@@ -20,7 +20,7 @@
 
 import { getLogger } from "./1_utilities.ts";
 import type { ClientDispatcherParams, WorkerRequest, WorkerResponse } from "./mod.ts";
-import { ClientReceiver } from "./client/6_client_receiver.ts";
+import { ClientReceiver } from "./client/7_client_receiver.ts";
 import { serializeWorkerError } from "./client/0_worker_error.ts";
 
 const clientReceivers = new Map<string, ClientReceiver>();

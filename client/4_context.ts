@@ -19,10 +19,122 @@
  */
 
 import { unreachable } from "../0_deps.ts";
+import { InputError } from "../0_errors.ts";
 import { type Api, toJSON } from "../2_tl.ts";
 import type { BusinessConnection, CallbackQuery, Chat, ChatAction, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ChosenInlineResult, ClaimedGifts, FailedInvitation, FileSource, ID, InlineQuery, InlineQueryResult, InputChecklistItem, InputMedia, InputPollOption, InputStoryContent, InviteLink, JoinRequest, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, Poll, PriceTag, Reaction, ReplyTo, SlowModeDuration, Story, Topic, Update, User, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
 import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, ForwardMessagesParams, GetChatMembersParams, GetClaimedGiftsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetSavedMessagesParams, PinMessageParams, PromoteChatMemberParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetReactionsParams, StartVideoChatParams, StopPollParams, UpdateChecklistParams } from "./0_params.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
+import { type FilterQuery, match, type WithChatType, type WithFilter } from "./3_filters.ts";
+
+export type ContextCommands = string | RegExp | (string | RegExp)[] | {
+  names: string | RegExp | (string | RegExp)[];
+  prefixes: string | string[];
+};
+
+interface StaticHas {
+  filterQuery<Q extends FilterQuery>(filter: Q): <C extends Context>(ctx: C) => ctx is WithFilter<typeof ctx, Q>;
+  command(commands: ContextCommands, fallbackPrefixes: string | string[] | undefined): <C extends Context>(ctx: C) => ctx is WithFilter<typeof ctx, "message:text">;
+  callbackQuery(data: string | RegExp | (string | RegExp)[]): <C extends Context>(ctx: C) => ctx is WithFilter<typeof ctx, "callbackQuery:data">;
+  inlineQuery(queries: string | RegExp | (string | RegExp)[]): <C extends Context>(ctx: C) => ctx is WithFilter<typeof ctx, "inlineQuery">;
+  chatType<T extends ChatP["type"]>(chatType: T | T[]): <C extends Context>(ctx: C) => ctx is WithChatType<typeof ctx, T>;
+}
+
+const staticHas: StaticHas = {
+  filterQuery<Q extends FilterQuery>(filter: Q) {
+    return <C extends Context>(ctx: C): ctx is WithFilter<typeof ctx, Q> => {
+      return match(filter, ctx.update);
+    };
+  },
+  command(commands: ContextCommands, fallbackPrefixes: string | string[] | undefined) {
+    const hasText = staticHas.filterQuery("message:text");
+    const commands__ = typeof commands === "object" && "names" in commands ? commands.names : commands;
+    const commands_ = Array.isArray(commands__) ? commands__ : [commands__];
+    const prefixes_ = typeof commands === "object" && "prefixes" in commands ? commands.prefixes : (fallbackPrefixes ?? []);
+    const prefixes = Array.isArray(prefixes_) ? prefixes_ : [prefixes_];
+    for (const left of prefixes) {
+      for (const right of prefixes) {
+        if (left === right) {
+          continue;
+        }
+        if (left.startsWith(right) || right.startsWith(left)) {
+          throw new InputError("Intersecting prefixes");
+        }
+      }
+    }
+
+    return <C extends Context>(ctx: C): ctx is WithFilter<typeof ctx, "message:text"> => {
+      if (!hasText(ctx)) {
+        return false;
+      }
+      const prefixes_ = prefixes.length === 0 ? [!ctx.me?.isBot ? "\\" : "/"] : prefixes;
+      if (prefixes_.length === 0) {
+        return false;
+      }
+      const cmd = ctx.update.message.text.split(/\s/, 1)[0];
+      const prefix = prefixes_.find((v) => cmd.startsWith(v));
+      if (prefix === undefined) {
+        return false;
+      }
+      if (cmd.includes("@")) {
+        const username = cmd.split("@", 2)[1];
+        if (username.toLowerCase() !== ctx.me!.username?.toLowerCase()) {
+          return false;
+        }
+      }
+      const command_ = cmd.split("@", 1)[0].split(prefix, 2)[1].toLowerCase();
+      for (const command of commands_) {
+        if (typeof command === "string" && (command.toLowerCase() === command_)) {
+          return true;
+        } else if (command instanceof RegExp && command.test(command_)) {
+          return true;
+        }
+      }
+      return false;
+    };
+  },
+  callbackQuery(data: string | RegExp | (string | RegExp)[]) {
+    const hasCallbackQueryData = staticHas.filterQuery("callbackQuery:data");
+    const data_ = Array.isArray(data) ? data : [data];
+    return <C extends Context>(ctx: C): ctx is WithFilter<typeof ctx, "callbackQuery:data"> => {
+      if (!hasCallbackQueryData(ctx)) {
+        return false;
+      }
+
+      for (const data of data_) {
+        if (typeof data === "string" && data === ctx.update.callbackQuery.data) {
+          return true;
+        } else if (data instanceof RegExp && data.test(ctx.update.callbackQuery.data)) {
+          return true;
+        }
+      }
+      return false;
+    };
+  },
+  inlineQuery(queries: string | RegExp | (string | RegExp)[]) {
+    const hasInlineQuery = staticHas.filterQuery("inlineQuery");
+    const queries_ = Array.isArray(queries) ? queries : [queries];
+    return <C extends Context>(ctx: C): ctx is WithFilter<typeof ctx, "inlineQuery"> => {
+      if (!hasInlineQuery(ctx)) {
+        return false;
+      }
+
+      for (const query of queries_) {
+        if (typeof query === "string" && query === ctx.update.inlineQuery.query) {
+          return true;
+        } else if (query instanceof RegExp && query.test(ctx.update.inlineQuery.query)) {
+          return true;
+        }
+      }
+      return false;
+    };
+  },
+  chatType<T extends ChatP["type"]>(chatType: T | T[]) {
+    const set = new Set<ChatP["type"]>(Array.isArray(chatType) ? chatType : [chatType]);
+    return <C extends Context>(ctx: C): ctx is WithChatType<typeof ctx, T> => {
+      return ctx.chat !== undefined && set.has(ctx.chat.type);
+    };
+  },
+};
 
 /**
  * The context object that is passed to the client's update handlers.
@@ -39,6 +151,8 @@ export class Context {
     this.#me = me;
     this.#update = update;
   }
+
+  static has: StaticHas = staticHas;
 
   get update(): Update {
     return this.#update;
@@ -148,6 +262,26 @@ export class Context {
   get from(): User | ChatPGroup | ChatPSupergroup | ChatPChannel | undefined {
     const from = "callbackQuery" in this.update ? this.update.callbackQuery.from : "inlineQuery" in this.update ? this.update.inlineQuery.from : "chatMember" in this.update ? this.update.chatMember.from : "myChatMember" in this.update ? this.update.myChatMember.from : "messageReactions" in this.update ? this.update.messageReactions.user : "preCheckoutQuery" in this.update ? this.update.preCheckoutQuery.from : "joinRequest" in this.update ? this.update.joinRequest.from : "businessConnection" in this.update ? this.update.businessConnection.user : "pollAnswer" in this.update ? this.update.pollAnswer.from : this.msg?.from;
     return from;
+  }
+
+  hasFilterQuery<Q extends FilterQuery>(filter: Q): this is WithFilter<typeof this, Q> {
+    return Context.has.filterQuery(filter)(this);
+  }
+
+  hasCommand(commands: ContextCommands, fallbackPrefixes: string | string[] | undefined): this is WithFilter<typeof this, "message:text"> {
+    return Context.has.command(commands, fallbackPrefixes)(this);
+  }
+
+  hasCallbackQuery(data: string | RegExp | (string | RegExp)[]): this is WithFilter<typeof this, "callbackQuery:data"> {
+    return Context.has.callbackQuery(data)(this);
+  }
+
+  hasInlineQuery(queries: string | RegExp | (string | RegExp)[]): this is WithFilter<typeof this, "inlineQuery"> {
+    return Context.has.inlineQuery(queries)(this);
+  }
+
+  hasChatType<T extends ChatP["type"]>(chatType: T | T[]): this is WithChatType<typeof this, T> {
+    return Context.has.chatType(chatType)(this);
   }
 
   /**

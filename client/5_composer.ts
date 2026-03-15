@@ -23,8 +23,8 @@ import type { MaybePromise } from "../1_utilities.ts";
 import type { ChatP, Update, User } from "../3_types.ts";
 import type { NextFunction } from "./0_utilities.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
-import { Context } from "./2_context.ts";
-import { type FilterQuery, match, type WithChatType, type WithFilter } from "./3_filters.ts";
+import type { FilterQuery, WithChatType, WithFilter } from "./3_filters.ts";
+import { Context, type ContextCommands } from "./4_context.ts";
 
 export type MiddlewareFn<C> = (
   ctx: C,
@@ -132,96 +132,31 @@ export class Composer<C extends Context> implements MiddlewareObj<C> {
     filter: Q,
     ...middleware: Middleware<WithFilter<C, Q>>[]
   ): Composer<WithFilter<C, Q>> {
-    return this.filter((ctx): ctx is WithFilter<C, Q> => {
-      return match(filter, ctx.update);
-    }, ...middleware);
+    return this.filter((ctx) => ctx.hasFilterQuery(filter), ...middleware);
   }
 
   command(
-    commands: string | RegExp | (string | RegExp)[] | {
-      names: string | RegExp | (string | RegExp)[];
-      prefixes: string | string[];
-    },
+    commands: ContextCommands,
     ...middleware: Middleware<WithFilter<C, "message:text">>[]
   ): Composer<WithFilter<C, "message:text">> {
-    const commands__ = typeof commands === "object" && "names" in commands ? commands.names : commands;
-    const commands_ = Array.isArray(commands__) ? commands__ : [commands__];
-    const prefixes_ = typeof commands === "object" && "prefixes" in commands ? commands.prefixes : (this.#prefixes ?? []);
-    const prefixes = Array.isArray(prefixes_) ? prefixes_ : [prefixes_];
-    for (const left of prefixes) {
-      for (const right of prefixes) {
-        if (left === right) {
-          continue;
-        }
-        if (left.startsWith(right) || right.startsWith(left)) {
-          throw new InputError("Intersecting prefixes");
-        }
-      }
-    }
-    return this.on("message:text").filter((ctx) => {
-      const prefixes_ = prefixes.length === 0 ? [!ctx.me?.isBot ? "\\" : "/"] : prefixes;
-      if (prefixes_.length === 0) {
-        return false;
-      }
-      const cmd = ctx.update.message.text.split(/\s/, 1)[0];
-      const prefix = prefixes_.find((v) => cmd.startsWith(v));
-      if (prefix === undefined) {
-        return false;
-      }
-      if (cmd.includes("@")) {
-        const username = cmd.split("@", 2)[1];
-        if (username.toLowerCase() !== ctx.me!.username?.toLowerCase()) {
-          return false;
-        }
-      }
-      const command_ = cmd.split("@", 1)[0].split(prefix, 2)[1].toLowerCase();
-      for (const command of commands_) {
-        if (typeof command === "string" && (command.toLowerCase() === command_)) {
-          return true;
-        } else if (command instanceof RegExp && command.test(command_)) {
-          return true;
-        }
-      }
-      return false;
-    }, ...middleware);
+    return this.filter(Context.has.command(commands, this.#prefixes), ...middleware);
   }
 
   callbackQuery(
     data: string | RegExp | (string | RegExp)[],
     ...middleware: Middleware<WithFilter<C, "callbackQuery:data">>[]
   ): Composer<WithFilter<C, "callbackQuery:data">> {
-    const data_ = Array.isArray(data) ? data : [data];
-    return this.on("callbackQuery:data").filter((ctx) => {
-      for (const data of data_) {
-        if (typeof data === "string" && data === ctx.update.callbackQuery.data) {
-          return true;
-        } else if (data instanceof RegExp && data.test(ctx.update.callbackQuery.data)) {
-          return true;
-        }
-      }
-      return false;
-    }, ...middleware);
+    return this.filter(Context.has.callbackQuery(data), ...middleware);
   }
 
   inlineQuery(
     queries: string | RegExp | (string | RegExp)[],
     ...middleware: Middleware<WithFilter<C, "inlineQuery">>[]
   ): Composer<WithFilter<C, "inlineQuery">> {
-    const queries_ = Array.isArray(queries) ? queries : [queries];
-    return this.on("inlineQuery").filter((ctx) => {
-      for (const query of queries_) {
-        if (typeof query === "string" && query === ctx.update.inlineQuery.query) {
-          return true;
-        } else if (query instanceof RegExp && query.test(ctx.update.inlineQuery.query)) {
-          return true;
-        }
-      }
-      return false;
-    }, ...middleware);
+    return this.filter(Context.has.inlineQuery(queries), ...middleware);
   }
 
   chatType<T extends ChatP["type"]>(chatType: T | T[], ...middleware: Middleware<WithChatType<C, T>>[]): Composer<WithChatType<C, T>> {
-    const set = new Set<ChatP["type"]>(Array.isArray(chatType) ? chatType : [chatType]);
-    return this.filter((ctx): ctx is WithChatType<C, T> => ctx.chat !== undefined && set.has(ctx.chat.type), ...middleware);
+    return this.filter(Context.has.chatType(chatType), ...middleware);
   }
 }

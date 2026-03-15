@@ -18,65 +18,24 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { delay, MINUTE, SECOND, unreachable } from "../0_deps.ts";
-import { AccessError, ConnectionError, InputError } from "../0_errors.ts";
-import { drop, getLogger, type Logger, type MaybePromise, Mutex, ZERO_CHANNEL_ID } from "../1_utilities.ts";
-import { type Storage, StorageMemory } from "../2_storage.ts";
-import { Api, Mtproto } from "../2_tl.ts";
-import { type DC, getDcId, type TransportProvider } from "../3_transport.ts";
-import { type BotCommand, type BotTokenCheckResult, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatAction, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type ConnectionState, constructChatP, constructUser2, type FailedInvitation, type FileSource, type Gift, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputChecklistItem, type InputEmojiStatus, type InputGift, type InputMedia, type InputPollOption, type InputStoryContent, type InviteLink, type JoinRequest, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageDice, type MessageDocument, type MessageInvoice, type MessageList, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type PasswordCheckResult, type Poll, type PriceTag, type Reaction, type SavedChats, type SlowModeDuration, type Sticker, type StickerSet, type Story, type Topic, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
-import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, type PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
-import { AuthKeyUnregistered, FloodWait, Migrate, SessionRevoked } from "../4_errors.ts";
-import { peerToChatId } from "../tl/2_telegram.ts";
-import type { CodeCheckResult } from "../types/0_code_check_result.ts";
-import { AbortableLoop } from "./0_abortable_loop.ts";
+import { getLogger, type Logger } from "../1_utilities.ts";
+import type { Api, Mtproto } from "../2_tl.ts";
+import type { DC } from "../3_transport.ts";
+import type { BotCommand, BotTokenCheckResult, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatAction, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ClaimedGifts, CodeCheckResult, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputChecklistItem, InputEmojiStatus, InputGift, InputMedia, InputPollOption, InputStoryContent, InviteLink, JoinRequest, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, MiniAppInfo, NetworkStatistics, ParseMode, PasswordCheckResult, Poll, PriceTag, Reaction, SavedChats, SlowModeDuration, Sticker, StickerSet, Story, Topic, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
+import { DOWNLOAD_MAX_CHUNK_SIZE } from "../4_constants.ts";
 import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetSavedChatsParams, GetSavedMessagesParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetWorkingHoursParams, SignInParams, StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams, UpdateProfileParams } from "./0_params.ts";
-import { StorageOperations } from "./0_storage_operations.ts";
-import { canBeInputChannel, canBeInputUser, DOWNLOAD_POOL_SIZE, getUsername, toInputChannel, toInputUser } from "./0_utilities.ts";
+import { deserializeWorkerError, type WorkerError } from "./0_worker_error.ts";
+import type { WorkerRequest } from "./0_worker_request.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
-import type { ClientPlainParams } from "./1_client_plain.ts";
 import { type InvokeErrorHandler, skipInvoke } from "./1_invoke_middleware.ts";
-import { AccountManager } from "./2_account_manager.ts";
-import { BotInfoManager } from "./2_bot_info_manager.ts";
-import { BusinessConnectionManager } from "./2_business_connection_manager.ts";
-import { ClientEncrypted } from "./2_client_encrypted.ts";
-import type { Context } from "./2_context.ts";
-import { FileManager } from "./2_file_manager.ts";
-import { NetworkStatisticsManager } from "./2_network_statistics_manager.ts";
-import { PaymentManager } from "./2_payment_manager.ts";
-import { ReactionManager } from "./2_reaction_manager.ts";
+import type { WorkerResponse } from "./1_worker_response.ts";
 import { signIn } from "./2_sign_in.ts";
-import { TranslationsManager } from "./2_translations_manager.ts";
-import { UpdateManager } from "./2_update_manager.ts";
-import { ClientEncryptedPool } from "./3_client_encrypted_pool.ts";
-import { MessageManager } from "./3_message_manager.ts";
-import { VideoChatManager } from "./3_video_chat_manager.ts";
-import { CallbackQueryManager } from "./4_callback_query_manager.ts";
-import { ChatListManager } from "./4_chat_list_manager.ts";
-import { ChatManager } from "./4_chat_manager.ts";
-import { ChecklistManager } from "./4_checklist_manager.ts";
-import { Composer } from "./4_composer.ts";
-import { ForumManager } from "./4_forum_manager.ts";
-import { GiftManager } from "./4_gift_manager.ts";
-import { InlineQueryManager } from "./4_inline_query_manager.ts";
-import { LinkPreviewManager } from "./4_link_preview_manager.ts";
-import { PollManager } from "./4_poll_manager.ts";
-import { StoryManager } from "./4_story_manager.ts";
+import type { Context } from "./4_context.ts";
+import { Composer } from "./5_composer.ts";
 
-export { restartAuth } from "./2_sign_in.ts";
-
-export const handleMigrationError = Symbol("handleMigrationError");
-
-// global Client ID counter for logs
-let id = 0;
-
-const getPeer = Symbol();
-
-const mustGetPeer = Symbol();
-
-export interface ClientParams extends ClientPlainParams {
+export interface ClientDispatcherParams {
   /** The storage provider to use. Defaults to memory storage. */
-  storage?: Storage;
+  storage?: "memory" | "indexeddb" | "denokv";
   /** App's API ID from [my.telegram.org/apps](https://my.telegram.org/apps). Required if no account was previously authorized. */
   apiId?: number;
   /** App's API hash from [my.telegram.org/apps](https://my.telegram.org/apps). Required if no account was previously authorized. */
@@ -125,771 +84,103 @@ export interface ClientParams extends ClientPlainParams {
   initialDc?: DC;
 }
 
-/**
- * An MTKruto client.
- */
-export class Client<C extends Context = Context> extends Composer<C> implements ClientGeneric {
-  #clients = new Array<ClientEncrypted>();
-  #downloadPools: Partial<Record<DC, ClientEncryptedPool>> = {};
-  #uploadPools: Partial<Record<DC, ClientEncryptedPool>> = {};
-  #guaranteeUpdateDelivery: boolean;
-  // 2_
-  #accountManager: AccountManager;
-  #botInfoManager: BotInfoManager;
-  #businessConnectionManager: BusinessConnectionManager;
-  #fileManager: FileManager;
-  #networkStatisticsManager: NetworkStatisticsManager;
-  #paymentManager: PaymentManager;
-  #reactionManager: ReactionManager;
-  #translationsManager: TranslationsManager;
-  #updateManager: UpdateManager;
-  // 3_
-  #messageManager: MessageManager;
-  #videoChatManager: VideoChatManager;
-  // 4_
-  #callbackQueryManager: CallbackQueryManager;
-  #chatListManager: ChatListManager;
-  #chatManager: ChatManager;
-  #checklistManager: ChecklistManager;
-  #forumManager: ForumManager;
-  #giftManager: GiftManager;
-  #inlineQueryManager: InlineQueryManager;
-  #linkPreviewManager: LinkPreviewManager;
-  #pollManager: PollManager;
-  #storyManager: StoryManager;
-
-  // deno-lint-ignore no-explicit-any
-  #managers?: Record<string, any>;
-  // deno-lint-ignore no-explicit-any
-  get managers(): Record<string, any> {
-    return this.#managers ?? (this.#managers ??= {
-      // 2_
-      accountManager: this.#accountManager,
-      botInfoManager: this.#botInfoManager,
-      businessConnectionManager: this.#businessConnectionManager,
-      fileManager: this.#fileManager,
-      networkStatisticsManager: this.#networkStatisticsManager,
-      paymentManager: this.#paymentManager,
-      reactionManager: this.#reactionManager,
-      translationsManager: this.#translationsManager,
-      updateManager: this.#updateManager,
-      // 3_
-      messageManager: this.#messageManager,
-      videoChatManager: this.#videoChatManager,
-      // 4_
-      callbackQueryManager: this.#callbackQueryManager,
-      chatListManager: this.#chatListManager,
-      chatManager: this.#chatManager,
-      checklistManager: this.#checklistManager,
-      forumManager: this.#forumManager,
-      giftManager: this.#giftManager,
-      inlineQueryManager: this.#inlineQueryManager,
-      linkPreviewManager: this.#linkPreviewManager,
-      pollManager: this.#pollManager,
-      storyManager: this.#storyManager,
-    });
-  }
-
-  #storage_: Storage;
-  #messageStorage_: Storage;
-  public readonly storage: StorageOperations;
-  public readonly messageStorage: StorageOperations;
-  #parseMode: ParseMode;
-
-  #apiId: number;
-  #apiHash: string;
-  #transportProvider?: TransportProvider;
-  public readonly appVersion: string;
-  public readonly deviceModel: string;
-  public readonly language: string;
-  public readonly platform: string;
-  public readonly systemLangCode: string;
-  public readonly systemVersion: string;
-  readonly #publicKeys?: PublicKeys;
-  readonly #outgoingMessages: NonNullable<ClientParams["outgoingMessages"]>;
-  #persistCache: boolean;
-  #disableUpdates: boolean;
-  #authString?: string;
-  #initialDc: DC;
-
+export class ClientDispatcher<C extends Context = Context> extends Composer<C> implements ClientGeneric {
+  #worker: Worker | MessagePort;
+  #id: string;
   #L: Logger;
   #LsignIn: Logger;
-  #LupdateGapRecoveryLoop: Logger;
-  #LstorageWriteLoop: Logger;
-  #LhandleMigrationError: Logger;
-  #Lmin: Logger;
 
-  /**
-   * Constructs the client.
-   */
-  constructor(params?: ClientParams) {
+  // deno-lint-ignore no-explicit-any
+  #pendingRequests = new Map<string, PromiseWithResolvers<any>>();
+
+  constructor(worker: Worker | MessagePort, id: string) {
     super();
 
-    this.#apiId = params?.apiId ?? 0;
-    this.#apiHash = params?.apiHash ?? "";
-    this.#transportProvider = params?.transportProvider;
-    this.#initialDc = params?.initialDc ?? INITIAL_DC;
-    this.#storage_ = params?.storage || new StorageMemory();
-    this.#persistCache = params?.persistCache ?? false;
-    if (!this.#persistCache) {
-      this.#messageStorage_ = new StorageMemory();
-    } else {
-      this.#messageStorage_ = this.#storage_;
+    this.#worker = worker;
+    this.#id = id;
+    this.#L = getLogger("ClientDispatcher").branch(this.#id);
+    this.#LsignIn = this.#L.branch("signIn");
+  }
+
+  /** @internal */
+  async handleResponse(response: WorkerResponse) {
+    if (response.clientId !== this.#id) {
+      return;
     }
-    this.storage = new StorageOperations(this.#storage_);
-    this.messageStorage = new StorageOperations(this.#messageStorage_);
-    this.#parseMode = params?.parseMode ?? null;
-    this.#disableUpdates = params?.disableUpdates ?? false;
-    this.#authString = params?.authString;
 
-    this.appVersion = params?.appVersion ?? APP_VERSION;
-    this.deviceModel = params?.deviceModel ?? DEVICE_MODEL;
-    this.language = params?.language ?? LANG_CODE;
-    this.platform = params?.platform ?? LANG_PACK;
-    this.systemLangCode = params?.systemLangCode ?? SYSTEM_LANG_CODE;
-    this.systemVersion = params?.systemVersion ?? SYSTEM_VERSION;
-    this.#publicKeys = params?.publicKeys;
-    this.#outgoingMessages = params?.outgoingMessages ?? false;
-    this.#guaranteeUpdateDelivery = params?.guaranteeUpdateDelivery ?? false;
+    this.#L.debug("handling response message", response);
 
-    const L = this.#L = getLogger("Client").client(id++);
-    this.#LsignIn = L.branch("signIn");
-    this.#LupdateGapRecoveryLoop = L.branch("updateGapRecoveryLoop");
-    this.#LstorageWriteLoop = L.branch("storageWriteLoop");
-    this.#LhandleMigrationError = L.branch("[handleMigrationError]");
-    this.#Lmin = L.branch("min");
+    if (response.isError) {
+      this.#pendingRequests.get(response.id)?.reject(deserializeWorkerError(response.data));
+      this.#pendingRequests.delete(response.id);
+    } else {
+      if (response.id === "") {
+        try {
+          await this.handleUpdate(this, response.data as Update);
+        } catch (err) {
+          this.#L.error("Error handling update:", err);
+        }
+      } else {
+        this.#pendingRequests.get(response.id)?.resolve(response.data);
+        this.#pendingRequests.delete(response.id);
+      }
+    }
+  }
 
-    const c = {
+  get id(): string {
+    return this.#id;
+  }
+
+  async #dispatch(method: string, ...args: unknown[]) {
+    // deno-lint-ignore no-explicit-any
+    const promiseWithResolvers = Promise.withResolvers<any>();
+
+    const id = crypto.randomUUID();
+    this.#pendingRequests.set(id, promiseWithResolvers);
+
+    const request: WorkerRequest = {
+      type: "request",
+      clientId: this.#id,
       id,
-      getUploadPoolSize: this.#getUploadPoolSize.bind(this),
-      invoke: async <T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams & { businessConnectionId?: string }): Promise<R> => {
-        if (params?.businessConnectionId) {
-          if (Mtproto.is("ping", function_)) {
-            unreachable();
-          }
-          return await this.invoke({ _: "invokeWithBusinessConnection", connection_id: params.businessConnectionId, query: function_ }, params);
-        } else {
-          return await this.invoke(function_, params);
-        }
-      },
-      storage: this.storage,
-      messageStorage: this.messageStorage,
-      guaranteeUpdateDelivery: this.#guaranteeUpdateDelivery,
-      setConnectionState: this.#propagateConnectionState.bind(this),
-      resetConnectionState: () => this.#stateChangeHandler(this.isConnected),
-      getSelfId: this.#getSelfId.bind(this),
-      getIsPremium: this.#getIsPremium.bind(this),
-      getInputPeer: this.getInputPeer.bind(this),
-      getInputChannel: this.getInputChannel.bind(this),
-      getInputUser: this.getInputUser.bind(this),
-      getInputPeerChatId: this.#getInputPeerChatId.bind(this),
-      getPeer: this[mustGetPeer].bind(this),
-      handleUpdate: this.#queueHandleCtxUpdate.bind(this),
-      parseMode: this.#parseMode,
-      outgoingMessages: this.#outgoingMessages,
-      dropPendingUpdates: params?.dropPendingUpdates,
-      isDisconnected: () => this.isDisconnected,
-      langPack: this.platform,
-      langCode: this.language,
+      method,
+      args,
     };
+    this.#L.debug("posted message to worker", request);
+    this.#worker.postMessage(request);
 
-    // 2_
-    this.#accountManager = new AccountManager(c);
-    this.#botInfoManager = new BotInfoManager(c);
-    this.#businessConnectionManager = new BusinessConnectionManager(c);
-    const fileManager = this.#fileManager = new FileManager(c);
-    this.#networkStatisticsManager = new NetworkStatisticsManager(c);
-    this.#paymentManager = new PaymentManager(c);
-    this.#reactionManager = new ReactionManager(c);
-    this.#translationsManager = new TranslationsManager(c);
-    this.#updateManager = new UpdateManager(c);
-    // 3_
-    const messageManager = this.#messageManager = new MessageManager({ ...c, fileManager });
-    this.#videoChatManager = new VideoChatManager({ ...c, fileManager });
-    // 4_
-    this.#callbackQueryManager = new CallbackQueryManager({ ...c, messageManager });
-    this.#chatListManager = new ChatListManager({ ...c, fileManager, messageManager });
-    this.#chatManager = new ChatManager({ ...c, fileManager, messageManager });
-    this.#checklistManager = new ChecklistManager({ ...c, messageManager });
-    this.#forumManager = new ForumManager({ ...c, messageManager });
-    this.#giftManager = new GiftManager({ ...c, messageManager });
-    this.#inlineQueryManager = new InlineQueryManager({ ...c, messageManager });
-    this.#linkPreviewManager = new LinkPreviewManager({ ...c, messageManager });
-    this.#pollManager = new PollManager({ ...c, messageManager });
-    this.#storyManager = new StoryManager({ ...c, fileManager, messageManager });
-
-    this.#updateManager.setUpdateHandler(this.#handleUpdate.bind(this));
-
-    if (params?.defaultHandlers ?? true) {
-      this.invoke.use(async ({ error }, next) => {
-        if (error instanceof FloodWait && error.seconds <= 10) {
-          L.warning("sleeping for", error.seconds, "because of:", error);
-          await delay(error.seconds * SECOND);
-          return true;
-        } else {
-          return next();
-        }
-      });
-    }
+    return await promiseWithResolvers.promise;
   }
 
-  #setMainClient(client: ClientEncrypted) {
-    this.#disconnectAllClients();
-    this.#clients = [client];
-    client.handlers.onUpdate = (updates) => {
-      this.#updateManager.processUpdates(updates, true, null);
-      this.#lastUpdates = new Date();
-    };
-    client.handlers.onDeserializationError = async () => {
-      await this.#updateManager.recoverUpdateGap("deserialization error");
-    };
-    client.handlers.onNewServerSalt = async (serverSalt) => {
-      await this.storage.setServerSalt(serverSalt);
-    };
-    client.onConnectionStateChange = this.#onConnectionStateChange.bind(this);
-  }
-
-  #newClient(dc: DC, main: boolean, isCdn: boolean) {
-    const client = new ClientEncrypted(dc, this.#apiId, {
-      appVersion: this.appVersion,
-      deviceModel: this.deviceModel,
-      langCode: this.language,
-      langPack: this.platform,
-      systemLangCode: this.systemLangCode,
-      systemVersion: this.systemVersion,
-      transportProvider: this.#transportProvider,
-      isCdn: isCdn,
-      disableUpdates: !main || isCdn,
-      publicKeys: this.#publicKeys,
-    });
-    client.connectionCallback = this.#networkStatisticsManager.getTransportReadWriteCallback(isCdn);
-    return client;
-  }
-
-  #disconnectAllClients() {
-    for (const client of this.#clients) {
-      client.disconnect();
-    }
-    for (const pool of Object.values(this.#downloadPools)) {
-      pool.disconnect();
-    }
-    for (const pool of Object.values(this.#uploadPools)) {
-      pool.disconnect();
-    }
-  }
-
-  get #client(): ClientEncrypted | undefined {
-    return this.#clients[0];
-  }
-
-  // direct ClientEncrypted property proxies
-  get isConnected(): boolean {
-    return this.#client?.isConnected ?? false;
-  }
-  get isDisconnected(): boolean {
-    return this.#client?.isDisconnected ?? true;
-  }
-
-  #propagateConnectionState(connectionState: ConnectionState) {
-    this.#queueHandleCtxUpdate({ connectionState });
-    this.#lastPropagatedConnectionState = connectionState;
-  }
-
-  #lastPropagatedConnectionState: ConnectionState | null = null;
-  #stateChangeHandler: (isConnected: boolean) => void = ((isConnected: boolean) => {
-    const connectionState = isConnected ? "ready" : "notConnected";
-    if (this.#lastPropagatedConnectionState !== connectionState) {
-      this.#propagateConnectionState(connectionState);
-    }
-  }).bind(this);
-
-  #storageInited = false;
-  async #initStorage() {
-    if (!this.#storageInited) {
-      await this.storage.initialize();
-      if (!this.#guaranteeUpdateDelivery) {
-        await this.storage.deleteUpdates();
-        await this.storage.commit(true);
-      }
-      this.#storageInited = true;
-    }
-  }
-
-  #connectMutex = new Mutex();
-  /**
-   * Loads the session if `setDc` was not called, initializes and connnects
-   * a `ClientPlain` to generate auth key if there was none, and connects the client.
-   * Before establishing the connection, the session is saved.
-   */
-  async connect() {
-    const unlock = await this.#connectMutex.lock();
-    try {
-      if (this.isConnected) {
-        return;
-      }
-      await this.#initStorage();
-      if (this.#authString && !this.#authStringImported) {
-        await this.importAuthString(this.#authString);
-      }
-      const auth = this.storage.auth.mustGet();
-      if (auth.authKey !== null && auth.dc !== null) {
-        if (!this.#client || this.#client.dc !== auth.dc) {
-          this.#client?.disconnect();
-          this.#setMainClient(this.#newClient(auth.dc, true, false));
-        }
-        await this.#client!.setAuthKey(auth.authKey);
-        if (this.#client!.serverSalt === 0n) {
-          this.#client!.serverSalt = await this.storage.getServerSalt() ?? 0n;
-        }
-      } else {
-        const dc = auth.dc ?? this.#initialDc;
-        if (!this.#client || this.#client.dc !== dc) {
-          this.#client?.disconnect();
-          this.#setMainClient(this.#newClient(dc, true, false));
-        }
-      }
-      await this.#client!.connect();
-      await this.storage.auth.update((v) => {
-        v.authKey = this.#client!.authKey;
-        v.dc = this.#client!.dc;
-      });
-      await this.storage.setServerSalt(this.#client!.serverSalt);
-      this.#updateGapRecoveryLoop.start();
-      this.#clientDisconnectionLoop.start();
-      if (!this.#messageStorage_.isMemory) {
-        this.#storageWriteLoop.start();
-      } else {
-        this.#L.debug("not starting storageWriteLoop");
-      }
-      await this.storage.commit(true);
-    } finally {
-      unlock();
-    }
-  }
-
-  async [handleMigrationError](err: Migrate) {
-    let newDc = String(err.dc);
-    if (Math.abs(getDcId(this.#client!.dc, this.#client!.isCdn)) >= 10_000) {
-      newDc += "-test";
-    }
-    this.disconnect();
-    await this.storage.auth.update((v) => {
-      v.authKey = null;
-      v.dc = newDc as DC;
-    });
-    await this.connect();
-    this.#LhandleMigrationError.debug(`migrated to DC${newDc}`);
-  }
-
-  async disconnect() {
-    this.#disconnectAllClients();
-    this.#clientDisconnectionLoop.abort();
-    this.#updateGapRecoveryLoop.abort();
-    this.#storageWriteLoop.abort();
-    this.#updateManager.closeAllChats();
-    await this.storage.commit(true);
-    await this.messageStorage.commit(true);
-  }
-
-  #lastPropagatedAuthorizationState: boolean | null = null;
-  async #propagateAuthorizationState(authorized: boolean) {
-    if (this.#lastPropagatedAuthorizationState !== authorized) {
-      await this.#handleCtxUpdate({ authorizationState: { isAuthorized: authorized } });
-      this.#lastPropagatedAuthorizationState = authorized;
-    }
-  }
-
-  async #getSelfId() {
-    const id = await this.storage.getAccountId();
-    if (id === null) {
-      throw new Error("Unauthorized");
-    }
-    return id;
-  }
-
-  async #getIsPremium() {
-    const maybeIsPremium = await this.storage.getIsPremium();
-    if (maybeIsPremium !== null) {
-      return maybeIsPremium;
-    }
-    return this.#lastGetMe?.isPremium ?? false;
-  }
-
-  #lastUpdates = new Date();
-  #updateGapRecoveryLoop = new AbortableLoop(async (loop, signal) => {
-    await delay(60 * SECOND, { signal });
-    if (!this.isConnected) {
-      loop.abort();
+  #isInited = false;
+  async init(params?: ClientDispatcherParams): Promise<void> {
+    if (this.#isInited) {
       return;
     }
-    if (Date.now() - this.#lastUpdates.getTime() >= 15 * MINUTE) {
-      drop(
-        this.#updateManager.recoverUpdateGap("lastUpdates").then(() => {
-          this.#lastUpdates = new Date();
-        }),
-      );
-    }
-  }, (loop, err) => {
-    if (!this.isConnected) {
-      loop.abort();
-    } else {
-      this.#LupdateGapRecoveryLoop.error(err);
-    }
-  });
+    this.#isInited = true;
 
-  #clientDisconnectionLoop = new AbortableLoop(async (loop, signal) => {
-    await delay(60 * SECOND, { signal });
-    if (!this.isConnected) {
-      loop.abort();
-      return;
-    }
-    const now = Date.now();
-    const disconnectAfter = 5 * MINUTE;
-    for (const [i, client] of this.#clients.entries()) {
-      if (i > 0 && !client.isDisconnected && client.lastRequest && now - client.lastRequest.getTime() >= disconnectAfter) {
-        client?.disconnect();
-      }
-    }
-  }, (loop) => {
-    if (!this.isConnected) {
-      loop.abort();
-    }
-  });
-
-  #storageWriteLoop = new AbortableLoop(async (_loop, signal) => {
-    await delay(5 * SECOND, { signal });
-    await this.messageStorage.commit();
-    await this.storage.commit();
-  }, (err) => {
-    this.#LstorageWriteLoop.error(err);
-  });
-
-  async #checkAuthorization() {
-    if (this.#lastGetMe) {
-      return this.#lastGetMe;
-    }
-
-    try {
-      await this.#updateManager.fetchState("#checkAuthorization");
-      const me = await this.#getMe();
-      await this.#propagateAuthorizationState(true);
-      drop(this.#updateManager.recoverUpdateGap("#checkAuthorization"));
-      return me;
-    } catch (err) {
-      if (!(err instanceof AuthKeyUnregistered) && !(err instanceof SessionRevoked)) {
-        throw err;
-      }
-    }
+    return await this.#dispatch("initClient", params);
   }
 
-  /**
-   * Send a user verification code.
-   *
-   * @param phoneNumber The phone number to send the code to.
-   * @method ac
-   */
-  async sendCode(phoneNumber: string) {
-    const me = await this.#checkAuthorization();
-    if (me) {
-      return;
-    }
-
-    try {
-      await this.#accountManager.sendCode(phoneNumber, this.#apiId, this.#apiHash);
-    } catch (err) {
-      if (err instanceof Migrate) {
-        await this[handleMigrationError](err);
-        await this.#accountManager.sendCode(phoneNumber, this.#apiId, this.#apiHash);
-      } else {
-        throw err;
-      }
-    }
+  async connect(): Promise<void> {
+    return await this.#dispatch("connect");
   }
 
-  /**
-   * Check if a code entered by the user was the same as the verification code.
-   *
-   * @param code A code entered by the user.
-   * @method ac
-   */
-  async checkCode(code: string): Promise<CodeCheckResult> {
-    const result = await this.#accountManager.checkCode(code);
-    if (result.type === "signedIn") {
-      await this.storage.auth.update((v) => {
-        v.userId = result.userId;
-        v.isBot = false;
-      });
-      this.#LsignIn.debug("signed in as user");
-      await this.#propagateAuthorizationState(true);
-      await this.#updateManager.fetchState("checkCode");
-    }
-
-    return result;
+  async disconnect(): Promise<void> {
+    return await this.#dispatch("disconnect");
   }
 
-  /**
-   * Get the user account password's hint.
-   *
-   * @method ac
-   */
-  async getPasswordHint(): Promise<string | null> {
-    return await this.#accountManager.getPasswordHint();
-  }
-
-  /**
-   * Check whether a password entered by the user is the same as the account's one.
-   *
-   * @param password The password to check
-   * @returns The result of the check.
-   * @method ac
-   */
-  async checkPassword(password: string): Promise<PasswordCheckResult> {
-    const result = await this.#accountManager.checkPassword(password);
-    if (result.type === "signedIn") {
-      await this.storage.auth.update((v) => {
-        v.userId = result.userId;
-        v.isBot = false;
-      });
-      await this.storage.commit(true);
-      this.#LsignIn.debug("signed in as user");
-      await this.#propagateAuthorizationState(true);
-      await this.#updateManager.fetchState("checkPassword");
-    }
-
-    return result;
-  }
-
-  /**
-   * Check whether a bot token is valid.
-   *
-   * @param password The password to check
-   * @returns The result of the check.
-   * @method ac
-   */
-  async checkBotToken(botToken: string): Promise<BotTokenCheckResult> {
-    const me = await this.#checkAuthorization();
-    if (me) {
-      return {
-        type: "signedIn",
-        userId: me.id,
-      };
-    }
-
-    while (true) {
-      try {
-        const result = await this.#accountManager.checkBotToken(botToken, this.#apiId, this.#apiHash);
-        if (result.type === "signedIn") {
-          await this.storage.auth.update((v) => {
-            v.userId = result.userId;
-            v.isBot = true;
-          });
-          await this.storage.commit(true);
-          this.#LsignIn.debug("signed in as bot");
-          await this.#propagateAuthorizationState(true);
-          await this.#updateManager.fetchState("checkBotToken");
-        }
-
-        return result;
-      } catch (err) {
-        if (err instanceof Migrate) {
-          await this[handleMigrationError](err);
-          continue;
-        } else {
-          throw err;
-        }
-      }
-    }
-  }
-
-  /**
-   * Signs in using the provided parameters if not already signed in.
-   * If no parameters are provided, the credentials will be prompted in runtime.
-   *
-   * Notes:
-   * 1. Requires the `apiId` and `apiHash` paramters to be passed when constructing the client.
-   * 3. Reconnects the client to the appropriate DC in case of MIGRATE_X errors.
-   */
-  async signIn(params?: SignInParams) {
-    await signIn(this, this.#LsignIn, params);
-  }
-
-  async signOut() {
-    try {
-      await Promise.all([
-        this.storage.reset(),
-        this.invoke({ _: "auth.logOut" }).then(() => {
-          this.#propagateAuthorizationState(false);
-        }),
-      ]);
-    } finally {
-      this.#lastGetMe = null;
-      this.disconnect();
-      await this.connect();
-    }
-  }
-
-  /**
-   * Same as calling `.connect()` followed by `.signIn(params)`.
-   */
   async start(params?: SignInParams) {
     await this.connect();
     await this.signIn(params);
   }
 
-  async #getClient(params: InvokeParams) {
-    let client: ClientEncrypted;
-    switch (params.type) {
-      case undefined:
-        client = await this.#getMainClient(params.dc);
-        break;
-      case "download":
-        client = await this.#getDownloadClient(params.dc);
-        break;
-      case "upload":
-        client = await this.#getUploadClient();
-        break;
-    }
-    if (client !== this.#client && !this.isDisconnected && client.isDisconnected) {
-      await client.connect();
-    }
-    return client;
-  }
-
-  #getMainClientMutex = new Mutex();
-  async #getMainClient(dc?: DC) {
-    if (dc === undefined || dc === this.#client?.dc) {
-      return this.#client!;
-    }
-    let client = this.#clients.find((v) => v.dc === dc);
-    if (client) {
-      return client;
-    }
-    const unlock = await this.#getMainClientMutex.lock();
-    client = this.#clients.find((v) => v.dc === dc);
-    if (client) {
-      return client;
-    }
-    try {
-      client = this.#newClient(dc, false, false);
-      await this.#setupClient(client);
-      this.#clients.push(client);
-      return client;
-    } finally {
-      unlock();
-    }
-  }
-
-  async #getDownloadClient(dc?: DC) {
-    dc ??= this.#client!.dc;
-    const pool = this.#downloadPools[dc] ??= new ClientEncryptedPool();
-    if (!pool.size) {
-      if (!pool.size) {
-        for (let i = 0; i < DOWNLOAD_POOL_SIZE; ++i) {
-          pool.add(this.#newClient(dc, false, true));
-        }
-      }
-    }
-    const client = pool.nextClient();
-    if (client.authKey.length) {
-      return client;
-    }
-    await this.#setupClient(client);
-    return client;
-  }
-
-  async #getUploadPoolSize() {
-    const dc = this.#client!.dc;
-    return (dc !== "2" && dc !== "4") || await this.#getIsPremium() ? 8 : 4;
-  }
-
-  async #getUploadClient() {
-    const dc = this.#client!.dc;
-    const poolSize = await this.#getUploadPoolSize();
-    const pool = this.#uploadPools[dc] ??= new ClientEncryptedPool();
-    if (!pool.size) {
-      for (let i = 0; i < poolSize; ++i) {
-        pool.add(await this.#newClient(dc, false, true));
-      }
-    }
-    const client = pool.nextClient();
-    if (client.authKey.length) {
-      return client;
-    }
-    await this.#setupClient(client);
-    return client;
-  }
-
-  async #setupClient(client: ClientEncrypted) {
-    const storage = client.dc === this.#client!.dc ? this.storage : new StorageOperations(this.storage.provider.branch(client.dc + (client.isCdn ? "_cdn" : "")));
-    await storage.initialize();
-    const auth = storage.auth.mustGet();
-    const serverSalt = await storage.getServerSalt();
-    if (auth.authKey !== null) {
-      await client.setAuthKey(auth.authKey);
-      if (serverSalt) {
-        client.serverSalt = serverSalt;
-      }
-    }
-    await client.connect();
-    if (auth.authKey === null) {
-      await this.#importAuthorization(client);
-    }
-    await storage.auth.update((v) => v.authKey = client.authKey);
-    if (client.dc !== this.#client!.dc) {
-      await storage.setServerSalt(client.serverSalt);
-      client.handlers.onNewServerSalt = async (serverSalt) => {
-        await storage.setServerSalt(serverSalt);
-      };
-    }
-  }
-
-  async #importAuthorization(client: ClientEncrypted) {
-    if (this.#client!.dc === client.dc && this.#client!.isCdn === client.isCdn) {
-      const auth = this.storage.auth.mustGet();
-      const serverSalt = await this.storage.getServerSalt();
-      if (auth.authKey !== null) {
-        await client.setAuthKey(auth.authKey);
-        if (serverSalt) {
-          client.serverSalt = serverSalt;
-        }
-      }
-      return;
-    }
-    const exportedAuthorization = await this.#client!.invoke({ _: "auth.exportAuthorization", dc_id: getDcId(client.dc, client.isCdn) });
-    await client.invoke({ ...exportedAuthorization, _: "auth.importAuthorization" });
-  }
-
   async #invoke<T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams): Promise<R> {
-    if (!this.#client) {
-      throw new ConnectionError("The connection is not open.");
-    }
     let n = 1;
-    let client: ClientEncrypted;
     while (true) {
-      client = params ? await this.#getClient(params) : this.#client!;
-      const main = client === this.#client;
       try {
-        const result = await client.invoke(function_);
-        if (main) {
-          try {
-            await this.#updateManager.processResult(result as Api.DeserializedType);
-          } catch (err) {
-            this.#L.error("failed to process result:", err);
-          }
-          if (Api.isOfEnum("Update", result) || Api.isOfEnum("Updates", result)) {
-            return new Promise<R>((resolve) => {
-              this.#updateManager.processUpdates(result, true, Mtproto.is("ping", function_) ? null : function_, () => resolve(result as R));
-            });
-          }
-        }
-        return result as R;
+        return await this.#dispatch("invoke", function_, params);
       } catch (err) {
-        if (err instanceof AuthKeyUnregistered && !main) {
-          await this.#importAuthorization(client);
-          continue;
-        } else if (err instanceof ConnectionError && !main && !this.isDisconnected) {
-          continue;
-        } else if (await this.#handleInvokeError(Object.freeze({ client: this, error: err, function: function_, n: n++ }), () => Promise.resolve(false))) {
+        if (await this.#handleInvokeError(Object.freeze({ client: this, error: err, function: function_, n: n++ }), () => Promise.resolve(false))) {
           continue;
         } else {
           throw err;
@@ -898,7 +189,18 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     }
   }
 
-  #handleInvokeError = skipInvoke<Client<C>>();
+  #handleInvokeError = skipInvoke<ClientDispatcher<C>>();
+
+  /** @internal */
+  async handleInvokeError(request: WorkerRequest): Promise<boolean> {
+    const args = request.args[0] as { error: WorkerError; function: Api.AnyFunction | Mtproto.ping; n: number };
+    return await this.#handleInvokeError({
+      client: this,
+      error: deserializeWorkerError(args.error),
+      function: args.function,
+      n: args.n,
+    }, () => Promise.resolve(false));
+  }
 
   /**
    * Invokes a function waiting and returning its reply.
@@ -908,11 +210,11 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   invoke: {
     <T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams): Promise<R>;
-    use: (handler: InvokeErrorHandler<Client<C>>) => void;
+    use: (handler: InvokeErrorHandler<ClientDispatcher<C>>) => void;
   } = Object.assign(
     this.#invoke,
     {
-      use: (handler: InvokeErrorHandler<Client<C>>) => {
+      use: (handler: InvokeErrorHandler<ClientDispatcher<C>>) => {
         const handle = this.#handleInvokeError;
         this.#handleInvokeError = async (ctx, next) => {
           let result: boolean | null = null;
@@ -926,33 +228,79 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     },
   );
 
-  exportAuthString(): Promise<string> {
-    return this.storage.exportAuthString(this.#apiId);
+  /**
+   * Send a user verification code.
+   *
+   * @param phoneNumber The phone number to send the code to.
+   * @method ac
+   */
+  async sendCode(phoneNumber: string): Promise<void> {
+    return await this.#dispatch("sendCode", phoneNumber);
   }
 
-  #authStringImported = false;
-  async importAuthString(authString: string) {
-    if (this.isConnected) {
-      throw new Error("Cannot import auth string while the client is connected");
-    }
-    await this.#initStorage();
-    await this.storage.importAuthString(authString);
-    this.#authStringImported = true;
-    if (!this.#apiId) {
-      this.#apiId = this.storage.auth.mustGet().apiId;
-    }
+  /**
+   * Check if a code entered by the user was the same as the verification code.
+   *
+   * @param code A code entered by the user.
+   * @method ac
+   */
+  async checkCode(code: string): Promise<CodeCheckResult> {
+    return await this.#dispatch("checkCode", code);
   }
 
-  async #getUserAccessHash(userId: bigint) {
-    const users = await this.invoke({ _: "users.getUsers", id: [{ _: "inputUser", user_id: userId, access_hash: 0n }] });
-    const user = Api.is("user", users[0]) ? users[0] : undefined;
-    return user?.access_hash ?? 0n;
+  /**
+   * Get the user account password's hint.
+   *
+   * @method ac
+   */
+  async getPasswordHint(): Promise<string | null> {
+    return await this.#dispatch("getPasswordHint");
   }
 
-  async #getChannelAccessHash(channelId: bigint) {
-    const channels = await this.invoke({ _: "channels.getChannels", id: [{ _: "inputChannel", channel_id: channelId, access_hash: 0n }] });
-    const channel = Api.is("channel", channels.chats[0]) ? channels.chats[0] : undefined;
-    return channel?.access_hash ?? 0n;
+  /**
+   * Check whether a password entered by the user is the same as the account's one.
+   *
+   * @param password The password to check
+   * @returns The result of the check.
+   * @method ac
+   */
+  async checkPassword(password: string): Promise<PasswordCheckResult> {
+    return await this.#dispatch("checkPassword", password);
+  }
+
+  /**
+   * Check whether a bot token is valid.
+   *
+   * @param password The password to check
+   * @returns The result of the check.
+   * @method ac
+   */
+  async checkBotToken(botToken: string): Promise<BotTokenCheckResult> {
+    return await this.#dispatch("checkBotToken", botToken);
+  }
+
+  /**
+   * Signs in using the provided parameters if not already signed in.
+   * If no parameters are provided, the credentials will be prompted in runtime.
+   *
+   * Notes:
+   * 1. Requires the `apiId` and `apiHash` paramters to be passed when constructing the client.
+   * 3. Reconnects the client to the appropriate DC in case of MIGRATE_X errors.
+   */
+  async signIn(params?: SignInParams): Promise<void> {
+    await signIn(this, this.#LsignIn, params);
+  }
+
+  async signOut(): Promise<void> {
+    return await this.#dispatch("signOut");
+  }
+
+  async exportAuthString(): Promise<string> {
+    return await this.#dispatch("exportAuthString");
+  }
+
+  async importAuthString(authString: string): Promise<void> {
+    return await this.#dispatch("importAuthString", authString);
   }
 
   /**
@@ -961,31 +309,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param id The identifier of a chat.
    */
   async getInputPeer(id: ID): Promise<Api.InputPeer> {
-    if (id === "me" || id === await this.#getSelfId()) {
-      return { _: "inputPeerSelf" };
-    }
-    const inputPeer = await this.#getInputPeerInner(id);
-    if (((Api.is("inputPeerUser", inputPeer) || Api.is("inputPeerChannel", inputPeer)) && inputPeer.access_hash === 0n) && this.storage.isBot) {
-      if ("channel_id" in inputPeer) {
-        inputPeer.access_hash = await this.#getChannelAccessHash(inputPeer.channel_id);
-      } else {
-        inputPeer.access_hash = await this.#getUserAccessHash(inputPeer.user_id);
-      }
-    }
-    if ((Api.is("inputPeerUser", inputPeer) || Api.is("inputPeerChannel", inputPeer)) && inputPeer.access_hash === 0n) {
-      throw new AccessError(`The chat ${id} cannot be accessed.`);
-    }
-    return inputPeer;
-  }
-
-  async #getInputPeerChatId(inputPeer: Api.InputPeer | Api.InputUser | Api.InputChannel) {
-    if (Api.isOneOf(["inputPeerSelf", "inputUserSelf"], inputPeer)) {
-      return await this.#getSelfId();
-    } else if (Api.isOneOf(["inputPeerEmpty", "inputUserEmpty", "inputChannelEmpty"], inputPeer)) {
-      unreachable();
-    } else {
-      return Api.peerToChatId(inputPeer);
-    }
+    return await this.#dispatch("getInputPeer", id);
   }
 
   /**
@@ -994,11 +318,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param id The identifier of the channel or the supergroup.
    */
   async getInputChannel(id: ID): Promise<Api.inputChannel | Api.inputChannelFromMessage> {
-    const inputPeer = await this.getInputPeer(id);
-    if (!canBeInputChannel(inputPeer)) {
-      throw new TypeError(`The chat ${id} is not a channel neither a supergroup.`);
-    }
-    return toInputChannel(inputPeer);
+    return await this.#dispatch("getInputChannel", id);
   }
 
   /**
@@ -1007,289 +327,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param id The identifier of the user.
    */
   async getInputUser(id: ID): Promise<Api.inputUserSelf | Api.inputUser | Api.inputUserFromMessage> {
-    const inputPeer = await this.getInputPeer(id);
-    if (!canBeInputUser(inputPeer)) {
-      throw new TypeError(`The chat ${id} is not a private chat.`);
-    }
-    return toInputUser(inputPeer);
-  }
-
-  async #getInputPeerInner(id: ID) {
-    const idn = Number(id);
-    if (!isNaN(idn)) {
-      id = idn;
-    }
-    let peer: Api.InputPeer;
-    if (typeof id === "string") {
-      id = getUsername(id);
-      let resolvedId = 0;
-      const maybeUsername = await this.messageStorage.usernames.get([id]);
-      if (maybeUsername !== null && Date.now() - maybeUsername[1].getTime() < USERNAME_TTL) {
-        const [id] = maybeUsername;
-        resolvedId = id;
-      } else {
-        const resolved = await this.invoke({ _: "contacts.resolveUsername", username: id });
-        this.#updateManager.processChats(resolved.chats, resolved);
-        this.#updateManager.processUsers(resolved.users, resolved);
-        if (Api.is("peerUser", resolved.peer)) {
-          resolvedId = Api.peerToChatId(resolved.peer);
-        } else if (Api.is("peerChannel", resolved.peer)) {
-          resolvedId = Api.peerToChatId(resolved.peer);
-        } else {
-          unreachable();
-        }
-      }
-      const resolvedIdType = Api.getChatIdPeerType(resolvedId);
-      if (resolvedIdType === "user") {
-        const accessHash = await this.messageStorage.getUserAccessHash(resolvedId);
-        peer = { _: "inputPeerUser", user_id: Api.chatIdToPeerId(resolvedId), access_hash: accessHash ?? 0n } as Api.inputPeerUser;
-      } else if (resolvedIdType === "channel") {
-        const accessHash = await this.messageStorage.getChannelAccessHash(resolvedId);
-        peer = { _: "inputPeerChannel", channel_id: Api.chatIdToPeerId(resolvedId), access_hash: accessHash ?? 0n } as Api.inputPeerChannel;
-      } else {
-        unreachable();
-      }
-    } else if (id > 0) {
-      const accessHash = await this.messageStorage.getUserAccessHash(id);
-      peer = { _: "inputPeerUser", user_id: Api.chatIdToPeerId(id), access_hash: accessHash ?? 0n } as Api.inputPeerUser;
-    } else if (-MAX_CHAT_ID <= id) {
-      peer = { _: "inputPeerChat", chat_id: BigInt(Math.abs(id)) } as Api.inputPeerChat;
-    } else if (ZERO_CHANNEL_ID - MAX_CHANNEL_ID <= id && id !== ZERO_CHANNEL_ID) {
-      const accessHash = await this.messageStorage.getChannelAccessHash(id);
-      peer = { _: "inputPeerChannel", channel_id: Api.chatIdToPeerId(id), access_hash: accessHash ?? 0n } as Api.inputPeerChannel;
-    } else {
-      throw new InputError("The ID is of an format unknown.");
-    }
-
-    if (!Api.is("inputPeerChat", peer) && !peer.access_hash) {
-      // TODO
-      // const chatId = Api.peerToChatId(peer);
-      // const minPeerReference = await this.messageStorage.getLastMinPeerReference(chatId);
-      // if (minPeerReference) {
-      //   const minInputPeer = await this.#getMinInputPeer(canBeInputChannel(peer) ? "channel" : "user", { ...minPeerReference, senderId: chatId });
-      //   if (minInputPeer) {
-      //     this.#Lmin.debug("resolved input min peer", minInputPeer);
-      //     peer = minInputPeer;
-      //   }
-      // }
-    }
-
-    return peer;
-  }
-
-  async #getMinInputPeer(type: "user" | "channel", reference: { chatId: number; senderId: number; messageId: number }): Promise<Api.inputPeerUserFromMessage | Api.inputPeerChannelFromMessage | null> {
-    const peer_ = await this.messageStorage.peers.get([reference.chatId]);
-    if (peer_ !== null && (peer_[0].type === "channel" || peer_[0].type === "supergroup")) {
-      const peer: Api.inputPeerChannel = { _: "inputPeerChannel", channel_id: BigInt(peer_[0].id), access_hash: peer_[1] };
-      if (type === "user") {
-        return { _: "inputPeerUserFromMessage", peer, msg_id: reference.messageId, user_id: Api.chatIdToPeerId(reference.senderId) };
-      } else {
-        return { _: "inputPeerChannelFromMessage", peer, msg_id: reference.messageId, channel_id: Api.chatIdToPeerId(reference.senderId) };
-      }
-    } else {
-      return null;
-    }
-  }
-
-  private [getPeer](peer: Api.peerUser): Promise<[ChatPPrivate, bigint] | null>;
-  private [getPeer](peer: Api.peerChat): Promise<[ChatPGroup, bigint] | null>;
-  private [getPeer](peer: Api.peerChannel): Promise<[ChatPChannel, bigint] | null>;
-  private [getPeer](peer: Api.peerUser | Api.peerChat | Api.peerChannel): Promise<[ChatP, bigint] | null>;
-  private async [getPeer](peer: Api.peerUser | Api.peerChat | Api.peerChannel) {
-    const id = Api.peerToChatId(peer);
-    const entity = await this.messageStorage.peers.get([id]);
-    if (entity === null) {
-      if (entity === null && this.storage.isBot && Api.is("peerUser", peer) || Api.is("peerChannel", peer)) {
-        await this.getInputPeer(id);
-      } else {
-        return entity;
-      }
-    }
-    return await this.messageStorage.peers.get([id]);
-  }
-
-  private [mustGetPeer](peer: Api.peerUser): [ChatPPrivate, bigint] | null;
-  private [mustGetPeer](peer: Api.peerChat): [ChatPGroup, bigint] | null;
-  private [mustGetPeer](peer: Api.peerChannel): [ChatPChannel, bigint] | null;
-  private [mustGetPeer](peer: Api.peerUser | Api.peerChat | Api.peerChannel): [ChatP, bigint] | null;
-  private [mustGetPeer](peer: Api.peerUser | Api.peerChat | Api.peerChannel) {
-    return this.messageStorage.peers.mustGet([peerToChatId(peer)]);
-  }
-
-  async #handleCtxUpdate(update: Update) {
-    if (this.#disableUpdates && !("authorizationState" in update) && !("connectionState" in update)) {
-      return;
-    }
-    try {
-      await this.handleUpdate(this, update);
-    } catch (err) {
-      this.#L.error("Failed to handle update:", err);
-      throw err;
-    }
-  }
-
-  #queueHandleCtxUpdate(update: Update) {
-    this.#updateManager.getHandleUpdateQueue(UpdateManager.MAIN_BOX_ID).add(async () => {
-      await this.#handleCtxUpdate(update);
-    });
-  }
-
-  async #handleUpdate(update: Api.Update) {
-    const maybePromises = new Array<() => MaybePromise<Update | null>>();
-    if (Api.is("updateUserName", update)) {
-      const value: [number, Date] = [Number(update.user_id), new Date()];
-      for (const username_ of update.usernames) {
-        const username = username_.username.toLowerCase();
-        this.messageStorage.usernames.set([username], value);
-      }
-      const peer: Api.peerUser = { ...update, _: "peerUser" };
-      const peer_ = await this[getPeer](peer);
-      if (peer_ !== null) {
-        const username = update.usernames[0];
-        if (username !== undefined) {
-          peer_[0].username = username.username;
-          const also = update.usernames.filter((v) => v !== username);
-          if (also.length) {
-            peer_[0].also = also.map((v) => v.username);
-          } else {
-            delete peer_[0].also;
-          }
-        } else {
-          delete peer_[0].username;
-        }
-        this.messageStorage.setPeer2(peer_[0], peer_[1]);
-      }
-    }
-
-    if (this.#messageManager.canHandleUpdate(update)) {
-      maybePromises.push(() => this.#messageManager.handleUpdate(update));
-    }
-
-    if (this.#chatManager.canHandleUpdate(update)) {
-      maybePromises.push(() => this.#chatManager.handleUpdate(update));
-    }
-
-    if (this.#pollManager.canHandleUpdate(update)) {
-      maybePromises.push(() => this.#pollManager.handleUpdate(update));
-    }
-
-    if (this.#videoChatManager.canHandleUpdate(update)) {
-      maybePromises.push(() => this.#videoChatManager.handleUpdate(update));
-    }
-
-    if (this.#callbackQueryManager.canHandleUpdate(update)) {
-      maybePromises.push(() => this.#callbackQueryManager.handleUpdate(update));
-    }
-
-    if (this.#inlineQueryManager.canHandleUpdate(update)) {
-      maybePromises.push(() => this.#inlineQueryManager.handleUpdate(update));
-    }
-
-    if (this.#linkPreviewManager.canHandleUpdate(update)) {
-      maybePromises.push(() => this.#linkPreviewManager.handleUpdate(update));
-    }
-
-    if (this.#reactionManager.canHandleUpdate(update)) {
-      maybePromises.push(() => this.#reactionManager.handleUpdate(update));
-    }
-
-    if (this.#chatListManager.canHandleUpdate(update)) {
-      maybePromises.push(() => this.#chatListManager.handleUpdate(update));
-    }
-
-    if (this.#storyManager.canHandleUpdate(update)) {
-      maybePromises.push(() => this.#storyManager.handleUpdate(update));
-    }
-
-    if (this.#businessConnectionManager.canHandleUpdate(update)) {
-      maybePromises.push(() => this.#businessConnectionManager.handleUpdate(update));
-    }
-
-    if (this.#storyManager.canHandleUpdate(update)) {
-      maybePromises.push(() => this.#storyManager.handleUpdate(update));
-    }
-
-    if (this.#paymentManager.canHandleUpdate(update)) {
-      maybePromises.push(() => this.#paymentManager.handleUpdate(update));
-    }
-
-    if (this.#translationsManager.canHandleUpdate(update)) {
-      maybePromises.push(() => this.#translationsManager.handleUpdate(update));
-    }
-
-    if (this.#botInfoManager.canHandleUpdate(update)) {
-      maybePromises.push(() => this.#botInfoManager.handleUpdate(update));
-    }
-
-    if (this.#accountManager.canHandleUpdate(update)) {
-      maybePromises.push(() => this.#accountManager.handleUpdate(update));
-    }
-
-    return () =>
-      Promise.resolve().then(async () => {
-        const updates: Array<Update> = [{ update }];
-        for (const maybePromise of maybePromises) {
-          try {
-            const value = maybePromise();
-            const update = value instanceof Promise ? await value : value;
-            if (update) {
-              updates.push(update);
-            }
-          } catch (err) {
-            this.#L.error("failed to construct update:", err);
-          }
-        }
-
-        for (const update of updates) {
-          try {
-            await this.#handleCtxUpdate(update);
-          } finally {
-            if ("deletedMessages" in update) {
-              for (const { chatId, messageId } of update.deletedMessages) {
-                await this.messageStorage.setMessage(chatId, messageId, null);
-              }
-            }
-          }
-        }
-      });
-  }
-
-  #lastGetMe: User | null = null;
-  async #getMe() {
-    if (this.#lastGetMe !== null) {
-      return this.#lastGetMe;
-    } else {
-      const user = await this.#getMeInner();
-      this.#lastGetMe = user;
-      return user;
-    }
-  }
-
-  async #getMeInner() {
-    let chatP = (await this[getPeer]({ _: "peerUser", user_id: BigInt(await this.#getSelfId()) }))?.[0] ?? null;
-    if (chatP === null) {
-      const users = await this.invoke({ _: "users.getUsers", id: [{ _: "inputUserSelf" }] });
-      chatP = constructChatP(Api.as("user", users[0]));
-      await this.storage.setIsPremium(chatP.isPremium);
-    }
-    const user = constructUser2(chatP);
-    this.#lastGetMe = user;
-    return user;
-  }
-
-  #previouslyConnected = false;
-  #lastConnectionState = false;
-  #onConnectionStateChange(isConnected: boolean) {
-    if (this.#lastConnectionState !== isConnected) {
-      if (isConnected) {
-        if (this.#previouslyConnected) {
-          drop(this.#updateManager.recoverUpdateGap("reconnect"));
-        }
-        this.#previouslyConnected = true;
-      }
-      const connectionState = isConnected ? "ready" : "notConnected";
-      this.#queueHandleCtxUpdate({ connectionState });
-    }
+    return await this.#dispatch("getInputUser", id);
   }
 
   //
@@ -1303,16 +341,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns Information on the currently authorized user.
    */
   async getMe(): Promise<User> {
-    if (this.#lastGetMe === null) {
-      const me = await this.#checkAuthorization();
-      if (!me) {
-        throw new InputError("Not signed in.");
-      } else {
-        return me;
-      }
-    }
-
-    return await this.#getMeInner();
+    return await this.#dispatch("getMe");
   }
 
   /**
@@ -1322,8 +351,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param id `"me"`, a bot ID, a supergroup ID, or a channel ID.
    * @param username The username to show.
    */
-  async showUsername(id: ID, username: string) {
-    await this.#accountManager.showUsername(id, username);
+  async showUsername(id: ID, username: string): Promise<void> {
+    return await this.#dispatch("showUsername", id, username);
   }
 
   /**
@@ -1333,8 +362,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param id `"me"`, a bot ID, a supergroup ID, or a channel ID.
    * @param username The username to hide.
    */
-  async hideUsername(id: ID, username: string) {
-    await this.#accountManager.hideUsername(id, username);
+  async hideUsername(id: ID, username: string): Promise<void> {
+    return await this.#dispatch("hideUsername", id, username);
   }
 
   /**
@@ -1345,7 +374,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns Whether the username is available.
    */
   async checkUsername(username: string, params?: CheckUsernameParams): Promise<boolean> {
-    return await this.#accountManager.checkUsername(username, params);
+    return await this.#dispatch("checkUsername", username, params);
   }
 
   /**
@@ -1355,7 +384,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param username The username to set.
    */
   async setUsername(username: string): Promise<void> {
-    await this.#accountManager.setUsername(username);
+    return await this.#dispatch("setUsername", username);
   }
 
   /**
@@ -1364,7 +393,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ac
    */
   async removeUsername(): Promise<void> {
-    await this.#accountManager.removeUsername();
+    return await this.#dispatch("removeUsername");
   }
 
   /**
@@ -1376,7 +405,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns Whether the order was changed.
    */
   async reorderUsernames(id: ID, order: string[]): Promise<boolean> {
-    return await this.#accountManager.reorderUsernames(id, order);
+    return await this.#dispatch("reorderUsernames", id, order);
   }
 
   /**
@@ -1387,7 +416,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns Whether any username was hidden.
    */
   async hideUsernames(id: ID): Promise<boolean> {
-    return await this.#accountManager.hideUsernames(id);
+    return await this.#dispatch("hideUsernames", id);
   }
 
   /**
@@ -1398,7 +427,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @cache
    */
   async getBusinessConnection(id: string): Promise<BusinessConnection> {
-    return await this.#businessConnectionManager.getBusinessConnection(id);
+    return await this.#dispatch("getBusinessConnection", id);
   }
 
   /**
@@ -1408,7 +437,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param isOnline The new online status.
    */
   async setIsOnline(isOnline: boolean): Promise<void> {
-    await this.#accountManager.setIsOnline(isOnline);
+    return await this.#dispatch("setOnline", isOnline);
   }
 
   /**
@@ -1417,8 +446,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ac
    * @param emojiStatus The emoji or gift to set as the new emoji status.
    */
-  async setEmojiStatus(emojiStatus: InputEmojiStatus, params?: SetEmojiStatusParams) {
-    await this.#accountManager.setEmojiStatus(emojiStatus, params);
+  async setEmojiStatus(emojiStatus: InputEmojiStatus, params?: SetEmojiStatusParams): Promise<void> {
+    return await this.#dispatch("setEmojiStatus", emojiStatus, params);
   }
 
   /**
@@ -1427,7 +456,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ac
    */
   async removeEmojiStatus(): Promise<void> {
-    await this.#accountManager.removeEmojiStatus();
+    return await this.#dispatch("removeEmojiStatus");
   }
 
   /**
@@ -1438,7 +467,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param emojiStatus The emoji or gift to set as the new emoji status.
    */
   async setChannelEmojiStatus(chatId: ID, emojiStatus: InputEmojiStatus, params?: SetEmojiStatusParams): Promise<void> {
-    await this.#accountManager.setChannelEmojiStatus(chatId, emojiStatus, params);
+    return await this.#dispatch("setChannelEmojiStatus", chatId, emojiStatus, params);
   }
 
   /**
@@ -1448,7 +477,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a channel.
    */
   async removeChannelEmojiStatus(chatId: ID): Promise<void> {
-    await this.#accountManager.removeChannelEmojiStatus(chatId);
+    return await this.#dispatch("removeChannelEmojiStatus", chatId);
   }
 
   /**
@@ -1458,8 +487,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param userId The identifier of a user of the bot.
    * @param emojiStatus The emoji or gift to set as the new emoji status.
    */
-  async setUserEmojiStatus(userId: ID, emojiStatus: InputEmojiStatus, params?: SetEmojiStatusParams) {
-    await this.#accountManager.setUserEmojiStatus(userId, emojiStatus, params);
+  async setUserEmojiStatus(userId: ID, emojiStatus: InputEmojiStatus, params?: SetEmojiStatusParams): Promise<void> {
+    return await this.#dispatch("setUserEmojiStatus", userId, emojiStatus, params);
   }
 
   /**
@@ -1469,7 +498,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param userId The identifier of a user of the bot.
    */
   async removeUserEmojiStatus(userId: ID): Promise<void> {
-    await this.#accountManager.removeUserEmojiStatus(userId);
+    return await this.#dispatch("removeUserEmojiStatus", userId);
   }
 
   /**
@@ -1478,7 +507,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ac
    */
   async updateProfile(params?: UpdateProfileParams): Promise<void> {
-    await this.#accountManager.updateProfile(params);
+    return await this.#dispatch("updateProfile", params);
   }
 
   /**
@@ -1487,7 +516,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ac
    */
   async setBirthday(params?: SetBirthdayParams): Promise<void> {
-    await this.#accountManager.setBirthday(params);
+    return await this.#dispatch("setBirthday", params);
   }
 
   /**
@@ -1496,7 +525,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ac
    */
   async setPersonalChannel(params?: SetPersonalChannelParams): Promise<void> {
-    await this.#accountManager.setPersonalChannel(params);
+    return await this.#dispatch("setPersonalChannel", params);
   }
 
   /**
@@ -1506,7 +535,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param color The identifier of the color to set.
    */
   async setNameColor(color: number, params?: SetNameColorParams): Promise<void> {
-    await this.#accountManager.setNameColor(color, params);
+    return await this.#dispatch("setNameColor", color, params);
   }
 
   /**
@@ -1516,7 +545,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param color The identifier of the color to set.
    */
   async setProfileColor(color: number, params?: SetProfileColorParams): Promise<void> {
-    await this.#accountManager.setProfileColor(color, params);
+    return await this.#dispatch("setProfileColor", color, params);
   }
 
   /**
@@ -1525,7 +554,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ac
    */
   async setLocation(params?: SetLocationParams): Promise<void> {
-    await this.#accountManager.setLocation(params);
+    return await this.#dispatch("setLocation", params);
   }
 
   /**
@@ -1534,7 +563,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ac
    */
   async setWorkingHours(params?: SetWorkingHoursParams): Promise<void> {
-    await this.#accountManager.setWorkingHours(params);
+    return await this.#dispatch("setWorkingHours", params);
   }
 
   /**
@@ -1543,7 +572,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ac
    */
   async enableSponsoredMessages(): Promise<void> {
-    await this.#accountManager.enableSponsoredMessages();
+    return await this.#dispatch("enableSponsoredMessages");
   }
 
   /**
@@ -1552,7 +581,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ac
    */
   async disableSponsoredMessages(): Promise<void> {
-    await this.#accountManager.disableSponsoredMessages();
+    return await this.#dispatch("disableSponsoredMessages");
   }
 
   /**
@@ -1561,7 +590,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ac
    */
   async pauseBusinessBotConnection(chatId: ID): Promise<void> {
-    await this.#accountManager.pauseBusinessBotConnection(chatId);
+    return await this.#dispatch("pauseBusinessBotConnection", chatId);
   }
 
   /**
@@ -1570,7 +599,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ac
    */
   async resumeBusinessBotConnection(chatId: ID): Promise<void> {
-    await this.#accountManager.resumeBusinessBotConnection(chatId);
+    return await this.#dispatch("resumeBusinessBotConnection", chatId);
   }
 
   //
@@ -1586,7 +615,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The sent text message.
    */
   async sendMessage(chatId: ID, text: string, params?: SendMessageParams): Promise<MessageText> {
-    return await this.#messageManager.sendMessage(chatId, text, params);
+    return await this.#dispatch("sendMessage", chatId, text, params);
   }
 
   /**
@@ -1597,8 +626,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param draftId The identifier of the draft.
    * @param text The message's text.
    */
-  async sendMessageDraft(chatId: ID, draftId: number, text: string, params?: SendMessageDraftParams) {
-    await this.#messageManager.sendMessageDraft(chatId, draftId, text, params);
+  async sendMessageDraft(chatId: ID, draftId: number, text: string, params?: SendMessageDraftParams): Promise<void> {
+    return await this.#dispatch("sendMessageDraft", chatId, draftId, text, params);
   }
 
   /**
@@ -1610,7 +639,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The sent photo.
    */
   async sendPhoto(chatId: ID, photo: FileSource, params?: SendPhotoParams): Promise<MessagePhoto> {
-    return await this.#messageManager.sendPhoto(chatId, photo, params);
+    return await this.#dispatch("sendPhoto", chatId, photo, params);
   }
 
   /**
@@ -1622,7 +651,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The sent document.
    */
   async sendDocument(chatId: ID, document: FileSource, params?: SendDocumentParams): Promise<MessageDocument> {
-    return await this.#messageManager.sendDocument(chatId, document, params);
+    return await this.#dispatch("sendDocument", chatId, document, params);
   }
 
   /**
@@ -1634,7 +663,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The sent sticker.
    */
   async sendSticker(chatId: ID, sticker: FileSource, params?: SendStickerParams): Promise<MessageSticker> {
-    return await this.#messageManager.sendSticker(chatId, sticker, params);
+    return await this.#dispatch("sendSticker", chatId, sticker, params);
   }
 
   /**
@@ -1646,7 +675,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The sent video.
    */
   async sendVideo(chatId: ID, video: FileSource, params?: SendVideoParams): Promise<MessageVideo> {
-    return await this.#messageManager.sendVideo(chatId, video, params);
+    return await this.#dispatch("sendVideo", chatId, video, params);
   }
 
   /**
@@ -1658,7 +687,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The sent animation.
    */
   async sendAnimation(chatId: ID, animation: FileSource, params?: SendAnimationParams): Promise<MessageAnimation> {
-    return await this.#messageManager.sendAnimation(chatId, animation, params);
+    return await this.#dispatch("sendAnimation", chatId, animation, params);
   }
 
   /**
@@ -1670,7 +699,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The sent voice message.
    */
   async sendVoice(chatId: ID, voice: FileSource, params?: SendVoiceParams): Promise<MessageVoice> {
-    return await this.#messageManager.sendVoice(chatId, voice, params);
+    return await this.#dispatch("sendVoice", chatId, voice, params);
   }
 
   /**
@@ -1679,10 +708,10 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ms
    * @param chatId The identifier of a chat to send the audio file to.
    * @param audio The audio to send.
-   * @returns The sent audio filr.
+   * @returns The sent audio file.
    */
   async sendAudio(chatId: ID, audio: FileSource, params?: SendAudioParams): Promise<MessageAudio> {
-    return await this.#messageManager.sendAudio(chatId, audio, params);
+    return await this.#dispatch("sendAudio", chatId, audio, params);
   }
 
   /**
@@ -1694,7 +723,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The sent messages.
    */
   async sendMediaGroup(chatId: ID, media: InputMedia[], params?: SendMediaGroupParams): Promise<Message[]> {
-    return await this.#messageManager.sendMediaGroup(chatId, media, params);
+    return await this.#dispatch("sendMediaGroup", chatId, media, params);
   }
 
   /**
@@ -1706,7 +735,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The sent video note.
    */
   async sendVideoNote(chatId: ID, videoNote: FileSource, params?: SendVideoNoteParams): Promise<MessageVideoNote> {
-    return await this.#messageManager.sendVideoNote(chatId, videoNote, params);
+    return await this.#dispatch("sendVideoNote", chatId, videoNote, params);
   }
 
   /**
@@ -1719,7 +748,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The sent location.
    */
   async sendLocation(chatId: ID, latitude: number, longitude: number, params?: SendLocationParams): Promise<MessageLocation> {
-    return await this.#messageManager.sendLocation(chatId, latitude, longitude, params);
+    return await this.#dispatch("sendLocation", chatId, latitude, longitude, params);
   }
 
   /**
@@ -1732,7 +761,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The sent contact.
    */
   async sendContact(chatId: ID, firstName: string, number: string, params?: SendContactParams): Promise<MessageContact> {
-    return await this.#messageManager.sendContact(chatId, firstName, number, params);
+    return await this.#dispatch("sendContact", chatId, firstName, number, params);
   }
 
   /**
@@ -1743,7 +772,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The sent dice.
    */
   async sendDice(chatId: ID, params?: SendDiceParams): Promise<MessageDice> {
-    return await this.#messageManager.sendDice(chatId, params);
+    return await this.#dispatch("sendDice", chatId, params);
   }
 
   /**
@@ -1758,7 +787,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The sent venue.
    */
   async sendVenue(chatId: ID, latitude: number, longitude: number, title: string, address: string, params?: SendVenueParams): Promise<MessageVenue> {
-    return await this.#messageManager.sendVenue(chatId, latitude, longitude, title, address, params);
+    return await this.#dispatch("sendVenue", chatId, latitude, longitude, title, address, params);
   }
 
   /**
@@ -1771,7 +800,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The sent poll.
    */
   async sendPoll(chatId: ID, question: string, options: InputPollOption[], params?: SendPollParams): Promise<MessagePoll> {
-    return await this.#messageManager.sendPoll(chatId, question, options, params);
+    return await this.#dispatch("sendPoll", chatId, question, options, params);
   }
 
   /**
@@ -1784,7 +813,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The sent checklist.
    */
   async sendChecklist(chatId: ID, title: string, items: InputChecklistItem[], params?: SendChecklistParams): Promise<MessageChecklist> {
-    return await this.#messageManager.sendChecklist(chatId, title, items, params);
+    return await this.#dispatch("sendChecklist", chatId, title, items, params);
   }
 
   /**
@@ -1800,7 +829,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The sent invoice.
    */
   async sendInvoice(chatId: ID, title: string, description: string, payload: string, currency: string, prices: PriceTag[], params?: SendInvoiceParams): Promise<MessageInvoice> {
-    return await this.#messageManager.sendInvoice(chatId, title, description, payload, currency, prices, params);
+    return await this.#dispatch("sendInvoice", chatId, title, description, payload, currency, prices, params);
   }
 
   /**
@@ -1813,7 +842,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The edited text message.
    */
   async editMessageText(chatId: ID, messageId: number, text: string, params?: EditMessageTextParams): Promise<MessageText> {
-    return await this.#messageManager.editMessageText(chatId, messageId, text, params);
+    return await this.#dispatch("editMessageText", chatId, messageId, text, params);
   }
 
   /**
@@ -1826,7 +855,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The edited message.
    */
   async editMessageCaption(chatId: ID, messageId: number, params?: EditMessageCaptionParams): Promise<Message> {
-    return await this.#messageManager.editMessageCaption(chatId, messageId, params);
+    return await this.#dispatch("editMessageCaption", chatId, messageId, params);
   }
 
   /**
@@ -1839,7 +868,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The edited message.
    */
   async editMessageMedia(chatId: ID, messageId: number, media: InputMedia, params?: EditMessageMediaParams): Promise<Message> {
-    return await this.#messageManager.editMessageMedia(chatId, messageId, media, params);
+    return await this.#dispatch("editMessageMedia", chatId, messageId, media, params);
   }
 
   /**
@@ -1850,7 +879,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param media The new media of the message.
    */
   async editInlineMessageMedia(inlineMessageId: string, media: InputMedia, params?: EditInlineMessageMediaParams): Promise<void> {
-    await this.#messageManager.editInlineMessageMedia(inlineMessageId, media, params);
+    return await this.#dispatch("editInlineMessageMedia", inlineMessageId, media, params);
   }
 
   /**
@@ -1861,7 +890,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param text The new text of the message.
    */
   async editInlineMessageText(inlineMessageId: string, text: string, params?: EditInlineMessageTextParams): Promise<void> {
-    await this.#messageManager.editInlineMessageText(inlineMessageId, text, params);
+    return await this.#dispatch("editInlineMessageText", inlineMessageId, text, params);
   }
 
   /**
@@ -1871,7 +900,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param inlineMessageId The identifier of the inline message.
    */
   async editInlineMessageCaption(inlineMessageId: string, params?: EditInlineMessageCaptionParams): Promise<void> {
-    await this.#messageManager.editInlineMessageCaption(inlineMessageId, params);
+    return await this.#dispatch("editInlineMessageCaption", inlineMessageId, params);
   }
 
   /**
@@ -1882,12 +911,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param messageId The identifier of the message.
    * @returns The edited message.
    */
-  async editMessageReplyMarkup(
-    chatId: ID,
-    messageId: number,
-    params?: EditMessageReplyMarkupParams,
-  ): Promise<Message> {
-    return await this.#messageManager.editMessageReplyMarkup(chatId, messageId, params);
+  async editMessageReplyMarkup(chatId: ID, messageId: number, params?: EditMessageReplyMarkupParams): Promise<Message> {
+    return await this.#dispatch("editMessageReplyMarkup", chatId, messageId, params);
   }
 
   /**
@@ -1896,8 +921,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ms
    * @param inlineMessageId The identifier of the inline message.
    */
-  async editInlineMessageReplyMarkup(inlineMessageId: string, params?: EditMessageReplyMarkupParams) {
-    await this.#messageManager.editInlineMessageReplyMarkup(inlineMessageId, params);
+  async editInlineMessageReplyMarkup(inlineMessageId: string, params?: EditMessageReplyMarkupParams): Promise<void> {
+    return await this.#dispatch("editInlineMessageReplyMarkup", inlineMessageId, params);
   }
 
   /**
@@ -1910,14 +935,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param longitude The new longitude.
    * @returns The edited location message.
    */
-  async editMessageLiveLocation(
-    chatId: ID,
-    messageId: number,
-    latitude: number,
-    longitude: number,
-    params?: EditMessageLiveLocationParams,
-  ): Promise<MessageLocation> {
-    return await this.#messageManager.editMessageLiveLocation(chatId, messageId, latitude, longitude, params);
+  async editMessageLiveLocation(chatId: ID, messageId: number, latitude: number, longitude: number, params?: EditMessageLiveLocationParams): Promise<MessageLocation> {
+    return await this.#dispatch("editMessageLiveLocation", chatId, messageId, latitude, longitude, params);
   }
 
   /**
@@ -1929,13 +948,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param longitude The new longitude.
    * @returns The edited location message.
    */
-  async editInlineMessageLiveLocation(
-    inlineMessageId: string,
-    latitude: number,
-    longitude: number,
-    params?: EditMessageLiveLocationParams,
-  ) {
-    await this.#messageManager.editInlineMessageLiveLocation(inlineMessageId, latitude, longitude, params);
+  async editInlineMessageLiveLocation(inlineMessageId: string, latitude: number, longitude: number, params?: EditMessageLiveLocationParams): Promise<void> {
+    return await this.#dispatch("editInlineMessageLiveLocation", inlineMessageId, latitude, longitude, params);
   }
 
   /**
@@ -1945,13 +959,13 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat to retrieve the messages from.
    * @param messageIds The identifiers of the messages to retrieve.
    * @example ```ts
-   * const message = await client.getMessages("@MTKruto", [210, 212]);
+   * const message = await client.getMessages("@MTKruto", [210, 212]): Promise<void>;
    * ```
    * @returns The retrieved messages.
    * @cache
    */
   async getMessages(chatId: ID, messageIds: number[]): Promise<Message[]> {
-    return await this.#messageManager.getMessages(chatId, messageIds);
+    return await this.#dispatch("getMessages", chatId, messageIds);
   }
 
   /**
@@ -1961,13 +975,13 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat.
    * @param messageId The identifier of the message to retrieve.
    * @example ```ts
-   * const message = await client.getMessage("@MTKruto", 212);
+   * const message = await client.getMessage("@MTKruto", 212): Promise<void>;
    * ```
    * @returns The retrieved message.
    * @cache
    */
   async getMessage(chatId: ID, messageId: number): Promise<Message | null> {
-    return await this.#messageManager.getMessage(chatId, messageId);
+    return await this.#dispatch("getMessage", chatId, messageId);
   }
 
   /**
@@ -1976,12 +990,12 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ms
    * @param link A message link.
    * @example ```ts
-   * const message = await client.resolveMessageLink("https://t.me/MTKruto/212");
+   * const message = await client.resolveMessageLink("https://t.me/MTKruto/212"): Promise<void>;
    * ```
    * @returns The message that was linked to.
    */
   async resolveMessageLink(link: string): Promise<Message | null> {
-    return await this.#messageManager.resolveMessageLink(link);
+    return await this.#dispatch("resolveMessageLink", link);
   }
 
   /**
@@ -1991,8 +1005,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of the chat which the message belongs to.
    * @param messageIds The identifiers of the messages to delete.
    */
-  async deleteMessages(chatId: ID, messageIds: number[], params?: DeleteMessagesParams) {
-    await this.#messageManager.deleteMessages(chatId, messageIds, params);
+  async deleteMessages(chatId: ID, messageIds: number[], params?: DeleteMessagesParams): Promise<void> {
+    return await this.#dispatch("deleteMessages", chatId, messageIds, params);
   }
 
   /**
@@ -2002,8 +1016,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of the chat which the message belongs to.
    * @param messageId The identifier of the message to delete.
    */
-  async deleteMessage(chatId: ID, messageId: number, params?: DeleteMessageParams) {
-    await this.#messageManager.deleteMessages(chatId, [messageId], params);
+  async deleteMessage(chatId: ID, messageId: number, params?: DeleteMessageParams): Promise<void> {
+    return await this.#dispatch("deleteMessage", chatId, messageId, params);
   }
 
   /**
@@ -2013,8 +1027,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat. Must be a supergroup.
    * @param memberId The identifier of the member.
    */
-  async deleteChatMemberMessages(chatId: ID, memberId: ID) {
-    await this.#messageManager.deleteChatMemberMessages(chatId, memberId);
+  async deleteChatMemberMessages(chatId: ID, memberId: ID): Promise<void> {
+    return await this.#dispatch("deleteChatMemberMessages", chatId, memberId);
   }
 
   /**
@@ -2024,8 +1038,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat.
    * @param messageIds The identifiers of the scheduled messages to delete.
    */
-  async deleteScheduledMessages(chatId: ID, messageIds: number[]) {
-    await this.#messageManager.deleteScheduledMessages(chatId, messageIds);
+  async deleteScheduledMessages(chatId: ID, messageIds: number[]): Promise<void> {
+    return await this.#dispatch("deleteScheduledMessages", chatId, messageIds);
   }
 
   /**
@@ -2035,8 +1049,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat.
    * @param messageId The identifier of the scheduled message to delete.
    */
-  async deleteScheduledMessage(chatId: ID, messageId: number) {
-    await this.#messageManager.deleteScheduledMessage(chatId, messageId);
+  async deleteScheduledMessage(chatId: ID, messageId: number): Promise<void> {
+    return await this.#dispatch("deleteScheduledMessage", chatId, messageId);
   }
 
   /**
@@ -2047,7 +1061,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param messageIds The identifiers of the scheduled messages to send.
    */
   async sendScheduledMessages(chatId: ID, messageIds: number[]): Promise<Message[]> {
-    return await this.#messageManager.sendScheduledMessages(chatId, messageIds);
+    return await this.#dispatch("sendScheduledMessages", chatId, messageIds);
   }
 
   /**
@@ -2058,7 +1072,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param messageId The identifier of the scheduled message to send.
    */
   async sendScheduledMessage(chatId: ID, messageId: number): Promise<Message> {
-    return await this.#messageManager.sendScheduledMessage(chatId, messageId);
+    return await this.#dispatch("sendScheduledMessage", chatId, messageId);
   }
 
   /**
@@ -2068,8 +1082,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat.
    * @param messageId The identifier of the message.
    */
-  async pinMessage(chatId: ID, messageId: number, params?: PinMessageParams) {
-    await this.#messageManager.pinMessage(chatId, messageId, params);
+  async pinMessage(chatId: ID, messageId: number, params?: PinMessageParams): Promise<void> {
+    return await this.#dispatch("pinMessage", chatId, messageId, params);
   }
 
   /**
@@ -2079,8 +1093,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat.
    * @param messageId The identifier of the message.
    */
-  async unpinMessage(chatId: ID, messageId: number, params?: UnpinMessageParams) {
-    await this.#messageManager.unpinMessage(chatId, messageId, params);
+  async unpinMessage(chatId: ID, messageId: number, params?: UnpinMessageParams): Promise<void> {
+    return await this.#dispatch("unpinMessage", chatId, messageId, params);
   }
 
   /**
@@ -2089,8 +1103,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ms
    * @param chatId The identifier of a chat.
    */
-  async unpinMessages(chatId: ID, params?: UnpinMessagesParams) {
-    await this.#messageManager.unpinMessages(chatId, params);
+  async unpinMessages(chatId: ID, params?: UnpinMessagesParams): Promise<void> {
+    return await this.#dispatch("unpinMessages", chatId, params);
   }
 
   /**
@@ -2103,7 +1117,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The forwarded messages.
    */
   async forwardMessages(from: ID, to: ID, messageIds: number[], params?: ForwardMessagesParams): Promise<Message[]> {
-    return await this.#messageManager.forwardMessages(from, to, messageIds, params);
+    return await this.#dispatch("forwardMessages", from, to, messageIds, params);
   }
 
   /**
@@ -2116,7 +1130,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The forwarded message.
    */
   async forwardMessage(from: ID, to: ID, messageId: number, params?: ForwardMessagesParams): Promise<Message> {
-    return (await this.forwardMessages(from, to, [messageId], params))[0];
+    return await this.#dispatch("forwardMessage", from, to, messageId, params);
   }
 
   /**
@@ -2128,7 +1142,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The new state of the poll.
    */
   async stopPoll(chatId: ID, messageId: number, params?: StopPollParams): Promise<Poll> {
-    return await this.#messageManager.stopPoll(chatId, messageId, params);
+    return await this.#dispatch("stopPoll", chatId, messageId, params);
   }
 
   /**
@@ -2139,8 +1153,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param action The chat action.
    * @param messageThreadId The thread to send the chat action to.
    */
-  async sendChatAction(chatId: ID, action: ChatAction, params?: { messageThreadId?: number }) {
-    await this.#messageManager.sendChatAction(chatId, action, params);
+  async sendChatAction(chatId: ID, action: ChatAction, params?: { messageThreadId?: number }): Promise<void> {
+    return await this.#dispatch("sendChatAction", chatId, action, params);
   }
 
   /**
@@ -2149,7 +1163,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ms
    */
   async searchMessages(params?: SearchMessagesParams): Promise<MessageList> {
-    return await this.#messageManager.searchMessages(params);
+    return await this.#dispatch("searchMessages", params);
   }
 
   /**
@@ -2160,7 +1174,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param untilMessageId The identifier of the message that will be marked as read, along with any other unread messages before it.
    */
   async readMessages(chatId: ID, untilMessageId: number): Promise<void> {
-    await this.#messageManager.readMessages(chatId, untilMessageId);
+    return await this.#dispatch("readMessages", chatId, untilMessageId);
   }
 
   /**
@@ -2171,7 +1185,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The start message.
    */
   async startBot(botId: number, params?: StartBotParams): Promise<Message> {
-    return await this.#messageManager.startBot(botId, params);
+    return await this.#dispatch("startBot", botId, params);
   }
 
   /**
@@ -2183,7 +1197,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @cache
    */
   async transcribeVoice(chatId: ID, messageId: number): Promise<VoiceTranscription> {
-    return await this.#messageManager.transcribeVoice(chatId, messageId);
+    return await this.#dispatch("transcribeVoice", chatId, messageId);
   }
 
   /**
@@ -2193,7 +1207,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param name The name of the sticker set or its link.
    */
   async getStickerSet(name: string): Promise<StickerSet> {
-    return await this.#messageManager.getStickerSet(name);
+    return await this.#dispatch("getStickerSet", name);
   }
 
   /*
@@ -2203,7 +1217,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param text The message's text.
    */
   async getLinkPreview(text: string, params?: GetLinkPreviewParams): Promise<LinkPreview | null> {
-    return await this.#linkPreviewManager.getLinkPreview(text, params);
+    return await this.#dispatch("getLinkPreview", text, params);
   }
 
   /**
@@ -2215,7 +1229,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @cache
    */
   async openMiniApp(botId: ID, chatId: ID, params?: OpenMiniAppParams): Promise<MiniAppInfo> {
-    return await this.#messageManager.openMiniApp(botId, chatId, params);
+    return await this.#dispatch("openMiniApp", botId, chatId, params);
   }
 
   /**
@@ -2225,7 +1239,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @cache
    */
   async getProgressId(): Promise<string> {
-    return await this.#fileManager.getProgressId();
+    return await this.#dispatch("getProgressId");
   }
 
   /**
@@ -2235,7 +1249,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat.
    */
   async getSavedMessages(chatId: ID, params?: GetSavedMessagesParams): Promise<Message[]> {
-    return await this.#messageManager.getSavedMessages(chatId, params);
+    return await this.#dispatch("getSavedMessages", chatId, params);
   }
 
   /**
@@ -2244,7 +1258,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ms
    */
   async getSavedChats(params?: GetSavedChatsParams): Promise<SavedChats> {
-    return await this.#messageManager.getSavedChats(params);
+    return await this.#dispatch("getSavedChats", params);
   }
 
   /**
@@ -2255,7 +1269,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ms
    */
   async getMessageReactions(chatId: ID, messageId: number, params?: GetMessageReactionsParams): Promise<MessageReactionList> {
-    return await this.#messageManager.getMessageReactions(chatId, messageId, params);
+    return await this.#dispatch("getMessageReactions", chatId, messageId, params);
   }
 
   //
@@ -2270,8 +1284,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param messageId The identifier of the message that includes the poll.
    * @param optionIndexes The indexes of the options to cast for.
    */
-  async vote(chatId: ID, messageId: number, optionIndexes: number[]) {
-    await this.#pollManager.vote(chatId, messageId, optionIndexes);
+  async vote(chatId: ID, messageId: number, optionIndexes: number[]): Promise<void> {
+    return await this.#dispatch("vote", chatId, messageId, optionIndexes);
   }
 
   /**
@@ -2281,8 +1295,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of the chat that includes the poll.
    * @param messageId The identifier of the message that includes the poll.
    */
-  async retractVote(chatId: ID, messageId: number) {
-    await this.#pollManager.retractVote(chatId, messageId);
+  async retractVote(chatId: ID, messageId: number): Promise<void> {
+    return await this.#dispatch("retractVote", chatId, messageId);
   }
 
   //
@@ -2298,7 +1312,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method cl
    */
   async addToChecklist(chatId: ID, messageId: number, items: InputChecklistItem[]): Promise<void> {
-    await this.#checklistManager.addToChecklist(chatId, messageId, items);
+    return await this.#dispatch("addToChecklist", chatId, messageId, items);
   }
 
   /**
@@ -2309,7 +1323,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method cl
    */
   async updateChecklist(chatId: ID, messageId: number, params?: UpdateChecklistParams): Promise<void> {
-    await this.#checklistManager.updateChecklist(chatId, messageId, params);
+    return await this.#dispatch("updateChecklist", chatId, messageId, params);
   }
 
   /**
@@ -2321,7 +1335,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method cl
    */
   async checkChecklistItems(chatId: ID, messageId: number, items: number[]): Promise<void> {
-    await this.#checklistManager.checkChecklistItems(chatId, messageId, items);
+    return await this.#dispatch("checkChecklistItems", chatId, messageId, items);
   }
 
   /**
@@ -2333,7 +1347,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method cl
    */
   async uncheckChecklistItems(chatId: ID, messageId: number, items: number[]): Promise<void> {
-    await this.#checklistManager.uncheckChecklistItems(chatId, messageId, items);
+    return await this.#dispatch("uncheckChecklistItems", chatId, messageId, items);
   }
 
   /**
@@ -2345,7 +1359,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method cl
    */
   async checkChecklistItem(chatId: ID, messageId: number, item: number): Promise<void> {
-    await this.#checklistManager.checkChecklistItem(chatId, messageId, item);
+    return await this.#dispatch("checkChecklistItem", chatId, messageId, item);
   }
 
   /**
@@ -2357,7 +1371,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method cl
    */
   async uncheckChecklistItem(chatId: ID, messageId: number, item: number): Promise<void> {
-    await this.#checklistManager.uncheckChecklistItem(chatId, messageId, item);
+    return await this.#dispatch("uncheckChecklistItem", chatId, messageId, item);
   }
 
   //
@@ -2376,13 +1390,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @cache file
    */
   async downloadChunk(fileId: string, params?: DownloadParams): Promise<Uint8Array> {
-    const controller = new AbortController();
-    for await (const chunk of this.#fileManager.download(fileId, { ...params, signal: controller.signal })) {
-      controller.abort();
-      return chunk;
-    }
-
-    unreachable();
+    return await this.#dispatch("downloadChunk", fileId, params);
   }
 
   /**
@@ -2392,15 +1400,25 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param fileId The identifier of the file to download.
    * @example ```ts
    * for await (const chunk of client.download(fileId, { chunkSize: 256 * 1024 })) {
-   *   await outFile.write(chunk);
+   *   await outFile.write(chunk): Promise<void>;
    * }
    * ```
    * @returns A generator yielding the contents of the file.
    * @cache file
    */
   async *download(fileId: string, params?: DownloadParams): AsyncGenerator<Uint8Array, void, unknown> {
-    for await (const chunk of this.#fileManager.download(fileId, params)) {
+    let offset = 0;
+    const chunkSize = params?.chunkSize ?? DOWNLOAD_MAX_CHUNK_SIZE;
+
+    while (true) {
+      const chunk = await this.downloadChunk(fileId, { chunkSize, offset });
       yield chunk;
+
+      if (chunk.length < chunkSize) {
+        break;
+      } else {
+        offset += chunk.length;
+      }
     }
   }
 
@@ -2413,7 +1431,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @cache
    */
   async getCustomEmojiStickers(id: string | string[]): Promise<Sticker[]> {
-    return await this.#fileManager.getCustomEmojiStickers(id);
+    return await this.#dispatch("getCustomEmojiStickers", id);
   }
 
   //
@@ -2426,7 +1444,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ch
    */
   async getChats(params?: GetChatsParams): Promise<ChatListItem[]> {
-    return await this.#chatListManager.getChats(params?.from, params?.after, params?.limit);
+    return await this.#dispatch("getChats", params);
   }
 
   /**
@@ -2436,7 +1454,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param from The chat list to get the pinned chats from. Defaults to main.
    */
   async getPinnedChats(from?: "archived" | "main"): Promise<ChatListItem[]> {
-    return await this.#chatListManager.getPinnedChats(from);
+    return await this.#dispatch("getPinnedChats", from);
   }
 
   /**
@@ -2446,7 +1464,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @cache
    */
   async getChat(chatId: ID): Promise<Chat> {
-    return await this.#chatListManager.getChat(chatId);
+    return await this.#dispatch("getChat", chatId);
   }
 
   /**
@@ -2456,7 +1474,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat.
    */
   async getHistory(chatId: ID, params?: GetHistoryParams): Promise<Message[]> {
-    return await this.#messageManager.getHistory(chatId, params);
+    return await this.#dispatch("getHistory", chatId, params);
   }
 
   /**
@@ -2466,8 +1484,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat.
    * @param availableReactions The new available reactions.
    */
-  async setAvailableReactions(chatId: ID, availableReactions: "none" | "all" | Reaction[]) {
-    await this.#chatManager.setAvailableReactions(chatId, availableReactions);
+  async setAvailableReactions(chatId: ID, availableReactions: "none" | "all" | Reaction[]): Promise<void> {
+    return await this.#dispatch("setAvailableReactions", chatId, availableReactions);
   }
 
   /**
@@ -2477,8 +1495,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat.
    * @param photo A photo to set as the chat's photo.
    */
-  async setChatPhoto(chatId: ID, photo: FileSource, params?: SetChatPhotoParams) {
-    await this.#chatManager.setChatPhoto(chatId, photo, params);
+  async setChatPhoto(chatId: ID, photo: FileSource, params?: SetChatPhotoParams): Promise<void> {
+    return await this.#dispatch("setChatPhoto", chatId, photo, params);
   }
 
   /**
@@ -2487,8 +1505,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ch
    * @param chatId The identifier of a chat.
    */
-  async deleteChatPhoto(chatId: ID) {
-    await this.#chatManager.deleteChatPhoto(chatId);
+  async deleteChatPhoto(chatId: ID): Promise<void> {
+    return await this.#dispatch("deleteChatPhoto", chatId);
   }
 
   /**
@@ -2498,8 +1516,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat.
    * @param memberId The identifier of the member.
    */
-  async banChatMember(chatId: ID, memberId: ID, params?: BanChatMemberParams) {
-    await this.#chatManager.banChatMember(chatId, memberId, params);
+  async banChatMember(chatId: ID, memberId: ID, params?: BanChatMemberParams): Promise<void> {
+    return await this.#dispatch("banChatMember", chatId, memberId, params);
   }
 
   /**
@@ -2509,8 +1527,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat. Must be a supergroup.
    * @param memberId The identifier of the member.
    */
-  async unbanChatMember(chatId: ID, memberId: ID) {
-    await this.#chatManager.unbanChatMember(chatId, memberId);
+  async unbanChatMember(chatId: ID, memberId: ID): Promise<void> {
+    return await this.#dispatch("unbanChatMember", chatId, memberId);
   }
 
   /**
@@ -2520,9 +1538,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat. Must be a supergroup.
    * @param memberId The identifier of the member.
    */
-  async kickChatMember(chatId: ID, memberId: ID) {
-    await this.#chatManager.banChatMember(chatId, memberId);
-    await this.#chatManager.unbanChatMember(chatId, memberId);
+  async kickChatMember(chatId: ID, memberId: ID): Promise<void> {
+    return await this.#dispatch("kickChatMember", chatId, memberId);
   }
 
   /**
@@ -2532,8 +1549,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat. Must be a supergroup.
    * @param memberId The identifier of the member.
    */
-  async setChatMemberRights(chatId: ID, memberId: ID, params?: SetChatMemberRightsParams) {
-    await this.#chatManager.setChatMemberRights(chatId, memberId, params);
+  async setChatMemberRights(chatId: ID, memberId: ID, params?: SetChatMemberRightsParams): Promise<void> {
+    return await this.#dispatch("setChatMemberRights", chatId, memberId, params);
   }
 
   /**
@@ -2544,7 +1561,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The chat's administrators.
    */
   async getChatAdministrators(chatId: ID): Promise<ChatMember[]> {
-    return await this.#chatListManager.getChatAdministrators(chatId);
+    return await this.#dispatch("getChatAdministrators", chatId);
   }
 
   /**
@@ -2553,8 +1570,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ch
    * @param chatId The identifier of a chat. Must be a channel or a supergroup.
    */
-  async enableJoinRequests(chatId: ID) {
-    await this.#chatManager.enableJoinRequests(chatId);
+  async enableJoinRequests(chatId: ID): Promise<void> {
+    return await this.#dispatch("enableJoinRequests", chatId);
   }
 
   /**
@@ -2563,8 +1580,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ch
    * @param chatId The identifier of a chat. Must be a channel or a supergroup.
    */
-  async disableJoinRequests(chatId: ID) {
-    await this.#chatManager.disableJoinRequests(chatId);
+  async disableJoinRequests(chatId: ID): Promise<void> {
+    return await this.#dispatch("disableJoinRequests", chatId);
   }
 
   /**
@@ -2574,7 +1591,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @retuns A list of inactive chats the current user is member of.
    */
   async getInactiveChats(): Promise<InactiveChat[]> {
-    return await this.#accountManager.getInactiveChats();
+    return await this.#dispatch("getInactiveChats");
   }
 
   /**
@@ -2585,7 +1602,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The invite links created for the chat. This might be a subset of the results if they were less than `limit`. The parameters `afterDate` and `afterInviteLink` can be used for pagination.
    */
   async getCreatedInviteLinks(chatId: ID, params?: GetCreatedInviteLinksParams): Promise<InviteLink[]> {
-    return await this.#chatManager.getCreatedInviteLinks(chatId, params);
+    return await this.#dispatch("getCreatedInviteLinks", chatId, params);
   }
 
   /**
@@ -2594,8 +1611,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ch
    * @param chatId The identifier of a chat.
    */
-  async joinChat(chatId: ID) {
-    await this.#chatManager.joinChat(chatId);
+  async joinChat(chatId: ID): Promise<void> {
+    return await this.#dispatch("joinChat", chatId);
   }
 
   /**
@@ -2604,8 +1621,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ch
    * @param chatId The identifier of a chat.
    */
-  async leaveChat(chatId: ID) {
-    await this.#chatManager.leaveChat(chatId);
+  async leaveChat(chatId: ID): Promise<void> {
+    return await this.#dispatch("leaveChat", chatId);
   }
 
   /**
@@ -2616,7 +1633,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param userId The identifier of the user.
    */
   async getChatMember(chatId: ID, userId: ID): Promise<ChatMember> {
-    return await this.#chatListManager.getChatMember(chatId, userId);
+    return await this.#dispatch("getChatMember", chatId, userId);
   }
 
   /**
@@ -2626,7 +1643,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat.
    */
   async getChatMembers(chatId: ID, params?: GetChatMembersParams): Promise<ChatMember[]> {
-    return await this.#chatListManager.getChatMembers(chatId, params);
+    return await this.#dispatch("getChatMembers", chatId, params);
   }
 
   /**
@@ -2636,8 +1653,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat. Must be a supergroup.
    * @param setName The name of the set.
    */
-  async setChatStickerSet(chatId: ID, setName: string) {
-    await this.#messageManager.setChatStickerSet(chatId, setName);
+  async setChatStickerSet(chatId: ID, setName: string): Promise<void> {
+    return await this.#dispatch("setChatStickerSet", chatId, setName);
   }
 
   /**
@@ -2646,8 +1663,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ch
    * @param chatId The identifier of a chat. Must be a supergroup.
    */
-  async deleteChatStickerSet(chatId: ID) {
-    await this.#messageManager.deleteChatStickerSet(chatId);
+  async deleteChatStickerSet(chatId: ID): Promise<void> {
+    return await this.#dispatch("deleteChatStickerSet", chatId);
   }
 
   /**
@@ -2657,8 +1674,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat.
    * @param boosts The number of boosts required to circumvent its restrictions.
    */
-  async setBoostsRequiredToCircumventRestrictions(chatId: ID, boosts: number) {
-    await this.#chatManager.setBoostsRequiredToCircumventRestrictions(chatId, boosts);
+  async setBoostsRequiredToCircumventRestrictions(chatId: ID, boosts: number): Promise<void> {
+    return await this.#dispatch("setBoostsRequiredToCircumventRestrictions", chatId, boosts);
   }
 
   /**
@@ -2669,7 +1686,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The newly created invite link.
    */
   async createInviteLink(chatId: ID, params?: CreateInviteLinkParams): Promise<InviteLink> {
-    return await this.#chatManager.createInviteLink(chatId, params);
+    return await this.#dispatch("createInviteLink", chatId, params);
   }
 
   /**
@@ -2680,7 +1697,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param userId The user who made the join request.
    */
   async approveJoinRequest(chatId: ID, userId: ID): Promise<void> {
-    await this.#chatManager.approveJoinRequest(chatId, userId);
+    return await this.#dispatch("approveJoinRequest", chatId, userId);
   }
 
   /**
@@ -2691,7 +1708,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param userId The user who made the join request.
    */
   async declineJoinRequest(chatId: ID, userId: ID): Promise<void> {
-    await this.#chatManager.declineJoinRequest(chatId, userId);
+    return await this.#dispatch("declineJoinRequest", chatId, userId);
   }
 
   /**
@@ -2701,7 +1718,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat with the join requests.
    */
   async approveJoinRequests(chatId: ID, params?: ApproveJoinRequestsParams): Promise<void> {
-    await this.#chatManager.approveJoinRequests(chatId, params);
+    return await this.#dispatch("approveJoinRequests", chatId, params);
   }
 
   /**
@@ -2711,7 +1728,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat with the join requests.
    */
   async declineJoinRequests(chatId: ID, params?: DeclineJoinRequestsParams): Promise<void> {
-    await this.#chatManager.declineJoinRequests(chatId, params);
+    return await this.#dispatch("declineJoinRequests", chatId, params);
   }
 
   /**
@@ -2721,7 +1738,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat with the join requests.
    */
   async getJoinRequests(chatId: ID, params?: GetJoinRequestsParams): Promise<JoinRequest[]> {
-    return await this.#chatManager.getJoinRequests(chatId, params);
+    return await this.#dispatch("getJoinRequests", chatId, params);
   }
 
   /**
@@ -2733,7 +1750,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns An array of FailedInvitation that has at most a length of 1. If empty, it means that the user was added.
    */
   async addChatMember(chatId: ID, userId: ID, params?: AddChatMemberParams): Promise<FailedInvitation[]> {
-    return await this.#chatManager.addChatMember(chatId, userId, params);
+    return await this.#dispatch("addChatMember", chatId, userId, params);
   }
 
   /**
@@ -2745,7 +1762,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns An array of FailedInvitation that has at most a length that is the same as that of the parameter userIds. If empty, it means that all the provided users were added.
    */
   async addChatMembers(chatId: ID, userIds: ID[]): Promise<FailedInvitation[]> {
-    return await this.#chatManager.addChatMembers(chatId, userIds);
+    return await this.#dispatch("addChatMembers", chatId, userIds);
   }
 
   /**
@@ -2755,7 +1772,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat to open.
    */
   async openChat(chatId: ID, params?: OpenChatParams): Promise<void> {
-    await this.#updateManager.openChat(chatId, params);
+    return await this.#dispatch("openChat", chatId, params);
   }
 
   /**
@@ -2765,7 +1782,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat to close.
    */
   async closeChat(chatId: ID): Promise<void> {
-    await this.#updateManager.closeChat(chatId);
+    return await this.#dispatch("closeChat", chatId);
   }
 
   /**
@@ -2776,7 +1793,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The created group.
    */
   async createGroup(title: string, params?: CreateGroupParams): Promise<ChatPGroup> {
-    return await this.#chatListManager.createGroup(title, params);
+    return await this.#dispatch("createGroup", title, params);
   }
 
   /**
@@ -2787,7 +1804,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The created supergroup.
    */
   async createSupergroup(title: string, params?: CreateSupergroupParams): Promise<ChatPSupergroup> {
-    return await this.#chatListManager.createSupergroup(title, params);
+    return await this.#dispatch("createSupergroup", title, params);
   }
 
   /**
@@ -2798,7 +1815,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The created channel.
    */
   async createChannel(title: string, params?: CreateChannelParams): Promise<ChatPChannel> {
-    return await this.#chatListManager.createChannel(title, params);
+    return await this.#dispatch("createChannel", title, params);
   }
 
   /**
@@ -2809,7 +1826,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param messageTtl The time to live of the messages in seconds.
    */
   async setMessageTtl(chatId: ID, messageTtl: number): Promise<void> {
-    await this.#chatListManager.setMessageTtl(chatId, messageTtl);
+    return await this.#dispatch("setMessageTtl", chatId, messageTtl);
   }
 
   /**
@@ -2819,7 +1836,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatIds The identifiers of the chats to archive.
    */
   async archiveChats(chatIds: ID[]): Promise<void> {
-    await this.#chatListManager.archiveChats(chatIds);
+    return await this.#dispatch("archiveChats", chatIds);
   }
 
   /**
@@ -2829,7 +1846,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat.
    */
   async archiveChat(chatId: ID): Promise<void> {
-    await this.#chatListManager.archiveChat(chatId);
+    return await this.#dispatch("archiveChat", chatId);
   }
 
   /**
@@ -2839,7 +1856,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatIds The identifiers of the chats to unarchive.
    */
   async unarchiveChats(chatIds: ID[]): Promise<void> {
-    await this.#chatListManager.unarchiveChats(chatIds);
+    return await this.#dispatch("unarchiveChats", chatIds);
   }
 
   /**
@@ -2849,7 +1866,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat.
    */
   async unarchiveChat(chatId: ID): Promise<void> {
-    await this.#chatListManager.unarchiveChat(chatId);
+    return await this.#dispatch("unarchiveChat", chatId);
   }
 
   /**
@@ -2859,7 +1876,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param userId The identifier of the user to get the common chats with them.
    */
   async getCommonChats(userId: ID, params?: GetCommonChatsParams): Promise<ChatP[]> {
-    return await this.#chatListManager.getCommonChats(userId, params);
+    return await this.#dispatch("getCommonChats", userId, params);
   }
 
   /**
@@ -2869,7 +1886,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat.
    */
   async getChatSettings(chatId: ID): Promise<ChatSettings> {
-    return await this.#chatListManager.getChatSettings(chatId);
+    return await this.#dispatch("getChatSettings", chatId);
   }
 
   /**
@@ -2879,7 +1896,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of the private chat to disable business bots in.
    */
   async disableBusinessBots(chatId: ID): Promise<void> {
-    await this.#chatListManager.disableBusinessBots(chatId);
+    return await this.#dispatch("disableBusinessBots", chatId);
   }
 
   /**
@@ -2889,7 +1906,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of the private chat to enable business bots in.
    */
   async enableBusinessBots(chatId: ID): Promise<void> {
-    await this.#chatListManager.enableBusinessBots(chatId);
+    return await this.#dispatch("enableBusinessBots", chatId);
   }
 
   /**
@@ -2899,7 +1916,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of the group to disable slow mode in.
    */
   async disableSlowMode(chatId: ID): Promise<void> {
-    await this.#chatManager.disableSlowMode(chatId);
+    return await this.#dispatch("disableSlowMode", chatId);
   }
 
   /**
@@ -2910,7 +1927,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param duration New slow mode duration.
    */
   async setSlowMode(chatId: ID, duration: SlowModeDuration): Promise<void> {
-    await this.#chatManager.setSlowMode(chatId, duration);
+    return await this.#dispatch("setSlowMode", chatId, duration);
   }
 
   /**
@@ -2921,7 +1938,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param title The new title.
    */
   async setChatTitle(chatId: ID, title: string): Promise<void> {
-    await this.#chatManager.setChatTitle(chatId, title);
+    return await this.#dispatch("setChatTitle", chatId, title);
   }
 
   /**
@@ -2932,7 +1949,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param description The new description.
    */
   async setChatDescription(chatId: ID, description: string): Promise<void> {
-    await this.#chatManager.setChatDescription(chatId, description);
+    return await this.#dispatch("setChatDescription", chatId, description);
   }
 
   /**
@@ -2942,7 +1959,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of the group.
    */
   async hideMemberList(chatId: ID): Promise<void> {
-    await this.#chatManager.hideMemberList(chatId);
+    return await this.#dispatch("hideMemberList", chatId);
   }
 
   /**
@@ -2952,7 +1969,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of the group.
    */
   async showMemberList(chatId: ID): Promise<void> {
-    await this.#chatManager.showMemberList(chatId);
+    return await this.#dispatch("showMemberList", chatId);
   }
 
   /**
@@ -2963,7 +1980,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param isShownAsTabs Whether topics should be displayed as tabs.
    */
   async enableTopics(chatId: ID, isShownAsTabs: boolean): Promise<void> {
-    await this.#chatManager.enableTopics(chatId, isShownAsTabs);
+    return await this.#dispatch("enableTopics", chatId, isShownAsTabs);
   }
 
   /**
@@ -2973,7 +1990,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of the group.
    */
   async disableTopics(chatId: ID): Promise<void> {
-    await this.#chatManager.disableTopics(chatId);
+    return await this.#dispatch("disableTopics", chatId);
   }
 
   /**
@@ -2983,7 +2000,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of the group.
    */
   async enableAntispam(chatId: ID): Promise<void> {
-    await this.#chatManager.enableAntispam(chatId);
+    return await this.#dispatch("enableAntispam", chatId);
   }
 
   /**
@@ -2993,7 +2010,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of the group.
    */
   async disableAntispam(chatId: ID): Promise<void> {
-    await this.#chatManager.disableAntispam(chatId);
+    return await this.#dispatch("disableAntispam", chatId);
   }
 
   /**
@@ -3003,7 +2020,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of the channel.
    */
   async enableSignatures(chatId: ID, params?: EnableSignaturesParams): Promise<void> {
-    await this.#chatManager.enableSignatures(chatId, params);
+    return await this.#dispatch("enableSignatures", chatId, params);
   }
 
   /**
@@ -3013,7 +2030,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of the channel.
    */
   async disableSignatures(chatId: ID): Promise<void> {
-    await this.#chatManager.disableSignatures(chatId);
+    return await this.#dispatch("disableSignatures", chatId);
   }
 
   /**
@@ -3023,7 +2040,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat.
    */
   async deleteChat(chatId: ID): Promise<void> {
-    await this.#chatManager.deleteChat(chatId);
+    return await this.#dispatch("deleteChat", chatId);
   }
 
   /**
@@ -3032,7 +2049,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ch
    */
   async getDiscussionChatSuggestions(): Promise<ChatP[]> {
-    return await this.#chatManager.getDiscussionChatSuggestions();
+    return await this.#dispatch("getDiscussionChatSuggestions");
   }
 
   /**
@@ -3043,7 +2060,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param discussionChatId The identifier of a chat to use as discussion for the channel.
    */
   async setDiscussionChat(chatId: ID, discussionChatId: ID): Promise<void> {
-    await this.#chatManager.setDiscussionChat(chatId, discussionChatId);
+    return await this.#dispatch("setDiscussionChat", chatId, discussionChatId);
   }
 
   /**
@@ -3055,7 +2072,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param password The password of the current account.
    */
   async transferChatOwnership(chatId: ID, userId: ID, password: string): Promise<void> {
-    await this.#chatManager.transferChatOwnership(chatId, userId, password);
+    return await this.#dispatch("transferChatOwnership", chatId, userId, password);
   }
 
   /**
@@ -3067,7 +2084,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The created topic.
    */
   async createTopic(chatId: ID, title: string, params?: CreateTopicParams): Promise<Topic> {
-    return await this.#forumManager.createTopic(chatId, title, params);
+    return await this.#dispatch("createTopic", chatId, title, params);
   }
 
   /**
@@ -3080,7 +2097,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The new topic.
    */
   async editTopic(chatId: ID, topicId: number, title: string, params?: EditTopicParams): Promise<Topic> {
-    return await this.#forumManager.editTopic(chatId, topicId, title, params);
+    return await this.#dispatch("editTopic", chatId, topicId, title, params);
   }
 
   /**
@@ -3090,7 +2107,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat.
    */
   async hideGeneralTopic(chatId: ID): Promise<void> {
-    await this.#forumManager.hideGeneralTopic(chatId);
+    return await this.#dispatch("hideGeneralTopic", chatId);
   }
 
   /**
@@ -3100,7 +2117,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat.
    */
   async showGeneralTopic(chatId: ID): Promise<void> {
-    await this.#forumManager.showGeneralTopic(chatId);
+    return await this.#dispatch("showGeneralTopic", chatId);
   }
 
   /**
@@ -3111,7 +2128,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param topicId The identifier of the topic.
    */
   async closeTopic(chatId: ID, topicId: number): Promise<void> {
-    await this.#forumManager.closeTopic(chatId, topicId);
+    return await this.#dispatch("closeTopic", chatId, topicId);
   }
 
   /**
@@ -3122,7 +2139,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param topicId The identifier of the topic.
    */
   async reopenTopic(chatId: ID, topicId: number): Promise<void> {
-    await this.#forumManager.reopenTopic(chatId, topicId);
+    return await this.#dispatch("reopenTopic", chatId, topicId);
   }
 
   /**
@@ -3133,7 +2150,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param topicId The identifier of the topic.
    */
   async pinTopic(chatId: ID, topicId: number): Promise<void> {
-    await this.#forumManager.pinTopic(chatId, topicId);
+    return await this.#dispatch("pinTopic", chatId, topicId);
   }
 
   /**
@@ -3144,7 +2161,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param topicId The identifier of the topic.
    */
   async unpinTopic(chatId: ID, topicId: number): Promise<void> {
-    await this.#forumManager.unpinTopic(chatId, topicId);
+    return await this.#dispatch("unpinTopic", chatId, topicId);
   }
 
   /**
@@ -3155,7 +2172,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param userId The identifier of the user to promote.
    */
   async promoteChatMember(chatId: ID, userId: ID, params?: PromoteChatMemberParams): Promise<void> {
-    await this.#chatManager.promoteChatMember(chatId, userId, params);
+    return await this.#dispatch("promoteChatMember", chatId, userId, params);
   }
 
   /**
@@ -3166,7 +2183,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param userId The identifier of the user that is a member of the chat.
    */
   async setChatMemberTag(chatId: ID, userId: ID, params?: SetChatMemberTagParams): Promise<void> {
-    await this.#chatManager.setChatMemberTag(chatId, userId, params);
+    return await this.#dispatch("setChatMemberTag", chatId, userId, params);
   }
 
   /**
@@ -3176,7 +2193,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat.
    */
   async enableSharing(chatId: ID): Promise<void> {
-    await this.#chatManager.enableSharing(chatId);
+    return await this.#dispatch("enableSharing", chatId);
   }
 
   /**
@@ -3186,7 +2203,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat.
    */
   async disableSharing(chatId: ID): Promise<void> {
-    await this.#chatManager.disableSharing(chatId);
+    return await this.#dispatch("disableSharing", chatId);
   }
 
   /**
@@ -3196,7 +2213,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns A list of recommended channels.
    */
   async getRecommendedChannels(): Promise<ChatPChannel[]> {
-    return await this.#chatManager.getRecommendedChannels();
+    return await this.#dispatch("getRecommendedChannels");
   }
 
   /**
@@ -3207,7 +2224,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns A list of similar channels.
    */
   async getSimilarChannels(chatId: ID): Promise<ChatPChannel[]> {
-    return await this.#chatManager.getSimilarChannels(chatId);
+    return await this.#dispatch("getSimilarChannels", chatId);
   }
 
   /**
@@ -3218,7 +2235,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns A list of similar bots.
    */
   async getSimilarBots(chatId: ID): Promise<ChatPPrivate[]> {
-    return await this.#chatManager.getSimilarBots(chatId);
+    return await this.#dispatch("getSimilarBots", chatId);
   }
 
   //
@@ -3236,7 +2253,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @cache
    */
   async sendCallbackQuery(botId: ID, messageId: number, question: CallbackQueryQuestion): Promise<CallbackQueryAnswer> {
-    return await this.#callbackQueryManager.sendCallbackQuery(botId, messageId, question);
+    return await this.#dispatch("sendCallbackQuery", botId, messageId, question);
   }
 
   /**
@@ -3245,9 +2262,10 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method cq
    * @param id ID of the callback query to answer.
    */
-  async answerCallbackQuery(id: string, params?: AnswerCallbackQueryParams) {
-    await this.#callbackQueryManager.answerCallbackQuery(id, params);
+  async answerCallbackQuery(id: string, params?: AnswerCallbackQueryParams): Promise<void> {
+    return await this.#dispatch("answerCallbackQuery", id, params);
   }
+
   //
   // ========================= INLINE QUERIES ========================= //
   //
@@ -3262,7 +2280,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @cache
    */
   async sendInlineQuery(botId: ID, chatId: ID, params?: SendInlineQueryParams): Promise<InlineQueryAnswer> {
-    return await this.#inlineQueryManager.sendInlineQuery(botId, chatId, params);
+    return await this.#dispatch("sendInlineQuery", botId, chatId, params);
   }
 
   /**
@@ -3272,8 +2290,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param id The identifier of the inline query to answer.
    * @param results The results to answer with.
    */
-  async answerInlineQuery(id: string, results: InlineQueryResult[], params?: AnswerInlineQueryParams) {
-    await this.#inlineQueryManager.answerInlineQuery(id, results, params);
+  async answerInlineQuery(id: string, results: InlineQueryResult[], params?: AnswerInlineQueryParams): Promise<void> {
+    return await this.#dispatch("answerInlineQuery", id, results, params);
   }
 
   //
@@ -3285,8 +2303,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    *
    * @method bs
    */
-  async setMyDescription(params?: { description?: string; languageCode?: string }) {
-    await this.#botInfoManager.setMyDescription(params);
+  async setMyDescription(params?: { description?: string; languageCode?: string }): Promise<void> {
+    return await this.#dispatch("setMyDescription", params);
   }
 
   /**
@@ -3294,8 +2312,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    *
    * @method bs
    */
-  async setMyName(params?: { name?: string; languageCode?: string }) {
-    await this.#botInfoManager.setMyName(params);
+  async setMyName(params?: { name?: string; languageCode?: string }): Promise<void> {
+    return await this.#dispatch("setMyName", params);
   }
 
   /**
@@ -3303,8 +2321,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    *
    * @method bs
    */
-  async setMyShortDescription(params?: { shortDescription?: string; languageCode?: string }) {
-    await this.#botInfoManager.setMyShortDescription(params);
+  async setMyShortDescription(params?: { shortDescription?: string; languageCode?: string }): Promise<void> {
+    return await this.#dispatch("setMyShortDescription", params);
   }
 
   /**
@@ -3314,7 +2332,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The current bot's description in the specified language.
    */
   async getMyDescription(params?: { languageCode?: string }): Promise<string> {
-    return await this.#botInfoManager.getMyDescription(params);
+    return await this.#dispatch("getMyDescription", params);
   }
 
   /**
@@ -3324,7 +2342,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The current bot's name in the specified language.
    */
   async getMyName(params?: { languageCode?: string }): Promise<string> {
-    return await this.#botInfoManager.getMyName(params);
+    return await this.#dispatch("getMyName", params);
   }
 
   /**
@@ -3334,7 +2352,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The current bot's short description in the specified language.
    */
   async getMyShortDescription(params?: { languageCode?: string }): Promise<string> {
-    return await this.#botInfoManager.getMyShortDescription(params);
+    return await this.#dispatch("getMyShortDescription", params);
   }
 
   /**
@@ -3343,8 +2361,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method bs
    * @param commands The commands to set.
    */
-  async setMyCommands(commands: BotCommand[], params?: SetMyCommandsParams) {
-    await this.#botInfoManager.setMyCommands(commands, params);
+  async setMyCommands(commands: BotCommand[], params?: SetMyCommandsParams): Promise<void> {
+    return await this.#dispatch("setMyCommands", commands, params);
   }
 
   /**
@@ -3354,7 +2372,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The current bot's commands in the specified language.
    */
   async getMyCommands(params?: GetMyCommandsParams): Promise<BotCommand[]> {
-    return await this.#botInfoManager.getMyCommands(params);
+    return await this.#dispatch("getMyCommands", params);
   }
 
   //
@@ -3369,8 +2387,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param messageId The identifier of the message to add the reaction to.
    * @param reactions The new reactions.
    */
-  async setReactions(chatId: ID, messageId: number, reactions: Reaction[], params?: SetReactionsParams) {
-    await this.#messageManager.setReactions(chatId, messageId, reactions, params);
+  async setReactions(chatId: ID, messageId: number, reactions: Reaction[], params?: SetReactionsParams): Promise<void> {
+    return await this.#dispatch("setReactions", chatId, messageId, reactions, params);
   }
 
   /**
@@ -3381,8 +2399,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param messageId The identifier of the message to add the reaction to.
    * @param reaction The reaction to add.
    */
-  async addReaction(chatId: ID, messageId: number, reaction: Reaction, params?: AddReactionParams) {
-    await this.#messageManager.addReaction(chatId, messageId, reaction, params);
+  async addReaction(chatId: ID, messageId: number, reaction: Reaction, params?: AddReactionParams): Promise<void> {
+    return await this.#dispatch("addReaction", chatId, messageId, reaction, params);
   }
 
   /**
@@ -3393,8 +2411,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param messageId The identifier of the message which the reaction was made to.
    * @param reaction The reaction to remove.
    */
-  async removeReaction(chatId: ID, messageId: number, reaction: Reaction) {
-    await this.#messageManager.removeReaction(chatId, messageId, reaction);
+  async removeReaction(chatId: ID, messageId: number, reaction: Reaction): Promise<void> {
+    return await this.#dispatch("removeReaction", chatId, messageId, reaction);
   }
 
   //
@@ -3409,7 +2427,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The created story.
    */
   async createStory(chatId: ID, content: InputStoryContent, params?: CreateStoryParams): Promise<Story> {
-    return await this.#storyManager.createStory(chatId, content, params);
+    return await this.#dispatch("createStory", chatId, content, params);
   }
 
   /**
@@ -3421,10 +2439,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The retrieved stories.
    */
   async getStories(chatId: ID, storyIds: number[]): Promise<Story[]> {
-    if (!storyIds.length) {
-      return [];
-    }
-    return await this.#storyManager.getStories(chatId, storyIds);
+    return await this.#dispatch("getStories", chatId, storyIds);
   }
 
   /**
@@ -3436,7 +2451,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The retrieved story.
    */
   async getStory(chatId: ID, storyId: number): Promise<Story | null> {
-    return await this.#storyManager.getStory(chatId, storyId);
+    return await this.#dispatch("getStory", chatId, storyId);
   }
 
   /**
@@ -3446,8 +2461,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat.
    * @param storyIds The identifiers of the stories to delete.
    */
-  async deleteStories(chatId: ID, storyIds: number[]) {
-    await this.#storyManager.deleteStories(chatId, storyIds);
+  async deleteStories(chatId: ID, storyIds: number[]): Promise<void> {
+    return await this.#dispatch("deleteStories", chatId, storyIds);
   }
 
   /**
@@ -3457,10 +2472,9 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat.
    * @param storyId The identifier of the story to delete.
    */
-  async deleteStory(chatId: ID, storyId: number) {
-    await this.#storyManager.deleteStory(chatId, storyId);
+  async deleteStory(chatId: ID, storyId: number): Promise<void> {
+    return await this.#dispatch("deleteStory", chatId, storyId);
   }
-
   /**
    * Add multiple stories to highlights. User-only.
    *
@@ -3468,8 +2482,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat.
    * @param storyIds The identifiers of the stories to add to highlights.
    */
-  async addStoriesToHighlights(chatId: ID, storyIds: number[]) {
-    await this.#storyManager.addStoriesToHighlights(chatId, storyIds);
+  async addStoriesToHighlights(chatId: ID, storyIds: number[]): Promise<void> {
+    return await this.#dispatch("addStoriesToHighlights", chatId, storyIds);
   }
 
   /**
@@ -3479,8 +2493,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat.
    * @param storyId The identifier of the story to add to highlights.
    */
-  async addStoryToHighlights(chatId: ID, storyId: number) {
-    await this.#storyManager.addStoryToHighlights(chatId, storyId);
+  async addStoryToHighlights(chatId: ID, storyId: number): Promise<void> {
+    return await this.#dispatch("addStoryToHighlights", chatId, storyId);
   }
 
   /**
@@ -3490,8 +2504,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat.
    * @param storyIds The identifiers of the stories to remove from highlights.
    */
-  async removeStoriesFromHighlights(chatId: ID, storyIds: number[]) {
-    await this.#storyManager.removeStoriesFromHighlights(chatId, storyIds);
+  async removeStoriesFromHighlights(chatId: ID, storyIds: number[]): Promise<void> {
+    return await this.#dispatch("removeStoriesFromHighlights", chatId, storyIds);
   }
 
   /**
@@ -3501,8 +2515,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat.
    * @param storyId The identifier of the story to remove from highlights.
    */
-  async removeStoryFromHighlights(chatId: ID, storyId: number) {
-    await this.#storyManager.removeStoryFromHighlights(chatId, storyId);
+  async removeStoryFromHighlights(chatId: ID, storyId: number): Promise<void> {
+    return await this.#dispatch("removeStoryFromHighlights", chatId, storyId);
   }
 
   //
@@ -3515,7 +2529,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method mc
    */
   async getNetworkStatistics(): Promise<NetworkStatistics> {
-    return await this.#networkStatisticsManager.getNetworkStatistics();
+    return await this.#dispatch("getNetworkStatistics");
   }
 
   /**
@@ -3524,8 +2538,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method mc
    * @param userId The identifier of the user to block.
    */
-  async blockUser(userId: ID) {
-    await this.#messageManager.blockUser(userId);
+  async blockUser(userId: ID): Promise<void> {
+    return await this.#dispatch("blockUser", userId);
   }
 
   /**
@@ -3534,8 +2548,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method mc
    * @param userId The identifier of the user to unblock.
    */
-  async unblockUser(userId: ID) {
-    await this.#messageManager.unblockUser(userId);
+  async unblockUser(userId: ID): Promise<void> {
+    return await this.#dispatch("unblockUser", userId);
   }
 
   //
@@ -3550,7 +2564,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The started video chat.
    */
   async startVideoChat(chatId: ID, params?: StartVideoChatParams): Promise<VideoChatActive> {
-    return await this.#videoChatManager.startVideoChat(chatId, params);
+    return await this.#dispatch("startVideoChat", chatId, params);
   }
 
   /**
@@ -3562,7 +2576,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The scheduled video chat.
    */
   async scheduleVideoChat(chatId: ID, startAt: number, params?: ScheduleVideoChatParams): Promise<VideoChatScheduled> {
-    return await this.#videoChatManager.scheduleVideoChat(chatId, startAt, params);
+    return await this.#dispatch("scheduleVideoChat", chatId, startAt, params);
   }
 
   /**
@@ -3574,7 +2588,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns Parameters to be passed to the used WebRTC library.
    */
   async joinVideoChat(id: string, params_: string, params?: JoinVideoChatParams): Promise<string> {
-    return await this.#videoChatManager.joinVideoChat(id, params_, params);
+    return await this.#dispatch("joinVideoChat", id, params_, params);
   }
 
   /**
@@ -3584,7 +2598,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param id The identifier of a video chat retrieved from getChat, startVideoChat, or scheduleVideoChat.
    */
   async leaveVideoChat(id: string): Promise<void> {
-    await this.#videoChatManager.leaveVideoChat(id);
+    return await this.#dispatch("leaveVideoChat", id);
   }
 
   /**
@@ -3594,7 +2608,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param id The identifier of a video chat retrieved from getChat, startVideoChat, or scheduleVideoChat.
    */
   async joinLiveStream(id: string): Promise<void> {
-    await this.#videoChatManager.joinLiveStream(id);
+    return await this.#dispatch("joinLiveStream", id);
   }
 
   /**
@@ -3605,7 +2619,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @cache
    */
   async getVideoChat(id: string): Promise<VideoChat> {
-    return await this.#videoChatManager.getVideoChat(id);
+    return await this.#dispatch("getVideoChat", id);
   }
 
   /**
@@ -3615,7 +2629,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param id The identifier of a video chat retrieved from getChat, startVideoChat, or scheduleVideoChat.
    */
   async getLiveStreamChannels(id: string): Promise<LiveStreamChannel[]> {
-    return await this.#videoChatManager.getLiveStreamChannels(id);
+    return await this.#dispatch("getLiveStreamChannels", id);
   }
 
   /**
@@ -3628,7 +2642,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param timestamp Millisecond timestamp of the chunk to download.
    */
   async downloadLiveStreamSegment(id: string, channelId: number, scale: number, timestamp: number, params?: DownloadLiveStreamSegmentParams): Promise<Uint8Array> {
-    return await this.#videoChatManager.downloadLiveStreamSegment(id, channelId, scale, timestamp, params);
+    return await this.#dispatch("downloadLiveStreamSegment", id, channelId, scale, timestamp, params);
   }
 
   //
@@ -3643,7 +2657,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param ok Whether the checkout is going to be processed.
    */
   async answerPreCheckoutQuery(preCheckoutQueryId: string, ok: boolean, params?: AnswerPreCheckoutQueryParams): Promise<void> {
-    await this.#paymentManager.answerPreCheckoutQuery(preCheckoutQueryId, ok, params);
+    return await this.#dispatch("answerPreCheckoutQuery", preCheckoutQueryId, ok, params);
   }
 
   /**
@@ -3654,7 +2668,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param telegramPaymentChargeId The identifier of the charge.
    */
   async refundStarPayment(userId: ID, telegramPaymentChargeId: string): Promise<void> {
-    await this.#paymentManager.refundStarPayment(userId, telegramPaymentChargeId);
+    return await this.#dispatch("refundStarPayment", userId, telegramPaymentChargeId);
   }
 
   //
@@ -3667,7 +2681,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method co
    */
   async getContacts(): Promise<User[]> {
-    return await this.#accountManager.getContacts();
+    return await this.#dispatch("getContacts");
   }
 
   /**
@@ -3677,7 +2691,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param userIds The identifiers of contacts to delete.
    */
   async deleteContacts(userIds: ID[]): Promise<void> {
-    await this.#accountManager.deleteContacts(userIds);
+    return await this.#dispatch("deleteContacts", userIds);
   }
 
   /**
@@ -3687,7 +2701,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param userId The identifier of the contact to delete.
    */
   async deleteContact(userId: ID): Promise<void> {
-    await this.#accountManager.deleteContact(userId);
+    return await this.#dispatch("deleteContact", userId);
   }
 
   /**
@@ -3697,7 +2711,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param userId The identifier of the user to add as contact.
    */
   async addContact(userId: ID, params?: AddContactParams): Promise<void> {
-    await this.#accountManager.addContact(userId, params);
+    return await this.#dispatch("addContact", userId, params);
   }
 
   //
@@ -3711,7 +2725,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @cache
    */
   async getTranslations(params?: GetTranslationsParams): Promise<Translation[]> {
-    return await this.#translationsManager.getTranslations(params);
+    return await this.#dispatch("getTranslations", params);
   }
 
   //
@@ -3724,7 +2738,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method gf
    */
   async getGifts(): Promise<Gift[]> {
-    return await this.#giftManager.getGifts();
+    return await this.#dispatch("getGifts");
   }
 
   /**
@@ -3734,7 +2748,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a user or a channel to get gifts for.
    */
   async getClaimedGifts(chatId: ID, params?: GetClaimedGiftsParams): Promise<ClaimedGifts> {
-    return await this.#giftManager.getClaimedGifts(chatId, params);
+    return await this.#dispatch("getClaimedGifts", chatId, params);
   }
 
   /**
@@ -3745,7 +2759,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param giftId The identifier of the gift to send.
    */
   async sendGift(chatId: ID, giftId: string, params?: SendGiftParams): Promise<void> {
-    await this.#giftManager.sendGift(chatId, giftId, params);
+    return await this.#dispatch("sendGift", chatId, giftId, params);
   }
 
   /**
@@ -3755,17 +2769,17 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param gift The gift to sell.
    */
   async sellGift(gift: InputGift): Promise<void> {
-    await this.#giftManager.sellGift(gift);
+    return await this.#dispatch("sellGift", gift);
   }
 
   /**
    * Craft gifts.
    *
    * @method gf
-   * @param gift The gifts to craft.
+   * @param gifts The gifts to craft.
    */
   async craftGifts(gifts: InputGift[]): Promise<void> {
-    await this.#giftManager.craftGifts(gifts);
+    return await this.#dispatch("craftGifts", gifts);
   }
 
   /**
@@ -3775,7 +2789,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param slug The slug of a gift.
    */
   async getGift(slug: string): Promise<Gift> {
-    return await this.#giftManager.getGift(slug);
+    return await this.#dispatch("getGift", slug);
   }
 
   /**
@@ -3786,6 +2800,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param gift The gift to transfer.
    */
   async transferGift(chatId: ID, gift: InputGift): Promise<void> {
-    return await this.#giftManager.transferGift(chatId, gift);
+    return await this.#dispatch("transferGift", chatId, gift);
   }
 }

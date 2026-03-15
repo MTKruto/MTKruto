@@ -22,7 +22,7 @@ import { InputError } from "../0_errors.ts";
 import { getLogger } from "../utilities/1_logger.ts";
 import type { WorkerRequest } from "./0_worker_request.ts";
 import type { WorkerResponse } from "./1_worker_response.ts";
-import { ClientDispatcher, type ClientDispatcherParams } from "./5_client_dispatcher.ts";
+import { ClientDispatcher, type ClientDispatcherParams } from "./6_client_dispatcher.ts";
 
 export class ClientWorker {
   #worker: Worker | MessagePort;

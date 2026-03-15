@@ -24,8 +24,8 @@ import { StorageDenoKV } from "../storage/1_storage_deno_kv.ts";
 import { deserializeWorkerError, serializeWorkerError } from "./0_worker_error.ts";
 import type { WorkerRequest } from "./0_worker_request.ts";
 import type { WorkerResponse } from "./1_worker_response.ts";
-import type { ClientDispatcherParams } from "./5_client_dispatcher.ts";
-import { Client, type ClientParams } from "./5_client.ts";
+import type { ClientDispatcherParams } from "./6_client_dispatcher.ts";
+import { Client, type ClientParams } from "./6_client.ts";
 
 export class ClientReceiver {
   #postMessage: typeof globalThis.postMessage;

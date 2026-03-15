@@ -20,7 +20,6 @@
 
 import type { Api } from "../2_tl.ts";
 import type { CallbackQuery, ChatP, ChosenInlineResult, MessageTypes, UpdateIntersection, UpdateMap } from "../3_types.ts";
-import type { Context } from "./2_context.ts";
 
 type AnyLevel1 = keyof UpdateMap;
 type GetLevel1Type<L1 extends AnyLevel1> = UpdateMap[L1];
@@ -83,7 +82,7 @@ type GetShortcuts<T extends UpdateIntersection> = T["update"] extends object ? R
 
 type Filter<Q extends AnyLevelX> = { update: FilterCore<Q> } & GetShortcuts<FilterCore<Q>>;
 export type FilterQuery = AnyLevelX;
-export type WithFilter<T extends Context, Q extends FilterQuery> = T & Filter<Q>;
+export type WithFilter<T, Q extends FilterQuery> = T & Filter<Q>;
 
 export function match<Q extends FilterQuery, T extends object>(filter: Q, value: T) {
   let [type, ...other] = filter.split(":");
@@ -116,7 +115,7 @@ export function match<Q extends FilterQuery, T extends object>(filter: Q, value:
 }
 
 type ChatType<T extends ChatP["type"]> = { chat: { type: T } };
-export type WithChatType<C extends Context, T extends ChatP["type"]> = C & ChatType<T> & {
+export type WithChatType<C, T extends ChatP["type"]> = C & ChatType<T> & {
   msg?: ChatType<T>;
   message?: ChatType<T>;
   editedMessage?: ChatType<T>;
