@@ -1405,10 +1405,10 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * Set the current account's online status. User-only.
    *
    * @method ac
-   * @param online The new online status.
+   * @param isOnline The new online status.
    */
-  async setOnline(online: boolean): Promise<void> {
-    await this.#accountManager.setOnline(online);
+  async setIsOnline(isOnline: boolean): Promise<void> {
+    await this.#accountManager.setIsOnline(isOnline);
   }
 
   /**

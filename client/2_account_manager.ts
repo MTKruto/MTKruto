@@ -119,9 +119,9 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     return chats.map((v, i) => constructInactiveChat(v, dates[i]));
   }
 
-  async setOnline(online: boolean) {
+  async setIsOnline(isOnline: boolean) {
     this.#c.storage.assertUser("setOnline");
-    await this.#c.invoke({ _: "account.updateStatus", offline: !online });
+    await this.#c.invoke({ _: "account.updateStatus", offline: !isOnline });
   }
 
   async setEmojiStatus(emojiStatus: InputEmojiStatus, params?: SetEmojiStatusParams) {

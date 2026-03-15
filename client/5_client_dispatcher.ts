@@ -434,10 +434,10 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * Set the current account's online status. User-only.
    *
    * @method ac
-   * @param online The new online status.
+   * @param isOnline The new online status.
    */
-  async setOnline(online: boolean): Promise<void> {
-    return await this.#dispatch("setOnline", online);
+  async setIsOnline(isOnline: boolean): Promise<void> {
+    return await this.#dispatch("setOnline", isOnline);
   }
 
   /**

@@ -198,9 +198,9 @@ export abstract class ClientGeneric {
    * Set the current account's online status. User-only.
    *
    * @method ac
-   * @param online The new online status.
+   * @param isOnline The new online status.
    */
-  abstract setOnline(online: boolean): Promise<void>;
+  abstract setIsOnline(isOnline: boolean): Promise<void>;
 
   /**
    * Set the current account's emoji status. User-only.
