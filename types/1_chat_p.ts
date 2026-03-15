@@ -120,6 +120,8 @@ export interface ChatPChannelBase extends _ChatPBase {
 export interface ChatPChannel extends ChatPChannelBase {
   /** @discriminator */
   type: "channel";
+  /** The channel's emoji status. */
+  emojiStatus?: EmojiStatus;
 }
 
 /** @unlisted */
@@ -227,6 +229,7 @@ export function constructChatP(chat: Api.User | Api.Chat): ChatP {
         color: Api.is("peerColor", chat.color) && chat.color.color !== undefined ? chat.color.color : getColorFromPeerId(id),
         type: "channel",
         title,
+        emojiStatus: chat.emoji_status ? constructEmojiStatus(chat.emoji_status) : undefined,
         isScam,
         isFake,
         isVerified,
