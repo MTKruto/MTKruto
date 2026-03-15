@@ -19,7 +19,7 @@
  */
 
 import type { Api } from "../2_tl.ts";
-import type { CallbackQuery, ChosenInlineResult, MessageTypes, UpdateIntersection, UpdateMap } from "../3_types.ts";
+import type { CallbackQuery, ChatP, ChosenInlineResult, MessageTypes, UpdateIntersection, UpdateMap } from "../3_types.ts";
 import type { Context } from "./2_context.ts";
 
 type AnyLevel1 = keyof UpdateMap;
@@ -114,3 +114,12 @@ export function match<Q extends FilterQuery, T extends object>(filter: Q, value:
   }
   return true;
 }
+
+type ChatType<T extends ChatP["type"]> = { chat: { type: T } };
+export type WithChatType<C extends Context, T extends ChatP["type"]> = C & ChatType<T> & {
+  msg?: ChatType<T>;
+  message?: ChatType<T>;
+  editedMessage?: ChatType<T>;
+  callbackQuery?: { message?: ChatType<T> };
+  update: { callbackQuery?: { message?: ChatType<T> }; message?: ChatType<T>; editedMessage?: ChatType<T>; scheduledMessage?: ChatType<T>; messageReactions?: ChatType<T>; messageReactionCount?: ChatType<T>; myChatMember?: ChatType<T>; chatMember?: ChatType<T>; joinRequest?: ChatType<T> };
+};
