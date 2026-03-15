@@ -19,7 +19,7 @@
  */
 
 import type { Animation, Message } from "../3_types.ts";
-import { Composer } from "./4_composer.ts";
+import { Composer } from "./5_composer.ts";
 
 Deno.test("types", () => {
   const composer = new Composer();
