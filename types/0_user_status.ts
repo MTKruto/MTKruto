@@ -67,6 +67,7 @@ export interface UserStatusLastSeenLastMonth {
   type: "lastSeenLastMonth";
 }
 
+/** Any type of a user's status. */
 export type UserStatus = UserStatusOnline | UserStatusOffline | UserStatusLastSeenRecently | UserStatusLastSeenLastWeek | UserStatusLastSeenLastMonth;
 
 export function constructUserStatus(userStatus: Api.UserStatus): UserStatus {

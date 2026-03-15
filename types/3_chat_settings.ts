@@ -22,6 +22,7 @@ import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { constructUser, type User } from "./2_user.ts";
 
+/** A chat's settings. */
 export interface ChatSettings {
   canReport: boolean;
   canAddToContacts: boolean;

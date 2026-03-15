@@ -22,6 +22,7 @@
 export interface InputEmojiStatusCustomEmoji {
   /** @discriminator */
   type: "customEmoji";
+  /** The identifier of a custom emoji. */
   customEmojiId: string;
 }
 
@@ -29,7 +30,9 @@ export interface InputEmojiStatusCustomEmoji {
 export interface InputEmojiStatusGift {
   /** @discriminator */
   type: "gift";
+  /** The gift's ID. */
   giftId: number;
 }
 
+/** An emoji status to be passed as an input. */
 export type InputEmojiStatus = InputEmojiStatusCustomEmoji | InputEmojiStatusGift;
