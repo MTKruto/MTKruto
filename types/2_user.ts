@@ -40,6 +40,8 @@ export interface User {
   lastName?: string;
   /** The user’s main username. */
   username?: string;
+  /** The user's phone number. */
+  phoneNumber?: string;
   /** The user's additional usernames. */
   also?: string[];
   /** The user's status. */
@@ -74,7 +76,6 @@ export function constructUser(user_: Api.user): User {
   const id = Number(user_.id);
   const usernames = user_.usernames?.map((v) => v.username);
   const username = user_.username ?? usernames?.shift();
-  user_.emoji_status;
   const user: User = {
     id,
     color: Api.is("peerColor", user_.color) && user_.color.color !== undefined ? user_.color.color : getColorFromPeerId(id),
@@ -82,6 +83,7 @@ export function constructUser(user_: Api.user): User {
     firstName: user_.first_name || "",
     lastName: user_.last_name,
     username: username,
+    phoneNumber: user_.phone,
     also: usernames?.filter((v) => v !== username),
     status: user_.status ? constructUserStatus(user_.status) : undefined,
     emojiStatus: user_.emoji_status ? constructEmojiStatus(user_.emoji_status) : undefined,
@@ -111,7 +113,10 @@ export function constructUser2(chatP: ChatPPrivate): User {
     firstName: chatP.firstName,
     lastName: chatP.lastName,
     username: chatP.username,
+    phoneNumber: chatP.phoneNumber,
     also: chatP.also,
+    status: chatP.status,
+    emojiStatus: chatP.emojiStatus,
     photo: chatP.photo,
     languageCode: chatP.languageCode,
     isScam: chatP.isScam,

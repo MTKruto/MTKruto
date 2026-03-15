@@ -58,6 +58,8 @@ export interface ChatPPrivate extends _ChatPBase {
   lastName?: string;
   /** The user's main username. */
   username?: string;
+  /** The user's phone number. */
+  phoneNumber?: string;
   /** The user's additional usernames. */
   also?: string[];
   /** The user's status. */
@@ -154,6 +156,7 @@ export function constructChatP(chat: Api.User | Api.Chat): ChatP {
       firstName: chat.first_name || "",
       lastName: chat.last_name,
       username,
+      phoneNumber: chat.phone,
       languageCode: chat.lang_code,
       also: usernames?.filter((v) => v !== username),
       status: chat.status ? constructUserStatus(chat.status) : undefined,
