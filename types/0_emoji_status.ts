@@ -27,6 +27,7 @@ export interface _EmojiStatusBase {
 
 /** @unlisted */
 export interface EmojiStatusCustomEmoji extends _EmojiStatusBase {
+  /** @discriminator */
   type: "customEmoji";
   customEmojiId: string;
 }

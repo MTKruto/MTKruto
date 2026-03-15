@@ -25,6 +25,7 @@ import type { Api } from "../2_tl.ts";
  * @unlisted
  */
 export interface UserStatusOnline {
+  /** @discriminator */
   type: "online";
 }
 

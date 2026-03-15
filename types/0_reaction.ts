@@ -26,6 +26,7 @@ import { Api } from "../2_tl.ts";
  * @unlisted
  */
 export interface ReactionEmoji {
+  /** @discriminator */
   type: "emoji";
   emoji: string;
 }
@@ -35,6 +36,7 @@ export interface ReactionEmoji {
  * @unlisted
  */
 export interface ReactionCustom {
+  /** @discriminator */
   type: "custom";
   id: string;
 }
@@ -44,6 +46,7 @@ export interface ReactionCustom {
  * @unlisted
  */
 export interface ReactionPaid {
+  /** @discriminator */
   type: "paid";
 }
 
