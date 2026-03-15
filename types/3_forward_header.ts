@@ -29,14 +29,20 @@ export interface _ForwardHeaderCommon {
   date: number;
 }
 
-/** @unlisted */
+/**
+ * A user forward header.
+ * @unlisted
+ */
 export interface ForwardHeaderUser extends _ForwardHeaderCommon {
   /** @discriminator */
   type: "user";
   user: User;
 }
 
-/** @unlisted */
+/**
+ * A channel forward header.
+ * @unlisted
+ */
 export interface ForwardHeaderChannel extends _ForwardHeaderCommon {
   /** @discriminator */
   type: "channel";
@@ -45,7 +51,10 @@ export interface ForwardHeaderChannel extends _ForwardHeaderCommon {
   authorSignature?: string;
 }
 
-/** @unlisted */
+/**
+ * A supergroup forward header.
+ * @unlisted
+ */
 export interface ForwardHeaderSupergroup extends _ForwardHeaderCommon {
   /** @discriminator */
   type: "supergroup";
@@ -53,19 +62,26 @@ export interface ForwardHeaderSupergroup extends _ForwardHeaderCommon {
   title?: string;
 }
 
-/** @unlisted */
+/**
+ * A forward header with a hidden sender.
+ * @unlisted
+ */
 export interface ForwardHeaderHidden extends _ForwardHeaderCommon {
   /** @discriminator */
   type: "hidden";
   name: string;
 }
 
-/** @unlisted */
+/**
+ * An unsupported type of forward header.
+ * @unlisted
+ */
 export interface ForwardHeaderUnsupported extends _ForwardHeaderCommon {
   /** @discriminator */
   type: "unsupported";
 }
 
+/** Any type of forward header. */
 export type ForwardHeader = ForwardHeaderUser | ForwardHeaderChannel | ForwardHeaderSupergroup | ForwardHeaderHidden | ForwardHeaderUnsupported;
 
 export function constructForwardHeader(fwdHeader: Api.MessageFwdHeader, getPeer: PeerGetter): ForwardHeader {

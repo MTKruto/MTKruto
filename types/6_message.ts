@@ -128,8 +128,11 @@ export interface _MessageBase {
  * @unlisted
  */
 export interface _MessageMediaBase extends _MessageBase {
+  /** The media's caption. */
   caption?: string;
+  /** The entities of the media's caption. */
   captionEntities?: MessageEntity[];
+  /** Whether the media is a spoiler. */
   isSpoiler?: boolean;
 }
 
@@ -146,7 +149,7 @@ export interface MessageText extends _MessageBase {
    */
   text: string;
   /**
-   * Entities of the text
+   * The text's entities.
    * @discriminator
    */
   entities: MessageEntity[];
@@ -357,7 +360,7 @@ export interface MessageLocation extends _MessageBase {
  */
 export interface MessageNewChatMembers extends _MessageBase {
   /**
-   * The new members of the chat
+   * The new members of the chat.
    * @discriminator
    */
   newChatMembers: User[];
@@ -369,7 +372,7 @@ export interface MessageNewChatMembers extends _MessageBase {
  */
 export interface MessageLeftChatMember extends _MessageBase {
   /**
-   * The member who left the chat
+   * The member who left the chat.
    * @discriminator
    */
   leftChatMember: User;
@@ -381,7 +384,7 @@ export interface MessageLeftChatMember extends _MessageBase {
  */
 export interface MessageNewChatTitle extends _MessageBase {
   /**
-   * The new title of the chat
+   * The new title of the chat.
    * @discriminator
    */
   newChatTitle: string;
@@ -449,7 +452,7 @@ export interface MessageChannelCreated extends _MessageBase {
  */
 export interface MessageAutoDeleteTimerChanged extends _MessageBase {
   /**
-   * The new auto-delete time in seconds
+   * The new auto-delete time in seconds.
    * @discriminator
    */
   newAutoDeleteTime: number;
@@ -461,7 +464,7 @@ export interface MessageAutoDeleteTimerChanged extends _MessageBase {
  */
 export interface MessageChatMigratedTo extends _MessageBase {
   /**
-   * The supergroup's ID
+   * The supergroup's ID.
    * @discriminator
    */
   chatMigratedTo: number;
@@ -473,7 +476,7 @@ export interface MessageChatMigratedTo extends _MessageBase {
  */
 export interface MessageChatMigratedFrom extends _MessageBase {
   /**
-   * The group's ID
+   * The group's ID.
    * @discriminator
    */
   chatMigratedFrom: number;
@@ -485,7 +488,7 @@ export interface MessageChatMigratedFrom extends _MessageBase {
  */
 export interface MessagePinnedMessage extends _MessageBase {
   /**
-   * The message that was pinned
+   * The message that was pinned.
    * @discriminator
    */
   pinnedMessage: Message;
@@ -514,7 +517,10 @@ export interface MessageWriteAccessAllowed extends _MessageBase {
  * @unlisted
  */
 export interface MessageForumTopicCreated extends _MessageBase {
-  /** @discriminator */
+  /**
+   * Information on the created forum topic.
+   * @discriminator
+   */
   forumTopicCreated: { name: string; color: number; customEmojiId?: string };
 }
 
@@ -550,7 +556,10 @@ export interface MessageForumTopicReopened extends _MessageBase {
  * @unlisted
  */
 export interface MessageVideoChatScheduled extends _MessageBase {
-  /** @discriminator */
+  /**
+   * Information on the scheduled video chat.
+   * @discriminator
+   */
   videoChatScheduled: { startDate: number };
 }
 
@@ -568,7 +577,10 @@ export interface MessageVideoChatStarted extends _MessageBase {
  * @unlisted
  */
 export interface MessageVideoChatEnded extends _MessageBase {
-  /** @discriminator */
+  /**
+   * Information on the ended video chat.
+   * @discriminator
+   */
   videoChatEnded: { duration: number };
 }
 
@@ -577,7 +589,10 @@ export interface MessageVideoChatEnded extends _MessageBase {
  * @unlisted
  */
 export interface MessageGiveaway extends _MessageBase {
-  /** @discriminator */
+  /**
+   * Information on the giveaway.
+   * @discriminator
+   */
   giveaway: Giveaway;
 }
 
@@ -595,7 +610,10 @@ export interface MessageUnsupported extends _MessageBase {
  * @unlisted
  */
 export interface MessageSuccessfulPayment extends _MessageBase {
-  /** @discriminator */
+  /**
+   * Information on the successful payment.
+   * @discriminator
+   */
   successfulPayment: SuccessfulPayment;
 }
 
@@ -604,7 +622,10 @@ export interface MessageSuccessfulPayment extends _MessageBase {
  * @unlisted
  */
 export interface MessageRefundedPayment extends _MessageBase {
-  /** @discriminator */
+  /**
+   * Information on the refunded payment.
+   * @discriminator
+   */
   refundedPayment: RefundedPayment;
 }
 
@@ -613,7 +634,10 @@ export interface MessageRefundedPayment extends _MessageBase {
  * @unlisted
  */
 export interface MessageChecklistChanged extends _MessageBase {
-  /** @discriminator */
+  /**
+   * The checklist's changes.
+   * @discriminator
+   */
   checklistChanged: ChecklistChanged;
 }
 
@@ -622,7 +646,10 @@ export interface MessageChecklistChanged extends _MessageBase {
  * @unlisted
  */
 export interface MessageChecklistExtended extends _MessageBase {
-  /** @discriminator */
+  /**
+   * The checklist's new items.
+   * @discriminator
+   */
   checklistExtended: ChecklistItem[];
 }
 
@@ -631,7 +658,10 @@ export interface MessageChecklistExtended extends _MessageBase {
  * @unlisted
  */
 export interface MessageGiftNonUpgraded extends _MessageBase {
-  /** @discriminator */
+  /**
+   * Information on the non-upgraded gift.
+   * @discriminator
+   */
   giftNonUpgraded: GiftNonUpgradedInformation;
 }
 
@@ -640,7 +670,10 @@ export interface MessageGiftNonUpgraded extends _MessageBase {
  * @unlisted
  */
 export interface MessageGiftUpgraded extends _MessageBase {
-  /** @discriminator */
+  /**
+   * Information on the upgraded gift.
+   * @discriminator
+   */
   giftUpgraded: GiftUpgradedInformation;
 }
 
