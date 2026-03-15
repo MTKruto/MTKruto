@@ -22,7 +22,7 @@ import { cleanObject, getColorFromPeerId } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { type ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
 import { constructEmojiStatus, type EmojiStatus } from "./0_emoji_status.ts";
-import type { RestrictionReason } from "./0_restriction_reason.ts";
+import { constructRestrictionReason, type RestrictionReason } from "./0_restriction_reason.ts";
 import { constructUserStatus, type UserStatus } from "./0_user_status.ts";
 import type { ChatPPrivate } from "./1_chat_p.ts";
 
@@ -94,7 +94,7 @@ export function constructUser(user_: Api.user): User {
     isVerified: user_.verified || false,
     isSupport: user_.support || false,
     isRestricted: user_.restricted || false,
-    restrictionReason: user_.restriction_reason,
+    restrictionReason: user_.restriction_reason?.map((v) => constructRestrictionReason(v)),
     isAddedToAttachmentMenu: user_.bot ? user_.attach_menu_enabled || false : undefined,
     hasMainMiniApp: user_.bot ? user_.bot_has_main_app || false : undefined,
   };

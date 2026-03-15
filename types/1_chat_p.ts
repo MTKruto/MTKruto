@@ -167,7 +167,7 @@ export function constructChatP(chat: Api.User | Api.Chat): ChatP {
       isVerified: chat.verified || false,
       isSupport: chat.support || false,
       isRestricted: chat.restricted || false,
-      restrictionReason: chat.restriction_reason,
+      restrictionReason: chat.restriction_reason?.map((v) => constructRestrictionReason(v)),
       isAddedToAttachmentMenu: chat.bot ? chat.attach_menu_enabled || false : undefined,
       hasMainMiniApp: chat.bot ? chat.attach_menu_enabled || false : undefined,
     };
