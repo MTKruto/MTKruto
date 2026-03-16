@@ -48,7 +48,7 @@ console.debug(pong);
 
 ```html
 <script type="module">
-  import { Client, getRandomId } from "https://esm.sh/jsr/@mtkruto/mtkruto";
+  import { Client, getRandomId } from "https://cdn.jsdelivr.net/npm/@mtkruto/browser/esm/mod.js";
 
   const client = new Client();
   await client.connect();
