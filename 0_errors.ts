@@ -43,9 +43,12 @@ export class InputError extends MtkrutoError {
 }
 
 export class TransportError extends MtkrutoError {
-  constructor(public readonly code: number) {
+  public readonly code: number;
+
+  constructor(code: number) {
     super(`Transport error: ${code}`);
     this.name = "TransportError";
+    this.code = code;
   }
 }
 

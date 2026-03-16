@@ -26,8 +26,10 @@ import { analyzeOptionalParam, BOOL_FALSE, BOOL_TRUE, constructorIdToHex, getOpt
 
 export class TLReader {
   #path = new Array<string>();
+  protected _buffer: Uint8Array;
 
-  constructor(protected _buffer: Uint8Array) {
+  constructor(buffer: Uint8Array) {
+    this._buffer = buffer;
   }
 
   get buffer(): Uint8Array {
