@@ -48,7 +48,7 @@ jobs:
           npm publish --access public
           cd ..
 
-      - name: Transform and Publish
+      - name: Transform and Publish (Browser)
         run: |
           deno run -A https://raw.githubusercontent.com/MTKruto/npm/main/transform_browser.ts ${{ github.ref_name }} ./mod.ts
           cd dist

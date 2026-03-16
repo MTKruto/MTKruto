@@ -130,6 +130,9 @@ jobs:
       - name: Transform
         run: deno run -A https://raw.githubusercontent.com/MTKruto/npm/main/transform.ts 0.0.0 ./mod.ts
 
+      - name: Transform (Browser)
+        run: deno run -A https://raw.githubusercontent.com/MTKruto/npm/main/transform_browser.ts 0.0.0 ./mod.ts
+
   doc:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
