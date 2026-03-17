@@ -52,6 +52,16 @@ export interface User {
   photo?: ChatPhoto;
   /** The user's [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag). */
   languageCode?: string;
+  /** Whether the user is the current user. */
+  isSelf: boolean;
+  /** Whether the user has been deleted. */
+  isDeleted: boolean;
+  /** Whether the user is a contact. */
+  isContact: boolean;
+  /** Whether the user is a mutual contact. */
+  isMutualContact: boolean;
+  /** Whether the user is a close friend. */
+  isCloseFriend: boolean;
   /** Whether the user has been identified as scam. */
   isScam: boolean;
   /** Whether the user has been identified as an impersonator. */
@@ -88,6 +98,11 @@ export function constructUser(user_: Api.user): User {
     status: user_.status ? constructUserStatus(user_.status) : undefined,
     emojiStatus: user_.emoji_status ? constructEmojiStatus(user_.emoji_status) : undefined,
     languageCode: user_.lang_code,
+    isSelf: user_.self || false,
+    isDeleted: user_.deleted || false,
+    isContact: user_.contact || false,
+    isMutualContact: user_.mutual_contact || false,
+    isCloseFriend: user_.close_friend || false,
     isScam: user_.scam || false,
     isFake: user_.fake || false,
     isPremium: user_.premium || false,
@@ -119,6 +134,11 @@ export function constructUser2(chatP: ChatPPrivate): User {
     emojiStatus: chatP.emojiStatus,
     photo: chatP.photo,
     languageCode: chatP.languageCode,
+    isSelf: chatP.isSelf,
+    isDeleted: chatP.isDeleted,
+    isContact: chatP.isContact,
+    isMutualContact: chatP.isMutualContact,
+    isCloseFriend: chatP.isCloseFriend,
     isScam: chatP.isScam,
     isFake: chatP.isFake,
     isPremium: chatP.isPremium,

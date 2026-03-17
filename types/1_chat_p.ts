@@ -66,6 +66,16 @@ export interface ChatPPrivate extends _ChatPBase {
   status?: UserStatus;
   /** The user's emoji status. */
   emojiStatus?: EmojiStatus;
+  /** Whether the user is the current user. */
+  isSelf: boolean;
+  /** Whether the user has been deleted. */
+  isDeleted: boolean;
+  /** Whether the user is a contact. */
+  isContact: boolean;
+  /** Whether the user is a mutual contact. */
+  isMutualContact: boolean;
+  /** Whether the user is a close friend. */
+  isCloseFriend: boolean;
   /** The user's [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag). */
   languageCode?: string;
   /** Whether the user has been identified as scam. */
@@ -161,6 +171,11 @@ export function constructChatP(chat: Api.User | Api.Chat): ChatP {
       also: usernames?.filter((v) => v !== username),
       status: chat.status ? constructUserStatus(chat.status) : undefined,
       emojiStatus: chat.emoji_status ? constructEmojiStatus(chat.emoji_status) : undefined,
+      isSelf: chat.self || false,
+      isDeleted: chat.deleted || false,
+      isContact: chat.contact || false,
+      isMutualContact: chat.mutual_contact || false,
+      isCloseFriend: chat.close_friend || false,
       isScam: chat.scam || false,
       isFake: chat.fake || false,
       isPremium: chat.premium || false,
