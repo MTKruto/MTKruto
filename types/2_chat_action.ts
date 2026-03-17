@@ -19,6 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
+import { cleanObject } from "../1_utilities.ts";
 import type { Api } from "../2_tl.ts";
 import { chatIdToPeer, peerToChatId } from "../tl/2_telegram.ts";
 import { type ChatActionType, constructChatActionType } from "./0_chat_action_type.ts";
@@ -32,6 +33,8 @@ export interface ChatAction {
   chat: ChatP;
   /** The sender of the action. */
   from: ChatP;
+  /** The identifier of a thread in which the action was made. */
+  messageThreadId?: number;
 }
 
 export function constructChatAction(update: Api.updateUserTyping | Api.updateChatUserTyping | Api.updateChannelUserTyping, getPeer: PeerGetter): ChatAction | null {
@@ -49,5 +52,7 @@ export function constructChatAction(update: Api.updateUserTyping | Api.updateCha
     unreachable();
   }
 
-  return { type, from, chat };
+  const messageThreadId = "top_msg_id" in update ? update.top_msg_id : undefined;
+
+  return cleanObject({ type, from, chat, messageThreadId });
 }
