@@ -24,7 +24,7 @@ import { encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } fr
 import { Api } from "../2_tl.ts";
 import { PackShortNameInvalid } from "../3_errors.ts";
 import { getDc } from "../3_transport.ts";
-import { constructChatAction, constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructStickerSet, constructVoiceTranscription, deserializeFileId, type FileId, type InputChecklistItem, type InputMedia, type InputPollOption, isMessageType, type MessageList, messageSearchFilterToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type VoiceTranscription } from "../3_types.ts";
+import { constructChatAction, constructMessageDraft, constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructStickerSet, constructVoiceTranscription, deserializeFileId, type FileId, type InputChecklistItem, type InputMedia, type InputPollOption, isMessageType, type MessageList, messageSearchFilterToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type VoiceTranscription } from "../3_types.ts";
 import { assertMessageType, type ChatActionType, constructMessage as constructMessage_, deserializeInlineMessageId, type FileSource, FileType, type ID, type Message, type MessageEntity, messageEntityToTlObject, type ParseMode, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type Update, type UsernameResolver } from "../3_types.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
@@ -1445,9 +1445,16 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     }
 
     if (Api.isOneOf(["updateUserTyping", "updateChatUserTyping", "updateChannelUserTyping"], update)) {
-      const chatAction = constructChatAction(update, this.#c.getPeer);
+      const chatAction = constructChatAction(update);
       if (chatAction !== null) {
         return { chatAction };
+      }
+    }
+
+    if (Api.is("updateUserTyping", update)) {
+      const messageDraft = constructMessageDraft(update);
+      if (messageDraft !== null) {
+        return { messageDraft };
       }
     }
 

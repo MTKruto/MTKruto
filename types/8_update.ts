@@ -29,13 +29,14 @@ import type { UploadProgress } from "./0_upload_progress.ts";
 import type { VideoChat } from "./0_video_chat.ts";
 import type { VoiceTranscription } from "./0_voice_transcription.ts";
 import type { BotCommands } from "./1_bot_commands.ts";
-import type { ChatAction } from "./2_chat_action.ts";
+import type { ChatAction } from "./1_chat_action.ts";
 import type { MessageInteractions } from "./2_message_interactions.ts";
 import type { MessageReactionCount } from "./2_message_reaction_count.ts";
 import type { PollAnswer } from "./2_poll_answer.ts";
 import type { BusinessConnection } from "./3_business_connection.ts";
 import type { ChosenInlineResult } from "./3_chosen_inline_result.ts";
 import type { InlineQuery } from "./3_inline_query.ts";
+import type { MessageDraft } from "./3_message_draft.ts";
 import type { MessageReactions } from "./3_message_reactions.ts";
 import type { PreCheckoutQuery } from "./3_pre_checkout_query.ts";
 import type { Story } from "./3_story.ts";
@@ -573,6 +574,7 @@ export interface UpdateEmojiStatusRemoved {
   emojiStatusRemoved: true;
   userId: number;
 }
+
 /**
  * A participant of a conversation made an action.
  *
@@ -586,6 +588,21 @@ export interface UpdateEmojiStatusRemoved {
 export interface UpdateChatAction {
   /** @discriminator */
   chatAction: ChatAction;
+}
+
+/**
+ * A message draft was received. User-only.
+ *
+ * ```
+ * client.on("messageDraft", (ctx) => {
+ *   // ctx.update.messageDraft
+ * });
+ * ```
+ * @unlisted
+ */
+export interface UpdateMessageDraft {
+  /** @discriminator */
+  messageDraft: MessageDraft;
 }
 
 /** @unlisted */
@@ -624,6 +641,7 @@ export interface UpdateMap {
   emojiStatus: UpdateEmojiStatus;
   emojiStatusRemoved: UpdateEmojiStatusRemoved;
   chatAction: UpdateChatAction;
+  messageDraft: UpdateMessageDraft;
 }
 
 /** @unlisted */
@@ -662,6 +680,7 @@ export type UpdateIntersection = Partial<
   & UpdateEmojiStatus
   & UpdateEmojiStatusRemoved
   & UpdateChatAction
+  & UpdateMessageDraft
 >;
 
 /** An incoming update. */
@@ -699,4 +718,5 @@ export type Update =
   | UpdateBotCommands
   | UpdateEmojiStatus
   | UpdateEmojiStatusRemoved
-  | UpdateChatAction;
+  | UpdateChatAction
+  | UpdateMessageDraft;
