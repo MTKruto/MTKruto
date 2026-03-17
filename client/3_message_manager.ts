@@ -24,8 +24,8 @@ import { encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } fr
 import { Api } from "../2_tl.ts";
 import { PackShortNameInvalid } from "../3_errors.ts";
 import { getDc } from "../3_transport.ts";
-import { constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructStickerSet, constructVoiceTranscription, deserializeFileId, type FileId, type InputChecklistItem, type InputMedia, type InputPollOption, isMessageType, type MessageList, messageSearchFilterToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type VoiceTranscription } from "../3_types.ts";
-import { assertMessageType, type ChatAction, constructMessage as constructMessage_, deserializeInlineMessageId, type FileSource, FileType, type ID, type Message, type MessageEntity, messageEntityToTlObject, type ParseMode, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type Update, type UsernameResolver } from "../3_types.ts";
+import { constructChatAction, constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructStickerSet, constructVoiceTranscription, deserializeFileId, type FileId, type InputChecklistItem, type InputMedia, type InputPollOption, isMessageType, type MessageList, messageSearchFilterToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type VoiceTranscription } from "../3_types.ts";
+import { assertMessageType, type ChatActionType, constructMessage as constructMessage_, deserializeInlineMessageId, type FileSource, FileType, type ID, type Message, type MessageEntity, messageEntityToTlObject, type ParseMode, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type Update, type UsernameResolver } from "../3_types.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
 import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetHistoryParams, GetMessageReactionsParams, GetSavedChatsParams, GetSavedMessagesParams, OpenMiniAppParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams as SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, StartBotParams, StopPollParams, UnpinMessageParams, UnpinMessagesParams } from "./0_params.ts";
@@ -59,6 +59,9 @@ const messageManagerUpdates = [
   "updateDeleteChannelMessages",
   "updateDeleteScheduledMessages",
   "updateTranscribedAudio",
+  "updateUserTyping",
+  "updateChatUserTyping",
+  "updateChannelUserTyping",
 ] as const;
 
 type MessageManagerUpdate = Api.Types[(typeof messageManagerUpdates)[number]];
@@ -1441,45 +1444,58 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       return { voiceTranscription };
     }
 
+    if (Api.isOneOf(["updateUserTyping", "updateChatUserTyping", "updateChannelUserTyping"], update)) {
+      const chatAction = constructChatAction(update, this.#c.getPeer);
+      if (chatAction !== null) {
+        return { chatAction };
+      }
+    }
+
     return null;
   }
 
-  async sendChatAction(chatId: ID, action: ChatAction, params?: SendChatActionParams) {
+  async sendChatAction(chatId: ID, action: ChatActionType, params?: SendChatActionParams) {
     this.#checkParams(params);
     let action_: Api.SendMessageAction;
-    switch (action) {
-      case "type":
+    switch (action.type) {
+      case "typing":
         action_ = { _: "sendMessageTypingAction" };
         break;
-      case "uploadPhoto":
-        action_ = { _: "sendMessageUploadPhotoAction", progress: 0 };
+      case "uploadingPhoto":
+        action_ = { _: "sendMessageUploadPhotoAction", progress: action.progress ?? 0 };
         break;
-      case "recordVideo":
+      case "recordingVideo":
         action_ = { _: "sendMessageRecordVideoAction" };
         break;
-      case "uploadVideo":
-        action_ = { _: "sendMessageRecordVideoAction" };
+      case "uploadingVideo":
+        action_ = { _: "sendMessageUploadVideoAction", progress: action.progress ?? 0 };
         break;
-      case "recordVoice":
+      case "recordingVoice":
         action_ = { _: "sendMessageRecordAudioAction" };
         break;
-      case "uploadAudio":
-        action_ = { _: "sendMessageUploadAudioAction", progress: 0 };
+      case "uploadingAudio":
+        action_ = { _: "sendMessageUploadAudioAction", progress: action.progress ?? 0 };
         break;
-      case "uploadDocument":
-        action_ = { _: "sendMessageUploadDocumentAction", progress: 0 };
+      case "uploadingDocument":
+        action_ = { _: "sendMessageUploadDocumentAction", progress: action.progress ?? 0 };
         break;
-      case "chooseSticker":
+      case "choosingSticker":
         action_ = { _: "sendMessageChooseStickerAction" };
         break;
-      case "findLocation":
+      case "choosingLocation":
         action_ = { _: "sendMessageGeoLocationAction" };
         break;
-      case "recordVideoNote":
+      case "recordingVideoNote":
         action_ = { _: "sendMessageRecordRoundAction" };
         break;
-      case "uploadVideoNote":
-        action_ = { _: "sendMessageUploadRoundAction", progress: 0 };
+      case "uploadingVideoNote":
+        action_ = { _: "sendMessageUploadRoundAction", progress: action.progress ?? 0 };
+        break;
+      case "playingGame":
+        action_ = { _: "sendMessageGamePlayAction" };
+        break;
+      case "cancel":
+        action_ = { _: "sendMessageCancelAction" };
         break;
       default:
         throw new InputError(`Invalid chat action: ${action}`);

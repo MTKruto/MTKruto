@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { type Api, toJSON } from "../2_tl.ts";
-import type { BusinessConnection, CallbackQuery, Chat, ChatAction, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ChosenInlineResult, ClaimedGifts, FailedInvitation, FileSource, ID, InlineQuery, InlineQueryResult, InputChecklistItem, InputMedia, InputPollOption, InputStoryContent, InviteLink, JoinRequest, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, Poll, PriceTag, Reaction, ReplyTo, SlowModeDuration, Story, Topic, Update, User, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
+import type { BusinessConnection, CallbackQuery, Chat, ChatActionType, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ChosenInlineResult, ClaimedGifts, FailedInvitation, FileSource, ID, InlineQuery, InlineQueryResult, InputChecklistItem, InputMedia, InputPollOption, InputStoryContent, InviteLink, JoinRequest, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, Poll, PriceTag, Reaction, ReplyTo, SlowModeDuration, Story, Topic, Update, User, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
 import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, ForwardMessagesParams, GetChatMembersParams, GetClaimedGiftsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetSavedMessagesParams, PinMessageParams, PromoteChatMemberParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetReactionsParams, StartVideoChatParams, StopPollParams, UpdateChecklistParams } from "./0_params.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
 import { type FilterQuery, match, type WithChatType, type WithFilter } from "./3_filters.ts";
@@ -275,11 +275,11 @@ export class Context {
   };
 
   get chat(): ChatP | undefined {
-    return this.msg?.chat ?? ("messageReactions" in this.update ? this.update.messageReactions.chat : "messageReactionCount" in this.update ? this.update.messageReactionCount.chat : "chatMember" in this.update ? this.update.chatMember.chat : "myChatMember" in this.update ? this.update.myChatMember.chat : "joinRequest" in this.update ? this.update.joinRequest.chat : "story" in this.update ? this.update.story.chat : undefined);
+    return this.msg?.chat ?? ("messageReactions" in this.update ? this.update.messageReactions.chat : "messageReactionCount" in this.update ? this.update.messageReactionCount.chat : "chatMember" in this.update ? this.update.chatMember.chat : "myChatMember" in this.update ? this.update.myChatMember.chat : "joinRequest" in this.update ? this.update.joinRequest.chat : "story" in this.update ? this.update.story.chat : "chatAction" in this.update ? this.update.chatAction.from : undefined);
   }
 
   get from(): User | ChatPGroup | ChatPSupergroup | ChatPChannel | undefined {
-    const from = "callbackQuery" in this.update ? this.update.callbackQuery.from : "inlineQuery" in this.update ? this.update.inlineQuery.from : "chatMember" in this.update ? this.update.chatMember.from : "myChatMember" in this.update ? this.update.myChatMember.from : "messageReactions" in this.update ? this.update.messageReactions.user : "preCheckoutQuery" in this.update ? this.update.preCheckoutQuery.from : "joinRequest" in this.update ? this.update.joinRequest.from : "businessConnection" in this.update ? this.update.businessConnection.user : "pollAnswer" in this.update ? this.update.pollAnswer.from : this.msg?.from;
+    const from = "callbackQuery" in this.update ? this.update.callbackQuery.from : "inlineQuery" in this.update ? this.update.inlineQuery.from : "chatMember" in this.update ? this.update.chatMember.from : "myChatMember" in this.update ? this.update.myChatMember.from : "messageReactions" in this.update ? this.update.messageReactions.user : "preCheckoutQuery" in this.update ? this.update.preCheckoutQuery.from : "joinRequest" in this.update ? this.update.joinRequest.from : "businessConnection" in this.update ? this.update.businessConnection.user : "pollAnswer" in this.update ? this.update.pollAnswer.from : "chatAction" in this.update ? this.update.chatAction.from : this.msg?.from;
     return from;
   }
 
@@ -1347,7 +1347,7 @@ export class Context {
   /**
    * Context-aware alias for {@link Client.sendChatAction}.
    */
-  async sendChatAction(action: ChatAction, params?: { messageThreadId?: number }): Promise<void> {
+  async sendChatAction(action: ChatActionType, params?: { messageThreadId?: number }): Promise<void> {
     const chatId = this.#mustGetChatId();
     return await this.client.sendChatAction(chatId, action, params);
   }
