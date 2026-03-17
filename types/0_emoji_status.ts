@@ -19,6 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
+import { cleanObject } from "../1_utilities.ts";
 import type { Api } from "../2_tl.ts";
 
 /** @unlisted */
@@ -57,9 +58,9 @@ export function constructEmojiStatus(emojiStatus: Api.EmojiStatus): EmojiStatus 
       unreachable();
       break;
     case "emojiStatus":
-      return { type: "customEmoji", customEmojiId: String(emojiStatus.document_id), until: emojiStatus.until };
+      return cleanObject({ type: "customEmoji", customEmojiId: String(emojiStatus.document_id), until: emojiStatus.until });
     case "emojiStatusCollectible":
-      return { type: "gift", giftId: String(emojiStatus.collectible_id), customEmojiId: String(emojiStatus.document_id), title: emojiStatus.title, slug: emojiStatus.slug, patternId: String(emojiStatus.pattern_document_id), centerColor: emojiStatus.center_color, edgeColor: emojiStatus.edge_color, patternColor: emojiStatus.pattern_color, textColor: emojiStatus.text_color, until: emojiStatus.until };
+      return cleanObject({ type: "gift", giftId: String(emojiStatus.collectible_id), customEmojiId: String(emojiStatus.document_id), title: emojiStatus.title, slug: emojiStatus.slug, patternId: String(emojiStatus.pattern_document_id), centerColor: emojiStatus.center_color, edgeColor: emojiStatus.edge_color, patternColor: emojiStatus.pattern_color, textColor: emojiStatus.text_color, until: emojiStatus.until });
     case "inputEmojiStatusCollectible":
       unreachable();
   }
