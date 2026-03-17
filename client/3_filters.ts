@@ -62,6 +62,12 @@ interface Shortcuts<T extends UpdateIntersection> {
     : T["chatMember"] extends object ? T["chatMember"]["chat"]
     : T["joinRequest"] extends object ? T["joinRequest"]["chat"]
     : undefined;
+  chatId: Shortcuts<T>["chat"] extends object ? number
+    : T["messageInteractions"] extends object ? number
+    : T["deletedChat"] extends object ? number
+    : T["botCommands"] extends object ? number
+    : T["chatAction"] extends object ? number
+    : undefined;
   from: T["callbackQuery"] extends object ? T["callbackQuery"]["from"]
     : T["inlineQuery"] extends object ? T["inlineQuery"]["from"]
     : T["chosenInlineResult"] extends object ? T["chosenInlineResult"]["from"]

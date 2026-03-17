@@ -275,7 +275,47 @@ export class Context {
   };
 
   get chat(): ChatP | undefined {
-    return this.msg?.chat ?? ("messageReactions" in this.update ? this.update.messageReactions.chat : "messageReactionCount" in this.update ? this.update.messageReactionCount.chat : "chatMember" in this.update ? this.update.chatMember.chat : "myChatMember" in this.update ? this.update.myChatMember.chat : "joinRequest" in this.update ? this.update.joinRequest.chat : "story" in this.update ? this.update.story.chat : undefined);
+    if (this.msg !== undefined) {
+      return this.msg.chat;
+    }
+
+    return "messageReactions" in this.update
+      //
+      ? this.update.messageReactions.chat
+      : "messageReactionCount" in this.update
+      ? this.update.messageReactionCount.chat
+      : "chatMember" in this.update
+      ? this.update.chatMember.chat
+      : "myChatMember" in this.update
+      ? this.update.myChatMember.chat
+      : "joinRequest" in this.update
+      ? this.update.joinRequest.chat
+      : "story" in this.update
+      ? this.update.story.chat
+      : "newChat" in this.update
+      ? this.update.newChat.chat
+      : "editedChat" in this.update
+      ? this.update.editedChat.chat
+      : undefined;
+  }
+
+  get chatId(): number | undefined {
+    if (this.chat !== undefined) {
+      return this.chat.id;
+    }
+
+    return "deletedStory" in this.update
+      //
+      ? this.update.deletedStory.chatId
+      : "messageInteractions" in this.update
+      ? this.update.messageInteractions.chatId
+      : "deletedChat" in this.update
+      ? this.update.deletedChat.chatId
+      : "botCommands" in this.update
+      ? this.update.botCommands.chatId
+      : "chatAction" in this.update
+      ? this.update.chatAction.chatId
+      : undefined;
   }
 
   get from(): User | ChatPGroup | ChatPSupergroup | ChatPChannel | undefined {
