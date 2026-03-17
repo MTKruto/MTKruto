@@ -18,41 +18,33 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import type { Api } from "../2_tl.ts";
-import { chatIdToPeer, peerToChatId } from "../tl/2_telegram.ts";
+import { peerToChatId } from "../tl/2_telegram.ts";
 import { type ChatActionType, constructChatActionType } from "./0_chat_action_type.ts";
-import type { ChatP, PeerGetter } from "./1_chat_p.ts";
 
 /** A sign of a possible action by a member of a conversation. */
 export interface ChatAction {
   /** The type of the action. */
   type: ChatActionType;
-  /** The chat in which the action was made. */
-  chat: ChatP;
-  /** The sender of the action. */
-  from: ChatP;
+  /** The identifier of the chat in which the action was made. */
+  chatId: number;
+  /** The identifier of the sender of the action. */
+  fromId: number;
   /** The identifier of a thread in which the action was made. */
   messageThreadId?: number;
 }
 
-export function constructChatAction(update: Api.updateUserTyping | Api.updateChatUserTyping | Api.updateChannelUserTyping, getPeer: PeerGetter): ChatAction | null {
+export function constructChatAction(update: Api.updateUserTyping | Api.updateChatUserTyping | Api.updateChannelUserTyping): ChatAction | null {
   const type = constructChatActionType(update.action);
   if (type === null) {
     return null;
   }
 
-  const chat = getPeer(chatIdToPeer(peerToChatId(update)))?.[0];
-  if (!chat) {
-    unreachable();
-  }
-  const from = getPeer("user_id" in update ? { _: "peerUser", user_id: update.user_id } : update.from_id)?.[0];
-  if (!from) {
-    unreachable();
-  }
+  const chatId = peerToChatId(update);
+  const fromId = peerToChatId("user_id" in update ? { _: "peerUser", user_id: update.user_id } : update.from_id);
 
   const messageThreadId = "top_msg_id" in update ? update.top_msg_id : undefined;
 
-  return cleanObject({ type, from, chat, messageThreadId });
+  return cleanObject({ type, chatId, fromId, messageThreadId });
 }

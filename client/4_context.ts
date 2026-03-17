@@ -275,11 +275,11 @@ export class Context {
   };
 
   get chat(): ChatP | undefined {
-    return this.msg?.chat ?? ("messageReactions" in this.update ? this.update.messageReactions.chat : "messageReactionCount" in this.update ? this.update.messageReactionCount.chat : "chatMember" in this.update ? this.update.chatMember.chat : "myChatMember" in this.update ? this.update.myChatMember.chat : "joinRequest" in this.update ? this.update.joinRequest.chat : "story" in this.update ? this.update.story.chat : "chatAction" in this.update ? this.update.chatAction.from : undefined);
+    return this.msg?.chat ?? ("messageReactions" in this.update ? this.update.messageReactions.chat : "messageReactionCount" in this.update ? this.update.messageReactionCount.chat : "chatMember" in this.update ? this.update.chatMember.chat : "myChatMember" in this.update ? this.update.myChatMember.chat : "joinRequest" in this.update ? this.update.joinRequest.chat : "story" in this.update ? this.update.story.chat : undefined);
   }
 
   get from(): User | ChatPGroup | ChatPSupergroup | ChatPChannel | undefined {
-    const from = "callbackQuery" in this.update ? this.update.callbackQuery.from : "inlineQuery" in this.update ? this.update.inlineQuery.from : "chatMember" in this.update ? this.update.chatMember.from : "myChatMember" in this.update ? this.update.myChatMember.from : "messageReactions" in this.update ? this.update.messageReactions.user : "preCheckoutQuery" in this.update ? this.update.preCheckoutQuery.from : "joinRequest" in this.update ? this.update.joinRequest.from : "businessConnection" in this.update ? this.update.businessConnection.user : "pollAnswer" in this.update ? this.update.pollAnswer.from : "chatAction" in this.update ? this.update.chatAction.from : this.msg?.from;
+    const from = "callbackQuery" in this.update ? this.update.callbackQuery.from : "inlineQuery" in this.update ? this.update.inlineQuery.from : "chatMember" in this.update ? this.update.chatMember.from : "myChatMember" in this.update ? this.update.myChatMember.from : "messageReactions" in this.update ? this.update.messageReactions.user : "preCheckoutQuery" in this.update ? this.update.preCheckoutQuery.from : "joinRequest" in this.update ? this.update.joinRequest.from : "businessConnection" in this.update ? this.update.businessConnection.user : "pollAnswer" in this.update ? this.update.pollAnswer.from : this.msg?.from;
     return from;
   }
 
