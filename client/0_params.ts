@@ -857,3 +857,8 @@ export interface UpdateChecklistParams {
   /** List of identifiers of items to uncheck. */
   itemsToUncheck?: number[];
 }
+
+export interface ResolveUsernameParams {
+  /** Affiliate program referrer. */
+  referrer?: string;
+}
