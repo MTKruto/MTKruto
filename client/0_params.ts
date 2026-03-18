@@ -677,6 +677,26 @@ export interface GetCommonChatsParams {
 }
 
 export interface GetClaimedGiftsParams {
+  /** The identifier of a gift collection. If provided, only gifts inside it will be fetched. */
+  collectionId?: number;
+  /** Whether to exclude hosted gifts. */
+  isHostedExcluded?: boolean;
+  /** Whether to exclude unupgradable gifts. */
+  isUnupgradableExcluded?: boolean;
+  /** Whether to exclude upgradable gifts. */
+  isUpgradableExcluded?: boolean;
+  /** Whether to sort gifts by value. */
+  isSortedByValue?: number;
+  /** Whether to exclude unique gifts. */
+  isUniqueExcluded?: boolean;
+  /** Whether to exclude unlimited gifts. */
+  isUnlimitedExcluded?: boolean;
+  /** Whether to exclude saved gifts. */
+  isSavedExcluded?: boolean;
+  /** Whether to exclude unsaved gifts. */
+  isUnsavedExcluded?: boolean;
+  /** Whether to get gifts with colors. */
+  isWithColors?: boolean;
   /** An offset key returned by a previous result. */
   offset?: string;
   /** The maximum number of results to return. */

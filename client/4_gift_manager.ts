@@ -51,7 +51,22 @@ export class GiftManager {
     const offset = params?.offset ?? "";
     const limit = getLimit(params?.limit);
     const peer = await this.#c.getInputPeer(chatId);
-    const result = await this.#c.invoke({ _: "payments.getSavedStarGifts", peer, offset, limit });
+    const result = await this.#c.invoke({
+      _: "payments.getSavedStarGifts",
+      peer,
+      offset,
+      limit,
+      collection_id: params?.collectionId,
+      exclude_hosted: params?.isHostedExcluded ? true : undefined,
+      exclude_unupgradable: params?.isUnupgradableExcluded ? true : undefined,
+      exclude_upgradable: params?.isUpgradableExcluded ? true : undefined,
+      sort_by_value: params?.isSortedByValue ? true : undefined,
+      exclude_unique: params?.isUniqueExcluded ? true : undefined,
+      exclude_unlimited: params?.isUnlimitedExcluded ? true : undefined,
+      exclude_saved: params?.isSavedExcluded ? true : undefined,
+      exclude_unsaved: params?.isUnsavedExcluded ? true : undefined,
+      peer_color_available: params?.isWithColors ? true : undefined,
+    });
     return constructClaimedGifts(result, this.#c.getPeer);
   }
 
