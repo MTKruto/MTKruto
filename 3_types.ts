@@ -103,6 +103,7 @@ export * from "./types/1_video.ts";
 export * from "./types/1_working_hours.ts";
 export * from "./types/2_chat_member.ts";
 export * from "./types/2_chat.ts";
+export * from "./types/2_gift_collection.ts";
 export * from "./types/2_inactive_chat.ts";
 export * from "./types/2_message_entity.ts";
 export * from "./types/2_message_interactions.ts";
