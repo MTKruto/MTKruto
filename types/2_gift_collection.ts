@@ -34,7 +34,7 @@ export interface GiftCollection {
   giftCount: number;
 }
 
-export function constructGiftCollection(collection: Api.StarGiftCollection) {
+export function constructGiftCollection(collection: Api.StarGiftCollection): GiftCollection {
   const id = collection.collection_id;
   const name = collection.title;
   let icon: Document | undefined;
