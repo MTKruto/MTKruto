@@ -859,5 +859,6 @@ export interface UpdateChecklistParams {
 }
 
 export interface ResolveUsernameParams {
+  /** Affiliate program referrer. */
   referrer?: string;
 }
