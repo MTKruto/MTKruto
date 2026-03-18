@@ -24,7 +24,7 @@ import { drop, getLogger, type Logger, type MaybePromise, Mutex, ZERO_CHANNEL_ID
 import { type Storage, StorageMemory } from "../2_storage.ts";
 import { Api, Mtproto } from "../2_tl.ts";
 import { type DC, getDcId, type TransportProvider } from "../3_transport.ts";
-import { type BotCommand, type BotTokenCheckResult, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatActionType, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type ConnectionState, constructChatP, constructUser2, type FailedInvitation, type FileSource, type Gift, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputChecklistItem, type InputEmojiStatus, type InputGift, type InputMedia, type InputPollOption, type InputStoryContent, type InviteLink, type JoinRequest, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageDice, type MessageDocument, type MessageInvoice, type MessageList, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type PasswordCheckResult, type Poll, type PriceTag, type Reaction, type SavedChats, type SlowModeDuration, type Sticker, type StickerSet, type Story, type Topic, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
+import { type BotCommand, type BotTokenCheckResult, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatActionType, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type ConnectionState, constructChatP, constructUser2, type FailedInvitation, type FileSource, type Gift, type GiftCollection, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputChecklistItem, type InputEmojiStatus, type InputGift, type InputMedia, type InputPollOption, type InputStoryContent, type InviteLink, type JoinRequest, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageDice, type MessageDocument, type MessageInvoice, type MessageList, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type PasswordCheckResult, type Poll, type PriceTag, type Reaction, type SavedChats, type SlowModeDuration, type Sticker, type StickerSet, type Story, type Topic, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, type PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, SessionRevoked } from "../4_errors.ts";
 import { peerToChatId } from "../tl/2_telegram.ts";
@@ -41,6 +41,7 @@ import { BotInfoManager } from "./2_bot_info_manager.ts";
 import { BusinessConnectionManager } from "./2_business_connection_manager.ts";
 import { ClientEncrypted } from "./2_client_encrypted.ts";
 import { FileManager } from "./2_file_manager.ts";
+import { GiftCollectionManager } from "./2_gift_collection_manager.ts";
 import { NetworkStatisticsManager } from "./2_network_statistics_manager.ts";
 import { PaymentManager } from "./2_payment_manager.ts";
 import { ReactionManager } from "./2_reaction_manager.ts";
@@ -138,6 +139,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   #botInfoManager: BotInfoManager;
   #businessConnectionManager: BusinessConnectionManager;
   #fileManager: FileManager;
+  #giftCollectionManager: GiftCollectionManager;
   #networkStatisticsManager: NetworkStatisticsManager;
   #paymentManager: PaymentManager;
   #reactionManager: ReactionManager;
@@ -168,6 +170,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       botInfoManager: this.#botInfoManager,
       businessConnectionManager: this.#businessConnectionManager,
       fileManager: this.#fileManager,
+      giftCollectionManager: this.#giftCollectionManager,
       networkStatisticsManager: this.#networkStatisticsManager,
       paymentManager: this.#paymentManager,
       reactionManager: this.#reactionManager,
@@ -298,6 +301,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     this.#botInfoManager = new BotInfoManager(c);
     this.#businessConnectionManager = new BusinessConnectionManager(c);
     const fileManager = this.#fileManager = new FileManager(c);
+    this.#giftCollectionManager = new GiftCollectionManager(c);
     this.#networkStatisticsManager = new NetworkStatisticsManager(c);
     this.#paymentManager = new PaymentManager(c);
     this.#reactionManager = new ReactionManager(c);
@@ -3799,5 +3803,90 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async transferGift(chatId: ID, gift: InputGift): Promise<void> {
     return await this.#giftManager.transferGift(chatId, gift);
+  }
+
+  //
+  // ========================= GIFT COLLECTIONS ========================= //
+  //
+
+  /**
+   * Get gift collections of a chat.
+   *
+   * @method gc
+   * @param chatId The identifier of a chat to get gift collections for.
+   */
+  async getGiftCollections(chatId: ID): Promise<GiftCollection[]> {
+    return await this.#giftCollectionManager.getGiftCollections(chatId);
+  }
+
+  /**
+   * Create a gift collection.
+   *
+   * @method gc
+   * @param chatId The identifier of a chat to create the gift collection in.
+   * @param name The name of the collection.
+   * @param gifts The collection's initial gifts.
+   */
+  async createGiftCollection(chatId: ID, name: string, gifts: InputGift[]): Promise<GiftCollection> {
+    return await this.#giftCollectionManager.createGiftCollection(chatId, name, gifts);
+  }
+
+  /**
+   * Set the name of a gift collection.
+   *
+   * @method gc
+   * @param chatId The identifier of the chat that includes the gift collection.
+   * @param collectionId The identifier of a gift collection.
+   * @param name The gift collection's new name.
+   */
+  async setGiftCollectionName(chatId: ID, collectionId: number, name: string): Promise<GiftCollection> {
+    return await this.#giftCollectionManager.setGiftCollectionName(chatId, collectionId, name);
+  }
+
+  /**
+   * Add gifts to a gift collection.
+   *
+   * @method gc
+   * @param chatId The identifier of the chat that includes the gift collection.
+   * @param collectionId The identifier of a gift collection.
+   * @param gifts The gifts to add to the collection.
+   */
+  async addGiftsToCollection(chatId: ID, collectionId: number, gifts: InputGift[]): Promise<GiftCollection> {
+    return await this.#giftCollectionManager.addGiftsToCollection(chatId, collectionId, gifts);
+  }
+
+  /**
+   * Remove gifts from a gift collection.
+   *
+   * @method gc
+   * @param chatId The identifier of the chat that includes the gift collection.
+   * @param collectionId The identifier of a gift collection.
+   * @param gifts The gifts to remove from the collection.
+   */
+  async removeGiftsFromCollection(chatId: ID, collectionId: number, gifts: InputGift[]): Promise<GiftCollection> {
+    return await this.#giftCollectionManager.removeGiftsFromCollection(chatId, collectionId, gifts);
+  }
+
+  /**
+   * Reorder gifts in a gift collection.
+   *
+   * @method gc
+   * @param chatId The identifier of the chat that includes the gift collection.
+   * @param collectionId The identifier of a gift collection.
+   * @param gifts The gifts to remove from the collection.
+   */
+  async reorderGiftsInCollection(chatId: ID, collectionId: number, gifts: InputGift[]): Promise<GiftCollection> {
+    return await this.#giftCollectionManager.reorderGiftsInCollection(chatId, collectionId, gifts);
+  }
+
+  /**
+   * Delete a gift collection.
+   *
+   * @method gc
+   * @param chatId The identifier of the chat that includes the gift collection.
+   * @param collectionId The identifier of a gift collection.
+   */
+  async deleteGiftCollection(chatId: ID, collectionId: number): Promise<void> {
+    return await this.#giftCollectionManager.deleteGiftCollection(chatId, collectionId);
   }
 }

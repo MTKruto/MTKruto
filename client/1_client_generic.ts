@@ -19,7 +19,7 @@
  */
 
 import type { Api, Mtproto } from "../2_tl.ts";
-import type { BotCommand, BotTokenCheckResult, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatActionType, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ClaimedGifts, CodeCheckResult, FailedInvitation, FileSource, Gift, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputChecklistItem, InputEmojiStatus, InputGift, InputMedia, InputPollOption, InputStoryContent, InviteLink, JoinRequest, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, MiniAppInfo, NetworkStatistics, PasswordCheckResult, Poll, PriceTag, Reaction, SavedChats, SlowModeDuration, Sticker, StickerSet, Story, Topic, Translation, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
+import type { BotCommand, BotTokenCheckResult, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatActionType, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ClaimedGifts, CodeCheckResult, FailedInvitation, FileSource, Gift, GiftCollection, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputChecklistItem, InputEmojiStatus, InputGift, InputMedia, InputPollOption, InputStoryContent, InviteLink, JoinRequest, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, MiniAppInfo, NetworkStatistics, PasswordCheckResult, Poll, PriceTag, Reaction, SavedChats, SlowModeDuration, Sticker, StickerSet, Story, Topic, Translation, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
 import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetSavedChatsParams, GetSavedMessagesParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ResolveUsernameParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetWorkingHoursParams, SignInParams, StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams, UpdateProfileParams } from "./0_params.ts";
 
 /**
@@ -2159,4 +2159,75 @@ export abstract class ClientGeneric {
    * @param gift The gift to transfer.
    */
   abstract transferGift(chatId: ID, gift: InputGift): Promise<void>;
+
+  //
+  // ========================= GIFT COLLECTIONS ========================= //
+  //
+
+  /**
+   * Get gift collections of a chat.
+   *
+   * @method gc
+   * @param chatId The identifier of a chat to get gift collections for.
+   */
+  abstract getGiftCollections(chatId: ID): Promise<GiftCollection[]>;
+
+  /**
+   * Create a gift collection.
+   *
+   * @method gc
+   * @param chatId The identifier of a chat to create the gift collection in.
+   * @param name The name of the collection.
+   * @param gifts The collection's initial gifts.
+   */
+  abstract createGiftCollection(chatId: ID, name: string, gifts: InputGift[]): Promise<GiftCollection>;
+
+  /**
+   * Set the name of a gift collection.
+   *
+   * @method gc
+   * @param chatId The identifier of the chat that includes the gift collection.
+   * @param collectionId The identifier of a gift collection.
+   * @param name The gift collection's new name.
+   */
+  abstract setGiftCollectionName(chatId: ID, collectionId: number, name: string): Promise<GiftCollection>;
+
+  /**
+   * Add gifts to a gift collection.
+   *
+   * @method gc
+   * @param chatId The identifier of the chat that includes the gift collection.
+   * @param collectionId The identifier of a gift collection.
+   * @param gifts The gifts to add to the collection.
+   */
+  abstract addGiftsToCollection(chatId: ID, collectionId: number, gifts: InputGift[]): Promise<GiftCollection>;
+
+  /**
+   * Remove gifts from a gift collection.
+   *
+   * @method gc
+   * @param chatId The identifier of the chat that includes the gift collection.
+   * @param collectionId The identifier of a gift collection.
+   * @param gifts The gifts to remove from the collection.
+   */
+  abstract removeGiftsFromCollection(chatId: ID, collectionId: number, gifts: InputGift[]): Promise<GiftCollection>;
+
+  /**
+   * Reorder gifts in a gift collection.
+   *
+   * @method gc
+   * @param chatId The identifier of the chat that includes the gift collection.
+   * @param collectionId The identifier of a gift collection.
+   * @param gifts The gifts to remove from the collection.
+   */
+  abstract reorderGiftsInCollection(chatId: ID, collectionId: number, gifts: InputGift[]): Promise<GiftCollection>;
+
+  /**
+   * Delete a gift collection.
+   *
+   * @method gc
+   * @param chatId The identifier of the chat that includes the gift collection.
+   * @param collectionId The identifier of a gift collection.
+   */
+  abstract deleteGiftCollection(chatId: ID, collectionId: number): Promise<void>;
 }
