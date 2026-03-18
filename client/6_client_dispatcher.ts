@@ -588,6 +588,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * Pause the business bot in a chat. User-only.
    *
    * @method ac
+   * @param chatId The identifier of a chat.
    */
   async pauseBusinessBotConnection(chatId: ID): Promise<void> {
     return await this.#dispatch("pauseBusinessBotConnection", chatId);
@@ -597,6 +598,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * Resume the business bot in a chat. User-only.
    *
    * @method ac
+   * @param chatId The identifier of a chat.
    */
   async resumeBusinessBotConnection(chatId: ID): Promise<void> {
     return await this.#dispatch("resumeBusinessBotConnection", chatId);
@@ -606,6 +608,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * Resolve a username.
    *
    * @method ac
+   * @param username The username to resolve.
    */
   async resolveUsername(username: string, params?: ResolveUsernameParams): Promise<ChatP> {
     return await this.#dispatch("resolveUsername", username, params);

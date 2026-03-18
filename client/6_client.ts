@@ -1559,6 +1559,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * Pause the business bot in a chat. User-only.
    *
    * @method ac
+   * @param chatId The identifier of a chat.
    */
   async pauseBusinessBotConnection(chatId: ID): Promise<void> {
     await this.#accountManager.pauseBusinessBotConnection(chatId);
@@ -1568,6 +1569,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * Resume the business bot in a chat. User-only.
    *
    * @method ac
+   * @param chatId The identifier of a chat.
    */
   async resumeBusinessBotConnection(chatId: ID): Promise<void> {
     await this.#accountManager.resumeBusinessBotConnection(chatId);
@@ -1577,6 +1579,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * Resolve a username.
    *
    * @method ac
+   * @param username The username to resolve.
    */
   async resolveUsername(username: string, params?: ResolveUsernameParams): Promise<ChatP> {
     return await this.#accountManager.resolveUsername(username, params);

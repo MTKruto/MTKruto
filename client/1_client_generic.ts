@@ -320,6 +320,7 @@ export abstract class ClientGeneric {
    * Pause the business bot in a chat. User-only.
    *
    * @method ac
+   * @param chatId The identifier of a chat.
    */
   abstract pauseBusinessBotConnection(chatId: ID): Promise<void>;
 
@@ -327,6 +328,7 @@ export abstract class ClientGeneric {
    * Resume the business bot in a chat. User-only.
    *
    * @method ac
+   * @param chatId The identifier of a chat.
    */
   abstract resumeBusinessBotConnection(chatId: ID): Promise<void>;
 
