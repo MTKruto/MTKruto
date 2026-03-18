@@ -23,7 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { PasswordHashInvalid, PhoneCodeInvalid, SessionPasswordNeeded } from "../3_errors.ts";
 import { birthdayToTlObject, type BotTokenCheckResult, type CodeCheckResult, constructEmojiStatus, constructInactiveChat, constructUser, type ID, type InputEmojiStatus, type PasswordCheckResult, type Update, workingHoursToTlObject } from "../3_types.ts";
-import type { AddContactParams, CheckUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams } from "./0_params.ts";
+import type { AddContactParams, CheckUsernameParams, ResolveUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, canBeInputUser, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -451,5 +451,15 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
       const emojiStatus = constructEmojiStatus(update.emoji_status);
       return { emojiStatus, userId };
     }
+  }
+
+  async resolveUsername(username: string, params?: ResolveUsernameParams) {
+    const result = await this.#c.invoke({ _: "contacts.resolveUsername", username, referer: params?.referrer });
+    const chatP = this.#c.getPeer(result.peer)?.[0];
+    if (!chatP) {
+      unreachable();
+    }
+
+    return chatP;
   }
 }
