@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { type FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
 import { constructDocument, type Document } from "./1_document.ts";
@@ -50,10 +51,10 @@ export function constructGiftCollection(collection: Api.StarGiftCollection): Gif
 
   const giftCount = collection.gifts_count;
 
-  return {
+  return cleanObject({
     id,
     name,
     icon,
     giftCount,
-  };
+  });
 }
