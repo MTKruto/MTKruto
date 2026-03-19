@@ -340,6 +340,14 @@ export abstract class ClientGeneric {
    */
   abstract resolveUsername(username: string, params?: ResolveUsernameParams): Promise<ChatP>;
 
+  /**
+   * Set the list of close friends.
+   *
+   * @method ac
+   * @param userIds The identifiers of users to set as close friends.
+   */
+  abstract setCloseFriends(userIds: ID[]): Promise<void>;
+
   //
   // ========================= MESSAGES ========================= //
   //
