@@ -1595,7 +1595,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ac
    * @param username The phone number to resolve.
    */
-  async resolvePhoneNumber(phoneNumber: string): Promise<ChatP> {
+  async resolvePhoneNumber(phoneNumber: string): Promise<User> {
     return await this.#accountManager.resolvePhoneNumber(phoneNumber);
   }
 
