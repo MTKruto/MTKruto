@@ -93,6 +93,8 @@ export const SYSTEM_VERSION = typeof navigator === "undefined" ? typeof process 
 
 export const USERNAME_TTL = 86_400;
 
+export const PHONE_NUMBER_TTL = 86_400;
+
 export const STICKER_SET_NAME_TTL = 172_800;
 
 export const MAX_CHAT_ID = 999999999999;

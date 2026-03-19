@@ -96,6 +96,7 @@ export class StorageOperations {
   channelPts: StorageMap<[bigint], number>;
   peers: StorageMap<[number], [ChatP, bigint]>;
   usernames: StorageMap<[string], [number, Date]>;
+  phoneNumbers: StorageMap<[string], [number, Date]>;
   translations: StorageMap<[string, string], {
     version: number;
     translations: Translation[];
@@ -112,6 +113,7 @@ export class StorageOperations {
     this.channelPts = this.#addMap(new StorageMap(storage, "channelPts"));
     this.peers = this.#addMap(new StorageMap(storage, "peers"));
     this.usernames = this.#addMap(new StorageMap(storage, "usernames"));
+    this.phoneNumbers = this.#addMap(new StorageMap(storage, "phoneNumbers"));
     this.translations = this.#addMap(new StorageMap(storage, "translations"));
   }
 

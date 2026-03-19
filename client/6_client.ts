@@ -25,7 +25,7 @@ import { type Storage, StorageMemory } from "../2_storage.ts";
 import { Api, Mtproto } from "../2_tl.ts";
 import { type DC, getDcId, type TransportProvider } from "../3_transport.ts";
 import { type BotCommand, type BotTokenCheckResult, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatActionType, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type ConnectionState, constructChatP, constructUser2, type FailedInvitation, type FileSource, type Gift, type GiftCollection, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputChecklistItem, type InputEmojiStatus, type InputGift, type InputMedia, type InputPollOption, type InputStoryContent, type InviteLink, type JoinRequest, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageDice, type MessageDocument, type MessageInvoice, type MessageList, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type PasswordCheckResult, type Poll, type PriceTag, type Reaction, type SavedChats, type SlowModeDuration, type Sticker, type StickerSet, type Story, type Topic, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
-import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, type PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
+import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, PHONE_NUMBER_TTL, type PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, SessionRevoked } from "../4_errors.ts";
 import { peerToChatId } from "../tl/2_telegram.ts";
 import type { CodeCheckResult } from "../types/0_code_check_result.ts";
@@ -1019,28 +1019,42 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   async #getInputPeerInner(id: ID) {
-    const idn = Number(id);
-    if (!isNaN(idn)) {
-      id = idn;
-    }
     let peer: Api.InputPeer;
     if (typeof id === "string") {
-      id = getUsername(id);
       let resolvedId = 0;
-      const maybeUsername = await this.messageStorage.usernames.get([id]);
-      if (maybeUsername !== null && Date.now() - maybeUsername[1].getTime() < USERNAME_TTL) {
-        const [id] = maybeUsername;
-        resolvedId = id;
+      if (id[0] === "+" || !isNaN(Number(id[0]))) {
+        if (id[0] === "+") {
+          id = id.slice(1);
+          const maybePhoneNumber = await this.messageStorage.phoneNumbers.get([id]);
+          if (maybePhoneNumber !== null && Date.now() - maybePhoneNumber[1].getTime() < PHONE_NUMBER_TTL) {
+            const [id] = maybePhoneNumber;
+            resolvedId = id;
+          } else {
+            const resolved = await this.invoke({ _: "contacts.resolvePhone", phone: id });
+            this.#updateManager.processChats(resolved.chats, resolved);
+            this.#updateManager.processUsers(resolved.users, resolved);
+            resolvedId = Api.peerToChatId(resolved.peer);
+            this.messageStorage.phoneNumbers.set([id], [resolvedId, new Date()]);
+          }
+        }
       } else {
-        const resolved = await this.invoke({ _: "contacts.resolveUsername", username: id });
-        this.#updateManager.processChats(resolved.chats, resolved);
-        this.#updateManager.processUsers(resolved.users, resolved);
-        if (Api.is("peerUser", resolved.peer)) {
-          resolvedId = Api.peerToChatId(resolved.peer);
-        } else if (Api.is("peerChannel", resolved.peer)) {
-          resolvedId = Api.peerToChatId(resolved.peer);
+        id = getUsername(id);
+        const maybeUsername = await this.messageStorage.usernames.get([id.toLowerCase()]);
+        if (maybeUsername !== null && Date.now() - maybeUsername[1].getTime() < USERNAME_TTL) {
+          const [id] = maybeUsername;
+          resolvedId = id;
         } else {
-          unreachable();
+          const resolved = await this.invoke({ _: "contacts.resolveUsername", username: id });
+          this.#updateManager.processChats(resolved.chats, resolved);
+          this.#updateManager.processUsers(resolved.users, resolved);
+          if (Api.is("peerUser", resolved.peer)) {
+            resolvedId = Api.peerToChatId(resolved.peer);
+          } else if (Api.is("peerChannel", resolved.peer)) {
+            resolvedId = Api.peerToChatId(resolved.peer);
+          } else {
+            unreachable();
+          }
+          this.messageStorage.usernames.set([id.toLowerCase()], [resolvedId, new Date()]);
         }
       }
       const resolvedIdType = Api.getChatIdPeerType(resolvedId);
