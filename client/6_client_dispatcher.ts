@@ -614,6 +614,16 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("resolveUsername", username, params);
   }
 
+  /**
+   * Set the list of close friends.
+   *
+   * @method ac
+   * @param userIds The identifiers of users to set as close friends.
+   */
+  async setCloseFriends(userIds: ID[]): Promise<void> {
+    return await this.#dispatch("setCloseFriends", userIds);
+  }
+
   //
   // ========================= MESSAGES ========================= //
   //

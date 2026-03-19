@@ -1589,6 +1589,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     return await this.#accountManager.resolveUsername(username, params);
   }
 
+  /**
+   * Set the list of close friends.
+   *
+   * @method ac
+   * @param userIds The identifiers of users to set as close friends.
+   */
+  async setCloseFriends(userIds: ID[]): Promise<void> {
+    return await this.#accountManager.setCloseFriends(userIds);
+  }
+
   //
   // ========================= MESSAGES ========================= //
   //
