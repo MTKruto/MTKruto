@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { PasswordHashInvalid, PhoneCodeInvalid, SessionPasswordNeeded } from "../3_errors.ts";
-import { birthdayToTlObject, type BotTokenCheckResult, type CodeCheckResult, constructEmojiStatus, constructInactiveChat, constructUser, type ID, type InputEmojiStatus, type PasswordCheckResult, type Update, workingHoursToTlObject } from "../3_types.ts";
+import { birthdayToTlObject, type BotTokenCheckResult, type CodeCheckResult, constructEmojiStatus, constructInactiveChat, constructUser, constructUser2, type ID, type InputEmojiStatus, type PasswordCheckResult, type Update, workingHoursToTlObject } from "../3_types.ts";
 import type { AddContactParams, CheckUsernameParams, ResolveUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
@@ -461,6 +461,17 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     }
 
     return chatP;
+  }
+
+  async resolvePhoneNumber(phoneNumber: string) {
+    this.#c.storage.assertUser("resolvePhoneNumber");
+    const result = await this.#c.invoke({ _: "contacts.resolvePhone", phone: phoneNumber });
+    const chatP = this.#c.getPeer(result.peer)?.[0];
+    if (!chatP || chatP.type !== "private") {
+      unreachable();
+    }
+
+    return constructUser2(chatP);
   }
 
   async setCloseFriends(userIds: ID[]) {

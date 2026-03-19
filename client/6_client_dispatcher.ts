@@ -615,6 +615,16 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
+   * Resolve a phone number.
+   *
+   * @method ac
+   * @param username The phone number to resolve.
+   */
+  async resolvePhoneNumber(phoneNumber: string): Promise<User> {
+    return await this.#dispatch("resolvePhoneNumber", phoneNumber);
+  }
+
+  /**
    * Set the list of close friends.
    *
    * @method ac
