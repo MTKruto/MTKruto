@@ -1590,6 +1590,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Resolve a phone number.
+   *
+   * @method ac
+   * @param username The phone number to resolve.
+   */
+  async resolvePhoneNumber(phoneNumber: string): Promise<ChatP> {
+    return await this.#accountManager.resolvePhoneNumber(phoneNumber);
+  }
+
+  /**
    * Set the list of close friends.
    *
    * @method ac

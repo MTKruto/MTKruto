@@ -341,6 +341,14 @@ export abstract class ClientGeneric {
   abstract resolveUsername(username: string, params?: ResolveUsernameParams): Promise<ChatP>;
 
   /**
+   * Resolve a phone number.
+   *
+   * @method ac
+   * @param username The phone number to resolve.
+   */
+  abstract resolvePhoneNumber(phoneNumber: string): Promise<ChatP>;
+
+  /**
    * Set the list of close friends.
    *
    * @method ac

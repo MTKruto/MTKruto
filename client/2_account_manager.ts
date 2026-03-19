@@ -463,6 +463,17 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     return chatP;
   }
 
+  async resolvePhoneNumber(phoneNumber: string) {
+    this.#c.storage.assertUser("resolvePhoneNumber");
+    const result = await this.#c.invoke({ _: "contacts.resolvePhone", phone: phoneNumber });
+    const chatP = this.#c.getPeer(result.peer)?.[0];
+    if (!chatP) {
+      unreachable();
+    }
+
+    return chatP;
+  }
+
   async setCloseFriends(userIds: ID[]) {
     this.#c.storage.assertUser("setCloseFriends");
     const inputUsers = await Promise.all(userIds.map((v) => this.#c.getInputUser(v)));
