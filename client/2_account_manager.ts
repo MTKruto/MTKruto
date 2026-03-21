@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { PasswordHashInvalid, PhoneCodeInvalid, SessionPasswordNeeded } from "../3_errors.ts";
-import { birthdayToTlObject, type BotTokenCheckResult, type CodeCheckResult, constructEmojiStatus, constructInactiveChat, constructUser2, type ID, type InputEmojiStatus, type PasswordCheckResult, type Update, workingHoursToTlObject } from "../3_types.ts";
+import { type Birthday, birthdayToTlObject, type BotTokenCheckResult, type CodeCheckResult, constructEmojiStatus, constructInactiveChat, constructUser2, type ID, type InputEmojiStatus, type PasswordCheckResult, type Update, workingHoursToTlObject } from "../3_types.ts";
 import type { CheckUsernameParams, ResolveUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
@@ -442,5 +442,12 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     const inputUsers = await Promise.all(userIds.map((v) => this.#c.getInputUser(v)));
     const id = inputUsers.map((v) => Api.as("inputUser", v).user_id);
     await this.#c.invoke({ _: "contacts.editCloseFriends", id });
+  }
+
+  async suggestBirthday(userId: ID, birthday_: Birthday) {
+    this.#c.storage.assertUser("suggestBirthday");
+    const id = await this.#c.getInputUser(userId);
+    const birthday = birthdayToTlObject(birthday_);
+    await this.#c.invoke({ _: "users.suggestBirthday", id, birthday });
   }
 }
