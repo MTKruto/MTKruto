@@ -3583,7 +3583,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   //
 
   /**
-   * Create a story album.
+   * Create a story album. User-only.
    *
    * @method sa
    * @param chatId The identifier of the chat to create the album in.
@@ -3595,7 +3595,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Set the name of a story album.
+   * Set the name of a story album. User-only.
    *
    * @method sa
    * @param chatId The identifier of the chat including the album.
@@ -3607,7 +3607,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Add multiple stories to an album.
+   * Add multiple stories to an album. User-only.
    *
    * @method sa
    * @param chatId The identifier of the chat including the album.
@@ -3619,7 +3619,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Add a single story to an album.
+   * Add a single story to an album. User-only.
    *
    * @method sa
    * @param chatId The identifier of the chat including the album.
@@ -3631,7 +3631,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Remove multiple stories from an album.
+   * Remove multiple stories from an album. User-only.
    *
    * @method sa
    * @param chatId The identifier of the chat including the album.
@@ -3643,7 +3643,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Remove a single story from an album.
+   * Remove a single story from an album. User-only.
    *
    * @method sa
    * @param chatId The identifier of the chat including the album.
@@ -3655,7 +3655,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Reorder stories in an album.
+   * Reorder stories in an album. User-only.
    *
    * @method sa
    * @param chatId The identifier of the chat including the album.
@@ -3667,7 +3667,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Get story albums in a chat.
+   * Get story albums in a chat. User-only.
    *
    * @method sa
    * @param chatId The identifier of a chat including albums.
@@ -3677,7 +3677,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Get stories inside an album.
+   * Get stories inside an album. User-only.
    *
    * @method sa
    * @param chatId The identifier of the chat including albums.

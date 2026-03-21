@@ -1956,7 +1956,7 @@ export abstract class ClientGeneric {
   //
 
   /**
-   * Create a story album.
+   * Create a story album. User-only.
    *
    * @method sa
    * @param chatId The identifier of the chat to create the album in.
@@ -1966,7 +1966,7 @@ export abstract class ClientGeneric {
   abstract createStoryAlbum(chatId: ID, name: string, storyIds: number[]): Promise<StoryAlbum>;
 
   /**
-   * Set the name of a story album.
+   * Set the name of a story album. User-only.
    *
    * @method sa
    * @param chatId The identifier of the chat including the album.
@@ -1976,7 +1976,7 @@ export abstract class ClientGeneric {
   abstract setStoryAlbumName(chatId: ID, albumId: number, name: string): Promise<StoryAlbum>;
 
   /**
-   * Add multiple stories to an album.
+   * Add multiple stories to an album. User-only.
    *
    * @method sa
    * @param chatId The identifier of the chat including the album.
@@ -1986,7 +1986,7 @@ export abstract class ClientGeneric {
   abstract addStoriesToAlbum(chatId: ID, albumId: number, storyIds: number[]): Promise<StoryAlbum>;
 
   /**
-   * Add a single story to an album.
+   * Add a single story to an album. User-only.
    *
    * @method sa
    * @param chatId The identifier of the chat including the album.
@@ -1996,7 +1996,7 @@ export abstract class ClientGeneric {
   abstract addStoryToAlbum(chatId: ID, albumId: number, storyId: number): Promise<StoryAlbum>;
 
   /**
-   * Remove multiple stories from an album.
+   * Remove multiple stories from an album. User-only.
    *
    * @method sa
    * @param chatId The identifier of the chat including the album.
@@ -2006,7 +2006,7 @@ export abstract class ClientGeneric {
   abstract removeStoriesFromAlbum(chatId: ID, albumId: number, storyIds: number[]): Promise<StoryAlbum>;
 
   /**
-   * Remove a single story from an album.
+   * Remove a single story from an album. User-only.
    *
    * @method sa
    * @param chatId The identifier of the chat including the album.
@@ -2016,7 +2016,7 @@ export abstract class ClientGeneric {
   abstract removeStoryFromAlbum(chatId: ID, albumId: number, storyId: number): Promise<StoryAlbum>;
 
   /**
-   * Reorder stories in an album.
+   * Reorder stories in an album. User-only.
    *
    * @method sa
    * @param chatId The identifier of the chat including the album.
@@ -2026,7 +2026,7 @@ export abstract class ClientGeneric {
   abstract reorderStoriesInAlbum(chatId: ID, albumId: number, storyIds: number[]): Promise<StoryAlbum>;
 
   /**
-   * Get story albums in a chat.
+   * Get story albums in a chat. User-only.
    *
    * @method sa
    * @param chatId The identifier of a chat including albums.
@@ -2034,7 +2034,7 @@ export abstract class ClientGeneric {
   abstract getStoryAlbums(chatId: ID): Promise<StoryAlbum[]>;
 
   /**
-   * Get stories inside an album.
+   * Get stories inside an album. User-only.
    *
    * @method sa
    * @param chatId The identifier of the chat including albums.
