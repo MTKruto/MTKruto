@@ -20,7 +20,7 @@
 
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { type FileId, FileType, serializeFileId, toUniqueFileId } from "../3_types.ts";
+import { type FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
 import { constructDocument } from "./1_document.ts";
 import { constructPhoto } from "./1_photo.ts";
 import type { StoryAlbumIcon } from "./2_story_album_icon.ts";
