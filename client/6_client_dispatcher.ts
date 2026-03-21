@@ -21,8 +21,9 @@
 import { getLogger, type Logger } from "../1_utilities.ts";
 import type { Api, Mtproto } from "../2_tl.ts";
 import type { DC } from "../3_transport.ts";
-import type { Birthday, BotCommand, BotTokenCheckResult, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatActionType, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ClaimedGifts, CodeCheckResult, FailedInvitation, FileSource, Gift, GiftCollection, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputChecklistItem, InputEmojiStatus, InputGift, InputMedia, InputPollOption, InputStoryContent, InviteLink, JoinRequest, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, MiniAppInfo, NetworkStatistics, ParseMode, PasswordCheckResult, Poll, PriceTag, Reaction, SavedChats, SlowModeDuration, Sticker, StickerSet, Story, Topic, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
+import type { Birthday, BotCommand, BotTokenCheckResult, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatActionType, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ClaimedGifts, CodeCheckResult, FailedInvitation, FileSource, Gift, GiftCollection, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputChecklistItem, InputEmojiStatus, InputGift, InputMedia, InputPollOption, InputStoryContent, InviteLink, JoinRequest, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, MiniAppInfo, NetworkStatistics, ParseMode, PasswordCheckResult, Poll, PriceTag, Reaction, SavedChats, SlowModeDuration, Sticker, StickerSet, Story, StoryAlbum, Topic, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
 import { DOWNLOAD_MAX_CHUNK_SIZE } from "../4_constants.ts";
+import type { AlbumStoryList } from "../types/4_album_story_list.ts";
 import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetSavedChatsParams, GetSavedMessagesParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ResolveUsernameParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetContactNoteParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetWorkingHoursParams, SignInParams, StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams, UpdateProfileParams } from "./0_params.ts";
 import { deserializeWorkerError, type WorkerError } from "./0_worker_error.ts";
 import type { WorkerRequest } from "./0_worker_request.ts";
@@ -2560,6 +2561,115 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async removeStoryFromHighlights(chatId: ID, storyId: number): Promise<void> {
     return await this.#dispatch("removeStoryFromHighlights", chatId, storyId);
+  }
+
+  //
+  // ========================= STORY ALBUMS ========================= //
+  //
+
+  /**
+   * Create a story album.
+   *
+   * @method sa
+   * @param chatId The identifier of the chat to create the album in.
+   * @param name The name of the album.
+   * @param storyIds The initial stories inside the album.
+   */
+  async createStoryAlbum(chatId: ID, name: string, storyIds: number[]): Promise<StoryAlbum> {
+    return await this.#dispatch("createStoryAlbum", chatId, name, storyIds);
+  }
+
+  /**
+   * Set the name of a story album.
+   *
+   * @method sa
+   * @param chatId The identifier of the chat including the album.
+   * @param albumId The identifier of the album to rename.
+   * @param name The new name of the album.
+   */
+  async setStoryAlbumName(chatId: ID, albumId: number, name: string): Promise<StoryAlbum> {
+    return await this.#dispatch("setStoryAlbumName", chatId, albumId, name);
+  }
+
+  /**
+   * Add multiple stories to an album.
+   *
+   * @method sa
+   * @param chatId The identifier of the chat including the album.
+   * @param albumId The identifier of an album.
+   * @param storyIds The identifiers of the stories to add.
+   */
+  async addStoriesToAlbum(chatId: ID, albumId: number, storyIds: number[]): Promise<StoryAlbum> {
+    return await this.#dispatch("addStoriesToAlbum", chatId, albumId, storyIds);
+  }
+
+  /**
+   * Add a single story to an album.
+   *
+   * @method sa
+   * @param chatId The identifier of the chat including the album.
+   * @param albumId The identifier of an album.
+   * @param storyIds The identifier of the story to add.
+   */
+  async addStoryToAlbum(chatId: ID, albumId: number, storyId: number): Promise<StoryAlbum> {
+    return await this.#dispatch("addStoryToAlbum", chatId, albumId, storyId);
+  }
+
+  /**
+   * Remove multiple stories from an album.
+   *
+   * @method sa
+   * @param chatId The identifier of the chat including the album.
+   * @param albumId The identifier of an album.
+   * @param storyIds The identifiers of the stories to remove.
+   */
+  async removeStoriesFromAlbum(chatId: ID, albumId: number, storyIds: number[]): Promise<StoryAlbum> {
+    return await this.#dispatch("removeStoriesFromAlbum", chatId, albumId, storyIds);
+  }
+
+  /**
+   * Remove a single story from an album.
+   *
+   * @method sa
+   * @param chatId The identifier of the chat including the album.
+   * @param albumId The identifier of an album.
+   * @param storyIds The identifier of the story to remove.
+   */
+  async removeStoryFromAlbum(chatId: ID, albumId: number, storyId: number): Promise<StoryAlbum> {
+    return await this.#dispatch("removeStoryFromAlbum", chatId, albumId, storyId);
+  }
+
+  /**
+   * Reorder stories in an album.
+   *
+   * @method sa
+   * @param chatId The identifier of the chat including the album.
+   * @param albumId The identifier of an album.
+   * @param storyIds The new order of stories.
+   */
+  async reorderStoriesInAlbum(chatId: ID, albumId: number, storyIds: number[]): Promise<StoryAlbum> {
+    return await this.#dispatch("reorderStoriesInAlbum", chatId, albumId, storyIds);
+  }
+
+  /**
+   * Get story albums in a chat.
+   *
+   * @method sa
+   * @param chatId The identifier of a chat including albums.
+   */
+  async getStoryAlbums(chatId: ID): Promise<StoryAlbum[]> {
+    return await this.#dispatch("getStoryAlbums", chatId);
+  }
+
+  /**
+   * Get stories inside an album.
+   *
+   * @method sa
+   * @param chatId The identifier of the chat including albums.
+   * @param albumId The identifier of an album.
+   */
+  async getStoriesInAlbum(chatId: ID, albumId: number): Promise<AlbumStoryList> {
+    return await this.#dispatch("getStoriesInAlbum", chatId, albumId);
   }
 
   //

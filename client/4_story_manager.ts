@@ -86,23 +86,23 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
     }
 
     const caption_ = params?.caption;
-    const parseResult = caption_ !== undefined ? await this.#c.messageManager.parseText(caption_, { parseMode: params?.parseMode, entities: params?.captionEntities }) : undefined;
+    const parseResult = caption_ !== undefined ? this.#c.messageManager.parseText(caption_, { parseMode: params?.parseMode, entities: params?.captionEntities }) : undefined;
 
     const caption = parseResult === undefined ? undefined : parseResult[0];
     const entities = parseResult === undefined ? undefined : parseResult[1];
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
-    const privacyRules = await storyPrivacyToTlObject(params?.privacy ?? { everyoneExcept: [] }, this.#c.getPeer);
+    const privacyRules = storyPrivacyToTlObject(params?.privacy ?? { everyoneExcept: [] }, this.#c.getPeer);
     const mediaAreas = new Array<Api.MediaArea>();
 
     if (params?.interactiveAreas?.length) {
       for (const area of params.interactiveAreas) {
-        mediaAreas.push(await storyInteractiveAreaToTlObject(area, this.#c.getPeer));
+        mediaAreas.push(storyInteractiveAreaToTlObject(area, this.#c.getPeer));
       }
     }
 
     const updates = await this.#c.invoke({ _: "stories.sendStory", peer, random_id: randomId, media, privacy_rules: privacyRules, caption, entities, noforwards: params?.isContentProtected ? true : undefined, period: params?.activeFor, pinned: params?.highlight ? true : undefined, media_areas: mediaAreas });
-    return await this.#updatesToStory(updates);
+    return this.#updatesToStory(updates);
   }
 
   async getStories(chatId: ID, storyIds: number[]) {
