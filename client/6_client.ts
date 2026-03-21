@@ -24,7 +24,7 @@ import { drop, getLogger, type Logger, type MaybePromise, Mutex, ZERO_CHANNEL_ID
 import { type Storage, StorageMemory } from "../2_storage.ts";
 import { Api, Mtproto } from "../2_tl.ts";
 import { type DC, getDcId, type TransportProvider } from "../3_transport.ts";
-import { type Birthday, type BotCommand, type BotTokenCheckResult, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatActionType, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type ConnectionState, constructChatP, constructUser2, type FailedInvitation, type FileSource, type Gift, type GiftCollection, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputChecklistItem, type InputEmojiStatus, type InputGift, type InputMedia, type InputPollOption, type InputStoryContent, type InviteLink, type JoinRequest, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageDice, type MessageDocument, type MessageInvoice, type MessageList, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type PasswordCheckResult, type Poll, type PriceTag, type Reaction, type SavedChats, type SlowModeDuration, type Sticker, type StickerSet, type Story, type Topic, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
+import { type AlbumStoryList, type Birthday, type BotCommand, type BotTokenCheckResult, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatActionType, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type ConnectionState, constructChatP, constructUser2, type FailedInvitation, type FileSource, type Gift, type GiftCollection, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputChecklistItem, type InputEmojiStatus, type InputGift, type InputMedia, type InputPollOption, type InputStoryContent, type InviteLink, type JoinRequest, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageDice, type MessageDocument, type MessageInvoice, type MessageList, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type PasswordCheckResult, type Poll, type PriceTag, type Reaction, type SavedChats, type SlowModeDuration, type Sticker, type StickerSet, type Story, type StoryAlbum, type Topic, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, PHONE_NUMBER_TTL, type PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, SessionRevoked } from "../4_errors.ts";
 import { peerToChatId } from "../tl/2_telegram.ts";
@@ -46,6 +46,7 @@ import { NetworkStatisticsManager } from "./2_network_statistics_manager.ts";
 import { PaymentManager } from "./2_payment_manager.ts";
 import { ReactionManager } from "./2_reaction_manager.ts";
 import { signIn } from "./2_sign_in.ts";
+import { StoryAlbumManager } from "./2_story_album_manager.ts";
 import { TranslationsManager } from "./2_translations_manager.ts";
 import { UpdateManager } from "./2_update_manager.ts";
 import { ClientEncryptedPool } from "./3_client_encrypted_pool.ts";
@@ -144,6 +145,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   #networkStatisticsManager: NetworkStatisticsManager;
   #paymentManager: PaymentManager;
   #reactionManager: ReactionManager;
+  #storyAlbumManager: StoryAlbumManager;
   #translationsManager: TranslationsManager;
   #updateManager: UpdateManager;
   // 3_
@@ -176,6 +178,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       networkStatisticsManager: this.#networkStatisticsManager,
       paymentManager: this.#paymentManager,
       reactionManager: this.#reactionManager,
+      storyAlbumManager: this.#storyAlbumManager,
       translationsManager: this.#translationsManager,
       updateManager: this.#updateManager,
       // 3_
@@ -308,6 +311,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     this.#networkStatisticsManager = new NetworkStatisticsManager(c);
     this.#paymentManager = new PaymentManager(c);
     this.#reactionManager = new ReactionManager(c);
+    this.#storyAlbumManager = new StoryAlbumManager(c);
     this.#translationsManager = new TranslationsManager(c);
     this.#updateManager = new UpdateManager(c);
     // 3_
@@ -3572,6 +3576,115 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async removeStoryFromHighlights(chatId: ID, storyId: number) {
     await this.#storyManager.removeStoryFromHighlights(chatId, storyId);
+  }
+
+  //
+  // ========================= STORY ALBUMS ========================= //
+  //
+
+  /**
+   * Create a story album. User-only.
+   *
+   * @method sa
+   * @param chatId The identifier of the chat to create the album in.
+   * @param name The name of the album.
+   * @param storyIds The initial stories inside the album.
+   */
+  async createStoryAlbum(chatId: ID, name: string, storyIds: number[]): Promise<StoryAlbum> {
+    return await this.#storyAlbumManager.createStoryAlbum(chatId, name, storyIds);
+  }
+
+  /**
+   * Set the name of a story album. User-only.
+   *
+   * @method sa
+   * @param chatId The identifier of the chat including the album.
+   * @param albumId The identifier of the album to rename.
+   * @param name The new name of the album.
+   */
+  async setStoryAlbumName(chatId: ID, albumId: number, name: string): Promise<StoryAlbum> {
+    return await this.#storyAlbumManager.setStoryAlbumName(chatId, albumId, name);
+  }
+
+  /**
+   * Add multiple stories to an album. User-only.
+   *
+   * @method sa
+   * @param chatId The identifier of the chat including the album.
+   * @param albumId The identifier of an album.
+   * @param storyIds The identifiers of the stories to add.
+   */
+  async addStoriesToAlbum(chatId: ID, albumId: number, storyIds: number[]): Promise<StoryAlbum> {
+    return await this.#storyAlbumManager.addStoriesToAlbum(chatId, albumId, storyIds);
+  }
+
+  /**
+   * Add a single story to an album. User-only.
+   *
+   * @method sa
+   * @param chatId The identifier of the chat including the album.
+   * @param albumId The identifier of an album.
+   * @param storyIds The identifier of the story to add.
+   */
+  async addStoryToAlbum(chatId: ID, albumId: number, storyId: number): Promise<StoryAlbum> {
+    return await this.#storyAlbumManager.addStoryToAlbum(chatId, albumId, storyId);
+  }
+
+  /**
+   * Remove multiple stories from an album. User-only.
+   *
+   * @method sa
+   * @param chatId The identifier of the chat including the album.
+   * @param albumId The identifier of an album.
+   * @param storyIds The identifiers of the stories to remove.
+   */
+  async removeStoriesFromAlbum(chatId: ID, albumId: number, storyIds: number[]): Promise<StoryAlbum> {
+    return await this.#storyAlbumManager.removeStoriesFromAlbum(chatId, albumId, storyIds);
+  }
+
+  /**
+   * Remove a single story from an album. User-only.
+   *
+   * @method sa
+   * @param chatId The identifier of the chat including the album.
+   * @param albumId The identifier of an album.
+   * @param storyIds The identifier of the story to remove.
+   */
+  async removeStoryFromAlbum(chatId: ID, albumId: number, storyId: number): Promise<StoryAlbum> {
+    return await this.#storyAlbumManager.removeStoryFromAlbum(chatId, albumId, storyId);
+  }
+
+  /**
+   * Reorder stories in an album. User-only.
+   *
+   * @method sa
+   * @param chatId The identifier of the chat including the album.
+   * @param albumId The identifier of an album.
+   * @param storyIds The new order of stories.
+   */
+  async reorderStoriesInAlbum(chatId: ID, albumId: number, storyIds: number[]): Promise<StoryAlbum> {
+    return await this.#storyAlbumManager.reorderStoriesInAlbum(chatId, albumId, storyIds);
+  }
+
+  /**
+   * Get story albums in a chat. User-only.
+   *
+   * @method sa
+   * @param chatId The identifier of a chat including albums.
+   */
+  async getStoryAlbums(chatId: ID): Promise<StoryAlbum[]> {
+    return await this.#storyAlbumManager.getStoryAlbums(chatId);
+  }
+
+  /**
+   * Get stories inside an album. User-only.
+   *
+   * @method sa
+   * @param chatId The identifier of the chat including albums.
+   * @param albumId The identifier of an album.
+   */
+  async getStoriesInAlbum(chatId: ID, albumId: number): Promise<AlbumStoryList> {
+    return await this.#storyAlbumManager.getStoriesInAlbum(chatId, albumId);
   }
 
   //

@@ -897,3 +897,10 @@ export interface SetContactNoteParams {
   /** The parse mode to use for the note */
   noteParseMode?: ParseMode;
 }
+
+export interface GetStoriesInAlbumParams {
+  /** The number of results to skip. */
+  offset?: number;
+  /** The maximum number of results to return. */
+  limit?: number;
+}
