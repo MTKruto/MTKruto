@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
 import { constructUser, type ID } from "../3_types.ts";
-import type { AddContactParams } from "./0_params.ts";
+import type { AddContactParams, SetContactNoteParams } from "./0_params.ts";
 import type { C as C_ } from "./1_types.ts";
 import type { MessageManager } from "./3_message_manager.ts";
 
@@ -64,5 +64,11 @@ export class ContactManager {
       unreachable();
     }
     return result.users.map((v) => Api.is("user", v) ? constructUser(v) : null).filter((v) => v !== null);
+  }
+
+  async setContactNote(userId: ID, params?: SetContactNoteParams) {
+    this.#c.storage.assertUser("setContactNote");
+    const noteParsed = params?.note ? this.#c.messageManager.parseText(params?.note, { parseMode: params?.noteParseMode, entities: params?.noteEntities }) : undefined;
+    await this.#c.invoke({ _: "contacts.updateContactNote", id: await this.#c.getInputUser(userId), note: noteParsed ? { _: "textWithEntities", text: noteParsed[0], entities: noteParsed[1] ?? [] } : { _: "textWithEntities", text: "", entities: [] } });
   }
 }

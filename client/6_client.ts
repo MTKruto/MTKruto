@@ -30,7 +30,7 @@ import { AuthKeyUnregistered, FloodWait, Migrate, SessionRevoked } from "../4_er
 import { peerToChatId } from "../tl/2_telegram.ts";
 import type { CodeCheckResult } from "../types/0_code_check_result.ts";
 import { AbortableLoop } from "./0_abortable_loop.ts";
-import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetSavedChatsParams, GetSavedMessagesParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ResolveUsernameParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetWorkingHoursParams, SignInParams, StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams, UpdateProfileParams } from "./0_params.ts";
+import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, ForwardMessagesParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetSavedChatsParams, GetSavedMessagesParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ResolveUsernameParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetContactNoteParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetWorkingHoursParams, SignInParams, StartBotParams, StartVideoChatParams, StopPollParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams, UpdateProfileParams } from "./0_params.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 import { canBeInputChannel, canBeInputUser, DOWNLOAD_POOL_SIZE, getUsername, toInputChannel, toInputUser } from "./0_utilities.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
@@ -3341,7 +3341,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   /**
    * Set the bot's description in the given language. Bot-only.
    *
-   * @method bs
+   * @method bo
    */
   async setMyDescription(params?: { description?: string; languageCode?: string }) {
     await this.#botInfoManager.setMyDescription(params);
@@ -3350,7 +3350,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   /**
    * Set the bot's name in the given language. Bot-only.
    *
-   * @method bs
+   * @method bo
    */
   async setMyName(params?: { name?: string; languageCode?: string }) {
     await this.#botInfoManager.setMyName(params);
@@ -3359,7 +3359,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   /**
    * Set the bot's short description in the given language. Bot-only.
    *
-   * @method bs
+   * @method bo
    */
   async setMyShortDescription(params?: { shortDescription?: string; languageCode?: string }) {
     await this.#botInfoManager.setMyShortDescription(params);
@@ -3368,7 +3368,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   /**
    * Get the bot's description in the given language. Bot-only.
    *
-   * @method bs
+   * @method bo
    * @returns The current bot's description in the specified language.
    */
   async getMyDescription(params?: { languageCode?: string }): Promise<string> {
@@ -3378,7 +3378,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   /**
    * Get the bot's name in the given language. Bot-only.
    *
-   * @method bs
+   * @method bo
    * @returns The current bot's name in the specified language.
    */
   async getMyName(params?: { languageCode?: string }): Promise<string> {
@@ -3388,7 +3388,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   /**
    * Get the bot's short description in the given language. Bot-only.
    *
-   * @method bs
+   * @method bo
    * @returns The current bot's short description in the specified language.
    */
   async getMyShortDescription(params?: { languageCode?: string }): Promise<string> {
@@ -3398,7 +3398,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   /**
    * Set the bot's commands in the given scope and/or language. Bot-only.
    *
-   * @method bs
+   * @method bo
    * @param commands The commands to set.
    */
   async setMyCommands(commands: BotCommand[], params?: SetMyCommandsParams) {
@@ -3408,7 +3408,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   /**
    * Get the bot's commands in the given scope and/or language. Bot-only.
    *
-   * @method bs
+   * @method bo
    * @returns The current bot's commands in the specified language.
    */
   async getMyCommands(params?: GetMyCommandsParams): Promise<BotCommand[]> {
@@ -3757,6 +3757,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async addContact(userId: ID, firstName: string, params?: AddContactParams): Promise<void> {
     await this.#contactManager.addContact(userId, firstName, params);
+  }
+
+  /**
+   * Set a contact note.
+   *
+   * @method co
+   * @param userId The identifier of the user to update the note for.
+   */
+  async setContactNote(userId: ID, params?: SetContactNoteParams) {
+    await this.#contactManager.setContactNote(userId, params);
   }
 
   //

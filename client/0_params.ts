@@ -888,3 +888,12 @@ export interface AddContactParams {
   /** The parse mode to use for the note */
   noteParseMode?: ParseMode;
 }
+
+export interface SetContactNoteParams {
+  /** A note to attach to the contact. */
+  note?: string;
+  /** The note's entities. */
+  noteEntities?: MessageEntity[];
+  /** The parse mode to use for the note */
+  noteParseMode?: ParseMode;
+}
