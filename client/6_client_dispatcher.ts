@@ -635,7 +635,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Suggest a birthday.
+   * Suggest a birthday. User-only.
    *
    * @method ac
    * @param userId The identifier of the user to suggest a birthday for.

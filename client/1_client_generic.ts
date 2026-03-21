@@ -357,7 +357,7 @@ export abstract class ClientGeneric {
   abstract setCloseFriends(userIds: ID[]): Promise<void>;
 
   /**
-   * Suggest a birthday.
+   * Suggest a birthday. User-only.
    *
    * @method ac
    * @param userId The identifier of the user to suggest a birthday for.
