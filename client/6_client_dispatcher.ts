@@ -639,7 +639,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    *
    * @method ac
    * @param userId The identifier of the user to suggest a birthday for.
-   * @param birthday The suggested birthday.
+   * @param birthday The birthday to suggest.
    */
   async suggestBirthday(userId: ID, birthday: Birthday): Promise<void> {
     return await this.#dispatch("suggestBirthday", userId, birthday);

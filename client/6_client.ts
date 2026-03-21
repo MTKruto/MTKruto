@@ -1632,7 +1632,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    *
    * @method ac
    * @param userId The identifier of the user to suggest a birthday for.
-   * @param birthday The suggested birthday.
+   * @param birthday The birthday to suggest.
    */
   async suggestBirthday(userId: ID, birthday: Birthday): Promise<void> {
     await this.#accountManager.suggestBirthday(userId, birthday);

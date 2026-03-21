@@ -361,7 +361,7 @@ export abstract class ClientGeneric {
    *
    * @method ac
    * @param userId The identifier of the user to suggest a birthday for.
-   * @param birthday The suggested birthday.
+   * @param birthday The birthday to suggest.
    */
   abstract suggestBirthday(userId: ID, birthday: Birthday): Promise<void>;
 
