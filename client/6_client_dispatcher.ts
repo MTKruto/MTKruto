@@ -2741,9 +2741,10 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    *
    * @method co
    * @param userId The identifier of the user to add as contact.
+   * @param firstName The contact's first name.
    */
-  async addContact(userId: ID, params?: AddContactParams): Promise<void> {
-    return await this.#dispatch("addContact", userId, params);
+  async addContact(userId: ID, firstName: string, params?: AddContactParams): Promise<void> {
+    await this.#dispatch("addContcat", userId, firstName, params);
   }
 
   //

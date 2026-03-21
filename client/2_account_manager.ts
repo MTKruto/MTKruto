@@ -22,8 +22,8 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { PasswordHashInvalid, PhoneCodeInvalid, SessionPasswordNeeded } from "../3_errors.ts";
-import { birthdayToTlObject, type BotTokenCheckResult, type CodeCheckResult, constructEmojiStatus, constructInactiveChat, constructUser, constructUser2, type ID, type InputEmojiStatus, type PasswordCheckResult, type Update, workingHoursToTlObject } from "../3_types.ts";
-import type { AddContactParams, CheckUsernameParams, ResolveUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams } from "./0_params.ts";
+import { birthdayToTlObject, type BotTokenCheckResult, type CodeCheckResult, constructEmojiStatus, constructInactiveChat, constructUser2, type ID, type InputEmojiStatus, type PasswordCheckResult, type Update, workingHoursToTlObject } from "../3_types.ts";
+import type { CheckUsernameParams, ResolveUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, canBeInputUser, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -187,43 +187,6 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     const bot = await this.#c.getInputUser(botId);
     const enabled = canSetEmojiStatus;
     await this.#c.invoke({ _: "bots.toggleUserEmojiStatusPermission", bot, enabled });
-  }
-
-  async getContacts() {
-    this.#c.storage.assertUser("getContacts");
-    const result = await this.#c.invoke({ _: "contacts.getContacts", hash: 0n });
-    if (!Api.is("contacts.contacts", result)) {
-      unreachable();
-    }
-    return result.users.map((v) => Api.is("user", v) ? constructUser(v) : null).filter((v) => v !== null);
-  }
-
-  async deleteContacts(userIds: ID[]) {
-    this.#c.storage.assertUser("deleteContacts");
-    const id = await Promise.all(userIds.map((v) => this.#c.getInputUser(v)));
-    await this.#c.invoke({ _: "contacts.deleteContacts", id });
-  }
-
-  async deleteContact(userId: ID) {
-    this.#c.storage.assertUser("deleteContact");
-    await this.deleteContacts([userId]);
-  }
-
-  async addContact(userId: ID, params?: AddContactParams) {
-    this.#c.storage.assertUser("addContact");
-    const id = await this.#c.getInputUser(userId);
-    if (!Api.is("inputPeerUser", id)) {
-      unreachable();
-    }
-    const peer = this.#c.getPeer(Api.inputPeerToPeer(id));
-    if (!peer || peer[0].type !== "private") {
-      unreachable();
-    }
-    const first_name = params?.firstName ?? peer[0].firstName ?? "";
-    const last_name = params?.lastName ?? peer[0].lastName ?? "";
-    const phone = "";
-    const add_phone_privacy_exception = params?.sharePhoneNumber ? true : undefined;
-    await this.#c.invoke({ _: "contacts.addContact", add_phone_privacy_exception, id, first_name, last_name, phone });
   }
 
   async #getUserFull(chatId: ID): Promise<Api.userFull> {

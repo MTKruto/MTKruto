@@ -55,6 +55,7 @@ import { CallbackQueryManager } from "./4_callback_query_manager.ts";
 import { ChatListManager } from "./4_chat_list_manager.ts";
 import { ChatManager } from "./4_chat_manager.ts";
 import { ChecklistManager } from "./4_checklist_manager.ts";
+import { ContactManager } from "./4_contact_manager.ts";
 import type { Context } from "./4_context.ts";
 import { ForumManager } from "./4_forum_manager.ts";
 import { GiftManager } from "./4_gift_manager.ts";
@@ -153,6 +154,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   #chatListManager: ChatListManager;
   #chatManager: ChatManager;
   #checklistManager: ChecklistManager;
+  #contactManager: ContactManager;
   #forumManager: ForumManager;
   #giftManager: GiftManager;
   #inlineQueryManager: InlineQueryManager;
@@ -184,6 +186,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       chatListManager: this.#chatListManager,
       chatManager: this.#chatManager,
       checklistManager: this.#checklistManager,
+      contactManager: this.#contactManager,
       forumManager: this.#forumManager,
       giftManager: this.#giftManager,
       inlineQueryManager: this.#inlineQueryManager,
@@ -315,6 +318,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     this.#chatListManager = new ChatListManager({ ...c, fileManager, messageManager });
     this.#chatManager = new ChatManager({ ...c, fileManager, messageManager });
     this.#checklistManager = new ChecklistManager({ ...c, messageManager });
+    this.#contactManager = new ContactManager({ ...c, messageManager });
     this.#forumManager = new ForumManager({ ...c, messageManager });
     this.#giftManager = new GiftManager({ ...c, messageManager });
     this.#inlineQueryManager = new InlineQueryManager({ ...c, messageManager });
@@ -3272,6 +3276,10 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   //
+  // ========================= CONTACTS ========================= //
+  //
+
+  //
   // ========================= CALLBACK QUERIES ========================= //
   //
 
@@ -3717,7 +3725,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method co
    */
   async getContacts(): Promise<User[]> {
-    return await this.#accountManager.getContacts();
+    return await this.#contactManager.getContacts();
   }
 
   /**
@@ -3727,7 +3735,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param userIds The identifiers of contacts to delete.
    */
   async deleteContacts(userIds: ID[]): Promise<void> {
-    await this.#accountManager.deleteContacts(userIds);
+    await this.#contactManager.deleteContacts(userIds);
   }
 
   /**
@@ -3737,7 +3745,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param userId The identifier of the contact to delete.
    */
   async deleteContact(userId: ID): Promise<void> {
-    await this.#accountManager.deleteContact(userId);
+    await this.#contactManager.deleteContact(userId);
   }
 
   /**
@@ -3745,9 +3753,10 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    *
    * @method co
    * @param userId The identifier of the user to add as contact.
+   * @param firstName The contact's first name.
    */
-  async addContact(userId: ID, params?: AddContactParams): Promise<void> {
-    await this.#accountManager.addContact(userId, params);
+  async addContact(userId: ID, firstName: string, params?: AddContactParams): Promise<void> {
+    await this.#contactManager.addContact(userId, firstName, params);
   }
 
   //

@@ -644,15 +644,6 @@ export interface SetEmojiStatusParams {
   until?: number;
 }
 
-export interface AddContactParams {
-  /** A custom ame for the contact. */
-  firstName?: string;
-  /** A custom last name for the contact. */
-  lastName?: string;
-  /** Whether the phone number of the current user should be shared with the contact. */
-  sharePhoneNumber?: boolean;
-}
-
 export interface UpdateProfileParams {
   /** New account first name. */
   firstName?: string;
@@ -881,4 +872,19 @@ export interface UpdateChecklistParams {
 export interface ResolveUsernameParams {
   /** Affiliate program referrer. */
   referrer?: string;
+}
+
+export interface AddContactParams {
+  /** The contact's last name. */
+  lastName?: string;
+  /** Whether the phone number of the current account should be shared with the new contact. */
+  isPhoneNumberShared?: boolean;
+  /** The contact's phone number. */
+  phoneNumber?: string;
+  /** A note to attach to the contact. */
+  note?: string;
+  /** The note's entities. */
+  noteEntities?: MessageEntity[];
+  /** The parse mode to use for the note */
+  noteParseMode?: ParseMode;
 }

@@ -2100,8 +2100,9 @@ export abstract class ClientGeneric {
    *
    * @method co
    * @param userId The identifier of the user to add as contact.
+   * @param firstName The contact's first name.
    */
-  abstract addContact(userId: ID, params?: AddContactParams): Promise<void>;
+  abstract addContact(userId: ID, firstName: string, params?: AddContactParams): Promise<void>;
 
   //
   // ========================= TRANSLATIONS ========================= //
