@@ -2862,7 +2862,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   //
 
   /**
-   * Get gift collections of a chat.
+   * Get gift collections of a chat. User-only.
    *
    * @method gc
    * @param chatId The identifier of a chat to get gift collections for.
@@ -2872,7 +2872,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Create a gift collection.
+   * Create a gift collection. User-only.
    *
    * @method gc
    * @param chatId The identifier of a chat to create the gift collection in.
@@ -2884,7 +2884,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Set the name of a gift collection.
+   * Set the name of a gift collection. User-only.
    *
    * @method gc
    * @param chatId The identifier of the chat that includes the gift collection.
@@ -2896,7 +2896,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Add gifts to a gift collection.
+   * Add gifts to a gift collection. User-only.
    *
    * @method gc
    * @param chatId The identifier of the chat that includes the gift collection.
@@ -2908,7 +2908,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Remove gifts from a gift collection.
+   * Remove gifts from a gift collection. User-only.
    *
    * @method gc
    * @param chatId The identifier of the chat that includes the gift collection.
@@ -2920,7 +2920,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Reorder gifts in a gift collection.
+   * Reorder gifts in a gift collection. User-only.
    *
    * @method gc
    * @param chatId The identifier of the chat that includes the gift collection.
@@ -2932,7 +2932,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Delete a gift collection.
+   * Delete a gift collection. User-only.
    *
    * @method gc
    * @param chatId The identifier of the chat that includes the gift collection.

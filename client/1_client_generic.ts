@@ -2199,7 +2199,7 @@ export abstract class ClientGeneric {
   //
 
   /**
-   * Get gift collections of a chat.
+   * Get gift collections of a chat. User-only.
    *
    * @method gc
    * @param chatId The identifier of a chat to get gift collections for.
@@ -2207,7 +2207,7 @@ export abstract class ClientGeneric {
   abstract getGiftCollections(chatId: ID): Promise<GiftCollection[]>;
 
   /**
-   * Create a gift collection.
+   * Create a gift collection. User-only.
    *
    * @method gc
    * @param chatId The identifier of a chat to create the gift collection in.
@@ -2217,7 +2217,7 @@ export abstract class ClientGeneric {
   abstract createGiftCollection(chatId: ID, name: string, gifts: InputGift[]): Promise<GiftCollection>;
 
   /**
-   * Set the name of a gift collection.
+   * Set the name of a gift collection. User-only.
    *
    * @method gc
    * @param chatId The identifier of the chat that includes the gift collection.
@@ -2227,7 +2227,7 @@ export abstract class ClientGeneric {
   abstract setGiftCollectionName(chatId: ID, collectionId: number, name: string): Promise<GiftCollection>;
 
   /**
-   * Add gifts to a gift collection.
+   * Add gifts to a gift collection. User-only.
    *
    * @method gc
    * @param chatId The identifier of the chat that includes the gift collection.
@@ -2237,7 +2237,7 @@ export abstract class ClientGeneric {
   abstract addGiftsToCollection(chatId: ID, collectionId: number, gifts: InputGift[]): Promise<GiftCollection>;
 
   /**
-   * Remove gifts from a gift collection.
+   * Remove gifts from a gift collection. User-only.
    *
    * @method gc
    * @param chatId The identifier of the chat that includes the gift collection.
@@ -2247,7 +2247,7 @@ export abstract class ClientGeneric {
   abstract removeGiftsFromCollection(chatId: ID, collectionId: number, gifts: InputGift[]): Promise<GiftCollection>;
 
   /**
-   * Reorder gifts in a gift collection.
+   * Reorder gifts in a gift collection. User-only.
    *
    * @method gc
    * @param chatId The identifier of the chat that includes the gift collection.
@@ -2257,7 +2257,7 @@ export abstract class ClientGeneric {
   abstract reorderGiftsInCollection(chatId: ID, collectionId: number, gifts: InputGift[]): Promise<GiftCollection>;
 
   /**
-   * Delete a gift collection.
+   * Delete a gift collection. User-only.
    *
    * @method gc
    * @param chatId The identifier of the chat that includes the gift collection.
