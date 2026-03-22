@@ -20,18 +20,18 @@
 
 import type { Api } from "../2_tl.ts";
 import type { PeerGetter } from "./1_chat_p.ts";
-import { constructBlockedUser, type BlockedUser } from "./3_blocked_user.ts";
+import { type BlockedUser, constructBlockedUser } from "./3_blocked_user.ts";
 
 /** A list of blocked users. */
 export interface BlockedUserList {
-    /** The blocked users. */
-    blockedUsers: BlockedUser[]
-    /** The total number of blocked users. */
-    count: number;
+  /** The blocked users. */
+  blockedUsers: BlockedUser[];
+  /** The total number of blocked users. */
+  count: number;
 }
 
 export function constructBlockedUserList(result: Api.contacts_Blocked, getPeer: PeerGetter): BlockedUserList {
-    const blockedUsers = result.blocked.map(v=>constructBlockedUser(v, getPeer))
-    const count = 'count' in result ? result.count : result.blocked.length;
-    return {blockedUsers, count}
+  const blockedUsers = result.blocked.map((v) => constructBlockedUser(v, getPeer));
+  const count = "count" in result ? result.count : result.blocked.length;
+  return { blockedUsers, count };
 }

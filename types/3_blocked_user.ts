@@ -25,23 +25,23 @@ import { constructUser2, type User } from "./2_user.ts";
 
 /** A blocked user. */
 export interface BlockedUser {
-    /** The blocked user. */
-    user: User;
-    /** The point in time in which the user was blocked. */
-    blockedAt: number;
+  /** The blocked user. */
+  user: User;
+  /** The point in time in which the user was blocked. */
+  blockedAt: number;
 }
 
 export function constructBlockedUser(peerBlocked: Api.PeerBlocked, getPeer: PeerGetter): BlockedUser {
-    const maybeChatP = getPeer(peerBlocked.peer_id)
-    if (maybeChatP === null || maybeChatP[0].type !== "private") {
-        unreachable()
-    }
+  const maybeChatP = getPeer(peerBlocked.peer_id);
+  if (maybeChatP === null || maybeChatP[0].type !== "private") {
+    unreachable();
+  }
 
-    const user = constructUser2(maybeChatP[0])
-    const blockedAt = peerBlocked.date
+  const user = constructUser2(maybeChatP[0]);
+  const blockedAt = peerBlocked.date;
 
-    return {
-        user,
-        blockedAt
-    }
+  return {
+    user,
+    blockedAt,
+  };
 }

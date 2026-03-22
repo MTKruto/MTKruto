@@ -905,7 +905,6 @@ export interface GetStoriesInAlbumParams {
   limit?: number;
 }
 
-
 export interface GetBlockedUsersParams {
   /** Whether to fetch users blocked from viewing stories. */
   isBlockedFromViewingStories?: boolean;
