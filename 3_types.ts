@@ -119,6 +119,7 @@ export * from "./types/2_story_interactive_area.ts";
 export * from "./types/2_story_privacy.ts";
 export * from "./types/2_successful_payment.ts";
 export * from "./types/2_user.ts";
+export * from './types/3_blocked_user.ts'
 export * from "./types/3_business_connection.ts";
 export * from "./types/3_chat_settings.ts";
 export * from "./types/3_checklist_item.ts";
@@ -140,6 +141,7 @@ export * from "./types/3_reply_quote.ts";
 export * from "./types/3_story_album.ts";
 export * from "./types/3_story.ts";
 export * from "./types/4_album_story_list.ts";
+export * from "./types/4_blocked_user_list.ts";
 export * from "./types/4_chat_member_updated.ts";
 export * from "./types/4_checklist.ts";
 export * from "./types/4_gift.ts";

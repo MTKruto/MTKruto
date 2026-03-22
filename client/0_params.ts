@@ -904,3 +904,13 @@ export interface GetStoriesInAlbumParams {
   /** The maximum number of results to return. */
   limit?: number;
 }
+
+
+export interface GetBlockedUsersParams {
+  /** Whether to fetch users blocked from viewing stories. */
+  isBlockedFromViewingStories?: boolean;
+  /** The number of results to skip. */
+  offset?: number;
+  /** The maximum number of results to return. */
+  limit?: number;
+}
