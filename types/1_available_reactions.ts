@@ -1,0 +1,68 @@
+/**
+ * MTKruto - Cross-runtime JavaScript library for building Telegram clients
+ * Copyright (C) 2023-2026 Roj <https://roj.im/>
+ *
+ * This file is part of MTKruto.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+import type { Api } from "../2_tl.ts";
+import { type Reaction, reactionToTlObject } from "./0_reaction.ts";
+
+/**
+ * An available reactions value allowing no type of reactions.
+ * @unlisted
+ */
+export interface AvailableReactionsNone {
+  /** @discriminator */
+  type: "none";
+}
+
+/**
+ * An available reactions value allowing a specific set of reactions.
+ * @unlisted
+ */
+export interface AvailableReactionsSome {
+  /** @discriminator */
+  type: "some";
+  /** The allowed reactions. */
+  reactions: Reaction[];
+  /** The maximum number of allowed reactions on a single message. */
+  maxReactionCount: number;
+}
+
+/**
+ * An available reactions value allowing all types of reactions.
+ * @unlisted
+ */
+export interface AvailableReactionsAll {
+  /** @discriminator */
+  type: "all";
+  /** The maximum number of allowed reactions on a single message. */
+  maxReactionCount: number;
+}
+
+export type AvailableReactions = AvailableReactionsNone | AvailableReactionsSome | AvailableReactionsAll;
+
+export function availableReactionsToTlObject(chatAvailableReactions: AvailableReactions): Api.ChatReactions {
+  switch (chatAvailableReactions.type) {
+    case "none":
+      return { _: "chatReactionsNone" };
+    case "some":
+      return { _: "chatReactionsSome", reactions: chatAvailableReactions.reactions.map(reactionToTlObject) };
+    case "all":
+      return { _: "chatReactionsAll" };
+  }
+}

@@ -21,8 +21,8 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { chatAdministratorRightsToTlObject, type ChatP, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, constructJoinRequest2, type SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
-import { chatMemberRightsToTlObject, type FileSource, type ID, type Reaction, reactionToTlObject, type Update } from "../3_types.ts";
+import { type AvailableReactions, availableReactionsToTlObject, chatAdministratorRightsToTlObject, type ChatP, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, constructJoinRequest2, type SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
+import { chatMemberRightsToTlObject, type FileSource, type ID, type Update } from "../3_types.ts";
 import { inputPeerToPeer } from "../tl/2_telegram.ts";
 import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, EnableSignaturesParams, GetCreatedInviteLinksParams, GetJoinRequestsParams, PromoteChatMemberParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
@@ -254,8 +254,10 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
   }
 
   // CHAT SETTINGS //
-  async setAvailableReactions(chatId: ID, availableReactions: "none" | "all" | Reaction[]) {
-    await this.#c.invoke({ _: "messages.setChatAvailableReactions", peer: await this.#c.getInputPeer(chatId), available_reactions: availableReactions === "none" ? { _: "chatReactionsNone" } : availableReactions === "all" ? { _: "chatReactionsAll" } : Array.isArray(availableReactions) ? ({ _: "chatReactionsSome", reactions: availableReactions.map((v) => reactionToTlObject(v)) }) : unreachable() });
+  async setAvailableReactions(chatId: ID, availableReactions: AvailableReactions) {
+    this.#c.storage.assertUser("setSendAs");
+    const peer = await this.#c.getInputPeer(chatId);
+    await this.#c.invoke({ _: "messages.setChatAvailableReactions", peer, available_reactions: availableReactionsToTlObject(availableReactions), paid_enabled: availableReactions.type === "all" ? true : availableReactions.type === "some" ? availableReactions.reactions.some((v) => v.type === "paid") : undefined, reactions_limit: "maxReactionCount" in availableReactions ? availableReactions.maxReactionCount : undefined });
   }
 
   async setBoostsRequiredToCircumventRestrictions(chatId: ID, boosts: number) {
