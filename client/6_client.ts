@@ -3301,6 +3301,26 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     return await this.#chatManager.getOnlineCount(chatId);
   }
 
+  /**
+   * Enable chat history for new members. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  async enableChatHistoryForNewMembers(chatId: ID): Promise<void> {
+    await this.#chatManager.enableChatHistoryForNewMembers(chatId);
+  }
+
+  /**
+   * Disable chat history for new members. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  async disableChatHistoryForNewMembers(chatId: ID): Promise<void> {
+    await this.#chatManager.disableChatHistoryForNewMembers(chatId);
+  }
+
   //
   // ========================= CONTACTS ========================= //
   //

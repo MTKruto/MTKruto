@@ -539,4 +539,19 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     const result = await this.#c.invoke({ _: "messages.getOnlines", peer });
     return result.onlines;
   }
+
+  async #toggleChatHistoryForNewMembers(chatId: ID, isEnabled: boolean) {
+    const channel = await this.#c.getInputChannel(chatId);
+    await this.#c.invoke({ _: "channels.togglePreHistoryHidden", channel, enabled: !isEnabled });
+  }
+
+  async enableChatHistoryForNewMembers(chatId: ID) {
+    this.#c.storage.assertUser("enableChatHistoryForNewMembers");
+    await this.#toggleChatHistoryForNewMembers(chatId, true);
+  }
+
+  async disableChatHistoryForNewMembers(chatId: ID) {
+    this.#c.storage.assertUser("disableChatHistoryForNewMembers");
+    await this.#toggleChatHistoryForNewMembers(chatId, false);
+  }
 }

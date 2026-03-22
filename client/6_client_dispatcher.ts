@@ -2293,6 +2293,26 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("getOnlineCount", chatId);
   }
 
+  /**
+   * Enable chat history for new members. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  async enableChatHistoryForNewMembers(chatId: ID): Promise<void> {
+    return await this.#dispatch("enableChatHistoryForNewMembers", chatId);
+  }
+
+  /**
+   * Disable chat history for new members. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  async disableChatHistoryForNewMembers(chatId: ID): Promise<void> {
+    return await this.#dispatch("disableChatHistoryForNewMembers", chatId);
+  }
+
   //
   // ========================= CALLBACK QUERIES ========================= //
   //

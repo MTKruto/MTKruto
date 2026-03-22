@@ -1727,6 +1727,22 @@ export abstract class ClientGeneric {
    */
   abstract getOnlineCount(chatId: ID): Promise<number>;
 
+  /**
+   * Enable chat history for new members. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  abstract enableChatHistoryForNewMembers(chatId: ID): Promise<void>;
+
+  /**
+   * Disable chat history for new members. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  abstract disableChatHistoryForNewMembers(chatId: ID): Promise<void>;
+
   //
   // ========================= CALLBACK QUERIES ========================= //
   //
