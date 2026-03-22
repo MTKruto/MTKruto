@@ -3351,7 +3351,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Set the default send as chat in a chat. User-only.
+   * Set the default send as chat of a chat. User-only.
    *
    * @method ch
    * @param chatId The identifier of a chat.

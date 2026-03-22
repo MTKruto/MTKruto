@@ -2343,7 +2343,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Set the default send as chat in a chat. User-only.
+   * Set the default send as chat of a chat. User-only.
    *
    * @method ch
    * @param chatId The identifier of a chat.
