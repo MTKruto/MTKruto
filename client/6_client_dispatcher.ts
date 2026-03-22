@@ -1337,12 +1337,22 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   /**
    * Get a list of reactions made to a message. User-only.
    *
+   * @method ms
    * @param chatId The identifier of a chat.
    * @param messageId The identifier of the message.
-   * @method ms
    */
   async getMessageReactions(chatId: ID, messageId: number, params?: GetMessageReactionsParams): Promise<MessageReactionList> {
     return await this.#dispatch("getMessageReactions", chatId, messageId, params);
+  }
+
+  /**
+   * Set a reaction as default. User-only.
+   *
+   * @mehod ms
+   * @param reaction The reaction to set as default.
+   */
+  async setDefaultReaction(reaction: Reaction): Promise<void> {
+    return await this.#dispatch("setDefaultReaction", reaction);
   }
 
   //

@@ -2356,6 +2356,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     return await this.#messageManager.getMessageReactions(chatId, messageId, params);
   }
 
+  /**
+   * Set a reaction as default. User-only.
+   *
+   * @mehod ms
+   * @param reaction The reaction to set as default.
+   */
+  async setDefaultReaction(reaction: Reaction): Promise<void> {
+    await this.#messageManager.setDefaultReaction(reaction);
+  }
+
   //
   // ========================= POLLS ========================= //
   //

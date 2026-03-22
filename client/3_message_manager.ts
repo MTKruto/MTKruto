@@ -2031,4 +2031,9 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     });
     return constructMessageReactionList(messageReactionsList);
   }
+
+  async setDefaultReaction(reaction: Reaction) {
+    this.#c.storage.assertUser("setDefaultReaction");
+    await this.#c.invoke({ _: "messages.setDefaultReaction", reaction: reactionToTlObject(reaction) });
+  }
 }
