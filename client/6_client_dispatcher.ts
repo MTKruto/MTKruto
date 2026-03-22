@@ -713,6 +713,15 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("getAppSupportName");
   }
 
+  /**
+   * Get owned bots. User-only.
+   *
+   * @method ac
+   */
+  async getOwnedBots(): Promise<User[]> {
+    return await this.#dispatch("getOwnedBots");
+  }
+
   //
   // ========================= MESSAGES ========================= //
   //

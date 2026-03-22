@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { PasswordHashInvalid, PhoneCodeInvalid, SessionPasswordNeeded } from "../3_errors.ts";
-import { type Birthday, birthdayToTlObject, type BotTokenCheckResult, type CodeCheckResult, constructAppSupport, constructEmojiStatus, constructInactiveChat, constructUser2, type ID, type InputEmojiStatus, type PasswordCheckResult, type Update, workingHoursToTlObject } from "../3_types.ts";
+import { type Birthday, birthdayToTlObject, type BotTokenCheckResult, type CodeCheckResult, constructAppSupport, constructEmojiStatus, constructInactiveChat, constructUser, constructUser2, type ID, type InputEmojiStatus, type PasswordCheckResult, type Update, workingHoursToTlObject } from "../3_types.ts";
 import type { AddBotToAttachmentsMenuParams, CheckUsernameParams, ResolveUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
@@ -476,5 +476,11 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     this.#c.storage.assertUser("getAppSupportName");
     const result = await this.#c.invoke({ _: "help.getSupportName" });
     return result.name;
+  }
+
+  async getOwnedBots() {
+    this.#c.storage.assertUser("getOwnedBots");
+    const result = await this.#c.invoke({ _: "bots.getAdminedBots" });
+    return result.map((v) => Api.as("user", v)).map(constructUser);
   }
 }
