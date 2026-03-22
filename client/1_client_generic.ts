@@ -955,11 +955,19 @@ export abstract class ClientGeneric {
   /**
    * Get a list of reactions made to a message. User-only.
    *
+   * @method ms
    * @param chatId The identifier of a chat.
    * @param messageId The identifier of the message.
-   * @method ms
    */
   abstract getMessageReactions(chatId: ID, messageId: number, params?: GetMessageReactionsParams): Promise<MessageReactionList>;
+
+  /**
+   * Set a reaction as default. User-only.
+   *
+   * @mehod ms
+   * @param reaction The reaction to set as default.
+   */
+  abstract setDefaultReaction(reaction: Reaction): Promise<void>;
 
   //
   // ========================= POLLS ========================= //
