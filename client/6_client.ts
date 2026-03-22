@@ -1642,6 +1642,26 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     await this.#accountManager.suggestBirthday(userId, birthday);
   }
 
+  /**
+   * Block a user. User-only.
+   *
+   * @method ac
+   * @param userId The identifier of the user to block.
+   */
+  async blockUser(userId: ID) {
+    await this.#messageManager.blockUser(userId);
+  }
+
+  /**
+   * Unblock a user. User-only.
+   *
+   * @method ac
+   * @param userId The identifier of the user to unblock.
+   */
+  async unblockUser(userId: ID) {
+    await this.#messageManager.unblockUser(userId);
+  }
+
   //
   // ========================= MESSAGES ========================= //
   //
@@ -3719,36 +3739,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   //
-  // ========================= MISC ========================= //
+  // ========================= NETWORK STATISTICS ========================= //
   //
 
   /**
    * Get network statistics. This might not always be available.
    *
-   * @method mc
+   * @method ns
    */
   async getNetworkStatistics(): Promise<NetworkStatistics> {
     return await this.#networkStatisticsManager.getNetworkStatistics();
-  }
-
-  /**
-   * Block a user. User-only.
-   *
-   * @method mc
-   * @param userId The identifier of the user to block.
-   */
-  async blockUser(userId: ID) {
-    await this.#messageManager.blockUser(userId);
-  }
-
-  /**
-   * Unblock a user. User-only.
-   *
-   * @method mc
-   * @param userId The identifier of the user to unblock.
-   */
-  async unblockUser(userId: ID) {
-    await this.#messageManager.unblockUser(userId);
   }
 
   //

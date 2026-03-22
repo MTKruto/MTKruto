@@ -646,6 +646,26 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("suggestBirthday", userId, birthday);
   }
 
+  /**
+   * Block a user. User-only.
+   *
+   * @method ac
+   * @param userId The identifier of the user to block.
+   */
+  async blockUser(userId: ID): Promise<void> {
+    return await this.#dispatch("blockUser", userId);
+  }
+
+  /**
+   * Unblock a user. User-only.
+   *
+   * @method ac
+   * @param userId The identifier of the user to unblock.
+   */
+  async unblockUser(userId: ID): Promise<void> {
+    return await this.#dispatch("unblockUser", userId);
+  }
+
   //
   // ========================= MESSAGES ========================= //
   //
@@ -2704,36 +2724,16 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   //
-  // ========================= MISC ========================= //
+  // ========================= NETWORK STATISTICS ========================= //
   //
 
   /**
    * Get network statistics. This might not always be available.
    *
-   * @method mc
+   * @method ns
    */
   async getNetworkStatistics(): Promise<NetworkStatistics> {
     return await this.#dispatch("getNetworkStatistics");
-  }
-
-  /**
-   * Block a user. User-only.
-   *
-   * @method mc
-   * @param userId The identifier of the user to block.
-   */
-  async blockUser(userId: ID): Promise<void> {
-    return await this.#dispatch("blockUser", userId);
-  }
-
-  /**
-   * Unblock a user. User-only.
-   *
-   * @method mc
-   * @param userId The identifier of the user to unblock.
-   */
-  async unblockUser(userId: ID): Promise<void> {
-    return await this.#dispatch("unblockUser", userId);
   }
 
   //
