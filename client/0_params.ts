@@ -913,3 +913,8 @@ export interface GetBlockedUsersParams {
   /** The maximum number of results to return. */
   limit?: number;
 }
+
+export interface AddBotToAttachmentsMenuParams {
+  /** Whether the bot is allowed to write to the user. */
+  isWriteAllowed?: boolean;
+}
