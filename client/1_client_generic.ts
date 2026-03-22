@@ -1953,6 +1953,13 @@ export abstract class ClientGeneric {
    */
   abstract removeReaction(chatId: ID, messageId: number, reaction: Reaction): Promise<void>;
 
+  /**
+   * Clear recent reactions. User-only.
+   *
+   * @method re
+   */
+  abstract clearRecentReactions(): Promise<void>;
+
   //
   // ========================= STORIES ========================= //
   //

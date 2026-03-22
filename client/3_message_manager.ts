@@ -1359,6 +1359,11 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     }
   }
 
+  async clearRecentReactions() {
+    this.#c.storage.assertUser("clearRecentReactions");
+    await this.#c.invoke({ _: "messages.clearRecentReactions" });
+  }
+
   canHandleUpdate(update: Api.Update): update is MessageManagerUpdate {
     return Api.isOneOf(messageManagerUpdates, update);
   }
