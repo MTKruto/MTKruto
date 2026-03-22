@@ -365,6 +365,22 @@ export abstract class ClientGeneric {
    */
   abstract suggestBirthday(userId: ID, birthday: Birthday): Promise<void>;
 
+  /**
+   * Block a user. User-only.
+   *
+   * @method ac
+   * @param userId The identifier of the user to block.
+   */
+  abstract blockUser(userId: ID): Promise<void>;
+
+  /**
+   * Unblock a user. User-only.
+   *
+   * @method ac
+   * @param userId The identifier of the user to unblock.
+   */
+  abstract unblockUser(userId: ID): Promise<void>;
+
   //
   // ========================= MESSAGES ========================= //
   //
@@ -2068,31 +2084,15 @@ export abstract class ClientGeneric {
   abstract getStoriesInAlbum(chatId: ID, albumId: number): Promise<AlbumStoryList>;
 
   //
-  // ========================= MISC ========================= //
+  // ========================= NETWORK STATISTICS ========================= //
   //
 
   /**
    * Get network statistics. This might not always be available.
    *
-   * @method mc
+   * @method ns
    */
   abstract getNetworkStatistics(): Promise<NetworkStatistics>;
-
-  /**
-   * Block a user. User-only.
-   *
-   * @method mc
-   * @param userId The identifier of the user to block.
-   */
-  abstract blockUser(userId: ID): Promise<void>;
-
-  /**
-   * Unblock a user. User-only.
-   *
-   * @method mc
-   * @param userId The identifier of the user to unblock.
-   */
-  abstract unblockUser(userId: ID): Promise<void>;
 
   //
   // ========================= VIDEO CHATS ========================= //
