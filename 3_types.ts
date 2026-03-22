@@ -120,6 +120,7 @@ export * from "./types/2_story_interactive_area.ts";
 export * from "./types/2_story_privacy.ts";
 export * from "./types/2_successful_payment.ts";
 export * from "./types/2_user.ts";
+export * from "./types/3_app_support.ts";
 export * from "./types/3_blocked_user.ts";
 export * from "./types/3_business_connection.ts";
 export * from "./types/3_chat_settings.ts";
