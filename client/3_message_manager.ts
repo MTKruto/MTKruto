@@ -2036,4 +2036,9 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     this.#c.storage.assertUser("setDefaultReaction");
     await this.#c.invoke({ _: "messages.setDefaultReaction", reaction: reactionToTlObject(reaction) });
   }
+
+  async clearDrafts() {
+    this.#c.storage.assertUser("clearDrafts");
+    await this.#c.invoke({ _: "messages.clearAllDrafts" });
+  }
 }
