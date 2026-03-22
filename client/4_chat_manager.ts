@@ -554,4 +554,11 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     this.#c.storage.assertUser("disableChatHistoryForNewMembers");
     await this.#toggleChatHistoryForNewMembers(chatId, false);
   }
+
+  async setDefaultSendAs(chatId: ID, sendAs: ID) {
+    this.#c.storage.assertUser("setSendAs");
+    const peer = await this.#c.getInputPeer(chatId);
+    const send_as = await this.#c.getInputPeer(sendAs);
+    await this.#c.invoke({ _: "messages.saveDefaultSendAs", peer, send_as });
+  }
 }
