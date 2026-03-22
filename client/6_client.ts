@@ -3350,6 +3350,17 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     await this.#chatManager.disableChatHistoryForNewMembers(chatId);
   }
 
+  /**
+   * Set the default send as chat in a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param sendAs The new default send as chat.
+   */
+  async setDefaultSendAs(chatId: ID, sendAs: ID): Promise<void> {
+    await this.#chatManager.setDefaultSendAs(chatId, sendAs);
+  }
+
   //
   // ========================= CONTACTS ========================= //
   //

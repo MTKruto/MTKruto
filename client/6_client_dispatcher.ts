@@ -2342,6 +2342,17 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("disableChatHistoryForNewMembers", chatId);
   }
 
+  /**
+   * Set the default send as chat in a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param sendAs The new default send as chat.
+   */
+  async setDefaultSendAs(chatId: ID, sendAs: ID): Promise<void> {
+    return await this.#dispatch("setDefaultSendAs", chatId, sendAs);
+  }
+
   //
   // ========================= CALLBACK QUERIES ========================= //
   //

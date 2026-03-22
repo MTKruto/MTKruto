@@ -1766,6 +1766,15 @@ export abstract class ClientGeneric {
    */
   abstract disableChatHistoryForNewMembers(chatId: ID): Promise<void>;
 
+  /**
+   * Set the default send as chat in a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param sendAs The new default send as chat.
+   */
+  abstract setDefaultSendAs(chatId: ID, sendAs: ID): Promise<void>;
+
   //
   // ========================= CALLBACK QUERIES ========================= //
   //
