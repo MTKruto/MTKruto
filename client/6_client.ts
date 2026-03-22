@@ -2363,7 +2363,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param reaction The reaction to set as default.
    */
   async setDefaultReaction(reaction: Reaction): Promise<void> {
-    return await this.#messageManager.setDefaultReaction(reaction);
+    await this.#messageManager.setDefaultReaction(reaction);
   }
 
   //
