@@ -1718,6 +1718,15 @@ export abstract class ClientGeneric {
    */
   abstract getSimilarBots(chatId: ID): Promise<ChatPPrivate[]>;
 
+  /**
+   * Get the count of online members in a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @returns The count of online members in the chat.
+   */
+  abstract getOnlineCount(chatId: ID): Promise<number>;
+
   //
   // ========================= CALLBACK QUERIES ========================= //
   //

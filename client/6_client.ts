@@ -3290,6 +3290,17 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     return await this.#chatManager.getSimilarBots(chatId);
   }
 
+  /**
+   * Get the count of online members in a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @returns The count of online members in the chat.
+   */
+  async getOnlineCount(chatId: ID): Promise<number> {
+    return await this.#chatManager.getOnlineCount(chatId);
+  }
+
   //
   // ========================= CONTACTS ========================= //
   //
