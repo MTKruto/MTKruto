@@ -985,6 +985,13 @@ export abstract class ClientGeneric {
    */
   abstract setDefaultReaction(reaction: Reaction): Promise<void>;
 
+  /**
+   * Clear all message drafts. User-only.
+   *
+   * @mehod ms
+   */
+  abstract clearDrafts(): Promise<void>;
+
   //
   // ========================= POLLS ========================= //
   //

@@ -1375,6 +1375,15 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("setDefaultReaction", reaction);
   }
 
+  /**
+   * Clear all message drafts. User-only.
+   *
+   * @mehod ms
+   */
+  async clearDrafts(): Promise<void> {
+    return await this.#dispatch("clearAllDrafts");
+  }
+
   //
   // ========================= POLLS ========================= //
   //

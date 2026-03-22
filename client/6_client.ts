@@ -2386,6 +2386,15 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     await this.#messageManager.setDefaultReaction(reaction);
   }
 
+  /**
+   * Clear all message drafts. User-only.
+   *
+   * @mehod ms
+   */
+  async clearDrafts(): Promise<void> {
+    await this.#messageManager.clearDrafts();
+  }
+
   //
   // ========================= POLLS ========================= //
   //
