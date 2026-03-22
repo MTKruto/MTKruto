@@ -23,7 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { PasswordHashInvalid, PhoneCodeInvalid, SessionPasswordNeeded } from "../3_errors.ts";
 import { type Birthday, birthdayToTlObject, type BotTokenCheckResult, type CodeCheckResult, constructEmojiStatus, constructInactiveChat, constructUser2, type ID, type InputEmojiStatus, type PasswordCheckResult, type Update, workingHoursToTlObject } from "../3_types.ts";
-import type { CheckUsernameParams, ResolveUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams } from "./0_params.ts";
+import type { AddBotToAttachmentsMenuParams, CheckUsernameParams, ResolveUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, canBeInputUser, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -449,5 +449,20 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     const id = await this.#c.getInputUser(userId);
     const birthday = birthdayToTlObject(birthday_);
     await this.#c.invoke({ _: "users.suggestBirthday", id, birthday });
+  }
+
+  async #toggleBotAddedtoAttachmentsMenu(botId: ID, isWriteAllowed: boolean, enabled: boolean) {
+    const bot = await this.#c.getInputUser(botId);
+    await this.#c.invoke({ _: "messages.toggleBotInAttachMenu", bot, write_allowed: isWriteAllowed ? true : undefined, enabled });
+  }
+
+  async addBotToAttachmentsMenu(botId: ID, params?: AddBotToAttachmentsMenuParams) {
+    this.#c.storage.assertUser("addBotToAttachmentsMenu");
+    await this.#toggleBotAddedtoAttachmentsMenu(botId, params?.isWriteAllowed ?? false, true);
+  }
+
+  async removeBotFromAttachmentsMenu(botId: ID) {
+    this.#c.storage.assertUser("addBotToAttachmentsMenu");
+    await this.#toggleBotAddedtoAttachmentsMenu(botId, false, false);
   }
 }
