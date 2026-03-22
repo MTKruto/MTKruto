@@ -3580,6 +3580,15 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     await this.#messageManager.removeReaction(chatId, messageId, reaction);
   }
 
+  /**
+   * Clear recent reactions. User-only.
+   *
+   * @method re
+   */
+  async clearRecentReactions(): Promise<void> {
+    return await this.#messageManager.clearRecentReactions();
+  }
+
   //
   // ========================= STORIES ========================= //
   //

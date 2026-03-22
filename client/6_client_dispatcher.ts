@@ -2569,6 +2569,15 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("removeReaction", chatId, messageId, reaction);
   }
 
+  /**
+   * Clear recent reactions. User-only.
+   *
+   * @method re
+   */
+  async clearRecentReactions(): Promise<void> {
+    return await this.#dispatch("clearRecentReactions");
+  }
+
   //
   // ========================= STORIES ========================= //
   //
