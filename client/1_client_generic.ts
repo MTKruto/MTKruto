@@ -418,6 +418,13 @@ export abstract class ClientGeneric {
    */
   abstract getAppSupportName(): Promise<string>;
 
+  /**
+   * Get owned bots. User-only.
+   *
+   * @method ac
+   */
+  abstract getOwnedBots(): Promise<User[]>;
+
   //
   // ========================= MESSAGES ========================= //
   //

@@ -1709,6 +1709,15 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     return await this.#accountManager.getAppSupportName();
   }
 
+  /**
+   * Get owned bots. User-only.
+   *
+   * @method ac
+   */
+  async getOwnedBots(): Promise<User[]> {
+    return await this.#accountManager.getOwnedBots();
+  }
+
   //
   // ========================= MESSAGES ========================= //
   //
