@@ -2282,6 +2282,17 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("getSimilarBots", chatId);
   }
 
+  /**
+   * Get the count of online members in a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @returns The count of online members in the chat.
+   */
+  async getOnlineCount(chatId: ID): Promise<number> {
+    return await this.#dispatch("getOnlineCount", chatId);
+  }
+
   //
   // ========================= CALLBACK QUERIES ========================= //
   //

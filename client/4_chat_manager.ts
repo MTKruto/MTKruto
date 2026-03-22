@@ -532,4 +532,11 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     const result = await this.#c.invoke({ _: "bots.getBotRecommendations", bot });
     return result.users.map((v) => constructChatP(v)).filter((v) => v.type === "private");
   }
+
+  async getOnlineCount(chatId: ID) {
+    this.#c.storage.assertUser("getOnlineCount");
+    const peer = await this.#c.getInputPeer(chatId);
+    const result = await this.#c.invoke({ _: "messages.getOnlines", peer });
+    return result.onlines;
+  }
 }
