@@ -20,71 +20,84 @@
 
 import type { Api } from "../2_tl.ts";
 
+/** @unlisted */
 export interface ChatActionTypeTyping {
   /** @discriminator */
   type: "typing";
 }
 
+/** @unlisted */
 export interface ChatActionTypeUploadingPhoto {
   /** @discriminator */
   type: "uploadingPhoto";
   progress?: number;
 }
 
+/** @unlisted */
 export interface ChatActionTypeRecordingVideo {
   /** @discriminator */
   type: "recordingVideo";
 }
 
+/** @unlisted */
 export interface ChatActionTypeUploadingVideo {
   /** @discriminator */
   type: "uploadingVideo";
   progress?: number;
 }
 
+/** @unlisted */
 export interface ChatActionTypeRecordingVoice {
   /** @discriminator */
   type: "recordingVoice";
 }
 
+/** @unlisted */
 export interface ChatActionTypeUploadingAudio {
   /** @discriminator */
   type: "uploadingAudio";
   progress?: number;
 }
 
+/** @unlisted */
 export interface ChatActionTypeUploadingDocument {
   /** @discriminator */
   type: "uploadingDocument";
   progress?: number;
 }
 
+/** @unlisted */
 export interface ChatActionTypeChoosingSticker {
   /** @discriminator */
   type: "choosingSticker";
 }
 
+/** @unlisted */
 export interface ChatActionTypeChoosingLocation {
   /** @discriminator */
   type: "choosingLocation";
 }
 
+/** @unlisted */
 export interface ChatActionTypeRecordingVideoNote {
   /** @discriminator */
   type: "recordingVideoNote";
 }
 
+/** @unlisted */
 export interface ChatActionTypeUploadingTypeVideoNote {
   /** @discriminator */
   type: "uploadingVideoNote";
   progress?: number;
 }
 
+/** @unlisted */
 export interface ChatActionTypePlayingGame {
   /** @discriminator */
   type: "playingGame";
 }
 
+/** @unlisted */
 export interface ChatActionTypeCancel {
   /** @discriminator */
   type: "cancel";

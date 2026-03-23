@@ -30,27 +30,24 @@ export { basename } from "jsr:@std/path@1.1.4/basename";
 export { toFileUrl } from "jsr:@std/path@1.1.4/to-file-url";
 export { isAbsolute } from "jsr:@std/path@1.1.4/is-absolute";
 
-export { delay, pooledMap } from "jsr:@std/async@1.2.0";
+export { delay } from "jsr:@std/async@1.2.0/delay";
+export { pooledMap } from "jsr:@std/async@1.2.0/pool";
 
 export { concat } from "jsr:@std/bytes@1.0.6/concat";
-
-export { startsWith } from "jsr:@std/bytes@1.0.6/starts-with";
-
 export { equals } from "jsr:@std/bytes@1.0.6/equals";
+export { startsWith } from "jsr:@std/bytes@1.0.6/starts-with";
 
 export { LruCache } from "jsr:@std/cache@0.2.2/lru-cache";
 
 export { iterateReader } from "jsr:@std/io@0.225.3/iterate-reader";
 
 export { format } from "jsr:@std/datetime@0.225.7/format";
-
 export { MINUTE, SECOND } from "jsr:@std/datetime@0.225.7/constants";
 
 export { toArrayBuffer } from "jsr:@std/streams@1.0.17/to-array-buffer";
 
-export { decodeBase64, encodeBase64 } from "jsr:@std/encoding@1.0.10/base64";
-
 export { encodeHex } from "jsr:@std/encoding@1.0.10/hex";
+export { decodeBase64, encodeBase64 } from "jsr:@std/encoding@1.0.10/base64";
 
 import { contentType as contentType_ } from "jsr:@std/media-types@1.1.0/content-type";
 export const contentType: typeof contentType_ = (extentionOrType) => {

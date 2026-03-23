@@ -54,6 +54,7 @@ export interface AvailableReactionsAll {
   maxReactionCount: number;
 }
 
+/** A chat's available reactions. */
 export type AvailableReactions = AvailableReactionsNone | AvailableReactionsSome | AvailableReactionsAll;
 
 export function availableReactionsToTlObject(chatAvailableReactions: AvailableReactions): Api.ChatReactions {

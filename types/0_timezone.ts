@@ -18,22 +18,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { Document } from "./1_document.ts";
-import type { Photo } from "./1_photo.ts";
+import type { Api } from "../2_tl.ts";
 
-/** @unlisted */
-export interface StoryAlbumIconPhoto {
-  /** @discriminator */
-  type: "photo";
-  photo: Photo;
+/** A timezone. */
+export interface Timezone {
+  /** The identifier of the timezone. */
+  id: string;
+  /** The name of the timezone. */
+  name: string;
+  /** The UTC offset of the timezone. */
+  utcOffset: number;
 }
 
-/** @unlisted */
-export interface StoryAlbumIconVideo {
-  /** @discriminator */
-  type: "video";
-  video: Document;
+export function constructTimezone(timezone: Api.Timezone): Timezone {
+  return {
+    id: timezone.id,
+    name: timezone.name,
+    utcOffset: timezone.utc_offset,
+  };
 }
-
-/** A story album's icon. */
-export type StoryAlbumIcon = StoryAlbumIconPhoto | StoryAlbumIconVideo;

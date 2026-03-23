@@ -18,22 +18,30 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { Document } from "./1_document.ts";
-import type { Photo } from "./1_photo.ts";
+import { cleanObject } from "../1_utilities.ts";
+import type { Api } from "../2_tl.ts";
+import { type CallingCode, constructCallingCode } from "./0_calling_code.ts";
 
-/** @unlisted */
-export interface StoryAlbumIconPhoto {
-  /** @discriminator */
-  type: "photo";
-  photo: Photo;
+/** A country. */
+export interface Country {
+  /** The default name for the country. */
+  defaultName: string;
+  /** The country's name. */
+  name?: string;
+  /** The country's 2-letter code. */
+  code: string;
+  /** The country's calling codes. */
+  callingCodes: CallingCode[];
+  /** Whether the country is hidden. */
+  isHidden: boolean;
 }
 
-/** @unlisted */
-export interface StoryAlbumIconVideo {
-  /** @discriminator */
-  type: "video";
-  video: Document;
+export function constructCountry(country: Api.help_Country): Country {
+  return cleanObject({
+    defaultName: country.default_name,
+    name: country.name,
+    code: country.iso2,
+    callingCodes: country.country_codes.map(constructCallingCode),
+    isHidden: country.hidden ?? false,
+  });
 }
-
-/** A story album's icon. */
-export type StoryAlbumIcon = StoryAlbumIconPhoto | StoryAlbumIconVideo;

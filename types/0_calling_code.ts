@@ -18,22 +18,22 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { Document } from "./1_document.ts";
-import type { Photo } from "./1_photo.ts";
+import type { Api } from "../2_tl.ts";
 
-/** @unlisted */
-export interface StoryAlbumIconPhoto {
-  /** @discriminator */
-  type: "photo";
-  photo: Photo;
+/** A country calling code. */
+export interface CallingCode {
+  /** The country's calling code. */
+  countryCode: string;
+  /** Phone number prefixes. */
+  prefixes: string[];
+  /** Phone number patterns. */
+  patterns: string[];
 }
 
-/** @unlisted */
-export interface StoryAlbumIconVideo {
-  /** @discriminator */
-  type: "video";
-  video: Document;
+export function constructCallingCode(countryCode: Api.help_CountryCode): CallingCode {
+  return {
+    countryCode: countryCode.country_code,
+    prefixes: countryCode.prefixes ?? [],
+    patterns: countryCode.patterns ?? [],
+  };
 }
-
-/** A story album's icon. */
-export type StoryAlbumIcon = StoryAlbumIconPhoto | StoryAlbumIconVideo;

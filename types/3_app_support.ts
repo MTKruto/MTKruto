@@ -21,8 +21,11 @@
 import { Api } from "../2_tl.ts";
 import { constructUser, type User } from "./2_user.ts";
 
+/** Information about app support. */
 export interface AppSupport {
+  /** App support's phone number. */
   phoneNumber: string;
+  /** The app support user. */
   user: User;
 }
 
