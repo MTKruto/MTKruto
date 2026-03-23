@@ -1842,7 +1842,7 @@ export abstract class ClientGeneric {
   abstract setDefaultSendAs(chatId: ID, sendAs: ID): Promise<void>;
 
   /**
-   * Get left channels.. User-only.
+   * Get left channels. User-only.
    *
    * @method ch
    * @param takeoutId The identifier of a takeout session.

@@ -4225,7 +4225,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   //
 
   /**
-   * Get left channels.. User-only.
+   * Get left channels. User-only.
    *
    * @method to
    * @param takeoutId The identifier of a takeout session.

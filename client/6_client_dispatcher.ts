@@ -2438,7 +2438,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Get left channels.. User-only.
+   * Get left channels. User-only.
    *
    * @method ch
    * @param takeoutId The identifier of a takeout session.
