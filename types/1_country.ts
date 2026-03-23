@@ -22,11 +22,17 @@ import { cleanObject } from "../1_utilities.ts";
 import type { Api } from "../2_tl.ts";
 import { type CallingCode, constructCallingCode } from "./0_calling_code.ts";
 
+/** A country. */
 export interface Country {
+  /** The default name for the country. */
   defaultName: string;
+  /** The country's name. */
   name?: string;
+  /** The country's 2-letter code. */
   code: string;
+  /** The country's calling codes. */
   callingCodes: CallingCode[];
+  /** Whether the country is hidden. */
   isHidden: boolean;
 }
 

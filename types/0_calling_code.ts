@@ -20,9 +20,13 @@
 
 import type { Api } from "../2_tl.ts";
 
+/** A country calling code. */
 export interface CallingCode {
+  /** The country's calling code. */
   countryCode: string;
+  /** Phone number prefixes. */
   prefixes: string[];
+  /** Phone number patterns. */
   patterns: string[];
 }
 
