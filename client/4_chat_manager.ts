@@ -564,10 +564,10 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     await this.#c.invoke({ _: "messages.saveDefaultSendAs", peer, send_as });
   }
 
-  async getLeftChannels(params?: GetLeftChannelsParams) {
+  async getLeftChannels(takeoutId: string, params?: GetLeftChannelsParams) {
     this.#c.storage.assertUser("getLeftChannels");
     const offset = params?.offset ?? 0;
-    const result = await this.#c.invoke({ _: "channels.getLeftChannels", offset });
+    const result = await this.#c.invoke({ _: "channels.getLeftChannels", offset }, { takeoutId });
     return constructLeftChannelList(result);
   }
 }
