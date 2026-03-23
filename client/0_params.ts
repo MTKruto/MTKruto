@@ -918,3 +918,8 @@ export interface AddBotToAttachmentsMenuParams {
   /** Whether the bot is allowed to write to the user. */
   isWriteAllowed?: boolean;
 }
+
+export interface GetLeftChannelsParams {
+  /** The number of results to skip. */
+  offset?: number;
+}

@@ -109,6 +109,7 @@ export * from "./types/2_chat_member.ts";
 export * from "./types/2_chat.ts";
 export * from "./types/2_gift_collection.ts";
 export * from "./types/2_inactive_chat.ts";
+export * from "./types/2_left_channel_list.ts";
 export * from "./types/2_message_entity.ts";
 export * from "./types/2_message_interactions.ts";
 export * from "./types/2_message_reaction_count.ts";
