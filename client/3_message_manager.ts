@@ -271,7 +271,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       max_id: 0,
       min_id: 0,
       hash: 0n,
-    });
+    }, { takeoutId: params?.takeoutId });
 
     if (!("messages" in result)) {
       unreachable();
