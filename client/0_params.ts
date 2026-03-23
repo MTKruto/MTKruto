@@ -923,3 +923,25 @@ export interface GetLeftChannelsParams {
   /** The number of results to skip. */
   offset?: number;
 }
+
+export interface StartTakeoutSessionParams {
+  /** Whether contacts will be exported in the takeout session. */
+  isExportingContacts?: boolean;
+  /** Whether messages from private chats will be exported in the takeout session. */
+  isExportingPrivateChats?: boolean;
+  /** Whether messages from group chats will be exported in the takeout session. */
+  isExportingGroupChats?: boolean;
+  /** Whether messages from supergroup chats will be exported in the takeout session. */
+  isExportingSupergroupChats?: boolean;
+  /** Whether messages from channel chats will be exported in the takeout session. */
+  isExportingChannelChats?: boolean;
+  /** Whether files will be exported in the takeout session. */
+  isExportingFiles?: boolean;
+  /** The maximum file size that will be exported. */
+  maxFileSize?: number;
+}
+
+export interface EndTakeoutSessionParams {
+  /** Whether the takeout failed. Defaults to false. */
+  isFailed?: boolean;
+}
