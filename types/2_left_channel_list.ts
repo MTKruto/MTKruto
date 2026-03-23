@@ -29,7 +29,7 @@ export interface LeftChannelList {
   count: number;
 }
 
-export function constructLeftChannelList(result: Api.messages_Chats) {
+export function constructLeftChannelList(result: Api.messages_Chats): LeftChannelList {
   const leftChannels = result.chats.map(constructChatP);
   const count = "count" in result ? result.count : result.chats.length;
   return { leftChannels, count };
