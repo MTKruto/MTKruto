@@ -19,7 +19,7 @@
  */
 
 import { constructLeftChannelList } from "../3_types.ts";
-import type { GetLeftChannelsParams } from "./0_params.ts";
+import type { EndTakeoutSessionParams, GetLeftChannelsParams, StartTakeoutSessionParams } from "./0_params.ts";
 import type { C } from "./1_types.ts";
 
 export class TakeoutManager {
@@ -27,6 +27,17 @@ export class TakeoutManager {
 
   constructor(c: C) {
     this.#c = c;
+  }
+
+  async startTakeoutSession(params?: StartTakeoutSessionParams) {
+    this.#c.storage.assertUser("startTakeoutSession");
+    const result = await this.#c.invoke({ _: "account.initTakeoutSession", contacts: params?.isExportingContacts ? true : undefined, message_users: params?.isExportingPrivateChats ? true : undefined, message_chats: params?.isExportingGroupChats ? true : undefined, message_megagroups: params?.isExportingSupergroupChats ? true : undefined, message_channels: params?.isExportingChannelChats ? true : undefined, files: params?.isExportingFiles ? true : undefined, file_max_size: params?.maxFileSize ? BigInt(params.maxFileSize) : undefined });
+    return String(result.id);
+  }
+
+  async endTakeoutSession(takeoutId: string, params?: EndTakeoutSessionParams) {
+    this.#c.storage.assertUser("endTakeoutSession");
+    await this.#c.invoke({ _: "account.finishTakeoutSession", success: params?.isFailed ? undefined : true }, { takeoutId });
   }
 
   async getLeftChannels(takeoutId: string, params?: GetLeftChannelsParams) {
