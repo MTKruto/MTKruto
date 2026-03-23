@@ -4228,6 +4228,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * Get left channels.. User-only.
    *
    * @method to
+   * @param takeoutId The identifier of a takeout session.
    */
   async getLeftChannels(takeoutId: string, params?: GetLeftChannelsParams): Promise<LeftChannelList> {
     return await this.#takeoutManager.getLeftChannels(takeoutId, params);

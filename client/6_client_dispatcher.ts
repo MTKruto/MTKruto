@@ -2441,6 +2441,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * Get left channels.. User-only.
    *
    * @method ch
+   * @param takeoutId The identifier of a takeout session.
    */
   async getLeftChannels(takeoutId: string, params?: GetLeftChannelsParams): Promise<LeftChannelList> {
     return await this.#dispatch("getLeftChannels", takeoutId, params);

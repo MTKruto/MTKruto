@@ -1845,6 +1845,7 @@ export abstract class ClientGeneric {
    * Get left channels.. User-only.
    *
    * @method ch
+   * @param takeoutId The identifier of a takeout session.
    */
   abstract getLeftChannels(takeoutId: string, params?: GetLeftChannelsParams): Promise<LeftChannelList>;
 
