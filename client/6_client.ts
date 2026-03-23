@@ -47,6 +47,7 @@ import { PaymentManager } from "./2_payment_manager.ts";
 import { ReactionManager } from "./2_reaction_manager.ts";
 import { signIn } from "./2_sign_in.ts";
 import { StoryAlbumManager } from "./2_story_album_manager.ts";
+import { TakeoutManager } from "./2_takeout_manager.ts";
 import { TranslationsManager } from "./2_translations_manager.ts";
 import { UpdateManager } from "./2_update_manager.ts";
 import { ClientEncryptedPool } from "./3_client_encrypted_pool.ts";
@@ -146,6 +147,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   #paymentManager: PaymentManager;
   #reactionManager: ReactionManager;
   #storyAlbumManager: StoryAlbumManager;
+  #takeoutManager: TakeoutManager;
   #translationsManager: TranslationsManager;
   #updateManager: UpdateManager;
   // 3_
@@ -179,6 +181,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       paymentManager: this.#paymentManager,
       reactionManager: this.#reactionManager,
       storyAlbumManager: this.#storyAlbumManager,
+      takeoutManager: this.#takeoutManager,
       translationsManager: this.#translationsManager,
       updateManager: this.#updateManager,
       // 3_
@@ -317,6 +320,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     this.#paymentManager = new PaymentManager(c);
     this.#reactionManager = new ReactionManager(c);
     this.#storyAlbumManager = new StoryAlbumManager(c);
+    this.#takeoutManager = new TakeoutManager(c);
     this.#translationsManager = new TranslationsManager(c);
     this.#updateManager = new UpdateManager(c);
     // 3_
@@ -3450,15 +3454,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     await this.#chatManager.setDefaultSendAs(chatId, sendAs);
   }
 
-  /**
-   * Get left channels.. User-only.
-   *
-   * @method ch
-   */
-  async getLeftChannels(takeoutId: string, params?: GetLeftChannelsParams): Promise<LeftChannelList> {
-    return await this.#chatManager.getLeftChannels(takeoutId, params);
-  }
-
   //
   // ========================= CONTACTS ========================= //
   //
@@ -4223,5 +4218,18 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async deleteGiftCollection(chatId: ID, collectionId: number): Promise<void> {
     return await this.#giftCollectionManager.deleteGiftCollection(chatId, collectionId);
+  }
+
+  //
+  // ========================= TAKEOUTS ========================= //
+  //
+
+  /**
+   * Get left channels.. User-only.
+   *
+   * @method to
+   */
+  async getLeftChannels(takeoutId: string, params?: GetLeftChannelsParams): Promise<LeftChannelList> {
+    return await this.#takeoutManager.getLeftChannels(takeoutId, params);
   }
 }
