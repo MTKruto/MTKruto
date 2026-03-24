@@ -146,6 +146,7 @@ export * from "./types/3_pre_checkout_query.ts";
 export * from "./types/3_reply_quote.ts";
 export * from "./types/3_story_album.ts";
 export * from "./types/3_story.ts";
+export * from "./types/3_summarized_text.ts";
 export * from "./types/4_album_story_list.ts";
 export * from "./types/4_blocked_user_list.ts";
 export * from "./types/4_chat_member_updated.ts";

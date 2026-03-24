@@ -947,3 +947,8 @@ export interface EndTakeoutSessionParams {
   /** Whether the takeout failed. Defaults to false. */
   isFailed?: boolean;
 }
+
+export interface SummarizeTextParams {
+  /** A language code. If specified, the message will be summarized into that language. */
+  languageCode?: string;
+}
