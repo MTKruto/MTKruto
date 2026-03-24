@@ -2450,7 +2450,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Summarize a text message. User-only.
+   * Summarize a message's text. User-only.
    *
    * @mehod ms
    * @param chatId The identifier of a chat.

@@ -1028,7 +1028,7 @@ export abstract class ClientGeneric {
   abstract clearDrafts(): Promise<void>;
 
   /**
-   * Summarize a text message. User-only.
+   * Summarize a message's text. User-only.
    *
    * @mehod ms
    * @param chatId The identifier of a chat.

@@ -1430,7 +1430,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Summarize a text message. User-only.
+   * Summarize a message's text. User-only.
    *
    * @mehod ms
    * @param chatId The identifier of a chat.
