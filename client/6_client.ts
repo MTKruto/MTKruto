@@ -30,13 +30,12 @@ import { AuthKeyUnregistered, FloodWait, Migrate, SessionRevoked } from "../4_er
 import { peerToChatId } from "../tl/2_telegram.ts";
 import type { CodeCheckResult } from "../types/0_code_check_result.ts";
 import { AbortableLoop } from "./0_abortable_loop.ts";
-import type { AddBotToAttachmentsMenuParams, AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, EndTakeoutSessionParams, ForwardMessagesParams, GetBlockedUsersParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLeftChannelsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetSavedChatsParams, GetSavedMessagesParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ResolveUsernameParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetContactNoteParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetWorkingHoursParams, SignInParams, StartBotParams, StartTakeoutSessionParams, StartVideoChatParams, StopPollParams, SummarizeTextParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams, UpdateProfileParams } from "./0_params.ts";
+import type { AddBotToAttachmentsMenuParams, AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, EndTakeoutSessionParams, ForwardMessagesParams, GetBlockedUsersParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLeftChannelsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetSavedChatsParams, GetSavedMessagesParams, GetTranslationsParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ResolveUsernameParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetContactNoteParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetWorkingHoursParams, SignInParams, StartBotParams, StartTakeoutSessionParams, StartVideoChatParams, StopPollParams, SummarizeTextParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 import { canBeInputChannel, canBeInputUser, DOWNLOAD_POOL_SIZE, getUsername, toInputChannel, toInputUser } from "./0_utilities.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
 import type { ClientPlainParams } from "./1_client_plain.ts";
 import { type InvokeErrorHandler, skipInvoke } from "./1_invoke_middleware.ts";
-import { AccountManager } from "./2_account_manager.ts";
 import { BotInfoManager } from "./2_bot_info_manager.ts";
 import { BusinessConnectionManager } from "./2_business_connection_manager.ts";
 import { ClientEncrypted } from "./2_client_encrypted.ts";
@@ -50,6 +49,7 @@ import { StoryAlbumManager } from "./2_story_album_manager.ts";
 import { TakeoutManager } from "./2_takeout_manager.ts";
 import { TranslationsManager } from "./2_translations_manager.ts";
 import { UpdateManager } from "./2_update_manager.ts";
+import { AccountManager } from "./3_account_manager.ts";
 import { ClientEncryptedPool } from "./3_client_encrypted_pool.ts";
 import { MessageManager } from "./3_message_manager.ts";
 import { VideoChatManager } from "./3_video_chat_manager.ts";
@@ -138,7 +138,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   #uploadPools: Partial<Record<DC, ClientEncryptedPool>> = {};
   #guaranteeUpdateDelivery: boolean;
   // 2_
-  #accountManager: AccountManager;
   #botInfoManager: BotInfoManager;
   #businessConnectionManager: BusinessConnectionManager;
   #fileManager: FileManager;
@@ -151,6 +150,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   #translationsManager: TranslationsManager;
   #updateManager: UpdateManager;
   // 3_
+  #accountManager: AccountManager;
   #messageManager: MessageManager;
   #videoChatManager: VideoChatManager;
   // 4_
@@ -172,7 +172,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   get managers(): Record<string, any> {
     return this.#managers ?? (this.#managers ??= {
       // 2_
-      accountManager: this.#accountManager,
       botInfoManager: this.#botInfoManager,
       businessConnectionManager: this.#businessConnectionManager,
       fileManager: this.#fileManager,
@@ -185,6 +184,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       translationsManager: this.#translationsManager,
       updateManager: this.#updateManager,
       // 3_
+      accountManager: this.#accountManager,
       messageManager: this.#messageManager,
       videoChatManager: this.#videoChatManager,
       // 4_
@@ -311,7 +311,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     };
 
     // 2_
-    this.#accountManager = new AccountManager(c);
     this.#botInfoManager = new BotInfoManager(c);
     this.#businessConnectionManager = new BusinessConnectionManager(c);
     const fileManager = this.#fileManager = new FileManager(c);
@@ -324,6 +323,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     this.#translationsManager = new TranslationsManager(c);
     this.#updateManager = new UpdateManager(c);
     // 3_
+    this.#accountManager = new AccountManager({ ...c, fileManager });
     const messageManager = this.#messageManager = new MessageManager({ ...c, fileManager });
     this.#videoChatManager = new VideoChatManager({ ...c, fileManager });
     // 4_
@@ -1514,6 +1514,26 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async updateProfile(params?: UpdateProfileParams): Promise<void> {
     await this.#accountManager.updateProfile(params);
+  }
+
+  /**
+   * Update the profile photo of the current user.
+   *
+   * @method ac
+   * @param photo The photo to set as profile photo.
+   */
+  async updateProfilePhoto(photo: FileSource, params?: UpdateProfilePhotoParams): Promise<void> {
+    await this.#accountManager.updateProfilePhoto(photo, params);
+  }
+
+  /**
+   * Update the profile video of the current user.
+   *
+   * @method ac
+   * @param video The video to set as profile video.
+   */
+  async updateProfileVideo(video: FileSource, params?: UpdateProfileVideoParams): Promise<void> {
+    return await this.#accountManager.updateProfileVideo(video, params);
   }
 
   /**

@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { unreachable } from "../0_deps.ts";
+import { startsWith, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api, repr as repr_ } from "../2_tl.ts";
 
@@ -216,3 +216,16 @@ export const UPLOAD_REQUEST_PER_CONNECTION = 2;
 
 export const DOWNLOAD_POOL_SIZE = 1;
 export const DOWNLOAD_REQUEST_PER_CONNECTION = 1;
+
+export function checkPhotoName(params?: { fileName?: string }) {
+  return (name: string, firstPart?: Uint8Array) => {
+    if (params?.fileName || !firstPart || name.includes(".")) {
+      return name;
+    }
+    if (startsWith(firstPart, new Uint8Array([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]))) {
+      return `${name}.png`;
+    } else {
+      return `${name}.jpg`;
+    }
+  };
+}
