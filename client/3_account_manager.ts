@@ -22,12 +22,15 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { PasswordHashInvalid, PhoneCodeInvalid, SessionPasswordNeeded } from "../3_errors.ts";
-import { type Birthday, birthdayToTlObject, type BotTokenCheckResult, type CodeCheckResult, constructAppSupport, constructCountry, constructEmojiStatus, constructInactiveChat, constructTimezone, constructUser, constructUser2, type ID, type InputEmojiStatus, type PasswordCheckResult, type Update, workingHoursToTlObject } from "../3_types.ts";
-import type { AddBotToAttachmentsMenuParams, CheckUsernameParams, ResolveUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams } from "./0_params.ts";
+import { type Birthday, birthdayToTlObject, type BotTokenCheckResult, type CodeCheckResult, constructAppSupport, constructCountry, constructEmojiStatus, constructInactiveChat, constructTimezone, constructUser, constructUser2, type FileSource, type ID, type InputEmojiStatus, type PasswordCheckResult, type Update, workingHoursToTlObject } from "../3_types.ts";
+import type { AddBotToAttachmentsMenuParams, CheckUsernameParams, ResolveUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
-import { canBeInputChannel, canBeInputUser, toInputChannel, toInputUser } from "./0_utilities.ts";
-import type { C } from "./1_types.ts";
+import { canBeInputChannel, canBeInputUser, checkPhotoName, toInputChannel, toInputUser } from "./0_utilities.ts";
+import type { C as C_ } from "./1_types.ts";
+import type { FileManager } from "./2_file_manager.ts";
+
+type C = C_ & { fileManager: FileManager };
 
 const accountManagerUpdates = [
   "updateUserEmojiStatus",
@@ -494,5 +497,15 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     this.#c.storage.assertUser("getCountries");
     const result = Api.as("help.countriesList", await this.#c.invoke({ _: "help.getCountriesList", hash: 0, lang_code: languageCode }));
     return result.countries.map(constructCountry);
+  }
+
+  async updateProfilePhoto(photo: FileSource, params?: UpdateProfilePhotoParams) {
+    const file = await this.#c.fileManager.upload(photo, params, checkPhotoName(params));
+    await this.#c.invoke({ _: "photos.uploadProfilePhoto", fallback: params?.isPublic ? true : undefined, file });
+  }
+
+  async updateProfileVideo(photo: FileSource, params?: UpdateProfileVideoParams) {
+    const video = await this.#c.fileManager.upload(photo, params, () => "video.mp4");
+    await this.#c.invoke({ _: "photos.uploadProfilePhoto", fallback: params?.isPublic ? true : undefined, video, video_start_ts: params?.thumbnailTimestamp });
   }
 }

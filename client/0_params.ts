@@ -952,3 +952,15 @@ export interface SummarizeTextParams {
   /** A language code. If specified, the message will be summarized into that language. */
   languageCode?: string;
 }
+
+export interface UpdateProfilePhotoParams extends _UploadCommon {
+  /** Whether the photo should be set as the fallback public profile photo. User-only. */
+  isPublic?: boolean;
+}
+
+export interface UpdateProfileVideoParams extends _UploadCommon {
+  /** Whether the video should be set as the fallback public profile photo. User-only. */
+  isPublic?: boolean;
+  /** The timestamp in seconds to use as thumbnail. */
+  thumbnailTimestamp?: number;
+}
