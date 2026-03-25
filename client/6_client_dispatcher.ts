@@ -1433,7 +1433,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   /**
    * Set a reaction as default. User-only.
    *
-   * @mehod ms
+   * @method ms
    * @param reaction The reaction to set as default.
    */
   async setDefaultReaction(reaction: Reaction): Promise<void> {
@@ -1443,7 +1443,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   /**
    * Clear all message drafts. User-only.
    *
-   * @mehod ms
+   * @method ms
    */
   async clearDrafts(): Promise<void> {
     return await this.#dispatch("clearAllDrafts");
@@ -1452,7 +1452,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   /**
    * Summarize a message's text. User-only.
    *
-   * @mehod ms
+   * @method ms
    * @param chatId The identifier of a chat.
    * @param messageId The identifier of a message.
    */

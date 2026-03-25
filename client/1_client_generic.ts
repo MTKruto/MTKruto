@@ -1031,7 +1031,7 @@ export abstract class ClientGeneric {
   /**
    * Set a reaction as default. User-only.
    *
-   * @mehod ms
+   * @method ms
    * @param reaction The reaction to set as default.
    */
   abstract setDefaultReaction(reaction: Reaction): Promise<void>;
@@ -1039,14 +1039,14 @@ export abstract class ClientGeneric {
   /**
    * Clear all message drafts. User-only.
    *
-   * @mehod ms
+   * @method ms
    */
   abstract clearDrafts(): Promise<void>;
 
   /**
    * Summarize a message's text. User-only.
    *
-   * @mehod ms
+   * @method ms
    * @param chatId The identifier of a chat.
    * @param messageId The identifier of a message.
    */

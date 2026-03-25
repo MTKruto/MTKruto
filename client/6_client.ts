@@ -2453,7 +2453,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   /**
    * Set a reaction as default. User-only.
    *
-   * @mehod ms
+   * @method ms
    * @param reaction The reaction to set as default.
    */
   async setDefaultReaction(reaction: Reaction): Promise<void> {
@@ -2463,7 +2463,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   /**
    * Clear all message drafts. User-only.
    *
-   * @mehod ms
+   * @method ms
    */
   async clearDrafts(): Promise<void> {
     await this.#messageManager.clearDrafts();
@@ -2472,7 +2472,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   /**
    * Summarize a message's text. User-only.
    *
-   * @mehod ms
+   * @method ms
    * @param chatId The identifier of a chat.
    * @param messageId The identifier of a message.
    */
