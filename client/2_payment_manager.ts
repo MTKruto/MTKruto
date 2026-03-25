@@ -21,6 +21,7 @@
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { constructPreCheckoutQuery, type ID, type Update } from "../3_types.ts";
+import { constructStarAmount } from "../types/0_star_amount.ts";
 import type { AnswerPreCheckoutQueryParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import type { C } from "./1_types.ts";
@@ -66,5 +67,29 @@ export class PaymentManager implements UpdateProcessor<PaymentManagerUpdate> {
   async refundStarPayment(userId: ID, telegramPaymentChargeId: string) {
     this.#c.storage.assertBot("refundStarPayment");
     await this.#c.invoke({ _: "payments.refundStarsCharge", user_id: await this.#c.getInputUser(userId), charge_id: telegramPaymentChargeId });
+  }
+
+  async getStarBalance(chatId: ID) {
+    if (this.#c.storage.isBot) {
+      const peer = await this.#c.getInputPeer(chatId);
+      const result = await this.#c.invoke({ _: "payments.getStarsTransactions", peer, offset: "", limit: 1 });
+      return constructStarAmount(Api.as("starsAmount", result.balance));
+    } else {
+      const peer = await this.#c.getInputPeer(chatId);
+      const result = await this.#c.invoke({ _: "payments.getStarsStatus", peer });
+      return constructStarAmount(Api.as("starsAmount", result.balance));
+    }
+  }
+
+  async getTonBalance(chatId: ID) {
+    if (this.#c.storage.isBot) {
+      const peer = await this.#c.getInputPeer(chatId);
+      const result = await this.#c.invoke({ _: "payments.getStarsTransactions", peer, ton: true, offset: "", limit: 1 });
+      return Number(Api.as("starsTonAmount", result.balance).amount / 10000000n) / 100;
+    } else {
+      const peer = await this.#c.getInputPeer(chatId);
+      const result = await this.#c.invoke({ _: "payments.getStarsStatus", peer });
+      return Number(Api.as("starsTonAmount", result.balance).amount / 10000000n) / 100;
+    }
   }
 }
