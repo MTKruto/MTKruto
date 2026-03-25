@@ -4023,7 +4023,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * Get the star balance of a chat.
    *
    * @method pa
-   * @param chatId The identifier of a chat to get the star balance for.
+   * @param chatId The identifier of the chat to get the star balance for.
    */
   async getStarBalance(chatId: ID): Promise<StarAmount> {
     return await this.#paymentManager.getStarBalance(chatId);
@@ -4033,7 +4033,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * Get the TON balance of a chat.
    *
    * @method pa
-   * @param chatId The identifier of a chat to get the TON balance for.
+   * @param chatId The identifier of the chat to get the TON balance for.
    */
   async getTonBalance(chatId: ID): Promise<number> {
     return await this.#paymentManager.getTonBalance(chatId);

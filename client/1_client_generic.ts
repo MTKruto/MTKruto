@@ -2311,7 +2311,7 @@ export abstract class ClientGeneric {
    * Get the star balance of a chat.
    *
    * @method pa
-   * @param chatId The identifier of a chat to get the star balance for.
+   * @param chatId The identifier of the chat to get the star balance for.
    */
   abstract getStarBalance(chatId: ID): Promise<StarAmount>;
 
@@ -2319,7 +2319,7 @@ export abstract class ClientGeneric {
    * Get the TON balance of a chat.
    *
    * @method pa
-   * @param chatId The identifier of a chat to get the TON balance for.
+   * @param chatId The identifier of the chat to get the TON balance for.
    */
   abstract getTonBalance(chatId: ID): Promise<number>;
 
