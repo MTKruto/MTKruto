@@ -26,6 +26,7 @@ import type { ChatP, PeerGetter } from "./1_chat_p.ts";
 import { constructStarTransactionPeer, type StarTransactionPeer } from "./2_star_transaction_peer.ts";
 import { constructGift, type Gift } from "./4_gift.ts";
 
+/** A star transaction. */
 export interface StarTransaction {
   isRefund: boolean;
   isPending: boolean;
