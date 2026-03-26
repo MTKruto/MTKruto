@@ -20,8 +20,7 @@
 
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { constructPreCheckoutQuery, type ID, type Update } from "../3_types.ts";
-import { constructStarAmount } from "../types/0_star_amount.ts";
+import { constructPreCheckoutQuery, constructStarAmount, constructStarTransactionList, type ID, type Update } from "../3_types.ts";
 import type { AnswerPreCheckoutQueryParams, GetStarTransactionsParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { getLimit } from "./0_utilities.ts";
@@ -54,7 +53,7 @@ export class PaymentManager implements UpdateProcessor<PaymentManagerUpdate> {
   }
 
   async answerPreCheckoutQuery(preCheckoutQueryId: string, ok: boolean, params?: AnswerPreCheckoutQueryParams) {
-    this.#c.storage.assertBot("answerPreCheckoutQuery");
+  this.#c.storage.assertBot("answerPreCheckoutQuery");
     if (!ok && !params?.error) {
       throw new InputError("error is required when ok is false");
     }
@@ -97,16 +96,8 @@ export class PaymentManager implements UpdateProcessor<PaymentManagerUpdate> {
   async getStarTransactions(chatId: ID, params?: GetStarTransactionsParams) {
     const peer = await this.#c.getInputPeer(chatId);
     const offset = params?.offset ?? "";
-    const limit =getLimit(params?.limit);
-    
-    const result = await this.#c.invoke({ _: "payments.getStarsTransactions", peer, ton: params?.isTon ? true : undefined, offset, limit,
-      inbound: params?.isInbound ? true : undefined,
-      outbound: params?.isOutbound ? true : undefined,
-      ascending: params?.isAscending ? true : undefined,
-      subscription_id: params?.subscriptionId,
-     });
-
-     result.history
-    
+    const limit = getLimit(params?.limit);
+    const result = await this.#c.invoke({ _: "payments.getStarsTransactions", peer, ton: params?.isTon ? true : undefined, offset, limit, inbound: params?.isInbound ? true : undefined, outbound: params?.isOutbound ? true : undefined, ascending: params?.isAscending ? true : undefined, subscription_id: params?.subscriptionId });
+    return constructStarTransactionList(result, this.#c.getPeer);
   }
 }

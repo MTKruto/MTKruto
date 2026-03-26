@@ -18,26 +18,21 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { StarAmount } from "./0_star_amount.ts";
-import type { ChatP } from "./1_chat_p.ts";
+import { cleanObject } from "../1_utilities.ts";
+import type { Api } from "../2_tl.ts";
+import type { PeerGetter } from "./1_chat_p.ts";
+import { constructStarTransaction, type StarTransaction } from "./5_star_transaction.ts";
 
-export interface StarTransaction {
-    isRefund: boolean;
-    isPending: boolean;
-    isFailed: boolean;
-    isGift: boolean;
-    isReaction: boolean
-    isGiftUpgrade: boolean 
-    isBusinessTransfer: boolean;
-    isGiftResale: boolean;
-    isPostSearch: boolean; 
-    isGiftPrepaidUpgrade: boolean;
-    isGiftDetailDrop: boolean;
-    isPhoneGroupMessage: boolean;
-    isGiftAuctionBid: boolean;
-    isOffer: boolean;
-    id: string;
-    amount: StarAmount
-    date : number 
-    peer: ChatP
+export interface StarTransactionList {
+  transactions: StarTransaction[];
+  /** Key to fetch further transactions. */
+  nextOffset?: string;
+}
+
+export function constructStarTransactionList(result: Api.payments_starsStatus, getPeer: PeerGetter): StarTransactionList {
+  const transactions = result.history?.map((v) => constructStarTransaction(v, getPeer)) ?? [];
+  return cleanObject({
+    transactions,
+    nextOffset: result.next_offset,
+  });
 }
