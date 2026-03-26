@@ -53,7 +53,7 @@ export class PaymentManager implements UpdateProcessor<PaymentManagerUpdate> {
   }
 
   async answerPreCheckoutQuery(preCheckoutQueryId: string, ok: boolean, params?: AnswerPreCheckoutQueryParams) {
-  this.#c.storage.assertBot("answerPreCheckoutQuery");
+    this.#c.storage.assertBot("answerPreCheckoutQuery");
     if (!ok && !params?.error) {
       throw new InputError("error is required when ok is false");
     }
