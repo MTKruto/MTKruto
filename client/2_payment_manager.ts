@@ -20,10 +20,10 @@
 
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { constructPreCheckoutQuery, type ID, type Update } from "../3_types.ts";
-import { constructStarAmount } from "../types/0_star_amount.ts";
-import type { AnswerPreCheckoutQueryParams } from "./0_params.ts";
+import { constructPreCheckoutQuery, constructStarAmount, constructStarTransactionList, type ID, type Update } from "../3_types.ts";
+import type { AnswerPreCheckoutQueryParams, GetStarTransactionsParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
+import { getLimit } from "./0_utilities.ts";
 import type { C } from "./1_types.ts";
 
 const paymentManagerUpdates = [
@@ -91,5 +91,13 @@ export class PaymentManager implements UpdateProcessor<PaymentManagerUpdate> {
       const result = await this.#c.invoke({ _: "payments.getStarsStatus", peer });
       return Number(Api.as("starsTonAmount", result.balance).amount / 10000000n) / 100;
     }
+  }
+
+  async getStarTransactions(chatId: ID, params?: GetStarTransactionsParams) {
+    const peer = await this.#c.getInputPeer(chatId);
+    const offset = params?.offset ?? "";
+    const limit = getLimit(params?.limit);
+    const result = await this.#c.invoke({ _: "payments.getStarsTransactions", peer, ton: params?.isTon ? true : undefined, offset, limit, inbound: params?.isInbound ? true : undefined, outbound: params?.isOutbound ? true : undefined, ascending: params?.isAscending ? true : undefined, subscription_id: params?.subscriptionId });
+    return constructStarTransactionList(result, this.#c.getPeer);
   }
 }

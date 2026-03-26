@@ -964,3 +964,20 @@ export interface UpdateProfileVideoParams extends _UploadCommon {
   /** The timestamp in seconds to use as thumbnail. */
   thumbnailTimestamp?: number;
 }
+
+export interface GetStarTransactionsParams {
+  /** Whether TON transactions should be returned. */
+  isTon?: boolean;
+  /** Whether only inbound transactions should be returned. */
+  isInbound?: boolean;
+  /** Whether only outbound transactions should be returned. */
+  isOutbound?: boolean;
+  /** Whether results should be sorted in an ascending order. */
+  isAscending?: boolean;
+  /** Whether only transactions related to a specific subscription be returned. */
+  subscriptionId?: string;
+  /** An offset key returned by a previous result. */
+  offset?: string;
+  /** The maximum number of results to return. */
+  limit?: number;
+}
