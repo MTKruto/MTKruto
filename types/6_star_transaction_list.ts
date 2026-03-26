@@ -23,7 +23,9 @@ import type { Api } from "../2_tl.ts";
 import type { PeerGetter } from "./1_chat_p.ts";
 import { constructStarTransaction, type StarTransaction } from "./5_star_transaction.ts";
 
+/** A list of star transactions. */
 export interface StarTransactionList {
+  /** The transactions included in this list. */
   transactions: StarTransaction[];
   /** Key to fetch further transactions. */
   nextOffset?: string;
