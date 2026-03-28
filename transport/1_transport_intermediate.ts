@@ -19,26 +19,28 @@
  */
 
 import { concat } from "../0_deps.ts";
-import { intToBytes } from "../1_utilities.ts";
+import { getRandomId, intToBytes } from "../1_utilities.ts";
 import type { Connection } from "../2_connection.ts";
 import { getObfuscationParameters } from "./0_obfuscation.ts";
 import { Transport } from "./0_transport.ts";
 
 export class TransportIntermediate extends Transport implements Transport {
   #connection: Connection;
-  #obfuscated: boolean;
+  #isObfuscated: boolean;
+  #isPadded: boolean;
 
-  constructor(connection: Connection, obfuscated = false) {
+  constructor(connection: Connection, isObfuscated = false, isPadded = false) {
     super();
     this.#connection = connection;
-    this.#obfuscated = obfuscated;
+    this.#isObfuscated = isObfuscated;
+    this.#isPadded = isPadded;
   }
 
   async initialize() {
-    if (this.#obfuscated) {
-      this.obfuscationParameters = await getObfuscationParameters(0xEEEEEEEE, this.#connection);
+    if (this.#isObfuscated) {
+      this.obfuscationParameters = await getObfuscationParameters(this.#isPadded ? 0xDDDDDDDD : 0xEEEEEEEE, this.#connection);
     } else {
-      await this.#connection.write(new Uint8Array([0xEE, 0xEE, 0xEE, 0xEE]));
+      await this.#connection.write(new Uint8Array(this.#isPadded ? [0xDD, 0xDD, 0xDD, 0xDD] : [0xEE, 0xEE, 0xEE, 0xEE]));
     }
   }
 
@@ -60,6 +62,11 @@ export class TransportIntermediate extends Transport implements Transport {
   }
 
   async send(buffer: Uint8Array) {
+    if (this.#isPadded) {
+      const padding = crypto.getRandomValues(new Uint8Array(Math.abs(getRandomId(true) % 16)));
+      buffer = concat([buffer, padding]);
+    }
+
     const length = intToBytes(buffer.length, 4);
     const data = concat([length, buffer]);
 

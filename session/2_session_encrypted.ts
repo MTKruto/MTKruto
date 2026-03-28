@@ -236,11 +236,15 @@ export class SessionEncrypted extends Session implements Session {
   }
 
   async #decryptMessage(buffer: Uint8Array) {
-    const reader = new TLReader(buffer);
+    let reader = new TLReader(buffer);
     assertEquals(reader.readInt64(), this.#authKeyId);
 
     const messageKey_ = reader.readInt128();
     const messageKey = intToBytes(messageKey_, 16);
+
+    if (reader.buffer.length % 16 !== 0) {
+      reader = new TLReader(reader.buffer.subarray(0, -(reader.buffer.length % 16)));
+    }
 
     const a = await sha256(concat([messageKey, this.#authKey.subarray(8, 44)]));
     const b = await sha256(concat([this.#authKey.subarray(48, 84), messageKey]));
