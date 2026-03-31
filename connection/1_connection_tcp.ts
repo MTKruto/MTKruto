@@ -45,6 +45,7 @@ export class ConnectionTCP implements Connection {
   }
 
   get isConnected(): boolean {
+    Deno.errors.BrokenPipe;
     return !!this.#connection && this.#canRead && this.#canWrite;
   }
 

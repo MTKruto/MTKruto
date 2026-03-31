@@ -91,3 +91,20 @@ export class CTR {
     this.#iv = intToBytes(intFromBytes(this.#iv, { byteOrder: "big", isSigned: false }) + BigInt(amount), this.#iv.length, { byteOrder: "big", isSigned: false });
   }
 }
+
+export async function hmacSha256(data: Uint8Array<ArrayBuffer>, secret: Uint8Array<ArrayBuffer>) {
+  const key = await crypto.subtle.importKey(
+    "raw",
+    secret,
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  return new Uint8Array(
+    await crypto.subtle.sign(
+      "HMAC",
+      key,
+      data.buffer,
+    ),
+  );
+}

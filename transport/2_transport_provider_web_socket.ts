@@ -38,8 +38,8 @@ export const transportProviderWebSocket = (params?: { wss?: boolean }): Transpor
     params.wss ??= typeof location !== "undefined" && location.protocol === "http:" && location.hostname !== "localhost" ? false : true;
     const url = `${params.wss ? "wss" : "ws"}://${dcToNameMap[dc]}${isCdn ? "-1" : ""}.web.telegram.org/${dc.endsWith("-test") ? "apiws_test" : "apiws"}`;
     const connection = new ConnectionWebSocket(url);
-    const transport = new TransportIntermediate(connection, true);
     const dcId = getDcId(dc, isCdn);
+    const transport = new TransportIntermediate(connection, { isObfuscated: true, dcId });
     return { connection, transport, dcId };
   };
 };
