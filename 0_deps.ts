@@ -41,8 +41,6 @@ export { LruCache } from "jsr:@std/cache@0.2.2/lru-cache";
 
 export { writeAll } from "jsr:@std/io@0.225.3/write-all";
 
-export { iterateReader } from "jsr:@std/io@0.225.3/iterate-reader";
-
 export { format } from "jsr:@std/datetime@0.225.7/format";
 export { MINUTE, SECOND } from "jsr:@std/datetime@0.225.7/constants";
 
