@@ -39,8 +39,6 @@ export { startsWith } from "jsr:@std/bytes@1.0.6/starts-with";
 
 export { LruCache } from "jsr:@std/cache@0.2.2/lru-cache";
 
-export { iterateReader } from "jsr:@std/io@0.225.3/iterate-reader";
-
 export { format } from "jsr:@std/datetime@0.225.7/format";
 export { MINUTE, SECOND } from "jsr:@std/datetime@0.225.7/constants";
 
