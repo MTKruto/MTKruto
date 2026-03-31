@@ -73,6 +73,7 @@ export class ConnectionTLS implements Connection {
         if (n <= 0) {
           continue;
         }
+        this.callback?.read(n);
         offset += n;
       }
     } catch (err) {
@@ -134,6 +135,7 @@ export class ConnectionTLS implements Connection {
         if (n <= 0) {
           continue;
         }
+        this.callback?.read(n);
         read = concat([read, buffer.subarray(0, n)]);
       }
     }
@@ -176,6 +178,7 @@ export class ConnectionTLS implements Connection {
     }
     try {
       await writeAll(this.#connection!, data);
+      this.callback?.write(data.byteLength);
     } catch (err) {
       this.#canWrite = false;
       this.stateChangeHandler?.(false);
@@ -187,7 +190,7 @@ export class ConnectionTLS implements Connection {
     this.#assertConnected();
     const unlock = await this.#rMutex.lock();
     try {
-      while (this.#buffer.length < p.byteLength) {
+      while (this.#buffer.byteLength < p.byteLength) {
         await this.#readPacket();
       }
       p.set(this.#buffer.subarray(0, p.byteLength));
