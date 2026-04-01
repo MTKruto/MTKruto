@@ -68,13 +68,10 @@ export class ConnectionTLS implements Connection {
       this.#rejectRead();
       this.stateChangeHandler?.(false);
     });
-    const mutex = new Mutex();
-    this.#socket.on("data", async (data) => {
+    this.#socket.on("data",  (data) => {
       if (typeof data === "string") {
         return;
       }
-
-      const unlock = await mutex.lock();
 
       for (const byte of data) {
         this.#buffer.push(byte);
@@ -87,8 +84,6 @@ export class ConnectionTLS implements Connection {
         this.#nextResolve = null;
         resolve();
       }
-
-      unlock();
     });
     await new Promise<void>((resolve, reject) => {
       this.#socket!.connect(this.#port, this.#hostname);
