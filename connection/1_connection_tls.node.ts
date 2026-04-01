@@ -48,7 +48,7 @@ export class ConnectionTLS implements Connection {
   constructor(hostname: string, port: number, secret: Uint8Array<ArrayBuffer>) {
     this.#hostname = hostname;
     this.#port = port;
-    this.#secret = (secret[0] === 0xDD || secret[0] === 0xEE) ? secret.slice(1) : secret;
+    this.#secret = secret.byteLength > 16 ? secret.slice(1) : secret;
   }
 
   #rejectRead() {
