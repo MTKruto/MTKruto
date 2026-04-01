@@ -68,7 +68,7 @@ export class ConnectionTLS implements Connection {
       this.#rejectRead();
       this.stateChangeHandler?.(false);
     });
-    this.#socket.on("data",  (data) => {
+    this.#socket.on("data", (data) => {
       if (typeof data === "string") {
         return;
       }
