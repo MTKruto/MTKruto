@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { cleanObject } from "../1_utilities.ts";
+import { cleanObject, decodeText } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { constructStarAmount, type StarAmount } from "./0_star_amount.ts";
 import type { ChatP, PeerGetter } from "./1_chat_p.ts";
@@ -97,7 +97,7 @@ export function constructStarTransaction(starTransaction: Api.StarsTransaction, 
     description: starTransaction.description,
     transactionDate: starTransaction.transaction_date,
     transactionUrl: starTransaction.transaction_url,
-    botPayload: new TextDecoder().decode(starTransaction.bot_payload),
+    botPayload: starTransaction.bot_payload ? decodeText(starTransaction.bot_payload) : undefined,
     messageId: starTransaction.msg_id,
     subscriptionPeriod: starTransaction.subscription_period,
     giveawayMessageId: starTransaction.giveaway_post_id,
