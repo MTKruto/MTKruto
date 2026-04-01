@@ -18,8 +18,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { ConnectionSocks5 } from "../connection/1_connection_socks5.node.ts";
 import { isIPv6 } from "../0_deps.ts";
-import { ConnectionSocks5 } from "../2_connection.ts";
 import { TransportAbridged } from "./1_transport_abridged.ts";
 import { getDcId, getDcIps, type TransportProvider } from "./1_transport_provider.ts";
 
