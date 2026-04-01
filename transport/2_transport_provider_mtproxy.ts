@@ -24,13 +24,13 @@ import { ConnectionTLS } from "../connection/1_connection_tls.ts";
 import { TransportIntermediate } from "./1_transport_intermediate.ts";
 import { getDcId, type TransportProvider } from "./1_transport_provider.ts";
 
-export function transportProviderMtproxy(link: string): TransportProvider;
+export function transportProviderMtproxy(url: string): TransportProvider;
 export function transportProviderMtproxy(hostname: string, port: number, secret: Uint8Array<ArrayBuffer>): TransportProvider;
-export function transportProviderMtproxy(hostnameOrLink: string, port?: number, secret?: Uint8Array<ArrayBuffer>): TransportProvider {
-  let hostname = hostnameOrLink;
+export function transportProviderMtproxy(urlOrHostname: string, port?: number, secret?: Uint8Array<ArrayBuffer>): TransportProvider {
+  let hostname = urlOrHostname;
 
   if (port === undefined && secret === undefined) {
-    const url = new URL(hostnameOrLink);
+    const url = new URL(urlOrHostname);
     const hostname_ = url.searchParams.get("server");
     const port_ = url.searchParams.get("port");
     const secret_ = url.searchParams.get("secret");
