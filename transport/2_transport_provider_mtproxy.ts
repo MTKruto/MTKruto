@@ -18,9 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { ConnectionTLS } from "../connection/1_connection_tls.node.ts";
 import { decodeHex } from "../0_deps.ts";
 import { ConnectionTCP } from "../connection/1_connection_tcp.ts";
+import { ConnectionTLS } from "../connection/1_connection_tls.ts";
 import { TransportIntermediate } from "./1_transport_intermediate.ts";
 import { getDcId, type TransportProvider } from "./1_transport_provider.ts";
 
