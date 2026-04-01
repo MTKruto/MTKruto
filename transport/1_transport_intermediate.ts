@@ -24,21 +24,36 @@ import type { Connection } from "../2_connection.ts";
 import { getObfuscationParameters } from "./0_obfuscation.ts";
 import { Transport } from "./0_transport.ts";
 
+export interface TransportIntermediateParams {
+  isObfuscated?: boolean;
+  isPadded?: boolean;
+  dcId?: number;
+  secret?: Uint8Array;
+}
+
 export class TransportIntermediate extends Transport implements Transport {
   #connection: Connection;
   #isObfuscated: boolean;
   #isPadded: boolean;
+  #dcId?: number;
+  #secret?: Uint8Array;
 
-  constructor(connection: Connection, isObfuscated = false, isPadded = false) {
+  constructor(connection: Connection, params?: TransportIntermediateParams) {
     super();
     this.#connection = connection;
-    this.#isObfuscated = isObfuscated;
-    this.#isPadded = isPadded;
+    this.#isObfuscated = params?.isObfuscated ?? false;
+    this.#isPadded = params?.isPadded ?? false;
+    this.#dcId = params?.dcId;
+    this.#secret = params?.secret;
   }
 
   async initialize() {
     if (this.#isObfuscated) {
-      this.obfuscationParameters = await getObfuscationParameters(this.#isPadded ? 0xDDDDDDDD : 0xEEEEEEEE, this.#connection);
+      this.obfuscationParameters = await getObfuscationParameters(
+        this.#isPadded ? 0xDDDDDDDD : 0xEEEEEEEE,
+        this.#connection,
+        { dcId: this.#dcId, secret: this.#secret },
+      );
     } else {
       await this.#connection.write(new Uint8Array(this.#isPadded ? [0xDD, 0xDD, 0xDD, 0xDD] : [0xEE, 0xEE, 0xEE, 0xEE]));
     }

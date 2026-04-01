@@ -19,10 +19,15 @@
  */
 
 import { concat } from "../0_deps.ts";
-import { CTR, intToBytes } from "../1_utilities.ts";
+import { CTR, intToBytes, sha256 } from "../1_utilities.ts";
 import type { Connection } from "../2_connection.ts";
 
-export async function getObfuscationParameters(protocol: number, connection: Connection) {
+export interface GetObfuscationParametersParams {
+  dcId?: number;
+  secret?: Uint8Array;
+}
+
+export async function getObfuscationParameters(protocol: number, connection: Connection, params?: GetObfuscationParametersParams) {
   let init: Uint8Array<ArrayBuffer>;
 
   while (true) {
@@ -46,8 +51,20 @@ export async function getObfuscationParameters(protocol: number, connection: Con
     break;
   }
 
-  const encryptKey = init.slice(8, 8 + 32);
+  if (params?.dcId !== undefined) {
+    init.set(intToBytes(params.dcId, 2, { byteOrder: "little" }), 60);
+  }
+
+  let secret = params?.secret;
+  if (secret !== undefined && secret.byteLength >= 17) {
+    secret = secret.subarray(1, 17);
+  }
+
+  let encryptKey = init.slice(8, 8 + 32);
   const encryptIv = init.slice(40, 40 + 16);
+  if (secret) {
+    encryptKey = await sha256(concat([encryptKey, secret]));
+  }
 
   const importedEncryptedKey = await CTR.importKey(encryptKey);
   const encryptionCTR = new CTR(importedEncryptedKey, encryptIv);
@@ -55,8 +72,11 @@ export async function getObfuscationParameters(protocol: number, connection: Con
   const encryptedInit = await encryptionCTR.call(init);
 
   const initRev = new Uint8Array(init).reverse();
-  const decryptKey = initRev.slice(8, 8 + 32);
+  let decryptKey = initRev.slice(8, 8 + 32);
   const decryptIv = initRev.slice(40, 40 + 16);
+  if (secret) {
+    decryptKey = await sha256(concat([decryptKey, secret]));
+  }
 
   const importedDecryptKey = await CTR.importKey(decryptKey);
   const decryptionCTR = new CTR(importedDecryptKey, decryptIv);
