@@ -118,7 +118,7 @@ export class ConnectionTCP implements Connection {
     }
   }
 
-  async write(p: Uint8Array) {
+  async #write(p: Uint8Array) {
     this.#assertConnected();
     const unlock = await this.#wMutex.lock();
     try {
