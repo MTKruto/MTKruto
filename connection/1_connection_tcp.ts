@@ -100,7 +100,7 @@ export class ConnectionTCP implements Connection {
     try {
       this.#assertConnected();
       let written = 0;
-      while (written < p.length) {
+      while (written < p.byteLength) {
         try {
           const wrote = await this.#connection!.write(p.subarray(written));
           this.callback?.write(wrote);
