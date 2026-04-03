@@ -86,7 +86,7 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate, true> {
     }
     const poll = media.poll;
     optionIndexes = Array.from(new Set(optionIndexes));
-    const options = optionIndexes.map((i) => poll.answers[i].option);
+    const options = optionIndexes.map((i) => Api.as("pollAnswer", poll.answers[i]).option);
     await this.#c.invoke({ _: "messages.sendVote", peer, msg_id: messageId, options });
   }
 

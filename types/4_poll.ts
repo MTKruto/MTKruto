@@ -18,8 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { equals } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
-import type { Api } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { constructMessageEntity, type MessageEntity } from "./2_message_entity.ts";
 import { constructPollOption, type PollOption } from "./3_poll_option.ts";
 
@@ -43,8 +44,8 @@ export interface Poll {
   type: "regular" | "quiz";
   /** Whether the poll allows multiple answers. */
   allowMultipleAnswers?: boolean;
-  /** Index of the correct option. */
-  correctOptionIndex?: number;
+  /** The indexes of correct options. */
+  correctOptionIndexes?: number[];
   /** A text that is shown to the user when the poll is answered. */
   explanation?: string;
   /** The explanation's entities. */
@@ -57,8 +58,8 @@ export interface Poll {
 
 export function constructPoll(media_: Api.messageMediaPoll): Poll {
   const poll = media_.poll;
-  const correctOption = media_.results.results?.find((v) => v.correct)?.option;
-  const correctOptionIndex = correctOption !== undefined ? poll.answers.findIndex((v) => v.option.every((v, i) => correctOption[i] === v)) : undefined;
+  const correctOptions = media_.results.results?.filter((v) => v.correct).map((v) => v.option);
+  const correctOptionIndexes = correctOptions !== undefined ? poll.answers.filter((v) => correctOptions.some((v_) => equals(v_, Api.as("pollAnswer", v).option))).map((_, i) => i) : undefined;
   return cleanObject({
     id: String(poll.id),
     question: poll.question.text,
@@ -69,7 +70,7 @@ export function constructPoll(media_: Api.messageMediaPoll): Poll {
     isAnonymous: !poll.public_voters,
     type: poll.quiz ? "quiz" : "regular",
     allowMultipleAnswers: poll.quiz ? undefined : poll.multiple_choice || false,
-    correctOptionIndex,
+    correctOptionIndexes,
     explanation: media_.results.solution,
     explanationEntities: media_.results.solution_entities?.map(constructMessageEntity).filter((v): v is MessageEntity => v !== null),
     openPeriod: poll.close_period,
