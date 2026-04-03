@@ -895,7 +895,6 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   }
 
   async sendChecklist(chatId: ID, title: string, items: InputChecklistItem[], params?: SendChecklistParams) {
-    this.#c.storage.assertUser("sendChecklist");
     this.#checkParams(params);
     title = title?.trim();
     if (!title) {

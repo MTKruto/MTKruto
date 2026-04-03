@@ -962,7 +962,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Send a checklist. User-only.
+   * Send a checklist.
    *
    * @method ms
    * @param chatId The identifier of a chat to send the checklist to.

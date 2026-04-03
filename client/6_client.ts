@@ -1967,7 +1967,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Send a checklist. User-only.
+   * Send a checklist.
    *
    * @method ms
    * @param chatId The identifier of a chat to send the checklist to.

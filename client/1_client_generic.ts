@@ -625,7 +625,7 @@ export abstract class ClientGeneric {
   abstract sendPoll(chatId: ID, question: string, options: InputPollOption[], params?: SendPollParams): Promise<MessagePoll>;
 
   /**
-   * Send a checklist. User-only.
+   * Send a checklist.
    *
    * @method ms
    * @param chatId The identifier of a chat to send the checklist to.
