@@ -165,7 +165,7 @@ export interface SendPollParams extends _SendCommon, _ReplyMarkupCommon {
   /** The type of the poll. */
   type?: "quiz" | "regular";
   /** Whether multiple selections should be allowed. Only valid for regular polls. */
-  allowMultipleAnswers?: boolean;
+  isMultipleAnswersAllowed?: boolean;
   /** Index of the correct option. Required for quiz polls. */
   correctOptionIndexes?: number[];
   /** A text that will be shown to the user when the poll is answered. Only valid for quiz polls. */
@@ -180,6 +180,14 @@ export interface SendPollParams extends _SendCommon, _ReplyMarkupCommon {
   closeDate?: number;
   /** Whether the poll should be closed as soon as it is sent, allowing no answers. */
   isClosed?: boolean;
+  /** Whether revoting is allowed. */
+  isRevotingAllowed?: boolean;
+  /** Whether the list of options should be shuffled. */
+  isShuffled?: boolean;
+  /** Whether the result of the poll should be hidden until voting is closed. */
+  isResultHidden?: boolean;
+  /** Whether it is allowed for options to be added. Not supported for anonymous polls and quizzes. */
+  isAddingOptionsAllowed?: boolean;
 }
 
 export interface SendChecklistParams extends _SendCommon {
