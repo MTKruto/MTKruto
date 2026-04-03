@@ -790,8 +790,8 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const caption_ = params?.caption;
     const parseResult = caption_ !== undefined ? this.parseText(caption_, { parseMode: params?.parseMode, entities: params?.captionEntities }) : undefined;
 
-    const caption = parseResult === undefined ? undefined : parseResult[0];
-    const captionEntities = parseResult === undefined ? undefined : parseResult[1];
+    const caption = parseResult?.[0];
+    const captionEntities = parseResult?.[1];
 
     const result = await this.#c.invoke(
       {
@@ -856,8 +856,8 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const explanation = params?.explanation;
     const parseResult = explanation !== undefined ? this.parseText(explanation, { parseMode: params?.explanationParseMode, entities: params?.explanationEntities }) : undefined;
 
-    const solution = parseResult === undefined ? undefined : parseResult[0];
-    const solutionEntities = parseResult === undefined ? undefined : parseResult[1];
+    const solution = parseResult?.[0];
+    const solutionEntities = parseResult?.[1];
 
     const answers: Api.pollAnswer[] = options.map((v, i) => {
       const text = v.text;
@@ -871,6 +871,11 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
     const media: Api.inputMediaPoll = { _: "inputMediaPoll", poll, correct_answers: params?.correctOptionIndexes, solution, solution_entities: solutionEntities };
 
+    const description = params?.description;
+    const parseResult2 = description !== undefined ? this.parseText(description, { parseMode: params?.descriptionParseMode, entities: params?.descriptionEntities }) : undefined;
+    const caption = parseResult2?.[0];
+    const entities = parseResult2?.[1];
+
     const result = await this.#c.invoke(
       {
         _: "messages.sendMedia",
@@ -882,7 +887,8 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         reply_to: await this.#constructReplyTo(params),
         send_as: sendAs,
         media,
-        message: "",
+        message: caption ?? "",
+        entities,
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
         schedule_date: params?.sendAt,
         allow_paid_floodskip: params?.isPaidBroadcast ? true : undefined,

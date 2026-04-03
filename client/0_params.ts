@@ -174,6 +174,12 @@ export interface SendPollParams extends _SendCommon, _ReplyMarkupCommon {
   explanationParseMode?: ParseMode;
   /** The explanation's entities. */
   explanationEntities?: MessageEntity[];
+  /** An optional description. */
+  description?: string;
+  /** The parse mode to use for the poll's description. If omitted, the default parse mode will be used. */
+  descriptionParseMode?: ParseMode;
+  /** The entities of the poll's description. */
+  descriptionEntities?: MessageEntity[];
   /** Duration of the poll in seconds. Must be in the range of 5-600. Cannot be used simultaneously with `closeDate`. */
   openPeriod?: number;
   /** The time in which the poll will be closed. Must be at least 5 seconds in the future, and no more than 600. Cannot be used simultaneously with `openPeriod`. */
