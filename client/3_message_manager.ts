@@ -867,9 +867,9 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     });
 
     const questionParseResult = this.parseText(question, { parseMode: params?.questionParseMode, entities: params?.questionEntities });
-    const poll: Api.poll = { _: "poll", id: getRandomId(), answers, question: { _: "textWithEntities", text: questionParseResult[0], entities: questionParseResult[1] ?? [] }, closed: params?.isClosed ? true : undefined, close_date: params?.closeDate, close_period: params?.openPeriod ? params.openPeriod : undefined, multiple_choice: params?.allowMultipleAnswers ? true : undefined, public_voters: params?.isAnonymous === false ? true : undefined, quiz: params?.type === "quiz" ? true : undefined };
+    const poll: Api.poll = { _: "poll", id: getRandomId(), answers, question: { _: "textWithEntities", text: questionParseResult[0], entities: questionParseResult[1] ?? [] }, closed: params?.isClosed ? true : undefined, close_date: params?.closeDate, close_period: params?.openPeriod ? params.openPeriod : undefined, multiple_choice: params?.allowMultipleAnswers ? true : undefined, public_voters: params?.isAnonymous === false ? true : undefined, quiz: params?.type === "quiz" ? true : undefined, hash: 0n };
 
-    const media: Api.inputMediaPoll = { _: "inputMediaPoll", poll, correct_answers: params?.correctOptionIndex !== undefined ? [encodeText(String(params.correctOptionIndex))] : undefined, solution, solution_entities: solutionEntities };
+    const media: Api.inputMediaPoll = { _: "inputMediaPoll", poll, correct_answers: params?.correctOptionIndexes, solution, solution_entities: solutionEntities };
 
     const result = await this.#c.invoke(
       {
@@ -1584,7 +1584,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       _: "messages.editMessage",
       peer: await this.#c.getInputPeer(chatId),
       id: messageId,
-      media: { _: "inputMediaPoll", poll: { _: "poll", id: BigInt(message.poll.id), closed: true, question: { _: "textWithEntities", text: "", entities: [] }, answers: [] } },
+      media: { _: "inputMediaPoll", poll: { _: "poll", id: BigInt(message.poll.id), closed: true, question: { _: "textWithEntities", text: "", entities: [] }, answers: [], hash: 0n } },
       reply_markup: await this.#constructReplyMarkup(params),
     }, { businessConnectionId: params?.businessConnectionId });
 

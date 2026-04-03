@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { Api } from "../2_tl.ts";
+import { Api } from "../2_tl.ts";
 import { constructMessageEntity, type MessageEntity } from "./2_message_entity.ts";
 
 /** A poll option. */
@@ -34,7 +34,7 @@ export interface PollOption {
 }
 
 export function constructPollOption(option: Api.PollAnswer, results: Array<Api.PollAnswerVoters>): PollOption {
-  const result = results.find((v) => v.option.every((v, i) => option.option[i] === v));
+  const result = results.find((v) => v.option.every((v, i) => Api.as("pollAnswer", option).option[i] === v));
   return {
     text: option.text.text,
     entities: option.text.entities?.map(constructMessageEntity).filter((v): v is MessageEntity => v !== null),

@@ -167,7 +167,7 @@ export interface SendPollParams extends _SendCommon, _ReplyMarkupCommon {
   /** Whether multiple selections should be allowed. Only valid for regular polls. */
   allowMultipleAnswers?: boolean;
   /** Index of the correct option. Required for quiz polls. */
-  correctOptionIndex?: number;
+  correctOptionIndexes?: number[];
   /** A text that will be shown to the user when the poll is answered. Only valid for quiz polls. */
   explanation?: string;
   /** The parse mode to use for the explanation. if omitted, the default parse mode will be used. */
