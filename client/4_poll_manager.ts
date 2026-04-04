@@ -20,8 +20,9 @@
 
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
+import { encodeText } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { constructPoll, constructPollAnswer, type ID, type Update } from "../3_types.ts";
+import { constructPoll, constructPollAnswer, type ID, type InputPollOption, type Update } from "../3_types.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import type { C as C_ } from "./1_types.ts";
 import type { MessageManager } from "./3_message_manager.ts";
@@ -88,6 +89,23 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate, true> {
     optionIndexes = Array.from(new Set(optionIndexes));
     const options = optionIndexes.map((i) => Api.as("pollAnswer", poll.answers[i]).option);
     await this.#c.invoke({ _: "messages.sendVote", peer, msg_id: messageId, options });
+  }
+
+  async addPollOption(chatId: ID, messageId: number, option: InputPollOption) {
+    const peer = await this.#c.getInputPeer(chatId);
+    const msg_id = messageId;
+    const text = option.text;
+    const entities = option.entities;
+    const parseResult = this.#c.messageManager.parseText(text, { parseMode: option.parseMode, entities });
+    const answer: Api.pollAnswer = { _: "pollAnswer", option: encodeText("0"), text: { _: "textWithEntities", text: parseResult[0], entities: parseResult[1] ?? [] } };
+    await this.#c.invoke({ _: "messages.addPollAnswer", peer, msg_id, answer });
+  }
+
+  async removePollOption(chatId: ID, messageId: number, optionId: string) {
+    const peer = await this.#c.getInputPeer(chatId);
+    const msg_id = messageId;
+    const option = encodeText(optionId);
+    await this.#c.invoke({ _: "messages.deletePollAnswer", peer, msg_id, option });
   }
 
   canHandleUpdate(update: Api.Update): update is PollManagerUpdate {

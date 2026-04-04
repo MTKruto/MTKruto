@@ -2507,6 +2507,28 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     await this.#pollManager.retractVote(chatId, messageId);
   }
 
+  /**
+   * Add an option to a poll. User-only.
+   *
+   * @param chatId The identifier of the chat that includes the poll.
+   * @param messageId The identifier of the message that includes the poll.
+   * @param option The option to add.
+   */
+  async addPollOption(chatId: ID, messageId: number, option: InputPollOption) {
+    await this.#pollManager.addPollOption(chatId, messageId, option);
+  }
+
+  /**
+   * Remove an option from a poll. User-only.
+   *
+   * @param chatId The identifier of the chat that includes the poll.
+   * @param messageId The identifier of the message that includes the poll.
+   * @param option The identifier of the option to remove.
+   */
+  async removePollOption(chatId: ID, messageId: number, optionId: string) {
+    await this.#pollManager.removePollOption(chatId, messageId, optionId);
+  }
+
   //
   // ========================= CHECKLISTS ========================= //
   //
