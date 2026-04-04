@@ -995,3 +995,12 @@ export interface GetStarTransactionsParams {
   /** The maximum number of results to return. */
   limit?: number;
 }
+
+export interface GiftPremiumSubscriptionParams {
+  /** A text to attach to the gift. */
+  text?: string;
+  /** The parse mode to use. If omitted, the default parse mode will be used. */
+  parseMode?: ParseMode;
+  /** The text's entities. */
+  entities?: MessageEntity[];
+}

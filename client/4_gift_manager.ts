@@ -21,8 +21,8 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { constructClaimedGifts, constructGift, type ID, type InputGift, inputGiftToTlObject } from "../3_types.ts";
-import type { GetClaimedGiftsParams, SendGiftParams } from "./0_params.ts";
+import { constructClaimedGifts, constructGift, type ID, type InputGift, inputGiftToTlObject, type PremiumSubscriptionDuration } from "../3_types.ts";
+import type { GetClaimedGiftsParams, GiftPremiumSubscriptionParams, SendGiftParams } from "./0_params.ts";
 import { getLimit } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
 import type { MessageManager } from "./3_message_manager.ts";
@@ -112,5 +112,16 @@ export class GiftManager {
     const stargift = await inputGiftToTlObject(gift, this.#c.getInputPeer);
     const to_id = await this.#c.getInputPeer(chatId);
     await this.#c.invoke({ _: "payments.transferStarGift", stargift, to_id });
+  }
+
+  async giftPremiumSubscription(userId: ID, duration: PremiumSubscriptionDuration, params?: GiftPremiumSubscriptionParams) {
+    this.#c.storage.assertBot("giftPremiumSubscription");
+    const months = duration;
+    const user_id = await this.#c.getInputUser(userId);
+    const message = params?.text ? this.#c.messageManager.parseText(params.text, { parseMode: params.parseMode, entities: params.entities }) : undefined;
+    const invoice: Api.inputInvoicePremiumGiftStars = { _: "inputInvoicePremiumGiftStars", months, user_id, message: message ? { _: "textWithEntities", text: message[0], entities: message[1] ?? [] } : undefined };
+
+    const form = await this.#c.invoke({ _: "payments.getPaymentForm", invoice });
+    await this.#c.invoke({ _: "payments.sendStarsForm", form_id: form.form_id, invoice });
   }
 }
