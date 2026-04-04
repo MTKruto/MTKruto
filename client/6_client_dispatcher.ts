@@ -285,7 +285,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * If no parameters are provided, the credentials will be prompted in runtime.
    *
    * Notes:
-   * 1. Requires the `apiId` and `apiHash` paramters to be passed when constructing the client.
+   * 1. Requires the `apiId` and `apiHash` parameters to be passed when constructing the client.
    * 3. Reconnects the client to the appropriate DC in case of MIGRATE_X errors.
    */
   async signIn(params?: SignInParams): Promise<void> {
@@ -1296,7 +1296,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    *
    * @method ms
    * @param chatId The chat that includes the poll.
-   * @param messageId The idenfifier of the poll's message.
+   * @param messageId The identifier of the poll's message.
    * @returns The new state of the poll.
    */
   async stopPoll(chatId: ID, messageId: number, params?: StopPollParams): Promise<Poll> {
@@ -1798,7 +1798,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * Get inactive chats. User-only.
    *
    * @method ch
-   * @retuns A list of inactive chats the current user is member of.
+   * @returns A list of inactive chats the current user is member of.
    */
   async getInactiveChats(): Promise<InactiveChat[]> {
     return await this.#dispatch("getInactiveChats");
@@ -1878,7 +1878,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Set the number of boosts required to circument a chat's default restrictions. User-only.
+   * Set the number of boosts required to circumvent a chat's default restrictions. User-only.
    *
    * @method ch
    * @param chatId The identifier of a chat.

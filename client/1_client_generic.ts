@@ -80,7 +80,7 @@ export abstract class ClientGeneric {
    * If no parameters are provided, the credentials will be prompted in runtime.
    *
    * Notes:
-   * 1. Requires the `apiId` and `apiHash` paramters to be passed when constructing the client.
+   * 1. Requires the `apiId` and `apiHash` parameters to be passed when constructing the client.
    * 3. Reconnects the client to the appropriate DC in case of MIGRATE_X errors.
    */
   abstract signIn(params?: SignInParams): Promise<void>;
@@ -545,7 +545,7 @@ export abstract class ClientGeneric {
    * @method ms
    * @param chatId The identifier of a chat to send the audio file to.
    * @param audio The audio to send.
-   * @returns The sent audio filr.
+   * @returns The sent audio file.
    */
   abstract sendAudio(chatId: ID, audio: FileSource, params?: SendAudioParams): Promise<MessageAudio>;
 
@@ -920,7 +920,7 @@ export abstract class ClientGeneric {
    *
    * @method ms
    * @param chatId The chat that includes the poll.
-   * @param messageId The idenfifier of the poll's message.
+   * @param messageId The identifier of the poll's message.
    * @returns The new state of the poll.
    */
   abstract stopPoll(chatId: ID, messageId: number, params?: StopPollParams): Promise<Poll>;
@@ -1324,7 +1324,7 @@ export abstract class ClientGeneric {
    * Get inactive chats. User-only.
    *
    * @method ch
-   * @retuns A list of inactive chats the current user is member of.
+   * @returns A list of inactive chats the current user is member of.
    */
   abstract getInactiveChats(): Promise<InactiveChat[]>;
 
@@ -1388,7 +1388,7 @@ export abstract class ClientGeneric {
   abstract deleteChatStickerSet(chatId: ID): Promise<void>;
 
   /**
-   * Set the number of boosts required to circument a chat's default restrictions. User-only.
+   * Set the number of boosts required to circumvent a chat's default restrictions. User-only.
    *
    * @method ch
    * @param chatId The identifier of a chat.

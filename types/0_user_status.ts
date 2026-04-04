@@ -41,7 +41,7 @@ export interface UserStatusOffline {
 }
 
 /**
- * A user status indictating that the user was last seen online recently.
+ * A user status indicating that the user was last seen online recently.
  * @unlisted
  */
 export interface UserStatusLastSeenRecently {
@@ -50,7 +50,7 @@ export interface UserStatusLastSeenRecently {
 }
 
 /**
- * A user status indictating that the user was last seen online around a week ago.
+ * A user status indicating that the user was last seen online around a week ago.
  * @unlisted
  */
 export interface UserStatusLastSeenLastWeek {
@@ -59,7 +59,7 @@ export interface UserStatusLastSeenLastWeek {
 }
 
 /**
- * A user status indictating that the user was last seen online around a month ago.
+ * A user status indicating that the user was last seen online around a month ago.
  * @unlisted
  */
 export interface UserStatusLastSeenLastMonth {

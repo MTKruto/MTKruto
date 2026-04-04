@@ -160,7 +160,7 @@ export interface UpdateMessageEdited {
  *
  * ```
  * client.on("scheduledMessage", (ctx) => {
- *   console.log("A message was just schedueld.");
+ *   console.log("A message was just scheduled.");
  *   // ctx.update.scheduledMessage
  * });
  * ```

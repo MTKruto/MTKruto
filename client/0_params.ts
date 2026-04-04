@@ -110,7 +110,7 @@ export interface SendChatActionParams extends _BusinessConnectionIdCommon {
 }
 
 export interface _EditMessageTextCommon extends _ReplyMarkupCommon {
-  /** The parse mode to use. if omitted, the default parse mode will be used. */
+  /** The parse mode to use. If omitted, the default parse mode will be used. */
   parseMode?: ParseMode;
   /** The message's entities. */
   entities?: MessageEntity[];
@@ -203,7 +203,7 @@ export interface SendChecklistParams extends _SendCommon {
   titleParseMode?: ParseMode;
   /** Whether users other than the creator of the to-do list can add more items. */
   isExtendableByOthers?: boolean;
-  /** Whether users other than the creator of the to-do-list can mark items as completed. */
+  /** Whether users other than the creator of the to-do list can mark items as completed. */
   isCompletableByOthers?: boolean;
 }
 
@@ -401,7 +401,7 @@ export interface SendDiceParams extends _SendCommon, _ReplyMarkupCommon {
 }
 
 export interface ReplyParams {
-  /** Whether to quote the message that is to be replied. Enabled by default for non-private chats. */
+  /** Whether to quote the message being replied to. Enabled by default for non-private chats. */
   isQuoted?: boolean;
 }
 
@@ -786,7 +786,7 @@ export interface GetLinkPreviewParams {
 export interface GetJoinRequestsParams {
   /** An invite link. If specified, only join requests from that invite link will be returned. */
   inviteLink?: string;
-  /** A search query. If specified, only matching users results will be returned. */
+  /** A search query. If specified, only matching users will be returned. */
   search?: string;
   /** A point in time. If specified, results will be fetched from that date. */
   fromDate?: number;
@@ -825,7 +825,7 @@ export interface GetMessageReactionsParams {
 }
 
 export interface PromoteChatMemberParams {
-  /** Whether the admininistrator's presence in the chat is hidden. */
+  /** Whether the administrator's presence in the chat is hidden. */
   isAnonymous?: boolean;
   /** Whether the administrator can access the chat event log, chat statistics, message statistics in channels, see channel members, see anonymous administrators in supergroups and surpass slow mode. */
   canManageChat?: boolean;
@@ -835,7 +835,7 @@ export interface PromoteChatMemberParams {
   canManageVideoChats?: boolean;
   /** Whether the administrator can restrict, ban or unban chat members. */
   canRestrictMembers?: boolean;
-  /** Whether the administrator can promote regular members to admininistrators. */
+  /** Whether the administrator can promote regular members to administrators. */
   canPromoteMembers?: boolean;
   /** Whether the administrator can change the name of the chat, its photo, description and some other settings. */
   canChangeInfo?: boolean;
@@ -855,9 +855,9 @@ export interface PromoteChatMemberParams {
   canEditStories?: boolean;
   /** Whether the administrator can delete stories. */
   canDeleteStories?: boolean;
-  /** Whether the administrator manage direct messages. */
+  /** Whether the administrator can manage direct messages. */
   canManageDirectMessages?: boolean;
-  /** Whether the administrator manage member tags. */
+  /** Whether the administrator can manage member tags. */
   canManageTags?: boolean;
   /** The custom title of the administrator. */
   title?: string;

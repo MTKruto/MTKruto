@@ -22,7 +22,7 @@ import type { Api } from "../2_tl.ts";
 
 /** The rights of a chat administrator. */
 export interface ChatAdministratorRights {
-  /** Whether the admininistrator's presence in the chat is hidden. */
+  /** Whether the administrator's presence in the chat is hidden. */
   isAnonymous: boolean;
   /** Whether the administrator can access the chat event log, chat statistics, message statistics in channels, see channel members, see anonymous administrators in supergroups and surpass slow mode. */
   canManageChat: boolean;
@@ -32,7 +32,7 @@ export interface ChatAdministratorRights {
   canManageVideoChats: boolean;
   /** Whether the administrator can restrict, ban or unban chat members. */
   canRestrictMembers: boolean;
-  /** Whether the administrator can promote regular members to admininistrators. */
+  /** Whether the administrator can promote regular members to administrators. */
   canPromoteMembers: boolean;
   /** Whether the administrator can change the name of the chat, its photo, description and some other settings. */
   canChangeInfo: boolean;
@@ -52,9 +52,9 @@ export interface ChatAdministratorRights {
   canEditStories: boolean;
   /** Whether the administrator can delete stories. */
   canDeleteStories: boolean;
-  /** Whether the administrator manage direct messages. */
+  /** Whether the administrator can manage direct messages. */
   canManageDirectMessages: boolean;
-  /** Whether the administrator manage member tags. */
+  /** Whether the administrator can manage member tags. */
   canManageTags: boolean;
 }
 
