@@ -72,7 +72,7 @@ export const K = {
     poll: (pollId: bigint) => [...K.cache.polls(), pollId],
     voiceTranscriptions: () => [K.cache.P("voiceTranscriptions")],
     voiceTranscription: (transcriptionId: bigint) => [...K.cache.voiceTranscriptions(), transcriptionId],
-    voiceTranscriptionReferences: () => [K.cache.P("voiceTranscriptions")],
+    voiceTranscriptionReferences: () => [K.cache.P("voiceTranscriptionReferences")],
     voiceTranscriptionReference: (chatId: number, messageId: number, messageEditDate: number) => [...K.cache.voiceTranscriptionReferences(), chatId, messageId, messageEditDate],
   },
   messages: {
