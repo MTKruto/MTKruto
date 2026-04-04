@@ -18,11 +18,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { equals } from "../0_deps.ts";
+import { decodeText } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { constructMessageEntity, type MessageEntity } from "./2_message_entity.ts";
 
 /** A poll option. */
 export interface PollOption {
+  /** The identifier of the option. */
+  id: string;
   /** The option's text (1-100 characters). */
   text: string;
   /** The entities of the option's text. */
@@ -34,8 +38,10 @@ export interface PollOption {
 }
 
 export function constructPollOption(option: Api.PollAnswer, results: Array<Api.PollAnswerVoters>): PollOption {
-  const result = results.find((v) => v.option.every((v, i) => Api.as("pollAnswer", option).option[i] === v));
+  const result = results.find((v) => equals(v.option, Api.as("pollAnswer", option).option));
+  const id = decodeText(Api.as("pollAnswer", option).option);
   return {
+    id,
     text: option.text.text,
     entities: option.text.entities?.map(constructMessageEntity).filter((v): v is MessageEntity => v !== null),
     voterCount: result?.voters ?? 0,

@@ -1075,6 +1075,24 @@ export abstract class ClientGeneric {
    */
   abstract retractVote(chatId: ID, messageId: number): Promise<void>;
 
+  /**
+   * Add an option to a poll. User-only.
+   *
+   * @param chatId The identifier of the chat that includes the poll.
+   * @param messageId The identifier of the message that includes the poll.
+   * @param option The option to add.
+   */
+  abstract addPollOption(chatId: ID, messageId: number, option: InputPollOption): Promise<void>;
+
+  /**
+   * Remove an option from a poll. User-only.
+   *
+   * @param chatId The identifier of the chat that includes the poll.
+   * @param messageId The identifier of the message that includes the poll.
+   * @param option The identifier of the option to remove.
+   */
+  abstract removePollOption(chatId: ID, messageId: number, optionId: string): Promise<void>;
+
   //
   // ========================= CHECKLISTS ========================= //
   //

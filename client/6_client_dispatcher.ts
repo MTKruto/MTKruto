@@ -1487,6 +1487,28 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("retractVote", chatId, messageId);
   }
 
+  /**
+   * Add an option to a poll. User-only.
+   *
+   * @param chatId The identifier of the chat that includes the poll.
+   * @param messageId The identifier of the message that includes the poll.
+   * @param option The option to add.
+   */
+  async addPollOption(chatId: ID, messageId: number, option: InputPollOption): Promise<void> {
+    return await this.#dispatch("addPollOption", chatId, messageId, option);
+  }
+
+  /**
+   * Remove an option from a poll. User-only.
+   *
+   * @param chatId The identifier of the chat that includes the poll.
+   * @param messageId The identifier of the message that includes the poll.
+   * @param option The identifier of the option to remove.
+   */
+  async removePollOption(chatId: ID, messageId: number, optionId: string): Promise<void> {
+    return await this.#dispatch("removePollOption", chatId, messageId, optionId);
+  }
+
   //
   // ========================= CHECKLISTS ========================= //
   //
