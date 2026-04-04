@@ -69,13 +69,12 @@ export class StorageSessionStorage implements Storage {
   }
 
   *getMany<T>(filter: GetManyFilter, params?: { limit?: number; reverse?: boolean }): Generator<[readonly StorageKeyPart[], T]> {
-    let entries = Object.entries(sessionStorage).sort(([a], [b]) => a.localeCompare(b));
+    const entries = Object.entries(sessionStorage).sort(([a], [b]) => a.localeCompare(b));
     if (params?.reverse) {
       entries.reverse();
     }
-    if (params?.limit !== undefined) {
-      entries = entries.slice(0, params.limit <= 0 ? 1 : params.limit);
-    }
+    const limit = params?.limit !== undefined ? (params.limit <= 0 ? 1 : params.limit) : undefined;
+    let yielded = 0;
     entries: for (let [key, value] of entries) {
       if (!key.startsWith(this.prefix)) {
         continue;
@@ -96,6 +95,10 @@ export class StorageSessionStorage implements Storage {
         }
 
         yield [parts, fromString(value)] as [readonly StorageKeyPart[], T];
+        ++yielded;
+        if (limit !== undefined && yielded >= limit) {
+          return;
+        }
       }
     }
   }

@@ -75,13 +75,12 @@ export class StorageMemory implements Storage {
   }
 
   *getMany<T>(filter: GetManyFilter, params?: { limit?: number; reverse?: boolean }): Generator<[readonly StorageKeyPart[], T]> {
-    let entries = this.#getEntries();
+    const entries = this.#getEntries();
     if (params?.reverse) {
       entries.reverse();
     }
-    if (params?.limit !== undefined) {
-      entries = entries.slice(0, params.limit <= 0 ? 1 : params.limit);
-    }
+    const limit = params?.limit !== undefined ? (params.limit <= 0 ? 1 : params.limit) : undefined;
+    let yielded = 0;
     entries: for (const [key, value] of entries) {
       const parts = fromString(key);
       if (Array.isArray(parts)) {
@@ -98,6 +97,10 @@ export class StorageMemory implements Storage {
         }
 
         yield [parts, value] as [readonly StorageKeyPart[], T];
+        ++yielded;
+        if (limit !== undefined && yielded >= limit) {
+          return;
+        }
       }
     }
   }
