@@ -21,7 +21,6 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject, getLogger, type MaybePromise, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import type { PollOption } from "../3_types.ts";
 import { type FileId, FileType, toUniqueFileId } from "./_file_id.ts";
 import { serializeFileId } from "./_file_id.ts";
 import { type ChecklistChanged, constructChecklistChanged } from "./0_checklist_changed.ts";
@@ -50,7 +49,7 @@ import { constructUser2, type User } from "./2_user.ts";
 import { type ChecklistItem, constructChecklistItem } from "./3_checklist_item.ts";
 import { constructForwardHeader, type ForwardHeader } from "./3_forward_header.ts";
 import { constructGame, type Game } from "./3_game.ts";
-import { constructPollOption } from "./3_poll_option.ts";
+import { constructPollOption, type PollOption } from "./3_poll_option.ts";
 import { constructReplyQuote, type ReplyQuote } from "./3_reply_quote.ts";
 import { type Checklist, constructChecklist } from "./4_checklist.ts";
 import { constructPoll, type Poll } from "./4_poll.ts";
