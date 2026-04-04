@@ -874,7 +874,6 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const description = params?.description;
     const parseResult2 = description !== undefined ? this.parseText(description, { parseMode: params?.descriptionParseMode, entities: params?.descriptionEntities }) : undefined;
     const caption = parseResult2?.[0];
-
     const entities = parseResult2?.[1];
 
     const result = await this.#c.invoke(
