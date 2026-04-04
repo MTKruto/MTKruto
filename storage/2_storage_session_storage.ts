@@ -77,9 +77,10 @@ export class StorageSessionStorage implements Storage {
       entries = entries.slice(0, params.limit <= 0 ? 1 : params.limit);
     }
     entries: for (let [key, value] of entries) {
-      if (key.startsWith(this.prefix)) {
-        key = key.slice(this.prefix.length);
+      if (!key.startsWith(this.prefix)) {
+        continue;
       }
+      key = key.slice(this.prefix.length);
       const parts = fromString(key);
       if (Array.isArray(parts)) {
         if ("prefix" in filter) {
