@@ -150,9 +150,9 @@ export interface EditInlineMessageMediaParams extends _ReplyMarkupCommon {
 
 export interface ForwardMessagesParams extends Omit<_SendCommon, "replyToMessageId" | "replyMarkup"> {
   /** Whether to not include the original sender of the message that is going to be forwarded. */
-  dropSenderName?: boolean;
+  isSenderNameDropped?: boolean;
   /** Whether to not include the original caption of the message that is going to be forwarded. */
-  dropCaption?: boolean;
+  isCaptionDropped?: boolean;
 }
 
 export interface SendPollParams extends _SendCommon, _ReplyMarkupCommon {
