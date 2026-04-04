@@ -18,4 +18,5 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+/** The duration of a Telegram Premium subscription. */
 export type PremiumSubscriptionDuration = 3 | 6 | 12;
