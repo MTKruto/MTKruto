@@ -169,7 +169,7 @@ export class UpdateManager {
         }
       }
       messages.push(...this.#extractMessages(context.other_updates));
-    } else if (Api.isOneOf(["updateNewMessage", "updateNewChannelMessage", "updateEditMessage", "updateEditChannelMessage", "updateBotNewBusinessMessage", "updateBotNewBusinessMessage"], context)) {
+    } else if (Api.isOneOf(["updateNewMessage", "updateNewChannelMessage", "updateEditMessage", "updateEditChannelMessage", "updateBotNewBusinessMessage"], context)) {
       if (Api.is("message", context.message)) {
         messages.push(context.message);
       }
