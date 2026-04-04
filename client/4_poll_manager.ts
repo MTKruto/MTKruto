@@ -92,6 +92,7 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate, true> {
   }
 
   async addPollOption(chatId: ID, messageId: number, option: InputPollOption) {
+    this.#c.storage.assertUser("addPollOption");
     const peer = await this.#c.getInputPeer(chatId);
     const msg_id = messageId;
     const text = option.text;
@@ -102,6 +103,7 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate, true> {
   }
 
   async removePollOption(chatId: ID, messageId: number, optionId: string) {
+    this.#c.storage.assertUser("removePollOption");
     const peer = await this.#c.getInputPeer(chatId);
     const msg_id = messageId;
     const option = encodeText(optionId);
