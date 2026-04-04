@@ -46,7 +46,8 @@ export class StorageMemory implements Storage {
 
   branch(id: string): Storage {
     const storage = new StorageMemory();
-    storage.#id = id;
+    storage.map = this.map;
+    storage.#id = this.#id !== null ? `${this.#id}S__${id}` : id;
     return storage;
   }
 
