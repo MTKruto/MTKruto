@@ -45,8 +45,6 @@ export interface InviteLink {
   pendingJoinRequestCount?: number;
   /** The amount of stars required to renew the subscription. */
   subscriptionPrice?: number;
-  /** The remaining duration (in seconds) until the subscription expires. */
-  subscriptionExpiresIn?: number;
 }
 
 export function constructInviteLink(inviteLink_: Api.chatInviteExported, getPeer: PeerGetter): InviteLink {
@@ -59,8 +57,8 @@ export function constructInviteLink(inviteLink_: Api.chatInviteExported, getPeer
   const requiresApproval = inviteLink_.request_needed ? true : false;
   const isRevoked = inviteLink_.revoked ? true : false;
   const title = inviteLink_.title;
-  const expiresAt = inviteLink_.expire_date ? inviteLink_.expire_date : undefined;
-  const limit = inviteLink_.usage_limit ? inviteLink_.usage_limit : undefined;
+  const expiresAt = inviteLink_.expire_date;
+  const limit = inviteLink_.usage_limit;
   const pendingJoinRequestCount = inviteLink_.requested;
   return cleanObject({
     inviteLink,
@@ -72,6 +70,5 @@ export function constructInviteLink(inviteLink_: Api.chatInviteExported, getPeer
     limit,
     pendingJoinRequestCount,
     subscriptionPrice: inviteLink_.subscription_pricing?.amount ? Number(inviteLink_.subscription_pricing.amount) : undefined,
-    subscriptionExpiresAt: inviteLink_.subscription_expired || undefined,
   });
 }
