@@ -19,6 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
+import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { constructLocation, type Location } from "./0_location.ts";
 import type { PeerGetter } from "./1_chat_p.ts";
@@ -67,12 +68,12 @@ export function constructInlineQuery(query_: Api.updateBotInlineQuery, getPeer: 
 
   const location = query_.geo !== undefined && Api.is("geoPoint", query_.geo) ? constructLocation(query_.geo) : undefined;
 
-  return {
+  return cleanObject({
     id: String(query_.query_id),
     from: user,
     query: query_.query,
     offset: query_.offset,
     chatType,
     location,
-  };
+  });
 }
