@@ -693,7 +693,7 @@ export interface GetClaimedGiftsParams {
   /** Whether to exclude upgradable gifts. */
   isUpgradableExcluded?: boolean;
   /** Whether to sort gifts by value. */
-  isSortedByValue?: number;
+  isSortedByValue?: boolean;
   /** Whether to exclude unique gifts. */
   isUniqueExcluded?: boolean;
   /** Whether to exclude unlimited gifts. */
