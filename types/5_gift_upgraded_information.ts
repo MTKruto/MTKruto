@@ -38,7 +38,7 @@ export interface GiftUpgradedInformation {
   to?: ChatP;
   inputId?: string;
   resalePrice?: number;
-  transferrableAt?: number;
+  transferableAt?: number;
   resellableAt?: number;
 }
 
@@ -55,7 +55,7 @@ export function constructGiftUpgradedInformation(action: Api.messageActionStarGi
   const to = action.peer ? getPeer(action.peer)?.[0] : undefined;
   const inputId = action.saved_id ? String(action.saved_id) : undefined;
   const resalePrice = action.resale_amount ? Number(action.resale_amount) : undefined;
-  const transferrableAt = action.can_transfer_at;
+  const transferableAt = action.can_transfer_at;
   const resellableAt = action.can_resell_at;
 
   if ((action.from_id && !from) || (action.peer && !to)) {
@@ -75,7 +75,7 @@ export function constructGiftUpgradedInformation(action: Api.messageActionStarGi
     to,
     inputId,
     resalePrice,
-    transferrableAt,
+    transferableAt,
     resellableAt,
   });
 }

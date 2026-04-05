@@ -71,7 +71,7 @@ export function constructInviteLink(inviteLink_: Api.chatInviteExported, getPeer
     expiresAt,
     limit,
     pendingJoinRequestCount,
-    subcriptionPrice: inviteLink_.subscription_pricing || undefined,
+    subscriptionPrice: inviteLink_.subscription_pricing?.amount ? Number(inviteLink_.subscription_pricing.amount) : undefined,
     subscriptionExpiresAt: inviteLink_.subscription_expired || undefined,
   });
 }

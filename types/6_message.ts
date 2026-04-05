@@ -1005,7 +1005,7 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
     const forumTopicCreated = {
       name: message_.action.title,
       color: message_.action.icon_color,
-      cutsomEmojiId: message_.action.icon_emoji_id ? String(message_.action.icon_emoji_id) : undefined,
+      customEmojiId: message_.action.icon_emoji_id ? String(message_.action.icon_emoji_id) : undefined,
     };
     return { ...message, forumTopicCreated };
   } else if (Api.is("messageActionTopicEdit", message_.action)) {
