@@ -28,7 +28,7 @@ import { constructSticker2, type Sticker } from "./1_sticker.ts";
 import { constructGiftUpgradedComponent, type GiftUpgradedComponent } from "./3_gift_upgraded_component.ts";
 
 /**
- * An non-upgraded gift.
+ * A non-upgraded gift.
  *
  * @unlisted
  */

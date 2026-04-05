@@ -883,7 +883,7 @@ export class UpdateManager {
       return chatIds;
     }
 
-    // messsages
+    // messages
     if (!("message" in object)) {
       return chatIds;
     }

@@ -1812,7 +1812,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   async resolveMessageLink(link: string) {
     const parseResult = MessageManager.parseMessageLink(link);
     if (parseResult === null) {
-      throw new InputError("Invalid messsage link.");
+      throw new InputError("Invalid message link.");
     }
     const [chatId, messageId] = parseResult;
     return await this.getMessage(chatId, messageId);
