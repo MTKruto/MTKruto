@@ -66,10 +66,10 @@ export function constructTopic(message: Message): Topic {
   const isHidden = false;
   let name = forumTopicCreated.forumTopicCreated.name;
   const color = forumTopicCreated.forumTopicCreated.color;
-  let customEmoijId = forumTopicCreated.forumTopicCreated.customEmojiId;
+  let customEmojiId = forumTopicCreated.forumTopicCreated.customEmojiId;
   if (forumTopicEdited) {
     name = forumTopicEdited.forumTopicEdited.name;
-    customEmoijId = forumTopicEdited.forumTopicEdited.customEmojiId;
+    customEmojiId = forumTopicEdited.forumTopicEdited.customEmojiId;
   }
   return cleanObject({
     id,
@@ -80,6 +80,6 @@ export function constructTopic(message: Message): Topic {
     isHidden,
     name,
     color,
-    customEmoijId,
+    customEmojiId,
   });
 }

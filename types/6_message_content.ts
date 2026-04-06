@@ -120,8 +120,8 @@ export interface MessageContentInvoice {
   needName?: boolean;
   needPhoneNumber?: boolean;
   needEmail?: boolean;
-  needShippingAAddress?: boolean;
-  sendPhoneNumberToPorvider?: boolean;
+  needShippingAddress?: boolean;
+  sendPhoneNumberToProvider?: boolean;
   sendEmailToProvider?: boolean;
   isFlexible?: boolean;
 }

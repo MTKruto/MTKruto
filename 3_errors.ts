@@ -314,7 +314,7 @@ export class ChannelInvalid extends TelegramError {
   //
 }
 
-export class ChannelParicipantMissing extends TelegramError {
+export class ChannelParticipantMissing extends TelegramError {
   //
 }
 
@@ -2155,7 +2155,7 @@ export const map = {
   CHANNEL_FORUM_MISSING: ChannelForumMissing,
   CHANNEL_ID_INVALID: ChannelIdInvalid,
   CHANNEL_INVALID: ChannelInvalid,
-  CHANNEL_PARICIPANT_MISSING: ChannelParicipantMissing,
+  CHANNEL_PARTICIPANT_MISSING: ChannelParticipantMissing,
   CHANNEL_PRIVATE: ChannelPrivate,
   CHANNEL_PUBLIC_GROUP_NA: ChannelPublicGroupNa,
   CHANNEL_TOO_BIG: ChannelTooBig,

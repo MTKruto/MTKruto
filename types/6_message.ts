@@ -110,7 +110,7 @@ export interface _MessageBase {
   forwards?: number;
   /** The message's reply markup. */
   replyMarkup?: ReplyMarkup;
-  /** The identifier of a business conection that the message was sent in. */
+  /** The identifier of a business connection that the message was sent in. */
   businessConnectionId?: string;
   /** The number of the boosts made by the sender of the message. */
   senderBoostCount?: number;

@@ -27,7 +27,7 @@ import type { Connection } from "./0_connection.ts";
 const VERSION_SOCKS = 5;
 const VERSION_USERNAME_PASSWORD_AUTH = 1;
 
-const AUTH_MEHTOD_NONE = 0;
+const AUTH_METHOD_NONE = 0;
 const AUTH_METHOD_USERNAME_PASSWORD = 2;
 
 const RESULT_SUCCESS = 0;
@@ -112,12 +112,12 @@ export class ConnectionSocks5 implements Connection {
         async () => {
           this.#socket!.off("error", reject);
           try {
-            const header = new Uint8Array([VERSION_SOCKS, 2, AUTH_MEHTOD_NONE, AUTH_METHOD_USERNAME_PASSWORD]);
+            const header = new Uint8Array([VERSION_SOCKS, 2, AUTH_METHOD_NONE, AUTH_METHOD_USERNAME_PASSWORD]);
             await this.write(header);
 
             const negotiation = new Uint8Array(2);
             await this.read(negotiation);
-            if (negotiation[0] !== VERSION_SOCKS || (negotiation[1] !== AUTH_MEHTOD_NONE && negotiation[1] !== AUTH_METHOD_USERNAME_PASSWORD)) {
+            if (negotiation[0] !== VERSION_SOCKS || (negotiation[1] !== AUTH_METHOD_NONE && negotiation[1] !== AUTH_METHOD_USERNAME_PASSWORD)) {
               throw new ConnectionError("Negotiation with SOCKS5 server failed.");
             }
 

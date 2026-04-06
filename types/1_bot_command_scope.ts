@@ -69,7 +69,7 @@ export interface BotCommandScopeChatMember {
   userId: number;
 }
 
-/** A type specifying where bot commads are available. */
+/** A type specifying where bot commands are available. */
 export type BotCommandScope = BotCommandScopeDefault | BotCommandScopeAllPrivateChats | BotCommandScopeAllGroupChats | BotCommandScopeAllChatAdministrators | BotCommandScopeChat | BotCommandScopeChatAdministrators | BotCommandScopeChatMember;
 
 export async function botCommandScopeToTlObject(scope: BotCommandScope, getInputPeer: InputPeerGetter): Promise<Api.BotCommandScope> {

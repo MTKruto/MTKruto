@@ -100,7 +100,7 @@ export function getLogger(scope: string) {
       this.log(IN_BIN, INA, toHex(p));
     },
     outBin(p: Uint8Array) {
-      if (verbosity < OUT_BIN) { // So it is not unnecessarilly converted to hex
+      if (verbosity < OUT_BIN) { // So it is not unnecessarily converted to hex
         return;
       }
       this.log(OUT_BIN, OUTA, toHex(p));
