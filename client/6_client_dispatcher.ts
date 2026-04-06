@@ -77,7 +77,7 @@ export interface ClientDispatcherParams {
   persistCache?: boolean;
   /** Whether to disable receiving updates. UpdateConnectionState and UpdatesAuthorizationState will always be received. Defaults to `false`. */
   disableUpdates?: boolean;
-  /** An auth string to automatically import. Can be overriden by a later importAuthString call. */
+  /** An auth string to automatically import. Can be overridden by a later importAuthString call. */
   authString?: string;
   /**
    * The first DC to connect to. This is commonly used to decide whether to connect to test or production servers. It is not necessarily the DC that the client will directly connect to or is currently connected to. Defaults to the default initial DC.
@@ -3092,7 +3092,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param firstName The contact's first name.
    */
   async addContact(userId: ID, firstName: string, params?: AddContactParams): Promise<void> {
-    await this.#dispatch("addContcat", userId, firstName, params);
+    await this.#dispatch("addContact", userId, firstName, params);
   }
 
   /**

@@ -52,11 +52,11 @@ export { decodeHex, encodeHex } from "jsr:@std/encoding@1.0.10/hex";
 export { decodeBase64, encodeBase64 } from "jsr:@std/encoding@1.0.10/base64";
 
 import { contentType as contentType_ } from "jsr:@std/media-types@1.1.0/content-type";
-export const contentType: typeof contentType_ = (extentionOrType) => {
-  if (extentionOrType === "tgs") {
+export const contentType: typeof contentType_ = (extensionOrType) => {
+  if (extensionOrType === "tgs") {
     return "application/x-tgsticker";
   } else {
-    return contentType_(extentionOrType);
+    return contentType_(extensionOrType);
   }
 };
 import { extension as extension_ } from "jsr:@std/media-types@1.1.0/extension";

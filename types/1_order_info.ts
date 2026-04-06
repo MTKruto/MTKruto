@@ -28,7 +28,7 @@ export interface OrderInfo {
   name?: string;
   /** Phone number of the recipient. */
   phoneNumber?: string;
-  /** Email adderss of the recipient. */
+  /** Email address of the recipient. */
   email?: string;
   /** The shipping address of the recipient. */
   shippingAddress?: ShippingAddress;

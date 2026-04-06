@@ -577,7 +577,7 @@ export class Context {
   /**
    * Context-aware alias for {@link Client.deleteChatPhoto}.
    */
-  async deletChatPhoto(): Promise<void> {
+  async deleteChatPhoto(): Promise<void> {
     const chatId = this.#mustGetChatId();
     return await this.client.deleteChatPhoto(chatId);
   }

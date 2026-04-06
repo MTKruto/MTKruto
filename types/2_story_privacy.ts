@@ -29,7 +29,7 @@ export interface StoryPrivacyEveryone {
 }
 
 /** @unlisted */
-export interface StoryPrivacyConctacts {
+export interface StoryPrivacyContacts {
   /** @discriminator */
   contactsExcept: number[];
 }
@@ -49,7 +49,7 @@ export interface StoryPrivacyOnly {
 /** A story's privacy choice. */
 export type StoryPrivacy =
   | StoryPrivacyEveryone
-  | StoryPrivacyConctacts
+  | StoryPrivacyContacts
   | StoryPrivacyCloseFriends
   | StoryPrivacyOnly;
 
