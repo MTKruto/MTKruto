@@ -32,7 +32,7 @@ const defaultTransportProvider = typeof Deno === "undefined" ? transportProvider
 
 export interface SessionParams {
   /**
-   * The transport provider to use. Defaults to `webSocketTransportProvider` with its default options.
+   * The transport provider to use. Defaults to `transportProviderWebsocket` in browsers and `transportProviderTcp` in other runtimes.
    */
   transportProvider?: TransportProvider;
   /**
