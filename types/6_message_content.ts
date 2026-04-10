@@ -28,7 +28,6 @@ import type { LinkPreview } from "./5_link_preview.ts";
  * @unlisted
  */
 export interface MessageContentContact {
-  /** @discriminator */
   type: "contact";
   /** The contact's phone number. */
   phoneNumber: string;
@@ -45,7 +44,6 @@ export interface MessageContentContact {
  * @unlisted
  */
 export interface MessageContentLocation {
-  /** @discriminator */
   type: "text";
   /** The latitude of the location. */
   latitude: number;
@@ -66,7 +64,6 @@ export interface MessageContentLocation {
  * @unlisted
  */
 export interface MessageContentVenue {
-  /** @discriminator */
   type: "venue";
   /** The latitude of the venue. */
   latitude: number;
@@ -88,7 +85,6 @@ export interface MessageContentVenue {
 
 /** @unlisted */
 export interface MessageContentText {
-  /** @discriminator */
   type: "text";
   /** The message's text. */
   text: string;
@@ -102,7 +98,6 @@ export interface MessageContentText {
 
 /** @unlisted */
 export interface MessageContentInvoice {
-  /** @discriminator */
   type: "invoice";
   title: string;
   description: string;

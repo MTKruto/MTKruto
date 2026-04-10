@@ -49,14 +49,14 @@ export class ReactionManager implements UpdateProcessor<ReactionManagerUpdate, t
     if (Api.is("updateBotMessageReactions", update)) {
       const messageReactionCount = constructMessageReactionCount(update, this.#c.getPeer);
       if (messageReactionCount) {
-        return { messageReactionCount };
+        return { type: "messageReactionCount", messageReactionCount };
       } else {
         return null;
       }
     } else if (Api.is("updateBotMessageReaction", update)) {
       const messageReactions = constructMessageReactions(update, this.#c.getPeer);
       if (messageReactions) {
-        return { messageReactions };
+        return { type: "messageReactions", messageReactions };
       } else {
         return null;
       }
@@ -70,7 +70,7 @@ export class ReactionManager implements UpdateProcessor<ReactionManagerUpdate, t
         const forwards = message.forwards ?? 0;
         const recentReactions = update.reactions.recent_reactions ?? [];
         const reactions = update.reactions.results.map((v) => constructMessageReaction(v, recentReactions));
-        return { messageInteractions: { chatId, messageId: update.msg_id, reactions, views, forwards } };
+        return { type: "messageInteractions", messageInteractions: { chatId, messageId: update.msg_id, reactions, views, forwards } };
       } else {
         return null;
       }
@@ -88,7 +88,7 @@ export class ReactionManager implements UpdateProcessor<ReactionManagerUpdate, t
         const forwards = message.forwards ?? 0;
         const recentReactions = message.reactions?.recent_reactions ?? [];
         const reactions = message.reactions?.results.map((v) => constructMessageReaction(v, recentReactions)) ?? [];
-        return { messageInteractions: { chatId, messageId: update.id, reactions, views, forwards } };
+        return { type: "messageInteractions", messageInteractions: { chatId, messageId: update.id, reactions, views, forwards } };
       } else {
         return null;
       }

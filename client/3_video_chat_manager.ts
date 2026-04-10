@@ -163,7 +163,7 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate,
     if (updateFullChat) {
       await this.#c.messageStorage.setFullChat(chatId, fullChat);
     }
-    return { videoChat: constructVideoChat(update.call) };
+    return { type: "videoChat", videoChat: constructVideoChat(update.call) };
   }
 
   async getLiveStreamChannels(id: string) {

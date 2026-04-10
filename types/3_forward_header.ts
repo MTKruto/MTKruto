@@ -34,7 +34,6 @@ export interface _ForwardHeaderCommon {
  * @unlisted
  */
 export interface ForwardHeaderUser extends _ForwardHeaderCommon {
-  /** @discriminator */
   type: "user";
   user: User;
 }
@@ -44,7 +43,6 @@ export interface ForwardHeaderUser extends _ForwardHeaderCommon {
  * @unlisted
  */
 export interface ForwardHeaderChannel extends _ForwardHeaderCommon {
-  /** @discriminator */
   type: "channel";
   chat: ChatPChannel;
   messageId: number;
@@ -56,7 +54,6 @@ export interface ForwardHeaderChannel extends _ForwardHeaderCommon {
  * @unlisted
  */
 export interface ForwardHeaderSupergroup extends _ForwardHeaderCommon {
-  /** @discriminator */
   type: "supergroup";
   chat: ChatPSupergroup;
   title?: string;
@@ -67,7 +64,6 @@ export interface ForwardHeaderSupergroup extends _ForwardHeaderCommon {
  * @unlisted
  */
 export interface ForwardHeaderHidden extends _ForwardHeaderCommon {
-  /** @discriminator */
   type: "hidden";
   name: string;
 }
@@ -77,7 +73,6 @@ export interface ForwardHeaderHidden extends _ForwardHeaderCommon {
  * @unlisted
  */
 export interface ForwardHeaderUnsupported extends _ForwardHeaderCommon {
-  /** @discriminator */
   type: "unsupported";
 }
 

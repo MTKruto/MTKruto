@@ -23,7 +23,6 @@
  * @unlisted
  */
 export interface CodeCheckResultPasswordRequired {
-  /** @discriminator */
   type: "passwordRequired";
 }
 
@@ -32,7 +31,6 @@ export interface CodeCheckResultPasswordRequired {
  * @unlisted
  */
 export interface CodeCheckResultInvalidCode {
-  /** @discriminator */
   type: "invalidCode";
 }
 
@@ -41,7 +39,6 @@ export interface CodeCheckResultInvalidCode {
  * @unlisted
  */
 export interface CodeCheckResultSignedIn {
-  /** @discriminator */
   type: "signedIn";
   userId: number;
 }

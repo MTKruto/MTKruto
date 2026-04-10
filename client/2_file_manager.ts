@@ -120,6 +120,7 @@ export class FileManager {
           if (mustTrackProgress) {
             uploaded += part.bytes.length;
             this.#c.handleUpdate({
+              type: "uploadProgress",
               uploadProgress: {
                 id: String(fileId),
                 uploaded,
@@ -169,6 +170,7 @@ export class FileManager {
               if (mustTrackProgress) {
                 uploaded += bytes.length;
                 this.#c.handleUpdate({
+                  type: "uploadProgress",
                   uploadProgress: {
                     id: String(fileId),
                     uploaded,

@@ -59,7 +59,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
   async createStory(chatId: ID, content: InputStoryContent, params?: CreateStoryParams) {
     this.#c.storage.assertUser("createStory");
     let media: Api.InputMedia | null = null;
-    const source = "video" in content ? content.video : "photo" in content ? content.photo : unreachable();
+    const source = content.type === "video" ? content.video : content.type === "photo" ? content.photo : unreachable();
 
     if (typeof source === "string") {
       const fileId = this.#c.messageManager.resolveFileId(source, FileType.Photo);
@@ -92,7 +92,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
     const entities = parseResult === undefined ? undefined : parseResult[1];
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
-    const privacyRules = storyPrivacyToTlObject(params?.privacy ?? { everyoneExcept: [] }, this.#c.getPeer);
+    const privacyRules = storyPrivacyToTlObject(params?.privacy ?? { type: "everyone", except: [] }, this.#c.getPeer);
     const mediaAreas = new Array<Api.MediaArea>();
 
     if (params?.interactiveAreas?.length) {
@@ -167,10 +167,10 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
     if (Api.is("storyItemDeleted", update.story)) {
       const chatId = Api.peerToChatId(update.peer);
       const storyId = update.story.id;
-      return { deletedStory: { chatId, storyId } };
+      return { type: "deletedStory", deletedStory: { chatId, storyId } };
     } else if (Api.is("storyItem", update.story)) {
       const story = constructStory(update.story, update.peer, this.#c.getPeer);
-      return { story };
+      return { type: "story", story };
     } else {
       return null;
     }

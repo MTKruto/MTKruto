@@ -24,7 +24,7 @@ import { encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } fr
 import { Api } from "../2_tl.ts";
 import { PackShortNameInvalid } from "../3_errors.ts";
 import { getDc } from "../3_transport.ts";
-import { constructBlockedUserList, constructChatAction, constructMessageDraft, constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructStickerSet, constructSummarizedText, constructVoiceTranscription, deserializeFileId, type FileId, type InputChecklistItem, type InputMedia, type InputPollOption, isMessageType, type MessageList, messageSearchFilterToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type VoiceTranscription } from "../3_types.ts";
+import { constructBlockedUserList, constructChatAction, constructMessageDraft, constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructStickerSet, constructSummarizedText, constructVoiceTranscription, deserializeFileId, type FileId, type InputChecklistItem, type InputMedia, type InputPollOption, type MessageList, messageSearchFilterToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type VoiceTranscription } from "../3_types.ts";
 import { assertMessageType, type ChatActionType, constructMessage as constructMessage_, deserializeInlineMessageId, type FileSource, FileType, type ID, type Message, type MessageEntity, messageEntityToTlObject, type ParseMode, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type Update, type UsernameResolver } from "../3_types.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
@@ -997,7 +997,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       if (!message) {
         throw new InputError("Message not found.");
       }
-      if (!isMessageType(message, "link") && !isMessageType(message, "text")) {
+      if (message.type !== "link" && message.type !== "text") {
         throw new InputError("The referenced message is not a text message.");
       }
     }
@@ -1040,7 +1040,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       throw new InputError("Message not found.");
     }
     for (const type of MessageManager.#CAPTIONABLE_MESSAGE_TYPES) {
-      if (isMessageType(message_, type)) {
+      if (message_.type !== type) {
         canHaveCaption = true;
       }
     }
@@ -1397,12 +1397,12 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
           const business = "connection_id" in update ? { connectionId: update.connection_id, replyToMessage: update.reply_to_message } : undefined;
           const message = await this.constructMessage(update.message, undefined, business);
           if (Api.is("updateNewMessage", update) || Api.is("updateNewChannelMessage", update) || Api.is("updateBotNewBusinessMessage", update)) {
-            return { message };
+            return { type: "message", message };
           } else if (Api.is("updateNewScheduledMessage", update)) {
             message.isScheduled = true;
-            return { scheduledMessage: message };
+            return { type: "scheduledMessage", scheduledMessage: message };
           } else {
-            return { editedMessage: message };
+            return { type: "editedMessage", editedMessage: message };
           }
         }
       }
@@ -1417,7 +1417,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         }
       }
       if (deletedMessages.length > 0) {
-        return { deletedMessages };
+        return { type: "deletedMessages", deletedMessages };
       }
     } else if (Api.is("updateDeleteChannelMessages", update)) {
       const chatId = Api.getChannelChatId(update.channel_id);
@@ -1428,34 +1428,34 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
           deletedMessages.push({ chatId, messageId });
         }
       }
-      return { deletedMessages };
+      return { type: "deletedMessages", deletedMessages };
     } else if (Api.is("updateDeleteScheduledMessages", update)) {
       const chatId = Api.peerToChatId(update.peer);
       const deletedMessages = update.messages.map((v) => ({ chatId, messageId: v }));
-      return { deletedMessages, isScheduled: true };
+      return { type: "deletedMessages", deletedMessages, isScheduled: true };
     } else if (Api.is("updateBotDeleteBusinessMessage", update)) {
       const chatId = Api.peerToChatId(update.peer);
       const deletedMessages = update.messages.map((v) => ({ chatId, messageId: v }));
-      return { deletedMessages, businessConnectionId: update.connection_id };
+      return { type: "deletedMessages", deletedMessages, businessConnectionId: update.connection_id };
     }
 
     if (Api.is("updateTranscribedAudio", update)) {
       const voiceTranscription = constructVoiceTranscription(update);
       await this.#c.messageStorage.setVoiceTranscription(voiceTranscription);
-      return { voiceTranscription };
+      return { type: "voiceTranscription", voiceTranscription };
     }
 
     if (Api.isOneOf(["updateUserTyping", "updateChatUserTyping", "updateChannelUserTyping"], update)) {
       const chatAction = constructChatAction(update);
       if (chatAction !== null) {
-        return { chatAction };
+        return { type: "chatAction", chatAction };
       }
     }
 
     if (Api.is("updateUserTyping", update)) {
       const messageDraft = constructMessageDraft(update);
       if (messageDraft !== null) {
-        return { messageDraft };
+        return { type: "messageDraft", messageDraft };
       }
     }
 
@@ -1694,12 +1694,9 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       if (!Array.isArray(media) || !media.length) {
         throw new InputError("Media group must not be empty.");
       }
-      // deno-lint-ignore no-explicit-any
-      const firstMedia = (media as any)?.[0];
-      const firstMediaType = firstMedia?.animation !== undefined ? "animation" : firstMedia?.audio !== undefined ? "audio" : firstMedia?.photo !== undefined ? "photo" : firstMedia?.video !== undefined ? "video" : "document";
+      const firstMediaType = media[0]!.type;
       for (const media_ of media) {
-        // deno-lint-ignore no-explicit-any
-        const thisMediaType = (media_ as any)?.animation !== undefined ? "animation" : (media_ as any)?.audio !== undefined ? "audio" : (media_ as any)?.photo !== undefined ? "photo" : (media_ as any)?.video !== undefined ? "video" : "document";
+        const thisMediaType = media_.type;
         if (thisMediaType === "animation") {
           throw new InputError("Media groups cannot consist of animations.");
         }
@@ -1779,7 +1776,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     if (message === null) {
       throw new InputError("Message not found.");
     }
-    if (!isMessageType(message, "voice")) {
+    if (message.type !== "voice") {
       throw new InputError("Message not voice.");
     }
     const cachedTranscription = await this.#getCachedVoiceTranscription(message);

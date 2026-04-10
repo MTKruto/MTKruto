@@ -412,10 +412,10 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
   handleUpdate(update: Api.updateUserEmojiStatus): Update {
     const userId = Number(update.user_id);
     if (Api.is("emojiStatusEmpty", update.emoji_status)) {
-      return { emojiStatusRemoved: true, userId };
+      return { type: "emojiStatusRemoved", emojiStatusRemoved: true, userId };
     } else {
       const emojiStatus = constructEmojiStatus(update.emoji_status);
-      return { emojiStatus, userId };
+      return { type: "emojiStatus", emojiStatus, userId };
     }
   }
 

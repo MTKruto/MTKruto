@@ -30,15 +30,11 @@ const L = getLogger("ClientPlain");
 const LcreateAuthKey = L.branch("createAuthKey");
 
 export interface ClientPlainParams extends SessionParams {
-  /**
-   * MTProto public keys to use in the `[keyId, [key, exponent]][]` format. Don't set this unless you know what you are doing. Defaults to Telegram servers' public keys.
-   */
+  /** MTProto public keys to use in the `[keyId, [key, exponent]][]` format. Don't set this unless you know what you are doing. Defaults to Telegram servers' public keys. */
   publicKeys?: PublicKeys;
 }
 
-/**
- * An MTProto client for making plain connections. Most users won't need to interact with this. Used internally for creating authorization keys.
- */
+/** An MTProto client for making plain connections. Most users won't need to interact with this. Used internally for creating authorization keys. */
 export class ClientPlain extends ClientAbstract implements ClientAbstract {
   readonly #publicKeys: PublicKeys;
   session: SessionPlain;

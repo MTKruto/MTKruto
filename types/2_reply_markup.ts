@@ -29,7 +29,6 @@ import { constructKeyboardButton, type KeyboardButton, keyboardButtonToTlObject 
 
 /** @unlisted */
 export interface ReplyMarkupInlineKeyboard {
-  /** @discriminator */
   type: "inlineKeyboard";
   inlineKeyboard: InlineKeyboardButton[][];
 }
@@ -62,7 +61,6 @@ async function inlineKeyboardMarkupToTlObject(keyboard: ReplyMarkupInlineKeyboar
 
 /** @unlisted */
 export interface ReplyMarkupKeyboard {
-  /** @discriminator */
   type: "keyboard";
   keyboard: KeyboardButton[][];
   isPersistent?: boolean;
@@ -110,7 +108,6 @@ function replyKeyboardMarkupToTlObject(replyMarkup: ReplyMarkupKeyboard): Api.re
  * @unlisted
  */
 export interface ReplyMarkupRemoveKeyboard {
-  /** @discriminator */
   type: "removeKeyboard";
   /** Whether to only affect specific users. If true, only users that were mentioned will be affected along with the author of the replied message if any. */
   isSelective?: boolean;
@@ -131,7 +128,6 @@ function replyKeyboardRemoveToTlObject(replyMarkup: ReplyMarkupRemoveKeyboard): 
  * @unlisted
  */
 export interface ReplyMarkupForceReply {
-  /** @discriminator */
   type: "forceReply";
   /** A placeholder to be shown in the client's message box. */
   inputFieldPlaceholder?: string;

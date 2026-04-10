@@ -144,15 +144,10 @@ export interface _MessageMediaBase extends _MessageBase {
  * @unlisted
  */
 export interface MessageText extends _MessageBase {
-  /**
-   * The text included in the message.
-   * @discriminator
-   */
+  type: "text";
+  /** The text included in the message. */
   text: string;
-  /**
-   * The text's entities.
-   * @discriminator
-   */
+  /** The text's entities. */
   entities: MessageEntity[];
   /** The message's link preview. */
   linkPreview?: LinkPreview;
@@ -163,15 +158,14 @@ export interface MessageText extends _MessageBase {
  * @unlisted
  */
 export interface MessageLink extends _MessageBase {
-  /** @discriminator */
-  linkPreview: LinkPreview & { url: NonNullable<LinkPreview["url"]> };
+  type: "link";
+  linkPreview: LinkPreview;
 }
 
 /** @unlisted */
 export interface MessagePhoto extends _MessageMediaBase {
-  /** The photo included in the message.
-   * @discriminator
-   */
+  type: "photo";
+  /** The photo included in the message. */
   photo: Photo;
 }
 
@@ -180,10 +174,8 @@ export interface MessagePhoto extends _MessageMediaBase {
  * @unlisted
  */
 export interface MessageDocument extends _MessageMediaBase {
-  /**
-   * The document included in the message.
-   * @discriminator
-   */
+  type: "document";
+  /** The document included in the message. */
   document: Document;
 }
 
@@ -192,10 +184,8 @@ export interface MessageDocument extends _MessageMediaBase {
  * @unlisted
  */
 export interface MessageVideo extends _MessageMediaBase {
-  /**
-   * The video included in the message.
-   * @discriminator
-   */
+  type: "video";
+  /** The video included in the message. */
   video: Video;
 }
 
@@ -204,10 +194,8 @@ export interface MessageVideo extends _MessageMediaBase {
  * @unlisted
  */
 export interface MessageSticker extends _MessageBase {
-  /**
-   * The sticker included in the message.
-   * @discriminator
-   */
+  type: "sticker";
+  /** The sticker included in the message. */
   sticker: Sticker;
 }
 
@@ -216,10 +204,8 @@ export interface MessageSticker extends _MessageBase {
  * @unlisted
  */
 export interface MessageAnimation extends _MessageMediaBase {
-  /**
-   * The animation included in the message.
-   * @discriminator
-   */
+  type: "animation";
+  /** The animation included in the message. */
   animation: Animation;
 }
 
@@ -228,10 +214,8 @@ export interface MessageAnimation extends _MessageMediaBase {
  * @unlisted
  */
 export interface MessageVoice extends _MessageMediaBase {
-  /**
-   * The voice included in the message.
-   * @discriminator
-   */
+  type: "voice";
+  /** The voice included in the message. */
   voice: Voice;
 }
 
@@ -240,10 +224,8 @@ export interface MessageVoice extends _MessageMediaBase {
  * @unlisted
  */
 export interface MessageAudio extends _MessageMediaBase {
-  /**
-   * The audio included in the message.
-   * @discriminator
-   */
+  type: "audio";
+  /** The audio included in the message. */
   audio: Audio;
 }
 
@@ -252,10 +234,8 @@ export interface MessageAudio extends _MessageMediaBase {
  * @unlisted
  */
 export interface MessageDice extends _MessageBase {
-  /**
-   * The dice included in the message.
-   * @discriminator
-   */
+  type: "dice";
+  /** The dice included in the message. */
   dice: Dice;
 }
 
@@ -264,10 +244,8 @@ export interface MessageDice extends _MessageBase {
  * @unlisted
  */
 export interface MessageVideoNote extends _MessageBase {
-  /**
-   * The video note included in the message.
-   * @discriminator
-   */
+  type: "videoNote";
+  /** The video note included in the message. */
   videoNote: VideoNote;
 }
 
@@ -276,10 +254,8 @@ export interface MessageVideoNote extends _MessageBase {
  * @unlisted
  */
 export interface MessageContact extends _MessageBase {
-  /**
-   * The contact included in the message.
-   * @discriminator
-   */
+  type: "contact";
+  /** The contact included in the message. */
   contact: Contact;
 }
 
@@ -288,10 +264,8 @@ export interface MessageContact extends _MessageBase {
  * @unlisted
  */
 export interface MessageGame extends _MessageBase {
-  /**
-   * The game included in the message.
-   * @discriminator
-   */
+  type: "game";
+  /** The game included in the message. */
   game: Game;
 }
 
@@ -300,10 +274,8 @@ export interface MessageGame extends _MessageBase {
  * @unlisted
  */
 export interface MessagePoll extends _MessageBase {
-  /**
-   * The poll included in the message.
-   * @discriminator
-   */
+  type: "poll";
+  /** The poll included in the message. */
   poll: Poll;
 }
 
@@ -312,10 +284,8 @@ export interface MessagePoll extends _MessageBase {
  * @unlisted
  */
 export interface MessageChecklist extends _MessageBase {
-  /**
-   * The checklist included in the message.
-   * @discriminator
-   */
+  type: "checklist";
+  /** The checklist included in the message. */
   checklist: Checklist;
 }
 
@@ -324,10 +294,8 @@ export interface MessageChecklist extends _MessageBase {
  * @unlisted
  */
 export interface MessageInvoice extends _MessageBase {
-  /**
-   * The invoice included in the message.
-   * @discriminator
-   */
+  type: "invoice";
+  /** The invoice included in the message. */
   invoice: Invoice;
 }
 
@@ -336,10 +304,8 @@ export interface MessageInvoice extends _MessageBase {
  * @unlisted
  */
 export interface MessageVenue extends _MessageBase {
-  /**
-   * The venue included in the message.
-   * @discriminator
-   */
+  type: "venue";
+  /** The venue included in the message. */
   venue: Venue;
 }
 
@@ -348,10 +314,8 @@ export interface MessageVenue extends _MessageBase {
  * @unlisted
  */
 export interface MessageLocation extends _MessageBase {
-  /**
-   * The location included in the message.
-   * @discriminator
-   */
+  type: "location";
+  /** The location included in the message. */
   location: Location;
 }
 
@@ -360,10 +324,8 @@ export interface MessageLocation extends _MessageBase {
  * @unlisted
  */
 export interface MessageNewChatMembers extends _MessageBase {
-  /**
-   * The new members of the chat.
-   * @discriminator
-   */
+  type: "newChatMembers";
+  /** The new members of the chat. */
   newChatMembers: User[];
 }
 
@@ -372,10 +334,8 @@ export interface MessageNewChatMembers extends _MessageBase {
  * @unlisted
  */
 export interface MessageLeftChatMember extends _MessageBase {
-  /**
-   * The member who left the chat.
-   * @discriminator
-   */
+  type: "leftChatMember";
+  /** The member who left the chat. */
   leftChatMember: User;
 }
 
@@ -384,10 +344,8 @@ export interface MessageLeftChatMember extends _MessageBase {
  * @unlisted
  */
 export interface MessageNewChatTitle extends _MessageBase {
-  /**
-   * The new title of the chat.
-   * @discriminator
-   */
+  type: "newChatTitle";
+  /** The new title of the chat. */
   newChatTitle: string;
 }
 
@@ -396,10 +354,8 @@ export interface MessageNewChatTitle extends _MessageBase {
  * @unlisted
  */
 export interface MessageNewChatPhoto extends _MessageBase {
-  /**
-   * The new photo of the chat
-   * @discriminator
-   */
+  type: "newChatPhoto";
+  /** The new photo of the chat */
   newChatPhoto: Photo;
 }
 
@@ -408,8 +364,7 @@ export interface MessageNewChatPhoto extends _MessageBase {
  * @unlisted
  */
 export interface MessageDeletedChatPhoto extends _MessageBase {
-  /** @discriminator */
-  deletedChatPhoto: true;
+  type: "deletedChatPhoto";
 }
 
 /**
@@ -418,12 +373,8 @@ export interface MessageDeletedChatPhoto extends _MessageBase {
  * @unlisted
  */
 export interface MessageGroupCreated extends _MessageBase {
-  /** @discriminator */
-  groupCreated: true;
-  /**
-   * The initial members of the group.
-   * @discriminator
-   */
+  type: "groupCreated";
+  /** The initial members of the group. */
   newChatMembers: User[];
 }
 
@@ -433,8 +384,7 @@ export interface MessageGroupCreated extends _MessageBase {
  * @unlisted
  */
 export interface MessageSupergroupCreated extends _MessageBase {
-  /** @discriminator */
-  supergroupCreated: true;
+  type: "supergroupCreated";
 }
 
 /**
@@ -443,8 +393,7 @@ export interface MessageSupergroupCreated extends _MessageBase {
  * @unlisted
  */
 export interface MessageChannelCreated extends _MessageBase {
-  /** @discriminator */
-  channelCreated: true;
+  type: "channelCreated";
 }
 
 /**
@@ -452,10 +401,8 @@ export interface MessageChannelCreated extends _MessageBase {
  * @unlisted
  */
 export interface MessageAutoDeleteTimerChanged extends _MessageBase {
-  /**
-   * The new auto-delete time in seconds.
-   * @discriminator
-   */
+  type: "newAutoDeleteTime";
+  /** The new auto-delete time in seconds. */
   newAutoDeleteTime: number;
 }
 
@@ -464,10 +411,8 @@ export interface MessageAutoDeleteTimerChanged extends _MessageBase {
  * @unlisted
  */
 export interface MessageChatMigratedTo extends _MessageBase {
-  /**
-   * The supergroup's ID.
-   * @discriminator
-   */
+  type: "chatMigratedTo";
+  /** The supergroup's ID. */
   chatMigratedTo: number;
 }
 
@@ -476,10 +421,8 @@ export interface MessageChatMigratedTo extends _MessageBase {
  * @unlisted
  */
 export interface MessageChatMigratedFrom extends _MessageBase {
-  /**
-   * The group's ID.
-   * @discriminator
-   */
+  type: "chatMigratedFrom";
+  /** The group's ID. */
   chatMigratedFrom: number;
 }
 
@@ -488,10 +431,8 @@ export interface MessageChatMigratedFrom extends _MessageBase {
  * @unlisted
  */
 export interface MessagePinnedMessage extends _MessageBase {
-  /**
-   * The message that was pinned.
-   * @discriminator
-   */
+  type: "pinnedMessage";
+  /** The message that was pinned. */
   pinnedMessage: Message;
 }
 
@@ -500,7 +441,7 @@ export interface MessagePinnedMessage extends _MessageBase {
  * @unlisted
  */
 export interface MessageUserShared extends _MessageBase {
-  /** @discriminator */
+  type: "userShared";
   userShared: { requestId: number; userId: number };
 }
 
@@ -509,7 +450,7 @@ export interface MessageUserShared extends _MessageBase {
  * @unlisted
  */
 export interface MessageWriteAccessAllowed extends _MessageBase {
-  /** @discriminator */
+  type: "writeAccessAllowed";
   writeAccessAllowed: { miniAppName?: string };
 }
 
@@ -518,10 +459,8 @@ export interface MessageWriteAccessAllowed extends _MessageBase {
  * @unlisted
  */
 export interface MessageForumTopicCreated extends _MessageBase {
-  /**
-   * Information on the created forum topic.
-   * @discriminator
-   */
+  type: "forumTopicCreated";
+  /** Information on the created forum topic. */
   forumTopicCreated: { name: string; color: number; customEmojiId?: string };
 }
 
@@ -530,7 +469,7 @@ export interface MessageForumTopicCreated extends _MessageBase {
  * @unlisted
  */
 export interface MessageForumTopicEdited extends _MessageBase {
-  /** @discriminator */
+  type: "forumTopicEdited";
   forumTopicEdited: { name: string; customEmojiId?: string };
 }
 
@@ -539,8 +478,7 @@ export interface MessageForumTopicEdited extends _MessageBase {
  * @unlisted
  */
 export interface MessageForumTopicClosed extends _MessageBase {
-  /** @discriminator */
-  forumTopicClosed: true;
+  type: "forumTopicClosed";
 }
 
 /**
@@ -548,8 +486,7 @@ export interface MessageForumTopicClosed extends _MessageBase {
  * @unlisted
  */
 export interface MessageForumTopicReopened extends _MessageBase {
-  /** @discriminator */
-  forumTopicReopened: true;
+  type: "forumTopicReopened";
 }
 
 /**
@@ -557,10 +494,8 @@ export interface MessageForumTopicReopened extends _MessageBase {
  * @unlisted
  */
 export interface MessageVideoChatScheduled extends _MessageBase {
-  /**
-   * Information on the scheduled video chat.
-   * @discriminator
-   */
+  type: "videoChatScheduled";
+  /** Information on the scheduled video chat. */
   videoChatScheduled: { startDate: number };
 }
 
@@ -569,8 +504,7 @@ export interface MessageVideoChatScheduled extends _MessageBase {
  * @unlisted
  */
 export interface MessageVideoChatStarted extends _MessageBase {
-  /** @discriminator */
-  videoChatStarted: true;
+  type: "videoChatStarted";
 }
 
 /**
@@ -578,10 +512,8 @@ export interface MessageVideoChatStarted extends _MessageBase {
  * @unlisted
  */
 export interface MessageVideoChatEnded extends _MessageBase {
-  /**
-   * Information on the ended video chat.
-   * @discriminator
-   */
+  type: "videoChatEnded";
+  /** Information on the ended video chat. */
   videoChatEnded: { duration: number };
 }
 
@@ -590,10 +522,8 @@ export interface MessageVideoChatEnded extends _MessageBase {
  * @unlisted
  */
 export interface MessageGiveaway extends _MessageBase {
-  /**
-   * Information on the giveaway.
-   * @discriminator
-   */
+  type: "giveaway";
+  /** Information on the giveaway. */
   giveaway: Giveaway;
 }
 
@@ -602,8 +532,7 @@ export interface MessageGiveaway extends _MessageBase {
  * @unlisted
  */
 export interface MessageUnsupported extends _MessageBase {
-  /** @discriminator */
-  unsupported: true;
+  type: "unsupported";
 }
 
 /**
@@ -611,10 +540,8 @@ export interface MessageUnsupported extends _MessageBase {
  * @unlisted
  */
 export interface MessageSuccessfulPayment extends _MessageBase {
-  /**
-   * Information on the successful payment.
-   * @discriminator
-   */
+  type: "successfulPayment";
+  /** Information on the successful payment. */
   successfulPayment: SuccessfulPayment;
 }
 
@@ -623,10 +550,8 @@ export interface MessageSuccessfulPayment extends _MessageBase {
  * @unlisted
  */
 export interface MessageRefundedPayment extends _MessageBase {
-  /**
-   * Information on the refunded payment.
-   * @discriminator
-   */
+  type: "refundedPayment";
+  /** Information on the refunded payment. */
   refundedPayment: RefundedPayment;
 }
 
@@ -635,10 +560,8 @@ export interface MessageRefundedPayment extends _MessageBase {
  * @unlisted
  */
 export interface MessageChecklistChanged extends _MessageBase {
-  /**
-   * The checklist's changes.
-   * @discriminator
-   */
+  type: "checklistChanged";
+  /** The checklist's changes. */
   checklistChanged: ChecklistChanged;
 }
 
@@ -647,10 +570,8 @@ export interface MessageChecklistChanged extends _MessageBase {
  * @unlisted
  */
 export interface MessageChecklistExtended extends _MessageBase {
-  /**
-   * The checklist's new items.
-   * @discriminator
-   */
+  type: "checklistExtended";
+  /** The checklist's new items. */
   checklistExtended: ChecklistItem[];
 }
 
@@ -659,10 +580,8 @@ export interface MessageChecklistExtended extends _MessageBase {
  * @unlisted
  */
 export interface MessageGiftNonUpgraded extends _MessageBase {
-  /**
-   * Information on the non-upgraded gift.
-   * @discriminator
-   */
+  type: "giftNonUpgraded";
+  /** Information on the non-upgraded gift. */
   giftNonUpgraded: GiftNonUpgradedInformation;
 }
 
@@ -671,10 +590,8 @@ export interface MessageGiftNonUpgraded extends _MessageBase {
  * @unlisted
  */
 export interface MessageGiftUpgraded extends _MessageBase {
-  /**
-   * Information on the upgraded gift.
-   * @discriminator
-   */
+  type: "giftUpgraded";
+  /** Information on the upgraded gift. */
   giftUpgraded: GiftUpgradedInformation;
 }
 
@@ -683,10 +600,8 @@ export interface MessageGiftUpgraded extends _MessageBase {
  * @unlisted
  */
 export interface MessagePollOptionAdded extends _MessageBase {
-  /**
-   * The option that was added.
-   * @discriminator
-   */
+  type: "pollOptionAdded";
+  /** The option that was added. */
   pollOptionAdded: PollOption;
 }
 
@@ -695,10 +610,8 @@ export interface MessagePollOptionAdded extends _MessageBase {
  * @unlisted
  */
 export interface MessagePollOptionRemoved extends _MessageBase {
-  /**
-   * The option that was added.
-   * @discriminator
-   */
+  type: "pollOptionRemoved";
+  /** The option that was added. */
   pollOptionRemoved: PollOption;
 }
 
@@ -757,70 +670,62 @@ export interface MessageTypes {
   pollOptionRemoved: MessagePollOptionRemoved;
 }
 
-const keys: Record<keyof MessageTypes, [string, ...string[]]> = {
-  text: ["text"],
-  link: ["linkPreview"],
-  photo: ["photo"],
-  document: ["document"],
-  video: ["video"],
-  sticker: ["sticker"],
-  animation: ["animation"],
-  voice: ["voice"],
-  audio: ["audio"],
-  dice: ["dice"],
-  videoNote: ["videoNote"],
-  contact: ["contact"],
-  game: ["game"],
-  poll: ["poll"],
-  checklist: ["checklist"],
-  invoice: ["invoice"],
-  venue: ["venue"],
-  location: ["location"],
-  newChatMembers: ["newChatMembers"],
-  leftChatMember: ["leftChatMember"],
-  newChatTitle: ["newChatTitle"],
-  newChatPhoto: ["newChatPhoto"],
-  deletedChatPhoto: ["deletedChatPhoto"],
-  groupCreated: ["groupCreated", "newChatMembers"],
-  supergroupCreated: ["supergroupCreated"],
-  channelCreated: ["channelCreated"],
-  newAutoDeleteTime: ["newAutoDeleteTime"],
-  chatMigratedTo: ["chatMigratedTo"],
-  chatMigratedFrom: ["chatMigratedFrom"],
-  pinnedMessage: ["pinnedMessage"],
-  userShared: ["userShared"],
-  writeAccessAllowed: ["writeAccessAllowed"],
-  forumTopicCreated: ["forumTopicCreated"],
-  forumTopicEdited: ["forumTopicEdited"],
-  forumTopicClosed: ["forumTopicClosed"],
-  forumTopicReopened: ["forumTopicReopened"],
-  videoChatScheduled: ["videoChatScheduled"],
-  videoChatStarted: ["videoChatStarted"],
-  videoChatEnded: ["videoChatEnded"],
-  giveaway: ["giveaway"],
-  unsupported: ["unsupported"],
-  successfulPayment: ["successfulPayment"],
-  refundedPayment: ["refundedPayment"],
-  checklistChanged: ["checklistChanged"],
-  checklistExtended: ["checklistExtended"],
-  giftNonUpgraded: ["giftNonUpgraded"],
-  giftUpgraded: ["giftUpgraded"],
-  pollOptionAdded: ["pollOptionAdded"],
-  pollOptionRemoved: ["pollOptionRemoved"],
-};
-export function isMessageType<T extends keyof MessageTypes>(message: Message, type: T): message is MessageTypes[T] {
-  for (const key of keys[type]) {
-    if (!(key in message) || message[key as keyof typeof message] === undefined) {
-      return false;
-    }
-  }
-  return true;
-}
+export const messageTypes: (keyof MessageTypes)[] = [
+  "text",
+  "link",
+  "photo",
+  "document",
+  "video",
+  "sticker",
+  "animation",
+  "voice",
+  "audio",
+  "dice",
+  "videoNote",
+  "contact",
+  "game",
+  "poll",
+  "checklist",
+  "invoice",
+  "venue",
+  "location",
+  "newChatMembers",
+  "leftChatMember",
+  "newChatTitle",
+  "newChatPhoto",
+  "deletedChatPhoto",
+  "groupCreated",
+  "supergroupCreated",
+  "channelCreated",
+  "newAutoDeleteTime",
+  "chatMigratedTo",
+  "chatMigratedFrom",
+  "pinnedMessage",
+  "userShared",
+  "writeAccessAllowed",
+  "forumTopicCreated",
+  "forumTopicEdited",
+  "forumTopicClosed",
+  "forumTopicReopened",
+  "videoChatScheduled",
+  "videoChatStarted",
+  "videoChatEnded",
+  "giveaway",
+  "unsupported",
+  "successfulPayment",
+  "refundedPayment",
+  "checklistChanged",
+  "checklistExtended",
+  "giftNonUpgraded",
+  "giftUpgraded",
+  "pollOptionRemoved",
+  "pollOptionAdded",
+];
 export function assertMessageType<T extends keyof MessageTypes>(message: Message, type: T): MessageTypes[T] {
-  if (!isMessageType(message, type)) {
+  if (message.type !== type) {
     unreachable();
   }
-  return message;
+  return message as MessageTypes[T];
 }
 
 /** Any type of message. */
@@ -943,25 +848,23 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
         unreachable();
       }
     }
-    return { ...message, newChatMembers };
+    return { type: "newChatMembers", ...message, newChatMembers };
   } else if (Api.is("messageActionChatDeleteUser", message_.action)) {
     const peer = getPeer({ _: "peerUser", user_id: message_.action.user_id });
     if (peer) {
       const user = constructUser2(peer[0]);
       const leftChatMember = user;
-      return { ...message, leftChatMember };
+      return { type: "leftChatMember", ...message, leftChatMember };
     }
   } else if (Api.is("messageActionChatEditTitle", message_.action)) {
     const newChatTitle = message_.action.title;
-    return { ...message, newChatTitle };
+    return { type: "newChatTitle", ...message, newChatTitle };
   } else if (Api.is("messageActionChatEditPhoto", message_.action)) {
     const newChatPhoto = constructPhoto(Api.as("photo", message_.action.photo));
-    return { ...message, newChatPhoto };
+    return { type: "newChatPhoto", ...message, newChatPhoto };
   } else if (Api.is("messageActionChatDeletePhoto", message_.action)) {
-    const deletedChatPhoto = true;
-    return { ...message, deletedChatPhoto };
+    return { type: "deletedChatPhoto", ...message };
   } else if (Api.is("messageActionChatCreate", message_.action)) {
-    const groupCreated = true;
     const newChatMembers = new Array<User>();
     for (const user_ of message_.action.users) {
       const peer = getPeer({ _: "peerUser", user_id: user_ });
@@ -970,99 +873,94 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
         newChatMembers.push(user);
       }
     }
-    return { ...message, groupCreated, newChatMembers };
+    return { type: "groupCreated", ...message, newChatMembers };
   } else if (Api.is("messageActionChannelCreate", message_.action)) {
     if (message.chat.type === "channel") {
-      const channelCreated = true;
-      return { ...message, channelCreated };
+      return { type: "channelCreated", ...message };
     } else if (message.chat.type === "supergroup") {
-      const supergroupCreated = true;
-      return { ...message, supergroupCreated };
+      return { type: "supergroupCreated", ...message };
     } else {
       // unreachable();
     }
   } else if (Api.is("messageActionChatMigrateTo", message_.action)) {
     const chatMigratedTo = ZERO_CHANNEL_ID + Number(-message_.action.channel_id);
-    return { ...message, chatMigratedTo };
+    return { type: "chatMigratedTo", ...message, chatMigratedTo };
   } else if (Api.is("messageActionChannelMigrateFrom", message_.action)) {
     const chatMigratedFrom = Number(-message_.action.chat_id);
-    return { ...message, chatMigratedFrom };
+    return { type: "chatMigratedFrom", ...message, chatMigratedFrom };
   } else if (Api.is("messageActionPinMessage", message_.action)) {
     const { replyToMessage } = await getReply(message_, chat, getMessage);
     if (replyToMessage) {
       const pinnedMessage = replyToMessage;
-      return { ...message, pinnedMessage };
+      return { type: "pinnedMessage", ...message, pinnedMessage };
     }
   } else if (Api.is("messageActionRequestedPeer", message_.action)) {
     const user = Api.as("peerUser", message_.action.peers[0]);
     const userShared = { requestId: message_.action.button_id, userId: Number(user.user_id) };
-    return { ...message, userShared };
+    return { type: "userShared", ...message, userShared };
   } else if (Api.is("messageActionBotAllowed", message_.action)) {
     const miniAppName = message_.action.app ? Api.as("botApp", message_.action.app).title : undefined;
     const writeAccessAllowed = { miniAppName };
-    return { ...message, writeAccessAllowed };
+    return { type: "writeAccessAllowed", ...message, writeAccessAllowed };
   } else if (Api.is("messageActionTopicCreate", message_.action)) {
     const forumTopicCreated = {
       name: message_.action.title,
       color: message_.action.icon_color,
       customEmojiId: message_.action.icon_emoji_id ? String(message_.action.icon_emoji_id) : undefined,
     };
-    return { ...message, forumTopicCreated };
+    return { type: "forumTopicCreated", ...message, forumTopicCreated };
   } else if (Api.is("messageActionTopicEdit", message_.action)) {
     if (message_.action.closed) {
-      const forumTopicClosed = true;
-      return { ...message, forumTopicClosed };
+      return { type: "forumTopicClosed", ...message };
     } else if (message_.action.title || message_.action.icon_emoji_id) {
       const forumTopicEdited = {
         name: message_.action.title ?? "",
         customEmojiId: message_.action.icon_emoji_id ? String(message_.action.icon_emoji_id) : undefined,
       };
-      return { ...message, forumTopicEdited };
+      return { type: "forumTopicEdited", ...message, forumTopicEdited };
     } else {
-      const forumTopicReopened = true;
-      return { ...message, forumTopicReopened };
+      return { type: "forumTopicReopened", ...message };
     }
   } else if (Api.is("messageActionGroupCallScheduled", message_.action)) {
     const videoChatScheduled = { startDate: message_.action.schedule_date };
-    return { ...message, videoChatScheduled };
+    return { type: "videoChatScheduled", ...message, videoChatScheduled };
   } else if (Api.is("messageActionGroupCall", message_.action)) {
     if (message_.action.duration) {
       const videoChatEnded = { duration: message_.action.duration };
 
-      return { ...message, videoChatEnded };
+      return { type: "videoChatEnded", ...message, videoChatEnded };
     } else {
-      const videoChatStarted = true;
-      return { ...message, videoChatStarted };
+      return { type: "videoChatStarted", ...message };
     }
   } else if (Api.is("messageActionSetMessagesTTL", message_.action)) {
     const newAutoDeleteTime = message_.action.period || 0;
-    return { ...message, newAutoDeleteTime };
+    return { type: "newAutoDeleteTime", ...message, newAutoDeleteTime };
   } else if (Api.is("messageActionPaymentSentMe", message_.action)) {
     const successfulPayment = constructSuccessfulPayment(message_.action);
-    return { ...message, successfulPayment };
+    return { type: "successfulPayment", ...message, successfulPayment };
   } else if (Api.is("messageActionPaymentRefunded", message_.action)) {
     const refundedPayment = constructRefundedPayment(message_.action);
-    return { ...message, refundedPayment };
+    return { type: "refundedPayment", ...message, refundedPayment };
   } else if (Api.is("messageActionTodoCompletions", message_.action)) {
     const checklistChanged = constructChecklistChanged(message_.action);
-    return { ...message, checklistChanged };
+    return { type: "checklistChanged", ...message, checklistChanged };
   } else if (Api.is("messageActionTodoAppendTasks", message_.action)) {
     const checklistExtended = message_.action.list.map((v) => constructChecklistItem(v, [], getPeer));
-    return { ...message, checklistExtended };
+    return { type: "checklistExtended", ...message, checklistExtended };
   } else if (Api.is("messageActionStarGift", message_.action)) {
     const giftNonUpgraded = constructGiftNonUpgradedInformation(message_.action, getPeer);
-    return { ...message, giftNonUpgraded };
+    return { type: "giftNonUpgraded", ...message, giftNonUpgraded };
   } else if (Api.is("messageActionStarGiftUnique", message_.action)) {
     const giftUpgraded = constructGiftUpgradedInformation(message_.action, getPeer);
-    return { ...message, giftUpgraded };
+    return { type: "giftUpgraded", ...message, giftUpgraded };
   } else if (Api.is("messageActionPollAppendAnswer", message_.action)) {
     const pollOptionAdded = constructPollOption(message_.action.answer, []);
-    return { ...message, pollOptionAdded };
+    return { type: "pollOptionAdded", ...message, pollOptionAdded };
   } else if (Api.is("messageActionPollDeleteAnswer", message_.action)) {
     const pollOptionRemoved = constructPollOption(message_.action.answer, []);
-    return { ...message, pollOptionRemoved };
+    return { type: "pollOptionRemoved", ...message, pollOptionRemoved };
   }
-  return { ...message, unsupported: true };
+  return { type: "unsupported", ...message };
 }
 
 export async function constructMessage(
@@ -1185,7 +1083,7 @@ export async function constructMessage(
   };
 
   if (message_.message && message_.media === undefined) {
-    return cleanObject(messageText);
+    return cleanObject({ type: "text", ...messageText });
   }
 
   const messageMedia: _MessageMediaBase = {
@@ -1209,10 +1107,10 @@ export async function constructMessage(
       unreachable();
     }
     const photo = constructPhoto(Api.as("photo", message_.media.photo));
-    m = { ...messageMedia, photo };
+    m = { type: "photo", ...messageMedia, photo };
   } else if (Api.is("messageMediaDice", message_.media)) {
     const dice = constructDice(message_.media);
-    m = { ...message, dice };
+    m = { type: "dice", ...message, dice };
   } else if (Api.is("messageMediaDocument", message_.media)) {
     const { document } = message_.media;
     if (Api.is("document", document)) {
@@ -1233,43 +1131,43 @@ export async function constructMessage(
       if (sticker) {
         const fileId = getFileId(FileType.Sticker);
         const sticker = await constructSticker(document, serializeFileId(fileId), toUniqueFileId(fileId), getStickerSetName);
-        m = { ...message, sticker };
+        m = { type: "sticker", ...message, sticker };
       } else if (animated) {
         const fileId = getFileId(FileType.Animation);
         const animation = constructAnimation(document, video, fileName, serializeFileId(fileId), toUniqueFileId(fileId));
-        m = { ...messageMedia, animation };
+        m = { type: "animation", ...messageMedia, animation };
       } else if (video) {
         if (video.round_message) {
           const fileId = getFileId(FileType.VideoNote);
           const videoNote = constructVideoNote(document, video, serializeFileId(fileId), toUniqueFileId(fileId));
-          m = { ...message, videoNote };
+          m = { type: "videoNote", ...message, videoNote };
         } else {
           const fileId = getFileId(FileType.Video);
           const video_ = constructVideo(document, video, fileName?.file_name, serializeFileId(fileId), toUniqueFileId(fileId));
-          m = { ...messageMedia, video: video_ };
+          m = { type: "video", ...messageMedia, video: video_ };
         }
       } else if (audio) {
         if (audio.voice) {
           const fileId = getFileId(FileType.VoiceNote);
           const voice = constructVoice(document, audio, serializeFileId(fileId), toUniqueFileId(fileId));
-          m = { ...messageMedia, voice };
+          m = { type: "voice", ...messageMedia, voice };
         } else {
           const fileId = getFileId(FileType.Audio);
           const audio_ = constructAudio(document, audio, serializeFileId(fileId), toUniqueFileId(fileId));
-          m = { ...messageMedia, audio: audio_ };
+          m = { type: "audio", ...messageMedia, audio: audio_ };
         }
       } else {
         const fileId = getFileId(FileType.Document);
         const document_ = constructDocument(document, fileName ?? ({ _: "documentAttributeFilename", file_name: "Unknown" }), serializeFileId(fileId), toUniqueFileId(fileId));
-        m = { ...messageMedia, document: document_ };
+        m = { type: "document", ...messageMedia, document: document_ };
       }
     }
   } else if (Api.is("messageMediaContact", message_.media)) {
     const contact = constructContact(message_.media);
-    m = { ...messageMedia, contact };
+    m = { type: "contact", ...messageMedia, contact };
   } else if (Api.is("messageMediaGame", message_.media)) {
     const game = constructGame(message_.media);
-    m = { ...message, game };
+    m = { type: "game", ...message, game };
   } else if (Api.is("messageMediaPoll", message_.media)) {
     if (poll) {
       message_.media.poll = poll;
@@ -1278,34 +1176,33 @@ export async function constructMessage(
       message_.media.results = pollResults;
     }
     const poll_ = constructPoll(message_.media);
-    m = { ...message, poll: poll_ };
+    m = { type: "poll", ...message, poll: poll_ };
   } else if (Api.is("messageMediaToDo", message_.media)) {
-    const todoList = constructChecklist(message_.media.todo, message_.media.completions ?? [], getPeer);
-    m = { ...message, checklist: todoList };
+    const checklist = constructChecklist(message_.media.todo, message_.media.completions ?? [], getPeer);
+    m = { type: "checklist", ...message, checklist };
   } else if (Api.is("messageMediaVenue", message_.media)) {
     const venue = constructVenue(message_.media);
-    m = { ...message, venue };
+    m = { type: "venue", ...message, venue };
   } else if (Api.is("messageMediaGeo", message_.media) || Api.is("messageMediaGeoLive", message_.media)) {
     const location = constructLocation(message_.media);
-    m = { ...message, location };
+    m = { type: "location", ...message, location };
   } else if (Api.is("messageMediaWebPage", message_.media)) {
     const linkPreview = constructLinkPreview(message_.media, message_.invert_media, getPeer);
     if (message_.message) {
-      m = { ...messageText, linkPreview };
+      m = { type: "link", ...messageText, linkPreview };
     } else {
-      m = { ...message, linkPreview: { ...linkPreview, url: linkPreview.url ? linkPreview.url : unreachable() } };
+      m = { type: "link", ...message, linkPreview: { ...linkPreview, url: linkPreview.url ? linkPreview.url : unreachable() } };
     }
   } else if (Api.is("messageMediaGiveaway", message_.media)) {
     const giveaway = constructGiveaway(message_.media);
-    m = { ...message, giveaway };
+    m = { type: "giveaway", ...message, giveaway };
   } else if (Api.is("messageMediaInvoice", message_.media)) {
     const invoice = constructInvoice(message_.media);
-    m = { ...message, invoice };
+    m = { type: "invoice", ...message, invoice };
   }
 
   if (m === null) {
-    const unsupported = true;
-    m = { ...message, unsupported };
+    m = { type: "unsupported", ...message };
   }
 
   return cleanObject(m);

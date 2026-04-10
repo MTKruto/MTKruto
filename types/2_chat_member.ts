@@ -39,10 +39,7 @@ export interface _ChatMemberBase {
  * @unlisted
  */
 export interface ChatMemberCreator extends _ChatMemberBase {
-  /**
-   * The status of the chat member.
-   * @discriminator
-   */
+  /** The status of the chat member. */
   status: "creator";
   /** Whether the chat member is an anonymous admin. */
   isAnonymous: boolean;
@@ -55,10 +52,7 @@ export interface ChatMemberCreator extends _ChatMemberBase {
  * @unlisted
  */
 export interface ChatMemberAdministrator extends _ChatMemberBase {
-  /**
-   * The status of the chat member.
-   * @discriminator
-   */
+  /** The status of the chat member. */
   status: "administrator";
   /** The rights of the chat administrator. */
   rights: ChatAdministratorRights;
@@ -71,10 +65,7 @@ export interface ChatMemberAdministrator extends _ChatMemberBase {
  * @unlisted
  */
 export interface ChatMemberMember extends _ChatMemberBase {
-  /**
-   * The status of the chat member.
-   * @discriminator
-   */
+  /** The status of the chat member. */
   status: "member";
   /** A point in time in which the membership expires. */
   until?: number;
@@ -87,10 +78,7 @@ export interface ChatMemberMember extends _ChatMemberBase {
  * @unlisted
  */
 export interface ChatMemberRestricted extends _ChatMemberBase {
-  /**
-   * The status of the chat member.
-   * @discriminator
-   */
+  /** The status of the chat member. */
   status: "restricted";
   /** Whether the restricted user is currently a member of the chat. */
   isMember: boolean;
@@ -107,10 +95,7 @@ export interface ChatMemberRestricted extends _ChatMemberBase {
  * @unlisted
  */
 export interface ChatMemberLeft extends _ChatMemberBase {
-  /**
-   * The status of the chat member.
-   * @discriminator
-   */
+  /** The status of the chat member. */
   status: "left";
 }
 
@@ -119,10 +104,7 @@ export interface ChatMemberLeft extends _ChatMemberBase {
  * @unlisted
  */
 export interface ChatMemberBanned extends _ChatMemberBase {
-  /**
-   * The status of the chat member.
-   * @discriminator
-   */
+  /** The status of the chat member. */
   status: "banned";
   /** A point in time in which the restriction expires. */
   until?: number;

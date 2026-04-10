@@ -126,13 +126,13 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate, true> {
       }
       if (poll) {
         const messageMediaPoll: Api.messageMediaPoll = { _: "messageMediaPoll", poll, results: update.results };
-        return { poll: constructPoll(messageMediaPoll) };
+        return { type: "poll", poll: constructPoll(messageMediaPoll) };
       } else {
         return null;
       }
     } else {
       const pollAnswer = constructPollAnswer(update, this.#c.getPeer);
-      return { pollAnswer };
+      return { type: "pollAnswer", pollAnswer };
     }
   }
 }

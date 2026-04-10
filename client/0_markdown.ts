@@ -18,9 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/**
- * Copyright (C) 2023 Dunkan
- */
+/** Copyright (C) 2023 Dunkan */
 
 import { unreachable } from "../0_deps.ts";
 import { type MessageEntity, type MessageEntityType, sortMessageEntities } from "../3_types.ts";

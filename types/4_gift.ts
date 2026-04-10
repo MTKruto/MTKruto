@@ -33,7 +33,6 @@ import { constructGiftUpgradedComponent, type GiftUpgradedComponent } from "./3_
  * @unlisted
  */
 export interface GiftNonUpgraded {
-  /** @discriminator */
   type: "nonupgraded";
   /** The identifier of the gift. */
   id: string;
@@ -67,7 +66,6 @@ export interface GiftNonUpgraded {
  * @unlisted
  */
 export interface GiftUpgraded {
-  /** @discriminator */
   type: "upgraded";
   /** The identifier of the gift. */
   id: string;

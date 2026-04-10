@@ -59,10 +59,8 @@ import type { ChatListItem } from "./7_chat_list_item.ts";
  * @unlisted
  */
 export interface UpdateConnectionState {
-  /**
-   * The client's new connection state
-   * @discriminator
-   */
+  type: "connectionState";
+  /** The client's new connection state */
   connectionState: ConnectionState;
 }
 
@@ -82,10 +80,8 @@ export interface UpdateConnectionState {
  * @unlisted
  */
 export interface UpdateAuthorizationState {
-  /**
-   * The client's new authorization state
-   * @discriminator
-   */
+  type: "authorizationState";
+  /** The client's new authorization state */
   authorizationState: AuthorizationState;
 }
 
@@ -100,10 +96,8 @@ export interface UpdateAuthorizationState {
  * @unlisted
  */
 export interface UpdateLowLevel {
-  /**
-   * The Telegram API update.
-   * @discriminator
-   */
+  type: "update";
+  /** The Telegram API update. */
   update: Api.Update;
 }
 
@@ -129,10 +123,8 @@ export interface UpdateLowLevel {
  * @unlisted
  */
 export interface UpdateNewMessage {
-  /**
-   * The sent or received message
-   * @discriminator
-   */
+  type: "message";
+  /** The sent or received message */
   message: Message;
 }
 
@@ -148,10 +140,8 @@ export interface UpdateNewMessage {
  * @unlisted
  */
 export interface UpdateMessageEdited {
-  /**
-   * The edited message.
-   * @discriminator
-   */
+  type: "editedMessage";
+  /** The edited message. */
   editedMessage: Message;
 }
 
@@ -167,10 +157,8 @@ export interface UpdateMessageEdited {
  * @unlisted
  */
 export interface UpdateMessageScheduled {
-  /**
-   * The scheduled message.
-   * @discriminator
-   */
+  type: "scheduledMessage";
+  /** The scheduled message. */
   scheduledMessage: Message;
 }
 
@@ -187,10 +175,8 @@ export interface UpdateMessageScheduled {
  * @unlisted
  */
 export interface UpdateMessagesDeleted {
-  /**
-   * The deleted messages
-   * @discriminator
-   */
+  type: "deletedMessages";
+  /** The deleted messages */
   deletedMessages: MessageReference[];
   isScheduled?: boolean;
   businessConnectionId?: string;
@@ -207,10 +193,8 @@ export interface UpdateMessagesDeleted {
  * @unlisted
  */
 export interface UpdateCallbackQuery {
-  /**
-   * The received callback query
-   * @discriminator
-   */
+  type: "callbackQuery";
+  /** The received callback query */
   callbackQuery: CallbackQuery;
 }
 
@@ -226,10 +210,8 @@ export interface UpdateCallbackQuery {
  * @unlisted
  */
 export interface UpdateInlineQuery {
-  /**
-   *  The received inline query
-   * @discriminator
-   */
+  type: "inlineQuery";
+  /** The received inline query */
   inlineQuery: InlineQuery;
 }
 
@@ -238,10 +220,8 @@ export interface UpdateInlineQuery {
  * @unlisted
  */
 export interface UpdateChosenInlineResult {
-  /**
-   * The chosen inline query result
-   * @discriminator
-   */
+  type: "chosenInlineResult";
+  /** The chosen inline query result */
   chosenInlineResult: ChosenInlineResult;
 }
 
@@ -250,10 +230,8 @@ export interface UpdateChosenInlineResult {
  * @unlisted
  */
 export interface UpdateNewChat {
-  /**
-   * The newly added chat
-   * @discriminator
-   */
+  type: "newChat";
+  /** The newly added chat */
   newChat: ChatListItem;
 }
 
@@ -262,7 +240,7 @@ export interface UpdateNewChat {
  * @unlisted
  */
 export interface UpdateEditedChat {
-  /** @discriminator */
+  type: "editedChat";
   editedChat: ChatListItem;
 }
 
@@ -271,10 +249,8 @@ export interface UpdateEditedChat {
  * @unlisted
  */
 export interface UpdateDeletedChat {
-  /**
-   *  The chat that was deleted
-   * @discriminator
-   */
+  type: "deletedChat";
+  /** The chat that was deleted */
   deletedChat: { chatId: number };
 }
 
@@ -283,10 +259,8 @@ export interface UpdateDeletedChat {
  * @unlisted
  */
 export interface UpdateMessageInteractions {
-  /**
-   * The new message interactions
-   * @discriminator
-   */
+  type: "messageInteractions";
+  /** The new message interactions */
   messageInteractions: MessageInteractions;
 }
 
@@ -295,10 +269,8 @@ export interface UpdateMessageInteractions {
  * @unlisted
  */
 export interface UpdateMessageReactionCount {
-  /**
-   * The new message reactions
-   * @discriminator
-   */
+  type: "messageReactionCount";
+  /** The new message reactions */
   messageReactionCount: MessageReactionCount;
 }
 
@@ -307,7 +279,7 @@ export interface UpdateMessageReactionCount {
  * @unlisted
  */
 export interface UpdateMessageReactions {
-  /** @discriminator */
+  type: "messageReactions";
   messageReactions: MessageReactions;
 }
 
@@ -316,7 +288,7 @@ export interface UpdateMessageReactions {
  * @unlisted
  */
 export interface UpdateChatMember {
-  /** @discriminator */
+  type: "chatMember";
   chatMember: ChatMemberUpdated;
 }
 
@@ -325,7 +297,7 @@ export interface UpdateChatMember {
  * @unlisted
  */
 export interface UpdateMyChatMember {
-  /** @discriminator */
+  type: "myChatMember";
   myChatMember: ChatMemberUpdated;
 }
 
@@ -340,7 +312,7 @@ export interface UpdateMyChatMember {
  * @unlisted
  */
 export interface UpdateDeletedStory {
-  /** @discriminator */
+  type: "deletedStory";
   deletedStory: StoryReference;
 }
 
@@ -356,7 +328,7 @@ export interface UpdateDeletedStory {
  * @unlisted
  */
 export interface UpdateNewStory {
-  /** @discriminator */
+  type: "story";
   story: Story;
 }
 
@@ -372,7 +344,7 @@ export interface UpdateNewStory {
  * @unlisted
  */
 export interface UpdateBusinessConnection {
-  /** @discriminator */
+  type: "businessConnection";
   businessConnection: BusinessConnection;
 }
 
@@ -388,13 +360,13 @@ export interface UpdateBusinessConnection {
  * @unlisted
  */
 export interface UpdateVideoChat {
-  /** @discriminator */
+  type: "videoChat";
   videoChat: VideoChat;
 }
 
 /** @unlisted */
 export interface UpdatePreCheckoutQuery {
-  /** @discriminator */
+  type: "preCheckoutQuery";
   preCheckoutQuery: PreCheckoutQuery;
 }
 
@@ -403,7 +375,7 @@ export interface UpdatePreCheckoutQuery {
  * @unlisted
  */
 export interface UpdateJoinRequest {
-  /** @discriminator */
+  type: "joinRequest";
   joinRequest: JoinRequest;
 }
 
@@ -419,10 +391,8 @@ export interface UpdateJoinRequest {
  * @unlisted
  */
 export interface UpdateTranslations {
-  /**
-   * The new translations.
-   * @discriminator
-   */
+  type: "translations";
+  /** The new translations. */
   translations: Translation[];
   /** The platform of the translations that were updated. */
   platform: string;
@@ -442,10 +412,8 @@ export interface UpdateTranslations {
  * @unlisted
  */
 export interface UpdatePoll {
-  /**
-   * The poll with its new state.
-   * @discriminator
-   */
+  type: "poll";
+  /** The poll with its new state. */
   poll: Poll;
 }
 
@@ -461,10 +429,8 @@ export interface UpdatePoll {
  * @unlisted
  */
 export interface UpdatePollAnswer {
-  /**
-   * The poll answer.
-   * @discriminator
-   */
+  type: "pollAnswer";
+  /** The poll answer. */
   pollAnswer: PollAnswer;
 }
 
@@ -479,10 +445,8 @@ export interface UpdatePollAnswer {
  * @unlisted
  */
 export interface UpdateVoiceTranscription {
-  /**
-   * The new voice transcription.
-   * @discriminator
-   */
+  type: "voiceTranscription";
+  /** The new voice transcription. */
   voiceTranscription: VoiceTranscription;
 }
 
@@ -497,10 +461,8 @@ export interface UpdateVoiceTranscription {
  * @unlisted
  */
 export interface UpdateLinkPreview {
-  /**
-   * The new link preview.
-   * @discriminator
-   */
+  type: "linkPreview";
+  /** The new link preview. */
   linkPreview: LinkPreview;
 }
 
@@ -515,10 +477,8 @@ export interface UpdateLinkPreview {
  * @unlisted
  */
 export interface UpdateUploadProgress {
-  /**
-   * The new progress of the upload.
-   * @discriminator
-   */
+  type: "uploadProgress";
+  /** The new progress of the upload. */
   uploadProgress: UploadProgress;
 }
 
@@ -533,10 +493,8 @@ export interface UpdateUploadProgress {
  * @unlisted
  */
 export interface UpdateBotCommands {
-  /**
-   * The new command list.
-   * @discriminator
-   */
+  type: "botCommands";
+  /** The new command list. */
   botCommands: BotCommands;
 }
 
@@ -551,10 +509,8 @@ export interface UpdateBotCommands {
  * @unlisted
  */
 export interface UpdateEmojiStatus {
-  /**
-   * The new emoji status.
-   * @discriminator
-   */
+  type: "emojiStatus";
+  /** The new emoji status. */
   emojiStatus: EmojiStatus;
   userId: number;
 }
@@ -570,7 +526,7 @@ export interface UpdateEmojiStatus {
  * @unlisted
  */
 export interface UpdateEmojiStatusRemoved {
-  /** @discriminator */
+  type: "emojiStatusRemoved";
   emojiStatusRemoved: true;
   userId: number;
 }
@@ -586,7 +542,7 @@ export interface UpdateEmojiStatusRemoved {
  * @unlisted
  */
 export interface UpdateChatAction {
-  /** @discriminator */
+  type: "chatAction";
   chatAction: ChatAction;
 }
 
@@ -601,7 +557,7 @@ export interface UpdateChatAction {
  * @unlisted
  */
 export interface UpdateMessageDraft {
-  /** @discriminator */
+  type: "messageDraft";
   messageDraft: MessageDraft;
 }
 
@@ -643,45 +599,6 @@ export interface UpdateMap {
   chatAction: UpdateChatAction;
   messageDraft: UpdateMessageDraft;
 }
-
-/** @unlisted */
-export type UpdateIntersection = Partial<
-  & UpdateConnectionState
-  & UpdateAuthorizationState
-  & UpdateLowLevel
-  & UpdateNewMessage
-  & UpdateMessageEdited
-  & UpdateMessageScheduled
-  & UpdateMessagesDeleted
-  & UpdateCallbackQuery
-  & UpdateInlineQuery
-  & UpdateChosenInlineResult
-  & UpdateNewChat
-  & UpdateEditedChat
-  & UpdateDeletedChat
-  & UpdateMessageInteractions
-  & UpdateMessageReactionCount
-  & UpdateMessageReactions
-  & UpdateChatMember
-  & UpdateMyChatMember
-  & UpdateDeletedStory
-  & UpdateNewStory
-  & UpdateBusinessConnection
-  & UpdateVideoChat
-  & UpdatePreCheckoutQuery
-  & UpdateJoinRequest
-  & UpdateTranslations
-  & UpdatePoll
-  & UpdatePollAnswer
-  & UpdateVoiceTranscription
-  & UpdateLinkPreview
-  & UpdateUploadProgress
-  & UpdateBotCommands
-  & UpdateEmojiStatus
-  & UpdateEmojiStatusRemoved
-  & UpdateChatAction
-  & UpdateMessageDraft
->;
 
 /** An incoming update. */
 export type Update =

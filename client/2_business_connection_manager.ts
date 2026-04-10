@@ -60,6 +60,6 @@ export class BusinessConnectionManager implements UpdateProcessor<BusinessConnec
       await this.#c.messageStorage.setBusinessConnection(update.connection.connection_id, update.connection);
     }
     const businessConnection = constructBusinessConnection(update.connection, this.#c.getPeer);
-    return { businessConnection };
+    return { type: "businessConnection", businessConnection };
   }
 }

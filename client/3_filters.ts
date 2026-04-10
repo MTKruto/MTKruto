@@ -19,9 +19,9 @@
  */
 
 import type { Api } from "../2_tl.ts";
-import type { CallbackQuery, ChatP, ChosenInlineResult, MessageTypes, UpdateIntersection, UpdateMap } from "../3_types.ts";
+import type { CallbackQuery, ChatP, ChosenInlineResult, Message, MessageTypes, Update, UpdateMap } from "../3_types.ts";
 
-type AnyLevel1 = keyof UpdateMap;
+type AnyLevel1 = Update["type"];
 type GetLevel1Type<L1 extends AnyLevel1> = UpdateMap[L1];
 
 interface Level2Map {
@@ -40,51 +40,57 @@ interface Level2TypeMap {
 type GetAnyLevel2<L1 extends AnyLevel1> = L1 extends keyof Level2Map ? Level2Map[L1] : never;
 type AnyLevel2<L1 extends AnyLevel1 = AnyLevel1> = L1 extends unknown ? `${L1 extends "message" | "editedMessage" | "scheduledMessage" ? L1 | "" : L1}:${GetAnyLevel2<L1>}`
   : never;
-type GetLevel2Type<L1 extends string, L2 extends string> = L2 extends keyof MessageTypes ? L1 extends "" ? { [P in "message" | "editedMessage" | "scheduledMessage"]?: MessageTypes[L2] } : L1 extends "message" | "editedMessage" | "scheduledMessage" ? { [P in L1]: MessageTypes[L2] } : never
-  : L1 extends keyof Level2TypeMap ? L2 extends Level2Map[L1] ? { [P in L1]: Level2TypeMap[P] & { [P in L2]-?: P extends keyof Level2TypeMap[L1] ? NonNullable<Level2TypeMap[L1][P]> : never } } : never
-  : never;
+type GetLevel2Type<L1 extends string, L2 extends string> = L2 extends Message["type"] ? L1 extends "" ? (
+      | { type: "message"; message: Extract<Message, { type: L2 }> }
+      | { type: "editedMessage"; editedMessage: Extract<Message, { type: L2 }> }
+      | { type: "scheduledMessage"; scheduledMessage: Extract<Message, { type: L2 }> }
+    )
+  : L1 extends "message" | "editedMessage" | "scheduledMessage" ? { type: L1 } & { [P in L1]: Extract<Message, { type: L2 }> }
+  : never
+  : L1 extends keyof Level2TypeMap ? L2 extends Level2Map[L1] ? { type: L1 } & { [P in L1]: Level2TypeMap[P] & { [P in L2]-?: P extends keyof Level2TypeMap[L1] ? NonNullable<Level2TypeMap[L1][P]> : never } } : never
+  : false;
 
 type AnyLevelX = AnyLevel1 | AnyLevel2 | Api.Update["_"];
 
-type FilterCore<Q extends AnyLevelX = AnyLevelX> = Q extends AnyLevel1 ? GetLevel1Type<Q> : Q extends `${infer L1}:${infer L2}` ? GetLevel2Type<L1, L2> : Q extends Api.Update["_"] ? { update: Extract<Api.Update, { _: Q }> } : 1;
+type FilterCore<Q extends AnyLevelX = AnyLevelX> = Q extends AnyLevel1 ? GetLevel1Type<Q> : Q extends `${infer L1}:${infer L2}` ? GetLevel2Type<L1, L2> : Q extends Api.Update["_"] ? { type: "update"; update: Extract<Api.Update, { _: Q }> } : 1;
 
-interface Shortcuts<T extends UpdateIntersection> {
-  msg: T["message"] extends object ? T["message"]
-    : T["editedMessage"] extends object ? T["editedMessage"]
-    : T["scheduledMessage"] extends object ? T["scheduledMessage"]
-    : T["callbackQuery"] extends object ? T["callbackQuery"]["message"]
+interface Shortcuts<T extends Update> {
+  msg: T extends { type: "message" } ? T["message"]
+    : T extends { type: "editedMessage" } ? T["editedMessage"]
+    : T extends { type: "scheduledMessage" } ? T["scheduledMessage"]
+    : T extends { type: "callbackQuery" } ? T["callbackQuery"]["message"]
     : undefined;
-  chat: T["callbackQuery"] extends object ? NonNullable<T["callbackQuery"]["message"]>["chat"] | undefined
+  chat: T extends { type: "callbackQuery" } ? NonNullable<T["callbackQuery"]["message"]>["chat"] | undefined
     : Shortcuts<T>["msg"] extends object ? Shortcuts<T>["msg"]["chat"]
-    : T["messageReactions"] extends object ? T["messageReactions"]["chat"]
-    : T["messageReactionCount"] extends object ? T["messageReactionCount"]["chat"]
-    : T["myChatMember"] extends object ? T["myChatMember"]["chat"]
-    : T["chatMember"] extends object ? T["chatMember"]["chat"]
-    : T["joinRequest"] extends object ? T["joinRequest"]["chat"]
+    : T extends { type: "messageReactions" } ? T["messageReactions"]["chat"]
+    : T extends { type: "messageReactionCount" } ? T["messageReactionCount"]["chat"]
+    : T extends { type: "myChatMember" } ? T["myChatMember"]["chat"]
+    : T extends { type: "chatMember" } ? T["chatMember"]["chat"]
+    : T extends { type: "joinRequest" } ? T["joinRequest"]["chat"]
     : undefined;
   chatId: Shortcuts<T>["chat"] extends object ? number
-    : T["messageInteractions"] extends object ? number
-    : T["deletedChat"] extends object ? number
-    : T["botCommands"] extends object ? number
-    : T["chatAction"] extends object ? number
+    : T extends { type: "messageInteractions" } ? number
+    : T extends { type: "deletedChat" } ? number
+    : T extends { type: "botCommands" } ? number
+    : T extends { type: "chatAction" } ? number
     : undefined;
-  from: T["callbackQuery"] extends object ? T["callbackQuery"]["from"]
-    : T["inlineQuery"] extends object ? T["inlineQuery"]["from"]
-    : T["chosenInlineResult"] extends object ? T["chosenInlineResult"]["from"]
-    : T["message"] extends object ? T["message"]["from"]
-    : T["editedMessage"] extends object ? T["editedMessage"]["from"]
-    : T["scheduledMessage"] extends object ? T["scheduledMessage"]["from"]
-    : T["preCheckoutQuery"] extends object ? T["preCheckoutQuery"]["from"]
-    : T["joinRequest"] extends object ? T["joinRequest"]["from"]
-    : T["pollAnswer"] extends object ? T["pollAnswer"]["from"]
+  from: T extends { type: "callbackQuery" } ? T["callbackQuery"]["from"]
+    : T extends { type: "inlineQuery" } ? T["inlineQuery"]["from"]
+    : T extends { type: "chosenInlineResult" } ? T["chosenInlineResult"]["from"]
+    : T extends { type: "message" } ? T["message"]["from"]
+    : T extends { type: "editedMessage" } ? T["editedMessage"]["from"]
+    : T extends { type: "scheduledMessage" } ? T["scheduledMessage"]["from"]
+    : T extends { type: "preCheckoutQuery" } ? T["preCheckoutQuery"]["from"]
+    : T extends { type: "joinRequest" } ? T["joinRequest"]["from"]
+    : T extends { type: "pollAnswer" } ? T["pollAnswer"]["from"]
     : undefined;
-  message: T["message"];
-  editedMessage: T["editedMessage"];
-  callbackQuery: T["callbackQuery"];
-  inlineQuery: T["inlineQuery"];
-  chosenInlineResult: T["chosenInlineResult"];
+  message: T extends { type: "message" } ? T["message"] : undefined;
+  editedMessage: T extends { type: "editedMessage" } ? T["editedMessage"] : undefined;
+  callbackQuery: T extends { type: "callbackQuery" } ? T["callbackQuery"] : undefined;
+  inlineQuery: T extends { type: "inlineQuery" } ? T["inlineQuery"] : undefined;
+  chosenInlineResult: T extends { type: "chosenInlineResult" } ? T["chosenInlineResult"] : undefined;
 }
-type GetShortcuts<T extends UpdateIntersection> = T["update"] extends object ? Record<string, never> : Shortcuts<T>;
+type GetShortcuts<T extends Update> = T["type"] extends "update" ? Record<string, never> : Shortcuts<T>;
 
 type Filter<Q extends AnyLevelX> = { update: FilterCore<Q> } & GetShortcuts<FilterCore<Q>>;
 export type FilterQuery = AnyLevelX;

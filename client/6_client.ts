@@ -123,15 +123,11 @@ export interface ClientParams extends ClientPlainParams {
   disableUpdates?: boolean;
   /** An auth string to automatically import. Can be overridden by a later importAuthString call. */
   authString?: string;
-  /**
-   * The first DC to connect to. This is commonly used to decide whether to connect to test or production servers. It is not necessarily the DC that the client will directly connect to or is currently connected to. Defaults to the default initial DC.
-   */
+  /** The first DC to connect to. This is commonly used to decide whether to connect to test or production servers. It is not necessarily the DC that the client will directly connect to or is currently connected to. Defaults to the default initial DC. */
   initialDc?: DC;
 }
 
-/**
- * An MTKruto client.
- */
+/** An MTKruto client. */
 export class Client<C extends Context = Context> extends Composer<C> implements ClientGeneric {
   #clients = new Array<ClientEncrypted>();
   #downloadPools: Partial<Record<DC, ClientEncryptedPool>> = {};
@@ -231,9 +227,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   #LhandleMigrationError: Logger;
   #Lmin: Logger;
 
-  /**
-   * Constructs the client.
-   */
+  /** Constructs the client. */
   constructor(params?: ClientParams) {
     super();
 
@@ -412,7 +406,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   #propagateConnectionState(connectionState: ConnectionState) {
-    this.#queueHandleCtxUpdate({ connectionState });
+    this.#queueHandleCtxUpdate({ type: "connectionState", connectionState });
     this.#lastPropagatedConnectionState = connectionState;
   }
 
@@ -515,7 +509,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   #lastPropagatedAuthorizationState: boolean | null = null;
   async #propagateAuthorizationState(authorized: boolean) {
     if (this.#lastPropagatedAuthorizationState !== authorized) {
-      await this.#handleCtxUpdate({ authorizationState: { isAuthorized: authorized } });
+      await this.#handleCtxUpdate({ type: "authorizationState", authorizationState: { isAuthorized: authorized } });
       this.#lastPropagatedAuthorizationState = authorized;
     }
   }
@@ -749,9 +743,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     }
   }
 
-  /**
-   * Same as calling `.connect()` followed by `.signIn(params)`.
-   */
+  /** Same as calling `.connect()` followed by `.signIn(params)`. */
   async start(params?: SignInParams) {
     await this.connect();
     await this.signIn(params);
@@ -1262,7 +1254,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
 
     return () =>
       Promise.resolve().then(async () => {
-        const updates: Array<Update> = [{ update }];
+        const updates: Array<Update> = [{ type: "update", update }];
         for (const maybePromise of maybePromises) {
           try {
             const value = maybePromise();
@@ -1323,7 +1315,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
         this.#previouslyConnected = true;
       }
       const connectionState = isConnected ? "ready" : "notConnected";
-      this.#queueHandleCtxUpdate({ connectionState });
+      this.#queueHandleCtxUpdate({ type: "connectionState", connectionState });
     }
   }
 

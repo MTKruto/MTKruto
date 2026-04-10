@@ -79,9 +79,7 @@ export interface ClientDispatcherParams {
   disableUpdates?: boolean;
   /** An auth string to automatically import. Can be overridden by a later importAuthString call. */
   authString?: string;
-  /**
-   * The first DC to connect to. This is commonly used to decide whether to connect to test or production servers. It is not necessarily the DC that the client will directly connect to or is currently connected to. Defaults to the default initial DC.
-   */
+  /** The first DC to connect to. This is commonly used to decide whether to connect to test or production servers. It is not necessarily the DC that the client will directly connect to or is currently connected to. Defaults to the default initial DC. */
   initialDc?: DC;
 }
 

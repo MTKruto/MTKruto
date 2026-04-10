@@ -23,32 +23,27 @@ import type { Api } from "../2_tl.ts";
 
 /** @unlisted */
 export interface GiftComponentRarityPerMille {
-  /** @discriminator */
   type: "perMille";
   perMille: number;
 }
 
 /** @unlisted */
 export interface GiftComponentRarityUncommon {
-  /** @discriminator */
   type: "uncommon";
 }
 
 /** @unlisted */
 export interface GiftComponentRarityRare {
-  /** @discriminator */
   type: "rare";
 }
 
 /** @unlisted */
 export interface GiftComponentRarityEpic {
-  /** @discriminator */
   type: "epic";
 }
 
 /** @unlisted */
 export interface GiftComponentRarityLegendary {
-  /** @discriminator */
   type: "legendary";
 }
 

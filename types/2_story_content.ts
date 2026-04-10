@@ -26,20 +26,19 @@ import { constructVideo, type Video } from "./1_video.ts";
 
 /** @unlisted */
 export interface StoryContentPhoto {
-  /** @discriminator */
+  type: "photo";
   photo: Photo;
 }
 
 /** @unlisted */
 export interface StoryContentVideo {
-  /** @discriminator */
+  type: "video";
   video: Video;
 }
 
 /** @unlisted */
 export interface StoryContentUnsupported {
-  /** @discriminator */
-  unsupported: true;
+  type: "unsupported";
 }
 
 /** A story content. */
@@ -51,7 +50,7 @@ export function constructStoryContent(media: Api.MessageMedia): StoryContent {
       unreachable();
     }
     const photo = constructPhoto(Api.as("photo", media.photo));
-    return { photo };
+    return { type: "photo", photo };
   } else if (Api.is("messageMediaDocument", media)) {
     const document = media.document;
     if (!(Api.is("document", document))) {
@@ -67,8 +66,8 @@ export function constructStoryContent(media: Api.MessageMedia): StoryContent {
     const fileId = serializeFileId(fileId_);
 
     const video_ = constructVideo(document, video, undefined, fileId, fileUniqueId);
-    return { video: video_ };
+    return { type: "video", video: video_ };
   } else {
-    unreachable();
+    return { type: "unsupported" };
   }
 }

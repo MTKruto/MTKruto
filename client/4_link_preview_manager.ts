@@ -61,6 +61,6 @@ export class LinkPreviewManager implements UpdateProcessor<LinkPreviewManagerUpd
 
   handleUpdate(update: LinkPreviewManagerUpdate): Update {
     const linkPreview = constructLinkPreview({ _: "messageMediaWebPage", webpage: update.webpage }, undefined, this.#c.getPeer);
-    return { linkPreview };
+    return { type: "linkPreview", linkPreview };
   }
 }
