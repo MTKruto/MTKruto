@@ -1696,7 +1696,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       }
       const firstMediaType = media[0]!.type;
       for (const media_ of media) {
-        const thisMediaType = media_.type
+        const thisMediaType = media_.type;
         if (thisMediaType === "animation") {
           throw new InputError("Media groups cannot consist of animations.");
         }

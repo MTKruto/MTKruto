@@ -848,22 +848,22 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
         unreachable();
       }
     }
-    return { ...message, newChatMembers, type: "newChatMembers" };
+    return { type: "newChatMembers", ...message, newChatMembers };
   } else if (Api.is("messageActionChatDeleteUser", message_.action)) {
     const peer = getPeer({ _: "peerUser", user_id: message_.action.user_id });
     if (peer) {
       const user = constructUser2(peer[0]);
       const leftChatMember = user;
-      return { ...message, leftChatMember, type: "leftChatMember" };
+      return { type: "leftChatMember", ...message, leftChatMember };
     }
   } else if (Api.is("messageActionChatEditTitle", message_.action)) {
     const newChatTitle = message_.action.title;
-    return { ...message, newChatTitle, type: "newChatTitle" };
+    return { type: "newChatTitle", ...message, newChatTitle };
   } else if (Api.is("messageActionChatEditPhoto", message_.action)) {
     const newChatPhoto = constructPhoto(Api.as("photo", message_.action.photo));
-    return { ...message, newChatPhoto, type: "newChatPhoto" };
+    return { type: "newChatPhoto", ...message, newChatPhoto };
   } else if (Api.is("messageActionChatDeletePhoto", message_.action)) {
-    return { ...message, type: "deletedChatPhoto" };
+    return { type: "deletedChatPhoto", ...message };
   } else if (Api.is("messageActionChatCreate", message_.action)) {
     const newChatMembers = new Array<User>();
     for (const user_ of message_.action.users) {
@@ -873,94 +873,94 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
         newChatMembers.push(user);
       }
     }
-    return { ...message, newChatMembers, type: "groupCreated" };
+    return { type: "groupCreated", ...message, newChatMembers };
   } else if (Api.is("messageActionChannelCreate", message_.action)) {
     if (message.chat.type === "channel") {
-      return { ...message, type: "channelCreated" };
+      return { type: "channelCreated", ...message };
     } else if (message.chat.type === "supergroup") {
-      return { ...message, type: "supergroupCreated" };
+      return { type: "supergroupCreated", ...message };
     } else {
       // unreachable();
     }
   } else if (Api.is("messageActionChatMigrateTo", message_.action)) {
     const chatMigratedTo = ZERO_CHANNEL_ID + Number(-message_.action.channel_id);
-    return { ...message, chatMigratedTo, type: "chatMigratedTo" };
+    return { type: "chatMigratedTo", ...message, chatMigratedTo };
   } else if (Api.is("messageActionChannelMigrateFrom", message_.action)) {
     const chatMigratedFrom = Number(-message_.action.chat_id);
-    return { ...message, chatMigratedFrom, type: "chatMigratedFrom" };
+    return { type: "chatMigratedFrom", ...message, chatMigratedFrom };
   } else if (Api.is("messageActionPinMessage", message_.action)) {
     const { replyToMessage } = await getReply(message_, chat, getMessage);
     if (replyToMessage) {
       const pinnedMessage = replyToMessage;
-      return { ...message, pinnedMessage, type: "pinnedMessage" };
+      return { type: "pinnedMessage", ...message, pinnedMessage };
     }
   } else if (Api.is("messageActionRequestedPeer", message_.action)) {
     const user = Api.as("peerUser", message_.action.peers[0]);
     const userShared = { requestId: message_.action.button_id, userId: Number(user.user_id) };
-    return { ...message, userShared, type: "userShared" };
+    return { type: "userShared", ...message, userShared };
   } else if (Api.is("messageActionBotAllowed", message_.action)) {
     const miniAppName = message_.action.app ? Api.as("botApp", message_.action.app).title : undefined;
     const writeAccessAllowed = { miniAppName };
-    return { ...message, writeAccessAllowed, type: "writeAccessAllowed" };
+    return { type: "writeAccessAllowed", ...message, writeAccessAllowed };
   } else if (Api.is("messageActionTopicCreate", message_.action)) {
     const forumTopicCreated = {
       name: message_.action.title,
       color: message_.action.icon_color,
       customEmojiId: message_.action.icon_emoji_id ? String(message_.action.icon_emoji_id) : undefined,
     };
-    return { ...message, forumTopicCreated, type: "forumTopicCreated" };
+    return { type: "forumTopicCreated", ...message, forumTopicCreated };
   } else if (Api.is("messageActionTopicEdit", message_.action)) {
     if (message_.action.closed) {
-      return { ...message, type: "forumTopicClosed" };
+      return { type: "forumTopicClosed", ...message };
     } else if (message_.action.title || message_.action.icon_emoji_id) {
       const forumTopicEdited = {
         name: message_.action.title ?? "",
         customEmojiId: message_.action.icon_emoji_id ? String(message_.action.icon_emoji_id) : undefined,
       };
-      return { ...message, forumTopicEdited, type: "forumTopicEdited" };
+      return { type: "forumTopicEdited", ...message, forumTopicEdited };
     } else {
-      return { ...message, type: "forumTopicReopened" };
+      return { type: "forumTopicReopened", ...message };
     }
   } else if (Api.is("messageActionGroupCallScheduled", message_.action)) {
     const videoChatScheduled = { startDate: message_.action.schedule_date };
-    return { ...message, videoChatScheduled, type: "videoChatScheduled" };
+    return { type: "videoChatScheduled", ...message, videoChatScheduled };
   } else if (Api.is("messageActionGroupCall", message_.action)) {
     if (message_.action.duration) {
       const videoChatEnded = { duration: message_.action.duration };
 
-      return { ...message, videoChatEnded, type: "videoChatEnded" };
+      return { type: "videoChatEnded", ...message, videoChatEnded };
     } else {
-      return { ...message, type: "videoChatStarted" };
+      return { type: "videoChatStarted", ...message };
     }
   } else if (Api.is("messageActionSetMessagesTTL", message_.action)) {
     const newAutoDeleteTime = message_.action.period || 0;
-    return { ...message, newAutoDeleteTime, type: "newAutoDeleteTime" };
+    return { type: "newAutoDeleteTime", ...message, newAutoDeleteTime };
   } else if (Api.is("messageActionPaymentSentMe", message_.action)) {
     const successfulPayment = constructSuccessfulPayment(message_.action);
-    return { ...message, successfulPayment, type: "successfulPayment" };
+    return { type: "successfulPayment", ...message, successfulPayment };
   } else if (Api.is("messageActionPaymentRefunded", message_.action)) {
     const refundedPayment = constructRefundedPayment(message_.action);
-    return { ...message, refundedPayment, type: "refundedPayment" };
+    return { type: "refundedPayment", ...message, refundedPayment };
   } else if (Api.is("messageActionTodoCompletions", message_.action)) {
     const checklistChanged = constructChecklistChanged(message_.action);
-    return { ...message, checklistChanged, type: "checklistChanged" };
+    return { type: "checklistChanged", ...message, checklistChanged };
   } else if (Api.is("messageActionTodoAppendTasks", message_.action)) {
     const checklistExtended = message_.action.list.map((v) => constructChecklistItem(v, [], getPeer));
-    return { ...message, checklistExtended, type: "checklistExtended" };
+    return { type: "checklistExtended", ...message, checklistExtended };
   } else if (Api.is("messageActionStarGift", message_.action)) {
     const giftNonUpgraded = constructGiftNonUpgradedInformation(message_.action, getPeer);
-    return { ...message, giftNonUpgraded, type: "giftNonUpgraded" };
+    return { type: "giftNonUpgraded", ...message, giftNonUpgraded };
   } else if (Api.is("messageActionStarGiftUnique", message_.action)) {
     const giftUpgraded = constructGiftUpgradedInformation(message_.action, getPeer);
-    return { ...message, giftUpgraded, type: "giftUpgraded" };
+    return { type: "giftUpgraded", ...message, giftUpgraded };
   } else if (Api.is("messageActionPollAppendAnswer", message_.action)) {
     const pollOptionAdded = constructPollOption(message_.action.answer, []);
-    return { ...message, pollOptionAdded, type: "pollOptionAdded" };
+    return { type: "pollOptionAdded", ...message, pollOptionAdded };
   } else if (Api.is("messageActionPollDeleteAnswer", message_.action)) {
     const pollOptionRemoved = constructPollOption(message_.action.answer, []);
-    return { ...message, pollOptionRemoved, type: "pollOptionRemoved" };
+    return { type: "pollOptionRemoved", ...message, pollOptionRemoved };
   }
-  return { ...message, type: "unsupported" };
+  return { type: "unsupported", ...message };
 }
 
 export async function constructMessage(
