@@ -23,14 +23,12 @@ import type { Photo } from "./1_photo.ts";
 
 /** @unlisted */
 export interface StoryAlbumIconPhoto {
-  /** @discriminator */
   type: "photo";
   photo: Photo;
 }
 
 /** @unlisted */
 export interface StoryAlbumIconVideo {
-  /** @discriminator */
   type: "video";
   video: Document;
 }

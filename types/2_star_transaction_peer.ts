@@ -24,50 +24,42 @@ import type { ChatP, PeerGetter } from "./1_chat_p.ts";
 
 /** @unlisted */
 export interface StarTransactionPeerUnsupported {
-  /** @discriminator */
   type: "unsupported";
 }
 
 /** @unlisted */
 export interface StarTransactionPeerAppStore {
-  /** @discriminator */
   type: "appStore";
 }
 
 /** @unlisted */
 export interface StarTransactionPeerPlayMarket {
-  /** @discriminator */
   type: "playMarket";
 }
 
 /** @unlisted */
 export interface StarTransactionPeerPremiumBot {
-  /** @discriminator */
   type: "premiumBot";
 }
 
 /** @unlisted */
 export interface StarTransactionPeerFragment {
-  /** @discriminator */
   type: "fragment";
 }
 
 /** @unlisted */
 export interface StarTransactionPeerChat {
-  /** @discriminator */
   type: "chat";
   chat: ChatP;
 }
 
 /** @unlisted */
 export interface StarTransactionPeerAds {
-  /** @discriminator */
   type: "ads";
 }
 
 /** @unlisted */
 export interface StarTransactionPeerApi {
-  /** @discriminator */
   type: "api";
 }
 

@@ -32,7 +32,6 @@ import { constructMessageEntity, type MessageEntity } from "./2_message_entity.t
  * @unlisted
  */
 export interface GiftUpgradedComponentModel {
-  /** @discriminator */
   type: "model";
   /** The name of the model. */
   name: string;
@@ -48,7 +47,6 @@ export interface GiftUpgradedComponentModel {
  * @unlisted
  */
 export interface GiftUpgradedComponentPattern {
-  /** @discriminator */
   type: "pattern";
   /** The name of the pattern. */
   name: string;
@@ -64,7 +62,6 @@ export interface GiftUpgradedComponentPattern {
  * @unlisted
  */
 export interface GiftUpgradedComponentBackdrop {
-  /** @discriminator */
   type: "backdrop";
   /** The name of the backdrop. */
   name: string;
@@ -86,7 +83,6 @@ export interface GiftUpgradedComponentBackdrop {
  * @unlisted
  */
 export interface GiftUpgradedComponentOriginalDetails {
-  /** @discriminator */
   type: "originalDetails";
   senderId?: number;
   recipientId: number;

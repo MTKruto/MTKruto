@@ -24,25 +24,24 @@ import type { PeerGetter } from "./1_chat_p.ts";
 
 /** @unlisted */
 export interface StoryPrivacyEveryone {
-  /** @discriminator */
-  everyoneExcept: number[];
+  type: "everyone";
+  except: number[];
 }
 
 /** @unlisted */
 export interface StoryPrivacyContacts {
-  /** @discriminator */
-  contactsExcept: number[];
+  type: "contacts";
+  except: number[];
 }
 
 /** @unlisted */
 export interface StoryPrivacyCloseFriends {
-  /** @discriminator */
-  closeFriends: true;
+  type: "closeFriends";
 }
 
 /** @unlisted */
 export interface StoryPrivacyOnly {
-  /** @discriminator */
+  type: "only";
   only: number[];
 }
 
@@ -74,20 +73,26 @@ function restrict(users_: number[], rules: Api.InputPrivacyRule[], getPeer: Peer
 
 export function storyPrivacyToTlObject(privacy: StoryPrivacy, getPeer: PeerGetter): Api.InputPrivacyRule[] {
   const rules = new Array<Api.InputPrivacyRule>();
-  if ("everyoneExcept" in privacy) {
-    restrict(privacy.everyoneExcept, rules, getPeer);
-    rules.push({ _: "inputPrivacyValueAllowAll" });
-  } else if ("contactsExcept" in privacy) {
-    restrict(privacy.contactsExcept, rules, getPeer);
-    rules.push({ _: "inputPrivacyValueAllowContacts" });
-  } else if ("closeFriends" in privacy) {
-    rules.push({ _: "inputPrivacyValueAllowCloseFriends" });
-  } else if ("only" in privacy) {
-    if (!privacy.only.length) {
-      unreachable();
+  switch (privacy.type) {
+    case "everyone":
+      restrict(privacy.except, rules, getPeer);
+      rules.push({ _: "inputPrivacyValueAllowAll" });
+      break;
+    case "contacts":
+      restrict(privacy.except, rules, getPeer);
+      rules.push({ _: "inputPrivacyValueAllowContacts" });
+      break;
+    case "closeFriends":
+      rules.push({ _: "inputPrivacyValueAllowCloseFriends" });
+      break;
+    case "only": {
+      if (!privacy.only.length) {
+        unreachable();
+      }
+      const users = resolveUsers(privacy.only, getPeer);
+      rules.push({ _: "inputPrivacyValueAllowUsers", users });
+      break;
     }
-    const users = resolveUsers(privacy.only, getPeer);
-    rules.push({ _: "inputPrivacyValueAllowUsers", users });
   }
   return rules;
 }
@@ -95,13 +100,13 @@ export function storyPrivacyToTlObject(privacy: StoryPrivacy, getPeer: PeerGette
 export function constructStoryPrivacy(privacy: Api.PrivacyRule[]): StoryPrivacy {
   const except = privacy.find((v): v is Api.privacyValueDisallowUsers => Api.is("privacyValueDisallowUsers", v))?.users?.map(Number) ?? [];
   if (privacy.some((v) => Api.is("privacyValueAllowAll", v))) {
-    return { everyoneExcept: except };
+    return { type: "everyone", except };
   } else if (privacy.some((v) => Api.is("privacyValueAllowContacts", v))) {
-    return { contactsExcept: except };
+    return { type: "contacts", except };
   } else if (privacy.some((v) => Api.is("privacyValueAllowCloseFriends", v))) {
-    return { closeFriends: true };
+    return { type: "closeFriends" };
   }
 
   const only = privacy.find((v): v is Api.privacyValueAllowUsers => Api.is("privacyValueAllowUsers", v))?.users?.map(Number) ?? [];
-  return { only };
+  return { type: "only", only };
 }

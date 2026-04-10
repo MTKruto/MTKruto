@@ -22,14 +22,14 @@ import type { FileSource } from "./0_file_source.ts";
 
 /** @unlisted */
 export interface InputStoryContentPhoto {
-  /** @discriminator */
+  type: "photo";
   photo: FileSource;
   attachedStickerFileIds?: string[];
 }
 
 /** @unlisted */
 export interface InputStoryContentVideo {
-  /** @discriminator */
+  type: "video";
   video: FileSource;
   attachedStickerFileIds?: string[];
   duration: number;

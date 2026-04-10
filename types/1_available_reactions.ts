@@ -26,7 +26,6 @@ import { type Reaction, reactionToTlObject } from "./0_reaction.ts";
  * @unlisted
  */
 export interface AvailableReactionsNone {
-  /** @discriminator */
   type: "none";
 }
 
@@ -35,7 +34,6 @@ export interface AvailableReactionsNone {
  * @unlisted
  */
 export interface AvailableReactionsSome {
-  /** @discriminator */
   type: "some";
   /** The allowed reactions. */
   reactions: Reaction[];
@@ -48,7 +46,6 @@ export interface AvailableReactionsSome {
  * @unlisted
  */
 export interface AvailableReactionsAll {
-  /** @discriminator */
   type: "all";
   /** The maximum number of allowed reactions on a single message. */
   maxReactionCount: number;

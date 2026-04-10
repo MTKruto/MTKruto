@@ -28,7 +28,6 @@ import type { ID } from "./0_id.ts";
  * @unlisted
  */
 export interface InputGiftSlug {
-  /** @discriminator */
   type: "slug";
   slug: string;
 }
@@ -38,7 +37,6 @@ export interface InputGiftSlug {
  * @unlisted
  */
 export interface InputGiftChat {
-  /** @discriminator */
   type: "chat";
   chatId: ID;
   id: string;
@@ -49,7 +47,6 @@ export interface InputGiftChat {
  * @unlisted
  */
 export interface InputGiftUser {
-  /** @discriminator */
   type: "user";
   messageId: number;
 }

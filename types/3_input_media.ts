@@ -43,9 +43,9 @@ export interface _InputMediaCommon {
 
 /** @unlisted */
 export interface InputMediaAnimation extends _InputMediaCommon {
+  type: "animation";
   /**
    * The animation.
-   * @discriminator
    */
   animation: FileSource;
   /** A thumbnail to assign. Cannot be a URL. */
@@ -62,9 +62,9 @@ export interface InputMediaAnimation extends _InputMediaCommon {
 
 /** @unlisted */
 export interface InputMediaAudio extends _InputMediaCommon {
+  type: "audio";
   /**
    * The audio.
-   * @discriminator
    */
   audio: FileSource;
   /** A thumbnail to assign. Cannot be a URL. */
@@ -79,9 +79,9 @@ export interface InputMediaAudio extends _InputMediaCommon {
 
 /** @unlisted */
 export interface InputMediaDocument extends _InputMediaCommon {
+  type: "document";
   /**
    * The document.
-   * @discriminator
    */
   document: FileSource;
   /** A thumbnail to assign. Cannot be a URL. */
@@ -90,9 +90,9 @@ export interface InputMediaDocument extends _InputMediaCommon {
 
 /** @unlisted */
 export interface InputMediaPhoto extends _InputMediaCommon {
+  type: "photo";
   /**
    * The photo.
-   * @discriminator
    */
   photo: FileSource;
   /** The width of the photo in pixels. */
@@ -106,9 +106,9 @@ export interface InputMediaPhoto extends _InputMediaCommon {
 
 /** @unlisted */
 export interface InputMediaVideo extends _InputMediaCommon {
+  type: "video";
   /**
    * The video.
-   * @discriminator
    */
   video: FileSource;
   /** A thumbnail to assign. Cannot be a URL. */

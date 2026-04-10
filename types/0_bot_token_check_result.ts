@@ -23,7 +23,6 @@
  * @unlisted
  */
 export interface BotTokenCheckResultSignedIn {
-  /** @discriminator */
   type: "signedIn";
   userId: number;
 }

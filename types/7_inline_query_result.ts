@@ -31,23 +31,7 @@ import { constructReplyMarkup, type ReplyMarkupInlineKeyboard, replyMarkupToTlOb
 import type { MessageContent } from "./6_message_content.ts";
 
 /** @unlisted */
-export type InlineQueryResultType =
-  | "article"
-  | "audio"
-  | "document"
-  | "gif"
-  | "mpeg4Gif"
-  | "photo"
-  | "sticker"
-  | "video"
-  | "voice"
-  | "game"
-  | "location"
-  | "venue";
-
-/** @unlisted */
 export interface _InlineQueryResultBase {
-  type: InlineQueryResultType;
   id: string;
 }
 
@@ -73,7 +57,6 @@ export interface _InlineQueryResultThumbnailCommon {
 
 /** @unlisted */
 export interface InlineQueryResultArticle extends _InlineQueryResultBase, _InlineQueryResultThumbnailCommon {
-  /** @discriminator */
   type: "article";
   title: string;
   messageContent: MessageContent;
@@ -85,8 +68,6 @@ export interface InlineQueryResultArticle extends _InlineQueryResultBase, _Inlin
 
 /** @unlisted */
 export interface InlineQueryResultAudio extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
-  /** @discriminator */
-
   type: "audio";
   title: string;
   url: string;
@@ -96,44 +77,34 @@ export interface InlineQueryResultAudio extends _InlineQueryResultBase, _InlineQ
 
 /** @unlisted */
 export interface InlineQueryResultCachedAudio extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
-  /** @discriminator */
-  type: "audio";
-  /** @discriminator */
+  type: "cachedAudio";
   fileId: string;
 }
 
 /** @unlisted */
 export interface InlineQueryResultCachedDocument extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
-  /** @discriminator */
-  type: "document";
-  /** @discriminator */
+  type: "cachedDocument";
   fileId: string;
   description?: string;
 }
 
 /** @unlisted */
 export interface InlineQueryResultCachedGif extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
-  /** @discriminator */
-  type: "gif";
-  /** @discriminator */
+  type: "cachedGif";
   fileId: string;
   title?: string;
 }
 
 /** @unlisted */
 export interface InlineQueryResultCachedMpeg4Gif extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
-  /** @discriminator */
-  type: "mpeg4Gif";
-  /** @discriminator */
+  type: "cachedMpeg4Gif";
   fileId: string;
   title?: string;
 }
 
 /** @unlisted */
 export interface InlineQueryResultCachedPhoto extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
-  /** @discriminator */
-  type: "photo";
-  /** @discriminator */
+  type: "cachedPhoto";
   fileId: string;
   thumbnails?: Thumbnail[];
   title?: string;
@@ -141,38 +112,29 @@ export interface InlineQueryResultCachedPhoto extends _InlineQueryResultBase, _I
 }
 
 /** @unlisted */
-export interface InlineQueryResultCachedSticker extends _InlineQueryResultBase, _InlineQueryResultMessageContentReplyMarkupCommon {
-  /** @discriminator */
+export interface InlineQueryResultSticker extends _InlineQueryResultBase, _InlineQueryResultMessageContentReplyMarkupCommon {
   type: "sticker";
-  /** @discriminator */
   fileId: string;
 }
 
 /** @unlisted */
 export interface InlineQueryResultCachedVideo extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
-  /** @discriminator */
-  type: "video";
+  type: "cachedVideo";
   title: string;
-  /** @discriminator */
-
   fileId: string;
   description?: string;
 }
 
 /** @unlisted */
 export interface InlineQueryResultCachedVoice extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
-  /** @discriminator */
-  type: "voice";
+  type: "cachedVoice";
   title: string;
-  /** @discriminator */
-
   fileId: string;
 }
 
 /** @unlisted */
 export interface InlineQueryResultContact extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon, _InlineQueryResultThumbnailCommon {
-  /** @discriminator */
-  type: "game";
+  type: "contact";
   phoneNumber: string;
   firstName: string;
   lastName?: string;
@@ -181,16 +143,13 @@ export interface InlineQueryResultContact extends _InlineQueryResultBase, _Inlin
 
 /** @unlisted */
 export interface InlineQueryResultDocument extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon, _InlineQueryResultThumbnailCommon {
-  /** @discriminator */
   type: "document";
   title: string;
-  /** @discriminator */
   url: string;
 }
 
 /** @unlisted */
 export interface InlineQueryResultGame extends _InlineQueryResultBase {
-  /** @discriminator */
   type: "game";
   gameShortName: string;
   replyMarkup?: ReplyMarkupInlineKeyboard;
@@ -198,10 +157,8 @@ export interface InlineQueryResultGame extends _InlineQueryResultBase {
 
 /** @unlisted */
 export interface InlineQueryResultGif extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
-  /** @discriminator */
   type: "gif";
   title?: string;
-  /** @discriminator */
   url: string;
   width?: number;
   height?: number;
@@ -212,7 +169,6 @@ export interface InlineQueryResultGif extends _InlineQueryResultBase, _InlineQue
 
 /** @unlisted */
 export interface InlineQueryResultLocation extends _InlineQueryResultBase, _InlineQueryResultMessageContentReplyMarkupCommon, _InlineQueryResultThumbnailCommon {
-  /** @discriminator */
   type: "location";
   title: string;
   latitude: number;
@@ -225,9 +181,7 @@ export interface InlineQueryResultLocation extends _InlineQueryResultBase, _Inli
 
 /** @unlisted */
 export interface InlineQueryResultMpeg4Gif extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
-  /** @discriminator */
   type: "mpeg4Gif";
-  /** @discriminator */
   url: string;
   title?: string;
   width?: number;
@@ -239,9 +193,7 @@ export interface InlineQueryResultMpeg4Gif extends _InlineQueryResultBase, _Inli
 
 /** @unlisted */
 export interface InlineQueryResultPhoto extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
-  /** @discriminator */
   type: "photo";
-  /** @discriminator */
   url: string;
   thumbnailUrl: string;
   title?: string;
@@ -252,7 +204,6 @@ export interface InlineQueryResultPhoto extends _InlineQueryResultBase, _InlineQ
 
 /** @unlisted */
 export interface InlineQueryResultVenue extends _InlineQueryResultBase, _InlineQueryResultMessageContentReplyMarkupCommon, _InlineQueryResultThumbnailCommon {
-  /** @discriminator */
   type: "venue";
   title: string;
   latitude: number;
@@ -264,11 +215,9 @@ export interface InlineQueryResultVenue extends _InlineQueryResultBase, _InlineQ
 
 /** @unlisted */
 export interface InlineQueryResultVideo extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
-  /** @discriminator */
   type: "video";
   title: string;
   description?: string;
-  /** @discriminator */
   url: string;
   mimeType: string;
   thumbnailUrl: string;
@@ -279,10 +228,8 @@ export interface InlineQueryResultVideo extends _InlineQueryResultBase, _InlineQ
 
 /** @unlisted */
 export interface InlineQueryResultVoice extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
-  /** @discriminator */
   type: "voice";
   title: string;
-  /** @discriminator */
   url: string;
   voiceDuration?: number;
 }
@@ -294,7 +241,6 @@ export type InlineQueryResult =
   | InlineQueryResultCachedGif
   | InlineQueryResultCachedMpeg4Gif
   | InlineQueryResultCachedPhoto
-  | InlineQueryResultCachedSticker
   | InlineQueryResultCachedVideo
   | InlineQueryResultCachedVoice
   | InlineQueryResultArticle
@@ -308,6 +254,7 @@ export type InlineQueryResult =
   | InlineQueryResultPhoto
   | InlineQueryResultVenue
   | InlineQueryResultVideo
+  | InlineQueryResultSticker
   | InlineQueryResultVoice;
 
 export function constructInlineQueryResult(result: Api.botInlineResult | Api.botInlineMediaResult): InlineQueryResult {
@@ -352,7 +299,7 @@ export function constructInlineQueryResult(result: Api.botInlineResult | Api.bot
       replyMarkup: result.send_message.reply_markup ? constructReplyMarkup(result.send_message.reply_markup) as ReplyMarkupInlineKeyboard : undefined,
     });
   } else if (Api.is("botInlineMessageMediaAuto", result.send_message)) {
-    let ref: { url: string } | { fileId: string };
+    let ref: { type: "fileId"; fileId: string } | { type: "url"; url: string };
     let attributes: Api.DocumentAttribute[] | undefined;
     const thumbnailUrl = "thumb" in result ? result.thumb?.url : undefined;
     let photoSizes: ReturnType<typeof getPhotoSizes> | undefined;
@@ -360,12 +307,13 @@ export function constructInlineQueryResult(result: Api.botInlineResult | Api.bot
     if (Api.is("botInlineMediaResult", result)) {
       if (result.photo) {
         photo = Api.as("photo", result.photo);
-        ref = { fileId: getPhotoFileId(photo).fileId };
+        ref = { type: "fileId", fileId: getPhotoFileId(photo).fileId };
         const { largest } = photoSizes = getPhotoSizes(photo);
         attributes = [{ _: "documentAttributeImageSize", w: largest.w, h: largest.h }];
       } else if (result.document) {
         const document = Api.as("document", result.document);
         ref = {
+          type: "fileId",
           fileId: serializeFileId(
             {
               type: FileType.Document, // Should this be changed? The type is already known.
@@ -380,7 +328,7 @@ export function constructInlineQueryResult(result: Api.botInlineResult | Api.bot
         unreachable();
       }
     } else if (result.content) {
-      ref = { url: result.content.url };
+      ref = { type: "url", url: result.content.url };
       attributes = result.content.attributes;
     } else {
       unreachable();
@@ -397,90 +345,174 @@ export function constructInlineQueryResult(result: Api.botInlineResult | Api.bot
     switch (type) {
       case "audio": {
         const a = attributes?.find((v): v is Api.documentAttributeAudio => Api.is("documentAttributeAudio", v));
-        return cleanObject({
-          id,
-          type,
-          title,
-          ...ref,
-          messageContent,
-          replyMarkup,
-          performer: a?.performer,
-          audioDuration: a?.duration,
-        });
+        if (ref.type === "fileId") {
+          return cleanObject({
+            id,
+            type: "cachedAudio",
+            title,
+            fileId: ref.fileId,
+            messageContent,
+            replyMarkup,
+            performer: a?.performer,
+            audioDuration: a?.duration,
+          });
+        } else {
+          return cleanObject({
+            id,
+            type,
+            title,
+            url: ref.url,
+            messageContent,
+            replyMarkup,
+            performer: a?.performer,
+            audioDuration: a?.duration,
+          });
+        }
       }
       case "gif":
       case "mpeg4Gif": {
         const a = attributes.find((v): v is Api.documentAttributeVideo => Api.is("documentAttributeVideo", v));
-        return cleanObject({
-          id,
-          type,
-          title,
-          ...ref,
-          messageContent,
-          replyMarkup,
-          thumbnailUrl,
-          width: a?.w,
-          height: a?.h,
-          duration: a?.duration,
-        }) as InlineQueryResultGif | InlineQueryResultMpeg4Gif;
+        if (ref.type === "fileId") {
+          return cleanObject({
+            id,
+            type: type === "gif" ? "cachedGif" : "cachedMpeg4Gif",
+            title,
+            fileId: ref.fileId,
+            messageContent,
+            replyMarkup,
+            thumbnailUrl,
+            width: a?.w,
+            height: a?.h,
+            duration: a?.duration,
+          }) as InlineQueryResultCachedGif | InlineQueryResultCachedMpeg4Gif;
+        } else {
+          return cleanObject({
+            id,
+            type,
+            title,
+            url: ref.url,
+            messageContent,
+            replyMarkup,
+            thumbnailUrl,
+            width: a?.w,
+            height: a?.h,
+            duration: a?.duration,
+          }) as InlineQueryResultGif | InlineQueryResultMpeg4Gif;
+        }
       }
       case "photo": {
         const a = attributes.find((v): v is Api.documentAttributeImageSize => Api.is("documentAttributeImageSize", v));
-        return cleanObject({
-          id,
-          type,
-          title,
-          description,
-          ...ref,
-          messageContent,
-          replyMarkup,
-          thumbnailUrl: thumbnailUrl!,
-          thumbnails: photo ? photoSizes?.sizes.slice(0, -1).map((v) => constructThumbnail(v, photo!)) : undefined,
-          width: a?.w,
-          height: a?.h,
-        });
+        if (ref.type === "fileId") {
+          return cleanObject({
+            id,
+            type: "cachedPhoto",
+            title,
+            description,
+            fileId: ref.fileId,
+            messageContent,
+            replyMarkup,
+            thumbnailUrl: thumbnailUrl!,
+            thumbnails: photo ? photoSizes?.sizes.slice(0, -1).map((v) => constructThumbnail(v, photo!)) : undefined,
+            width: a?.w,
+            height: a?.h,
+          });
+        } else {return cleanObject({
+            id,
+            type,
+            title,
+            description,
+            url: ref.url,
+            messageContent,
+            replyMarkup,
+            thumbnailUrl: thumbnailUrl!,
+            thumbnails: photo ? photoSizes?.sizes.slice(0, -1).map((v) => constructThumbnail(v, photo!)) : undefined,
+            width: a?.w,
+            height: a?.h,
+          });}
       }
       case "video": {
         const a = attributes.find((v): v is Api.documentAttributeVideo => Api.is("documentAttributeVideo", v));
-        return cleanObject({
-          id,
-          type,
-          title,
-          description,
-          ...ref,
-          messageContent,
-          replyMarkup,
-          mimeType: "content" in result && result.content ? result.content.mime_type : "video/mp4",
-          thumbnailUrl: thumbnailUrl!,
-          width: a?.w,
-          height: a?.h,
-          videoDuration: a?.duration,
-        });
+        if (ref.type === "fileId") {
+          return cleanObject({
+            id,
+            type: "cachedVideo",
+            title,
+            description,
+            fileId: ref.fileId,
+            messageContent,
+            replyMarkup,
+            mimeType: "content" in result && result.content ? result.content.mime_type : "video/mp4",
+            thumbnailUrl: thumbnailUrl!,
+            width: a?.w,
+            height: a?.h,
+            videoDuration: a?.duration,
+          });
+        } else {
+          return cleanObject({
+            id,
+            type: "video",
+            title,
+            description,
+            url: ref.url,
+            messageContent,
+            replyMarkup,
+            mimeType: "content" in result && result.content ? result.content.mime_type : "video/mp4",
+            thumbnailUrl: thumbnailUrl!,
+            width: a?.w,
+            height: a?.h,
+            videoDuration: a?.duration,
+          });
+        }
       }
       case "voice": {
         const a = attributes.find((v): v is Api.documentAttributeAudio => Api.is("documentAttributeAudio", v));
-        return cleanObject({
-          id,
-          type,
-          title,
-          ...ref,
-          messageContent,
-          replyMarkup,
-          thumbnailUrl,
-          voiceDuration: a?.duration,
-        });
+        if (ref.type === "fileId") {
+          return cleanObject({
+            id,
+            type: "cachedVoice",
+            title,
+            fileId: ref.fileId,
+            messageContent,
+            replyMarkup,
+            thumbnailUrl,
+            voiceDuration: a?.duration,
+          });
+        } else {
+          return cleanObject({
+            id,
+            type: "voice",
+            title,
+            url: ref.url,
+            messageContent,
+            replyMarkup,
+            thumbnailUrl,
+            voiceDuration: a?.duration,
+          });
+        }
       }
       case "document":
       case "file": // Does it really return this?
-        return cleanObject({
-          type: "document",
-          id,
-          title: result.title ?? "",
-          ...ref,
-          messageContent,
-          replyMarkup,
-          thumbnailUrl,
-        });
+        if (ref.type === "fileId") {
+          return cleanObject({
+            type: "cachedDocument",
+            id,
+            title: result.title ?? "",
+            fileId: ref.fileId,
+            messageContent,
+            replyMarkup,
+            thumbnailUrl,
+          });
+        } else {
+          return cleanObject({
+            type: "document",
+            id,
+            title: result.title ?? "",
+            url: ref.url,
+            messageContent,
+            replyMarkup,
+            thumbnailUrl,
+          });
+        }
     }
   }
 
@@ -494,96 +526,80 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
   let fileId_: string | null = null;
   switch (result_.type) {
     case "audio":
-      if ("url" in result_) {
-        document = {
-          _: "inputWebDocument",
-          url: result_.url,
-          size: 0,
-          mime_type: "audio/mpeg",
-          attributes: [
-            { _: "documentAttributeAudio", duration: result_.audioDuration ?? 0, title: result_.title, performer: result_.performer },
-          ],
-        };
-      } else {
-        fileId_ = result_.fileId;
-      }
+      document = {
+        _: "inputWebDocument",
+        url: result_.url,
+        size: 0,
+        mime_type: "audio/mpeg",
+        attributes: [
+          { _: "documentAttributeAudio", duration: result_.audioDuration ?? 0, title: result_.title, performer: result_.performer },
+        ],
+      };
       break;
     case "video":
-      if ("url" in result_) {
-        document = {
-          _: "inputWebDocument",
-          url: result_.url,
-          size: 0,
-          mime_type: result_.mimeType ?? "video/mp4",
-          attributes: [
-            { _: "documentAttributeVideo", duration: result_.videoDuration ?? 0, h: result_.height ?? 0, w: result_.width ?? 0 },
-          ],
-        };
-      } else {
-        fileId_ = result_.fileId;
-      }
+      document = {
+        _: "inputWebDocument",
+        url: result_.url,
+        size: 0,
+        mime_type: result_.mimeType ?? "video/mp4",
+        attributes: [
+          { _: "documentAttributeVideo", duration: result_.videoDuration ?? 0, h: result_.height ?? 0, w: result_.width ?? 0 },
+        ],
+      };
       break;
     case "document":
-      if ("url" in result_) {
-        document = { _: "inputWebDocument", url: result_.url, mime_type: "application/octet-stream", attributes: [], size: 0 };
-      } else {
-        fileId_ = result_.fileId;
-      }
+      document = { _: "inputWebDocument", url: result_.url, mime_type: "application/octet-stream", attributes: [], size: 0 };
+
       break;
     case "gif":
-      if ("url" in result_) {
-        document = {
-          _: "inputWebDocument",
-          url: result_.url,
-          size: 0,
-          mime_type: "image/gif",
-          attributes: [
-            { _: "documentAttributeVideo", duration: result_.duration ?? 0, w: result_.width ?? 0, h: result_.height ?? 0 },
-          ],
-        };
-      } else {
-        fileId_ = result_.fileId;
-      }
+      document = {
+        _: "inputWebDocument",
+        url: result_.url,
+        size: 0,
+        mime_type: "image/gif",
+        attributes: [
+          { _: "documentAttributeVideo", duration: result_.duration ?? 0, w: result_.width ?? 0, h: result_.height ?? 0 },
+        ],
+      };
       break;
     case "mpeg4Gif":
-      if ("url" in result_) {
-        document = {
-          _: "inputWebDocument",
-          url: result_.url,
-          size: 0,
-          mime_type: "video/mp4",
-          attributes: [
-            { _: "documentAttributeVideo", nosound: true, duration: result_.duration ?? 0, w: result_.width ?? 0, h: result_.height ?? 0, supports_streaming: true },
-          ],
-        };
-      } else {
-        fileId_ = result_.fileId;
-      }
+      document = {
+        _: "inputWebDocument",
+        url: result_.url,
+        size: 0,
+        mime_type: "video/mp4",
+        attributes: [
+          { _: "documentAttributeVideo", nosound: true, duration: result_.duration ?? 0, w: result_.width ?? 0, h: result_.height ?? 0, supports_streaming: true },
+        ],
+      };
       break;
     case "photo":
-      if ("url" in result_) {
-        document = { _: "inputWebDocument", url: result_.url, size: 0, mime_type: "image/jpeg", attributes: [{ _: "documentAttributeImageSize", w: result_.width ?? 0, h: result_.height ?? 0 }] };
-      } else {
-        fileId_ = result_.fileId;
-      }
+      document = { _: "inputWebDocument", url: result_.url, size: 0, mime_type: "image/jpeg", attributes: [{ _: "documentAttributeImageSize", w: result_.width ?? 0, h: result_.height ?? 0 }] };
+
       break;
     case "sticker":
       fileId_ = result_.fileId;
       break;
     case "voice":
-      if ("url" in result_) {
-        document = {
-          _: "inputWebDocument",
-          url: result_.url,
-          size: 0,
-          mime_type: "audio/mpeg",
-          attributes: [
-            { _: "documentAttributeAudio", duration: result_.voiceDuration ?? 0, voice: true },
-          ],
-        };
-      } else {
-        fileId_ = result_.fileId;
-      }
+      document = {
+        _: "inputWebDocument",
+        url: result_.url,
+        size: 0,
+        mime_type: "audio/mpeg",
+        attributes: [
+          { _: "documentAttributeAudio", duration: result_.voiceDuration ?? 0, voice: true },
+        ],
+      };
+      break;
+    case "cachedAudio":
+    case "cachedDocument":
+    case "cachedGif":
+    case "cachedMpeg4Gif":
+    case "cachedPhoto":
+    case "cachedVideo":
+    case "cachedVoice":
+      fileId_ = result_.fileId;
+
       break;
   }
 

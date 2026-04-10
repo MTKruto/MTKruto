@@ -256,22 +256,26 @@ export class Context {
   }
 
   #getReplyTo = (isQuoted: boolean | undefined, chatId: number, messageId: number): { messageThreadId?: number; replyTo?: ReplyTo } => {
-    if ("story" in this.update) {
-      return { replyTo: { chatId: this.update.story.chat.id, storyId: this.update.story.id } };
+    if (this.update.type === "story") {
+      return { replyTo: { type: "story", chatId: this.update.story.chat.id, storyId: this.update.story.id } };
     }
 
     let messageThreadId = undefined;
-    if ("message" in this.update) {
-      messageThreadId = this.update.message.threadId;
-    } else if ("editedMessage" in this.update) {
-      messageThreadId = this.update.editedMessage.threadId;
-    } else if ("scheduledMessage" in this.update) {
-      messageThreadId = this.update.scheduledMessage.threadId;
+    switch (this.update.type) {
+      case "message":
+        messageThreadId = this.update.message.threadId;
+        break;
+      case "editedMessage":
+        messageThreadId = this.update.editedMessage.threadId;
+        break;
+      case "scheduledMessage":
+        messageThreadId = this.update.scheduledMessage.threadId;
+        break;
     }
 
     const isPrivate = chatId > 0;
     const shouldQuote = isQuoted === undefined ? !isPrivate : isQuoted;
-    return { messageThreadId, replyTo: shouldQuote ? { messageId } : undefined };
+    return { messageThreadId, replyTo: shouldQuote ? { type: "message", messageId } : undefined };
   };
 
   get chat(): ChatP | undefined {
@@ -279,24 +283,26 @@ export class Context {
       return this.msg.chat;
     }
 
-    return "messageReactions" in this.update
-      //
-      ? this.update.messageReactions.chat
-      : "messageReactionCount" in this.update
-      ? this.update.messageReactionCount.chat
-      : "chatMember" in this.update
-      ? this.update.chatMember.chat
-      : "myChatMember" in this.update
-      ? this.update.myChatMember.chat
-      : "joinRequest" in this.update
-      ? this.update.joinRequest.chat
-      : "story" in this.update
-      ? this.update.story.chat
-      : "newChat" in this.update
-      ? this.update.newChat.chat
-      : "editedChat" in this.update
-      ? this.update.editedChat.chat
-      : undefined;
+    switch (this.update.type) {
+      case "messageReactions":
+        return this.update.messageReactions.chat;
+      case "messageReactionCount":
+        return this.update.messageReactionCount.chat;
+      case "chatMember":
+        return this.update.chatMember.chat;
+      case "myChatMember":
+        return this.update.myChatMember.chat;
+      case "joinRequest":
+        return this.update.joinRequest.chat;
+      case "story":
+        return this.update.story.chat;
+      case "newChat":
+        return this.update.newChat.chat;
+      case "editedChat":
+        return this.update.editedChat.chat;
+    }
+
+    return undefined;
   }
 
   get chatId(): number | undefined {
@@ -304,23 +310,45 @@ export class Context {
       return this.chat.id;
     }
 
-    return "deletedStory" in this.update
-      //
-      ? this.update.deletedStory.chatId
-      : "messageInteractions" in this.update
-      ? this.update.messageInteractions.chatId
-      : "deletedChat" in this.update
-      ? this.update.deletedChat.chatId
-      : "botCommands" in this.update
-      ? this.update.botCommands.chatId
-      : "chatAction" in this.update
-      ? this.update.chatAction.chatId
-      : undefined;
+    switch (this.update.type) {
+      case "deletedStory":
+        return this.update.deletedStory.chatId;
+      case "messageInteractions":
+        return this.update.messageInteractions.chatId;
+      case "deletedChat":
+        return this.update.deletedChat.chatId;
+      case "botCommands":
+        return this.update.botCommands.chatId;
+      case "chatAction":
+        return this.update.chatAction.chatId;
+    }
+
+    return undefined;
   }
 
   get from(): User | ChatPGroup | ChatPSupergroup | ChatPChannel | undefined {
-    const from = "callbackQuery" in this.update ? this.update.callbackQuery.from : "inlineQuery" in this.update ? this.update.inlineQuery.from : "chatMember" in this.update ? this.update.chatMember.from : "myChatMember" in this.update ? this.update.myChatMember.from : "messageReactions" in this.update ? this.update.messageReactions.user : "preCheckoutQuery" in this.update ? this.update.preCheckoutQuery.from : "joinRequest" in this.update ? this.update.joinRequest.from : "businessConnection" in this.update ? this.update.businessConnection.user : "pollAnswer" in this.update ? this.update.pollAnswer.from : this.msg?.from;
-    return from;
+    switch (this.update.type) {
+      case "callbackQuery":
+        return this.update.callbackQuery.from;
+      case "inlineQuery":
+        return this.update.inlineQuery.from;
+      case "chatMember":
+        return this.update.chatMember.from;
+      case "myChatMember":
+        return this.update.myChatMember.from;
+      case "messageReactions":
+        return this.update.messageReactions.user;
+      case "preCheckoutQuery":
+        return this.update.preCheckoutQuery.from;
+      case "joinRequest":
+        return this.update.joinRequest.from;
+      case "businessConnection":
+        return this.update.businessConnection.user;
+      case "pollAnswer":
+        return this.update.pollAnswer.from;
+    }
+
+    return this.msg?.from;
   }
 
   hasFilterQuery<Q extends FilterQuery>(filter: Q): this is WithFilter<typeof this, Q> {

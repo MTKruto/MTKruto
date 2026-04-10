@@ -40,7 +40,6 @@ export interface _InlineKeyboardButtonBase {
 export interface InlineKeyboardButtonURL extends _InlineKeyboardButtonBase {
   /**
    * The URL to open.
-   * @discriminator
    */
   type: "url";
   url: string;
@@ -51,7 +50,6 @@ export interface InlineKeyboardButtonURL extends _InlineKeyboardButtonBase {
  * @unlisted
  */
 export interface InlineKeyboardButtonCallback extends _InlineKeyboardButtonBase {
-  /** @discriminator */
   type: "callbackData";
   /** The callback data to send back. */
   callbackData: string;
@@ -63,7 +61,6 @@ export interface InlineKeyboardButtonCallback extends _InlineKeyboardButtonBase 
  */
 /** @unlisted */
 export interface InlineKeyboardButtonMiniApp extends _InlineKeyboardButtonBase {
-  /** @discriminator */
   type: "miniApp";
   /** An HTTPS URL of the mini app to be opened with additional data. */
   url: string;
@@ -74,7 +71,6 @@ export interface InlineKeyboardButtonMiniApp extends _InlineKeyboardButtonBase {
  * @unlisted
  */
 export interface InlineKeyboardButtonLogin extends _InlineKeyboardButtonBase {
-  /** @discriminator */
   type: "loginUrl";
   /** The URL to log into. */
   loginUrl: LoginUrl;
@@ -85,7 +81,6 @@ export interface InlineKeyboardButtonLogin extends _InlineKeyboardButtonBase {
  * @unlisted
  */
 export interface InlineKeyboardButtonSwitchInline extends _InlineKeyboardButtonBase {
-  /** @discriminator */
   type: "switchInlineQuery";
   /** The query to type into the user's message box once switched to inline. */
   inlineQuery: string;
@@ -96,7 +91,6 @@ export interface InlineKeyboardButtonSwitchInline extends _InlineKeyboardButtonB
  * @unlisted
  */
 export interface InlineKeyboardButtonSwitchInlineCurrent extends _InlineKeyboardButtonBase {
-  /** @discriminator */
   type: "switchInlineQueryCurrentChat";
   /**
    * The query to type into the user's message box once switched to inline.
@@ -110,7 +104,6 @@ export interface InlineKeyboardButtonSwitchInlineCurrent extends _InlineKeyboard
  */
 export interface InlineKeyboardButtonSwitchInlineChosen extends _InlineKeyboardButtonBase {
   type: "switchInlineQueryChosenChats";
-  /** @discriminator */
   inlineQuery: string;
   isUser?: boolean;
   isBot?: boolean;
@@ -123,7 +116,6 @@ export interface InlineKeyboardButtonSwitchInlineChosen extends _InlineKeyboardB
  * @unlisted
  */
 export interface InlineKeyboardButtonGame extends _InlineKeyboardButtonBase {
-  /** @discriminator */
   type: "callbackGame";
 }
 
@@ -132,7 +124,6 @@ export interface InlineKeyboardButtonGame extends _InlineKeyboardButtonBase {
  * @unlisted
  */
 export interface InlineKeyboardButtonPay extends _InlineKeyboardButtonBase {
-  /** @discriminator */
   type: "pay";
 }
 
@@ -141,7 +132,6 @@ export interface InlineKeyboardButtonPay extends _InlineKeyboardButtonBase {
  * @unlisted
  */
 export interface InlineKeyboardButtonCopy extends _InlineKeyboardButtonBase {
-  /** @discriminator */
   type: "copy";
   textToCopy: string;
 }

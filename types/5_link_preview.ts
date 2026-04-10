@@ -34,7 +34,6 @@ import { constructGift, type Gift } from "./4_gift.ts";
  * @unlisted
  */
 export interface InputLinkPreview {
-  /** @discriminator */
   type: "input";
   /** Whether link preview is disabled. */
   isDisabled?: boolean;
@@ -64,7 +63,6 @@ export interface _LinkPreviewBase {
  * @unlisted
  */
 export interface LinkPreviewLoading extends _LinkPreviewBase {
-  /** @discriminator */
   type: "loading";
   /** The URL of the link preview. */
   url?: string;
@@ -77,7 +75,6 @@ export interface LinkPreviewLoading extends _LinkPreviewBase {
  * @unlisted
  */
 export interface LinkPreviewNotLoaded extends _LinkPreviewBase {
-  /** @discriminator */
   type: "notLoaded";
   /** The URL of the link preview. */
   url?: string;
@@ -95,7 +92,6 @@ export interface _LinkPreviewLoadedBase extends _LinkPreviewBase {
  */
 
 export interface LinkPreviewUnknown extends _LinkPreviewLoadedBase {
-  /** @discriminator */
   type: "unknown";
 }
 
@@ -105,7 +101,6 @@ export interface LinkPreviewUnknown extends _LinkPreviewLoadedBase {
  */
 
 export interface LinkPreviewPhoto extends _LinkPreviewLoadedBase {
-  /** @discriminator */
   type: "photo";
   photo: Photo;
 }
@@ -127,7 +122,6 @@ export interface _LinkPreviewEmbeddedBase extends _LinkPreviewLoadedBase {
  */
 
 export interface LinkPreviewEmbeddedVideo extends _LinkPreviewEmbeddedBase {
-  /** @discriminator */
   type: "embeddedVideo";
   thumbnail?: Photo;
 }
@@ -138,7 +132,6 @@ export interface LinkPreviewEmbeddedVideo extends _LinkPreviewEmbeddedBase {
  */
 
 export interface LinkPreviewExternalVideo extends _LinkPreviewEmbeddedBase {
-  /** @discriminator */
   type: "externalVideo";
   mimeType: string;
   width: number;
@@ -150,7 +143,6 @@ export interface LinkPreviewExternalVideo extends _LinkPreviewEmbeddedBase {
  * @unlisted
  */
 export interface LinkPreviewVideo extends _LinkPreviewLoadedBase {
-  /** @discriminator */
   type: "video";
   video: Document;
   startTimestamp?: number;
@@ -162,7 +154,6 @@ export interface LinkPreviewVideo extends _LinkPreviewLoadedBase {
  * @unlisted
  */
 export interface LinkPreviewEmbeddedAudio extends _LinkPreviewEmbeddedBase {
-  /** @discriminator */
   type: "embeddedAudio";
   duration: number;
   width: number;
@@ -174,7 +165,6 @@ export interface LinkPreviewEmbeddedAudio extends _LinkPreviewEmbeddedBase {
  * @unlisted
  */
 export interface LinkPreviewExternalAudio extends _LinkPreviewEmbeddedBase {
-  /** @discriminator */
   type: "externalAudio";
   mimeType: string;
   duration: number;
@@ -185,7 +175,6 @@ export interface LinkPreviewExternalAudio extends _LinkPreviewEmbeddedBase {
  * @unlisted
  */
 export interface LinkPreviewAudio extends _LinkPreviewLoadedBase {
-  /** @discriminator */
   type: "audio";
   audio: Audio;
 }
@@ -195,7 +184,6 @@ export interface LinkPreviewAudio extends _LinkPreviewLoadedBase {
  * @unlisted
  */
 export interface LinkPreviewGift extends _LinkPreviewLoadedBase {
-  /** @discriminator */
   type: "gift";
   gift: Gift;
 }

@@ -41,7 +41,6 @@ export interface _VideoChatNotEndedCommon {
  * @unlisted
  */
 export interface VideoChatActive extends _VideoChatCommon, _VideoChatNotEndedCommon {
-  /** @discriminator */
   type: "active";
   /** Whether the video chat is being recorded. */
   isRecording: boolean;
@@ -52,7 +51,6 @@ export interface VideoChatActive extends _VideoChatCommon, _VideoChatNotEndedCom
  * @unlisted
  */
 export interface VideoChatScheduled extends _VideoChatCommon, _VideoChatNotEndedCommon {
-  /** @discriminator */
   type: "scheduled";
   /** The point in time in which the video chat will be started. */
   scheduledFor: number;
@@ -63,7 +61,6 @@ export interface VideoChatScheduled extends _VideoChatCommon, _VideoChatNotEnded
  * @unlisted
  */
 export interface VideoChatEnded extends _VideoChatCommon {
-  /** @discriminator */
   type: "ended";
   /** The duration of the video chat in seconds. */
   duration: number;

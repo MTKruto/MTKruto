@@ -32,7 +32,6 @@ export interface _KeyboardButtonBase {
 
 /** @unlisted */
 export interface KeyboardButtonText {
-  /** @discriminator */
   type: "text";
   text: string;
   style?: ButtonStyle;
@@ -40,7 +39,6 @@ export interface KeyboardButtonText {
 
 /** @unlisted */
 export interface KeyboardButtonRequestUser extends _KeyboardButtonBase {
-  /** @discriminator */
   type: "requestUser";
   requestId: number;
   isBot?: boolean;
@@ -49,7 +47,6 @@ export interface KeyboardButtonRequestUser extends _KeyboardButtonBase {
 
 /** @unlisted */
 export interface KeyboardButtonRequestChat extends _KeyboardButtonBase {
-  /** @discriminator */
   type: "requestChat";
   requestId: number;
   isChannel: boolean;
@@ -63,19 +60,16 @@ export interface KeyboardButtonRequestChat extends _KeyboardButtonBase {
 
 /** @unlisted */
 export interface KeyboardButtonRequestContact extends _KeyboardButtonBase {
-  /** @discriminator */
   type: "requestContact";
 }
 
 /** @unlisted */
 export interface KeyboardButtonRequestLocation extends _KeyboardButtonBase {
-  /** @discriminator */
   type: "requestLocation";
 }
 
 /** @unlisted */
 export interface KeyboardButtonRequestPoll extends _KeyboardButtonBase {
-  /** @discriminator */
   type: "requestPoll";
   /** If a type is not specified, the user will be allowed to choose either type. */
   pollType?: "regular" | "quiz";
@@ -83,7 +77,6 @@ export interface KeyboardButtonRequestPoll extends _KeyboardButtonBase {
 
 /** @unlisted */
 export interface KeyboardButtonMiniApp extends _KeyboardButtonBase {
-  /** @discriminator */
   type: "miniApp";
   /** An HTTPS URL of the mini app to be opened with additional data. */
   url: string;

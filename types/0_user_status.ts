@@ -25,7 +25,6 @@ import type { Api } from "../2_tl.ts";
  * @unlisted
  */
 export interface UserStatusOnline {
-  /** @discriminator */
   type: "online";
 }
 
@@ -34,7 +33,6 @@ export interface UserStatusOnline {
  * @unlisted
  */
 export interface UserStatusOffline {
-  /** @discriminator */
   type: "offline";
   /** A point in time in which the user was last seen online. */
   lastSeenAt: number;
@@ -45,7 +43,6 @@ export interface UserStatusOffline {
  * @unlisted
  */
 export interface UserStatusLastSeenRecently {
-  /** @discriminator */
   type: "lastSeenRecently";
 }
 
@@ -54,7 +51,6 @@ export interface UserStatusLastSeenRecently {
  * @unlisted
  */
 export interface UserStatusLastSeenLastWeek {
-  /** @discriminator */
   type: "lastSeenLastWeek";
 }
 
@@ -63,7 +59,6 @@ export interface UserStatusLastSeenLastWeek {
  * @unlisted
  */
 export interface UserStatusLastSeenLastMonth {
-  /** @discriminator */
   type: "lastSeenLastMonth";
 }
 

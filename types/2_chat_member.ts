@@ -41,7 +41,6 @@ export interface _ChatMemberBase {
 export interface ChatMemberCreator extends _ChatMemberBase {
   /**
    * The status of the chat member.
-   * @discriminator
    */
   status: "creator";
   /** Whether the chat member is an anonymous admin. */
@@ -57,7 +56,6 @@ export interface ChatMemberCreator extends _ChatMemberBase {
 export interface ChatMemberAdministrator extends _ChatMemberBase {
   /**
    * The status of the chat member.
-   * @discriminator
    */
   status: "administrator";
   /** The rights of the chat administrator. */
@@ -73,7 +71,6 @@ export interface ChatMemberAdministrator extends _ChatMemberBase {
 export interface ChatMemberMember extends _ChatMemberBase {
   /**
    * The status of the chat member.
-   * @discriminator
    */
   status: "member";
   /** A point in time in which the membership expires. */
@@ -89,7 +86,6 @@ export interface ChatMemberMember extends _ChatMemberBase {
 export interface ChatMemberRestricted extends _ChatMemberBase {
   /**
    * The status of the chat member.
-   * @discriminator
    */
   status: "restricted";
   /** Whether the restricted user is currently a member of the chat. */
@@ -109,7 +105,6 @@ export interface ChatMemberRestricted extends _ChatMemberBase {
 export interface ChatMemberLeft extends _ChatMemberBase {
   /**
    * The status of the chat member.
-   * @discriminator
    */
   status: "left";
 }
@@ -121,7 +116,6 @@ export interface ChatMemberLeft extends _ChatMemberBase {
 export interface ChatMemberBanned extends _ChatMemberBase {
   /**
    * The status of the chat member.
-   * @discriminator
    */
   status: "banned";
   /** A point in time in which the restriction expires. */
