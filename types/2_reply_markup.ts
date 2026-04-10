@@ -30,6 +30,7 @@ import { constructKeyboardButton, type KeyboardButton, keyboardButtonToTlObject 
 /** @unlisted */
 export interface ReplyMarkupInlineKeyboard {
   /** @discriminator */
+  type: "inlineKeyboard";
   inlineKeyboard: InlineKeyboardButton[][];
 }
 
@@ -42,7 +43,7 @@ function constructInlineKeyboardMarkup(keyboard_: Api.replyInlineMarkup): ReplyM
     }
     rows.push(row);
   }
-  return { inlineKeyboard: rows };
+  return { type: "inlineKeyboard", inlineKeyboard: rows };
 }
 
 async function inlineKeyboardMarkupToTlObject(keyboard: ReplyMarkupInlineKeyboard, usernameResolver: UsernameResolver): Promise<Api.replyInlineMarkup> {
@@ -62,6 +63,7 @@ async function inlineKeyboardMarkupToTlObject(keyboard: ReplyMarkupInlineKeyboar
 /** @unlisted */
 export interface ReplyMarkupKeyboard {
   /** @discriminator */
+  type: "keyboard";
   keyboard: KeyboardButton[][];
   isPersistent?: boolean;
   isResized?: boolean;
@@ -80,6 +82,7 @@ function constructReplyKeyboardMarkup(keyboard_: Api.replyKeyboardMarkup): Reply
     rows.push(row);
   }
   return {
+    type: "keyboard",
     isResized: keyboard_.resize || false,
     isOneTime: keyboard_.single_use || false,
     isSelective: keyboard_.selective || false,
@@ -107,17 +110,14 @@ function replyKeyboardMarkupToTlObject(replyMarkup: ReplyMarkupKeyboard): Api.re
  * @unlisted
  */
 export interface ReplyMarkupRemoveKeyboard {
-  /**
-   *  Differentiate from other reply markup types
-   * @discriminator
-   */
-  removeKeyboard: true;
+  /** @discriminator */
+  type: "removeKeyboard";
   /** Whether to only affect specific users. If true, only users that were mentioned will be affected along with the author of the replied message if any. */
   isSelective?: boolean;
 }
 
 function constructReplyKeyboardRemove(replyMarkup_: Api.replyKeyboardHide): ReplyMarkupRemoveKeyboard {
-  return cleanObject({ removeKeyboard: true, selective: replyMarkup_.selective });
+  return cleanObject({ type: "removeKeyboard", selective: replyMarkup_.selective });
 }
 
 function replyKeyboardRemoveToTlObject(replyMarkup: ReplyMarkupRemoveKeyboard): Api.replyKeyboardHide {
@@ -131,11 +131,8 @@ function replyKeyboardRemoveToTlObject(replyMarkup: ReplyMarkupRemoveKeyboard): 
  * @unlisted
  */
 export interface ReplyMarkupForceReply {
-  /**
-   *  Differentiate from other reply markup types
-   * @discriminator
-   */
-  forceReply: true;
+  /** @discriminator */
+  type: "forceReply";
   /** A placeholder to be shown in the client's message box. */
   inputFieldPlaceholder?: string;
   /** Whether to only affect specific users. If true, only users that were mentioned will be affected along with the author of the replied message if any. */
@@ -143,7 +140,7 @@ export interface ReplyMarkupForceReply {
 }
 
 function constructForceReply(replyMarkup_: Api.replyKeyboardForceReply) {
-  const replyMarkup: ReplyMarkupForceReply = { forceReply: true };
+  const replyMarkup: ReplyMarkupForceReply = { type: "forceReply" };
   if (replyMarkup_.placeholder) {
     replyMarkup.inputFieldPlaceholder = replyMarkup_.placeholder;
   }
@@ -177,15 +174,14 @@ export function constructReplyMarkup(replyMarkup: Api.ReplyMarkup): ReplyMarkup 
 }
 
 export async function replyMarkupToTlObject(replyMarkup: ReplyMarkup, usernameResolver: UsernameResolver): Promise<Api.ReplyMarkup> {
-  if ("inlineKeyboard" in replyMarkup) {
-    return await inlineKeyboardMarkupToTlObject(replyMarkup, usernameResolver);
-  } else if ("keyboard" in replyMarkup) {
-    return replyKeyboardMarkupToTlObject(replyMarkup);
-  } else if ("removeKeyboard" in replyMarkup) {
-    return replyKeyboardRemoveToTlObject(replyMarkup);
-  } else if ("forceReply" in replyMarkup) {
-    return forceReplyToTlObject(replyMarkup);
-  } else {
-    unreachable();
+  switch (replyMarkup.type) {
+    case "inlineKeyboard":
+      return await inlineKeyboardMarkupToTlObject(replyMarkup, usernameResolver);
+    case "keyboard":
+      return replyKeyboardMarkupToTlObject(replyMarkup);
+    case "removeKeyboard":
+      return replyKeyboardRemoveToTlObject(replyMarkup);
+    case "forceReply":
+      return forceReplyToTlObject(replyMarkup);
   }
 }

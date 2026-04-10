@@ -18,14 +18,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { MiniAppButtonInfo } from "./0_mini_app_button_info.ts";
-
 /** A button to be shown along with the results of an inline query. */
 export interface InlineQueryResultButton {
   /** Label text on the button. */
   text: string;
-  /** Description of the Mini App that will be launched when the user presses the button. */
-  miniApp?: MiniAppButtonInfo;
+  /** An HTTPS URL of the mini app to be opened with additional data. */
+  url?: string;
   /** Deep linking parameter for the /start message. */
   startParameter?: string;
 }
