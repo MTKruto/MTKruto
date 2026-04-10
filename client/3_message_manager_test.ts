@@ -64,28 +64,28 @@ Deno.test("sendMediaGroup() disallows invalid media type combination", async () 
   const chatId = -1;
 
   try {
-    await messageManager.sendMediaGroup(chatId, [{ animation: "" }]);
+    await messageManager.sendMediaGroup(chatId, [{ type: "animation", animation: "" }]);
   } catch (err) {
     assertInstanceOf(err, InputError);
     assertEquals(err.message, "Media groups cannot consist of animations.");
   }
 
   try {
-    await messageManager.sendMediaGroup(chatId, [{ document: "" }, { video: "" }]);
+    await messageManager.sendMediaGroup(chatId, [{ type: "document", document: "" }, { type: "video", video: "" }]);
   } catch (err) {
     assertInstanceOf(err, InputError);
     assertEquals(err.message, "Media of the type document cannot be mixed with other types.");
   }
 
   try {
-    await messageManager.sendMediaGroup(chatId, [{ video: "" }, { document: "" }]);
+    await messageManager.sendMediaGroup(chatId, [{ type: "video", video: "" }, { type: "document", document: "" }]);
   } catch (err) {
     assertInstanceOf(err, InputError);
     assertEquals(err.message, "Media of the type video cannot be mixed with those of the type document.");
   }
 
   try {
-    await messageManager.sendMediaGroup(chatId, [{ photo: "" }, { document: "" }]);
+    await messageManager.sendMediaGroup(chatId, [{ type: "photo", photo: "" }, { type: "document", document: "" }]);
   } catch (err) {
     assertInstanceOf(err, InputError);
     assertEquals(err.message, "Media of the type photo cannot be mixed with those of the type document.");
