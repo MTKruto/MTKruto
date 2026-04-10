@@ -140,9 +140,7 @@ export interface ChatPSupergroup extends ChatPChannelBase {
   isForum: boolean;
 }
 
-/**
- * A chat with lesser fields.
- */
+/** A chat with lesser fields. */
 export type ChatP = ChatPPrivate | ChatPGroup | ChatPSupergroup | ChatPChannel;
 
 export function constructChatP(chat: Api.user): ChatPPrivate;

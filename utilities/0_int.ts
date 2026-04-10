@@ -51,9 +51,7 @@ export function mod(n: bigint | number, m: bigint | number) {
   return ((n % m) + m) % m;
 }
 
-/**
- * Additional parameters for {@link intFromBytes}.
- */
+/** Additional parameters for {@link intFromBytes}. */
 export interface IntFromBytesParams {
   /** The byte order of the representation. Defaults to `little`. */
   byteOrder?: ByteOrder;

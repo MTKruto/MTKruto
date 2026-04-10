@@ -123,15 +123,11 @@ export interface ClientParams extends ClientPlainParams {
   disableUpdates?: boolean;
   /** An auth string to automatically import. Can be overridden by a later importAuthString call. */
   authString?: string;
-  /**
-   * The first DC to connect to. This is commonly used to decide whether to connect to test or production servers. It is not necessarily the DC that the client will directly connect to or is currently connected to. Defaults to the default initial DC.
-   */
+  /** The first DC to connect to. This is commonly used to decide whether to connect to test or production servers. It is not necessarily the DC that the client will directly connect to or is currently connected to. Defaults to the default initial DC. */
   initialDc?: DC;
 }
 
-/**
- * An MTKruto client.
- */
+/** An MTKruto client. */
 export class Client<C extends Context = Context> extends Composer<C> implements ClientGeneric {
   #clients = new Array<ClientEncrypted>();
   #downloadPools: Partial<Record<DC, ClientEncryptedPool>> = {};
@@ -231,9 +227,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   #LhandleMigrationError: Logger;
   #Lmin: Logger;
 
-  /**
-   * Constructs the client.
-   */
+  /** Constructs the client. */
   constructor(params?: ClientParams) {
     super();
 
@@ -749,9 +743,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     }
   }
 
-  /**
-   * Same as calling `.connect()` followed by `.signIn(params)`.
-   */
+  /** Same as calling `.connect()` followed by `.signIn(params)`. */
   async start(params?: SignInParams) {
     await this.connect();
     await this.signIn(params);

@@ -63,9 +63,7 @@ export interface ChatPrivate extends ChatBase, Omit<ChatPPrivate, "photo"> {
   workingHours?: WorkingHours;
 }
 
-/**
- * A chat with more fields.
- */
+/** A chat with more fields. */
 export type Chat = ChatChannel | ChatSupergroup | ChatGroup | ChatPrivate;
 
 export function constructChat(fullChat: Api.userFull | Api.chatFull | Api.channelFull, getPeer: PeerGetter): Chat {

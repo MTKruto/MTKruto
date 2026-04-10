@@ -21,9 +21,7 @@
 import type { ID } from "./0_id.ts";
 import type { ReplyQuote } from "./3_reply_quote.ts";
 
-/**
- * Information on a message that another message is replying to.
- * @unlisted */
+/** Information on a message that another message is replying to. */
 export interface ReplyToMessage {
   type: "message";
   /** The identifier of the message that is being replied to. */

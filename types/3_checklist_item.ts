@@ -30,9 +30,7 @@ import { constructUser2, type User } from "./2_user.ts";
  * @unlisted
  */
 export interface ChecklistItemUnchecked {
-  /**
-   * The type of the checklist item.
-   */
+  /** The type of the checklist item. */
   type: "unchecked";
   /** The identifier of the checklist item. */
   id: number;
@@ -47,9 +45,7 @@ export interface ChecklistItemUnchecked {
  * @unlisted
  */
 export interface ChecklistItemChecked {
-  /**
-   * The type of the checklist item.
-   */
+  /** The type of the checklist item. */
   type: "checked";
   /** The identifier of the to-do item. */
   id: number;

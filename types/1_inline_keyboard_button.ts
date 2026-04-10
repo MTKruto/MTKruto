@@ -38,9 +38,7 @@ export interface _InlineKeyboardButtonBase {
  * @unlisted
  */
 export interface InlineKeyboardButtonURL extends _InlineKeyboardButtonBase {
-  /**
-   * The URL to open.
-   */
+  /** The URL to open. */
   type: "url";
   url: string;
 }
@@ -92,9 +90,7 @@ export interface InlineKeyboardButtonSwitchInline extends _InlineKeyboardButtonB
  */
 export interface InlineKeyboardButtonSwitchInlineCurrent extends _InlineKeyboardButtonBase {
   type: "switchInlineQueryCurrentChat";
-  /**
-   * The query to type into the user's message box once switched to inline.
-   */
+  /** The query to type into the user's message box once switched to inline. */
   inlineQuery: string;
 }
 

@@ -105,9 +105,7 @@ export interface LinkPreviewPhoto extends _LinkPreviewLoadedBase {
   photo: Photo;
 }
 
-/** An embedded video link preview.
- * @unlisted
- */
+/** @unlisted */
 
 export interface _LinkPreviewEmbeddedBase extends _LinkPreviewLoadedBase {
   embedUrl: string;
@@ -139,9 +137,7 @@ export interface LinkPreviewExternalVideo extends _LinkPreviewEmbeddedBase {
   duration: number;
 }
 
-/** A video link preview.
- * @unlisted
- */
+/** @unlisted */
 export interface LinkPreviewVideo extends _LinkPreviewLoadedBase {
   type: "video";
   video: Document;
