@@ -1694,12 +1694,9 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       if (!Array.isArray(media) || !media.length) {
         throw new InputError("Media group must not be empty.");
       }
-      // deno-lint-ignore no-explicit-any
-      const firstMedia = (media as any)?.[0];
-      const firstMediaType = firstMedia?.animation !== undefined ? "animation" : firstMedia?.audio !== undefined ? "audio" : firstMedia?.photo !== undefined ? "photo" : firstMedia?.video !== undefined ? "video" : "document";
+      const firstMediaType = media[0]!.type;
       for (const media_ of media) {
-        // deno-lint-ignore no-explicit-any
-        const thisMediaType = (media_ as any)?.animation !== undefined ? "animation" : (media_ as any)?.audio !== undefined ? "audio" : (media_ as any)?.photo !== undefined ? "photo" : (media_ as any)?.video !== undefined ? "video" : "document";
+        const thisMediaType = media_.type
         if (thisMediaType === "animation") {
           throw new InputError("Media groups cannot consist of animations.");
         }
