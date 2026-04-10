@@ -412,7 +412,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   #propagateConnectionState(connectionState: ConnectionState) {
-    this.#queueHandleCtxUpdate({ connectionState });
+    this.#queueHandleCtxUpdate({ type: "connectionState", connectionState });
     this.#lastPropagatedConnectionState = connectionState;
   }
 
@@ -515,7 +515,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   #lastPropagatedAuthorizationState: boolean | null = null;
   async #propagateAuthorizationState(authorized: boolean) {
     if (this.#lastPropagatedAuthorizationState !== authorized) {
-      await this.#handleCtxUpdate({ authorizationState: { isAuthorized: authorized } });
+      await this.#handleCtxUpdate({ type: "authorizationState", authorizationState: { isAuthorized: authorized } });
       this.#lastPropagatedAuthorizationState = authorized;
     }
   }
@@ -1262,7 +1262,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
 
     return () =>
       Promise.resolve().then(async () => {
-        const updates: Array<Update> = [{ update }];
+        const updates: Array<Update> = [{ type: "update", update }];
         for (const maybePromise of maybePromises) {
           try {
             const value = maybePromise();
@@ -1323,7 +1323,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
         this.#previouslyConnected = true;
       }
       const connectionState = isConnected ? "ready" : "notConnected";
-      this.#queueHandleCtxUpdate({ connectionState });
+      this.#queueHandleCtxUpdate({ type: "connectionState", connectionState });
     }
   }
 

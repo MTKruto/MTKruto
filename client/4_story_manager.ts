@@ -167,10 +167,10 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
     if (Api.is("storyItemDeleted", update.story)) {
       const chatId = Api.peerToChatId(update.peer);
       const storyId = update.story.id;
-      return { deletedStory: { chatId, storyId } };
+      return { type: "deletedStory", deletedStory: { chatId, storyId } };
     } else if (Api.is("storyItem", update.story)) {
       const story = constructStory(update.story, update.peer, this.#c.getPeer);
-      return { story };
+      return { type: "story", story };
     } else {
       return null;
     }

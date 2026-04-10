@@ -61,15 +61,15 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
       const chatMember = constructChatMemberUpdated(update, this.#c.getPeer);
       const selfId = await this.#c.getSelfId();
       if (chatMember.oldChatMember.member.id === selfId) {
-        return { myChatMember: chatMember };
+        return { type: "myChatMember", myChatMember: chatMember };
       } else {
-        return { chatMember };
+        return { type: "chatMember", chatMember };
       }
     }
 
     if (Api.is("updateBotChatInviteRequester", update)) {
       const joinRequest = constructJoinRequest(update, this.#c.getPeer);
-      return { joinRequest };
+      return { type: "joinRequest", joinRequest };
     }
 
     return null;

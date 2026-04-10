@@ -104,6 +104,6 @@ export class BotInfoManager implements UpdateProcessor<BotInfoManagerUpdate, fal
     const botId = Number(update.bot_id);
     const chatId = peerToChatId(update.peer);
     const commands = update.commands;
-    return { botCommands: { botId, chatId, commands } };
+    return { type: "botCommands", botCommands: { botId, chatId, commands } };
   }
 }

@@ -55,9 +55,9 @@ export class InlineQueryManager implements UpdateProcessor<InlineQueryManagerUpd
 
   handleUpdate(update: InlineQueryManagerUpdate): Update {
     if (Api.is("updateBotInlineQuery", update)) {
-      return { inlineQuery: constructInlineQuery(update, this.#c.getPeer) };
+      return { type: "inlineQuery", inlineQuery: constructInlineQuery(update, this.#c.getPeer) };
     } else if (Api.is("updateBotInlineSend", update)) {
-      return { chosenInlineResult: constructChosenInlineResult(update, this.#c.getPeer) };
+      return { type: "chosenInlineResult", chosenInlineResult: constructChosenInlineResult(update, this.#c.getPeer) };
     } else {
       unreachable();
     }

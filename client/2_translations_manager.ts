@@ -150,7 +150,7 @@ export class TranslationsManager implements UpdateProcessor<TranslationsManagerU
     if (Api.is("updateLangPackTooLong", update)) {
       await this.#updateTranslations(this.#c.langPack, update.lang_code);
       const translations = await this.#getTranslationsInner(this.#c.langPack, update.lang_code, true);
-      return { platform: this.#c.langPack, language: update.lang_code, translations };
+      return { type: "translations", platform: this.#c.langPack, language: update.lang_code, translations };
     } else if (Api.is("updateLangPack", update)) {
       if (!this.#c.langCode) {
         return null;
@@ -159,7 +159,7 @@ export class TranslationsManager implements UpdateProcessor<TranslationsManagerU
       if (!translations) {
         return null;
       } else {
-        return { platform: this.#c.langPack, language: this.#c.langCode, translations };
+        return { type: "translations", platform: this.#c.langPack, language: this.#c.langCode, translations };
       }
     }
     return null;

@@ -46,7 +46,7 @@ export class PaymentManager implements UpdateProcessor<PaymentManagerUpdate> {
   handleUpdate(update: PaymentManagerUpdate): Update | null {
     if (Api.is("updateBotPrecheckoutQuery", update)) {
       const preCheckoutQuery = constructPreCheckoutQuery(update, this.#c.getPeer);
-      return { preCheckoutQuery };
+      return { type: "preCheckoutQuery", preCheckoutQuery };
     }
 
     return null;
