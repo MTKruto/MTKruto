@@ -187,7 +187,7 @@ export interface UpdateMessagesDeleted {
  *
  * ```
  * client.on("callbackQuery", async (ctx) => {
- *   await ctx.answerCallbackQuery(ctx.update.callbackQuery.data, { alert: true });
+ *   await ctx.answerCallbackQuery(ctx.update.callbackQuery.data, { isAlert: true });
  * });
  * ```
  * @unlisted

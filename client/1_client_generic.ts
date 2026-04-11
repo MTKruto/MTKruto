@@ -769,7 +769,7 @@ export abstract class ClientGeneric {
    * @param chatId The identifier of a chat to retrieve the messages from.
    * @param messageIds The identifiers of the messages to retrieve.
    * @example ```ts
-   * const message = await client.getMessages("@MTKruto", [210, 212]): Promise<void>;
+   * const messages = await client.getMessages("@MTKruto", [210, 212]);
    * ```
    * @returns The retrieved messages.
    * @cache
@@ -783,7 +783,7 @@ export abstract class ClientGeneric {
    * @param chatId The identifier of a chat.
    * @param messageId The identifier of the message to retrieve.
    * @example ```ts
-   * const message = await client.getMessage("@MTKruto", 212): Promise<void>;
+   * const message = await client.getMessage("@MTKruto", 212);
    * ```
    * @returns The retrieved message.
    * @cache
@@ -796,7 +796,7 @@ export abstract class ClientGeneric {
    * @method ms
    * @param link A message link.
    * @example ```ts
-   * const message = await client.resolveMessageLink("https://t.me/MTKruto/212"): Promise<void>;
+   * const message = await client.resolveMessageLink("https://t.me/MTKruto/212");
    * ```
    * @returns The message that was linked to.
    */
@@ -1178,7 +1178,7 @@ export abstract class ClientGeneric {
    * @param fileId The identifier of the file to download.
    * @example ```ts
    * for await (const chunk of client.download(fileId, { chunkSize: 256 * 1024 })) {
-   *   await outFile.write(chunk): Promise<void>;
+   *   await outFile.write(chunk);
    * }
    * ```
    * @returns A generator yielding the contents of the file.
