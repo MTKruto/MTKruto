@@ -527,7 +527,6 @@ export interface UpdateEmojiStatus {
  */
 export interface UpdateEmojiStatusRemoved {
   type: "emojiStatusRemoved";
-  emojiStatusRemoved: true;
   userId: number;
 }
 
