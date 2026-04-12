@@ -22,11 +22,11 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { PasswordHashInvalid, PhoneCodeInvalid, SessionPasswordNeeded } from "../3_errors.ts";
-import { type Birthday, birthdayToTlObject, type BotTokenCheckResult, type CodeCheckResult, constructAppSupport, constructCountry, constructEmojiStatus, constructInactiveChat, constructTimezone, constructUser, constructUser2, type FileSource, type ID, type InputEmojiStatus, type PasswordCheckResult, type Update, workingHoursToTlObject } from "../3_types.ts";
-import type { AddBotToAttachmentsMenuParams, CheckUsernameParams, ResolveUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
+import { type Birthday, birthdayToTlObject, type BotTokenCheckResult, type CodeCheckResult, constructAppSupport, constructCountry, constructEmojiStatus, constructInactiveChat, constructProfilePhotoList, constructTimezone, constructUser, constructUser2, type FileSource, type ID, type InputEmojiStatus, type PasswordCheckResult, type Update, workingHoursToTlObject } from "../3_types.ts";
+import type { AddBotToAttachmentsMenuParams, CheckUsernameParams, GetProfilePhotosParams, ResolveUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
-import { canBeInputChannel, canBeInputUser, checkPhotoName, toInputChannel, toInputUser } from "./0_utilities.ts";
+import { canBeInputChannel, canBeInputUser, checkPhotoName, getLimit, toInputChannel, toInputUser } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
 import type { FileManager } from "./2_file_manager.ts";
 
@@ -507,5 +507,13 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
   async updateProfileVideo(photo: FileSource, params?: UpdateProfileVideoParams) {
     const video = await this.#c.fileManager.upload(photo, params, () => "video.mp4");
     await this.#c.invoke({ _: "photos.uploadProfilePhoto", fallback: params?.isPublic ? true : undefined, video, video_start_ts: params?.thumbnailTimestamp });
+  }
+
+  async getProfilePhotos(userId: ID, params?: GetProfilePhotosParams) {
+    const user_id = await this.#c.getInputUser(userId);
+    const offset = params?.offset ?? 0;
+    const limit = getLimit(params?.limit);
+    const result = await this.#c.invoke({ _: "photos.getUserPhotos", user_id, offset, limit, max_id: 0n });
+    return constructProfilePhotoList(result);
   }
 }

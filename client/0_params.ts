@@ -1004,3 +1004,10 @@ export interface GiftPremiumSubscriptionParams {
   /** The text's entities. */
   entities?: MessageEntity[];
 }
+
+export interface GetProfilePhotosParams {
+  /** The number of results to skip. */
+  offset?: number;
+  /** The maximum number of results to return. */
+  limit?: number;
+}

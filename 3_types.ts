@@ -115,6 +115,7 @@ export * from "./types/2_message_interactions.ts";
 export * from "./types/2_message_reaction_count.ts";
 export * from "./types/2_message_reaction_list_item.ts";
 export * from "./types/2_poll_answer.ts";
+export * from "./types/2_profile_photo_list.ts";
 export * from "./types/2_reply_markup.ts";
 export * from "./types/2_star_transaction_peer.ts";
 export * from "./types/2_sticker_set.ts";
