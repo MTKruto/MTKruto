@@ -20,7 +20,6 @@
 
 import { Api } from "../2_tl.ts";
 import { constructAlbumStoryList, constructStoryAlbum, type ID } from "../3_types.ts";
-import { inputPeerToPeer } from "../tl/2_telegram.ts";
 import type { GetStoriesInAlbumParams } from "./0_params.ts";
 import { getLimit } from "./0_utilities.ts";
 import type { C } from "./1_types.ts";
@@ -110,6 +109,6 @@ export class StoryAlbumManager {
     const offset = params?.offset ?? 0;
     const limit = getLimit(params?.limit);
     const result = await this.#c.invoke({ _: "stories.getAlbumStories", peer, album_id, offset, limit });
-    return constructAlbumStoryList(result, inputPeerToPeer(peer), this.#c.getPeer);
+    return constructAlbumStoryList(result, await this.#c.inputPeerToPeer(peer), this.#c.getPeer);
   }
 }

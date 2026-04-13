@@ -36,6 +36,7 @@ export interface C {
   getInputChannel: (id: ID) => Promise<Api.inputChannel | Api.inputChannelFromMessage>;
   getInputUser: (id: ID) => Promise<Api.inputUserSelf | Api.inputUser | Api.inputUserFromMessage>;
   getInputPeerChatId: (inputPeer: Api.InputPeer | Api.InputUser | Api.InputChannel) => Promise<number>;
+  inputPeerToPeer: (inputPeer: Api.InputPeer) => Promise<Api.Peer>;
   getPeer: PeerGetter;
   handleUpdate: (update: Update) => void;
   parseMode: ParseMode;

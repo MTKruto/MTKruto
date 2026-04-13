@@ -565,7 +565,7 @@ export class UpdateManager {
           silent: call.silent,
           id: updates_.id,
           from_id: { _: "peerUser", user_id: BigInt(await this.#c.getSelfId()) },
-          peer_id: Api.inputPeerToPeer(call.peer),
+          peer_id: await this.#c.inputPeerToPeer(call.peer),
           message: call.message,
           media: updates_.media,
           date: updates_.date,

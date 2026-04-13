@@ -27,7 +27,7 @@ import { type DC, getDcId, type TransportProvider } from "../3_transport.ts";
 import { type AlbumStoryList, type AppSupport, type AvailableReactions, type Birthday, type BlockedUserList, type BotCommand, type BotTokenCheckResult, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatActionType, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type ConnectionState, constructChatP, constructUser2, type Country, type FailedInvitation, type FileSource, type Gift, type GiftCollection, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputChecklistItem, type InputEmojiStatus, type InputGift, type InputMedia, type InputPollOption, type InputStoryContent, type InviteLink, type JoinRequest, type LeftChannelList, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageDice, type MessageDocument, type MessageInvoice, type MessageList, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type PasswordCheckResult, type Poll, type PremiumSubscriptionDuration, type PriceTag, type ProfilePhotoList, type Reaction, type SavedChats, type SlowModeDuration, type StarAmount, type StarTransactionList, type Sticker, type StickerSet, type Story, type StoryAlbum, type SummarizedText, type Timezone, type Topic, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, PHONE_NUMBER_TTL, type PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, SessionRevoked } from "../4_errors.ts";
-import { peerToChatId } from "../tl/2_telegram.ts";
+import { inputPeerToPeer, peerToChatId } from "../tl/2_telegram.ts";
 import type { CodeCheckResult } from "../types/0_code_check_result.ts";
 import { AbortableLoop } from "./0_abortable_loop.ts";
 import type { AddBotToAttachmentsMenuParams, AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, EndTakeoutSessionParams, ForwardMessagesParams, GetBlockedUsersParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLeftChannelsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetProfilePhotosParams, GetSavedChatsParams, GetSavedMessagesParams, GetStarTransactionsParams, GetTranslationsParams, GiftPremiumSubscriptionParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ResolveUsernameParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetContactNoteParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetWorkingHoursParams, SignInParams, StartBotParams, StartTakeoutSessionParams, StartVideoChatParams, StopPollParams, SummarizeTextParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
@@ -294,6 +294,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       getInputChannel: this.getInputChannel.bind(this),
       getInputUser: this.getInputUser.bind(this),
       getInputPeerChatId: this.#getInputPeerChatId.bind(this),
+      inputPeerToPeer: this.#inputPeerToPeer.bind(this),
       getPeer: this[mustGetPeer].bind(this),
       handleUpdate: this.#queueHandleCtxUpdate.bind(this),
       parseMode: this.#parseMode,
@@ -989,6 +990,14 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       throw new AccessError(`The chat ${id} cannot be accessed.`);
     }
     return inputPeer;
+  }
+
+  async #inputPeerToPeer(inputPeer: Api.InputPeer): Promise<Api.Peer> {
+    if (Api.is("inputPeerSelf", inputPeer)) {
+      return { _: "peerUser", user_id: BigInt(await this.#getSelfId()) };
+    } else {
+      return inputPeerToPeer(inputPeer);
+    }
   }
 
   async #getInputPeerChatId(inputPeer: Api.InputPeer | Api.InputUser | Api.InputChannel) {
