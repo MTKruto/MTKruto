@@ -43,16 +43,19 @@ export interface _StoryInteractiveAreaPositionCommon {
 
 /** @unlisted */
 export interface StoryInteractiveAreaLocation extends _StoryInteractiveAreaPositionCommon {
+  type: "location";
   location: Location;
 }
 
 /** @unlisted */
 export interface StoryInteractiveAreaVenue extends _StoryInteractiveAreaPositionCommon {
+  type: "venue";
   venue: Venue;
 }
 
 /** @unlisted */
 export interface StoryInteractiveAreaReaction extends _StoryInteractiveAreaPositionCommon {
+  type: "reaction";
   reaction: Reaction;
   count?: number;
   isDark?: boolean;
@@ -61,7 +64,28 @@ export interface StoryInteractiveAreaReaction extends _StoryInteractiveAreaPosit
 
 /** @unlisted */
 export interface StoryInteractiveAreaMessage extends _StoryInteractiveAreaPositionCommon {
+  type: "messageReference";
   messageReference: MessageReference;
+}
+
+/** @unlisted */
+export interface StoryInteractiveAreaLink extends _StoryInteractiveAreaPositionCommon {
+  type: "link";
+  link: string;
+}
+
+/** @unlisted */
+export interface StoryInteractiveAreaWeather extends _StoryInteractiveAreaPositionCommon {
+  type: "weather";
+  emoji: string;
+  temperature: number;
+  color: number;
+}
+
+/** @unlisted */
+export interface StoryInteractiveAreaGift extends _StoryInteractiveAreaPositionCommon {
+  type: "gift";
+  slug: string;
 }
 
 /** A story's interactive area. */
@@ -69,7 +93,10 @@ export type StoryInteractiveArea =
   | StoryInteractiveAreaLocation
   | StoryInteractiveAreaVenue
   | StoryInteractiveAreaReaction
-  | StoryInteractiveAreaMessage;
+  | StoryInteractiveAreaMessage
+  | StoryInteractiveAreaLink
+  | StoryInteractiveAreaWeather
+  | StoryInteractiveAreaGift;
 
 function constructStoryInteractiveAreaPosition(position: Api.mediaAreaCoordinates): StoryInteractiveAreaPosition {
   return {
@@ -87,13 +114,14 @@ export function constructStoryInteractiveArea(area: Api.MediaArea): StoryInterac
       unreachable(); // will this ever be empty?
     }
     const location = constructLocation(area.geo);
-    return { position, location };
+    return { type: "location", position, location };
   } else if (Api.is("mediaAreaVenue", area)) {
     const venue = constructVenue(area);
-    return { position, venue };
+    return { type: "venue", position, venue };
   } else if (Api.is("mediaAreaSuggestedReaction", area)) {
     const reaction = constructReaction(area.reaction);
     return {
+      type: "reaction",
       position,
       reaction,
       count: 0, // TODO: count
@@ -102,11 +130,32 @@ export function constructStoryInteractiveArea(area: Api.MediaArea): StoryInterac
     };
   } else if (Api.is("mediaAreaChannelPost", area)) {
     return {
+      type: "messageReference",
       position,
       messageReference: {
         chatId: Api.peerToChatId(area),
         messageId: area.msg_id,
       },
+    };
+  } else if (Api.is("mediaAreaUrl", area)) {
+    return {
+      type: "link",
+      position,
+      link: area.url,
+    };
+  } else if (Api.is("mediaAreaWeather", area)) {
+    return {
+      type: "weather",
+      position,
+      emoji: area.emoji,
+      temperature: area.temperature_c,
+      color: area.color,
+    };
+  } else if (Api.is("mediaAreaStarGift", area)) {
+    return {
+      type: "gift",
+      position,
+      slug: area.slug,
     };
   } else {
     unreachable();
@@ -118,32 +167,44 @@ function storyInteractiveAreaPositionToTlObject(position: StoryInteractiveAreaPo
 }
 export function storyInteractiveAreaToTlObject(area: StoryInteractiveArea, getPeer: PeerGetter): Api.MediaArea {
   const coordinates = storyInteractiveAreaPositionToTlObject(area.position);
-  if ("location" in area) {
-    const geo: Api.geoPoint = { _: "geoPoint", lat: area.location.latitude, long: area.location.longitude, access_hash: 0n, accuracy_radius: area.location.horizontalAccuracy };
-    return { _: "mediaAreaGeoPoint", coordinates, geo };
-  } else if ("venue" in area) {
-    const geo: Api.geoPoint = { _: "geoPoint", lat: area.venue.location.latitude, long: area.venue.location.longitude, access_hash: 0n, accuracy_radius: area.venue.location.horizontalAccuracy };
-    return {
-      _: "mediaAreaVenue",
-      coordinates,
-      geo,
-      address: area.venue.address,
-      provider: "foursquare",
-      title: area.venue.title,
-      venue_id: area.venue.foursquareId || "",
-      venue_type: area.venue.foursquareType || "",
-    };
-  } else if ("reaction" in area) {
-    const reaction = reactionToTlObject(area.reaction);
-    return { _: "mediaAreaSuggestedReaction", coordinates, reaction, dark: area.isDark ? true : undefined, flipped: area.isFlipped ? true : undefined };
-  } else if ("messageReference" in area) {
-    const peer = getPeer(Api.chatIdToPeer(area.messageReference.chatId));
-    if (!peer || peer[0].type !== "channel") {
-      unreachable();
+  switch (area.type) {
+    case "location": {
+      const geo: Api.geoPoint = { _: "geoPoint", lat: area.location.latitude, long: area.location.longitude, access_hash: 0n, accuracy_radius: area.location.horizontalAccuracy };
+      return { _: "mediaAreaGeoPoint", coordinates, geo };
     }
-    const channel: Api.inputChannel = { _: "inputChannel", channel_id: chatIdToPeerId(peer[0].id), access_hash: peer[1] };
-    return { _: "inputMediaAreaChannelPost", coordinates, channel, msg_id: area.messageReference.messageId };
-  } else {
-    unreachable();
+    case "venue": {
+      const geo: Api.geoPoint = { _: "geoPoint", lat: area.venue.location.latitude, long: area.venue.location.longitude, access_hash: 0n, accuracy_radius: area.venue.location.horizontalAccuracy };
+      return {
+        _: "mediaAreaVenue",
+        coordinates,
+        geo,
+        address: area.venue.address,
+        provider: "foursquare",
+        title: area.venue.title,
+        venue_id: area.venue.foursquareId || "",
+        venue_type: area.venue.foursquareType || "",
+      };
+    }
+
+    case "reaction": {
+      const reaction = reactionToTlObject(area.reaction);
+      return { _: "mediaAreaSuggestedReaction", coordinates, reaction, dark: area.isDark ? true : undefined, flipped: area.isFlipped ? true : undefined };
+    }
+    case "messageReference": {
+      const peer = getPeer(Api.chatIdToPeer(area.messageReference.chatId));
+      if (!peer || peer[0].type !== "channel") {
+        unreachable();
+      }
+      const channel: Api.inputChannel = { _: "inputChannel", channel_id: chatIdToPeerId(peer[0].id), access_hash: peer[1] };
+      return { _: "inputMediaAreaChannelPost", coordinates, channel, msg_id: area.messageReference.messageId };
+    }
+    case "link":
+      return { _: "mediaAreaUrl", coordinates, url: area.link };
+    case "weather":
+      return { _: "mediaAreaWeather", coordinates, emoji: area.emoji, temperature_c: area.temperature, color: area.color };
+    case "gift":
+      return { _: "mediaAreaStarGift", coordinates, slug: area.slug };
   }
+
+  unreachable();
 }
