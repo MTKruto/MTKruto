@@ -27,7 +27,7 @@ import { constructUser2, type User } from "./2_user.ts";
 export interface BlockedUser {
   /** The blocked user. */
   user: User;
-  /** The point in time in which the user was blocked. */
+  /** The point in time when the user was blocked. */
   blockedAt: number;
 }
 

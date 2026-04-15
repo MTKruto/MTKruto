@@ -27,11 +27,11 @@ import { type ChatActionType, constructChatActionType } from "./0_chat_action_ty
 export interface ChatAction {
   /** The type of the action. */
   type: ChatActionType;
-  /** The identifier of the chat in which the action was made. */
+  /** The identifier of the chat where the action was made. */
   chatId: number;
   /** The identifier of the sender of the action. */
   fromId: number;
-  /** The identifier of a thread in which the action was made. */
+  /** The identifier of a thread where the action was made. */
   messageThreadId?: number;
 }
 

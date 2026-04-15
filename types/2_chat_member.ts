@@ -67,7 +67,7 @@ export interface ChatMemberAdministrator extends _ChatMemberBase {
 export interface ChatMemberMember extends _ChatMemberBase {
   /** The status of the chat member. */
   status: "member";
-  /** A point in time in which the membership expires. */
+  /** A point in time when the membership expires. */
   until?: number;
   /** The tag of the member. */
   tag?: string;
@@ -84,7 +84,7 @@ export interface ChatMemberRestricted extends _ChatMemberBase {
   isMember: boolean;
   /** The rights of the restricted chat member. */
   rights: ChatMemberRights;
-  /** A point in time in which the restriction expires. */
+  /** A point in time when the restriction expires. */
   until?: number;
   /** The tag of the member. */
   tag?: string;
@@ -106,7 +106,7 @@ export interface ChatMemberLeft extends _ChatMemberBase {
 export interface ChatMemberBanned extends _ChatMemberBase {
   /** The status of the chat member. */
   status: "banned";
-  /** A point in time in which the restriction expires. */
+  /** A point in time when the restriction expires. */
   until?: number;
 }
 

@@ -28,11 +28,11 @@ import { constructInviteLink, type InviteLink } from "./3_invite_link.ts";
 
 /** Changes made to a chat member. */
 export interface ChatMemberUpdated {
-  /** The chat in which the change was made. */
+  /** The chat where the change was made. */
   chat: ChatP;
   /** The one who made the change. */
   from: User;
-  /** The point in time in which the chat member's status was changed. */
+  /** The point in time when the chat member's status was changed. */
   date: number;
   /** The old status of the chat member. */
   oldChatMember: ChatMember;

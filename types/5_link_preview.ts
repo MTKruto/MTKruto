@@ -52,7 +52,7 @@ export interface InputLinkPreview {
 export interface _LinkPreviewBase {
   /** The ID of the link preview. */
   id: string;
-  /** The size in which the media is expected to be displayed in. */
+  /** The size at which the media is expected to be displayed. */
   mediaSize: LinkPreviewMediaSize;
   /** Whether the preview is to be shown above the message's text. */
   isAboveText: boolean;
@@ -66,7 +66,7 @@ export interface LinkPreviewLoading extends _LinkPreviewBase {
   type: "loading";
   /** The URL of the link preview. */
   url?: string;
-  /** The point in time in which the link preview started to load. */
+  /** The point in time when the link preview started to load. */
   date: number;
 }
 

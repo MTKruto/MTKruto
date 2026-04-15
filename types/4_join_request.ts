@@ -31,7 +31,7 @@ export interface JoinRequest {
   chat: ChatP;
   /** The user who made the join request. */
   from: User;
-  /** The point in time in which the join request was made. */
+  /** The point in time when the join request was made. */
   date: number;
   /** The bio of the user who made the join request. Bot-only. */
   bio?: string;

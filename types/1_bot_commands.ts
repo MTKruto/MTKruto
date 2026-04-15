@@ -24,7 +24,7 @@ import type { BotCommand } from "./0_bot_command.ts";
 export interface BotCommands {
   /** The identifier of the bot. */
   botId: number;
-  /** The identifier of the chat in which the command list is valid. */
+  /** The identifier of the chat where the command list is valid. */
   chatId: number;
   /** The list of commands. */
   commands: BotCommand[];

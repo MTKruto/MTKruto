@@ -20,8 +20,8 @@
 
 /** A business working hour interval. */
 export interface WorkingHoursInterval {
-  /** A point in time in which the working hour starts. */
+  /** A point in time when the working hour starts. */
   startsAt: number;
-  /** A point in time in which the working hour ends. */
+  /** A point in time when the working hour ends. */
   endsAt: number;
 }

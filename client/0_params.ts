@@ -182,7 +182,7 @@ export interface SendPollParams extends _SendCommon, _ReplyMarkupCommon {
   descriptionEntities?: MessageEntity[];
   /** Duration of the poll in seconds. Must be in the range of 5-600. Cannot be used simultaneously with `closeDate`. */
   openPeriod?: number;
-  /** The time in which the poll will be closed. Must be at least 5 seconds in the future, and no more than 600. Cannot be used simultaneously with `openPeriod`. */
+  /** The time when the poll will be closed. Must be at least 5 seconds in the future, and no more than 600. Cannot be used simultaneously with `openPeriod`. */
   closeDate?: number;
   /** Whether the poll should be closed as soon as it is sent, allowing no answers. */
   isClosed?: boolean;
@@ -373,7 +373,7 @@ export interface SendMediaGroupParams extends _SendCommon {
 export interface SendLocationParams extends _SendCommon, _ReplyMarkupCommon {
   /** The accuracy radius of the location in meters. Must be in the range of 0-1500. */
   horizontalAccuracy?: number;
-  /** The duration in which the location can be updated in seconds. Must be in the range of 80-864,000. */
+  /** The duration for which the location can be updated, in seconds. Must be in the range of 80-864,000. */
   livePeriod?: number;
   /** The direction which the user is moving towards. Must be in the range of 1-350. */
   heading?: number;
@@ -483,7 +483,7 @@ export interface UnpinMessagesParams {
 }
 
 export interface BanChatMemberParams {
-  /** A point in time within the future in which the ban will be reverted. */
+  /** A point in time in the future when the ban will be reverted. */
   until?: number;
   /** Whether to delete all of the user's messages. */
   deleteMessages?: boolean;
@@ -492,7 +492,7 @@ export interface BanChatMemberParams {
 export interface SetChatMemberRightsParams {
   /** The member's new rights. All fields default to `true` if the chat's default member rights allow. This means that this method is the same as unbanChatMember if this parameter is not provided or all of its fields are `true`. */
   rights?: ChatMemberRights;
-  /** A point in time within the future in which the restriction will be reverted. */
+  /** A point in time in the future when the restriction will be reverted. */
   until?: number;
 }
 
@@ -501,7 +501,7 @@ export interface CreateStoryParams extends _CaptionCommon, _UploadCommon {
   interactiveAreas?: StoryInteractiveArea[];
   /** The story's privacy settings. */
   privacy?: StoryPrivacy;
-  /** The period in which the story will be active. */
+  /** The period during which the story will be active. */
   activeFor?: number;
   /** Whether to add the story to highlights. */
   highlight?: boolean;
@@ -531,7 +531,7 @@ export interface SearchMessagesParams {
 export interface CreateInviteLinkParams {
   /** An optional title to be attached to the link that can only be seen by admins. */
   title?: string;
-  /** A point in time within the future in which the invite link will be invalidated. */
+  /** A point in time in the future when the invite link will be invalidated. */
   expireAt?: number;
   /** The times the invite link can be used. Cannot be specified while `requireApproval` is `true`. */
   limit?: number;
@@ -656,7 +656,7 @@ export interface StartBotParams {
 }
 
 export interface SetEmojiStatusParams {
-  /** If specified, the emoji status will be unset in that date. */
+  /** If specified, the emoji status will be unset on that date. */
   until?: number;
 }
 

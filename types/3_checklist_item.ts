@@ -53,7 +53,7 @@ export interface ChecklistItemChecked {
   text: string;
   /** The entities of the text. */
   entities?: MessageEntity[];
-  /** A point in time in which the checklist item was checked. */
+  /** A point in time when the checklist item was checked. */
   checkedAt: number;
   /** The user who checked the item. */
   checkedBy: User;

@@ -52,7 +52,7 @@ export interface VideoChatActive extends _VideoChatCommon, _VideoChatNotEndedCom
  */
 export interface VideoChatScheduled extends _VideoChatCommon, _VideoChatNotEndedCommon {
   type: "scheduled";
-  /** The point in time in which the video chat will be started. */
+  /** The point in time when the video chat will be started. */
   scheduledFor: number;
 }
 

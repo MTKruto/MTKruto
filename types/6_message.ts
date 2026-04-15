@@ -72,7 +72,7 @@ export interface _MessageBase {
   threadId?: number;
   /** The sender of the message. */
   from: ChatP;
-  /** The point in time in which the message was sent. */
+  /** The point in time when the message was sent. */
   date: number;
   /** The chat where the message was sent to. */
   chat: ChatP;
@@ -94,7 +94,7 @@ export interface _MessageBase {
   replyQuote?: ReplyQuote;
   /** The inline bot that was used to send this message. */
   viaBot?: User;
-  /** The point in time in which the message's last edit was made. */
+  /** The point in time when the message's last edit was made. */
   editDate?: number;
   /** Whether the contents of the message is protected. */
   hasProtectedContent?: boolean;
@@ -114,7 +114,7 @@ export interface _MessageBase {
   businessConnectionId?: string;
   /** The number of the boosts made by the sender of the message. */
   senderBoostCount?: number;
-  /** The identifier of the business connection in which the message was sent. */
+  /** The identifier of the business connection through which the message was sent. */
   viaBusinessBot?: User;
   /** The identifier of the message effect that has been attached to the message. */
   effectId?: string;

@@ -34,7 +34,7 @@ export interface UserStatusOnline {
  */
 export interface UserStatusOffline {
   type: "offline";
-  /** A point in time in which the user was last seen online. */
+  /** A point in time when the user was last seen online. */
   lastSeenAt: number;
 }
 

@@ -31,7 +31,7 @@ export interface PreCheckoutQuery {
   id: string;
   /** The user that created the pre-checkout query. */
   from: User;
-  /** The currency in which the pre-checkout query is in. */
+  /** The currency of the pre-checkout query. */
   currency: string;
   /** The payment's total amount. */
   totalAmount: number;

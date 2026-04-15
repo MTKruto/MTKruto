@@ -48,7 +48,7 @@ export interface StickerSet {
   isOfficial: boolean;
   /** Whether the set is archived. */
   isArchived: boolean;
-  /** A point in time in which the set was added to the current account. */
+  /** A point in time when the set was added to the current account. */
   addedAt?: number;
 }
 

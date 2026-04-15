@@ -2250,7 +2250,7 @@ export abstract class ClientGeneric {
    *
    * @method vc
    * @param chatId The identifier of a chat to schedule the video chat in.
-   * @param startAt A point in time within the future in which the video chat will be started.
+   * @param startAt A point in time in the future when the video chat will be started.
    * @returns The scheduled video chat.
    */
   abstract scheduleVideoChat(chatId: ID, startAt: number, params?: ScheduleVideoChatParams): Promise<VideoChatScheduled>;

@@ -27,7 +27,7 @@ import type { Message, MessageForumTopicCreated, MessageForumTopicEdited } from 
 export interface Topic {
   /** The ID of the topic. */
   id: number;
-  /** The point in time in which the topic was created. */
+  /** The point in time when the topic was created. */
   date: number;
   /** The creator of the topic. */
   creator: ChatP;

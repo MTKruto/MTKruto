@@ -33,7 +33,7 @@ export interface MessageDraft {
   text: string;
   /** The draft text's entities. */
   entities: MessageEntity[];
-  /** The identifier of a thread in which the draft was sent. */
+  /** The identifier of a thread where the draft was sent. */
   messageThreadId?: number;
 }
 

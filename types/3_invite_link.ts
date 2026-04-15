@@ -37,7 +37,7 @@ export interface InviteLink {
   isRevoked: boolean;
   /** An optional title. */
   title?: string;
-  /** A point in time within the future in which the invite link will be revoked. */
+  /** A point in time in the future when the invite link will be revoked. */
   expiresAt?: number;
   /** The times the invite link can be used. */
   limit?: number;

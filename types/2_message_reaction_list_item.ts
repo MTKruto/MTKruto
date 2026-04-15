@@ -27,7 +27,7 @@ import { type ChatP, constructChatP } from "./1_chat_p.ts";
 export interface MessageReactionListItem {
   /** The entity that made the reaction. */
   chat: ChatP;
-  /** The point in time in which the reaction was made. */
+  /** The point in time when the reaction was made. */
   date: number;
   /** The reaction that was made. */
   reaction: Reaction;

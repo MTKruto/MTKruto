@@ -34,7 +34,7 @@ export interface MessageReactions {
   user?: User;
   /** The chat that changed its reactions to the message. Unset if done on behalf of a user. */
   actorChat?: ChatP;
-  /** The point in time in which the change was made. */
+  /** The point in time when the change was made. */
   date: number;
   /** The previous reactions. */
   oldReactions: Reaction[];

@@ -28,7 +28,7 @@ export interface MessageReactionCount {
   chat: ChatP;
   /** The message's identifier. */
   messageId: number;
-  /** The point in time in which the change was made. */
+  /** The point in time when the change was made. */
   date: number;
   /** The reactions made to the post. */
   reactions: ReactionCount[];
