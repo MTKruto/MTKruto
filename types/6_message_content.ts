@@ -44,7 +44,7 @@ export interface MessageContentContact {
  * @unlisted
  */
 export interface MessageContentLocation {
-  type: "text";
+  type: "location";
   /** The latitude of the location. */
   latitude: number;
   /** The longitude of the location. */
