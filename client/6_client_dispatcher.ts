@@ -21,10 +21,10 @@
 import { getLogger, type Logger } from "../1_utilities.ts";
 import type { Api, Mtproto } from "../2_tl.ts";
 import type { DC } from "../3_transport.ts";
-import type { AppSupport, AvailableReactions, Birthday, BlockedUserList, BotCommand, BotTokenCheckResult, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatActionType, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ClaimedGifts, CodeCheckResult, Country, FailedInvitation, FileSource, Gift, GiftCollection, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputChecklistItem, InputEmojiStatus, InputGift, InputMedia, InputPollOption, InputStoryContent, InviteLink, JoinRequest, LeftChannelList, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, MiniAppInfo, NetworkStatistics, ParseMode, PasswordCheckResult, Poll, PremiumSubscriptionDuration, PriceTag, ProfilePhotoList, Reaction, SavedChats, SlowModeDuration, StarAmount, StarTransactionList, Sticker, StickerSet, Story, StoryAlbum, SummarizedText, Timezone, Topic, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
+import type { AppSupport, AvailableReactions, Birthday, BlockedUserList, BotCommand, BotTokenCheckResult, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatActionType, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ClaimedGifts, CodeCheckResult, Country, FailedInvitation, FileSource, Gift, GiftCollection, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputChecklistItem, InputEmojiStatus, InputGift, InputMedia, InputPollOption, InputSticker, InputStoryContent, InviteLink, JoinRequest, LeftChannelList, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, MiniAppInfo, NetworkStatistics, ParseMode, PasswordCheckResult, Poll, PremiumSubscriptionDuration, PriceTag, ProfilePhotoList, Reaction, SavedChats, SlowModeDuration, StarAmount, StarTransactionList, Sticker, StickerSet, Story, StoryAlbum, SummarizedText, Timezone, Topic, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
 import { DOWNLOAD_MAX_CHUNK_SIZE } from "../4_constants.ts";
 import type { AlbumStoryList } from "../types/4_album_story_list.ts";
-import type { AddBotToAttachmentsMenuParams, AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, EndTakeoutSessionParams, ForwardMessagesParams, GetBlockedUsersParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLeftChannelsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetProfilePhotosParams, GetSavedChatsParams, GetSavedMessagesParams, GetStarTransactionsParams, GetTranslationsParams, GiftPremiumSubscriptionParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ResolveUsernameParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetContactNoteParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetWorkingHoursParams, SignInParams, StartBotParams, StartTakeoutSessionParams, StartVideoChatParams, StopPollParams, SummarizeTextParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
+import type { AddBotToAttachmentsMenuParams, AddChatMemberParams, AddContactParams, AddReactionParams, AddStickerToStickerSetParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStickerSetParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, EndTakeoutSessionParams, ForwardMessagesParams, GetBlockedUsersParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLeftChannelsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetProfilePhotosParams, GetSavedChatsParams, GetSavedMessagesParams, GetStarTransactionsParams, GetTranslationsParams, GiftPremiumSubscriptionParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ReplaceStickerInStickerSetParams, ResolveUsernameParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetContactNoteParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetWorkingHoursParams, SignInParams, StartBotParams, StartTakeoutSessionParams, StartVideoChatParams, StopPollParams, SummarizeTextParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
 import { deserializeWorkerError, type WorkerError } from "./0_worker_error.ts";
 import type { WorkerRequest } from "./0_worker_request.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
@@ -1364,16 +1364,6 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async transcribeVoice(chatId: ID, messageId: number): Promise<VoiceTranscription> {
     return await this.#dispatch("transcribeVoice", chatId, messageId);
-  }
-
-  /**
-   * Get a sticker set.
-   *
-   * @method ms
-   * @param name The name of the sticker set or its link.
-   */
-  async getStickerSet(name: string): Promise<StickerSet> {
-    return await this.#dispatch("getStickerSet", name);
   }
 
   /*
@@ -3330,5 +3320,150 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async getLeftChannels(takeoutId: string, params?: GetLeftChannelsParams): Promise<LeftChannelList> {
     return await this.#dispatch("getLeftChannels", takeoutId, params);
+  }
+
+  //
+  // ========================= STICKER SETS ========================= //
+  //
+
+  /**
+   * Get a sticker set.
+   *
+   * @method ss
+   * @param slug The slug of the sticker set or its link.
+   */
+  async getStickerSet(name: string): Promise<StickerSet> {
+    return await this.#dispatch("getStickerSet", name);
+  }
+
+  /**
+   * Check the availability of a sticker set slug.
+   *
+   * @method ss
+   * @param slug The slug of the sticker set or its link.
+   * @returns Whether the slug is available.
+   */
+  async checkStickerSetSlug(slug: string): Promise<boolean> {
+    return await this.#dispatch("checkStickerSetSlug", slug);
+  }
+
+  /**
+   * Suggest a sticker set slug from its title.
+   *
+   * @method ss
+   * @param title A title of a sticker set.
+   * @returns The suggested slug.
+   */
+  async suggestStickerSetSlug(title: string): Promise<string> {
+    return await this.#dispatch("suggestStickerSetSlug", title);
+  }
+
+  /**
+   * Create a sticker set.
+   *
+   * @method ss
+   * @param name The sticker set's name.
+   * @param slug The sticker set's slug.
+   * @param stickers The initial stickers of the set.
+   */
+  async createStickerSet(name: string, slug: string, stickers: InputSticker[], params?: CreateStickerSetParams): Promise<StickerSet> {
+    return await this.#dispatch("createStickerSet", name, slug, stickers, params);
+  }
+
+  /**
+   * Add a sticker to a sticker set.
+   *
+   * @method ss
+   * @param slug The slug of the sticker set or its link.
+   * @param sticker The sticker to add.
+   */
+  async addStickerToStickerSet(slug: string, sticker: InputSticker, params?: AddStickerToStickerSetParams): Promise<void> {
+    return await this.#dispatch("addStickerToStickerSet", slug, sticker, params);
+  }
+
+  /**
+   * Remove a sticker from its set.
+   *
+   * @method ss
+   * @param fileId The identifier of the sticker.
+   */
+  async removeStickerFromStickerSet(fileId: string): Promise<void> {
+    return await this.#dispatch("removeStickerFromStickerSet", fileId);
+  }
+
+  /**
+   * Replace a sticker's emoji.
+   *
+   * @method ss
+   * @param fileId The identifier of the sticker.
+   * @param emoji The new emoji to use for the sticker.
+   */
+  async replaceStickerEmoji(fileId: string, emoji: string): Promise<void> {
+    return await this.#dispatch("replaceStickerEmoji", fileId, emoji);
+  }
+
+  /**
+   * Replace a sticker in a sticker set.
+   *
+   * @method ss
+   * @param currentStickerFileId The identifier of the current sticker.
+   * @param newSticker The new sticker to use.
+   */
+  async replaceStickerInStickerSet(currentStickerFileId: string, newSticker: InputSticker, params?: ReplaceStickerInStickerSetParams): Promise<void> {
+    return await this.#dispatch("replaceStickerInStickerSet", currentStickerFileId, newSticker, params);
+  }
+
+  /**
+   * Delete a sticker set.
+   *
+   * @method ss
+   * @param slug The slug of the sticker set or its link.
+   */
+  async deleteStickerSet(slug: string): Promise<void> {
+    return await this.#dispatch("deleteStickerSet", slug);
+  }
+
+  /**
+   * Set the title of a sticker set.
+   *
+   * @method ss
+   * @param slug The slug of the sticker set or its link.
+   * @param title The sticker set's new title.
+   */
+  async setStickerSetTitle(slug: string, title: string): Promise<void> {
+    return await this.#dispatch("setStickerSetTitle", slug, title);
+  }
+
+  /**
+   * Change the position of a sticker in its set.
+   *
+   * @method ss
+   * @param fileId The identifier of the sticker.
+   * @param position The new position of the sticker.
+   */
+  async changeStickerPositionInStickerSet(slug: string, position: number): Promise<void> {
+    return await this.#dispatch("changeStickerPositionInStickerSet", slug, position);
+  }
+
+  /**
+   * Set a sticker set's thumbnail.
+   *
+   * @method ss
+   * @param slug The slug of the sticker set or its link.
+   * @param thumbnail The new thumbnail of the sticker set.
+   */
+  async setStickerSetThumbnail(slug: string, thumbnail: FileSource): Promise<void> {
+    return await this.#dispatch("setStickerSetThumbnail", slug, thumbnail);
+  }
+
+  /**
+   * Set a custom emoji as a sticker set's thumbnail.
+   *
+   * @method ss
+   * @param slug The slug of the sticker set or its link.
+   * @param customEmojiId The identifier of the custom emoji to use as thumbnail.
+   */
+  async setCustomEmojiAsStickerSetThumbnail(slug: string, customEmojiId: string): Promise<void> {
+    return await this.#dispatch("setCustomEmojiAsStickerSetThumbnail", slug, customEmojiId);
   }
 }

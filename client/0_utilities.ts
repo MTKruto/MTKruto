@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { startsWith, unreachable } from "../0_deps.ts";
+import { equals, startsWith, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api, repr as repr_ } from "../2_tl.ts";
 
@@ -228,4 +228,14 @@ export function checkPhotoName(params?: { fileName?: string }) {
       return `${name}.jpg`;
     }
   };
+}
+
+export function checkStickerName(firstPart: Uint8Array) {
+  if (startsWith(firstPart, new Uint8Array([0x1F, 0x8B]))) {
+    return "file.tgs";
+  } else if (firstPart.length >= 12 && equals(firstPart.subarray(8, 12), new Uint8Array([0x57, 0x45, 0x42, 0x50]))) {
+    return "file.webp";
+  } else {
+    return "file.webm";
+  }
 }

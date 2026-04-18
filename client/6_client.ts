@@ -24,13 +24,13 @@ import { drop, getLogger, type Logger, type MaybePromise, Mutex, ZERO_CHANNEL_ID
 import { type Storage, StorageMemory } from "../2_storage.ts";
 import { Api, Mtproto } from "../2_tl.ts";
 import { type DC, getDcId, type TransportProvider } from "../3_transport.ts";
-import { type AlbumStoryList, type AppSupport, type AvailableReactions, type Birthday, type BlockedUserList, type BotCommand, type BotTokenCheckResult, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatActionType, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type ConnectionState, constructChatP, constructUser2, type Country, type FailedInvitation, type FileSource, type Gift, type GiftCollection, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputChecklistItem, type InputEmojiStatus, type InputGift, type InputMedia, type InputPollOption, type InputStoryContent, type InviteLink, type JoinRequest, type LeftChannelList, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageDice, type MessageDocument, type MessageInvoice, type MessageList, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type PasswordCheckResult, type Poll, type PremiumSubscriptionDuration, type PriceTag, type ProfilePhotoList, type Reaction, type SavedChats, type SlowModeDuration, type StarAmount, type StarTransactionList, type Sticker, type StickerSet, type Story, type StoryAlbum, type SummarizedText, type Timezone, type Topic, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
+import { type AlbumStoryList, type AppSupport, type AvailableReactions, type Birthday, type BlockedUserList, type BotCommand, type BotTokenCheckResult, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatActionType, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type ConnectionState, constructChatP, constructUser2, type Country, type FailedInvitation, type FileSource, type Gift, type GiftCollection, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputChecklistItem, type InputEmojiStatus, type InputGift, type InputMedia, type InputPollOption, type InputSticker, type InputStoryContent, type InviteLink, type JoinRequest, type LeftChannelList, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageDice, type MessageDocument, type MessageInvoice, type MessageList, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type PasswordCheckResult, type Poll, type PremiumSubscriptionDuration, type PriceTag, type ProfilePhotoList, type Reaction, type SavedChats, type SlowModeDuration, type StarAmount, type StarTransactionList, type Sticker, type StickerSet, type Story, type StoryAlbum, type SummarizedText, type Timezone, type Topic, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, PHONE_NUMBER_TTL, type PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, SessionRevoked } from "../4_errors.ts";
 import { inputPeerToPeer, peerToChatId } from "../tl/2_telegram.ts";
 import type { CodeCheckResult } from "../types/0_code_check_result.ts";
 import { AbortableLoop } from "./0_abortable_loop.ts";
-import type { AddBotToAttachmentsMenuParams, AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, EndTakeoutSessionParams, ForwardMessagesParams, GetBlockedUsersParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLeftChannelsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetProfilePhotosParams, GetSavedChatsParams, GetSavedMessagesParams, GetStarTransactionsParams, GetTranslationsParams, GiftPremiumSubscriptionParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ResolveUsernameParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetContactNoteParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetWorkingHoursParams, SignInParams, StartBotParams, StartTakeoutSessionParams, StartVideoChatParams, StopPollParams, SummarizeTextParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
+import type { AddBotToAttachmentsMenuParams, AddChatMemberParams, AddContactParams, AddReactionParams, AddStickerToStickerSetParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStickerSetParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, EndTakeoutSessionParams, ForwardMessagesParams, GetBlockedUsersParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLeftChannelsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetProfilePhotosParams, GetSavedChatsParams, GetSavedMessagesParams, GetStarTransactionsParams, GetTranslationsParams, GiftPremiumSubscriptionParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, ReplaceStickerInStickerSetParams, ResolveUsernameParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetContactNoteParams, SetEmojiStatusParams, SetLocationParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetWorkingHoursParams, SignInParams, StartBotParams, StartTakeoutSessionParams, StartVideoChatParams, StopPollParams, SummarizeTextParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 import { canBeInputChannel, canBeInputUser, DOWNLOAD_POOL_SIZE, getUsername, toInputChannel, toInputUser } from "./0_utilities.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
@@ -52,6 +52,7 @@ import { UpdateManager } from "./2_update_manager.ts";
 import { AccountManager } from "./3_account_manager.ts";
 import { ClientEncryptedPool } from "./3_client_encrypted_pool.ts";
 import { MessageManager } from "./3_message_manager.ts";
+import { StickerSetManager } from "./3_sticker_set_manager.ts";
 import { VideoChatManager } from "./3_video_chat_manager.ts";
 import { CallbackQueryManager } from "./4_callback_query_manager.ts";
 import { ChatListManager } from "./4_chat_list_manager.ts";
@@ -148,6 +149,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   // 3_
   #accountManager: AccountManager;
   #messageManager: MessageManager;
+  #stickerSetManager: StickerSetManager;
   #videoChatManager: VideoChatManager;
   // 4_
   #callbackQueryManager: CallbackQueryManager;
@@ -182,6 +184,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       // 3_
       accountManager: this.#accountManager,
       messageManager: this.#messageManager,
+      stickerSetManager: this.#stickerSetManager,
       videoChatManager: this.#videoChatManager,
       // 4_
       callbackQueryManager: this.#callbackQueryManager,
@@ -320,6 +323,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     // 3_
     this.#accountManager = new AccountManager({ ...c, fileManager });
     const messageManager = this.#messageManager = new MessageManager({ ...c, fileManager });
+    this.#stickerSetManager = new StickerSetManager({ ...c, fileManager });
     this.#videoChatManager = new VideoChatManager({ ...c, fileManager });
     // 4_
     this.#callbackQueryManager = new CallbackQueryManager({ ...c, messageManager });
@@ -2389,16 +2393,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     return await this.#messageManager.transcribeVoice(chatId, messageId);
   }
 
-  /**
-   * Get a sticker set.
-   *
-   * @method ms
-   * @param name The name of the sticker set or its link.
-   */
-  async getStickerSet(name: string): Promise<StickerSet> {
-    return await this.#messageManager.getStickerSet(name);
-  }
-
   /*
    * Get the link preview for a message that is about to be sent. User-only.
    *
@@ -4353,5 +4347,150 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async getLeftChannels(takeoutId: string, params?: GetLeftChannelsParams): Promise<LeftChannelList> {
     return await this.#takeoutManager.getLeftChannels(takeoutId, params);
+  }
+
+  //
+  // ========================= STICKER SETS ========================= //
+  //
+
+  /**
+   * Get a sticker set.
+   *
+   * @method ss
+   * @param slug The slug of the sticker set or its link.
+   */
+  async getStickerSet(name: string): Promise<StickerSet> {
+    return await this.#stickerSetManager.getStickerSet(name);
+  }
+
+  /**
+   * Check the availability of a sticker set slug.
+   *
+   * @method ss
+   * @param slug The slug of the sticker set or its link.
+   * @returns Whether the slug is available.
+   */
+  async checkStickerSetSlug(slug: string): Promise<boolean> {
+    return await this.#stickerSetManager.checkStickerSetSlug(slug);
+  }
+
+  /**
+   * Suggest a sticker set slug from its title.
+   *
+   * @method ss
+   * @param title A title of a sticker set.
+   * @returns The suggested slug.
+   */
+  async suggestStickerSetSlug(title: string): Promise<string> {
+    return await this.#stickerSetManager.suggestStickerSetSlug(title);
+  }
+
+  /**
+   * Create a sticker set.
+   *
+   * @method ss
+   * @param name The sticker set's name.
+   * @param slug The sticker set's slug.
+   * @param stickers The initial stickers of the set.
+   */
+  async createStickerSet(name: string, slug: string, stickers: InputSticker[], params?: CreateStickerSetParams): Promise<StickerSet> {
+    return await this.#stickerSetManager.createStickerSet(name, slug, stickers, params);
+  }
+
+  /**
+   * Add a sticker to a sticker set.
+   *
+   * @method ss
+   * @param slug The slug of the sticker set or its link.
+   * @param sticker The sticker to add.
+   */
+  async addStickerToStickerSet(slug: string, sticker: InputSticker, params?: AddStickerToStickerSetParams): Promise<void> {
+    return await this.#stickerSetManager.addStickerToStickerSet(slug, sticker, params);
+  }
+
+  /**
+   * Remove a sticker from its set.
+   *
+   * @method ss
+   * @param fileId The identifier of the sticker.
+   */
+  async removeStickerFromStickerSet(fileId: string): Promise<void> {
+    return await this.#stickerSetManager.removeStickerFromStickerSet(fileId);
+  }
+
+  /**
+   * Replace a sticker's emoji.
+   *
+   * @method ss
+   * @param fileId The identifier of the sticker.
+   * @param emoji The new emoji to use for the sticker.
+   */
+  async replaceStickerEmoji(fileId: string, emoji: string): Promise<void> {
+    return await this.#stickerSetManager.replaceStickerEmoji(fileId, emoji);
+  }
+
+  /**
+   * Replace a sticker in a sticker set.
+   *
+   * @method ss
+   * @param currentStickerFileId The identifier of the current sticker.
+   * @param newSticker The new sticker to use.
+   */
+  async replaceStickerInStickerSet(currentStickerFileId: string, newSticker: InputSticker, params?: ReplaceStickerInStickerSetParams): Promise<void> {
+    return await this.#stickerSetManager.replaceStickerInStickerSet(currentStickerFileId, newSticker, params);
+  }
+
+  /**
+   * Delete a sticker set.
+   *
+   * @method ss
+   * @param slug The slug of the sticker set or its link.
+   */
+  async deleteStickerSet(slug: string): Promise<void> {
+    return await this.#stickerSetManager.deleteStickerSet(slug);
+  }
+
+  /**
+   * Set the title of a sticker set.
+   *
+   * @method ss
+   * @param slug The slug of the sticker set or its link.
+   * @param title The sticker set's new title.
+   */
+  async setStickerSetTitle(slug: string, title: string): Promise<void> {
+    return await this.#stickerSetManager.setStickerSetTitle(slug, title);
+  }
+
+  /**
+   * Change the position of a sticker in its set.
+   *
+   * @method ss
+   * @param fileId The identifier of the sticker.
+   * @param position The new position of the sticker.
+   */
+  async changeStickerPositionInStickerSet(slug: string, position: number): Promise<void> {
+    return await this.#stickerSetManager.changeStickerPositionInStickerSet(slug, position);
+  }
+
+  /**
+   * Set a sticker set's thumbnail.
+   *
+   * @method ss
+   * @param slug The slug of the sticker set or its link.
+   * @param thumbnail The new thumbnail of the sticker set.
+   */
+  async setStickerSetThumbnail(slug: string, thumbnail: FileSource): Promise<void> {
+    return await this.#stickerSetManager.setStickerSetThumbnail(slug, thumbnail);
+  }
+
+  /**
+   * Set a custom emoji as a sticker set's thumbnail.
+   *
+   * @method ss
+   * @param slug The slug of the sticker set or its link.
+   * @param customEmojiId The identifier of the custom emoji to use as thumbnail.
+   */
+  async setCustomEmojiAsStickerSetThumbnail(slug: string, customEmojiId: string): Promise<void> {
+    return await this.#stickerSetManager.setCustomEmojiAsStickerSetThumbnail(slug, customEmojiId);
   }
 }

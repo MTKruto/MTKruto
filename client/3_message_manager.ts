@@ -18,19 +18,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { contentType, equals, startsWith, unreachable } from "../0_deps.ts";
+import { contentType, startsWith, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { PackShortNameInvalid } from "../3_errors.ts";
 import { getDc } from "../3_transport.ts";
-import { constructBlockedUserList, constructChatAction, constructMessageDraft, constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructStickerSet, constructSummarizedText, constructVoiceTranscription, deserializeFileId, type FileId, type InputChecklistItem, type InputMedia, type InputPollOption, type MessageList, messageSearchFilterToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type VoiceTranscription } from "../3_types.ts";
+import { constructBlockedUserList, constructChatAction, constructMessageDraft, constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructSummarizedText, constructVoiceTranscription, deserializeFileId, type FileId, type InputChecklistItem, type InputMedia, type InputPollOption, type MessageList, messageSearchFilterToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type VoiceTranscription } from "../3_types.ts";
 import { assertMessageType, type ChatActionType, constructMessage as constructMessage_, deserializeInlineMessageId, type FileSource, FileType, type ID, type Message, type MessageEntity, messageEntityToTlObject, type ParseMode, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type Update, type UsernameResolver } from "../3_types.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
 import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetBlockedUsersParams, GetHistoryParams, GetMessageReactionsParams, GetSavedChatsParams, GetSavedMessagesParams, OpenMiniAppParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams as SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, StartBotParams, StopPollParams, SummarizeTextParams, UnpinMessageParams, UnpinMessagesParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
-import { canBeInputChannel, checkArray, checkMessageId, checkPhotoName, getLimit, getUsername, isHttpUrl, toInputChannel } from "./0_utilities.ts";
+import { canBeInputChannel, checkArray, checkMessageId, checkPhotoName, checkStickerName, getLimit, getUsername, isHttpUrl, toInputChannel } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
 import type { FileManager } from "./2_file_manager.ts";
 
@@ -735,15 +734,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async sendSticker(chatId: ID, sticker: FileSource, params?: SendStickerParams) {
     this.#checkParams(params);
-    const message = await this.#sendDocumentInner(chatId, sticker, params, FileType.Sticker, [{ _: "documentAttributeSticker", alt: params?.emoji || "", stickerset: { _: "inputStickerSetEmpty" } }], undefined, STICKER_MIME_TYPES, (firstPart) => {
-      if (startsWith(firstPart, new Uint8Array([0x1F, 0x8B]))) {
-        return "file.tgs";
-      } else if (firstPart.length >= 12 && equals(firstPart.subarray(8, 12), new Uint8Array([0x57, 0x45, 0x42, 0x50]))) {
-        return "file.webp";
-      } else {
-        return "file.webm";
-      }
-    });
+    const message = await this.#sendDocumentInner(chatId, sticker, params, FileType.Sticker, [{ _: "documentAttributeSticker", alt: params?.emoji || "", stickerset: { _: "inputStickerSetEmpty" } }], undefined, STICKER_MIME_TYPES, checkStickerName);
     return assertMessageType(message, "sticker");
   }
 
@@ -1886,37 +1877,6 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       }
     }
     return [peer, id];
-  }
-
-  async getStickerSet(name: string) {
-    if (name.includes("/")) {
-      let valid = false;
-      try {
-        const url = new URL(name);
-        const pathname = "/addstickers/";
-        valid = (url.protocol === "http:" || url.protocol === "https:") && url.hostname === "t.me" && url.pathname.startsWith(pathname) && url.pathname.length > PackShortNameInvalid.length;
-        if (valid) {
-          name = url.pathname.slice(pathname.length);
-          if (name.endsWith("/")) {
-            name = name.slice(0, -1);
-            if (name === "") {
-              valid = false;
-            }
-          }
-        }
-      } catch (err) {
-        if (err instanceof TypeError) {
-          valid = false;
-        } else {
-          throw err;
-        }
-      }
-      if (!valid) {
-        throw new InputError("Invalid sticker set name or link.");
-      }
-    }
-    const result = await this.#c.invoke({ _: "messages.getStickerSet", hash: 0, stickerset: { _: "inputStickerSetShortName", short_name: name } });
-    return constructStickerSet(result);
   }
 
   async openMiniApp(botId: ID, chatId: ID, params?: OpenMiniAppParams) {
