@@ -1011,3 +1011,33 @@ export interface GetProfilePhotosParams {
   /** The maximum number of results to return. */
   limit?: number;
 }
+
+export interface CreateStickerSetParams extends _UploadCommon {
+  /** Whether a mask sticker set should be created. */
+  isMask?: boolean;
+  /** Whether a custom emoji set should be created. */
+  isCustomEmoji?: boolean;
+  /** Whether the items of the sticker set should be adaptive. */
+  isAdaptive?: boolean;
+  /** An optional thumbnail to use for the sticker set. */
+  thumbnail?: FileSource;
+  /** The name of the software used to create the sticker set. */
+  software?: string;
+  /** The identifier of the owner of the sticker set. Required for bots. Bot-only. */
+  userId?: ID;
+}
+
+export interface AddStickerToStickerSetParams {
+  /** The identifier of the owner of the sticker set. Required for bots. Bot-only. */
+  userId?: ID;
+}
+
+export interface ReplaceStickerInStickerSetParams {
+  /** The identifier of the owner of the sticker set. Required for bots. Bot-only. */
+  userId?: ID;
+}
+
+export interface SetStickerSetThumnailParams extends _UploadCommon {
+  /** The identifier of the owner of the sticker set. Required for bots. Bot-only. */
+  userId?: ID;
+}
