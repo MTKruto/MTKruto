@@ -1037,7 +1037,7 @@ export interface ReplaceStickerInStickerSetParams {
   userId?: ID;
 }
 
-export interface SetStickerSetThumnailParams extends _UploadCommon {
+export interface SetStickerSetThumbnailParams extends _UploadCommon {
   /** The identifier of the owner of the sticker set. Required for bots. Bot-only. */
   userId?: ID;
 }

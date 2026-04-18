@@ -23,7 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { constructStickerSet, deserializeFileId, type InputSticker } from "../3_types.ts";
 import type { FileSource } from "../types/0_file_source.ts";
-import type { _UploadCommon, AddStickerToStickerSetParams, CreateStickerSetParams, ReplaceStickerInStickerSetParams, SetStickerSetThumnailParams } from "./0_params.ts";
+import type { _UploadCommon, AddStickerToStickerSetParams, CreateStickerSetParams, ReplaceStickerInStickerSetParams, SetStickerSetThumbnailParams } from "./0_params.ts";
 import { checkStickerName } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
 import type { FileManager } from "./2_file_manager.ts";
@@ -210,7 +210,7 @@ export class StickerSetManager {
     await this.#c.invoke({ _: "stickers.changeStickerPosition", sticker: this.#getStickerInputDocument(fileId), position });
   }
 
-  async setStickerSetThumbnail(slug: string, thumbnail: FileSource, params?: SetStickerSetThumnailParams) {
+  async setStickerSetThumbnail(slug: string, thumbnail: FileSource, params?: SetStickerSetThumbnailParams) {
     slug = StickerSetManager.#getSlug(slug);
     if (this.#c.storage.isBot && !params?.userId) {
       throw new InputError("The parameter userId is required.");

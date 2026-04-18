@@ -4477,14 +4477,14 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    *
    * @method ss
    * @param slug The slug of the sticker set or its link.
-   * @param thumbnail The new thumbnail of the sticker.
+   * @param thumbnail The new thumbnail of the sticker set.
    */
   async setStickerSetThumbnail(slug: string, thumbnail: FileSource): Promise<void> {
     return await this.#stickerSetManager.setStickerSetThumbnail(slug, thumbnail);
   }
 
   /**
-   * Set a custom emoji as a sticker set's thumnail.
+   * Set a custom emoji as a sticker set's thumbnail.
    *
    * @method ss
    * @param slug The slug of the sticker set or its link.

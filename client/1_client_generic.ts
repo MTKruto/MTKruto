@@ -2678,12 +2678,12 @@ export abstract class ClientGeneric {
    *
    * @method ss
    * @param slug The slug of the sticker set or its link.
-   * @param thumbnail The new thumbnail of the sticker.
+   * @param thumbnail The new thumbnail of the sticker set.
    */
   abstract setStickerSetThumbnail(slug: string, thumbnail: FileSource): Promise<void>;
 
   /**
-   * Set a custom emoji as a sticker set's thumnail.
+   * Set a custom emoji as a sticker set's thumbnail.
    *
    * @method ss
    * @param slug The slug of the sticker set or its link.
