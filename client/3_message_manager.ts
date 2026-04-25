@@ -239,7 +239,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async forwardMessages(from: ID, to: ID, messageIds: number[], params?: ForwardMessagesParams) {
     checkArray(messageIds, checkMessageId);
-    const result = await this.#c.invoke({ _: "messages.forwardMessages", from_peer: await this.#c.getInputPeer(from), to_peer: await this.#c.getInputPeer(to), id: messageIds, random_id: messageIds.map(() => getRandomId()), silent: params?.isSilent || undefined, top_msg_id: params?.messageThreadId, noforwards: params?.isSilent || undefined, send_as: params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined, drop_author: params?.isSenderNameDropped || undefined, drop_media_captions: params?.isCaptionDropped || undefined });
+    const result = await this.#c.invoke({ _: "messages.forwardMessages", from_peer: await this.#c.getInputPeer(from), to_peer: await this.#c.getInputPeer(to), id: messageIds, random_id: messageIds.map(() => getRandomId()), silent: params?.isSilent || undefined, top_msg_id: params?.messageThreadId, noforwards: params?.isContentProtected || undefined, send_as: params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined, drop_author: params?.isSenderNameDropped || undefined, drop_media_captions: params?.isCaptionDropped || undefined });
 
     return await this.updatesToMessages(to, result);
   }
