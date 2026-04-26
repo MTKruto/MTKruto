@@ -2690,4 +2690,26 @@ export abstract class ClientGeneric {
    * @param customEmojiId The identifier of the custom emoji to use as thumbnail.
    */
   abstract setCustomEmojiAsStickerSetThumbnail(slug: string, customEmojiId: string): Promise<void>;
+
+  //
+  // ========================= MANAGED BOTS ========================= //
+  //
+
+  /**
+   * Get the token of a managed bot. Bot-only.
+   *
+   * @method mb
+   * @param userId The identifier of the bot user.
+   * @returns The managed bot's token.
+   */
+  abstract getManagedBotToken(userId: ID): Promise<string>;
+
+  /**
+   * Revoke the token of a managed bot. Bot-only.
+   *
+   * @method mb
+   * @param userId The identifier of the bot user.
+   * @returns The managed bot's new token.
+   */
+  abstract revokeManagedBotToken(userId: ID): Promise<string>;
 }

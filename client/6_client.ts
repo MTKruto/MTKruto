@@ -41,6 +41,7 @@ import { BusinessConnectionManager } from "./2_business_connection_manager.ts";
 import { ClientEncrypted } from "./2_client_encrypted.ts";
 import { FileManager } from "./2_file_manager.ts";
 import { GiftCollectionManager } from "./2_gift_collection_manager.ts";
+import { ManagedBotManager } from "./2_managed_bot_manager.ts";
 import { NetworkStatisticsManager } from "./2_network_statistics_manager.ts";
 import { PaymentManager } from "./2_payment_manager.ts";
 import { ReactionManager } from "./2_reaction_manager.ts";
@@ -139,6 +140,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   #businessConnectionManager: BusinessConnectionManager;
   #fileManager: FileManager;
   #giftCollectionManager: GiftCollectionManager;
+  #managedBotManager: ManagedBotManager;
   #networkStatisticsManager: NetworkStatisticsManager;
   #paymentManager: PaymentManager;
   #reactionManager: ReactionManager;
@@ -174,6 +176,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       businessConnectionManager: this.#businessConnectionManager,
       fileManager: this.#fileManager,
       giftCollectionManager: this.#giftCollectionManager,
+      managedBotManager: this.#managedBotManager,
       networkStatisticsManager: this.#networkStatisticsManager,
       paymentManager: this.#paymentManager,
       reactionManager: this.#reactionManager,
@@ -313,6 +316,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     this.#businessConnectionManager = new BusinessConnectionManager(c);
     const fileManager = this.#fileManager = new FileManager(c);
     this.#giftCollectionManager = new GiftCollectionManager(c);
+    this.#managedBotManager = new ManagedBotManager(c);
     this.#networkStatisticsManager = new NetworkStatisticsManager(c);
     this.#paymentManager = new PaymentManager(c);
     this.#reactionManager = new ReactionManager(c);
@@ -4492,5 +4496,31 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async setCustomEmojiAsStickerSetThumbnail(slug: string, customEmojiId: string): Promise<void> {
     return await this.#stickerSetManager.setCustomEmojiAsStickerSetThumbnail(slug, customEmojiId);
+  }
+
+  //
+  // ========================= MANAGED BOTS ========================= //
+  //
+
+  /**
+   * Get the token of a managed bot. Bot-only.
+   *
+   * @method mb
+   * @param userId The identifier of the bot user.
+   * @returns The managed bot's token.
+   */
+  async getManagedBotToken(userId: ID): Promise<string> {
+    return await this.#managedBotManager.getManagedBotToken(userId);
+  }
+
+  /**
+   * Revoke the token of a managed bot. Bot-only.
+   *
+   * @method mb
+   * @param userId The identifier of the bot user.
+   * @returns The managed bot's new token.
+   */
+  async revokeManagedBotToken(userId: ID): Promise<string> {
+    return await this.#managedBotManager.revokeManagedBotToken(userId);
   }
 }

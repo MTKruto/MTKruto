@@ -3466,4 +3466,30 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   async setCustomEmojiAsStickerSetThumbnail(slug: string, customEmojiId: string): Promise<void> {
     return await this.#dispatch("setCustomEmojiAsStickerSetThumbnail", slug, customEmojiId);
   }
+
+  //
+  // ========================= MANAGED BOTS ========================= //
+  //
+
+  /**
+   * Get the token of a managed bot. Bot-only.
+   *
+   * @method mb
+   * @param userId The identifier of the bot user.
+   * @returns The managed bot's token.
+   */
+  async getManagedBotToken(userId: ID): Promise<string> {
+    return await this.#dispatch("getManagedBotToken", userId);
+  }
+
+  /**
+   * Revoke the token of a managed bot. Bot-only.
+   *
+   * @method mb
+   * @param userId The identifier of the bot user.
+   * @returns The managed bot's new token.
+   */
+  async revokeManagedBotToken(userId: ID): Promise<string> {
+    return await this.#dispatch("revokeManagedBotToken", userId);
+  }
 }
