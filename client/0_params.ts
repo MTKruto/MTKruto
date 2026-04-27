@@ -983,6 +983,11 @@ export interface UpdateProfileVideoParams extends _UploadCommon {
   thumbnailTimestamp?: number;
 }
 
+export interface RemoveProfilePhotoParams {
+  /** The identifier of a bot managed by the current user. If specified, the profile photo of the bot will be removed. User-only. */
+  botId?: ID;
+}
+
 export interface GetStarTransactionsParams {
   /** Whether TON transactions should be returned. */
   isTon?: boolean;
