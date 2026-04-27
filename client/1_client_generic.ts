@@ -257,7 +257,7 @@ export abstract class ClientGeneric {
   abstract updateProfile(params?: UpdateProfileParams): Promise<void>;
 
   /**
-   * Update the profile photo of the current user.
+   * Update the profile photo of the current user or a bot managed by the current user.
    *
    * @method ac
    * @param photo The photo to set as profile photo.
@@ -265,7 +265,7 @@ export abstract class ClientGeneric {
   abstract updateProfilePhoto(photo: FileSource, params?: UpdateProfilePhotoParams): Promise<void>;
 
   /**
-   * Update the profile video of the current user.
+   * Update the profile video of the current user or a bot managed by the current user.
    *
    * @method ac
    * @param video The video to set as profile video.

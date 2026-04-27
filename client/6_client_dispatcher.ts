@@ -510,7 +510,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Update the profile photo of the current user.
+   * Update the profile photo of the current user or a bot managed by the current user.
    *
    * @method ac
    * @param photo The photo to set as profile photo.
@@ -520,7 +520,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Update the profile video of the current user.
+   * Update the profile video of the current user or a bot managed by the current user.
    *
    * @method ac
    * @param video The video to set as profile video.

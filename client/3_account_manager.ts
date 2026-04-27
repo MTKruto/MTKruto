@@ -500,13 +500,23 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
   }
 
   async updateProfilePhoto(photo: FileSource, params?: UpdateProfilePhotoParams) {
+    if (params?.botId && this.#c.storage.isBot){
+      throw new InputError("The parameter botId is user-only.")
+    }
+
+    const bot = params?.botId ? await this.#c.getInputUser(params.botId) : undefined;
     const file = await this.#c.fileManager.upload(photo, params, checkPhotoName(params));
-    await this.#c.invoke({ _: "photos.uploadProfilePhoto", fallback: params?.isPublic ? true : undefined, file });
+    await this.#c.invoke({ _: "photos.uploadProfilePhoto", fallback: params?.isPublic ? true : undefined, file, bot });
   }
 
   async updateProfileVideo(photo: FileSource, params?: UpdateProfileVideoParams) {
+    if (params?.botId && this.#c.storage.isBot){
+      throw new InputError("The parameter botId is user-only.")
+    }
+    
+    const bot = params?.botId ? await this.#c.getInputUser(params.botId) : undefined;
     const video = await this.#c.fileManager.upload(photo, params, () => "video.mp4");
-    await this.#c.invoke({ _: "photos.uploadProfilePhoto", fallback: params?.isPublic ? true : undefined, video, video_start_ts: params?.thumbnailTimestamp });
+    await this.#c.invoke({ _: "photos.uploadProfilePhoto", fallback: params?.isPublic ? true : undefined, video, video_start_ts: params?.thumbnailTimestamp, bot });
   }
 
   async getProfilePhotos(userId: ID, params?: GetProfilePhotosParams) {
