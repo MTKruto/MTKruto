@@ -968,11 +968,15 @@ export interface SummarizeTextParams {
 }
 
 export interface UpdateProfilePhotoParams extends _UploadCommon {
+  /** The identifier of a bot managed by the current user. If specified, the profile photo of the bot will be updated. User-only. */
+  botId?: ID;
   /** Whether the photo should be set as the fallback public profile photo. User-only. */
   isPublic?: boolean;
 }
 
 export interface UpdateProfileVideoParams extends _UploadCommon {
+  /** The identifier of a bot managed by the current user. If specified, the profile video of the bot will be updated. User-only. */
+  botId?: ID;
   /** Whether the video should be set as the fallback public profile photo. User-only. */
   isPublic?: boolean;
   /** The timestamp in seconds to use as thumbnail. */
