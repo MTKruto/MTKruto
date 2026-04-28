@@ -23,7 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { PasswordHashInvalid, PhoneCodeInvalid, SessionPasswordNeeded } from "../3_errors.ts";
 import { type Birthday, birthdayToTlObject, type BotTokenCheckResult, type CodeCheckResult, constructAppSupport, constructCountry, constructEmojiStatus, constructInactiveChat, constructProfilePhotoList, constructTimezone, constructUser, constructUser2, type FileSource, type ID, type InputEmojiStatus, type PasswordCheckResult, type Update, workingHoursToTlObject } from "../3_types.ts";
-import type { AddBotToAttachmentsMenuParams, CheckUsernameParams, GetProfilePhotosParams, ResolveUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
+import type { AddBotToAttachmentsMenuParams, CheckUsernameParams, GetProfilePhotosParams, RemoveProfilePhotoParams, ResolveUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, canBeInputUser, checkPhotoName, getLimit, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -517,6 +517,15 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     const bot = params?.botId ? await this.#c.getInputUser(params.botId) : undefined;
     const video = await this.#c.fileManager.upload(photo, params, () => "video.mp4");
     await this.#c.invoke({ _: "photos.uploadProfilePhoto", fallback: params?.isPublic ? true : undefined, video, video_start_ts: params?.thumbnailTimestamp, bot });
+  }
+
+  async removeProfilePhoto(params?: RemoveProfilePhotoParams) {
+    if (params?.botId && this.#c.storage.isBot) {
+      throw new InputError("The parameter botId is user-only.");
+    }
+
+    const bot = params?.botId ? await this.#c.getInputUser(params.botId) : undefined;
+    await this.#c.invoke({ _: "photos.updateProfilePhoto", id: { _: "inputPhotoEmpty" }, bot });
   }
 
   async getProfilePhotos(userId: ID, params?: GetProfilePhotosParams) {
