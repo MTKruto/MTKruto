@@ -194,6 +194,8 @@ export interface SendPollParams extends _SendCommon, _ReplyMarkupCommon {
   isResultHidden?: boolean;
   /** Whether it is allowed for options to be added. Not supported for anonymous polls and quizzes. */
   isAddingOptionsAllowed?: boolean;
+  /** The codes of the countries where the poll is available in. */
+  countries?: string[];
 }
 
 export interface SendChecklistParams extends _SendCommon {

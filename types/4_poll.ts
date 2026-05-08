@@ -54,6 +54,8 @@ export interface Poll {
   openPeriod?: number;
   /** The time when the poll will be closed. */
   closeDate?: number;
+  /** The codes of the countries where the poll is available. */
+  countries?: string[];
 }
 
 export function constructPoll(media_: Api.messageMediaPoll): Poll {
@@ -75,5 +77,6 @@ export function constructPoll(media_: Api.messageMediaPoll): Poll {
     explanationEntities: media_.results.solution_entities?.map(constructMessageEntity).filter((v): v is MessageEntity => v !== null),
     openPeriod: poll.close_period,
     closeDate: poll.close_date,
+    countries: poll.countries_iso2,
   });
 }
