@@ -605,6 +605,7 @@ export interface user {
   bot_forum_view?: true;
   bot_forum_can_manage_topics?: true;
   bot_can_manage_bots?: true;
+  bot_guestchat?: true;
   id: bigint;
   access_hash?: bigint;
   first_name?: string;
@@ -960,6 +961,7 @@ export interface message {
   fwd_from?: MessageFwdHeader;
   via_bot_id?: bigint;
   via_business_bot_id?: bigint;
+  guestchat_via_from?: Peer;
   reply_to?: MessageReplyHeader;
   date: number;
   message: string;
@@ -1848,6 +1850,7 @@ export interface auth_sentCodePaymentRequired {
   phone_code_hash: string;
   support_email_address: string;
   support_email_subject: string;
+  premium_days: number;
   currency: string;
   amount: bigint;
 }
@@ -3517,6 +3520,20 @@ export interface updateManagedBot {
   user_id: bigint;
   bot_id: bigint;
   qts: number;
+}
+
+/** https://core.telegram.org/constructor/updateBotGuestChatQuery */
+export interface updateBotGuestChatQuery {
+  _: "updateBotGuestChatQuery";
+  query_id: bigint;
+  message: Message;
+  reference_messages?: Array<Message>;
+  qts: number;
+}
+
+/** https://core.telegram.org/constructor/updateAiComposeTones */
+export interface updateAiComposeTones {
+  _: "updateAiComposeTones";
 }
 
 /** https://core.telegram.org/constructor/updates.state */
@@ -5890,6 +5907,11 @@ export interface topPeerCategoryBotsApp {
   _: "topPeerCategoryBotsApp";
 }
 
+/** https://core.telegram.org/constructor/topPeerCategoryBotsGuestChat */
+export interface topPeerCategoryBotsGuestChat {
+  _: "topPeerCategoryBotsGuestChat";
+}
+
 /** https://core.telegram.org/constructor/topPeerCategoryPeers */
 export interface topPeerCategoryPeers {
   _: "topPeerCategoryPeers";
@@ -7987,10 +8009,12 @@ export interface poll {
   shuffle_answers?: true;
   hide_results_until_close?: true;
   creator?: true;
+  subscribers_only?: true;
   question: TextWithEntities;
   answers: Array<PollAnswer>;
   close_period?: number;
   close_date?: number;
+  countries_iso2?: Array<string>;
   hash: bigint;
 }
 
@@ -8009,6 +8033,7 @@ export interface pollResults {
   _: "pollResults";
   min?: true;
   has_unread_votes?: true;
+  can_view_stats?: true;
   results?: Array<PollAnswerVoters>;
   total_voters?: number;
   recent_voters?: Array<Peer>;
@@ -8075,6 +8100,7 @@ export interface chatBannedRights {
   send_docs?: true;
   send_plain?: true;
   edit_rank?: true;
+  send_reactions?: true;
   until_date: number;
 }
 
@@ -8456,6 +8482,12 @@ export interface webPageAttributeStarGiftAuction {
   _: "webPageAttributeStarGiftAuction";
   gift: StarGift;
   end_date: number;
+}
+
+/** https://core.telegram.org/constructor/webPageAttributeAiComposeTone */
+export interface webPageAttributeAiComposeTone {
+  _: "webPageAttributeAiComposeTone";
+  emoji_id: bigint;
 }
 
 /** https://core.telegram.org/constructor/messages.votesList */
@@ -9712,6 +9744,7 @@ export interface inputStorePaymentAuthCode {
   restore?: true;
   phone_number: string;
   phone_code_hash: string;
+  premium_days: number;
   currency: string;
   amount: bigint;
 }
@@ -12636,6 +12669,81 @@ export interface messages_composedMessageWithAI {
   diff_text?: TextWithEntities;
 }
 
+/** https://core.telegram.org/constructor/stats.pollStats */
+export interface stats_pollStats {
+  _: "stats.pollStats";
+  votes_graph: StatsGraph;
+}
+
+/** https://core.telegram.org/constructor/inputAiComposeToneDefault */
+export interface inputAiComposeToneDefault {
+  _: "inputAiComposeToneDefault";
+  tone: string;
+}
+
+/** https://core.telegram.org/constructor/inputAiComposeToneID */
+export interface inputAiComposeToneID {
+  _: "inputAiComposeToneID";
+  id: bigint;
+  access_hash: bigint;
+}
+
+/** https://core.telegram.org/constructor/inputAiComposeToneSlug */
+export interface inputAiComposeToneSlug {
+  _: "inputAiComposeToneSlug";
+  slug: string;
+}
+
+/** https://core.telegram.org/constructor/aiComposeTone */
+export interface aiComposeTone {
+  _: "aiComposeTone";
+  creator?: true;
+  id: bigint;
+  access_hash: bigint;
+  slug: string;
+  title: string;
+  emoji_id?: bigint;
+  prompt?: string;
+  installs_count?: number;
+  author_id?: bigint;
+  example_english?: AiComposeToneExample;
+}
+
+/** https://core.telegram.org/constructor/aiComposeToneDefault */
+export interface aiComposeToneDefault {
+  _: "aiComposeToneDefault";
+  tone: string;
+  emoji_id: bigint;
+  title: string;
+}
+
+/** https://core.telegram.org/constructor/aicompose.tonesNotModified */
+export interface aicompose_tonesNotModified {
+  _: "aicompose.tonesNotModified";
+}
+
+/** https://core.telegram.org/constructor/aicompose.tones */
+export interface aicompose_tones {
+  _: "aicompose.tones";
+  hash: bigint;
+  tones: Array<AiComposeTone>;
+  users: Array<User>;
+}
+
+/** https://core.telegram.org/constructor/aiComposeToneExample */
+export interface aiComposeToneExample {
+  _: "aiComposeToneExample";
+  from: TextWithEntities;
+  to: TextWithEntities;
+}
+
+/** https://core.telegram.org/constructor/bots.accessSettings */
+export interface bots_accessSettings {
+  _: "bots.accessSettings";
+  restricted?: true;
+  add_users?: Array<User>;
+}
+
 /** https://core.telegram.org/method/invokeWithBusinessConnectionPrefix */
 export interface invokeWithBusinessConnectionPrefix {
   _: "invokeWithBusinessConnectionPrefix";
@@ -14060,6 +14168,7 @@ export interface contacts_getTopPeers {
   groups?: true;
   channels?: true;
   bots_app?: true;
+  bots_guestchat?: true;
   offset: number;
   limit: number;
   hash: bigint;
@@ -16454,7 +16563,7 @@ export interface messages_composeMessageWithAI {
   emojify?: true;
   text: TextWithEntities;
   translate_to_lang?: string;
-  change_tone?: string;
+  tone?: InputAiComposeTone;
   [R]?: messages_ComposedMessageWithAI;
 }
 
@@ -16511,6 +16620,42 @@ export interface messages_readPollVotes {
   peer: InputPeer;
   top_msg_id?: number;
   [R]?: messages_AffectedHistory;
+}
+
+/** https://core.telegram.org/method/messages.setBotGuestChatResult */
+export interface messages_setBotGuestChatResult {
+  _: "messages.setBotGuestChatResult";
+  query_id: bigint;
+  result: InputBotInlineResult;
+  [R]?: InputBotInlineMessageID;
+}
+
+/** https://core.telegram.org/method/messages.deleteParticipantReactions */
+export interface messages_deleteParticipantReactions {
+  _: "messages.deleteParticipantReactions";
+  peer: InputPeer;
+  participant: InputPeer;
+  [R]?: boolean;
+}
+
+/** https://core.telegram.org/method/messages.deleteParticipantReaction */
+export interface messages_deleteParticipantReaction {
+  _: "messages.deleteParticipantReaction";
+  peer: InputPeer;
+  msg_id: number;
+  participant: InputPeer;
+  [R]?: Updates;
+}
+
+/** https://core.telegram.org/method/messages.getPersonalChannelHistory */
+export interface messages_getPersonalChannelHistory {
+  _: "messages.getPersonalChannelHistory";
+  user_id: InputUser;
+  limit: number;
+  max_id: number;
+  min_id: number;
+  hash: bigint;
+  [R]?: messages_Messages;
 }
 
 /** https://core.telegram.org/method/updates.getState */
@@ -17607,6 +17752,22 @@ export interface bots_getRequestedWebViewButton {
   bot: InputUser;
   webapp_req_id: string;
   [R]?: KeyboardButton;
+}
+
+/** https://core.telegram.org/method/bots.getAccessSettings */
+export interface bots_getAccessSettings {
+  _: "bots.getAccessSettings";
+  bot: InputUser;
+  [R]?: bots_AccessSettings;
+}
+
+/** https://core.telegram.org/method/bots.editAccessSettings */
+export interface bots_editAccessSettings {
+  _: "bots.editAccessSettings";
+  restricted?: true;
+  bot: InputUser;
+  add_users?: Array<InputUser>;
+  [R]?: boolean;
 }
 
 /** https://core.telegram.org/method/payments.getPaymentForm */
@@ -18747,6 +18908,15 @@ export interface stats_getStoryPublicForwards {
   [R]?: stats_PublicForwards;
 }
 
+/** https://core.telegram.org/method/stats.getPollStats */
+export interface stats_getPollStats {
+  _: "stats.getPollStats";
+  dark?: true;
+  peer: InputPeer;
+  msg_id: number;
+  [R]?: stats_PollStats;
+}
+
 /** https://core.telegram.org/method/chatlists.exportChatlistInvite */
 export interface chatlists_exportChatlistInvite {
   _: "chatlists.exportChatlistInvite";
@@ -19236,6 +19406,64 @@ export interface fragment_getCollectibleInfo {
   [R]?: fragment_CollectibleInfo;
 }
 
+/** https://core.telegram.org/method/aicompose.createTone */
+export interface aicompose_createTone {
+  _: "aicompose.createTone";
+  display_author?: true;
+  emoji_id: bigint;
+  title: string;
+  prompt: string;
+  [R]?: AiComposeTone;
+}
+
+/** https://core.telegram.org/method/aicompose.updateTone */
+export interface aicompose_updateTone {
+  _: "aicompose.updateTone";
+  tone: InputAiComposeTone;
+  display_author?: boolean;
+  emoji_id?: bigint;
+  title?: string;
+  prompt?: string;
+  [R]?: AiComposeTone;
+}
+
+/** https://core.telegram.org/method/aicompose.saveTone */
+export interface aicompose_saveTone {
+  _: "aicompose.saveTone";
+  tone: InputAiComposeTone;
+  unsave: boolean;
+  [R]?: boolean;
+}
+
+/** https://core.telegram.org/method/aicompose.deleteTone */
+export interface aicompose_deleteTone {
+  _: "aicompose.deleteTone";
+  tone: InputAiComposeTone;
+  [R]?: boolean;
+}
+
+/** https://core.telegram.org/method/aicompose.getTone */
+export interface aicompose_getTone {
+  _: "aicompose.getTone";
+  tone: InputAiComposeTone;
+  [R]?: aicompose_Tones;
+}
+
+/** https://core.telegram.org/method/aicompose.getTones */
+export interface aicompose_getTones {
+  _: "aicompose.getTones";
+  hash: bigint;
+  [R]?: aicompose_Tones;
+}
+
+/** https://core.telegram.org/method/aicompose.getToneExample */
+export interface aicompose_getToneExample {
+  _: "aicompose.getToneExample";
+  tone: InputAiComposeTone;
+  num: number;
+  [R]?: AiComposeToneExample;
+}
+
 export interface Types {
   "true": true_;
   "error": error;
@@ -19653,6 +19881,8 @@ export interface Types {
   "updateStarGiftCraftFail": updateStarGiftCraftFail;
   "updateChatParticipantRank": updateChatParticipantRank;
   "updateManagedBot": updateManagedBot;
+  "updateBotGuestChatQuery": updateBotGuestChatQuery;
+  "updateAiComposeTones": updateAiComposeTones;
   "updates.state": updates_state;
   "updates.differenceEmpty": updates_differenceEmpty;
   "updates.difference": updates_difference;
@@ -19959,6 +20189,7 @@ export interface Types {
   "topPeerCategoryForwardUsers": topPeerCategoryForwardUsers;
   "topPeerCategoryForwardChats": topPeerCategoryForwardChats;
   "topPeerCategoryBotsApp": topPeerCategoryBotsApp;
+  "topPeerCategoryBotsGuestChat": topPeerCategoryBotsGuestChat;
   "topPeerCategoryPeers": topPeerCategoryPeers;
   "contacts.topPeersNotModified": contacts_topPeersNotModified;
   "contacts.topPeers": contacts_topPeers;
@@ -20294,6 +20525,7 @@ export interface Types {
   "webPageAttributeUniqueStarGift": webPageAttributeUniqueStarGift;
   "webPageAttributeStarGiftCollection": webPageAttributeStarGiftCollection;
   "webPageAttributeStarGiftAuction": webPageAttributeStarGiftAuction;
+  "webPageAttributeAiComposeTone": webPageAttributeAiComposeTone;
   "messages.votesList": messages_votesList;
   "bankCardOpenUrl": bankCardOpenUrl;
   "payments.bankCardData": payments_bankCardData;
@@ -20799,6 +21031,16 @@ export interface Types {
   "bots.exportedBotToken": bots_exportedBotToken;
   "bots.requestedButton": bots_requestedButton;
   "messages.composedMessageWithAI": messages_composedMessageWithAI;
+  "stats.pollStats": stats_pollStats;
+  "inputAiComposeToneDefault": inputAiComposeToneDefault;
+  "inputAiComposeToneID": inputAiComposeToneID;
+  "inputAiComposeToneSlug": inputAiComposeToneSlug;
+  "aiComposeTone": aiComposeTone;
+  "aiComposeToneDefault": aiComposeToneDefault;
+  "aicompose.tonesNotModified": aicompose_tonesNotModified;
+  "aicompose.tones": aicompose_tones;
+  "aiComposeToneExample": aiComposeToneExample;
+  "bots.accessSettings": bots_accessSettings;
 }
 
 export interface Functions<T = Function> {
@@ -21252,6 +21494,10 @@ export interface Functions<T = Function> {
   "messages.deletePollAnswer": messages_deletePollAnswer;
   "messages.getUnreadPollVotes": messages_getUnreadPollVotes;
   "messages.readPollVotes": messages_readPollVotes;
+  "messages.setBotGuestChatResult": messages_setBotGuestChatResult;
+  "messages.deleteParticipantReactions": messages_deleteParticipantReactions;
+  "messages.deleteParticipantReaction": messages_deleteParticipantReaction;
+  "messages.getPersonalChannelHistory": messages_getPersonalChannelHistory;
   "updates.getState": updates_getState;
   "updates.getDifference": updates_getDifference;
   "updates.getChannelDifference": updates_getChannelDifference;
@@ -21386,6 +21632,8 @@ export interface Functions<T = Function> {
   "bots.exportBotToken": bots_exportBotToken;
   "bots.requestWebViewButton": bots_requestWebViewButton;
   "bots.getRequestedWebViewButton": bots_getRequestedWebViewButton;
+  "bots.getAccessSettings": bots_getAccessSettings;
+  "bots.editAccessSettings": bots_editAccessSettings;
   "payments.getPaymentForm": payments_getPaymentForm;
   "payments.getPaymentReceipt": payments_getPaymentReceipt;
   "payments.validateRequestedInfo": payments_validateRequestedInfo;
@@ -21518,6 +21766,7 @@ export interface Functions<T = Function> {
   "stats.getMessageStats": stats_getMessageStats;
   "stats.getStoryStats": stats_getStoryStats;
   "stats.getStoryPublicForwards": stats_getStoryPublicForwards;
+  "stats.getPollStats": stats_getPollStats;
   "chatlists.exportChatlistInvite": chatlists_exportChatlistInvite;
   "chatlists.deleteExportedInvite": chatlists_deleteExportedInvite;
   "chatlists.editExportedInvite": chatlists_editExportedInvite;
@@ -21575,6 +21824,13 @@ export interface Functions<T = Function> {
   "smsjobs.getSmsJob": smsjobs_getSmsJob;
   "smsjobs.finishJob": smsjobs_finishJob;
   "fragment.getCollectibleInfo": fragment_getCollectibleInfo;
+  "aicompose.createTone": aicompose_createTone;
+  "aicompose.updateTone": aicompose_updateTone;
+  "aicompose.saveTone": aicompose_saveTone;
+  "aicompose.deleteTone": aicompose_deleteTone;
+  "aicompose.getTone": aicompose_getTone;
+  "aicompose.getTones": aicompose_getTones;
+  "aicompose.getToneExample": aicompose_getToneExample;
 }
 
 export interface Enums {
@@ -22167,6 +22423,12 @@ export interface Enums {
   "bots.ExportedBotToken": bots_ExportedBotToken;
   "bots.RequestedButton": bots_RequestedButton;
   "messages.ComposedMessageWithAI": messages_ComposedMessageWithAI;
+  "stats.PollStats": stats_PollStats;
+  "InputAiComposeTone": InputAiComposeTone;
+  "AiComposeTone": AiComposeTone;
+  "aicompose.Tones": aicompose_Tones;
+  "AiComposeToneExample": AiComposeToneExample;
+  "bots.AccessSettings": bots_AccessSettings;
 }
 
 export type AnyType = Types[keyof Types];
@@ -22337,7 +22599,7 @@ export type messages_AffectedHistory = messages_affectedHistory;
 export type MessagesFilter = inputMessagesFilterEmpty | inputMessagesFilterPhotos | inputMessagesFilterVideo | inputMessagesFilterPhotoVideo | inputMessagesFilterDocument | inputMessagesFilterUrl | inputMessagesFilterGif | inputMessagesFilterVoice | inputMessagesFilterMusic | inputMessagesFilterChatPhotos | inputMessagesFilterPhoneCalls | inputMessagesFilterRoundVoice | inputMessagesFilterRoundVideo | inputMessagesFilterMyMentions | inputMessagesFilterGeo | inputMessagesFilterContacts | inputMessagesFilterPinned | inputMessagesFilterPoll;
 
 /** https://core.telegram.org/type/Update */
-export type Update = updateNewMessage | updateMessageID | updateDeleteMessages | updateUserTyping | updateChatUserTyping | updateChatParticipants | updateUserStatus | updateUserName | updateNewAuthorization | updateNewEncryptedMessage | updateEncryptedChatTyping | updateEncryption | updateEncryptedMessagesRead | updateChatParticipantAdd | updateChatParticipantDelete | updateDcOptions | updateNotifySettings | updateServiceNotification | updatePrivacy | updateUserPhone | updateReadHistoryInbox | updateReadHistoryOutbox | updateWebPage | updateReadMessagesContents | updateChannelTooLong | updateChannel | updateNewChannelMessage | updateReadChannelInbox | updateDeleteChannelMessages | updateChannelMessageViews | updateChatParticipantAdmin | updateNewStickerSet | updateStickerSetsOrder | updateStickerSets | updateSavedGifs | updateBotInlineQuery | updateBotInlineSend | updateEditChannelMessage | updateBotCallbackQuery | updateEditMessage | updateInlineBotCallbackQuery | updateReadChannelOutbox | updateDraftMessage | updateReadFeaturedStickers | updateRecentStickers | updateConfig | updatePtsChanged | updateChannelWebPage | updateDialogPinned | updatePinnedDialogs | updateBotWebhookJSON | updateBotWebhookJSONQuery | updateBotShippingQuery | updateBotPrecheckoutQuery | updatePhoneCall | updateLangPackTooLong | updateLangPack | updateFavedStickers | updateChannelReadMessagesContents | updateContactsReset | updateChannelAvailableMessages | updateDialogUnreadMark | updateMessagePoll | updateChatDefaultBannedRights | updateFolderPeers | updatePeerSettings | updatePeerLocated | updateNewScheduledMessage | updateDeleteScheduledMessages | updateTheme | updateGeoLiveViewed | updateLoginToken | updateMessagePollVote | updateDialogFilter | updateDialogFilterOrder | updateDialogFilters | updatePhoneCallSignalingData | updateChannelMessageForwards | updateReadChannelDiscussionInbox | updateReadChannelDiscussionOutbox | updatePeerBlocked | updateChannelUserTyping | updatePinnedMessages | updatePinnedChannelMessages | updateChat | updateGroupCallParticipants | updateGroupCall | updatePeerHistoryTTL | updateChatParticipant | updateChannelParticipant | updateBotStopped | updateGroupCallConnection | updateBotCommands | updatePendingJoinRequests | updateBotChatInviteRequester | updateMessageReactions | updateAttachMenuBots | updateWebViewResultSent | updateBotMenuButton | updateSavedRingtones | updateTranscribedAudio | updateReadFeaturedEmojiStickers | updateUserEmojiStatus | updateRecentEmojiStatuses | updateRecentReactions | updateMoveStickerSetToTop | updateMessageExtendedMedia | updateUser | updateAutoSaveSettings | updateStory | updateReadStories | updateStoryID | updateStoriesStealthMode | updateSentStoryReaction | updateBotChatBoost | updateChannelViewForumAsMessages | updatePeerWallpaper | updateBotMessageReaction | updateBotMessageReactions | updateSavedDialogPinned | updatePinnedSavedDialogs | updateSavedReactionTags | updateSmsJob | updateQuickReplies | updateNewQuickReply | updateDeleteQuickReply | updateQuickReplyMessage | updateDeleteQuickReplyMessages | updateBotBusinessConnect | updateBotNewBusinessMessage | updateBotEditBusinessMessage | updateBotDeleteBusinessMessage | updateNewStoryReaction | updateStarsBalance | updateBusinessBotCallbackQuery | updateStarsRevenueStatus | updateBotPurchasedPaidMedia | updatePaidReactionPrivacy | updateSentPhoneCode | updateGroupCallChainBlocks | updateReadMonoForumInbox | updateReadMonoForumOutbox | updateMonoForumNoPaidException | updateGroupCallMessage | updateGroupCallEncryptedMessage | updatePinnedForumTopic | updatePinnedForumTopics | updateDeleteGroupCallMessages | updateStarGiftAuctionState | updateStarGiftAuctionUserState | updateEmojiGameInfo | updateStarGiftCraftFail | updateChatParticipantRank | updateManagedBot;
+export type Update = updateNewMessage | updateMessageID | updateDeleteMessages | updateUserTyping | updateChatUserTyping | updateChatParticipants | updateUserStatus | updateUserName | updateNewAuthorization | updateNewEncryptedMessage | updateEncryptedChatTyping | updateEncryption | updateEncryptedMessagesRead | updateChatParticipantAdd | updateChatParticipantDelete | updateDcOptions | updateNotifySettings | updateServiceNotification | updatePrivacy | updateUserPhone | updateReadHistoryInbox | updateReadHistoryOutbox | updateWebPage | updateReadMessagesContents | updateChannelTooLong | updateChannel | updateNewChannelMessage | updateReadChannelInbox | updateDeleteChannelMessages | updateChannelMessageViews | updateChatParticipantAdmin | updateNewStickerSet | updateStickerSetsOrder | updateStickerSets | updateSavedGifs | updateBotInlineQuery | updateBotInlineSend | updateEditChannelMessage | updateBotCallbackQuery | updateEditMessage | updateInlineBotCallbackQuery | updateReadChannelOutbox | updateDraftMessage | updateReadFeaturedStickers | updateRecentStickers | updateConfig | updatePtsChanged | updateChannelWebPage | updateDialogPinned | updatePinnedDialogs | updateBotWebhookJSON | updateBotWebhookJSONQuery | updateBotShippingQuery | updateBotPrecheckoutQuery | updatePhoneCall | updateLangPackTooLong | updateLangPack | updateFavedStickers | updateChannelReadMessagesContents | updateContactsReset | updateChannelAvailableMessages | updateDialogUnreadMark | updateMessagePoll | updateChatDefaultBannedRights | updateFolderPeers | updatePeerSettings | updatePeerLocated | updateNewScheduledMessage | updateDeleteScheduledMessages | updateTheme | updateGeoLiveViewed | updateLoginToken | updateMessagePollVote | updateDialogFilter | updateDialogFilterOrder | updateDialogFilters | updatePhoneCallSignalingData | updateChannelMessageForwards | updateReadChannelDiscussionInbox | updateReadChannelDiscussionOutbox | updatePeerBlocked | updateChannelUserTyping | updatePinnedMessages | updatePinnedChannelMessages | updateChat | updateGroupCallParticipants | updateGroupCall | updatePeerHistoryTTL | updateChatParticipant | updateChannelParticipant | updateBotStopped | updateGroupCallConnection | updateBotCommands | updatePendingJoinRequests | updateBotChatInviteRequester | updateMessageReactions | updateAttachMenuBots | updateWebViewResultSent | updateBotMenuButton | updateSavedRingtones | updateTranscribedAudio | updateReadFeaturedEmojiStickers | updateUserEmojiStatus | updateRecentEmojiStatuses | updateRecentReactions | updateMoveStickerSetToTop | updateMessageExtendedMedia | updateUser | updateAutoSaveSettings | updateStory | updateReadStories | updateStoryID | updateStoriesStealthMode | updateSentStoryReaction | updateBotChatBoost | updateChannelViewForumAsMessages | updatePeerWallpaper | updateBotMessageReaction | updateBotMessageReactions | updateSavedDialogPinned | updatePinnedSavedDialogs | updateSavedReactionTags | updateSmsJob | updateQuickReplies | updateNewQuickReply | updateDeleteQuickReply | updateQuickReplyMessage | updateDeleteQuickReplyMessages | updateBotBusinessConnect | updateBotNewBusinessMessage | updateBotEditBusinessMessage | updateBotDeleteBusinessMessage | updateNewStoryReaction | updateStarsBalance | updateBusinessBotCallbackQuery | updateStarsRevenueStatus | updateBotPurchasedPaidMedia | updatePaidReactionPrivacy | updateSentPhoneCode | updateGroupCallChainBlocks | updateReadMonoForumInbox | updateReadMonoForumOutbox | updateMonoForumNoPaidException | updateGroupCallMessage | updateGroupCallEncryptedMessage | updatePinnedForumTopic | updatePinnedForumTopics | updateDeleteGroupCallMessages | updateStarGiftAuctionState | updateStarGiftAuctionUserState | updateEmojiGameInfo | updateStarGiftCraftFail | updateChatParticipantRank | updateManagedBot | updateBotGuestChatQuery | updateAiComposeTones;
 
 /** https://core.telegram.org/type/updates.State */
 export type updates_State = updates_state;
@@ -22580,7 +22842,7 @@ export type messages_PeerDialogs = messages_peerDialogs;
 export type TopPeer = topPeer;
 
 /** https://core.telegram.org/type/TopPeerCategory */
-export type TopPeerCategory = topPeerCategoryBotsPM | topPeerCategoryBotsInline | topPeerCategoryCorrespondents | topPeerCategoryGroups | topPeerCategoryChannels | topPeerCategoryPhoneCalls | topPeerCategoryForwardUsers | topPeerCategoryForwardChats | topPeerCategoryBotsApp;
+export type TopPeerCategory = topPeerCategoryBotsPM | topPeerCategoryBotsInline | topPeerCategoryCorrespondents | topPeerCategoryGroups | topPeerCategoryChannels | topPeerCategoryPhoneCalls | topPeerCategoryForwardUsers | topPeerCategoryForwardChats | topPeerCategoryBotsApp | topPeerCategoryBotsGuestChat;
 
 /** https://core.telegram.org/type/TopPeerCategoryPeers */
 export type TopPeerCategoryPeers = topPeerCategoryPeers;
@@ -22985,7 +23247,7 @@ export type InputThemeSettings = inputThemeSettings;
 export type ThemeSettings = themeSettings;
 
 /** https://core.telegram.org/type/WebPageAttribute */
-export type WebPageAttribute = webPageAttributeTheme | webPageAttributeStory | webPageAttributeStickerSet | webPageAttributeUniqueStarGift | webPageAttributeStarGiftCollection | webPageAttributeStarGiftAuction;
+export type WebPageAttribute = webPageAttributeTheme | webPageAttributeStory | webPageAttributeStickerSet | webPageAttributeUniqueStarGift | webPageAttributeStarGiftCollection | webPageAttributeStarGiftAuction | webPageAttributeAiComposeTone;
 
 /** https://core.telegram.org/type/messages.VotesList */
 export type messages_VotesList = messages_votesList;
@@ -23944,6 +24206,24 @@ export type bots_RequestedButton = bots_requestedButton;
 /** https://core.telegram.org/type/messages.ComposedMessageWithAI */
 export type messages_ComposedMessageWithAI = messages_composedMessageWithAI;
 
+/** https://core.telegram.org/type/stats.PollStats */
+export type stats_PollStats = stats_pollStats;
+
+/** https://core.telegram.org/type/InputAiComposeTone */
+export type InputAiComposeTone = inputAiComposeToneDefault | inputAiComposeToneID | inputAiComposeToneSlug;
+
+/** https://core.telegram.org/type/AiComposeTone */
+export type AiComposeTone = aiComposeTone | aiComposeToneDefault;
+
+/** https://core.telegram.org/type/aicompose.Tones */
+export type aicompose_Tones = aicompose_tonesNotModified | aicompose_tones;
+
+/** https://core.telegram.org/type/AiComposeToneExample */
+export type AiComposeToneExample = aiComposeToneExample;
+
+/** https://core.telegram.org/type/bots.AccessSettings */
+export type bots_AccessSettings = bots_accessSettings;
+
 export const schema = Object.freeze({
   definitions: {
     true: [
@@ -24598,6 +24878,7 @@ export const schema = Object.freeze({
         ["bot_forum_view", "flags2.16?true"],
         ["bot_forum_can_manage_topics", "flags2.17?true"],
         ["bot_can_manage_bots", "flags2.18?true"],
+        ["bot_guestchat", "flags2.19?true"],
         ["id", "long"],
         ["access_hash", "flags.0?long"],
         ["first_name", "flags.1?string"],
@@ -24965,7 +25246,7 @@ export const schema = Object.freeze({
       "Message",
     ],
     message: [
-      0x3AE56482,
+      0x95EF6F2B,
       [
         ["flags", "#"],
         ["out", "flags.1?true"],
@@ -24993,6 +25274,7 @@ export const schema = Object.freeze({
         ["fwd_from", "flags.2?MessageFwdHeader"],
         ["via_bot_id", "flags.11?long"],
         ["via_business_bot_id", "flags2.0?long"],
+        ["guestchat_via_from", "flags2.19?Peer"],
         ["reply_to", "flags.3?MessageReplyHeader"],
         ["date", "int"],
         ["message", "string"],
@@ -26011,12 +26293,13 @@ export const schema = Object.freeze({
       "auth.SentCode",
     ],
     "auth.sentCodePaymentRequired": [
-      0xE0955A3C,
+      0xF8827EBF,
       [
         ["store_product", "string"],
         ["phone_code_hash", "string"],
         ["support_email_address", "string"],
         ["support_email_subject", "string"],
+        ["premium_days", "int"],
         ["currency", "string"],
         ["amount", "long"],
       ],
@@ -27910,6 +28193,22 @@ export const schema = Object.freeze({
         ["bot_id", "long"],
         ["qts", "int"],
       ],
+      "Update",
+    ],
+    updateBotGuestChatQuery: [
+      0xCDD4093D,
+      [
+        ["flags", "#"],
+        ["query_id", "long"],
+        ["message", "Message"],
+        ["reference_messages", "flags.0?Vector<Message>"],
+        ["qts", "int"],
+      ],
+      "Update",
+    ],
+    updateAiComposeTones: [
+      0x8C0F91FB,
+      [],
       "Update",
     ],
     "updates.state": [
@@ -30578,6 +30877,11 @@ export const schema = Object.freeze({
       [],
       "TopPeerCategory",
     ],
+    topPeerCategoryBotsGuestChat: [
+      0x6C24F3DD,
+      [],
+      "TopPeerCategory",
+    ],
     topPeerCategoryPeers: [
       0xFB834291,
       [
@@ -32949,7 +33253,7 @@ export const schema = Object.freeze({
       "PollAnswer",
     ],
     poll: [
-      0xB8425BE9,
+      0x966E2DBF,
       [
         ["id", "long"],
         ["flags", "#"],
@@ -32962,10 +33266,12 @@ export const schema = Object.freeze({
         ["shuffle_answers", "flags.8?true"],
         ["hide_results_until_close", "flags.9?true"],
         ["creator", "flags.10?true"],
+        ["subscribers_only", "flags.11?true"],
         ["question", "TextWithEntities"],
         ["answers", "Vector<PollAnswer>"],
         ["close_period", "flags.4?int"],
         ["close_date", "flags.5?int"],
+        ["countries_iso2", "flags.12?Vector<string>"],
         ["hash", "long"],
       ],
       "Poll",
@@ -32988,6 +33294,7 @@ export const schema = Object.freeze({
         ["flags", "#"],
         ["min", "flags.0?true"],
         ["has_unread_votes", "flags.6?true"],
+        ["can_view_stats", "flags.7?true"],
         ["results", "flags.1?Vector<PollAnswerVoters>"],
         ["total_voters", "flags.2?int"],
         ["recent_voters", "flags.3?Vector<Peer>"],
@@ -33060,6 +33367,7 @@ export const schema = Object.freeze({
         ["send_docs", "flags.24?true"],
         ["send_plain", "flags.25?true"],
         ["edit_rank", "flags.26?true"],
+        ["send_reactions", "flags.27?true"],
         ["until_date", "int"],
       ],
       "ChatBannedRights",
@@ -33495,6 +33803,13 @@ export const schema = Object.freeze({
       [
         ["gift", "StarGift"],
         ["end_date", "int"],
+      ],
+      "WebPageAttribute",
+    ],
+    webPageAttributeAiComposeTone: [
+      0x7781FE18,
+      [
+        ["emoji_id", "long"],
       ],
       "WebPageAttribute",
     ],
@@ -34912,12 +35227,13 @@ export const schema = Object.freeze({
       "InputStorePaymentPurpose",
     ],
     inputStorePaymentAuthCode: [
-      0x9BB2636D,
+      0x3FC18057,
       [
         ["flags", "#"],
         ["restore", "flags.0?true"],
         ["phone_number", "string"],
         ["phone_code_hash", "string"],
+        ["premium_days", "int"],
         ["currency", "string"],
         ["amount", "long"],
       ],
@@ -38266,6 +38582,92 @@ export const schema = Object.freeze({
       ],
       "messages.ComposedMessageWithAI",
     ],
+    "stats.pollStats": [
+      0x2999BEED,
+      [
+        ["votes_graph", "StatsGraph"],
+      ],
+      "stats.PollStats",
+    ],
+    inputAiComposeToneDefault: [
+      0x1FE9A9BF,
+      [
+        ["tone", "string"],
+      ],
+      "InputAiComposeTone",
+    ],
+    inputAiComposeToneID: [
+      0x0773C080,
+      [
+        ["id", "long"],
+        ["access_hash", "long"],
+      ],
+      "InputAiComposeTone",
+    ],
+    inputAiComposeToneSlug: [
+      0x1FA01357,
+      [
+        ["slug", "string"],
+      ],
+      "InputAiComposeTone",
+    ],
+    aiComposeTone: [
+      0xCFF63EA9,
+      [
+        ["flags", "#"],
+        ["creator", "flags.0?true"],
+        ["id", "long"],
+        ["access_hash", "long"],
+        ["slug", "string"],
+        ["title", "string"],
+        ["emoji_id", "flags.1?long"],
+        ["prompt", "flags.4?string"],
+        ["installs_count", "flags.2?int"],
+        ["author_id", "flags.3?long"],
+        ["example_english", "flags.5?AiComposeToneExample"],
+      ],
+      "AiComposeTone",
+    ],
+    aiComposeToneDefault: [
+      0x9BAD6414,
+      [
+        ["tone", "string"],
+        ["emoji_id", "long"],
+        ["title", "string"],
+      ],
+      "AiComposeTone",
+    ],
+    "aicompose.tonesNotModified": [
+      0xC1F46103,
+      [],
+      "aicompose.Tones",
+    ],
+    "aicompose.tones": [
+      0x6C9D0EFE,
+      [
+        ["hash", "long"],
+        ["tones", "Vector<AiComposeTone>"],
+        ["users", "Vector<User>"],
+      ],
+      "aicompose.Tones",
+    ],
+    aiComposeToneExample: [
+      0xF1D628EC,
+      [
+        ["from", "TextWithEntities"],
+        ["to", "TextWithEntities"],
+      ],
+      "AiComposeToneExample",
+    ],
+    "bots.accessSettings": [
+      0xDD1FBF93,
+      [
+        ["flags", "#"],
+        ["restricted", "flags.0?true"],
+        ["add_users", "flags.1?Vector<User>"],
+      ],
+      "bots.AccessSettings",
+    ],
     invokeWithBusinessConnectionPrefix: [
       0xDD289F8E,
       [
@@ -39700,6 +40102,7 @@ export const schema = Object.freeze({
         ["groups", "flags.10?true"],
         ["channels", "flags.15?true"],
         ["bots_app", "flags.16?true"],
+        ["bots_guestchat", "flags.17?true"],
         ["offset", "int"],
         ["limit", "int"],
         ["hash", "long"],
@@ -42174,14 +42577,14 @@ export const schema = Object.freeze({
       "Bool",
     ],
     "messages.composeMessageWithAI": [
-      0xFD426AFE,
+      0xDAECC589,
       [
         ["flags", "#"],
         ["proofread", "flags.0?true"],
         ["emojify", "flags.3?true"],
         ["text", "TextWithEntities"],
         ["translate_to_lang", "flags.1?string"],
-        ["change_tone", "flags.2?string"],
+        ["tone", "flags.2?InputAiComposeTone"],
       ],
       "messages.ComposedMessageWithAI",
     ],
@@ -42241,6 +42644,42 @@ export const schema = Object.freeze({
         ["top_msg_id", "flags.0?int"],
       ],
       "messages.AffectedHistory",
+    ],
+    "messages.setBotGuestChatResult": [
+      0xB8F106E3,
+      [
+        ["query_id", "long"],
+        ["result", "InputBotInlineResult"],
+      ],
+      "InputBotInlineMessageID",
+    ],
+    "messages.deleteParticipantReactions": [
+      0xA0B80CF8,
+      [
+        ["peer", "InputPeer"],
+        ["participant", "InputPeer"],
+      ],
+      "Bool",
+    ],
+    "messages.deleteParticipantReaction": [
+      0xE3B7F82C,
+      [
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
+        ["participant", "InputPeer"],
+      ],
+      "Updates",
+    ],
+    "messages.getPersonalChannelHistory": [
+      0x55FB0996,
+      [
+        ["user_id", "InputUser"],
+        ["limit", "int"],
+        ["max_id", "int"],
+        ["min_id", "int"],
+        ["hash", "long"],
+      ],
+      "messages.Messages",
     ],
     "updates.getState": [
       0xEDD4882A,
@@ -43348,6 +43787,23 @@ export const schema = Object.freeze({
         ["webapp_req_id", "string"],
       ],
       "KeyboardButton",
+    ],
+    "bots.getAccessSettings": [
+      0x213853A3,
+      [
+        ["bot", "InputUser"],
+      ],
+      "bots.AccessSettings",
+    ],
+    "bots.editAccessSettings": [
+      0x31813CD8,
+      [
+        ["flags", "#"],
+        ["restricted", "flags.0?true"],
+        ["bot", "InputUser"],
+        ["add_users", "flags.1?Vector<InputUser>"],
+      ],
+      "Bool",
     ],
     "payments.getPaymentForm": [
       0x37148DBB,
@@ -44532,6 +44988,16 @@ export const schema = Object.freeze({
       ],
       "stats.PublicForwards",
     ],
+    "stats.getPollStats": [
+      0xC27DFA68,
+      [
+        ["flags", "#"],
+        ["dark", "flags.0?true"],
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
+      ],
+      "stats.PollStats",
+    ],
     "chatlists.exportChatlistInvite": [
       0x8472478E,
       [
@@ -45029,6 +45495,66 @@ export const schema = Object.freeze({
       ],
       "fragment.CollectibleInfo",
     ],
+    "aicompose.createTone": [
+      0x4AA83913,
+      [
+        ["flags", "#"],
+        ["display_author", "flags.0?true"],
+        ["emoji_id", "long"],
+        ["title", "string"],
+        ["prompt", "string"],
+      ],
+      "AiComposeTone",
+    ],
+    "aicompose.updateTone": [
+      0x903BCF59,
+      [
+        ["flags", "#"],
+        ["tone", "InputAiComposeTone"],
+        ["display_author", "flags.0?Bool"],
+        ["emoji_id", "flags.1?long"],
+        ["title", "flags.2?string"],
+        ["prompt", "flags.3?string"],
+      ],
+      "AiComposeTone",
+    ],
+    "aicompose.saveTone": [
+      0x1782CBB1,
+      [
+        ["tone", "InputAiComposeTone"],
+        ["unsave", "Bool"],
+      ],
+      "Bool",
+    ],
+    "aicompose.deleteTone": [
+      0xDD39316A,
+      [
+        ["tone", "InputAiComposeTone"],
+      ],
+      "Bool",
+    ],
+    "aicompose.getTone": [
+      0xB2E8BA03,
+      [
+        ["tone", "InputAiComposeTone"],
+      ],
+      "aicompose.Tones",
+    ],
+    "aicompose.getTones": [
+      0xABD59201,
+      [
+        ["hash", "long"],
+      ],
+      "aicompose.Tones",
+    ],
+    "aicompose.getToneExample": [
+      0xD1B4AB14,
+      [
+        ["tone", "InputAiComposeTone"],
+        ["num", "int"],
+      ],
+      "AiComposeToneExample",
+    ],
   },
   identifierToName: {
     [0x3FEDD339]: "true",
@@ -45129,7 +45655,7 @@ export const schema = Object.freeze({
     [0x37C1011C]: "chatPhotoEmpty",
     [0x1C6E1C11]: "chatPhoto",
     [0x90A6CA84]: "messageEmpty",
-    [0x3AE56482]: "message",
+    [0x95EF6F2B]: "message",
     [0x7A800E0A]: "messageService",
     [0x3DED6320]: "messageMediaEmpty",
     [0xE216EB63]: "messageMediaPhoto",
@@ -45231,7 +45757,7 @@ export const schema = Object.freeze({
     [0xB2A2F663]: "geoPoint",
     [0x5E002502]: "auth.sentCode",
     [0x2390FE44]: "auth.sentCodeSuccess",
-    [0xE0955A3C]: "auth.sentCodePaymentRequired",
+    [0xF8827EBF]: "auth.sentCodePaymentRequired",
     [0x2EA2C0D4]: "auth.authorization",
     [0x44747E9A]: "auth.authorizationSignUpRequired",
     [0xB434E2B8]: "auth.exportedAuthorization",
@@ -45447,6 +45973,8 @@ export const schema = Object.freeze({
     [0xAC072444]: "updateStarGiftCraftFail",
     [0xBD8367B9]: "updateChatParticipantRank",
     [0x4880ED9A]: "updateManagedBot",
+    [0xCDD4093D]: "updateBotGuestChatQuery",
+    [0x8C0F91FB]: "updateAiComposeTones",
     [0xA56C2A3E]: "updates.state",
     [0x5D75A138]: "updates.differenceEmpty",
     [0x00F49CA0]: "updates.difference",
@@ -45753,6 +46281,7 @@ export const schema = Object.freeze({
     [0xA8406CA9]: "topPeerCategoryForwardUsers",
     [0xFBEEC0F0]: "topPeerCategoryForwardChats",
     [0xFD9E7BEC]: "topPeerCategoryBotsApp",
+    [0x6C24F3DD]: "topPeerCategoryBotsGuestChat",
     [0xFB834291]: "topPeerCategoryPeers",
     [0xDE266EF5]: "contacts.topPeersNotModified",
     [0x70B772A8]: "contacts.topPeers",
@@ -46032,7 +46561,7 @@ export const schema = Object.freeze({
     [0x01EB3758]: "help.userInfo",
     [0x4B7D786A]: "pollAnswer",
     [0x199FED96]: "inputPollAnswer",
-    [0xB8425BE9]: "poll",
+    [0x966E2DBF]: "poll",
     [0x3645230A]: "pollAnswerVoters",
     [0xBA7BB15E]: "pollResults",
     [0xF041E250]: "chatOnlines",
@@ -46088,6 +46617,7 @@ export const schema = Object.freeze({
     [0xCF6F6DB8]: "webPageAttributeUniqueStarGift",
     [0x31CAD303]: "webPageAttributeStarGiftCollection",
     [0x01C641C2]: "webPageAttributeStarGiftAuction",
+    [0x7781FE18]: "webPageAttributeAiComposeTone",
     [0x4899484E]: "messages.votesList",
     [0xF568028A]: "bankCardOpenUrl",
     [0x3E24E573]: "payments.bankCardData",
@@ -46238,7 +46768,7 @@ export const schema = Object.freeze({
     [0xF9A2A6CB]: "inputStorePaymentStarsTopup",
     [0x1D741EF7]: "inputStorePaymentStarsGift",
     [0x751F08FA]: "inputStorePaymentStarsGiveaway",
-    [0x9BB2636D]: "inputStorePaymentAuthCode",
+    [0x3FC18057]: "inputStorePaymentAuthCode",
     [0x88F8F21B]: "paymentFormMethod",
     [0x2DE11AAE]: "emojiStatusEmpty",
     [0xE7FF068A]: "emojiStatus",
@@ -46593,7 +47123,17 @@ export const schema = Object.freeze({
     [0x3C60B621]: "bots.exportedBotToken",
     [0xF13BBCD7]: "bots.requestedButton",
     [0x90D7ADFA]: "messages.composedMessageWithAI",
+    [0x2999BEED]: "stats.pollStats",
+    [0x1FE9A9BF]: "inputAiComposeToneDefault",
+    [0x0773C080]: "inputAiComposeToneID",
+    [0x1FA01357]: "inputAiComposeToneSlug",
+    [0xCFF63EA9]: "aiComposeTone",
+    [0x9BAD6414]: "aiComposeToneDefault",
+    [0xC1F46103]: "aicompose.tonesNotModified",
+    [0x6C9D0EFE]: "aicompose.tones",
+    [0xF1D628EC]: "aiComposeToneExample",
+    [0xDD1FBF93]: "bots.accessSettings",
   },
 }) as unknown as Schema;
 
-export const LAYER = 224;
+export const LAYER = 225;
