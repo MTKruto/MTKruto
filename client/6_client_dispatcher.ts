@@ -3501,4 +3501,19 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   async revokeManagedBotToken(userId: ID): Promise<string> {
     return await this.#dispatch("revokeManagedBotToken", userId);
   }
+
+  //
+  // ========================= GUEST QUERIES ========================= //
+  //
+
+  /**
+   * Answer a guest query. Bot-only.
+   *
+   * @method gq
+   * @param id The identifier of the guest query to answer.
+   * @returns The identifier of the sent message.
+   */
+  async answerGuestQuery(id: string, result: InlineQueryResult): Promise<string> {
+    return await this.#dispatch("answerGuestQuery", id, result);
+  }
 }

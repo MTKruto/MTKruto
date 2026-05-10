@@ -47,6 +47,7 @@ import type { LinkPreview } from "./5_link_preview.ts";
 import type { Message } from "./6_message.ts";
 import type { CallbackQuery } from "./7_callback_query.ts";
 import type { ChatListItem } from "./7_chat_list_item.ts";
+import type { GuestQuery } from "./7_guest_query.ts";
 
 /**
  * A client's connection state was changed.
@@ -213,6 +214,23 @@ export interface UpdateInlineQuery {
   type: "inlineQuery";
   /** The received inline query */
   inlineQuery: InlineQuery;
+}
+
+/**
+ * A guest query was received.
+ *
+ * ```
+ * client.on("guestQuery", (ctx) => {
+ *   console.log("A guest query was just received.");
+ *   // ctx.update.guestQuery
+ * });
+ * ```
+ * @unlisted
+ */
+export interface UpdateGuestQuery {
+  type: "guestQuery";
+  /** The guest query. */
+  guestQuery: GuestQuery;
 }
 
 /**
@@ -571,6 +589,7 @@ export interface UpdateMap {
   deletedMessages: UpdateMessagesDeleted;
   callbackQuery: UpdateCallbackQuery;
   inlineQuery: UpdateInlineQuery;
+  guestQuery: UpdateGuestQuery;
   chosenInlineResult: UpdateChosenInlineResult;
   newChat: UpdateNewChat;
   editedChat: UpdateEditedChat;
@@ -610,6 +629,7 @@ export type Update =
   | UpdateMessagesDeleted
   | UpdateCallbackQuery
   | UpdateInlineQuery
+  | UpdateGuestQuery
   | UpdateChosenInlineResult
   | UpdateNewChat
   | UpdateEditedChat

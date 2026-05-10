@@ -80,6 +80,8 @@ export interface User {
   isAddedToAttachmentsMenu?: boolean;
   /** Whether the user is a bot that has a main mini app. */
   hasMainMiniApp?: boolean;
+  /** Whether the user is a bot that supports guest queries. */
+  isGuestQuerySupported?: boolean;
 }
 
 export function constructUser(user_: Api.user): User {
@@ -112,6 +114,7 @@ export function constructUser(user_: Api.user): User {
     restrictionReason: user_.restriction_reason?.map((v) => constructRestrictionReason(v)),
     isAddedToAttachmentsMenu: user_.bot ? user_.attach_menu_enabled || false : undefined,
     hasMainMiniApp: user_.bot ? user_.bot_has_main_app || false : undefined,
+    isGuestQuerySupported: user_.bot ? user_.bot_guestchat || false : undefined,
   };
   if (Api.is("userProfilePhoto", user_.photo)) {
     user.photo = constructChatPhoto(user_.photo, user.id, user_.access_hash ?? 0n);

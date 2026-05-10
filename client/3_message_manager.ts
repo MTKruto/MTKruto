@@ -20,10 +20,10 @@
 
 import { contentType, startsWith, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } from "../1_utilities.ts";
+import { base64EncodeUrlSafe, encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
-import { constructBlockedUserList, constructChatAction, constructMessageDraft, constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructSummarizedText, constructVoiceTranscription, deserializeFileId, type FileId, type InputChecklistItem, type InputMedia, type InputPollOption, type MessageList, messageSearchFilterToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type VoiceTranscription } from "../3_types.ts";
+import { constructBlockedUserList, constructChatAction, constructMessageDraft, constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructSummarizedText, constructVoiceTranscription, deserializeFileId, type FileId, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, type InputPollOption, type MessageGetter, type MessageList, messageSearchFilterToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type VoiceTranscription } from "../3_types.ts";
 import { assertMessageType, type ChatActionType, constructMessage as constructMessage_, deserializeInlineMessageId, type FileSource, FileType, type ID, type Message, type MessageEntity, messageEntityToTlObject, type ParseMode, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type Update, type UsernameResolver } from "../3_types.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
@@ -61,6 +61,7 @@ const messageManagerUpdates = [
   "updateUserTyping",
   "updateChatUserTyping",
   "updateChannelUserTyping",
+  "updateBotGuestChatQuery",
 ] as const;
 
 type MessageManagerUpdate = Api.Types[(typeof messageManagerUpdates)[number]];
@@ -219,7 +220,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return messages;
   }
 
-  async constructMessage(message_: Api.Message, r?: boolean, business?: { connectionId: string; replyToMessage?: Api.Message }) {
+  async constructMessage(message_: Api.Message, r?: boolean, business?: { connectionId: string; replyToMessage?: Api.Message }, messageGetter?: MessageGetter) {
     const mediaPoll = "media" in message_ && Api.is("messageMediaPoll", message_.media) ? message_.media : null;
     const pollId = mediaPoll?.poll.id;
     let poll: Api.poll | null = null;
@@ -227,7 +228,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     if (pollId) {
       [poll, pollResults] = await Promise.all([this.#c.messageStorage.getPoll(pollId), this.#c.messageStorage.getPollResults(pollId)]);
     }
-    const message = await constructMessage_(message_, this.#c.getPeer, this.getMessage.bind(this), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager), r, business, poll ?? undefined, pollResults ?? undefined);
+    const message = await constructMessage_(message_, this.#c.getPeer, messageGetter ?? this.getMessage.bind(this), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager), r, business, poll ?? undefined, pollResults ?? undefined);
     if (!poll && mediaPoll) {
       await this.#c.messageStorage.setPoll(mediaPoll.poll.id, mediaPoll.poll);
     }
@@ -1450,6 +1451,19 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       }
     }
 
+    if (Api.is("updateBotGuestChatQuery", update)) {
+      let replyToMessage: Api.Message | undefined;
+      const replyTo = Api.as("message", update.message).reply_to;
+      if (Api.is("messageReplyHeader", replyTo)) {
+        replyToMessage = update.reference_messages?.find((v) => v.id === replyTo.reply_to_msg_id);
+      }
+      const message = await this.constructMessage(update.message, false);
+      if (replyToMessage) {
+        message.replyToMessage = await this.constructMessage(replyToMessage, false);
+      }
+      return { type: "guestQuery", guestQuery: { id: String(update.query_id), message } };
+    }
+
     return null;
   }
 
@@ -2005,5 +2019,11 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const peer = await this.#c.getInputPeer(chatId);
     const result = await this.#c.invoke({ _: "messages.summarizeText", peer, id: messageId, to_lang: params?.languageCode });
     return constructSummarizedText(result);
+  }
+
+  async answerGuestQuery(id: string, result_: InlineQueryResult) {
+    const result = await inlineQueryResultToTlObject(result_, this.parseText.bind(this), this.usernameResolver.bind(this));
+    const result__ = await this.#c.invoke({ _: "messages.setBotGuestChatResult", query_id: BigInt(id), result });
+    return base64EncodeUrlSafe(Api.serializeObject(result__));
   }
 }
