@@ -1347,6 +1347,19 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     }
   }
 
+  async removeUserReaction(chatId: ID, messageId: number, userId: ID) {
+    const peer = await this.#c.getInputPeer(chatId);
+    const msg_id = messageId;
+    const participant = await this.#c.getInputPeer(userId);
+    await this.#c.invoke({ _: "messages.deleteParticipantReaction", peer, msg_id, participant });
+  }
+
+  async removeUserReactions(chatId: ID, userId: ID) {
+    const peer = await this.#c.getInputPeer(chatId);
+    const participant = await this.#c.getInputPeer(userId);
+    await this.#c.invoke({ _: "messages.deleteParticipantReactions", peer, participant });
+  }
+
   async clearRecentReactions() {
     this.#c.storage.assertUser("clearRecentReactions");
     await this.#c.invoke({ _: "messages.clearRecentReactions" });

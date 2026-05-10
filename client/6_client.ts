@@ -3702,6 +3702,29 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Undo a reaction by another user.
+   *
+   * @method re
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageId The identifier of the message which the reaction was made to.
+   * @param userId The identifier of the user who made the reaction.
+   */
+  async removeUserReaction(chatId: ID, messageId: number, userId: ID): Promise<void> {
+    return await this.#messageManager.removeUserReaction(chatId, messageId, userId);
+  }
+
+  /**
+   * Undo recent reactions to messages made by another user.
+   *
+   * @method re
+   * @param chatId The identifier of the chat which the messages belongs to.
+   * @param userId The identifier of the user who made the reactions.
+   */
+  async removeUserReactions(chatId: ID, userId: ID): Promise<void> {
+    return await this.#messageManager.removeUserReactions(chatId, userId);
+  }
+
+  /**
    * Clear recent reactions. User-only.
    *
    * @method re
