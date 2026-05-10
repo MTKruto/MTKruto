@@ -121,7 +121,7 @@ export class ConnectionWebSocket implements Connection {
     }
   }
 
-  async write(p: Uint8Array) {
+  async write(p: Uint8Array<ArrayBuffer>) {
     this.#assertConnected();
     const unlock = await this.#wMutex.lock();
     try {
