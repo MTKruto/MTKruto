@@ -1015,6 +1015,18 @@ export class Context {
     return await this.client.removeReaction(chatId, messageId, reaction);
   }
 
+  /** Context-aware alias for {@link Client.removeUserReaction}. */
+  async removeUserReaction(messageId: number, userId: ID): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.removeUserReaction(chatId, messageId, userId);
+  }
+
+  /** Context-aware alias for {@link Client.removeUserReactions}. */
+  async removeUserReactions(userId: ID): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.removeUserReactions(chatId, userId);
+  }
+
   /** Context-aware alias for {@link Client.removeStoriesFromHighlights}. */
   async removeStoriesFromHighlights(storyIds: number[]): Promise<void> {
     const chatId = this.#mustGetChatId();
