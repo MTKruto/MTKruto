@@ -59,6 +59,7 @@ interface Shortcuts<T extends Update> {
     : T extends { type: "editedMessage" } ? T["editedMessage"]
     : T extends { type: "scheduledMessage" } ? T["scheduledMessage"]
     : T extends { type: "callbackQuery" } ? T["callbackQuery"]["message"]
+    : T extends { type: "guestQuery" } ? T["guestQuery"]["message"]
     : undefined;
   chat: T extends { type: "callbackQuery" } ? NonNullable<T["callbackQuery"]["message"]>["chat"] | undefined
     : Shortcuts<T>["msg"] extends object ? Shortcuts<T>["msg"]["chat"]
@@ -86,6 +87,7 @@ interface Shortcuts<T extends Update> {
     : undefined;
   message: T extends { type: "message" } ? T["message"] : undefined;
   editedMessage: T extends { type: "editedMessage" } ? T["editedMessage"] : undefined;
+  guestQuery: T extends { type: "guestQuery" } ? T["guestQuery"] : undefined;
   callbackQuery: T extends { type: "callbackQuery" } ? T["callbackQuery"] : undefined;
   inlineQuery: T extends { type: "inlineQuery" } ? T["inlineQuery"] : undefined;
   chosenInlineResult: T extends { type: "chosenInlineResult" } ? T["chosenInlineResult"] : undefined;

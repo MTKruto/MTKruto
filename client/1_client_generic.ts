@@ -2719,4 +2719,17 @@ export abstract class ClientGeneric {
    * @returns The managed bot's new token.
    */
   abstract revokeManagedBotToken(userId: ID): Promise<string>;
+
+  //
+  // ========================= GUEST QUERIES ========================= //
+  //
+
+  /**
+   * Answer a guest query. Bot-only.
+   *
+   * @method gq
+   * @param id The identifier of the guest query to answer.
+   * @returns The identifier of the sent message.
+   */
+  abstract answerGuestQuery(id: string, result: InlineQueryResult): Promise<string>;
 }

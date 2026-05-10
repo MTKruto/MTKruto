@@ -169,6 +169,7 @@ export * from "./types/6_message.ts";
 export * from "./types/6_star_transaction_list.ts";
 export * from "./types/7_callback_query.ts";
 export * from "./types/7_chat_list_item.ts";
+export * from "./types/7_guest_query.ts";
 export * from "./types/7_inline_query_result.ts";
 export * from "./types/7_message_list.ts";
 export * from "./types/7_saved_chat.ts";
