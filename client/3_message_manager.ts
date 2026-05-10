@@ -129,7 +129,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return messages[0] ?? null;
   }
 
-  static parseText(text: string, entities: MessageEntity[], parseMode: ParseMode): [string, MessageEntity[]] {
+  static parseText(text: string, entities: MessageEntity[], parseMode: ParseMode, isEmptyAllowed = false): [string, MessageEntity[]] {
     switch (parseMode) {
       case null:
         break;
@@ -160,7 +160,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       }
     }
 
-    if (!text.length) {
+    if (!isEmptyAllowed && !text.length) {
       throw new InputError("Text must not be empty.");
     }
 
@@ -182,8 +182,8 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     }
   }
 
-  parseText(text_: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) {
-    const [text, entities_] = MessageManager.parseText(text_, params?.entities ?? [], params?.parseMode ?? this.#c.parseMode);
+  parseText(text_: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }, isEmptyAllowed?: boolean) {
+    const [text, entities_] = MessageManager.parseText(text_, params?.entities ?? [], params?.parseMode ?? this.#c.parseMode, isEmptyAllowed);
     const entities = entities_?.length > 0 ? entities_.map((v) => messageEntityToTlObject(v, this.#c.getPeer)) : undefined;
     return [text, entities] as const;
   }
@@ -305,7 +305,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async sendMessageDraft(chatId: ID, draftId: number, text: string, params?: SendMessageDraftParams) {
     this.#c.storage.assertBot("sendMessageDraft");
-    const [message, entities] = this.parseText(text, params);
+    const [message, entities] = this.parseText(text, params, true);
     const peer = await this.#c.getInputPeer(chatId);
     await this.#c.invoke({
       _: "messages.setTyping",
