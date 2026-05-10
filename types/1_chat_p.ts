@@ -95,6 +95,8 @@ export interface ChatPPrivate extends _ChatPBase {
   isAddedToAttachmentsMenu?: boolean;
   /** Whether the user is a bot that has been added to the attachment menu by the current user. */
   hasMainMiniApp?: boolean;
+  /** Whether the user is a bot that supports guest queries. */
+  isGuestQuerySupported?: boolean;
 }
 
 /** @unlisted */
@@ -179,6 +181,7 @@ export function constructChatP(chat: Api.User | Api.Chat): ChatP {
       restrictionReason: chat.restriction_reason?.map((v) => constructRestrictionReason(v)),
       isAddedToAttachmentsMenu: chat.bot ? chat.attach_menu_enabled || false : undefined,
       hasMainMiniApp: chat.bot ? chat.attach_menu_enabled || false : undefined,
+      isGuestQuerySupported: chat.bot ? chat.bot_guestchat || false : undefined,
     };
     if (Api.is("userProfilePhoto", chat.photo)) {
       chat_.photo = constructChatPhoto(chat.photo, chat_.id, chat.access_hash ?? 0n);
