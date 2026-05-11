@@ -51,7 +51,7 @@ export class ManagedBotManager {
   }
 
   async getManagedBotAccessSettings(userId: ID) {
-    this.#c.storage.assertBot("setManagedBotAccessSettings");
+    this.#c.storage.assertBot("getManagedBotAccessSettings");
     const bot = await this.#c.getInputUser(userId);
     const result = await this.#c.invoke({ _: "bots.getAccessSettings", bot });
     return constructBotAccessSettings(result);
