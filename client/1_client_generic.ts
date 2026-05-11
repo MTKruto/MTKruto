@@ -2753,7 +2753,6 @@ export abstract class ClientGeneric {
    *
    * @method mb
    * @param userId The identifier of the bot user.
-   * @param isAccessRestricted Whether access is restricted to specific users.
    */
   abstract getManagedBotAccessSettings(userId: ID): Promise<BotAccessSettings>;
 

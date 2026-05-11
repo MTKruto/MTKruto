@@ -3540,7 +3540,6 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    *
    * @method mb
    * @param userId The identifier of the bot user.
-   * @param isAccessRestricted Whether access is restricted to specific users.
    */
   async getManagedBotAccessSettings(userId: ID): Promise<BotAccessSettings> {
     return await this.#dispatch("getManagedBotAccessSettings", userId);
