@@ -309,6 +309,8 @@ export interface _StarCount {
 export interface SendPhotoParams extends _CaptionCommon, _SpoilCommon, _UploadCommon, _SendCommon, _ReplyMarkupCommon, _StarCount {
   /** The photo's self-destruct preference. */
   selfDestruct?: SelfDestructOption;
+  /** The live photo's video. If specified, the photo will be a live photo. */
+  video?: FileSource
 }
 
 export interface SetChatPhotoParams extends _UploadCommon {
