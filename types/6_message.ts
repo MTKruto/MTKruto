@@ -122,6 +122,8 @@ export interface _MessageBase {
   isScheduled?: boolean;
   /** The message's self-destruct preference. */
   selfDestruct?: SelfDestructOption;
+  /** If this message is a guest message, the user or chat that triggered it. */
+  for?: ChatP;
 }
 
 /**
@@ -1009,7 +1011,8 @@ export async function constructMessage(
     senderBoostCount: message_.from_boosts_applied,
     effectId: message_.effect ? String(message_.effect) : undefined,
     isScheduled: message_.from_scheduled ? true : undefined,
-    ...await getSender(message_, getPeer),
+    ...getSender(message_, getPeer),
+    for: message_.guestchat_via_from ? getPeer(message_.guestchat_via_from)?.[0] : undefined,
   };
 
   if (message_.reactions) {
