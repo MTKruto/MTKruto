@@ -18,7 +18,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { ID } from "../3_types.ts";
+import { constructBotAccessSettings, type ID } from "../3_types.ts";
+import type { SetManagedBotAccessSettingsParams } from "./0_params.ts";
 import type { C } from "./1_types.ts";
 
 export class ManagedBotManager {
@@ -40,5 +41,19 @@ export class ManagedBotManager {
     const bot = await this.#c.getInputUser(userId);
     const result = await this.#c.invoke({ _: "bots.exportBotToken", bot, revoke: true });
     return result.token;
+  }
+
+  async setManagedBotAccessSettings(userId: ID, isAccessRestricted: boolean, params?: SetManagedBotAccessSettingsParams) {
+    this.#c.storage.assertBot("setManagedBotAccessSettings");
+    const bot = await this.#c.getInputUser(userId);
+    const add_users = params?.usersWithAccess ? await Promise.all(params.usersWithAccess.map((v) => this.#c.getInputUser(v))) : undefined;
+    await this.#c.invoke({ _: "bots.editAccessSettings", bot, add_users, restricted: isAccessRestricted || undefined });
+  }
+
+  async getManagedBotAccessSettings(userId: ID) {
+    this.#c.storage.assertBot("getManagedBotAccessSettings");
+    const bot = await this.#c.getInputUser(userId);
+    const result = await this.#c.invoke({ _: "bots.getAccessSettings", bot });
+    return constructBotAccessSettings(result);
   }
 }
