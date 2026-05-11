@@ -194,6 +194,8 @@ export interface SendPollParams extends _SendCommon, _ReplyMarkupCommon {
   isAddingOptionsAllowed?: boolean;
   /** The codes of the countries where the poll is available in. */
   countries?: string[];
+  /** Whether only channel subscribers can vote in the poll. */
+  isSubscriberOnly?: boolean;
 }
 
 export interface SendChecklistParams extends _SendCommon {
