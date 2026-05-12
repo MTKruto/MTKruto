@@ -23,7 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { base64EncodeUrlSafe, encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
-import { constructBlockedUserList, constructChatAction, constructMessageDraft, constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructSummarizedText, constructVoiceTranscription, deserializeFileId, type FileId, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, type InputPollOption, type MessageGetter, type MessageList, messageSearchFilterToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type VoiceTranscription } from "../3_types.ts";
+import { constructBlockedUserList, constructChatAction, constructMessageDraft, constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructSummarizedText, constructVoiceTranscription, deserializeFileId, type FileId, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, type InputPollOption, type MessageGetter, type MessageList, type MessageLivePhoto, type MessagePhoto, messageSearchFilterToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type VoiceTranscription } from "../3_types.ts";
 import { assertMessageType, type ChatActionType, constructMessage as constructMessage_, deserializeInlineMessageId, type FileSource, FileType, type ID, type Message, type MessageEntity, messageEntityToTlObject, type ParseMode, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type Update, type UsernameResolver } from "../3_types.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
@@ -740,6 +740,14 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   }
 
   async sendPhoto(chatId: ID, photo: FileSource, params?: SendPhotoParams) {
+    return (await this.#sendPhotoInner(chatId, photo, params)) as MessagePhoto;
+  }
+
+  async sendLivePhoto(chatId: ID, photo: FileSource, video: FileSource, params?: SendPhotoParams) {
+    return (await this.#sendPhotoInner(chatId, photo, { ...params, video })) as MessageLivePhoto;
+  }
+
+  async #sendPhotoInner(chatId: ID, photo: FileSource, params?: SendPhotoParams & { video?: FileSource }) {
     this.#checkParams(params);
     let media: Api.InputMedia | null = null;
     const spoiler = params?.hasSpoiler ? true : undefined;
@@ -767,7 +775,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     }
 
     const message = await this.#sendMedia(chatId, media, params);
-    return assertMessageType(message, "photo");
+    return assertMessageType(message, params?.video ? "livePhoto" : "photo");
   }
 
   async #sendMedia(chatId: ID, media: Api.InputMedia, params: SendPhotoParams | undefined) {

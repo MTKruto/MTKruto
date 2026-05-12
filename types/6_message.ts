@@ -171,6 +171,15 @@ export interface MessagePhoto extends _MessageMediaBase {
   photo: Photo;
 }
 
+/** @unlisted */
+export interface MessageLivePhoto extends _MessageMediaBase {
+  type: "livePhoto";
+  /** The photo included in the message. */
+  photo: Photo;
+  /** The video included in the message. */
+  video: Video;
+}
+
 /**
  * A document message.
  * @unlisted
@@ -624,6 +633,7 @@ export interface MessageTypes {
   text: MessageText;
   link: MessageLink;
   photo: MessagePhoto;
+  livePhoto: MessageLivePhoto;
   document: MessageDocument;
   video: MessageVideo;
   sticker: MessageSticker;
@@ -735,6 +745,7 @@ export type Message =
   | MessageText
   | MessageLink
   | MessagePhoto
+  | MessageLivePhoto
   | MessageDocument
   | MessageVideo
   | MessageSticker
@@ -1110,7 +1121,23 @@ export async function constructMessage(
       unreachable();
     }
     const photo = constructPhoto(Api.as("photo", message_.media.photo));
-    m = { type: "photo", ...messageMedia, photo };
+    if (message_.media.video) {
+      const video_ = Api.as("document", message_.media.video);
+      const fileId: FileId = {
+        type: FileType.Video,
+        dcId: video_.dc_id,
+        location: {
+          type: "common",
+          id: video_.id,
+          accessHash: video_.access_hash,
+        },
+        fileReference: video_.file_reference,
+      };
+      const video = constructVideo(video_, video_.attributes.find((v) => Api.is("documentAttributeVideo", v))!, "video.mp4", serializeFileId(fileId), toUniqueFileId(fileId));
+      m = { type: "livePhoto", ...messageMedia, photo, video };
+    } else {
+      m = { type: "photo", ...messageMedia, photo };
+    }
   } else if (Api.is("messageMediaDice", message_.media)) {
     const dice = constructDice(message_.media);
     m = { type: "dice", ...message, dice };
