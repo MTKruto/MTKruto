@@ -735,7 +735,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async sendSticker(chatId: ID, sticker: FileSource, params?: SendStickerParams) {
     this.#checkParams(params);
-    const message = await this.#sendDocumentInner(chatId, sticker, params, FileType.Sticker, [{ _: "documentAttributeSticker", alt: params?.emoji || "", stickerset: { _: "inputStickerSetEmpty" } ,}], undefined, STICKER_MIME_TYPES, checkStickerName);
+    const message = await this.#sendDocumentInner(chatId, sticker, params, FileType.Sticker, [{ _: "documentAttributeSticker", alt: params?.emoji || "", stickerset: { _: "inputStickerSetEmpty" } }], undefined, STICKER_MIME_TYPES, checkStickerName);
     return assertMessageType(message, "sticker");
   }
 
@@ -745,15 +745,15 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const spoiler = params?.hasSpoiler ? true : undefined;
     const ttl_seconds = params && "selfDestruct" in params && params.selfDestruct !== undefined ? selfDestructOptionToInt(params.selfDestruct) : undefined;
 
-let video: Api.InputDocument | undefined
-if (params?.video) {
-  video = await this.#uploadVideo(params.video)
-}
+    let video: Api.InputDocument | undefined;
+    if (params?.video) {
+      video = await this.#uploadVideo(params.video);
+    }
 
     if (typeof photo === "string") {
       const fileId = this.resolveFileId(photo, [FileType.Photo, FileType.ProfilePhoto]);
       if (fileId !== null) {
-        media = { _: "inputMediaPhoto", id: { ...fileId, _: "inputPhoto" }, spoiler, ttl_seconds,live_photo:video!==undefined?true:undefined,video };
+        media = { _: "inputMediaPhoto", id: { ...fileId, _: "inputPhoto" }, spoiler, ttl_seconds, live_photo: video !== undefined ? true : undefined, video };
       }
     }
 
@@ -762,7 +762,7 @@ if (params?.video) {
         media = { _: "inputMediaPhotoExternal", url: photo, spoiler, ttl_seconds: (params && "selfDestruct" in params && params.selfDestruct !== undefined) ? selfDestructOptionToInt(params.selfDestruct) : undefined };
       } else {
         const file = await this.#c.fileManager.upload(photo, params, checkPhotoName(params), false);
-        media = { _: "inputMediaUploadedPhoto", file, spoiler, ttl_seconds: (params && "selfDestruct" in params && params.selfDestruct !== undefined) ? selfDestructOptionToInt(params.selfDestruct) : undefined,live_photo: video!==undefined?true:undefined,video };
+        media = { _: "inputMediaUploadedPhoto", file, spoiler, ttl_seconds: (params && "selfDestruct" in params && params.selfDestruct !== undefined) ? selfDestructOptionToInt(params.selfDestruct) : undefined, live_photo: video !== undefined ? true : undefined, video };
       }
     }
 
@@ -1213,23 +1213,22 @@ if (params?.video) {
     return inputMedia;
   }
 
+  async #uploadVideo(video: FileSource): Promise<Api.inputDocument> {
+    const result = await this.#c.fileManager.upload(video, {});
 
-    async #uploadVideo(video: FileSource): Promise<Api.inputDocument> {
-      const result = await this.#c.fileManager.upload(video, {});
-  
-      const uploadedMedia = await this.#c.invoke({
-        _: "messages.uploadMedia",
-        peer:  { _: "inputPeerSelf" },
-        media: { _: "inputMediaUploadedDocument", file: result, attributes:[{_:'documentAttributeVideo',duration: 0, w:0,h:0}], mime_type: 'video/mp4' },
-      });
-      const document = Api.as("document", Api.as("messageMediaDocument", uploadedMedia).document);
-      return {
-        _: "inputDocument",
-        id: document.id,
-        access_hash: document.access_hash,
-        file_reference: document.file_reference,
-      };
-    }
+    const uploadedMedia = await this.#c.invoke({
+      _: "messages.uploadMedia",
+      peer: { _: "inputPeerSelf" },
+      media: { _: "inputMediaUploadedDocument", file: result, attributes: [{ _: "documentAttributeVideo", duration: 0, w: 0, h: 0 }], mime_type: "video/mp4" },
+    });
+    const document = Api.as("document", Api.as("messageMediaDocument", uploadedMedia).document);
+    return {
+      _: "inputDocument",
+      id: document.id,
+      access_hash: document.access_hash,
+      file_reference: document.file_reference,
+    };
+  }
 
   async editMessageMedia(
     chatId: ID,
