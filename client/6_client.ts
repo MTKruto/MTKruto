@@ -1838,7 +1838,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ms
    * @param chatId The identifier of a chat to send the photo to.
    * @param photo The photo to send.
-   * @param photo The video version of the photo.
+   * @param video The video version of the photo.
    * @returns The sent live photo.
    */
   async sendLivePhoto(chatId: ID, photo: FileSource, video: FileSource, params?: SendLivePhotoParams): Promise<MessageLivePhoto> {
