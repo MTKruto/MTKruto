@@ -545,6 +545,6 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
       password = await checkPassword(params.password, ap);
     }
 
-    this.#c.invoke({ _: "account.deleteAccount", reason, password });
+    await this.#c.invoke({ _: "account.deleteAccount", reason, password });
   }
 }
