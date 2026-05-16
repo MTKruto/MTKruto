@@ -1061,3 +1061,8 @@ export interface SetManagedBotAccessSettingsParams {
   /** The identifiers of the users with access when access is restricted. The owner of the bot will always have access. */
   usersWithAccess: ID[];
 }
+
+export interface DeleteAccountParams {
+  /** The account's password. */
+  password?: string;
+}
