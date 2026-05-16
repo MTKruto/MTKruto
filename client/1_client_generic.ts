@@ -1076,6 +1076,24 @@ export abstract class ClientGeneric {
    */
   abstract summarizeText(chatId: ID, messageId: number, params?: SummarizeTextParams): Promise<SummarizedText>;
 
+  /**
+   * View multiple messages.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat including the messages.
+   * @param messageIds The identifiers of the messages.
+   */
+  abstract viewMessages(chatId: ID, messageIds: number[]): Promise<void>;
+
+  /**
+   * View a single message.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat including the message.
+   * @param messageId The identifier of the message.
+   */
+  abstract viewMessage(chatId: ID, messageId: number): Promise<void>;
+
   //
   // ========================= POLLS ========================= //
   //

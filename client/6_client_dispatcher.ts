@@ -1489,6 +1489,28 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("summarizeText", chatId, messageId, params);
   }
 
+  /**
+   * View multiple messages.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat including the messages.
+   * @param messageIds The identifiers of the messages.
+   */
+  async viewMessages(chatId: ID, messageIds: number[]): Promise<void> {
+    return await this.#dispatch("viewMessages", chatId, messageIds);
+  }
+
+  /**
+   * View a single message.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat including the message.
+   * @param messageId The identifier of the message.
+   */
+  async viewMessage(chatId: ID, messageId: number): Promise<void> {
+    return await this.#dispatch("viewMessage", chatId, messageId);
+  }
+
   //
   // ========================= POLLS ========================= //
   //

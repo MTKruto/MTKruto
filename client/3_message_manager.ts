@@ -2069,4 +2069,20 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const result__ = await this.#c.invoke({ _: "messages.setBotGuestChatResult", query_id: BigInt(id), result });
     return base64EncodeUrlSafe(Api.serializeObject(result__));
   }
+
+  async #viewMessages(chatId: ID, messageIds: number[]) {
+    const peer = await this.#c.getInputPeer(chatId);
+    const id = messageIds;
+    await this.#c.invoke({ _: "messages.getMessagesViews", peer, id, increment: true });
+  }
+
+  async viewMessages(chatId: ID, messageIds: number[]) {
+    this.#c.storage.assertUser("viewMessages");
+    await this.#viewMessages(chatId, messageIds);
+  }
+
+  async viewMessage(chatId: ID, messageId: number) {
+    this.#c.storage.assertUser("viewMessage");
+    await this.#viewMessages(chatId, [messageId]);
+  }
 }
