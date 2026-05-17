@@ -524,6 +524,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
   let document: Api.InputWebDocument | null = null;
   let thumb: Api.inputWebDocument | null = null;
   let fileId_: string | null = null;
+  let photoFileId: string | null = null;
   switch (result_.type) {
     case "audio":
       document = {
@@ -595,11 +596,12 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
     case "cachedDocument":
     case "cachedGif":
     case "cachedMpeg4Gif":
-    case "cachedPhoto":
     case "cachedVideo":
     case "cachedVoice":
       fileId_ = result_.fileId;
-
+      break;
+    case "cachedPhoto":
+      photoFileId = result_.fileId;
       break;
   }
 
@@ -635,6 +637,20 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       description,
       document: {
         _: "inputDocument",
+        id: "id" in fileId.location ? fileId.location.id : unreachable(),
+        access_hash: fileId.location.accessHash,
+        file_reference: fileId.fileReference ?? new Uint8Array(),
+      },
+      send_message: sendMessage,
+    };
+  } else if (photoFileId !== null) {
+    const fileId = deserializeFileId(photoFileId);
+    return {
+      _: "inputBotInlineResultPhoto",
+      id,
+      type: "photo",
+      photo: {
+        _: "inputPhoto",
         id: "id" in fileId.location ? fileId.location.id : unreachable(),
         access_hash: fileId.location.accessHash,
         file_reference: fileId.fileReference ?? new Uint8Array(),
