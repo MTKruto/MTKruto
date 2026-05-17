@@ -25,7 +25,6 @@ import { Api } from "../2_tl.ts";
 import { PersistentTimestampInvalid } from "../3_errors.ts";
 import type { ID } from "../3_types.ts";
 import { CHANNEL_DIFFERENCE_LIMIT_BOT, CHANNEL_DIFFERENCE_LIMIT_USER } from "../4_constants.ts";
-import { peerToChatId } from "../tl/2_telegram.ts";
 import type { OpenChatParams } from "./0_params.ts";
 import type { C } from "./1_types.ts";
 
@@ -850,10 +849,10 @@ export class UpdateManager {
 
     if (Api.is("messageFwdHeader", object)) {
       if (object.from_id) {
-        chatIds.add(peerToChatId(object.from_id));
+        chatIds.add(Api.peerToChatId(object.from_id));
       }
       if (object.saved_from_peer) {
-        chatIds.add(peerToChatId(object.saved_from_peer));
+        chatIds.add(Api.peerToChatId(object.saved_from_peer));
       }
       return chatIds;
     }
@@ -862,20 +861,20 @@ export class UpdateManager {
       switch (object._) {
         case "messageMediaContact":
           if (object.user_id) {
-            chatIds.add(peerToChatId({ _: "peerUser", user_id: object.user_id }));
+            chatIds.add(Api.peerToChatId({ _: "peerUser", user_id: object.user_id }));
           }
           break;
         case "messageMediaStory":
-          chatIds.add(peerToChatId(object.peer));
+          chatIds.add(Api.peerToChatId(object.peer));
           break;
         case "messageMediaGiveaway":
-          for (const chatId of object.channels.map((v) => peerToChatId({ _: "peerChannel", channel_id: v }))) {
+          for (const chatId of object.channels.map((v) => Api.peerToChatId({ _: "peerChannel", channel_id: v }))) {
             chatIds.add(chatId);
           }
           break;
         case "messageMediaGiveawayResults":
-          chatIds.add(peerToChatId({ _: "peerChannel", channel_id: object.channel_id }));
-          for (const chatId of object.winners.map((user_id) => peerToChatId({ _: "peerUser", user_id }))) {
+          chatIds.add(Api.peerToChatId({ _: "peerChannel", channel_id: object.channel_id }));
+          for (const chatId of object.winners.map((user_id) => Api.peerToChatId({ _: "peerUser", user_id }))) {
             chatIds.add(chatId);
           }
       }
@@ -890,9 +889,9 @@ export class UpdateManager {
     if (Api.is("messageEmpty", object.message)) {
       return chatIds;
     }
-    chatIds.add(peerToChatId(object.message.peer_id));
+    chatIds.add(Api.peerToChatId(object.message.peer_id));
     if (object.message.from_id) {
-      chatIds.add(peerToChatId(object.message.from_id));
+      chatIds.add(Api.peerToChatId(object.message.from_id));
     }
     if (Api.is("messageService", object.message)) {
       switch (object.message.action._) {
@@ -900,43 +899,43 @@ export class UpdateManager {
         case "messageActionChatAddUser":
         case "messageActionInviteToGroupCall":
           for (const user_id of object.message.action.users) {
-            chatIds.add(peerToChatId({ _: "peerUser", user_id }));
+            chatIds.add(Api.peerToChatId({ _: "peerUser", user_id }));
           }
           break;
         case "messageActionChatDeleteUser":
-          chatIds.add(peerToChatId({ _: "peerUser", user_id: object.message.action.user_id }));
+          chatIds.add(Api.peerToChatId({ _: "peerUser", user_id: object.message.action.user_id }));
           break;
         case "messageActionChatMigrateTo":
-          chatIds.add(peerToChatId({ _: "peerChannel", channel_id: object.message.action.channel_id }));
+          chatIds.add(Api.peerToChatId({ _: "peerChannel", channel_id: object.message.action.channel_id }));
           break;
         case "messageActionChannelMigrateFrom":
-          chatIds.add(peerToChatId({ _: "peerChat", chat_id: object.message.action.chat_id }));
+          chatIds.add(Api.peerToChatId({ _: "peerChat", chat_id: object.message.action.chat_id }));
           break;
         case "messageActionConferenceCall":
           if (object.message.action.other_participants) {
             for (const participant of object.message.action.other_participants) {
-              chatIds.add(peerToChatId(participant));
+              chatIds.add(Api.peerToChatId(participant));
             }
           }
           break;
         case "messageActionPaymentRefunded":
-          chatIds.add(peerToChatId(object.message.action.peer));
+          chatIds.add(Api.peerToChatId(object.message.action.peer));
           break;
         case "messageActionGiftCode":
           if (object.message.action.boost_peer) {
-            chatIds.add(peerToChatId(object.message.action.boost_peer));
+            chatIds.add(Api.peerToChatId(object.message.action.boost_peer));
           }
           break;
         case "messageActionRequestedPeer":
           if (!this.#c.storage.isBot) {
             for (const peer of object.message.action.peers) {
-              chatIds.add(peerToChatId(peer));
+              chatIds.add(Api.peerToChatId(peer));
             }
           }
           break;
         case "messageActionSetMessagesTTL":
           if (object.message.action.auto_setting_from) {
-            chatIds.add(peerToChatId({ _: "peerUser", user_id: object.message.action.auto_setting_from }));
+            chatIds.add(Api.peerToChatId({ _: "peerUser", user_id: object.message.action.auto_setting_from }));
           }
       }
     } else {
@@ -944,7 +943,7 @@ export class UpdateManager {
         switch (object.message.reply_to._) {
           case "messageReplyHeader":
             if (object.message.reply_to.reply_to_peer_id) {
-              chatIds.add(peerToChatId(object.message.reply_to.reply_to_peer_id));
+              chatIds.add(Api.peerToChatId(object.message.reply_to.reply_to_peer_id));
             }
             if (object.message.reply_to.reply_from) {
               for (const chatId of this.#collectChatIds(object.message.reply_to.reply_from)) {
@@ -963,7 +962,7 @@ export class UpdateManager {
             }
             break;
           case "messageReplyStoryHeader":
-            chatIds.add(peerToChatId(object.message.reply_to.peer));
+            chatIds.add(Api.peerToChatId(object.message.reply_to.peer));
         }
       }
       if (object.message.fwd_from) {
@@ -972,7 +971,7 @@ export class UpdateManager {
         }
       }
       if (object.message.via_bot_id) {
-        chatIds.add(peerToChatId({ _: "peerUser", user_id: object.message.via_bot_id }));
+        chatIds.add(Api.peerToChatId({ _: "peerUser", user_id: object.message.via_bot_id }));
       }
       if (object.message.entities) {
         for (const chatId of this.#collectChatIdsFromEntities(object.message.entities)) {
@@ -992,7 +991,7 @@ export class UpdateManager {
   #collectChatIdsFromEntities(entities: Api.MessageEntity[]) {
     const chatIds = new Array<number>();
     for (const user_id of entities.filter((v): v is Api.messageEntityMentionName => Api.is("messageEntityMentionName", v)).map((v) => v.user_id)) {
-      chatIds.push(peerToChatId({ _: "peerUser", user_id }));
+      chatIds.push(Api.peerToChatId({ _: "peerUser", user_id }));
     }
     return chatIds;
   }

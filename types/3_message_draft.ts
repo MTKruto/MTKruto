@@ -20,7 +20,6 @@
 
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { peerToChatId } from "../tl/2_telegram.ts";
 import { constructMessageEntity, type MessageEntity } from "./2_message_entity.ts";
 
 /** A message draft. */
@@ -42,7 +41,7 @@ export function constructMessageDraft(action: Api.updateUserTyping): MessageDraf
     return null;
   }
 
-  const fromId = peerToChatId(action);
+  const fromId = Api.peerToChatId(action);
 
   const id = String(action.action.random_id);
   const text = action.action.text.text;

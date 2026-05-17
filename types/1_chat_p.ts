@@ -21,7 +21,6 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject, getColorFromPeerId, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { peerToChatId } from "../tl/2_telegram.ts";
 import { type ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
 import { constructEmojiStatus, type EmojiStatus } from "./0_emoji_status.ts";
 import { constructRestrictionReason, type RestrictionReason } from "./0_restriction_reason.ts";
@@ -189,7 +188,7 @@ export function constructChatP(chat: Api.User | Api.Chat): ChatP {
 
     return cleanObject(chat_);
   } else if (Api.is("chat", chat) || Api.is("chatForbidden", chat)) {
-    const id = peerToChatId(chat);
+    const id = Api.peerToChatId(chat);
     const chat_: ChatPGroup = {
       id,
       type: "group",
@@ -208,7 +207,7 @@ export function constructChatP(chat: Api.User | Api.Chat): ChatP {
     return cleanObject(chat_);
   } else if (Api.is("channel", chat) || Api.is("channelForbidden", chat)) {
     let chat_: ChatPSupergroup | ChatPChannel;
-    const id = peerToChatId(chat);
+    const id = Api.peerToChatId(chat);
 
     if (Api.is("channelForbidden", chat)) {
       const { title } = chat;

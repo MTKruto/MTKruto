@@ -19,8 +19,7 @@
  */
 
 import { cleanObject } from "../1_utilities.ts";
-import type { Api } from "../2_tl.ts";
-import { peerToChatId } from "../tl/2_telegram.ts";
+import { Api } from "../2_tl.ts";
 import { type ChatActionType, constructChatActionType } from "./0_chat_action_type.ts";
 
 /** A sign of a possible action by a member of a conversation. */
@@ -41,8 +40,8 @@ export function constructChatAction(update: Api.updateUserTyping | Api.updateCha
     return null;
   }
 
-  const chatId = peerToChatId(update);
-  const fromId = peerToChatId("user_id" in update ? { _: "peerUser", user_id: update.user_id } : update.from_id);
+  const chatId = Api.peerToChatId(update);
+  const fromId = Api.peerToChatId("user_id" in update ? { _: "peerUser", user_id: update.user_id } : update.from_id);
 
   const messageThreadId = "top_msg_id" in update ? update.top_msg_id : undefined;
 

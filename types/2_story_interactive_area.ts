@@ -20,7 +20,6 @@
 
 import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
-import { chatIdToPeerId } from "../tl/2_telegram.ts";
 import { constructLocation, type Location } from "./0_location.ts";
 import type { MessageReference } from "./0_message_reference.ts";
 import { constructReaction, type Reaction, reactionToTlObject } from "./0_reaction.ts";
@@ -195,7 +194,7 @@ export function storyInteractiveAreaToTlObject(area: StoryInteractiveArea, getPe
       if (!peer || peer[0].type !== "channel") {
         unreachable();
       }
-      const channel: Api.inputChannel = { _: "inputChannel", channel_id: chatIdToPeerId(peer[0].id), access_hash: peer[1] };
+      const channel: Api.inputChannel = { _: "inputChannel", channel_id: Api.chatIdToPeerId(peer[0].id), access_hash: peer[1] };
       return { _: "inputMediaAreaChannelPost", coordinates, channel, msg_id: area.messageReference.messageId };
     }
     case "link":

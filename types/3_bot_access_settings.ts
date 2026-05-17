@@ -19,7 +19,6 @@
  */
 
 import { Api } from "../2_tl.ts";
-import type { bots_accessSettings } from "../tl/1_telegram_api.ts";
 import { constructUser, type User } from "./2_user.ts";
 
 export interface BotAccessSettings {
@@ -27,7 +26,7 @@ export interface BotAccessSettings {
   usersWithAccess: User[];
 }
 
-export function constructBotAccessSettings(accessSettings: bots_accessSettings): BotAccessSettings {
+export function constructBotAccessSettings(accessSettings: Api.bots_accessSettings): BotAccessSettings {
   return {
     isAccessRestricted: accessSettings.restricted || false,
     usersWithAccess: accessSettings.add_users?.map((v) => constructUser(Api.as("user", v))) ?? [],

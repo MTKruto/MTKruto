@@ -24,7 +24,6 @@ import { getRandomId } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
 import { constructLiveStreamChannel, constructVideoChat, type ID, type Update, type VideoChatActive, type VideoChatScheduled } from "../3_types.ts";
-import { peerToChatId } from "../tl/2_telegram.ts";
 import type { DownloadLiveStreamSegmentParams, JoinVideoChatParams, StartVideoChatParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputUser } from "./0_utilities.ts";
@@ -140,7 +139,7 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate,
     if (!update.peer) {
       return null; // TODO: handle updates with unspecified chat_id
     }
-    const chatId = peerToChatId(update.peer);
+    const chatId = Api.peerToChatId(update.peer);
     const fullChat = await this.#c.messageStorage.getFullChat(chatId).then((v) => v === null ? this.#c.messageStorage.getFullChat(chatId) : v) as Api.channelFull | Api.chatFull | null;
     let updateFullChat = false;
     if (Api.is("groupCallDiscarded", update.call)) {
