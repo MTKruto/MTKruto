@@ -23,7 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { base64EncodeUrlSafe, encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
-import { constructBlockedUserList, constructChatAction, constructMessageDraft, constructMessageEntity, constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructSummarizedText, constructVoiceTranscription, deserializeFileId, type FileId, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, type InputPollOption, type MessageGetter, type MessageList, type MessageLivePhoto, type MessagePhoto, messageSearchFilterToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type TextToTranslate, type TranslatedText, type VoiceTranscription } from "../3_types.ts";
+import { constructBlockedUserList, constructChatAction, constructMessageDraft, constructMessageEntity, constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructSummarizedText, constructVoiceTranscription, deserializeFileId, type FileId, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, type InputPollOption, type MessageCounters, type MessageGetter, type MessageList, type MessageLivePhoto, type MessagePhoto, messageSearchFilterToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type TextToTranslate, type TranslatedText, type VoiceTranscription } from "../3_types.ts";
 import { assertMessageType, type ChatActionType, constructMessage as constructMessage_, deserializeInlineMessageId, type FileSource, FileType, type ID, type Message, type MessageEntity, messageEntityToTlObject, type ParseMode, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type Update, type UsernameResolver } from "../3_types.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
@@ -2084,6 +2084,23 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   async viewMessage(chatId: ID, messageId: number) {
     this.#c.storage.assertUser("viewMessage");
     await this.#viewMessages(chatId, [messageId]);
+  }
+
+  async #getMessagesCounters(chatId: ID, messageIds: number[]) {
+    const peer = await this.#c.getInputPeer(chatId);
+    const id = messageIds;
+    const result = await this.#c.invoke({ _: "messages.getMessagesViews", peer, id, increment: false });
+    return result.views.map((v): MessageCounters => ({ views: v.views ?? 0, replies: v.replies?.replies ?? 0, forwards: v.forwards ?? 0 }));
+  }
+
+  async getMessagesCounters(chatId: ID, messageIds: number[]) {
+    this.#c.storage.assertUser("getMessagesCounters");
+    return await this.#getMessagesCounters(chatId, messageIds);
+  }
+
+  async getMessageCounters(chatId: ID, messageId: number) {
+    this.#c.storage.assertUser("getMessageCounters");
+    return (await this.#getMessagesCounters(chatId, [messageId]))[0];
   }
 
   async #translateTexts(toLanguage: string, texts: TextToTranslate[], params?: TranslateTextParams): Promise<TranslatedText[]> {

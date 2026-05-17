@@ -19,7 +19,7 @@
  */
 
 import type { Api, Mtproto } from "../2_tl.ts";
-import type { AlbumStoryList, AppSupport, AvailableReactions, Birthday, BlockedUserList, BotAccessSettings, BotCommand, BotTokenCheckResult, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatActionType, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ClaimedGifts, CodeCheckResult, Country, FailedInvitation, FileSource, Gift, GiftCollection, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputChecklistItem, InputEmojiStatus, InputGift, InputMedia, InputPollOption, InputSticker, InputStoryContent, InviteLink, JoinRequest, LeftChannelList, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLivePhoto, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, MiniAppInfo, NetworkStatistics, PasswordCheckResult, Poll, PremiumSubscriptionDuration, PriceTag, ProfilePhotoList, Reaction, SavedChats, SlowModeDuration, StarAmount, StarTransactionList, Sticker, StickerSet, Story, StoryAlbum, SummarizedText, TextToTranslate, Timezone, Topic, TranslatedText, Translation, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
+import type { AlbumStoryList, AppSupport, AvailableReactions, Birthday, BlockedUserList, BotAccessSettings, BotCommand, BotTokenCheckResult, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatActionType, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ClaimedGifts, CodeCheckResult, Country, FailedInvitation, FileSource, Gift, GiftCollection, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputChecklistItem, InputEmojiStatus, InputGift, InputMedia, InputPollOption, InputSticker, InputStoryContent, InviteLink, JoinRequest, LeftChannelList, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageCounters, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLivePhoto, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, MiniAppInfo, NetworkStatistics, PasswordCheckResult, Poll, PremiumSubscriptionDuration, PriceTag, ProfilePhotoList, Reaction, SavedChats, SlowModeDuration, StarAmount, StarTransactionList, Sticker, StickerSet, Story, StoryAlbum, SummarizedText, TextToTranslate, Timezone, Topic, TranslatedText, Translation, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
 import type { AddBotToAttachmentsMenuParams, AddChatMemberParams, AddContactParams, AddReactionParams, AddStickerToStickerSetParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStickerSetParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteAccountParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, EndTakeoutSessionParams, ForwardMessagesParams, GetBlockedUsersParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLeftChannelsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetProfilePhotosParams, GetSavedChatsParams, GetSavedMessagesParams, GetStarTransactionsParams, GetTranslationsParams, GiftPremiumSubscriptionParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, RemoveProfilePhotoParams, ReplaceStickerInStickerSetParams, ResolveUsernameParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLivePhotoParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetContactNoteParams, SetEmojiStatusParams, SetLocationParams, SetManagedBotAccessSettingsParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetWorkingHoursParams, SignInParams, StartBotParams, StartTakeoutSessionParams, StartVideoChatParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
 
 /** A generic MTKruto client. */
@@ -1131,6 +1131,24 @@ export abstract class ClientGeneric {
    * @param messageId The identifier of the message to translate.
    */
   abstract translateMessage(toLanguage: string, chatId: ID, messageId: number, params?: TranslateTextParams): Promise<TranslatedText>;
+
+  /**
+   * Get the counters of multiple messages. User-only.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat including the messages.
+   * @param messageIds The identifiers of the messages.
+   */
+  abstract getMessagesCounters(chatId: ID, messageIds: number[]): Promise<MessageCounters[]>;
+
+  /**
+   * Get the counters of a single message. User-only.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat including the message.
+   * @param messageId The identifier of the message.
+   */
+  abstract getMessageCounters(chatId: ID, messageId: number): Promise<MessageCounters>;
 
   //
   // ========================= POLLS ========================= //
