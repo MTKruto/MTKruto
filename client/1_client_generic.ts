@@ -1077,7 +1077,7 @@ export abstract class ClientGeneric {
   abstract summarizeText(chatId: ID, messageId: number, params?: SummarizeTextParams): Promise<SummarizedText>;
 
   /**
-   * View multiple messages.
+   * View multiple messages. User-only.
    *
    * @method ms
    * @param chatId The identifier of the chat including the messages.
@@ -1086,7 +1086,7 @@ export abstract class ClientGeneric {
   abstract viewMessages(chatId: ID, messageIds: number[]): Promise<void>;
 
   /**
-   * View a single message.
+   * View a single message. User-only.
    *
    * @method ms
    * @param chatId The identifier of the chat including the message.

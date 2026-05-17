@@ -1490,7 +1490,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * View multiple messages.
+   * View multiple messages. User-only.
    *
    * @method ms
    * @param chatId The identifier of the chat including the messages.
@@ -1501,7 +1501,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * View a single message.
+   * View a single message. User-only.
    *
    * @method ms
    * @param chatId The identifier of the chat including the message.

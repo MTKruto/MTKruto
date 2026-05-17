@@ -2521,7 +2521,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * View multiple messages.
+   * View multiple messages. User-only.
    *
    * @method ms
    * @param chatId The identifier of the chat including the messages.
@@ -2532,7 +2532,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * View a single message.
+   * View a single message. User-only.
    *
    * @method ms
    * @param chatId The identifier of the chat including the message.
