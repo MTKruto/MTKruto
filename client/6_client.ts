@@ -2520,6 +2520,28 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     return await this.#messageManager.summarizeText(chatId, messageId, params);
   }
 
+  /**
+   * View multiple messages.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat including the messages.
+   * @param messageIds The identifiers of the messages.
+   */
+  async viewMessages(chatId: ID, messageIds: number[]): Promise<void> {
+    return await this.#messageManager.viewMessages(chatId, messageIds);
+  }
+
+  /**
+   * View a single message.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat including the message.
+   * @param messageId The identifier of the message.
+   */
+  async viewMessage(chatId: ID, messageId: number): Promise<void> {
+    return await this.#messageManager.viewMessage(chatId, messageId);
+  }
+
   //
   // ========================= POLLS ========================= //
   //
