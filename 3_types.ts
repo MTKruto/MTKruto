@@ -53,6 +53,7 @@ export * from "./types/0_live_stream_channel.ts";
 export * from "./types/0_location.ts";
 export * from "./types/0_login_url.ts";
 export * from "./types/0_mask_position.ts";
+export * from "./types/0_message_counters.ts";
 export * from "./types/0_message_reference.ts";
 export * from "./types/0_message_search_filter.ts";
 export * from "./types/0_mini_app_mode.ts";
