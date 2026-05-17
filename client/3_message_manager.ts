@@ -23,11 +23,11 @@ import { InputError } from "../0_errors.ts";
 import { base64EncodeUrlSafe, encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
-import { constructBlockedUserList, constructChatAction, constructMessageDraft, constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructSummarizedText, constructVoiceTranscription, deserializeFileId, type FileId, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, type InputPollOption, type MessageGetter, type MessageList, type MessageLivePhoto, type MessagePhoto, messageSearchFilterToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type VoiceTranscription } from "../3_types.ts";
+import { constructBlockedUserList, constructChatAction, constructMessageDraft, constructMessageEntity, constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructSummarizedText, constructVoiceTranscription, deserializeFileId, type FileId, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, type InputPollOption, type MessageGetter, type MessageList, type MessageLivePhoto, type MessagePhoto, messageSearchFilterToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type TextToTranslate, type TranslatedText, type VoiceTranscription } from "../3_types.ts";
 import { assertMessageType, type ChatActionType, constructMessage as constructMessage_, deserializeInlineMessageId, type FileSource, FileType, type ID, type Message, type MessageEntity, messageEntityToTlObject, type ParseMode, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type Update, type UsernameResolver } from "../3_types.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetBlockedUsersParams, GetHistoryParams, GetMessageReactionsParams, GetSavedChatsParams, GetSavedMessagesParams, OpenMiniAppParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams as SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, StartBotParams, StopPollParams, SummarizeTextParams, UnpinMessageParams, UnpinMessagesParams } from "./0_params.ts";
+import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetBlockedUsersParams, GetHistoryParams, GetMessageReactionsParams, GetSavedChatsParams, GetSavedMessagesParams, OpenMiniAppParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams as SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, StartBotParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, checkArray, checkMessageId, checkPhotoName, checkStickerName, getLimit, getUsername, isHttpUrl, toInputChannel } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
@@ -2084,5 +2084,47 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   async viewMessage(chatId: ID, messageId: number) {
     this.#c.storage.assertUser("viewMessage");
     await this.#viewMessages(chatId, [messageId]);
+  }
+
+  async #translateTexts(toLanguage: string, texts: TextToTranslate[], params?: TranslateTextParams): Promise<TranslatedText[]> {
+    const result = await this.#c.invoke({
+      _: "messages.translateText",
+      to_lang: toLanguage,
+      text: texts.map((v) => ({ _: "textWithEntities", text: v.text, entities: v.entities.map((v) => messageEntityToTlObject(v, this.#c.getPeer)) })),
+      tone: params?.tone,
+    });
+    return result.result.map((v) => ({ text: v.text, entities: v.entities.map(constructMessageEntity).filter((v) => v !== null) }));
+  }
+
+  async translateTexts(toLanguage: string, texts: TextToTranslate[], params?: TranslateTextParams): Promise<TranslatedText[]> {
+    this.#c.storage.assertUser("translateTexts");
+    return await this.#translateTexts(toLanguage, texts, params);
+  }
+
+  async translateText(toLanguage: string, text: TextToTranslate, params?: TranslateTextParams) {
+    this.#c.storage.assertUser("translateText");
+    return (await this.#translateTexts(toLanguage, [text], params))[0];
+  }
+
+  async #translateMessages(toLanguage: string, chatId: ID, messageIds: number[], params?: TranslateTextParams): Promise<TranslatedText[]> {
+    const peer = await this.#c.getInputPeer(chatId);
+    const result = await this.#c.invoke({
+      _: "messages.translateText",
+      to_lang: toLanguage,
+      peer,
+      id: messageIds,
+      tone: params?.tone,
+    });
+    return result.result.map((v) => ({ text: v.text, entities: v.entities.map(constructMessageEntity).filter((v) => v !== null) }));
+  }
+
+  async translateMessages(toLanguage: string, chatId: ID, messageIds: number[], params?: TranslateTextParams): Promise<TranslatedText[]> {
+    this.#c.storage.assertUser("translateMessages");
+    return await this.#translateMessages(toLanguage, chatId, messageIds, params);
+  }
+
+  async translateMessage(toLanguage: string, chatId: ID, messageId: number, params?: TranslateTextParams) {
+    this.#c.storage.assertUser("translateMessage");
+    return (await this.#translateMessages(toLanguage, chatId, [messageId], params))[0];
   }
 }

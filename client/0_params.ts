@@ -1066,3 +1066,8 @@ export interface DeleteAccountParams {
   /** The account's password. */
   password?: string;
 }
+
+export interface TranslateTextParams {
+  /** The tone of the translation. */
+  tone?: string;
+}
