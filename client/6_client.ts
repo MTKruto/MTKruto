@@ -2604,7 +2604,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    *
    * @method ms
    * @param chatId The identifier of the chat including the message.
-   * @param messageIds The identifier of the message.
+   * @param messageId The identifier of the message.
    */
   async getMessageCounters(chatId: ID, messageId: number): Promise<MessageCounters> {
     return await this.#messageManager.getMessageCounters(chatId, messageId);

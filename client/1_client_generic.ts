@@ -1146,7 +1146,7 @@ export abstract class ClientGeneric {
    *
    * @method ms
    * @param chatId The identifier of the chat including the message.
-   * @param messageIds The identifier of the message.
+   * @param messageId The identifier of the message.
    */
   abstract getMessageCounters(chatId: ID, messageId: number): Promise<MessageCounters>;
 

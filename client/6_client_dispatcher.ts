@@ -1573,7 +1573,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    *
    * @method ms
    * @param chatId The identifier of the chat including the message.
-   * @param messageIds The identifier of the message.
+   * @param messageId The identifier of the message.
    */
   async getMessageCounters(chatId: ID, messageId: number): Promise<MessageCounters> {
     return await this.#dispatch("getMessageCounters", chatId, messageId);
