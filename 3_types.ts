@@ -20,6 +20,7 @@
 
 export * from "./types/_file_id.ts";
 export * from "./types/_getters.ts";
+export * from "./types/0_authorization_session.ts";
 export * from "./types/0_authorization_state.ts";
 export * from "./types/0_birthday.ts";
 export * from "./types/0_bot_command.ts";
