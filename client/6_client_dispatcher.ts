@@ -3509,6 +3509,16 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
+   * Get a dice sticker set.
+   *
+   * @method ss
+   * @param emoji The emoji of the dice.
+   */
+  async getDiceStickerSet(emoji: string): Promise<StickerSet> {
+    return await this.#dispatch("getDiceStickerSet", emoji);
+  }
+
+  /**
    * Check the availability of a sticker set slug.
    *
    * @method ss

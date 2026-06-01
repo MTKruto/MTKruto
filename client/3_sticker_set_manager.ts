@@ -230,4 +230,9 @@ export class StickerSetManager {
     const result = await this.#c.invoke({ _: "messages.getStickerSet", hash: 0, stickerset: { _: "inputStickerSetShortName", short_name: slug } });
     return constructStickerSet(result);
   }
+
+  async getDiceStickerSet(emoji: string) {
+    const result = await this.#c.invoke({ _: "messages.getStickerSet", hash: 0, stickerset: { _: "inputStickerSetDice", emoticon: emoji } });
+    return constructStickerSet(result);
+  }
 }
