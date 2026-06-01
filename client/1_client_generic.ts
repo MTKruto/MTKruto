@@ -2726,6 +2726,14 @@ export abstract class ClientGeneric {
   abstract getStickerSet(slug: string): Promise<StickerSet>;
 
   /**
+   * Get a dice sticker set.
+   *
+   * @method ss
+   * @param emoji The emoji of the dice.
+   */
+  abstract getDiceStickerSet(emoji: string): Promise<StickerSet>;
+
+  /**
    * Check the availability of a sticker set slug.
    *
    * @method ss
