@@ -24,14 +24,14 @@ export { assertEquals } from "jsr:@std/assert@1.0.19/equals";
 export { unreachable } from "jsr:@std/assert@1.0.19/unreachable";
 export { AssertionError } from "jsr:@std/assert@1.0.19/assertion-error";
 
-export { join } from "jsr:@std/path@1.1.4/join";
-export { extname } from "jsr:@std/path@1.1.4/extname";
-export { basename } from "jsr:@std/path@1.1.4/basename";
-export { toFileUrl } from "jsr:@std/path@1.1.4/to-file-url";
-export { isAbsolute } from "jsr:@std/path@1.1.4/is-absolute";
+export { join } from "jsr:@std/path@1.1.5/join";
+export { extname } from "jsr:@std/path@1.1.5/extname";
+export { basename } from "jsr:@std/path@1.1.5/basename";
+export { toFileUrl } from "jsr:@std/path@1.1.5/to-file-url";
+export { isAbsolute } from "jsr:@std/path@1.1.5/is-absolute";
 
-export { delay } from "jsr:@std/async@1.3.0/delay";
-export { pooledMap } from "jsr:@std/async@1.3.0/pool";
+export { delay } from "jsr:@std/async@1.4.0/delay";
+export { pooledMap } from "jsr:@std/async@1.4.0/pool";
 
 export { concat } from "jsr:@std/bytes@1.0.6/concat";
 export { equals } from "jsr:@std/bytes@1.0.6/equals";
@@ -46,7 +46,7 @@ export { writeAll } from "jsr:@std/io@0.225.3/write-all";
 export { format } from "jsr:@std/datetime@0.225.7/format";
 export { MINUTE, SECOND } from "jsr:@std/datetime@0.225.7/constants";
 
-export { toArrayBuffer } from "jsr:@std/streams@1.1.0/to-array-buffer";
+export { toArrayBuffer } from "jsr:@std/streams@1.1.1/to-array-buffer";
 
 export { decodeHex, encodeHex } from "jsr:@std/encoding@1.0.10/hex";
 export { decodeBase64, encodeBase64 } from "jsr:@std/encoding@1.0.10/base64";
