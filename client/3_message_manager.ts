@@ -1577,6 +1577,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       min_id: 0,
       offset_id: params?.offset ? params.offset : 0,
       from_id: params?.from ? await this.#c.getInputPeer(params.from) : undefined,
+      top_msg_id: params?.threadId,
     });
     if (!("messages" in result)) {
       unreachable();
