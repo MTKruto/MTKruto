@@ -1096,8 +1096,12 @@ export async function constructMessage(
     entities: message_.entities?.map(constructMessageEntity).filter((v): v is NonNullable<typeof v> => !!v) ?? [],
   };
 
-  if (message_.message && message_.media === undefined) {
-    return cleanObject({ type: "text", ...messageText });
+  if (message_.message && message_.media === undefined || message_.message && Api.is("messageMediaWebPage", message_.media)) {
+    let linkPreview: LinkPreview | undefined;
+    if (Api.is("messageMediaWebPage", message_.media)) {
+      linkPreview = constructLinkPreview(message_.media, message_.invert_media, getPeer);
+    }
+    return cleanObject({ type: "text", ...messageText, linkPreview });
   }
 
   const messageMedia: _MessageMediaBase = {
