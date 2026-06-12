@@ -189,6 +189,34 @@ export type MessageEntity =
   | MessageEntityCustomEmoji
   | MessageEntityDateTime;
 
+export function constructDateTimeFormat(obj: {
+  relative?: true;
+  day_of_week?: true;
+  short_date?: true;
+  long_date?: true;
+  short_time?: true;
+  long_time?: true;
+}) {
+  let format = "";
+  if (obj.relative) {
+    format += "r";
+  }
+  if (obj.day_of_week) {
+    format += "w";
+  }
+  if (obj.short_date) {
+    format += "d";
+  } else if (obj.long_date) {
+    format += "D";
+  }
+  if (obj.short_time) {
+    format += "t";
+  } else if (obj.long_time) {
+    format += "T";
+  }
+  return format;
+}
+
 export function constructMessageEntity(obj: Api.MessageEntity): MessageEntity | null {
   if (Api.is("messageEntityMention", obj)) {
     return { type: "mention", offset: obj.offset, length: obj.length };
@@ -229,29 +257,12 @@ export function constructMessageEntity(obj: Api.MessageEntity): MessageEntity | 
   } else if (Api.is("messageEntityCustomEmoji", obj)) {
     return { type: "customEmoji", offset: obj.offset, length: obj.length, customEmojiId: String(obj.document_id) };
   } else if (Api.is("messageEntityFormattedDate", obj)) {
-    let format = "";
-    if (obj.relative) {
-      format += "r";
-    }
-    if (obj.day_of_week) {
-      format += "w";
-    }
-    if (obj.short_date) {
-      format += "d";
-    } else if (obj.long_date) {
-      format += "D";
-    }
-    if (obj.short_time) {
-      format += "t";
-    } else if (obj.long_time) {
-      format += "T";
-    }
     return cleanObject(
       {
         type: "dateTime",
         offset: obj.offset,
         length: obj.length,
-        format: format || undefined,
+        format: constructDateTimeFormat(obj) || undefined,
         dateTime: obj.date,
       } as const,
     );
