@@ -196,7 +196,7 @@ export function constructDateTimeFormat(obj: {
   long_date?: true;
   short_time?: true;
   long_time?: true;
-}) {
+}): string {
   let format = "";
   if (obj.relative) {
     format += "r";
