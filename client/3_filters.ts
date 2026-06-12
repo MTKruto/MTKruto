@@ -121,7 +121,9 @@ export function match<Q extends FilterQuery, T extends object>(filter: Q, value:
   }
   const field = other[0];
   if (field) {
-    if ((value as Record<symbol | number | string, { type: "string" }>)[type]["type"] !== field) {
+    if (["message", "editedMessage", "scheduledMessage"].includes(type) && (value as Record<symbol | number | string, { type: "string" }>)[type]["type"] !== field) {
+      return false;
+    } else if (!(field in (value as Record<symbol | number | string, object>)[type])) {
       return false;
     }
   }
