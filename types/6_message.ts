@@ -1116,7 +1116,7 @@ export async function constructMessage(
     return cleanObject({
       ...message,
       type: "richText",
-      blocks: message_.rich_message.blocks.map(constructPageBlock),
+      blocks: message_.rich_message.blocks.map((v) => constructPageBlock(v, message_.rich_message!.photos, message_.rich_message!.documents)),
       isRtl: !!message_.rich_message.rtl,
       isPartial: !!message_.rich_message.part,
       photos: message_.rich_message.photos.map((v) => constructPhoto(Api.as("photo", v))),
