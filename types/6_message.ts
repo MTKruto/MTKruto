@@ -1113,7 +1113,7 @@ export async function constructMessage(
   }
 
   if (message_.rich_message) {
-    return {
+    return cleanObject({
       ...message,
       type: "richText",
       blocks: message_.rich_message.blocks.map(constructPageBlock),
@@ -1140,7 +1140,7 @@ export async function constructMessage(
           toUniqueFileId(fileId),
         );
       }),
-    };
+    });
   }
 
   const messageText = {

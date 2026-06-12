@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import type { Api } from "../2_tl.ts";
-import { constructDateTimeFormat } from "./2_message_entity.ts";
+import { constructDateTimeFormat, timeFormatToTlObject } from "./2_message_entity.ts";
 
 /**
  * An empty rich text component.
@@ -374,4 +374,72 @@ export function constructRichTextComponent(rt: Api.RichText): RichTextComponent 
   }
 
   unreachable();
+}
+
+export function richTextComponentToTlObject(rtc: RichTextComponent): Api.RichText {
+  switch (rtc.type) {
+    case "empty":
+      return { _: "textEmpty" };
+    case "plain":
+      return { _: "textPlain", text: rtc.text };
+    case "bold":
+      return { _: "textBold", text: richTextComponentToTlObject(rtc.text) };
+    case "italic":
+      return { _: "textItalic", text: richTextComponentToTlObject(rtc.text) };
+    case "underline":
+      return { _: "textUnderline", text: richTextComponentToTlObject(rtc.text) };
+    case "strikethrough":
+      return { _: "textStrike", text: richTextComponentToTlObject(rtc.text) };
+    case "fixed":
+      return { _: "textFixed", text: richTextComponentToTlObject(rtc.text) };
+    case "link":
+      return { _: "textUrl", url: rtc.url, webpage_id: BigInt(rtc.linkPreviewId), text: richTextComponentToTlObject(rtc.text) };
+    case "emailLink":
+      return { _: "textEmail", email: rtc.email, text: richTextComponentToTlObject(rtc.text) };
+    case "concatenate":
+      return { _: "textConcat", texts: rtc.components.map(richTextComponentToTlObject) };
+    case "subscript":
+      return { _: "textSubscript", text: richTextComponentToTlObject(rtc.text) };
+
+    case "superscript":
+      return { _: "textSuperscript", text: richTextComponentToTlObject(rtc.text) };
+
+    case "marked":
+      return { _: "textMarked", text: richTextComponentToTlObject(rtc.text) };
+    case "phoneNumberLink":
+      return { _: "textPhone", phone: rtc.phoneNumber, text: richTextComponentToTlObject(rtc.text) };
+    case "photo":
+      return { _: "textImage", document_id: BigInt(rtc.id), w: rtc.width, h: rtc.height };
+    case "anchor":
+      return { _: "textAnchor", name: rtc.name, text: richTextComponentToTlObject(rtc.text) };
+    case "math":
+      return { _: "textMath", source: rtc.code };
+    case "customEmoji":
+      return { _: "textCustomEmoji", document_id: BigInt(rtc.customEmojiId), alt: rtc.alt };
+    case "spoiler":
+      return { _: "textSpoiler", text: richTextComponentToTlObject(rtc.text) };
+    case "mention":
+      return { _: "textMention", text: richTextComponentToTlObject(rtc.text) };
+    case "hashtag":
+      return { _: "textHashtag", text: richTextComponentToTlObject(rtc.text) };
+    case "botCommand":
+      return { _: "textBotCommand", text: richTextComponentToTlObject(rtc.text) };
+    case "cashtag":
+      return { _: "textCashtag", text: richTextComponentToTlObject(rtc.text) };
+    case "url":
+      return { _: "textAutoUrl", text: richTextComponentToTlObject(rtc.text) };
+    case "email":
+      return { _: "textAutoEmail", text: richTextComponentToTlObject(rtc.text) };
+    case "phoneNumber":
+      return { _: "textAutoPhone", text: richTextComponentToTlObject(rtc.text) };
+    case "bankCard":
+      return { _: "textBankCard", text: richTextComponentToTlObject(rtc.text) };
+    case "textMention":
+      return { _: "textMentionName", text: richTextComponentToTlObject(rtc.text), user_id: BigInt(rtc.userId) };
+    case "dateTime": {
+      const obj: Api.textDate = { _: "textDate", text: richTextComponentToTlObject(rtc.text), date: rtc.date };
+      timeFormatToTlObject(rtc.format ?? "", obj);
+      return obj;
+    }
+  }
 }
