@@ -38,9 +38,52 @@ export interface error {
   text: string;
 }
 
-/** https://core.telegram.org/constructor/null */
-export interface null_ {
-  _: "null";
+/** https://core.telegram.org/constructor/ipPort */
+export interface ipPort {
+  _: "ipPort";
+  ipv4: number;
+  port: number;
+}
+
+/** https://core.telegram.org/constructor/ipPortSecret */
+export interface ipPortSecret {
+  _: "ipPortSecret";
+  ipv4: number;
+  port: number;
+  secret: Uint8Array<ArrayBuffer>;
+}
+
+/** https://core.telegram.org/constructor/accessPointRule */
+export interface accessPointRule {
+  _: "accessPointRule";
+  phone_prefix_rules: string;
+  dc_id: number;
+  ips: Array<IpPort>;
+}
+
+/** https://core.telegram.org/constructor/help.configSimple */
+export interface help_configSimple {
+  _: "help.configSimple";
+  date: number;
+  expires: number;
+  rules: Array<AccessPointRule>;
+}
+
+/** https://core.telegram.org/constructor/inputPeerPhotoFileLocationLegacy */
+export interface inputPeerPhotoFileLocationLegacy {
+  _: "inputPeerPhotoFileLocationLegacy";
+  big?: true;
+  peer: InputPeer;
+  volume_id: bigint;
+  local_id: number;
+}
+
+/** https://core.telegram.org/constructor/inputStickerSetThumbLegacy */
+export interface inputStickerSetThumbLegacy {
+  _: "inputStickerSetThumbLegacy";
+  stickerset: InputStickerSet;
+  volume_id: bigint;
+  local_id: number;
 }
 
 /** https://core.telegram.org/constructor/inputPeerEmpty */
@@ -8988,7 +9031,6 @@ export interface messageReplyHeader {
   reply_to_scheduled?: true;
   forum_topic?: true;
   quote?: true;
-  reply_to_ephemeral?: true;
   reply_to_msg_id?: number;
   reply_to_peer_id?: Peer;
   reply_from?: MessageFwdHeader;
@@ -13000,14 +13042,18 @@ export interface account_webBrowserSettings {
   hash: bigint;
 }
 
-/** https://core.telegram.org/constructor/richMessage */
-export interface richMessage {
-  _: "richMessage";
-  rtl?: true;
-  part?: true;
-  blocks: Array<PageBlock>;
-  photos: Array<Photo>;
-  documents: Array<Document>;
+/** https://core.telegram.org/constructor/inputRichFilePhoto */
+export interface inputRichFilePhoto {
+  _: "inputRichFilePhoto";
+  id: string;
+  photo: InputPhoto;
+}
+
+/** https://core.telegram.org/constructor/inputRichFileDocument */
+export interface inputRichFileDocument {
+  _: "inputRichFileDocument";
+  id: string;
+  document: InputDocument;
 }
 
 /** https://core.telegram.org/constructor/inputRichMessage */
@@ -13027,9 +13073,7 @@ export interface inputRichMessageHTML {
   rtl?: true;
   noautolink?: true;
   html: string;
-  photos?: Array<InputPhoto>;
-  documents?: Array<InputDocument>;
-  users?: Array<InputUser>;
+  files?: Array<InputRichFile>;
 }
 
 /** https://core.telegram.org/constructor/inputRichMessageMarkdown */
@@ -13038,9 +13082,47 @@ export interface inputRichMessageMarkdown {
   rtl?: true;
   noautolink?: true;
   markdown: string;
-  photos?: Array<InputPhoto>;
-  documents?: Array<InputDocument>;
-  users?: Array<InputUser>;
+  files?: Array<InputRichFile>;
+}
+
+/** https://core.telegram.org/constructor/richMessage */
+export interface richMessage {
+  _: "richMessage";
+  rtl?: true;
+  part?: true;
+  blocks: Array<PageBlock>;
+  photos: Array<Photo>;
+  documents: Array<Document>;
+}
+
+/** https://core.telegram.org/method/invokeWithBusinessConnectionPrefix */
+export interface invokeWithBusinessConnectionPrefix {
+  _: "invokeWithBusinessConnectionPrefix";
+  connection_id: string;
+  [R]?: Error;
+}
+
+/** https://core.telegram.org/method/invokeWithGooglePlayIntegrityPrefix */
+export interface invokeWithGooglePlayIntegrityPrefix {
+  _: "invokeWithGooglePlayIntegrityPrefix";
+  nonce: string;
+  token: string;
+  [R]?: Error;
+}
+
+/** https://core.telegram.org/method/invokeWithApnsSecretPrefix */
+export interface invokeWithApnsSecretPrefix {
+  _: "invokeWithApnsSecretPrefix";
+  nonce: string;
+  secret: string;
+  [R]?: Error;
+}
+
+/** https://core.telegram.org/method/invokeWithReCaptchaPrefix */
+export interface invokeWithReCaptchaPrefix {
+  _: "invokeWithReCaptchaPrefix";
+  token: string;
+  [R]?: Error;
 }
 
 /** https://core.telegram.org/method/invokeAfterMsg */
@@ -19797,7 +19879,12 @@ export interface aicompose_getToneExample {
 export interface Types {
   "true": true_;
   "error": error;
-  "null": null_;
+  "ipPort": ipPort;
+  "ipPortSecret": ipPortSecret;
+  "accessPointRule": accessPointRule;
+  "help.configSimple": help_configSimple;
+  "inputPeerPhotoFileLocationLegacy": inputPeerPhotoFileLocationLegacy;
+  "inputStickerSetThumbLegacy": inputStickerSetThumbLegacy;
   "inputPeerEmpty": inputPeerEmpty;
   "inputPeerSelf": inputPeerSelf;
   "inputPeerChat": inputPeerChat;
@@ -21406,13 +21493,19 @@ export interface Types {
   "webDomainException": webDomainException;
   "account.webBrowserSettingsNotModified": account_webBrowserSettingsNotModified;
   "account.webBrowserSettings": account_webBrowserSettings;
-  "richMessage": richMessage;
+  "inputRichFilePhoto": inputRichFilePhoto;
+  "inputRichFileDocument": inputRichFileDocument;
   "inputRichMessage": inputRichMessage;
   "inputRichMessageHTML": inputRichMessageHTML;
   "inputRichMessageMarkdown": inputRichMessageMarkdown;
+  "richMessage": richMessage;
 }
 
 export interface Functions<T = Function> {
+  "invokeWithBusinessConnectionPrefix": invokeWithBusinessConnectionPrefix;
+  "invokeWithGooglePlayIntegrityPrefix": invokeWithGooglePlayIntegrityPrefix;
+  "invokeWithApnsSecretPrefix": invokeWithApnsSecretPrefix;
+  "invokeWithReCaptchaPrefix": invokeWithReCaptchaPrefix;
   "invokeAfterMsg": invokeAfterMsg<T>;
   "invokeAfterMsgs": invokeAfterMsgs<T>;
   "initConnection": initConnection<T>;
@@ -22208,7 +22301,10 @@ export interface Functions<T = Function> {
 export interface Enums {
   "True": True;
   "Error": Error;
-  "Null": Null;
+  "IpPort": IpPort;
+  "AccessPointRule": AccessPointRule;
+  "help.ConfigSimple": help_ConfigSimple;
+  "InputFileLocation": InputFileLocation;
   "InputPeer": InputPeer;
   "InputUser": InputUser;
   "InputContact": InputContact;
@@ -22217,7 +22313,6 @@ export interface Enums {
   "InputChatPhoto": InputChatPhoto;
   "InputGeoPoint": InputGeoPoint;
   "InputPhoto": InputPhoto;
-  "InputFileLocation": InputFileLocation;
   "Peer": Peer;
   "storage.FileType": storage_FileType;
   "User": User;
@@ -22803,8 +22898,9 @@ export interface Enums {
   "JoinChatBotResult": JoinChatBotResult;
   "WebDomainException": WebDomainException;
   "account.WebBrowserSettings": account_WebBrowserSettings;
-  "RichMessage": RichMessage;
+  "InputRichFile": InputRichFile;
   "InputRichMessage": InputRichMessage;
+  "RichMessage": RichMessage;
 }
 
 export type AnyType = Types[keyof Types];
@@ -22821,8 +22917,17 @@ export type True = true_;
 /** https://core.telegram.org/type/Error */
 export type Error = error;
 
-/** https://core.telegram.org/type/Null */
-export type Null = null_;
+/** https://core.telegram.org/type/IpPort */
+export type IpPort = ipPort | ipPortSecret;
+
+/** https://core.telegram.org/type/AccessPointRule */
+export type AccessPointRule = accessPointRule;
+
+/** https://core.telegram.org/type/help.ConfigSimple */
+export type help_ConfigSimple = help_configSimple;
+
+/** https://core.telegram.org/type/InputFileLocation */
+export type InputFileLocation = inputPeerPhotoFileLocationLegacy | inputStickerSetThumbLegacy | inputFileLocation | inputEncryptedFileLocation | inputDocumentFileLocation | inputSecureFileLocation | inputTakeoutFileLocation | inputPhotoFileLocation | inputPhotoLegacyFileLocation | inputPeerPhotoFileLocation | inputStickerSetThumb | inputGroupCallStream;
 
 /** https://core.telegram.org/type/InputPeer */
 export type InputPeer = inputPeerEmpty | inputPeerSelf | inputPeerChat | inputPeerUser | inputPeerChannel | inputPeerUserFromMessage | inputPeerChannelFromMessage;
@@ -22847,9 +22952,6 @@ export type InputGeoPoint = inputGeoPointEmpty | inputGeoPoint;
 
 /** https://core.telegram.org/type/InputPhoto */
 export type InputPhoto = inputPhotoEmpty | inputPhoto;
-
-/** https://core.telegram.org/type/InputFileLocation */
-export type InputFileLocation = inputFileLocation | inputEncryptedFileLocation | inputDocumentFileLocation | inputSecureFileLocation | inputTakeoutFileLocation | inputPhotoFileLocation | inputPhotoLegacyFileLocation | inputPeerPhotoFileLocation | inputStickerSetThumb | inputGroupCallStream;
 
 /** https://core.telegram.org/type/Peer */
 export type Peer = peerUser | peerChat | peerChannel;
@@ -24606,11 +24708,14 @@ export type WebDomainException = webDomainException;
 /** https://core.telegram.org/type/account.WebBrowserSettings */
 export type account_WebBrowserSettings = account_webBrowserSettingsNotModified | account_webBrowserSettings;
 
-/** https://core.telegram.org/type/RichMessage */
-export type RichMessage = richMessage;
+/** https://core.telegram.org/type/InputRichFile */
+export type InputRichFile = inputRichFilePhoto | inputRichFileDocument;
 
 /** https://core.telegram.org/type/InputRichMessage */
 export type InputRichMessage = inputRichMessage | inputRichMessageHTML | inputRichMessageMarkdown;
+
+/** https://core.telegram.org/type/RichMessage */
+export type RichMessage = richMessage;
 
 export const schema = Object.freeze({
   definitions: {
@@ -24627,10 +24732,60 @@ export const schema = Object.freeze({
       ],
       "Error",
     ],
-    null: [
-      0x56730BCC,
-      [],
-      "Null",
+    ipPort: [
+      0xD433AD73,
+      [
+        ["ipv4", "int"],
+        ["port", "int"],
+      ],
+      "IpPort",
+    ],
+    ipPortSecret: [
+      0x37982646,
+      [
+        ["ipv4", "int"],
+        ["port", "int"],
+        ["secret", "bytes"],
+      ],
+      "IpPort",
+    ],
+    accessPointRule: [
+      0x4679B65F,
+      [
+        ["phone_prefix_rules", "string"],
+        ["dc_id", "int"],
+        ["ips", "vector<IpPort>"],
+      ],
+      "AccessPointRule",
+    ],
+    "help.configSimple": [
+      0x5A592A6C,
+      [
+        ["date", "int"],
+        ["expires", "int"],
+        ["rules", "vector<AccessPointRule>"],
+      ],
+      "help.ConfigSimple",
+    ],
+    inputPeerPhotoFileLocationLegacy: [
+      0x27D69997,
+      [
+        ["flags", "#"],
+        ["big", "flags.0?true"],
+        ["peer", "InputPeer"],
+        ["volume_id", "long"],
+        ["local_id", "int"],
+      ],
+      "InputFileLocation",
+    ],
+    inputStickerSetThumbLegacy: [
+      0x0DBAEAE9,
+      [
+        ["stickerset", "InputStickerSet"],
+        ["volume_id", "long"],
+        ["local_id", "int"],
+      ],
+      "InputFileLocation",
     ],
     inputPeerEmpty: [
       0x7F3B18EA,
@@ -34776,7 +34931,6 @@ export const schema = Object.freeze({
         ["reply_to_scheduled", "flags.2?true"],
         ["forum_topic", "flags.3?true"],
         ["quote", "flags.9?true"],
-        ["reply_to_ephemeral", "flags.13?true"],
         ["reply_to_msg_id", "flags.4?int"],
         ["reply_to_peer_id", "flags.0?Peer"],
         ["reply_from", "flags.5?MessageFwdHeader"],
@@ -39355,17 +39509,21 @@ export const schema = Object.freeze({
       ],
       "account.WebBrowserSettings",
     ],
-    richMessage: [
-      0xBAF39D8B,
+    inputRichFilePhoto: [
+      0x9B00622B,
       [
-        ["flags", "#"],
-        ["rtl", "flags.0?true"],
-        ["part", "flags.1?true"],
-        ["blocks", "Vector<PageBlock>"],
-        ["photos", "Vector<Photo>"],
-        ["documents", "Vector<Document>"],
+        ["id", "string"],
+        ["photo", "InputPhoto"],
       ],
-      "RichMessage",
+      "InputRichFile",
+    ],
+    inputRichFileDocument: [
+      0x83281DBD,
+      [
+        ["id", "string"],
+        ["document", "InputDocument"],
+      ],
+      "InputRichFile",
     ],
     inputRichMessage: [
       0xE4C449FC,
@@ -39381,30 +39539,68 @@ export const schema = Object.freeze({
       "InputRichMessage",
     ],
     inputRichMessageHTML: [
-      0xD4EAB551,
+      0xDACB836A,
       [
         ["flags", "#"],
         ["rtl", "flags.0?true"],
         ["noautolink", "flags.1?true"],
         ["html", "string"],
-        ["photos", "flags.2?Vector<InputPhoto>"],
-        ["documents", "flags.3?Vector<InputDocument>"],
-        ["users", "flags.4?Vector<InputUser>"],
+        ["files", "flags.2?Vector<InputRichFile>"],
       ],
       "InputRichMessage",
     ],
     inputRichMessageMarkdown: [
-      0x09AC8186,
+      0x004B572C,
       [
         ["flags", "#"],
         ["rtl", "flags.0?true"],
         ["noautolink", "flags.1?true"],
         ["markdown", "string"],
-        ["photos", "flags.2?Vector<InputPhoto>"],
-        ["documents", "flags.3?Vector<InputDocument>"],
-        ["users", "flags.4?Vector<InputUser>"],
+        ["files", "flags.2?Vector<InputRichFile>"],
       ],
       "InputRichMessage",
+    ],
+    richMessage: [
+      0xBAF39D8B,
+      [
+        ["flags", "#"],
+        ["rtl", "flags.0?true"],
+        ["part", "flags.1?true"],
+        ["blocks", "Vector<PageBlock>"],
+        ["photos", "Vector<Photo>"],
+        ["documents", "Vector<Document>"],
+      ],
+      "RichMessage",
+    ],
+    invokeWithBusinessConnectionPrefix: [
+      0xDD289F8E,
+      [
+        ["connection_id", "string"],
+      ],
+      "Error",
+    ],
+    invokeWithGooglePlayIntegrityPrefix: [
+      0x1DF92984,
+      [
+        ["nonce", "string"],
+        ["token", "string"],
+      ],
+      "Error",
+    ],
+    invokeWithApnsSecretPrefix: [
+      0x0DAE54F8,
+      [
+        ["nonce", "string"],
+        ["secret", "string"],
+      ],
+      "Error",
+    ],
+    invokeWithReCaptchaPrefix: [
+      0xADBB0F94,
+      [
+        ["token", "string"],
+      ],
+      "Error",
     ],
     invokeAfterMsg: [
       0xCB9F372D,
@@ -46331,7 +46527,12 @@ export const schema = Object.freeze({
   identifierToName: {
     [0x3FEDD339]: "true",
     [0xC4B9F9BB]: "error",
-    [0x56730BCC]: "null",
+    [0xD433AD73]: "ipPort",
+    [0x37982646]: "ipPortSecret",
+    [0x4679B65F]: "accessPointRule",
+    [0x5A592A6C]: "help.configSimple",
+    [0x27D69997]: "inputPeerPhotoFileLocationLegacy",
+    [0x0DBAEAE9]: "inputStickerSetThumbLegacy",
     [0x7F3B18EA]: "inputPeerEmpty",
     [0x7DA07EC9]: "inputPeerSelf",
     [0x35A95CB9]: "inputPeerChat",
@@ -47940,10 +48141,12 @@ export const schema = Object.freeze({
     [0x933CA597]: "webDomainException",
     [0xC31C8F4E]: "account.webBrowserSettingsNotModified",
     [0x79EB8CB3]: "account.webBrowserSettings",
-    [0xBAF39D8B]: "richMessage",
+    [0x9B00622B]: "inputRichFilePhoto",
+    [0x83281DBD]: "inputRichFileDocument",
     [0xE4C449FC]: "inputRichMessage",
-    [0xD4EAB551]: "inputRichMessageHTML",
-    [0x09AC8186]: "inputRichMessageMarkdown",
+    [0xDACB836A]: "inputRichMessageHTML",
+    [0x004B572C]: "inputRichMessageMarkdown",
+    [0xBAF39D8B]: "richMessage",
   },
 }) as unknown as Schema;
 

@@ -20,8 +20,10 @@
 
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
-import type { Api } from "../2_tl.ts";
-import { constructDateTimeFormat } from "./2_message_entity.ts";
+import { Api } from "../2_tl.ts";
+import { deserializeFileId } from "./_file_id.ts";
+import { constructPhoto } from "./1_photo.ts";
+import { constructDateTimeFormat, timeFormatToTlObject } from "./2_message_entity.ts";
 
 /**
  * An empty rich text component.
@@ -157,7 +159,7 @@ export interface RichTextComponentPhoneNumberLink {
  */
 export interface RichTextComponentPhoto {
   type: "photo";
-  id: string;
+  fileId: string;
   width: number;
   height: number;
 }
@@ -298,80 +300,141 @@ export interface RichTextComponentDateTime {
 /** Any type of rich text component. */
 export type RichTextComponent = RichTextComponentEmpty | RichTextComponentPlain | RichTextComponentBold | RichTextComponentItalic | RichTextComponentUnderline | RichTextComponentStrikethrough | RichTextComponentFixed | RichTextComponentLink | RichTextComponentEmailLink | RichTextComponentConcatenate | RichTextComponentSubscript | RichTextComponentSuperscript | RichTextComponentMarked | RichTextComponentPhoneNumberLink | RichTextComponentPhoto | RichTextComponentAnchor | RichTextComponentMath | RichTextComponentCustomEmoji | RichTextComponentSpoiler | RichTextComponentMention | RichTextComponentHashtag | RichTextComponentBotCommand | RichTextComponentCashtag | RichTextComponentUrl | RichTextComponentEmail | RichTextComponentPhone | RichTextComponentBankCard | RichTextComponentTextMention | RichTextComponentDateTime;
 
-export function constructRichTextComponent(rt: Api.RichText): RichTextComponent {
+export function constructRichTextComponent(rt: Api.RichText, photos: Api.Photo[]): RichTextComponent {
   switch (rt._) {
     case "textMention":
-      return { type: "mention", text: constructRichTextComponent(rt.text) };
+      return { type: "mention", text: constructRichTextComponent(rt.text, photos) };
     case "textEmpty":
       return { type: "empty" };
     case "textPlain":
       return { type: "plain", text: rt.text };
     case "textBold":
-      return { type: "bold", text: constructRichTextComponent(rt.text) };
-
+      return { type: "bold", text: constructRichTextComponent(rt.text, photos) };
     case "textItalic":
-      return { type: "italic", text: constructRichTextComponent(rt.text) };
-
+      return { type: "italic", text: constructRichTextComponent(rt.text, photos) };
     case "textUnderline":
-      return { type: "underline", text: constructRichTextComponent(rt.text) };
+      return { type: "underline", text: constructRichTextComponent(rt.text, photos) };
     case "textStrike":
-      return { type: "strikethrough", text: constructRichTextComponent(rt.text) };
+      return { type: "strikethrough", text: constructRichTextComponent(rt.text, photos) };
     case "textFixed":
-      return { type: "fixed", text: constructRichTextComponent(rt.text) };
+      return { type: "fixed", text: constructRichTextComponent(rt.text, photos) };
     case "textUrl":
-      return { type: "link", url: rt.url, linkPreviewId: String(rt.webpage_id), text: constructRichTextComponent(rt.text) };
+      return { type: "link", url: rt.url, linkPreviewId: String(rt.webpage_id), text: constructRichTextComponent(rt.text, photos) };
     case "textEmail":
-      return { type: "emailLink", email: rt.email, text: constructRichTextComponent(rt.text) };
+      return { type: "emailLink", email: rt.email, text: constructRichTextComponent(rt.text, photos) };
     case "textConcat":
-      return { type: "concatenate", components: rt.texts.map(constructRichTextComponent) };
+      return { type: "concatenate", components: rt.texts.map((v) => constructRichTextComponent(v, photos)) };
     case "textSubscript":
-      return { type: "subscript", text: constructRichTextComponent(rt.text) };
-
+      return { type: "subscript", text: constructRichTextComponent(rt.text, photos) };
     case "textSuperscript":
-      return { type: "superscript", text: constructRichTextComponent(rt.text) };
-
+      return { type: "superscript", text: constructRichTextComponent(rt.text, photos) };
     case "textMarked":
-      return { type: "marked", text: constructRichTextComponent(rt.text) };
+      return { type: "marked", text: constructRichTextComponent(rt.text, photos) };
     case "textPhone":
-      return { type: "phoneNumberLink", phoneNumber: rt.phone, text: constructRichTextComponent(rt.text) };
-    case "textImage":
-      return { type: "photo", id: String(rt.document_id), width: rt.w, height: rt.h };
+      return { type: "phoneNumberLink", phoneNumber: rt.phone, text: constructRichTextComponent(rt.text, photos) };
+    case "textImage": {
+      const photo = Api.as("photo", photos.find((v) => v.id === rt.document_id));
+      const fileId = constructPhoto(photo).fileId;
+      return { type: "photo", fileId, width: rt.w, height: rt.h };
+    }
     case "textAnchor":
-      return { type: "anchor", name: rt.name, text: constructRichTextComponent(rt.text) };
-
+      return { type: "anchor", name: rt.name, text: constructRichTextComponent(rt.text, photos) };
     case "textMath":
       return { type: "math", code: rt.source };
-
     case "textCustomEmoji":
       return { type: "customEmoji", customEmojiId: String(rt.document_id), alt: rt.alt };
     case "textSpoiler":
-      return { type: "spoiler", text: constructRichTextComponent(rt.text) };
+      return { type: "spoiler", text: constructRichTextComponent(rt.text, photos) };
     case "textHashtag":
-      return { type: "hashtag", text: constructRichTextComponent(rt.text) };
+      return { type: "hashtag", text: constructRichTextComponent(rt.text, photos) };
     case "textBotCommand":
-      return { type: "botCommand", text: constructRichTextComponent(rt.text) };
-
+      return { type: "botCommand", text: constructRichTextComponent(rt.text, photos) };
     case "textCashtag":
-      return { type: "cashtag", text: constructRichTextComponent(rt.text) };
-
+      return { type: "cashtag", text: constructRichTextComponent(rt.text, photos) };
     case "textAutoUrl":
-      return { type: "url", text: constructRichTextComponent(rt.text) };
-
+      return { type: "url", text: constructRichTextComponent(rt.text, photos) };
     case "textAutoEmail":
-      return { type: "email", text: constructRichTextComponent(rt.text) };
-
+      return { type: "email", text: constructRichTextComponent(rt.text, photos) };
     case "textAutoPhone":
-      return { type: "phoneNumber", text: constructRichTextComponent(rt.text) };
-
+      return { type: "phoneNumber", text: constructRichTextComponent(rt.text, photos) };
     case "textBankCard":
-      return { type: "bankCard", text: constructRichTextComponent(rt.text) };
-
+      return { type: "bankCard", text: constructRichTextComponent(rt.text, photos) };
     case "textMentionName":
-      return { type: "textMention", userId: Number(rt.user_id), text: constructRichTextComponent(rt.text) };
-
+      return { type: "textMention", userId: Number(rt.user_id), text: constructRichTextComponent(rt.text, photos) };
     case "textDate":
-      return cleanObject({ type: "dateTime", isRelative: !!rt.relative, format: constructDateTimeFormat(rt) || undefined, date: rt.date, text: constructRichTextComponent(rt.text) });
+      return cleanObject({ type: "dateTime", isRelative: !!rt.relative, format: constructDateTimeFormat(rt) || undefined, date: rt.date, text: constructRichTextComponent(rt.text, photos) });
   }
 
   unreachable();
+}
+
+export function richTextComponentToTlObject(rtc: RichTextComponent): Api.RichText {
+  switch (rtc.type) {
+    case "empty":
+      return { _: "textEmpty" };
+    case "plain":
+      return { _: "textPlain", text: rtc.text };
+    case "bold":
+      return { _: "textBold", text: richTextComponentToTlObject(rtc.text) };
+    case "italic":
+      return { _: "textItalic", text: richTextComponentToTlObject(rtc.text) };
+    case "underline":
+      return { _: "textUnderline", text: richTextComponentToTlObject(rtc.text) };
+    case "strikethrough":
+      return { _: "textStrike", text: richTextComponentToTlObject(rtc.text) };
+    case "fixed":
+      return { _: "textFixed", text: richTextComponentToTlObject(rtc.text) };
+    case "link":
+      return { _: "textUrl", url: rtc.url, webpage_id: BigInt(rtc.linkPreviewId), text: richTextComponentToTlObject(rtc.text) };
+    case "emailLink":
+      return { _: "textEmail", email: rtc.email, text: richTextComponentToTlObject(rtc.text) };
+    case "concatenate":
+      return { _: "textConcat", texts: rtc.components.map(richTextComponentToTlObject) };
+    case "subscript":
+      return { _: "textSubscript", text: richTextComponentToTlObject(rtc.text) };
+    case "superscript":
+      return { _: "textSuperscript", text: richTextComponentToTlObject(rtc.text) };
+    case "marked":
+      return { _: "textMarked", text: richTextComponentToTlObject(rtc.text) };
+    case "phoneNumberLink":
+      return { _: "textPhone", phone: rtc.phoneNumber, text: richTextComponentToTlObject(rtc.text) };
+    case "photo": {
+      const fileId = deserializeFileId(rtc.fileId);
+      if (!("id" in fileId.location)) {
+        unreachable();
+      }
+      return { _: "textImage", document_id: fileId.location.id, w: rtc.width, h: rtc.height };
+    }
+    case "anchor":
+      return { _: "textAnchor", name: rtc.name, text: richTextComponentToTlObject(rtc.text) };
+    case "math":
+      return { _: "textMath", source: rtc.code };
+    case "customEmoji":
+      return { _: "textCustomEmoji", document_id: BigInt(rtc.customEmojiId), alt: rtc.alt };
+    case "spoiler":
+      return { _: "textSpoiler", text: richTextComponentToTlObject(rtc.text) };
+    case "mention":
+      return { _: "textMention", text: richTextComponentToTlObject(rtc.text) };
+    case "hashtag":
+      return { _: "textHashtag", text: richTextComponentToTlObject(rtc.text) };
+    case "botCommand":
+      return { _: "textBotCommand", text: richTextComponentToTlObject(rtc.text) };
+    case "cashtag":
+      return { _: "textCashtag", text: richTextComponentToTlObject(rtc.text) };
+    case "url":
+      return { _: "textAutoUrl", text: richTextComponentToTlObject(rtc.text) };
+    case "email":
+      return { _: "textAutoEmail", text: richTextComponentToTlObject(rtc.text) };
+    case "phoneNumber":
+      return { _: "textAutoPhone", text: richTextComponentToTlObject(rtc.text) };
+    case "bankCard":
+      return { _: "textBankCard", text: richTextComponentToTlObject(rtc.text) };
+    case "textMention":
+      return { _: "textMentionName", text: richTextComponentToTlObject(rtc.text), user_id: BigInt(rtc.userId) };
+    case "dateTime": {
+      const obj: Api.textDate = { _: "textDate", text: richTextComponentToTlObject(rtc.text), date: rtc.date };
+      timeFormatToTlObject(rtc.format ?? "", obj);
+      return obj;
+    }
+  }
 }

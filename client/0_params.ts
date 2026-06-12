@@ -94,6 +94,11 @@ export interface SendMessageParams extends _SendCommon, _ReplyMarkupCommon {
   linkPreview?: InputLinkPreview;
 }
 
+export interface SendRichTextParams extends _SendCommon, _ReplyMarkupCommon {
+  isRtl?: boolean;
+  isAutomaticLinkDetectionDisabled?: boolean;
+}
+
 export interface SendMessageDraftParams {
   /** The identifier of a thread to send the message to. */
   messageThreadId?: number;

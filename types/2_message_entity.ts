@@ -217,6 +217,40 @@ export function constructDateTimeFormat(obj: {
   return format;
 }
 
+export function timeFormatToTlObject(format: string, obj: {
+  relative?: true;
+  day_of_week?: true;
+  short_date?: true;
+  long_date?: true;
+  short_time?: true;
+  long_time?: true;
+}) {
+  if (format === "r" || format === "R") {
+    obj.relative = true;
+  } else {
+    for (const character of format) {
+      switch (character) {
+        case "t":
+          obj.short_time = true;
+          break;
+        case "T":
+          obj.long_time = true;
+          break;
+        case "d":
+          obj.short_date = true;
+          break;
+        case "D":
+          obj.long_date = true;
+          break;
+        case "w":
+        case "W":
+          obj.day_of_week = true;
+          break;
+      }
+    }
+  }
+}
+
 export function constructMessageEntity(obj: Api.MessageEntity): MessageEntity | null {
   if (Api.is("messageEntityMention", obj)) {
     return { type: "mention", offset: obj.offset, length: obj.length };
@@ -336,30 +370,7 @@ export function messageEntityToTlObject(entity: MessageEntity, getPeer: PeerGett
     case "dateTime": {
       const entity_: Api.messageEntityFormattedDate = { _: "messageEntityFormattedDate", offset, length, date: entity.dateTime };
       if (entity.format) {
-        if (entity.format === "r" || entity.format === "R") {
-          entity_.relative = true;
-        } else {
-          for (const character of entity.format) {
-            switch (character) {
-              case "t":
-                entity_.short_time = true;
-                break;
-              case "T":
-                entity_.long_time = true;
-                break;
-              case "d":
-                entity_.short_date = true;
-                break;
-              case "D":
-                entity_.long_date = true;
-                break;
-              case "w":
-              case "W":
-                entity_.day_of_week = true;
-                break;
-            }
-          }
-        }
+        timeFormatToTlObject(entity.format, entity_);
       }
       return entity_;
     }
