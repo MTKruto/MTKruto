@@ -1,0 +1,680 @@
+/**
+ * MTKruto - Cross-runtime JavaScript library for building Telegram clients
+ * Copyright (C) 2023-2026 Roj <https://roj.im/>
+ *
+ * This file is part of MTKruto.
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+import { unreachable } from "../0_deps.ts";
+import { cleanObject } from "../1_utilities.ts";
+import { Api } from "../2_tl.ts";
+import { constructLocation, type Location } from "./0_location.ts";
+import { type ChatP, constructChatP } from "./1_chat_p.ts";
+import { constructRichTextComponent, type RichTextComponent } from "./3_rich_text_component.ts";
+
+/**
+ * An unsupported type of page block.
+ * @unlisted
+ */
+export interface PageBlockUnsupported {
+  type: "unsupported";
+}
+
+/**
+ * A title page block.
+ * @unlisted
+ */
+export interface PageBlockTitle {
+  type: "title";
+  text: RichTextComponent;
+}
+
+/**
+ * A subtitle page block.
+ * @unlisted
+ */
+export interface PageBlockSubtitle {
+  type: "subtitle";
+  text: RichTextComponent;
+}
+
+/**
+ * An author-date page block.
+ * @unlisted
+ */
+export interface PageBlockAuthorDate {
+  type: "authorDate";
+  author: RichTextComponent;
+  date: number;
+}
+
+/**
+ * A header page block.
+ * @unlisted
+ */
+export interface PageBlockHeader {
+  type: "header";
+  text: RichTextComponent;
+}
+
+/**
+ * A subheader page block.
+ * @unlisted
+ */
+export interface PageBlockSubheader {
+  type: "subheader";
+  text: RichTextComponent;
+}
+
+/**
+ * A paragraph page block.
+ * @unlisted
+ */
+export interface PageBlockParagraph {
+  type: "paragraph";
+  text: RichTextComponent;
+}
+
+/**
+ * A pre-formatted page block.
+ * @unlisted
+ */
+export interface PageBlockPre {
+  type: "pre";
+  text: RichTextComponent;
+}
+
+/**
+ * A footer page block.
+ * @unlisted
+ */
+export interface PageBlockFooter {
+  type: "footer";
+  text: RichTextComponent;
+}
+
+/**
+ * A divider page block.
+ * @unlisted
+ */
+export interface PageBlockDivider {
+  type: "divider";
+}
+
+/**
+ * An anchor page block.
+ * @unlisted
+ */
+export interface PageBlockAnchor {
+  type: "anchor";
+  name: string;
+}
+
+/** @unlisted */
+export interface PageBlockListItemText {
+  type: "text";
+  isCheckbox: boolean;
+  isChecked: boolean;
+  text: RichTextComponent;
+}
+/** @unlisted */
+export interface PageBlockListItemBlockList {
+  type: "blockList";
+  isCheckbox: boolean;
+  isChecked: boolean;
+  blocks: PageBlock[];
+}
+/** @unlisted */
+export type PageBlockListItem = PageBlockListItemText | PageBlockListItemBlockList;
+export function constructPageBlockListItem(pbli: Api.PageListItem): PageBlockListItem {
+  switch (pbli._) {
+    case "pageListItemText":
+      return { type: "text", isCheckbox: !!pbli.checkbox, isChecked: !!pbli.checked, text: constructRichTextComponent(pbli.text) };
+    case "pageListItemBlocks":
+      return { type: "blockList", isCheckbox: !!pbli.checkbox, isChecked: !!pbli.checked, blocks: pbli.blocks.map(constructPageBlock) };
+  }
+}
+/**
+ * An list page block.
+ * @unlisted
+ */
+export interface PageBlockList {
+  type: "list";
+  items: PageBlockListItem[];
+}
+
+/**
+ * A block quote page block.
+ * @unlisted
+ */
+export interface PageBlockBlockQuote {
+  type: "blockQuote";
+  text: RichTextComponent;
+  caption: RichTextComponent;
+}
+
+/**
+ * A pull quote page block.
+ * @unlisted
+ */
+export interface PageBlockPullQuote {
+  type: "pullQuote";
+  text: RichTextComponent;
+  caption: RichTextComponent;
+}
+
+/** @unlisted */
+export interface PageBlockCaption {
+  text: RichTextComponent;
+  credit: RichTextComponent;
+}
+export function constructPageBlockCaption(pc: Api.PageCaption): PageBlockCaption {
+  return {
+    text: constructRichTextComponent(pc.text),
+    credit: constructRichTextComponent(pc.credit),
+  };
+}
+/**
+ * A photo page block.
+ * @unlisted
+ */
+export interface PageBlockPhoto {
+  type: "photo";
+  id: string;
+  caption: PageBlockCaption;
+  isSpoiler: boolean;
+  url?: string;
+  linkPreviewId?: string;
+}
+
+/**
+ * A video page block.
+ * @unlisted
+ */
+export interface PageBlockVideo {
+  type: "video";
+  id: string;
+  caption: PageBlockCaption;
+  isSpoiler: boolean;
+  isLoop: boolean;
+  isAutoplay: boolean;
+  linkPreviewId?: string;
+}
+
+/**
+ * A cover page block.
+ * @unlisted
+ */
+export interface PageBlockCover {
+  type: "cover";
+  cover: PageBlock;
+}
+
+/**
+ * An embed page block.
+ * @unlisted
+ */
+export interface PageBlockEmbed {
+  type: "embed";
+  isFullWidth: boolean;
+  isScrollingAllowed: boolean;
+  url?: string;
+  html?: string;
+  posterPhotoId?: string;
+  width?: number;
+  height?: number;
+  caption: PageBlockCaption;
+}
+
+/**
+ * An embed post page block.
+ * @unlisted
+ */
+export interface PageBlockEmbedPost {
+  type: "embedPost";
+  url: string;
+  linkPreviewId: string;
+  authorPhotoId: string;
+  author: string;
+  date: number;
+  blocks: PageBlock[];
+  caption: PageBlockCaption;
+}
+
+/**
+ * A collage page block.
+ * @unlisted
+ */
+export interface PageBlockCollage {
+  type: "collage";
+  items: PageBlock[];
+  caption: PageBlockCaption;
+}
+
+/**
+ * A slideshow page block.
+ * @unlisted
+ */
+export interface PageBlockSlideshow {
+  type: "slideshow";
+  items: PageBlock[];
+  caption: PageBlockCaption;
+}
+
+/**
+ * A channel page block.
+ * @unlisted
+ */
+export interface PageBlockChannel {
+  type: "channel";
+  chat: ChatP;
+}
+
+/**
+ * An audio page block.
+ * @unlisted
+ */
+export interface PageBlockAudio {
+  type: "audio";
+  id: string;
+  caption: PageBlockCaption;
+}
+
+/**
+ * A kicker page block.
+ * @unlisted
+ */
+export interface PageBlockKicker {
+  type: "kicker";
+  text: RichTextComponent;
+}
+
+/** @unlisted */
+export interface PageBlockTableCell {
+  isHeader: boolean;
+  isCenterAligned: boolean;
+  isRightAligned: boolean;
+  isMiddleVerticallyAligned: boolean;
+  isBottomVerticallyAligned: boolean;
+  text?: RichTextComponent;
+  colspan?: number;
+  rowspan?: number;
+}
+export function constructPageBlockTableCell(ptc: Api.PageTableCell): PageBlockTableCell {
+  return cleanObject({
+    isHeader: !!ptc.header,
+    isCenterAligned: !!ptc.align_center,
+    isRightAligned: !!ptc.align_right,
+    isMiddleVerticallyAligned: !!ptc.valign_middle,
+    isBottomVerticallyAligned: !!ptc.valign_bottom,
+    text: ptc.text ? constructRichTextComponent(ptc.text) : undefined,
+    colspan: ptc.colspan,
+    rowspan: ptc.rowspan,
+  });
+}
+/** @unlisted */
+export interface PageBlockTableRow {
+  cells: PageBlockTableCell[];
+}
+export function constructPageBlockTableRow(ptr: Api.PageTableRow): PageBlockTableRow {
+  return {
+    cells: ptr.cells.map(constructPageBlockTableCell),
+  };
+}
+/**
+ * A table page block.
+ * @unlisted
+ */
+export interface PageBlockTable {
+  type: "table";
+  isBordered: boolean;
+  isStriped: boolean;
+  title: RichTextComponent;
+  rows: PageBlockTableRow[];
+}
+
+/** @unlisted */
+export interface PageBlockOrderedListItemText {
+  type: "text";
+  isCheckbox: boolean;
+  isChecked: boolean;
+  number?: string;
+  value?: number;
+  itemType?: string;
+  text: RichTextComponent;
+}
+/** @unlisted */
+export interface PageBlockOrderedListItemTextBlockList {
+  type: "blockList";
+  isCheckbox: boolean;
+  isChecked: boolean;
+  number?: string;
+  value?: number;
+  itemType?: string;
+  blocks: PageBlock[];
+}
+/** @unlisted */
+export type PageBlockOrderedListItem = PageBlockOrderedListItemText | PageBlockOrderedListItemTextBlockList;
+export function constructPageBlockOrderedListItem(ploi: Api.PageListOrderedItem): PageBlockOrderedListItem {
+  switch (ploi._) {
+    case "pageListOrderedItemText":
+      return cleanObject({ type: "text", isCheckbox: !!ploi.checkbox, isChecked: !!ploi.checked, number: ploi.num, value: ploi.value, itemType: ploi.type, text: constructRichTextComponent(ploi.text) });
+    case "pageListOrderedItemBlocks":
+      return cleanObject({ type: "blockList", isCheckbox: !!ploi.checkbox, isChecked: !!ploi.checked, number: ploi.num, value: ploi.value, itemType: ploi.type, blocks: ploi.blocks.map(constructPageBlock) });
+  }
+
+  unreachable();
+}
+/**
+ * An order list page block.
+ * @unlisted
+ */
+export interface PageBlockOrderedList {
+  type: "orderedList";
+  isReversed: boolean;
+  items: PageBlockOrderedListItem[];
+  start?: number;
+  itemsType?: string;
+}
+
+/**
+ * A details page block.
+ * @unlisted
+ */
+export interface PageBlockDetails {
+  type: "details";
+  isOpen: boolean;
+  blocks: PageBlock[];
+  title: RichTextComponent;
+}
+
+/** @unlisted */
+export interface PageBlockRelatedArticle {
+  url: string;
+  linkPreviewId: string;
+  title?: string;
+  description?: string;
+  photoId?: string;
+  author?: string;
+  date?: number;
+}
+export function constructPageBlockRelatedArticle(pra: Api.PageRelatedArticle): PageBlockRelatedArticle {
+  return cleanObject({
+    url: pra.url,
+    linkPreviewId: String(pra.webpage_id),
+    title: pra.title,
+    description: pra.description,
+    photoId: pra.photo_id ? String(pra.photo_id) : undefined,
+    author: pra.author,
+    date: pra.published_date,
+  });
+}
+/**
+ * A related articles page block.
+ * @unlisted
+ */
+export interface PageBlockRelatedArticles {
+  type: "relatedArticles";
+  title: RichTextComponent;
+  articles: PageBlockRelatedArticle[];
+}
+
+/**
+ * A map page block.
+ * @unlisted
+ */
+export interface PageBlockMap {
+  type: "map";
+  location: Location;
+  zoom: number;
+  width: number;
+  height: number;
+  caption: PageBlockCaption;
+}
+
+/**
+ * A heading 1 page block.
+ * @unlisted
+ */
+export interface PageBlockHeading1 {
+  type: "heading1";
+  text: RichTextComponent;
+}
+
+/**
+ * A heading 2 page block.
+ * @unlisted
+ */
+export interface PageBlockHeading2 {
+  type: "heading2";
+  text: RichTextComponent;
+}
+
+/**
+ * A heading 3 page block.
+ * @unlisted
+ */
+export interface PageBlockHeading3 {
+  type: "heading3";
+  text: RichTextComponent;
+}
+
+/**
+ * A heading 4 page block.
+ * @unlisted
+ */
+export interface PageBlockHeading4 {
+  type: "heading4";
+  text: RichTextComponent;
+}
+
+/**
+ * A heading 5 page block.
+ * @unlisted
+ */
+export interface PageBlockHeading5 {
+  type: "heading5";
+  text: RichTextComponent;
+}
+
+/**
+ * A heading 6 page block.
+ * @unlisted
+ */
+export interface PageBlockHeading6 {
+  type: "heading6";
+  text: RichTextComponent;
+}
+
+/**
+ * A math page block.
+ * @unlisted
+ */
+export interface PageBlockMath {
+  type: "math";
+  code: string;
+}
+
+/**
+ * A thinking block.
+ * @unlisted
+ */
+export interface PageBlockThinking {
+  type: "thinking";
+  text: RichTextComponent;
+}
+
+/**
+ * A block quote blocks block.
+ * @unlisted
+ */
+export interface PageBlockBlockQuoteBlocks {
+  type: "blockQuoteBlocks";
+  blocks: PageBlock[];
+  caption: RichTextComponent;
+}
+
+/** Any type of page block. */
+export type PageBlock =
+  | PageBlockUnsupported
+  | PageBlockTitle
+  | PageBlockSubtitle
+  | PageBlockAuthorDate
+  | PageBlockHeader
+  | PageBlockSubheader
+  | PageBlockParagraph
+  | PageBlockPre
+  | PageBlockFooter
+  | PageBlockDivider
+  | PageBlockAnchor
+  | PageBlockList
+  | PageBlockBlockQuote
+  | PageBlockPullQuote
+  | PageBlockPhoto
+  | PageBlockVideo
+  | PageBlockCover
+  | PageBlockEmbed
+  | PageBlockEmbedPost
+  | PageBlockCollage
+  | PageBlockSlideshow
+  | PageBlockChannel
+  | PageBlockAudio
+  | PageBlockKicker
+  | PageBlockTable
+  | PageBlockOrderedList
+  | PageBlockDetails
+  | PageBlockRelatedArticles
+  | PageBlockMap
+  | PageBlockHeading1
+  | PageBlockHeading2
+  | PageBlockHeading3
+  | PageBlockHeading4
+  | PageBlockHeading5
+  | PageBlockHeading6
+  | PageBlockMath
+  | PageBlockThinking
+  | PageBlockBlockQuoteBlocks;
+
+export function constructPageBlock(pb: Api.PageBlock): PageBlock {
+  switch (pb._) {
+    case "pageBlockUnsupported":
+      return { type: "unsupported" };
+    case "pageBlockTitle":
+      return { type: "title", text: constructRichTextComponent(pb.text) };
+    case "pageBlockSubtitle":
+      return { type: "subtitle", text: constructRichTextComponent(pb.text) };
+    case "pageBlockAuthorDate":
+      return { type: "authorDate", author: constructRichTextComponent(pb.author), date: pb.published_date };
+    case "pageBlockHeader":
+      return { type: "header", text: constructRichTextComponent(pb.text) };
+
+    case "pageBlockSubheader":
+      return { type: "subheader", text: constructRichTextComponent(pb.text) };
+
+    case "pageBlockParagraph":
+      return { type: "paragraph", text: constructRichTextComponent(pb.text) };
+
+    case "pageBlockPreformatted":
+      return { type: "pre", text: constructRichTextComponent(pb.text) };
+
+    case "pageBlockFooter":
+      return { type: "footer", text: constructRichTextComponent(pb.text) };
+
+    case "pageBlockDivider":
+      return { type: "divider" };
+    case "pageBlockAnchor":
+      return { type: "anchor", name: pb.name };
+    case "pageBlockList":
+      return { type: "list", items: pb.items.map(constructPageBlockListItem) };
+    case "pageBlockBlockquote":
+      return { type: "blockQuote", text: constructRichTextComponent(pb.text), caption: constructRichTextComponent(pb.caption) };
+    case "pageBlockPullquote":
+      return { type: "blockQuote", text: constructRichTextComponent(pb.text), caption: constructRichTextComponent(pb.caption) };
+
+    case "pageBlockPhoto":
+      return cleanObject({ type: "photo", id: String(pb.photo_id), caption: constructPageBlockCaption(pb.caption), isSpoiler: !!pb.spoiler, linkPreviewId: pb.webpage_id ? String(pb.webpage_id) : undefined, url: pb.url });
+    case "pageBlockVideo":
+      return { type: "video", id: String(pb.video_id), caption: constructPageBlockCaption(pb.caption), isSpoiler: !!pb.spoiler, isAutoplay: !!pb.autoplay, isLoop: !!pb.loop };
+    case "pageBlockCover":
+      return { type: "cover", cover: constructPageBlock(pb.cover) };
+    case "pageBlockEmbed":
+      return cleanObject({ type: "embed", caption: constructPageBlockCaption(pb.caption), isFullWidth: !!pb.full_width, isScrollingAllowed: !!pb.allow_scrolling, width: pb.w, height: pb.h, html: pb.html, url: pb.url, posterPhotoId: pb.poster_photo_id ? String(pb.poster_photo_id) : undefined });
+
+    case "pageBlockEmbedPost":
+      return cleanObject({ type: "embedPost", caption: constructPageBlockCaption(pb.caption), author: pb.author, authorPhotoId: String(pb.author_photo_id), blocks: pb.blocks.map(constructPageBlock), date: pb.date, linkPreviewId: String(pb.webpage_id), url: pb.url });
+
+    case "pageBlockCollage":
+      return cleanObject({ type: "collage", caption: constructPageBlockCaption(pb.caption), items: pb.items.map(constructPageBlock) });
+    case "pageBlockSlideshow":
+      return cleanObject({ type: "slideshow", caption: constructPageBlockCaption(pb.caption), items: pb.items.map(constructPageBlock) });
+    case "pageBlockChannel":
+      return cleanObject({ type: "channel", chat: constructChatP(pb.channel) });
+    case "pageBlockAudio":
+      return cleanObject({ type: "audio", caption: constructPageBlockCaption(pb.caption), id: String(pb.audio_id) });
+    case "pageBlockKicker":
+      return cleanObject({ type: "kicker", text: constructRichTextComponent(pb.text) });
+    case "pageBlockTable":
+      return cleanObject({ type: "table", isBordered: !!pb.bordered, isStriped: !!pb.striped, title: constructRichTextComponent(pb.title), rows: pb.rows.map(constructPageBlockTableRow) });
+    case "pageBlockOrderedList":
+      return cleanObject({
+        type: "orderedList",
+        isReversed: !!pb.reversed,
+        items: pb.items.map(constructPageBlockOrderedListItem),
+        itemsType: pb.type,
+        start: pb.start,
+      });
+    case "pageBlockDetails":
+      return { type: "details", isOpen: !!pb.open, title: constructRichTextComponent(pb.title), blocks: pb.blocks.map(constructPageBlock) };
+    case "pageBlockRelatedArticles":
+      return {
+        type: "relatedArticles",
+        title: constructRichTextComponent(pb.title),
+        articles: pb.articles.map(constructPageBlockRelatedArticle),
+      };
+    case "pageBlockMap":
+      return {
+        type: "map",
+        caption: constructPageBlockCaption(pb.caption),
+        width: pb.w,
+        height: pb.h,
+        zoom: pb.zoom,
+        location: constructLocation(Api.as("geoPoint", pb.geo)),
+      };
+    case "pageBlockHeading1":
+      return { type: "heading1", text: constructRichTextComponent(pb.text) };
+    case "pageBlockHeading2":
+      return { type: "heading2", text: constructRichTextComponent(pb.text) };
+    case "pageBlockHeading3":
+      return { type: "heading3", text: constructRichTextComponent(pb.text) };
+    case "pageBlockHeading4":
+      return { type: "heading4", text: constructRichTextComponent(pb.text) };
+    case "pageBlockHeading5":
+      return { type: "heading5", text: constructRichTextComponent(pb.text) };
+    case "pageBlockHeading6":
+      return { type: "heading6", text: constructRichTextComponent(pb.text) };
+    case "pageBlockMath":
+      return { type: "math", code: pb.source };
+    case "pageBlockThinking":
+      return { type: "thinking", text: constructRichTextComponent(pb.text) };
+    case "inputPageBlockMap":
+      unreachable();
+      break;
+    case "pageBlockBlockquoteBlocks":
+      return { type: "blockQuoteBlocks", blocks: pb.blocks.map(constructPageBlock), caption: constructRichTextComponent(pb.caption) };
+  }
+
+  unreachable();
+}

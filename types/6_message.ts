@@ -52,6 +52,7 @@ import { constructGame, type Game } from "./3_game.ts";
 import { constructPollOption, type PollOption } from "./3_poll_option.ts";
 import { constructReplyQuote, type ReplyQuote } from "./3_reply_quote.ts";
 import { type Checklist, constructChecklist } from "./4_checklist.ts";
+import { constructPageBlock, type PageBlock } from "./4_page_block.ts";
 import { constructPoll, type Poll } from "./4_poll.ts";
 import { constructGiftNonUpgradedInformation, type GiftNonUpgradedInformation } from "./5_gift_non_upgraded_information.ts";
 import { constructGiftUpgradedInformation, type GiftUpgradedInformation } from "./5_gift_upgraded_information.ts";
@@ -626,6 +627,24 @@ export interface MessagePollOptionRemoved extends _MessageBase {
   pollOptionRemoved: PollOption;
 }
 
+/**
+ * A message with rich text.
+ * @unlisted
+ */
+export interface MessageRichText extends _MessageBase {
+  type: "richText";
+  /** The blocks of the rich text. */
+  blocks: PageBlock[];
+  /** Whether the rich text is right-to-left. */
+  isRtl: boolean;
+  /** Whether the rich text is partial. */
+  isPartial: boolean;
+  /** The photos included in the rich text. */
+  photos: Photo[];
+  /** The documents included in the rich text. */
+  documents: Document[];
+}
+
 // message type map
 
 /** @unlisted */
@@ -680,6 +699,7 @@ export interface MessageTypes {
   giftUpgraded: MessageGiftUpgraded;
   pollOptionAdded: MessagePollOptionAdded;
   pollOptionRemoved: MessagePollOptionRemoved;
+  richText: MessageRichText;
 }
 
 export const messageTypes: (keyof MessageTypes)[] = [
@@ -732,6 +752,7 @@ export const messageTypes: (keyof MessageTypes)[] = [
   "giftUpgraded",
   "pollOptionRemoved",
   "pollOptionAdded",
+  "richText",
 ];
 export function assertMessageType<T extends keyof MessageTypes>(message: Message, type: T): MessageTypes[T] {
   if (message.type !== type) {
@@ -791,7 +812,8 @@ export type Message =
   | MessageGiftNonUpgraded
   | MessageGiftUpgraded
   | MessagePollOptionAdded
-  | MessagePollOptionRemoved;
+  | MessagePollOptionRemoved
+  | MessageRichText;
 
 /** @unlisted */
 export interface MessageGetter {
@@ -1090,12 +1112,42 @@ export async function constructMessage(
     message.editDate = message_.edit_date;
   }
 
+  if (message_.rich_message) {
+    return {
+      ...message,
+      type: "richText",
+      blocks: message_.rich_message.blocks.map(constructPageBlock),
+      isRtl: !!message_.rich_message.rtl,
+      isPartial: !!message_.rich_message.part,
+      photos: message_.rich_message.photos.map((v) => constructPhoto(Api.as("photo", v))),
+      documents: message_.rich_message.documents.map((v) => {
+        v = Api.as("document", v);
+
+        const fileId: FileId = {
+          type: FileType.Document,
+          dcId: v.dc_id,
+          location: {
+            type: "common",
+            id: v.id,
+            accessHash: v.access_hash,
+          },
+          fileReference: v.file_reference,
+        };
+        return constructDocument(
+          v,
+          v.attributes.find((v) => Api.is("documentAttributeFilename", v)) ?? { _: "documentAttributeFilename", file_name: "unknown" },
+          serializeFileId(fileId),
+          toUniqueFileId(fileId),
+        );
+      }),
+    };
+  }
+
   const messageText = {
     ...message,
     text: message_.message,
     entities: message_.entities?.map(constructMessageEntity).filter((v): v is NonNullable<typeof v> => !!v) ?? [],
   };
-
   if (message_.message && message_.media === undefined || message_.message && Api.is("messageMediaWebPage", message_.media)) {
     let linkPreview: LinkPreview | undefined;
     if (Api.is("messageMediaWebPage", message_.media)) {
