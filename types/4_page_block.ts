@@ -21,12 +21,11 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import type { RichTextComponentPhoto } from "../3_types.ts";
 import { deserializeFileId, type FileId, FileType, serializeFileId } from "./_file_id.ts";
 import { constructLocation, type Location } from "./0_location.ts";
 import { type ChatP, constructChatP } from "./1_chat_p.ts";
 import { constructPhoto } from "./1_photo.ts";
-import { constructRichTextComponent, type RichTextComponent, richTextComponentToTlObject } from "./3_rich_text_component.ts";
+import { constructRichTextComponent, type RichTextComponent, type RichTextComponentPhoto, richTextComponentToTlObject } from "./3_rich_text_component.ts";
 
 /**
  * An unsupported type of page block.
