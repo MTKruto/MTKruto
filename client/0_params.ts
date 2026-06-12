@@ -97,7 +97,6 @@ export interface SendMessageParams extends _SendCommon, _ReplyMarkupCommon {
 export interface SendRichTextParams extends _SendCommon, _ReplyMarkupCommon {
   isRtl?: boolean;
   isAutomaticLinkDetectionDisabled?: boolean;
-  users?: ID[];
 }
 
 export interface SendMessageDraftParams {
