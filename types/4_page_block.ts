@@ -233,6 +233,20 @@ export interface PageBlockVideo {
 }
 
 /**
+ * An animation page block.
+ * @unlisted
+ */
+export interface PageBlockAnimation {
+  type: "animation";
+  fileId: string;
+  caption: PageBlockCaption;
+  isSpoiler: boolean;
+  isLoop: boolean;
+  isAutoplay: boolean;
+  linkPreviewId?: string;
+}
+
+/**
  * A cover page block.
  * @unlisted
  */
@@ -307,6 +321,16 @@ export interface PageBlockChannel {
  */
 export interface PageBlockAudio {
   type: "audio";
+  fileId: string;
+  caption: PageBlockCaption;
+}
+
+/**
+ * A voice page block.
+ * @unlisted
+ */
+export interface PageBlockVoice {
+  type: "voice";
   fileId: string;
   caption: PageBlockCaption;
 }
@@ -593,6 +617,7 @@ export type PageBlock =
   | PageBlockPullQuote
   | PageBlockPhoto
   | PageBlockVideo
+  | PageBlockAnimation
   | PageBlockCover
   | PageBlockEmbed
   | PageBlockEmbedPost
@@ -600,6 +625,7 @@ export type PageBlock =
   | PageBlockSlideshow
   | PageBlockChannel
   | PageBlockAudio
+  | PageBlockVoice
   | PageBlockKicker
   | PageBlockTable
   | PageBlockOrderedList
@@ -652,13 +678,14 @@ export function constructPageBlock(pb: Api.PageBlock, photos: Api.Photo[], docum
     }
     case "pageBlockVideo": {
       const document = Api.as("document", documents.find((v) => v.id === pb.video_id));
+      const isAnimated = !!document.attributes.find((v) => Api.is("documentAttributeAnimated", v));
       const fileId: FileId = {
         type: FileType.Video,
         dcId: document.dc_id,
         location: { type: "common", id: document.id, accessHash: document.access_hash },
         fileReference: document.file_reference,
       };
-      return { type: "video", fileId: serializeFileId(fileId), caption: constructPageBlockCaption(pb.caption, photos), isSpoiler: !!pb.spoiler, isAutoplay: !!pb.autoplay, isLoop: !!pb.loop };
+      return { type: isAnimated ? "animation" : "video", fileId: serializeFileId(fileId), caption: constructPageBlockCaption(pb.caption, photos), isSpoiler: !!pb.spoiler, isAutoplay: !!pb.autoplay, isLoop: !!pb.loop };
     }
     case "pageBlockCover":
       return { type: "cover", cover: constructPageBlock(pb.cover, photos, documents) };
@@ -674,13 +701,17 @@ export function constructPageBlock(pb: Api.PageBlock, photos: Api.Photo[], docum
       return cleanObject({ type: "channel", chat: constructChatP(pb.channel) });
     case "pageBlockAudio": {
       const document = Api.as("document", documents.find((v) => v.id === pb.audio_id));
+      const audioAttribute = document.attributes.find((v) => Api.is("documentAttributeAudio", v));
+      if (!audioAttribute) {
+        unreachable();
+      }
       const fileId: FileId = {
         type: FileType.Video,
         dcId: document.dc_id,
         location: { type: "common", id: document.id, accessHash: document.access_hash },
         fileReference: document.file_reference,
       };
-      return cleanObject({ type: "audio", fileId: serializeFileId(fileId), caption: constructPageBlockCaption(pb.caption, photos) });
+      return cleanObject({ type: audioAttribute.voice ? "voice" : "audio", fileId: serializeFileId(fileId), caption: constructPageBlockCaption(pb.caption, photos) });
     }
     case "pageBlockKicker":
       return cleanObject({ type: "kicker", text: constructRichTextComponent(pb.text, photos) });
@@ -774,7 +805,8 @@ export function pageBlockToTlObject(pb: PageBlock): Api.PageBlock {
       }
       return { _: "pageBlockPhoto", photo_id: location.id, caption: pageBlockCaptionToTlObject(pb.caption), spoiler: pb.isSpoiler || undefined, url: pb.url, webpage_id: pb.linkPreviewId ? BigInt(pb.linkPreviewId) : undefined };
     }
-    case "video": {
+    case "video":
+    case "animation": {
       const location = deserializeFileId(pb.fileId).location;
       if (!("id" in location)) {
         unreachable();
@@ -794,7 +826,8 @@ export function pageBlockToTlObject(pb: PageBlock): Api.PageBlock {
     case "channel":
       unreachable();
       break;
-    case "audio": {
+    case "audio":
+    case "voice": {
       const location = deserializeFileId(pb.fileId).location;
       if (!("id" in location)) {
         unreachable();
@@ -836,8 +869,8 @@ export function pageBlockToTlObject(pb: PageBlock): Api.PageBlock {
   unreachable();
 }
 
-export function collectMediaFileIds(pageBlocks: PageBlock[]): { fileId: string; type: "photo" | "audio" | "video" }[] {
-  const fileIds = new Array<{ fileId: string; type: "photo" | "audio" | "video" }>();
+export function collectMediaFileIds(pageBlocks: PageBlock[]): { fileId: string; type: "photo" | "audio" | "video" | "voice" | "animation" }[] {
+  const fileIds = new Array<{ fileId: string; type: "photo" | "audio" | "video" | "voice" | "animation" }>();
   for (const m of collectPageBlockMedia(pageBlocks)) {
     fileIds.push({ type: m.type, fileId: m.fileId });
   }
@@ -1000,9 +1033,9 @@ function collectRichTextComponents(pageBlocks: PageBlock[]): RichTextComponent[]
   return components;
 }
 function collectPageBlockMedia(pageBlocks: PageBlock[]) {
-  const media = new Array<PageBlockPhoto | PageBlockVideo | PageBlockAudio>();
+  const media = new Array<PageBlockPhoto | PageBlockVideo | PageBlockAudio | PageBlockVoice | PageBlockAnimation>();
   for (const pb of pageBlocks) {
-    if (pb.type === "photo" || pb.type === "video" || pb.type === "audio") {
+    if (pb.type === "photo" || pb.type === "video" || pb.type === "audio" || pb.type === "voice" || pb.type === "animation") {
       media.push(pb);
     } else {switch (pb.type) {
         case "list":
