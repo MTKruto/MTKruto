@@ -860,7 +860,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @method ms
    * @param chatId The identifier of a chat to send the message to.
    * @param draftId The identifier of the draft.
-   * @param text The message's rich text.
+   * @param richText The message's rich text.
    */
   async sendRichTextDraft(chatId: ID, draftId: number, richText: InputRichText, params?: SendRichTextDraftParams): Promise<void> {
     return await this.#dispatch("sendRichTextDraft", chatId, draftId, richText, params);

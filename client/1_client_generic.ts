@@ -538,7 +538,7 @@ export abstract class ClientGeneric {
    * @method ms
    * @param chatId The identifier of a chat to send the message to.
    * @param draftId The identifier of the draft.
-   * @param text The message's rich text.
+   * @param richText The message's rich text.
    */
   abstract sendRichTextDraft(chatId: ID, draftId: number, richText: InputRichText, params?: SendRichTextDraftParams): Promise<void>;
 
