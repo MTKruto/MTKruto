@@ -108,6 +108,11 @@ export interface SendMessageDraftParams {
   entities?: MessageEntity[];
 }
 
+export interface SendRichTextDraftParams {
+  /** The identifier of a thread to send the message to. */
+  messageThreadId?: number;
+}
+
 export interface SendChatActionParams extends _BusinessConnectionIdCommon {
   messageThreadId?: number;
 }
