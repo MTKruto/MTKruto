@@ -27,7 +27,7 @@ import { collectMediaFileIds, constructBlockedUserList, constructChatAction, con
 import { assertMessageType, type ChatActionType, constructMessage as constructMessage_, deserializeInlineMessageId, type FileSource, FileType, type ID, type Message, type MessageEntity, messageEntityToTlObject, type ParseMode, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type Update, type UsernameResolver } from "../3_types.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetBlockedUsersParams, GetHistoryParams, GetMessageReactionsParams, GetSavedChatsParams, GetSavedMessagesParams, OpenMiniAppParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams as SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, StartBotParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams } from "./0_params.ts";
+import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetBlockedUsersParams, GetHistoryParams, GetMessageReactionsParams, GetSavedChatsParams, GetSavedMessagesParams, OpenMiniAppParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams as SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendRichTextParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, StartBotParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, checkArray, checkMessageId, checkPhotoName, checkStickerName, getLimit, getUsername, isHttpUrl, toInputChannel } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
@@ -315,6 +315,18 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     });
   }
 
+  async sendRichTextDraft(chatId: ID, draftId: number, richText: InputRichText, params?: SendRichTextDraftParams) {
+    this.#c.storage.assertBot("sendRichTextDraft");
+    const peer = await this.#c.getInputPeer(chatId);
+    const rich_message = MessageManager.#inputRichTextToInputRichMessage(richText);
+    await this.#c.invoke({
+      _: "messages.setTyping",
+      peer,
+      action: { _: "inputSendMessageRichMessageDraftAction", random_id: BigInt(draftId), rich_message },
+      top_msg_id: params?.messageThreadId,
+    });
+  }
+
   async sendMessage(
     chatId: ID,
     text: string,
@@ -406,6 +418,32 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const schedule_date = params?.sendAt;
     const allow_paid_floodskip = params?.isPaidBroadcast ? true : undefined;
 
+    const rich_message = MessageManager.#inputRichTextToInputRichMessage(richText);
+
+    const result = await this.#c.invoke(
+      {
+        _: "messages.sendMessage",
+        peer,
+        random_id: randomId,
+        message: "",
+        rich_message,
+        silent,
+        noforwards,
+        reply_to: await this.#constructReplyTo(params),
+        send_as: sendAs,
+        reply_markup: replyMarkup,
+        effect,
+        schedule_date,
+        allow_paid_floodskip,
+      },
+      { businessConnectionId: params?.businessConnectionId },
+    );
+
+    const message_ = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
+    return assertMessageType(message_, "richText");
+  }
+
+  static #inputRichTextToInputRichMessage(richText: InputRichText) {
     let rich_message: Api.InputRichMessage;
     switch (richText.type) {
       case "blocks": {
@@ -444,28 +482,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       default:
         unreachable();
     }
-
-    const result = await this.#c.invoke(
-      {
-        _: "messages.sendMessage",
-        peer,
-        random_id: randomId,
-        message: "",
-        rich_message,
-        silent,
-        noforwards,
-        reply_to: await this.#constructReplyTo(params),
-        send_as: sendAs,
-        reply_markup: replyMarkup,
-        effect,
-        schedule_date,
-        allow_paid_floodskip,
-      },
-      { businessConnectionId: params?.businessConnectionId },
-    );
-
-    const message_ = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
-    return assertMessageType(message_, "richText");
+    return rich_message;
   }
 
   async #constructReplyTo(params?: _SendCommon) {
