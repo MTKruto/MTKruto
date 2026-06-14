@@ -945,8 +945,8 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     if (!question) {
       throw new Error("Question must not be empty.");
     }
-    if (!Array.isArray(options) || options.length < 2) {
-      throw new Error("There must be at least two options.");
+    if (!Array.isArray(options) || options.length < 1) {
+      throw new Error("There must be at least one option.");
     }
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
