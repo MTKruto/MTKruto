@@ -23,7 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { base64EncodeUrlSafe, encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
-import { collectMediaFileIds, constructBlockedUserList, constructChatAction, constructMessageDraft, constructMessageEntity, constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructSummarizedText, constructVoiceTranscription, deserializeFileId, type FileId, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, type InputPollOption, type InputPollOptionMediaAnimation, type InputPollOptionMediaSticker, type InputRichText, type MessageCounters, type MessageGetter, type MessageList, type MessageLivePhoto, type MessagePhoto, messageSearchFilterToTlObject, pageBlockToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type TextToTranslate, type TranslatedText, type VoiceTranscription } from "../3_types.ts";
+import { collectMediaFileIds, constructBlockedUserList, constructChatAction, constructMessageDraft, constructMessageEntity, constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructSummarizedText, constructVoiceTranscription, deserializeFileId, type FileId, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, type InputPollMedia, type InputPollMediaAnimation, type InputPollMediaSticker, type InputPollOption, type InputRichText, type MessageCounters, type MessageGetter, type MessageList, type MessageLivePhoto, type MessagePhoto, messageSearchFilterToTlObject, pageBlockToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type TextToTranslate, type TranslatedText, type VoiceTranscription } from "../3_types.ts";
 import { assertMessageType, type ChatActionType, constructMessage as constructMessage_, deserializeInlineMessageId, type FileSource, FileType, type ID, type Message, type MessageEntity, messageEntityToTlObject, type ParseMode, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type Update, type UsernameResolver } from "../3_types.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
@@ -940,44 +940,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
     for (const [i, option] of options.entries()) {
       if (option.media) {
-        switch (option.media.type) {
-          case "photo":
-            mediaMap.set(i, await this.#getInputMediaPhoto(peer, option.media.photo, option.media));
-            break;
-          case "video":
-            mediaMap.set(i, this.#getInputMediaDocument(await this.#uploadVideo(option.media.video, option.media)));
-            break;
-          case "animation":
-            mediaMap.set(i, this.#getInputMediaDocument(await this.#uploadAnimation(option.media.animation, option.media)));
-            break;
-          case "sticker":
-            mediaMap.set(i, this.#getInputMediaDocument(await this.#uploadSticker(option.media.sticker, option.media)));
-            break;
-          case "livePhoto":
-            mediaMap.set(i, await this.#getInputMediaPhoto(peer, option.media.photo, option.media));
-            break;
-          case "location":
-            mediaMap.set(i, { _: "inputMediaGeoPoint", geo_point: { _: "inputGeoPoint", lat: option.media.latitude, long: option.media.longitude, accuracy_radius: option.media.horizontalAccuracy } });
-            break;
-          case "venue":
-            mediaMap.set(i, {
-              _: "inputMediaVenue",
-              address: option.media.address,
-              geo_point: {
-                _: "inputGeoPoint",
-                lat: option.media.latitude,
-                long: option.media.longitude,
-              },
-              provider: "foursquare",
-              title: option.media.title,
-              venue_id: option.media.foursquareId ?? "",
-              venue_type: option.media.foursquareType ?? "",
-            });
-            break;
-          case "link":
-            mediaMap.set(i, { _: "inputMediaWebPage", url: option.media.url });
-            break;
-        }
+        mediaMap.set(i, await this.#resolvePollMedia(peer, option.media));
       }
     }
 
@@ -989,9 +952,35 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     });
 
     const questionParseResult = this.parseText(question, { parseMode: params?.questionParseMode, entities: params?.questionEntities });
-    const poll: Api.poll = { _: "poll", id: getRandomId(), answers, question: { _: "textWithEntities", text: questionParseResult[0], entities: questionParseResult[1] ?? [] }, closed: params?.isClosed ? true : undefined, close_date: params?.closeDate, close_period: params?.openPeriod ? params.openPeriod : undefined, multiple_choice: params?.isMultipleAnswersAllowed ? true : undefined, public_voters: params?.isAnonymous === false ? true : undefined, quiz: params?.type === "quiz" ? true : undefined, hash: 0n, revoting_disabled: params?.isRevotingAllowed === false ? true : undefined, shuffle_answers: params?.isShuffled ? true : undefined, hide_results_until_close: params?.isResultHidden ? true : undefined, open_answers: params?.isAddingOptionsAllowed ? true : undefined, countries_iso2: params?.countries, subscribers_only: params?.isSubscriberOnly || undefined };
+    const poll: Api.poll = {
+      _: "poll",
+      id: getRandomId(),
+      answers,
+      question: { _: "textWithEntities", text: questionParseResult[0], entities: questionParseResult[1] ?? [] },
+      closed: params?.isClosed ? true : undefined,
+      close_date: params?.closeDate,
+      close_period: params?.openPeriod ? params.openPeriod : undefined,
+      multiple_choice: params?.isMultipleAnswersAllowed ? true : undefined,
+      public_voters: params?.isAnonymous === false ? true : undefined,
+      quiz: params?.type === "quiz" ? true : undefined,
+      hash: 0n,
+      revoting_disabled: params?.isRevotingAllowed === false ? true : undefined,
+      shuffle_answers: params?.isShuffled ? true : undefined,
+      hide_results_until_close: params?.isResultHidden ? true : undefined,
+      open_answers: params?.isAddingOptionsAllowed ? true : undefined,
+      countries_iso2: params?.countries,
+      subscribers_only: params?.isSubscriberOnly || undefined,
+    };
 
-    const media: Api.inputMediaPoll = { _: "inputMediaPoll", poll, correct_answers: params?.correctOptionIndexes, solution, solution_entities: solutionEntities };
+    const media: Api.inputMediaPoll = {
+      _: "inputMediaPoll",
+      poll,
+      correct_answers: params?.correctOptionIndexes,
+      solution,
+      solution_entities: solutionEntities,
+      solution_media: params?.explanationMedia ? await this.#resolvePollMedia(peer, params.explanationMedia) : undefined,
+      attached_media: params?.media ? await this.#resolvePollMedia(peer, params.media) : undefined,
+    };
 
     const description = params?.description;
     const parseResult2 = description !== undefined ? this.parseText(description, { parseMode: params?.descriptionParseMode, entities: params?.descriptionEntities }) : undefined;
@@ -1020,6 +1009,42 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
     const message = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message, "poll");
+  }
+
+  async #resolvePollMedia(peer: Api.InputPeer, media: InputPollMedia): Promise<Api.InputMedia> {
+    switch (media.type) {
+      case "photo":
+        return await this.#getInputMediaPhoto(peer, media.photo, media);
+      case "video":
+        return this.#getInputMediaDocument(await this.#uploadVideo(media.video, media));
+      case "animation":
+        return this.#getInputMediaDocument(await this.#uploadAnimation(media.animation, media));
+      case "sticker":
+        return this.#getInputMediaDocument(await this.#uploadSticker(media.sticker, media));
+
+      case "livePhoto":
+        return await this.#getInputMediaPhoto(peer, media.photo, media);
+      case "location":
+        return { _: "inputMediaGeoPoint", geo_point: { _: "inputGeoPoint", lat: media.latitude, long: media.longitude, accuracy_radius: media.horizontalAccuracy } };
+      case "venue":
+        return {
+          _: "inputMediaVenue",
+          address: media.address,
+          geo_point: {
+            _: "inputGeoPoint",
+            lat: media.latitude,
+            long: media.longitude,
+          },
+          provider: "foursquare",
+          title: media.title,
+          venue_id: media.foursquareId ?? "",
+          venue_type: media.foursquareType ?? "",
+        };
+      case "link":
+        return { _: "inputMediaWebPage", url: media.url };
+    }
+
+    unreachable();
   }
 
   async sendChecklist(chatId: ID, title: string, items: InputChecklistItem[], params?: SendChecklistParams) {
@@ -1407,7 +1432,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     };
   }
 
-  async #uploadAnimation(video: FileSource, params?: _UploadCommon & InputPollOptionMediaAnimation): Promise<Api.inputDocument> {
+  async #uploadAnimation(video: FileSource, params?: _UploadCommon & InputPollMediaAnimation): Promise<Api.inputDocument> {
     if (typeof video === "string") {
       const fileId = this.resolveFileId(video, [FileType.Animation]);
       if (fileId !== null) {
@@ -1425,7 +1450,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     };
   }
 
-  async #uploadSticker(video: FileSource, params?: _UploadCommon & InputPollOptionMediaSticker): Promise<Api.inputDocument> {
+  async #uploadSticker(video: FileSource, params?: _UploadCommon & InputPollMediaSticker): Promise<Api.inputDocument> {
     if (typeof video === "string") {
       const fileId = this.resolveFileId(video, [FileType.Sticker]);
       if (fileId !== null) {

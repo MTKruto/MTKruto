@@ -33,7 +33,7 @@ export interface _InputPollOptionMediaCommon {
 }
 
 /** @unlisted */
-export interface InputPollOptionMediaAnimation extends _InputPollOptionMediaCommon {
+export interface InputPollMediaAnimation extends _InputPollOptionMediaCommon {
   type: "animation";
   /** The animation. */
   animation: FileSource;
@@ -50,7 +50,7 @@ export interface InputPollOptionMediaAnimation extends _InputPollOptionMediaComm
 }
 
 /** @unlisted */
-export interface InputPollOptionMediaPhoto extends _InputPollOptionMediaCommon {
+export interface InputPollMediaPhoto extends _InputPollOptionMediaCommon {
   type: "photo";
   /** The photo. */
   photo: FileSource;
@@ -63,7 +63,7 @@ export interface InputPollOptionMediaPhoto extends _InputPollOptionMediaCommon {
 }
 
 /** @unlisted */
-export interface InputPollOptionMediaVideo extends _InputPollOptionMediaCommon {
+export interface InputPollMediaVideo extends _InputPollOptionMediaCommon {
   type: "video";
   /** The video. */
   video: FileSource;
@@ -82,7 +82,7 @@ export interface InputPollOptionMediaVideo extends _InputPollOptionMediaCommon {
 }
 
 /** @unlisted */
-export interface InputPollOptionMediaSticker extends _InputPollOptionMediaCommon {
+export interface InputPollMediaSticker extends _InputPollOptionMediaCommon {
   type: "sticker";
   /** The sticker. */
   sticker: FileSource;
@@ -91,7 +91,7 @@ export interface InputPollOptionMediaSticker extends _InputPollOptionMediaCommon
 }
 
 /** @unlisted */
-export interface InputPollOptionMediaVenue {
+export interface InputPollMediaVenue {
   type: "venue";
   /** The latitude of the venue. */
   latitude: number;
@@ -108,14 +108,14 @@ export interface InputPollOptionMediaVenue {
 }
 
 /** @unlisted */
-export interface InputPollOptionMediaLink {
+export interface InputPollMediaLink {
   type: "link";
   /** The URL. */
   url: string;
 }
 
 /** @unlisted */
-export interface InputPollOptionLivePhoto extends _InputPollOptionMediaCommon {
+export interface InputPollLivePhoto extends _InputPollOptionMediaCommon {
   type: "livePhoto";
   /** The photo. */
   photo: FileSource;
@@ -124,7 +124,7 @@ export interface InputPollOptionLivePhoto extends _InputPollOptionMediaCommon {
 }
 
 /** @unlisted */
-export interface InputPollOptionMediaLocation {
+export interface InputPollMediaLocation {
   type: "location";
   /** The latitude of the location. */
   latitude: number;
@@ -135,4 +135,4 @@ export interface InputPollOptionMediaLocation {
 }
 
 /** A poll option input media. */
-export type InputPollOptionMedia = InputPollOptionMediaAnimation | InputPollOptionMediaPhoto | InputPollOptionMediaVideo | InputPollOptionMediaSticker | InputPollOptionLivePhoto | InputPollOptionMediaLocation | InputPollOptionMediaVenue | InputPollOptionMediaLink;
+export type InputPollMedia = InputPollMediaAnimation | InputPollMediaPhoto | InputPollMediaVideo | InputPollMediaSticker | InputPollLivePhoto | InputPollMediaLocation | InputPollMediaVenue | InputPollMediaLink;

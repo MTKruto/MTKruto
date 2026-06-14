@@ -93,7 +93,7 @@ export * from "./types/1_document.ts";
 export * from "./types/1_giveaway.ts";
 export * from "./types/1_inline_keyboard_button.ts";
 export * from "./types/1_input_gift.ts";
-export * from "./types/1_input_poll_option_media.ts";
+export * from "./types/1_input_poll_media.ts";
 export * from "./types/1_input_sticker.ts";
 export * from "./types/1_input_story_content.ts";
 export * from "./types/1_keyboard_button.ts";
