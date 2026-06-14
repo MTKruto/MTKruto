@@ -23,11 +23,11 @@ import { InputError } from "../0_errors.ts";
 import { base64EncodeUrlSafe, encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
-import { collectMediaFileIds, constructBlockedUserList, constructChatAction, constructMessageDraft, constructMessageEntity, constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructSummarizedText, constructVoiceTranscription, deserializeFileId, type FileId, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, type InputPollOption, type InputRichText, type MessageCounters, type MessageGetter, type MessageList, type MessageLivePhoto, type MessagePhoto, messageSearchFilterToTlObject, pageBlockToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type TextToTranslate, type TranslatedText, type VoiceTranscription } from "../3_types.ts";
+import { collectMediaFileIds, constructBlockedUserList, constructChatAction, constructMessageDraft, constructMessageEntity, constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructSummarizedText, constructVenue, constructVoiceTranscription, deserializeFileId, type FileId, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, type InputPollOption, type InputPollOptionMedia, type InputPollOptionMediaAnimation, type InputPollOptionMediaSticker, type InputRichText, type MessageCounters, type MessageGetter, type MessageList, type MessageLivePhoto, type MessagePhoto, messageSearchFilterToTlObject, pageBlockToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type TextToTranslate, type TranslatedText, type VoiceTranscription } from "../3_types.ts";
 import { assertMessageType, type ChatActionType, constructMessage as constructMessage_, deserializeInlineMessageId, type FileSource, FileType, type ID, type Message, type MessageEntity, messageEntityToTlObject, type ParseMode, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type Update, type UsernameResolver } from "../3_types.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetBlockedUsersParams, GetHistoryParams, GetMessageReactionsParams, GetSavedChatsParams, GetSavedMessagesParams, OpenMiniAppParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams as SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendRichTextParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, StartBotParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams } from "./0_params.ts";
+import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, _UploadCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetBlockedUsersParams, GetHistoryParams, GetMessageReactionsParams, GetSavedChatsParams, GetSavedMessagesParams, OpenMiniAppParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams as SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendRichTextParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, StartBotParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, checkArray, checkMessageId, checkPhotoName, checkStickerName, getLimit, getUsername, isHttpUrl, toInputChannel } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
@@ -846,31 +846,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async #sendPhotoInner(chatId: ID, photo: FileSource, params?: SendPhotoParams & { video?: FileSource }) {
     this.#checkParams(params);
-    let media: Api.InputMedia | null = null;
-    const spoiler = params?.hasSpoiler ? true : undefined;
-    const ttl_seconds = params && "selfDestruct" in params && params.selfDestruct !== undefined ? selfDestructOptionToInt(params.selfDestruct) : undefined;
-
-    let video: Api.InputDocument | undefined;
-    if (params?.video) {
-      video = await this.#uploadVideo(params.video);
-    }
-
-    if (typeof photo === "string") {
-      const fileId = this.resolveFileId(photo, [FileType.Photo, FileType.ProfilePhoto]);
-      if (fileId !== null) {
-        media = { _: "inputMediaPhoto", id: { ...fileId, _: "inputPhoto" }, spoiler, ttl_seconds, live_photo: video !== undefined ? true : undefined, video };
-      }
-    }
-
-    if (media === null) {
-      if (typeof photo === "string" && isHttpUrl(photo)) {
-        media = { _: "inputMediaPhotoExternal", url: photo, spoiler, ttl_seconds: (params && "selfDestruct" in params && params.selfDestruct !== undefined) ? selfDestructOptionToInt(params.selfDestruct) : undefined };
-      } else {
-        const file = await this.#c.fileManager.upload(photo, params, checkPhotoName(params), false);
-        media = { _: "inputMediaUploadedPhoto", file, spoiler, ttl_seconds: (params && "selfDestruct" in params && params.selfDestruct !== undefined) ? selfDestructOptionToInt(params.selfDestruct) : undefined, live_photo: video !== undefined ? true : undefined, video };
-      }
-    }
-
+    const media = await this.#uploadPhoto(photo, params);
     const message = await this.#sendMedia(chatId, media, params);
     return assertMessageType(message, params?.video ? "livePhoto" : "photo");
   }
@@ -960,12 +936,56 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
     const solution = parseResult?.[0];
     const solutionEntities = parseResult?.[1];
+    const mediaMap = new Map<number, Api.InputMedia>();
 
-    const answers: Api.pollAnswer[] = options.map((v, i) => {
+    for (const [i, option] of options.entries()) {
+      if (option.media) {
+        switch (option.media.type) {
+          case "photo":
+            mediaMap.set(i, await this.#getInputMediaPhoto(peer, option.media.photo, option.media));
+            break;
+          case "video":
+            mediaMap.set(i, this.#getInputMediaDocument(await this.#uploadVideo(option.media.video, option.media)));
+            break;
+          case "animation":
+            mediaMap.set(i, this.#getInputMediaDocument(await this.#uploadAnimation(option.media.animation, option.media)));
+            break;
+          case "sticker":
+            mediaMap.set(i, this.#getInputMediaDocument(await this.#uploadSticker(option.media.sticker, option.media)));
+            break;
+          case "livePhoto":
+            mediaMap.set(i, await this.#getInputMediaPhoto(peer, option.media.photo, option.media));
+            break;
+          case "location":
+            mediaMap.set(i, { _: "inputMediaGeoPoint", geo_point: { _: "inputGeoPoint", lat: option.media.latitude, long: option.media.longitude, accuracy_radius: option.media.horizontalAccuracy } });
+            break;
+          case "venue":
+            mediaMap.set(i, {
+              _: "inputMediaVenue",
+              address: option.media.address,
+              geo_point: {
+                _: "inputGeoPoint",
+                lat: option.media.latitude,
+                long: option.media.longitude,
+              },
+              provider: "foursquare",
+              title: option.media.title,
+              venue_id: option.media.foursquareId ?? "",
+              venue_type: option.media.foursquareType ?? "",
+            });
+            break;
+          case "link":
+            mediaMap.set(i, { _: "inputMediaWebPage", url: option.media.url });
+            break;
+        }
+      }
+    }
+
+    const answers: Api.inputPollAnswer[] = options.map((v, i) => {
       const text = v.text;
       const entities = v.entities;
       const parseResult = this.parseText(text, { parseMode: v.parseMode, entities });
-      return ({ _: "pollAnswer", option: encodeText(String(i)), text: { _: "textWithEntities", text: parseResult[0], entities: parseResult[1] ?? [] } });
+      return ({ _: "inputPollAnswer", text: { _: "textWithEntities", text: parseResult[0], entities: parseResult[1] ?? [] }, media: mediaMap.get(i) });
     });
 
     const questionParseResult = this.parseText(question, { parseMode: params?.questionParseMode, entities: params?.questionEntities });
@@ -1240,50 +1260,53 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return media_;
   }
   async #resolveInputMedia(media: InputMedia) {
-    if ("animation" in media) {
-      return await this.#resolveInputMediaInner(media.animation, media, FileType.Animation, [
-        { _: "documentAttributeAnimated" },
-        { _: "documentAttributeVideo", supports_streaming: true, w: media?.width ?? 0, h: media?.height ?? 0, duration: media?.duration ?? 0 },
-      ]);
-    } else if ("audio" in media) {
-      return await this.#resolveInputMediaInner(media.audio, media, FileType.Audio, [
-        { _: "documentAttributeAudio", duration: media?.duration ?? 0, performer: media?.performer, title: media?.title },
-      ]);
-    } else if ("document" in media) {
-      return await this.#resolveInputMediaInner(media.document, media, FileType.Document, []);
-    } else if ("photo" in media) {
-      let media_: Api.InputMedia | null = null;
-      const spoiler = media.hasSpoiler ? true : undefined;
-      const ttl_seconds = "selfDestruct" in media && media.selfDestruct !== undefined ? selfDestructOptionToInt(media.selfDestruct) : undefined;
+    switch (media.type) {
+      case "animation":
+        return await this.#resolveInputMediaInner(media.animation, media, FileType.Animation, [
+          { _: "documentAttributeAnimated" },
+          { _: "documentAttributeVideo", supports_streaming: true, w: media?.width ?? 0, h: media?.height ?? 0, duration: media?.duration ?? 0 },
+        ]);
+      case "audio":
+        return await this.#resolveInputMediaInner(media.audio, media, FileType.Audio, [
+          { _: "documentAttributeAudio", duration: media?.duration ?? 0, performer: media?.performer, title: media?.title },
+        ]);
+      case "document":
+        return await this.#resolveInputMediaInner(media.document, media, FileType.Document, []);
+      case "photo": {
+        let media_: Api.InputMedia | null = null;
+        const spoiler = media.hasSpoiler ? true : undefined;
+        const ttl_seconds = "selfDestruct" in media && media.selfDestruct !== undefined ? selfDestructOptionToInt(media.selfDestruct) : undefined;
 
-      if (typeof media.photo === "string") {
-        const fileId = this.resolveFileId(media.photo, [FileType.Photo, FileType.ProfilePhoto]);
-        if (fileId !== null) {
-          media_ = { _: "inputMediaPhoto", id: { ...fileId, _: "inputPhoto" }, spoiler, ttl_seconds };
+        if (typeof media.photo === "string") {
+          const fileId = this.resolveFileId(media.photo, [FileType.Photo, FileType.ProfilePhoto]);
+          if (fileId !== null) {
+            media_ = { _: "inputMediaPhoto", id: { ...fileId, _: "inputPhoto" }, spoiler, ttl_seconds };
+          }
         }
-      }
 
-      if (media_ === null) {
-        if (typeof media.photo === "string" && isHttpUrl(media.photo)) {
-          media_ = { _: "inputMediaPhotoExternal", url: media.photo, spoiler };
-        } else {
-          const file = await this.#c.fileManager.upload(media.photo, media, null, false);
-          media_ = { _: "inputMediaUploadedPhoto", file, spoiler, ttl_seconds };
+        if (media_ === null) {
+          if (typeof media.photo === "string" && isHttpUrl(media.photo)) {
+            media_ = { _: "inputMediaPhotoExternal", url: media.photo, spoiler };
+          } else {
+            const file = await this.#c.fileManager.upload(media.photo, media, null, false);
+            media_ = { _: "inputMediaUploadedPhoto", file, spoiler, ttl_seconds };
+          }
         }
-      }
 
-      return media_;
-    } else if ("video" in media) {
-      const ttl_seconds = "selfDestruct" in media && media.selfDestruct !== undefined ? selfDestructOptionToInt(media.selfDestruct) : undefined;
-      const media_ = await this.#resolveInputMediaInner(media.video, media, FileType.Video, [
-        { _: "documentAttributeVideo", supports_streaming: media?.supportsStreaming ? true : undefined, w: media?.width ?? 0, h: media?.height ?? 0, duration: media?.duration ?? 0 },
-      ]);
-      media_.ttl_seconds = ttl_seconds;
-      return media_;
-    } else {
-      unreachable();
+        return media_;
+      }
+      case "video": {
+        const ttl_seconds = "selfDestruct" in media && media.selfDestruct !== undefined ? selfDestructOptionToInt(media.selfDestruct) : undefined;
+        const media_ = await this.#resolveInputMediaInner(media.video, media, FileType.Video, [
+          { _: "documentAttributeVideo", supports_streaming: media?.supportsStreaming ? true : undefined, w: media?.width ?? 0, h: media?.height ?? 0, duration: media?.duration ?? 0 },
+        ]);
+        media_.ttl_seconds = ttl_seconds;
+        return media_;
+      }
     }
+    unreachable();
   }
+
   async #resolveInputMediaUpload(media: InputMedia, businessConnectionId?: string): Promise<Api.InputMedia> {
     const inputMedia = await this.#resolveInputMedia(media);
     if (Api.is("inputMediaUploadedPhoto", inputMedia) || Api.is("inputMediaUploadedDocument", inputMedia)) {
@@ -1318,15 +1341,118 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return inputMedia;
   }
 
-  async #uploadVideo(video: FileSource): Promise<Api.inputDocument> {
-    const result = await this.#c.fileManager.upload(video, {});
+  async #getInputMediaPhoto(peer: Api.InputPeer, photo: FileSource, params?: SendPhotoParams & { video?: FileSource }): Promise<Api.inputMediaPhoto> {
+    const result = await this.#uploadPhoto(photo, params);
+    if (Api.is("inputMediaPhoto", result)) {
+      return result;
+    }
+    const messageMediaPhoto = Api.as("messageMediaPhoto", await this.#c.invoke({ _: "messages.uploadMedia", peer, media: result, business_connection_id: params?.businessConnectionId }));
+    const photo_ = Api.as("photo", messageMediaPhoto.photo);
+    return {
+      _: "inputMediaPhoto",
+      id: { _: "inputPhoto", id: photo_.id, access_hash: photo_.access_hash, file_reference: photo_.file_reference },
+      live_photo: !!messageMediaPhoto.video || undefined,
+      video: Api.is("document", messageMediaPhoto.video) ? { _: "inputDocument", id: messageMediaPhoto.video.id, access_hash: messageMediaPhoto.video.access_hash, file_reference: messageMediaPhoto.video.file_reference } : undefined,
+    };
+  }
+
+  async #uploadPhoto(photo: FileSource, params?: SendPhotoParams & { video?: FileSource }) {
+    let media: Api.InputMedia | null = null;
+    const spoiler = params?.hasSpoiler ? true : undefined;
+    const ttl_seconds = params && "selfDestruct" in params && params.selfDestruct !== undefined ? selfDestructOptionToInt(params.selfDestruct) : undefined;
+
+    let video: Api.InputDocument | undefined;
+    if (params?.video) {
+      video = await this.#uploadVideo(params.video);
+    }
+
+    if (typeof photo === "string") {
+      const fileId = this.resolveFileId(photo, [FileType.Photo, FileType.ProfilePhoto]);
+      if (fileId !== null) {
+        media = { _: "inputMediaPhoto", id: { ...fileId, _: "inputPhoto" }, spoiler, ttl_seconds, live_photo: video !== undefined ? true : undefined, video };
+      }
+    }
+
+    if (media === null) {
+      if (typeof photo === "string" && isHttpUrl(photo)) {
+        media = { _: "inputMediaPhotoExternal", url: photo, spoiler, ttl_seconds: (params && "selfDestruct" in params && params.selfDestruct !== undefined) ? selfDestructOptionToInt(params.selfDestruct) : undefined };
+      } else {
+        const file = await this.#c.fileManager.upload(photo, params, checkPhotoName(params), false);
+        media = { _: "inputMediaUploadedPhoto", file, spoiler, ttl_seconds: (params && "selfDestruct" in params && params.selfDestruct !== undefined) ? selfDestructOptionToInt(params.selfDestruct) : undefined, live_photo: video !== undefined ? true : undefined, video };
+      }
+    }
+
+    return media;
+  }
+
+  async #uploadDocument(document: FileSource, attributes: Api.DocumentAttribute[], mimeType: string, params?: _UploadCommon & { hasSpoiler?: boolean }, checkName?: null | ((name: string, firstPart?: Uint8Array) => string), allowStream?: boolean): Promise<Api.messageMediaDocument> {
+    const result = await this.#c.fileManager.upload(document, params, checkName, allowStream);
 
     const uploadedMedia = await this.#c.invoke({
       _: "messages.uploadMedia",
       peer: { _: "inputPeerSelf" },
-      media: { _: "inputMediaUploadedDocument", file: result, attributes: [{ _: "documentAttributeVideo", duration: 0, w: 0, h: 0 }], mime_type: "video/mp4" },
+      media: { _: "inputMediaUploadedDocument", file: result, attributes, mime_type: mimeType, spoiler: params?.hasSpoiler || undefined },
     });
-    const document = Api.as("document", Api.as("messageMediaDocument", uploadedMedia).document);
+
+    return Api.as("messageMediaDocument", uploadedMedia);
+  }
+
+  #getInputMediaDocument(input: Api.inputDocument): Api.inputMediaDocument {
+    return {
+      _: "inputMediaDocument",
+      id: {
+        ...input,
+        _: "inputDocument",
+      },
+    };
+  }
+
+  async #uploadAnimation(video: FileSource, params?: _UploadCommon & InputPollOptionMediaAnimation): Promise<Api.inputDocument> {
+    if (typeof video === "string") {
+      const fileId = this.resolveFileId(video, [FileType.Animation]);
+      if (fileId !== null) {
+        return { ...fileId, _: "inputDocument" };
+      }
+    }
+
+    const messageMediaDocument = await this.#uploadDocument(video, [{ _: "documentAttributeVideo", duration: params?.duration ?? 0, w: params?.width ?? 0, h: params?.height ?? 0 }, { _: "documentAttributeAnimated" }], "video/mp4", params);
+    const document = Api.as("document", Api.as("messageMediaDocument", messageMediaDocument).document);
+    return {
+      _: "inputDocument",
+      id: document.id,
+      access_hash: document.access_hash,
+      file_reference: document.file_reference,
+    };
+  }
+
+  async #uploadSticker(video: FileSource, params?: _UploadCommon & InputPollOptionMediaSticker): Promise<Api.inputDocument> {
+    if (typeof video === "string") {
+      const fileId = this.resolveFileId(video, [FileType.Sticker]);
+      if (fileId !== null) {
+        return { ...fileId, _: "inputDocument" };
+      }
+    }
+
+    const messageMediaDocument = await this.#uploadDocument(video, [{ _: "documentAttributeSticker", alt: params?.emoji ?? "", stickerset: { _: "inputStickerSetEmpty" } }], "video/mp4", params);
+    const document = Api.as("document", Api.as("messageMediaDocument", messageMediaDocument).document);
+    return {
+      _: "inputDocument",
+      id: document.id,
+      access_hash: document.access_hash,
+      file_reference: document.file_reference,
+    };
+  }
+
+  async #uploadVideo(video: FileSource, params?: _UploadCommon): Promise<Api.inputDocument> {
+    if (typeof video === "string") {
+      const fileId = this.resolveFileId(video, [FileType.Video]);
+      if (fileId !== null) {
+        return { ...fileId, _: "inputDocument" };
+      }
+    }
+
+    const messageMediaDocument = await this.#uploadDocument(video, [{ _: "documentAttributeVideo", duration: 0, w: 0, h: 0 }], "video/mp4", params);
+    const document = Api.as("document", Api.as("messageMediaDocument", messageMediaDocument).document);
     return {
       _: "inputDocument",
       id: document.id,
