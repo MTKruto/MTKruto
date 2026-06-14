@@ -115,7 +115,7 @@ export interface InputPollMediaLink {
 }
 
 /** @unlisted */
-export interface InputPollLivePhoto extends _InputPollOptionMediaCommon {
+export interface InputPollMediaLivePhoto extends _InputPollOptionMediaCommon {
   type: "livePhoto";
   /** The photo. */
   photo: FileSource;
@@ -135,4 +135,4 @@ export interface InputPollMediaLocation {
 }
 
 /** A poll option input media. */
-export type InputPollMedia = InputPollMediaAnimation | InputPollMediaPhoto | InputPollMediaVideo | InputPollMediaSticker | InputPollLivePhoto | InputPollMediaLocation | InputPollMediaVenue | InputPollMediaLink;
+export type InputPollMedia = InputPollMediaAnimation | InputPollMediaPhoto | InputPollMediaVideo | InputPollMediaSticker | InputPollMediaLivePhoto | InputPollMediaLocation | InputPollMediaVenue | InputPollMediaLink;
