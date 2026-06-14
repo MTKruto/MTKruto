@@ -125,6 +125,7 @@ export class FileManager {
                 id: String(fileId),
                 uploaded,
                 total: 0,
+                isUploaded: false,
               },
             });
           }
@@ -136,6 +137,15 @@ export class FileManager {
       }
     }
     await Promise.all(promises);
+    this.#c.handleUpdate({
+      type: "uploadProgress",
+      uploadProgress: {
+        id: String(fileId),
+        uploaded,
+        total: 0,
+        isUploaded: true,
+      },
+    });
     return { isSmall: part!.isSmall, parts: part!.totalParts, firstPart };
   }
 
@@ -175,6 +185,7 @@ export class FileManager {
                     id: String(fileId),
                     uploaded,
                     total: buffer.length,
+                    isUploaded: false,
                   },
                 });
               }
@@ -190,6 +201,15 @@ export class FileManager {
       promises = [];
     }
     await Promise.all(promises);
+    this.#c.handleUpdate({
+      type: "uploadProgress",
+      uploadProgress: {
+        id: String(fileId),
+        uploaded,
+        total: 0,
+        isUploaded: true,
+      },
+    });
     return { isSmall: !isBig, parts: partCount, firstPart };
   }
 

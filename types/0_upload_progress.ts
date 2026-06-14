@@ -26,4 +26,6 @@ export interface UploadProgress {
   uploaded: number;
   /** Total byte count if available, otherwise 0. */
   total: number;
+  /** Whether the file is completely uploaded. */
+  isUploaded: boolean;
 }
