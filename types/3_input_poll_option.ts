@@ -19,6 +19,7 @@
  */
 
 import type { ParseMode } from "./0_parse_mode.ts";
+import type { InputPollOptionMedia } from "./1_input_poll_option_media.ts";
 import type { MessageEntity } from "./2_message_entity.ts";
 
 /** A poll option to be provided as an input. */
@@ -29,4 +30,6 @@ export interface InputPollOption {
   parseMode?: ParseMode;
   /** The entities of the option's text. */
   entities?: MessageEntity[];
+  /** The option's attached media. */
+  media?: InputPollOptionMedia;
 }
