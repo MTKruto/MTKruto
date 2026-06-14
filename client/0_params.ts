@@ -20,7 +20,7 @@
 
 import type { MaybePromise } from "../1_utilities.ts";
 import type { DC } from "../3_transport.ts";
-import type { Birthday, BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, InputLinkPreview, LinkPreview, MessageEntity, MessageSearchFilter, MiniAppMode, ParseMode, Reaction, ReplyMarkup, ReplyTo, SelfDestructOption, StoryInteractiveArea, StoryPrivacy, WorkingHours } from "../3_types.ts";
+import type { Birthday, BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, InputLinkPreview, InputPollMedia, LinkPreview, MessageEntity, MessageSearchFilter, MiniAppMode, ParseMode, Reaction, ReplyMarkup, ReplyTo, SelfDestructOption, StoryInteractiveArea, StoryPrivacy, WorkingHours } from "../3_types.ts";
 
 export interface InvokeParams {
   dc?: DC;
@@ -168,6 +168,8 @@ export interface SendPollParams extends _SendCommon, _ReplyMarkupCommon {
   questionEntities?: MessageEntity[];
   /** The parse mode to use for the poll's question. If omitted, the default parse mode will be used. */
   questionParseMode?: ParseMode;
+  /** A media to attach. */
+  media?: InputPollMedia;
   /** Whether the poll should be anonymous. */
   isAnonymous?: boolean;
   /** The type of the poll. */
@@ -182,6 +184,8 @@ export interface SendPollParams extends _SendCommon, _ReplyMarkupCommon {
   explanationParseMode?: ParseMode;
   /** The explanation's entities. */
   explanationEntities?: MessageEntity[];
+  /** The explanation's media. */
+  explanationMedia?: InputPollMedia;
   /** An optional description. */
   description?: string;
   /** The parse mode to use for the poll's description. If omitted, the default parse mode will be used. */
