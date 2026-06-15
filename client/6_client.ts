@@ -2113,6 +2113,19 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Edit a message's rich text.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageId The identifier of the message.
+   * @param richText The new rich text of the message.
+   * @returns The edited rich text message.
+   */
+  async editMessageRichText(chatId: ID, messageId: number, richText: InputRichText, params?: EditMessageTextParams): Promise<MessageRichText> {
+    return await this.#messageManager.editMessageRichText(chatId, messageId, richText, params);
+  }
+
+  /**
    * Edit a message's caption.
    *
    * @method ms

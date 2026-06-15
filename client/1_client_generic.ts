@@ -735,6 +735,17 @@ export abstract class ClientGeneric {
   abstract editMessageText(chatId: ID, messageId: number, text: string, params?: EditMessageTextParams): Promise<MessageText>;
 
   /**
+   * Edit a message's rich text.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageId The identifier of the message.
+   * @param richText The new rich text of the message.
+   * @returns The edited rich text message.
+   */
+  abstract editMessageRichText(chatId: ID, messageId: number, richText: InputRichText, params?: EditMessageTextParams): Promise<MessageRichText>;
+
+  /**
    * Edit a message's caption.
    *
    * @method ms
