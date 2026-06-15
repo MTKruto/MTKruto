@@ -318,7 +318,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   async sendRichTextDraft(chatId: ID, draftId: number, richText: InputRichText, params?: SendRichTextDraftParams) {
     this.#c.storage.assertBot("sendRichTextDraft");
     const peer = await this.#c.getInputPeer(chatId);
-    const rich_message = MessageManager.#inputRichTextToInputRichMessage(richText);
+    const rich_message = MessageManager.inputRichTextToInputRichMessage(richText);
     await this.#c.invoke({
       _: "messages.setTyping",
       peer,
@@ -418,7 +418,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const schedule_date = params?.sendAt;
     const allow_paid_floodskip = params?.isPaidBroadcast ? true : undefined;
 
-    const rich_message = MessageManager.#inputRichTextToInputRichMessage(richText);
+    const rich_message = MessageManager.inputRichTextToInputRichMessage(richText);
 
     const result = await this.#c.invoke(
       {
@@ -443,7 +443,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return assertMessageType(message_, "richText");
   }
 
-  static #inputRichTextToInputRichMessage(richText: InputRichText) {
+  static inputRichTextToInputRichMessage(richText: InputRichText) {
     let rich_message: Api.InputRichMessage;
     switch (richText.type) {
       case "blocks": {
@@ -1208,7 +1208,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         throw new InputError("The referenced message is not a rich text message.");
       }
     }
-    const rich_message = MessageManager.#inputRichTextToInputRichMessage(richText);
+    const rich_message = MessageManager.inputRichTextToInputRichMessage(richText);
 
     const result = await this.#c.invoke({
       _: "messages.editMessage",
@@ -2357,7 +2357,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   }
 
   async answerGuestQuery(id: string, result_: InlineQueryResult) {
-    const result = await inlineQueryResultToTlObject(result_, this.parseText.bind(this), this.usernameResolver.bind(this));
+    const result = await inlineQueryResultToTlObject(result_, this.parseText.bind(this), this.usernameResolver.bind(this), MessageManager.inputRichTextToInputRichMessage);
     const result__ = await this.#c.invoke({ _: "messages.setBotGuestChatResult", query_id: BigInt(id), result });
     return base64EncodeUrlSafe(Api.serializeObject(result__));
   }

@@ -21,6 +21,7 @@
 import type { ParseMode } from "./0_parse_mode.ts";
 import type { PriceTag } from "./0_price_tag.ts";
 import type { MessageEntity } from "./2_message_entity.ts";
+import type { InputRichText } from "./5_input_rich_text.ts";
 import type { LinkPreview } from "./5_link_preview.ts";
 
 /**
@@ -97,6 +98,13 @@ export interface MessageContentText {
 }
 
 /** @unlisted */
+export interface MessageContentRichText {
+  type: "richText";
+  /** The message's rich text. */
+  richText: InputRichText;
+}
+
+/** @unlisted */
 export interface MessageContentInvoice {
   type: "invoice";
   title: string;
@@ -112,14 +120,14 @@ export interface MessageContentInvoice {
   photoSize?: number;
   photoWidth?: number;
   photoHeight?: number;
-  needName?: boolean;
-  needPhoneNumber?: boolean;
-  needEmail?: boolean;
-  needShippingAddress?: boolean;
-  sendPhoneNumberToProvider?: boolean;
-  sendEmailToProvider?: boolean;
+  isNameNeeded?: boolean;
+  isPhoneNumberNeeded?: boolean;
+  isEmailNeeded?: boolean;
+  isShippingAddressNeeded?: boolean;
+  isPhoneNumberSentToProvider?: boolean;
+  isEmailSentToProvider?: boolean;
   isFlexible?: boolean;
 }
 
 /** The content of a message in an inline query result. */
-export type MessageContent = MessageContentText | MessageContentLocation | MessageContentVenue | MessageContentContact | MessageContentInvoice;
+export type MessageContent = MessageContentText | MessageContentRichText | MessageContentLocation | MessageContentVenue | MessageContentContact | MessageContentInvoice;

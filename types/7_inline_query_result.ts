@@ -19,7 +19,7 @@
  */
 
 import { unreachable } from "../0_deps.ts";
-import { cleanObject } from "../1_utilities.ts";
+import { cleanObject, encodeText } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { deserializeFileId, FileType, getPhotoFileId, serializeFileId } from "./_file_id.ts";
 import type { UsernameResolver } from "./_getters.ts";
@@ -28,6 +28,7 @@ import { constructThumbnail, type Thumbnail } from "./0_thumbnail.ts";
 import { getPhotoSizes } from "./1_photo.ts";
 import { constructMessageEntity, type MessageEntity } from "./2_message_entity.ts";
 import { constructReplyMarkup, type ReplyMarkupInlineKeyboard, replyMarkupToTlObject } from "./2_reply_markup.ts";
+import type { InputRichText } from "./5_input_rich_text.ts";
 import type { MessageContent } from "./6_message_content.ts";
 
 /** @unlisted */
@@ -520,7 +521,7 @@ export function constructInlineQueryResult(result: Api.botInlineResult | Api.bot
 }
 
 // deno-lint-ignore no-explicit-any
-export async function inlineQueryResultToTlObject(result_: InlineQueryResult, parseText: (text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) => readonly [string, any[] | undefined], usernameResolver: UsernameResolver): Promise<Api.InputBotInlineResult> {
+export async function inlineQueryResultToTlObject(result_: InlineQueryResult, parseText: (text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) => readonly [string, any[] | undefined], usernameResolver: UsernameResolver, inputRichTextToInputRichMessage: (irt: InputRichText) => Api.InputRichMessage): Promise<Api.InputBotInlineResult> {
   let document: Api.InputWebDocument | null = null;
   let thumb: Api.inputWebDocument | null = null;
   let fileId_: string | null = null;
@@ -662,19 +663,58 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
   } else if (result_.type === "game") {
     return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb === null ? undefined : thumb, send_message: { _: "inputBotInlineMessageGame", reply_markup: replyMarkup } };
   } else if (result_.type === "article") {
-    if (!("text" in result_.messageContent)) {
-      unreachable();
-    }
-    const [message, entities] = parseText(result_.messageContent.text, { entities: result_.messageContent.entities, parseMode: result_.messageContent.parseMode });
-    const noWebpage = result_.messageContent?.linkPreview && result_.messageContent?.linkPreview.type === "input" && result_.messageContent?.linkPreview.isDisabled ? true : undefined;
-    const invertMedia = result_.messageContent?.linkPreview?.isAboveText ? true : undefined;
-
     let sendMessage: Api.InputBotInlineMessage;
 
-    if (result_.messageContent.linkPreview?.url) {
-      sendMessage = { _: "inputBotInlineMessageMediaWebPage", url: result_.messageContent.linkPreview.url, force_large_media: result_.messageContent.linkPreview.mediaSize === "large" ? true : undefined, force_small_media: result_.messageContent.linkPreview.mediaSize === "small" ? true : undefined, optional: message.length ? undefined : true, message, entities, invert_media: invertMedia, reply_markup: replyMarkup };
-    } else {
-      sendMessage = { _: "inputBotInlineMessageText", message, entities, no_webpage: noWebpage, invert_media: invertMedia, reply_markup: replyMarkup };
+    switch (result_.messageContent.type) {
+      case "contact":
+        sendMessage = { _: "inputBotInlineMessageMediaContact", first_name: result_.messageContent.firstName, last_name: result_.messageContent.lastName ?? "", phone_number: result_.messageContent.phoneNumber, vcard: result_.messageContent.vcard ?? "", reply_markup: replyMarkup };
+        break;
+      case "location":
+        sendMessage = { _: "inputBotInlineMessageMediaGeo", geo_point: { _: "inputGeoPoint", lat: result_.messageContent.latitude, long: result_.messageContent.longitude, accuracy_radius: result_.messageContent.horizontalAccuracy }, heading: result_.messageContent.heading, period: result_.messageContent.livePeriod, proximity_notification_radius: result_.messageContent.proximityAlertRadius, reply_markup: replyMarkup };
+        break;
+      case "venue":
+        sendMessage = { _: "inputBotInlineMessageMediaVenue", address: result_.messageContent.address, provider: "foursquare", title: result_.messageContent.title, venue_id: result_.messageContent.foursquareId ?? "", venue_type: result_.messageContent.foursquareType ?? "", geo_point: { _: "inputGeoPoint", lat: result_.messageContent.latitude, long: result_.messageContent.longitude }, reply_markup: replyMarkup };
+        break;
+      case "invoice":
+        sendMessage = {
+          _: "inputBotInlineMessageMediaInvoice",
+          title: result_.messageContent.title,
+          description: result_.messageContent.description,
+          invoice: {
+            _: "invoice",
+            currency: result_.messageContent.currency,
+            prices: result_.messageContent.prices.map((v) => ({ "_": "labeledPrice", label: v.label, amount: BigInt(v.amount) })),
+            email_to_provider: result_.messageContent.isEmailSentToProvider || undefined,
+            email_requested: result_.messageContent.isEmailNeeded || undefined,
+            flexible: result_.messageContent.isFlexible || undefined,
+            max_tip_amount: result_.messageContent.maxTipAmount ? BigInt(result_.messageContent.maxTipAmount) : undefined,
+            name_requested: result_.messageContent.isNameNeeded || undefined,
+            phone_requested: result_.messageContent.isPhoneNumberNeeded || undefined,
+            phone_to_provider: result_.messageContent.isPhoneNumberSentToProvider || undefined,
+            shipping_address_requested: result_.messageContent.isShippingAddressNeeded || undefined,
+          },
+          payload: encodeText(result_.messageContent.payload),
+          provider: result_.messageContent.providerToken,
+          provider_data: { _: "dataJSON", data: result_.messageContent.providerData ?? "{}" },
+          photo: result_.messageContent.photoUrl ? { _: "inputWebDocument", url: result_.messageContent.photoUrl, size: 0, attributes: [], mime_type: "" } : undefined,
+          reply_markup: replyMarkup,
+        };
+        break;
+      case "richText":
+        sendMessage = { _: "inputBotInlineMessageRichMessage", rich_message: inputRichTextToInputRichMessage(result_.messageContent.richText), reply_markup: replyMarkup };
+        break;
+      case "text": {
+        const [message, entities] = parseText(result_.messageContent.text, { entities: result_.messageContent.entities, parseMode: result_.messageContent.parseMode });
+        const noWebpage = result_.messageContent?.linkPreview && result_.messageContent?.linkPreview.type === "input" && result_.messageContent?.linkPreview.isDisabled ? true : undefined;
+        const invertMedia = result_.messageContent?.linkPreview?.isAboveText ? true : undefined;
+
+        if (result_.messageContent.linkPreview?.url) {
+          sendMessage = { _: "inputBotInlineMessageMediaWebPage", url: result_.messageContent.linkPreview.url, force_large_media: result_.messageContent.linkPreview.mediaSize === "large" ? true : undefined, force_small_media: result_.messageContent.linkPreview.mediaSize === "small" ? true : undefined, optional: message.length ? undefined : true, message, entities, invert_media: invertMedia, reply_markup: replyMarkup };
+        } else {
+          sendMessage = { _: "inputBotInlineMessageText", message, entities, no_webpage: noWebpage, invert_media: invertMedia, reply_markup: replyMarkup };
+        }
+        break;
+      }
     }
 
     return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb === null ? undefined : thumb, send_message: sendMessage };
