@@ -47,7 +47,7 @@ export interface ChecklistItemUnchecked {
 export interface ChecklistItemChecked {
   /** The type of the checklist item. */
   type: "checked";
-  /** The identifier of the to-do item. */
+  /** The identifier of the checklist item. */
   id: number;
   /** The item's text. */
   text: string;
