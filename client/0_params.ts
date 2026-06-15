@@ -135,7 +135,7 @@ export interface EditInlineMessageTextParams extends _EditMessageTextCommon {
 }
 
 export interface _EditMessageCaptionCommon extends _ReplyMarkupCommon {
-  /** The message's new caption. If omitted, the caption will be removed.  */
+  /** The message's new caption. If omitted, the caption will be removed. */
   caption?: string;
   /** The parse mode to use. If omitted, the default parse mode will be used. */
   parseMode?: ParseMode;
@@ -182,7 +182,7 @@ export interface SendPollParams extends _SendCommon, _ReplyMarkupCommon {
   correctOptionIndexes?: number[];
   /** A text that will be shown to the user when the poll is answered. Only valid for quiz polls. */
   explanation?: string;
-  /** The parse mode to use for the explanation. if omitted, the default parse mode will be used. */
+  /** The parse mode to use for the explanation. If omitted, the default parse mode will be used. */
   explanationParseMode?: ParseMode;
   /** The explanation's entities. */
   explanationEntities?: MessageEntity[];
@@ -215,13 +215,13 @@ export interface SendPollParams extends _SendCommon, _ReplyMarkupCommon {
 }
 
 export interface SendChecklistParams extends _SendCommon {
-  /** The entities of the checklist list's title. */
+  /** The entities of the checklist's title. */
   titleEntities?: MessageEntity[];
   /** The parse mode to use for the title. If omitted, the default parse mode will be used. */
   titleParseMode?: ParseMode;
-  /** Whether users other than the creator of the checklist list can add more items. */
+  /** Whether users other than the creator of the checklist can add more items. */
   isExtendableByOthers?: boolean;
-  /** Whether users other than the creator of the checklist list can mark items as completed. */
+  /** Whether users other than the creator of the checklist can mark items as completed. */
   isCompletableByOthers?: boolean;
 }
 
@@ -311,7 +311,7 @@ export interface _CaptionCommon {
   caption?: string;
   /** The caption's entities. */
   captionEntities?: MessageEntity[];
-  /** The parse mode to use for the caption. if omitted, the default parse mode will be used. */
+  /** The parse mode to use for the caption. If omitted, the default parse mode will be used. */
   parseMode?: ParseMode;
 }
 export interface _SpoilCommon {
@@ -1019,7 +1019,7 @@ export interface GetStarTransactionsParams {
   isOutbound?: boolean;
   /** Whether results should be sorted in an ascending order. */
   isAscending?: boolean;
-  /** Whether only transactions related to a specific subscription be returned. */
+  /** Whether only transactions related to a specific subscription should be returned. */
   subscriptionId?: string;
   /** An offset key returned by a previous result. */
   offset?: string;

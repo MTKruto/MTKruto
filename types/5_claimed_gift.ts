@@ -38,7 +38,7 @@ export interface ClaimedGift {
   message?: string;
   /** The entities of the message. */
   entities?: MessageEntity[];
-  /** The identifier of the service message announcing the receival of the gift. */
+  /** The identifier of the service message announcing the receipt of the gift. */
   messageId?: number;
   /** The amount of stars the gift would be worth. */
   conversionStars?: number;

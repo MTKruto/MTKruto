@@ -34,7 +34,7 @@ export interface RichTextComponentEmpty {
 }
 
 /**
- * An plain rich text component.
+ * A plain rich text component.
  * @unlisted
  */
 export interface RichTextComponentPlain {
@@ -70,7 +70,7 @@ export interface RichTextComponentUnderline {
 }
 
 /**
- * A rich text component that has its child striked through.
+ * A rich text component that has its child struck through.
  * @unlisted
  */
 export interface RichTextComponentStrikethrough {
@@ -175,7 +175,7 @@ export interface RichTextComponentAnchor {
 }
 
 /**
- * An rich text component that displays a mathematical expression.
+ * A rich text component that displays a mathematical expression.
  * @unlisted
  */
 export interface RichTextComponentMath {
@@ -184,7 +184,7 @@ export interface RichTextComponentMath {
 }
 
 /**
- * An rich text component that displays a custom emoji.
+ * A rich text component that displays a custom emoji.
  * @unlisted
  */
 export interface RichTextComponentCustomEmoji {
@@ -194,7 +194,7 @@ export interface RichTextComponentCustomEmoji {
 }
 
 /**
- * An rich text component that displays a spoiler.
+ * A rich text component that displays a spoiler.
  * @unlisted
  */
 export interface RichTextComponentSpoiler {
@@ -203,7 +203,7 @@ export interface RichTextComponentSpoiler {
 }
 
 /**
- * An rich text component that mentions a username.
+ * A rich text component that mentions a username.
  * @unlisted
  */
 export interface RichTextComponentMention {

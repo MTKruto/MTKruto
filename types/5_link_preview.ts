@@ -176,7 +176,7 @@ export interface LinkPreviewAudio extends _LinkPreviewLoadedBase {
 }
 
 /**
- * An gift link preview.
+ * A gift link preview.
  * @unlisted
  */
 export interface LinkPreviewGift extends _LinkPreviewLoadedBase {

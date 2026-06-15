@@ -24,7 +24,7 @@ import type { Api } from "../2_tl.ts";
 export interface VoiceTranscription {
   /** The identifier of the transcription. */
   id: string;
-  /** Whether the transciption is complete. */
+  /** Whether the transcription is complete. */
   isCompleted: boolean;
   /** The transcription result. */
   text: string;

@@ -87,9 +87,9 @@ export interface GiftUpgraded {
   components: GiftUpgradedComponent[];
   /** The address of the gift on TON blockchain. */
   address?: string;
-  /** The amount of stars that can be used to buy the gift.  */
+  /** The amount of stars that can be used to buy the gift. */
   price?: number;
-  /** The amount of TON that can be used to buy the gift.  */
+  /** The amount of TON that can be used to buy the gift. */
   priceTon?: number;
   /** Whether the gift can be bought only using TON. */
   isTonOnly?: boolean;

@@ -159,7 +159,7 @@ export function pageBlockListItemToTlObject(pbli: PageBlockListItem): Api.PageLi
   }
 }
 /**
- * An list page block.
+ * A list page block.
  * @unlisted
  */
 export interface PageBlockList {
