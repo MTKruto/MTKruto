@@ -259,27 +259,31 @@ export class Context {
     unreachable();
   }
 
-  #getReplyTo = (isQuoted: boolean | undefined, chatId: number, messageId: number): { messageThreadId?: number; replyTo?: ReplyTo } => {
+  #getReplyTo = (isQuoted: boolean | undefined, chatId: number, messageId: number): { messageThreadId?: number; directMessagesTopicId?: number; replyTo?: ReplyTo } => {
     if (this.update.type === "story") {
       return { replyTo: { type: "story", chatId: this.update.story.chat.id, storyId: this.update.story.id } };
     }
 
     let messageThreadId = undefined;
+    let directMessagesTopicId = undefined;
     switch (this.update.type) {
       case "message":
         messageThreadId = this.update.message.threadId;
+        directMessagesTopicId = this.update.message.directMessagesTopicId;
         break;
       case "editedMessage":
         messageThreadId = this.update.editedMessage.threadId;
+        directMessagesTopicId = this.update.editedMessage.directMessagesTopicId;
         break;
       case "scheduledMessage":
         messageThreadId = this.update.scheduledMessage.threadId;
+        directMessagesTopicId = this.update.scheduledMessage.directMessagesTopicId;
         break;
     }
 
     const isPrivate = chatId > 0;
     const shouldQuote = isQuoted === undefined ? !isPrivate : isQuoted;
-    return { messageThreadId, replyTo: shouldQuote ? { type: "message", messageId } : undefined };
+    return { messageThreadId, directMessagesTopicId, replyTo: shouldQuote ? { type: "message", messageId } : undefined };
   };
 
   get chat(): ChatP | undefined {

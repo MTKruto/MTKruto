@@ -139,6 +139,8 @@ export interface ChatPSupergroup extends ChatPChannelBase {
   type: "supergroup";
   /** Whether the chat is a forum. */
   isForum: boolean;
+  /** Whether the chat is a channel's direct messages. */
+  isDirectMessagesChat: boolean;
 }
 
 /** A chat with lesser fields. */
@@ -212,7 +214,7 @@ export function constructChatP(chat: Api.User | Api.Chat): ChatP {
     if (Api.is("channelForbidden", chat)) {
       const { title } = chat;
       if (chat.megagroup) {
-        return { id, color: getColorFromPeerId(id), title, type: "supergroup", isScam: false, isFake: false, isVerified: false, isRestricted: false, isForum: false };
+        return { id, color: getColorFromPeerId(id), title, type: "supergroup", isScam: false, isFake: false, isVerified: false, isRestricted: false, isForum: false, isDirectMessagesChat: !!chat.monoforum };
       } else {
         return { id, color: getColorFromPeerId(id), title, type: "channel", isScam: false, isFake: false, isVerified: false, isRestricted: false };
       }
@@ -234,7 +236,8 @@ export function constructChatP(chat: Api.User | Api.Chat): ChatP {
         isFake,
         isVerified,
         isRestricted,
-        isForum: chat.forum || false,
+        isForum: !!chat.forum,
+        isDirectMessagesChat: !!chat.monoforum,
       };
     } else {
       const id = ZERO_CHANNEL_ID + -Number(chat.id);

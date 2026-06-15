@@ -55,6 +55,8 @@ export function mustPromptOneOf<T extends readonly string[]>(message: string, ch
 
 export const ZERO_CHANNEL_ID = -1000000000000;
 
+export const MAX_MONOFORUM_CHANNEL_ID = 3000000000000;
+
 export function toUnixTimestamp(date: Date) {
   return Math.floor(date.getTime() / SECOND);
 }

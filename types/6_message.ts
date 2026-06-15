@@ -21,6 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject, getLogger, type MaybePromise, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
+import { peerToChatId } from "../tl/2_telegram.ts";
 import { type FileId, FileType, toUniqueFileId } from "./_file_id.ts";
 import { serializeFileId } from "./_file_id.ts";
 import { type ChecklistChanged, constructChecklistChanged } from "./0_checklist_changed.ts";
@@ -71,6 +72,8 @@ export interface _MessageBase {
   id: number;
   /** The identifier of the message's thread. */
   threadId?: number;
+  /** The identifier of the direct message's topic. */
+  directMessagesTopicId?: number;
   /** The sender of the message. */
   from: ChatP;
   /** The point in time when the message was sent. */
@@ -1047,6 +1050,10 @@ export async function constructMessage(
     ...getSender(message_, getPeer),
     for: message_.guestchat_via_from ? getPeer(message_.guestchat_via_from)?.[0] : undefined,
   };
+
+  if (chat_.type === "supergroup" && chat_.isDirectMessagesChat && message_.saved_peer_id) {
+    message.directMessagesTopicId = peerToChatId(message_.saved_peer_id);
+  }
 
   if (message_.reactions) {
     const recentReactions = message_.reactions.recent_reactions ?? [];

@@ -485,19 +485,22 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return rich_message;
   }
 
-  async #constructReplyTo(params?: _SendCommon) {
+  async #constructReplyTo(params?: _SendCommon): Promise<Api.InputReplyTo | undefined> {
     const topMsgId = params?.messageThreadId;
+    const directMessagesTopicId = params?.directMessagesTopicId;
     if (!params?.replyTo) {
       if (topMsgId) {
-        return { _: "inputReplyToMessage", reply_to_msg_id: topMsgId, top_msg_id: topMsgId } as Api.inputReplyToMessage;
+        return { _: "inputReplyToMessage", reply_to_msg_id: topMsgId, top_msg_id: topMsgId };
+      } else if (directMessagesTopicId) {
+        return { _: "inputReplyToMonoForum", monoforum_peer_id: await this.#c.getInputPeer(directMessagesTopicId) };
       } else {
         return undefined;
       }
     }
     if ("messageId" in params.replyTo) {
-      return { _: "inputReplyToMessage", reply_to_msg_id: params.replyTo.messageId, top_msg_id: topMsgId, quote_text: params.replyTo.quote?.text, quote_entities: await Promise.all(params.replyTo.quote?.entities.map((v) => messageEntityToTlObject(v, this.#c.getPeer)) ?? []), quote_offset: params.replyTo.quote?.offset } as Api.inputReplyToMessage;
+      return { _: "inputReplyToMessage", reply_to_msg_id: params.replyTo.messageId, top_msg_id: topMsgId, quote_text: params.replyTo.quote?.text, quote_entities: await Promise.all(params.replyTo.quote?.entities.map((v) => messageEntityToTlObject(v, this.#c.getPeer)) ?? []), quote_offset: params.replyTo.quote?.offset, monoforum_peer_id: directMessagesTopicId ? await this.#c.getInputPeer(directMessagesTopicId) : undefined };
     } else {
-      return { _: "inputReplyToStory", peer: await this.#c.getInputPeer(params.replyTo.chatId), story_id: params.replyTo.storyId } as Api.inputReplyToStory;
+      return { _: "inputReplyToStory", peer: await this.#c.getInputPeer(params.replyTo.chatId), story_id: params.replyTo.storyId };
     }
   }
 

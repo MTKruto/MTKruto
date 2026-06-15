@@ -20,7 +20,7 @@
 
 import { delay, MINUTE, SECOND, unreachable } from "../0_deps.ts";
 import { AccessError, ConnectionError, InputError } from "../0_errors.ts";
-import { drop, getLogger, type Logger, type MaybePromise, Mutex, ZERO_CHANNEL_ID } from "../1_utilities.ts";
+import { drop, getLogger, type Logger, MAX_MONOFORUM_CHANNEL_ID, type MaybePromise, Mutex, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { type Storage, StorageMemory } from "../2_storage.ts";
 import { Api, Mtproto } from "../2_tl.ts";
 import { type DC, getDcId, type TransportProvider } from "../3_transport.ts";
@@ -1097,6 +1097,9 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     } else if (-MAX_CHAT_ID <= id) {
       peer = { _: "inputPeerChat", chat_id: BigInt(Math.abs(id)) } as Api.inputPeerChat;
     } else if (ZERO_CHANNEL_ID - MAX_CHANNEL_ID <= id && id !== ZERO_CHANNEL_ID) {
+      const accessHash = await this.messageStorage.getChannelAccessHash(id);
+      peer = { _: "inputPeerChannel", channel_id: Api.chatIdToPeerId(id), access_hash: accessHash ?? 0n } as Api.inputPeerChannel;
+    } else if (ZERO_CHANNEL_ID - MAX_MONOFORUM_CHANNEL_ID <= id) {
       const accessHash = await this.messageStorage.getChannelAccessHash(id);
       peer = { _: "inputPeerChannel", channel_id: Api.chatIdToPeerId(id), access_hash: accessHash ?? 0n } as Api.inputPeerChannel;
     } else {
@@ -3697,7 +3700,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    *
    * @method cq
    * @param botId The identifier of the bot to send the callback query to.
-   * @param messageId The identifier of the message that includes at a button responsible for the callback query question.
+   * @param messageId The identifier of the message that includes a button responsible for the callback query question.
    * @param question The callback query's question.
    * @returns The bot's answer to the callback query.
    * @cache
@@ -3880,7 +3883,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * Undo recent reactions to messages made by another user.
    *
    * @method re
-   * @param chatId The identifier of the chat which the messages belongs to.
+   * @param chatId The identifier of the chat which the messages belong to.
    * @param userId The identifier of the user who made the reactions.
    */
   async removeUserReactions(chatId: ID, userId: ID): Promise<void> {
@@ -4050,7 +4053,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method sa
    * @param chatId The identifier of the chat including the album.
    * @param albumId The identifier of an album.
-   * @param storyIds The identifier of the story to add.
+   * @param storyId The identifier of the story to add.
    */
   async addStoryToAlbum(chatId: ID, albumId: number, storyId: number): Promise<StoryAlbum> {
     return await this.#storyAlbumManager.addStoryToAlbum(chatId, albumId, storyId);
@@ -4074,7 +4077,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method sa
    * @param chatId The identifier of the chat including the album.
    * @param albumId The identifier of an album.
-   * @param storyIds The identifier of the story to remove.
+   * @param storyId The identifier of the story to remove.
    */
   async removeStoryFromAlbum(chatId: ID, albumId: number, storyId: number): Promise<StoryAlbum> {
     return await this.#storyAlbumManager.removeStoryFromAlbum(chatId, albumId, storyId);

@@ -78,6 +78,8 @@ export interface _SendCommon extends _BusinessConnectionIdCommon, _PaidBroadcast
   replyTo?: ReplyTo;
   /** The identifier of a thread to send the message to. */
   messageThreadId?: number;
+  /** The identifier of the direct messages topic that is being replied to. */
+  directMessagesTopicId?: number;
   /** The identifier of a chat to send the message on behalf of. User-only. */
   sendAs?: ID;
   /** The identifier of a message effect to be attached to the message. */
