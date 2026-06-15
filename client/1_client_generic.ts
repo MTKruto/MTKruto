@@ -2033,7 +2033,7 @@ export abstract class ClientGeneric {
    *
    * @method cq
    * @param botId The identifier of the bot to send the callback query to.
-   * @param messageId The identifier of the message that includes at a button responsible for the callback query question.
+   * @param messageId The identifier of the message that includes a button responsible for the callback query question.
    * @param question The callback query's question.
    * @returns The bot's answer to the callback query.
    * @cache
@@ -2185,7 +2185,7 @@ export abstract class ClientGeneric {
    * Undo recent reactions to messages made by another user.
    *
    * @method re
-   * @param chatId The identifier of the chat which the messages belongs to.
+   * @param chatId The identifier of the chat which the messages belong to.
    * @param userId The identifier of the user who made the reactions.
    */
   abstract removeUserReactions(chatId: ID, userId: ID): Promise<void>;
@@ -2323,7 +2323,7 @@ export abstract class ClientGeneric {
    * @method sa
    * @param chatId The identifier of the chat including the album.
    * @param albumId The identifier of an album.
-   * @param storyIds The identifier of the story to add.
+   * @param storyId The identifier of the story to add.
    */
   abstract addStoryToAlbum(chatId: ID, albumId: number, storyId: number): Promise<StoryAlbum>;
 
@@ -2343,7 +2343,7 @@ export abstract class ClientGeneric {
    * @method sa
    * @param chatId The identifier of the chat including the album.
    * @param albumId The identifier of an album.
-   * @param storyIds The identifier of the story to remove.
+   * @param storyId The identifier of the story to remove.
    */
   abstract removeStoryFromAlbum(chatId: ID, albumId: number, storyId: number): Promise<StoryAlbum>;
 

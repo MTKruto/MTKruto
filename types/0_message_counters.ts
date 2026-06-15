@@ -22,7 +22,7 @@
 export interface MessageCounters {
   /** The number of times the message was viewed. */
   views: number;
-  /** The number of replies made to the messages. */
+  /** The number of replies made to the message. */
   replies: number;
   /** The number of times the message was forwarded. */
   forwards: number;

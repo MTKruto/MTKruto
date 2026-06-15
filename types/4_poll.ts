@@ -44,7 +44,7 @@ export interface Poll {
   type: "regular" | "quiz";
   /** Whether the poll allows multiple answers. */
   allowMultipleAnswers?: boolean;
-  /** The indexes of correct options. */
+  /** The indexes of the correct options. */
   correctOptionIndexes?: number[];
   /** A text that is shown to the user when the poll is answered. */
   explanation?: string;

@@ -24,7 +24,7 @@ import { constructReaction, type Reaction } from "./0_reaction.ts";
 import type { ChatP, PeerGetter } from "./1_chat_p.ts";
 import { constructUser2, type User } from "./2_user.ts";
 
-/** The reactions of a user to a messages in a group. */
+/** The reactions of a user to a message in a group. */
 export interface MessageReactions {
   /** The chat containing the message the user reacted to. */
   chat: ChatP;
