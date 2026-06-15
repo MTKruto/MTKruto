@@ -497,8 +497,18 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         return undefined;
       }
     }
-    if ("messageId" in params.replyTo) {
-      return { _: "inputReplyToMessage", reply_to_msg_id: params.replyTo.messageId, top_msg_id: topMsgId, quote_text: params.replyTo.quote?.text, quote_entities: await Promise.all(params.replyTo.quote?.entities.map((v) => messageEntityToTlObject(v, this.#c.getPeer)) ?? []), quote_offset: params.replyTo.quote?.offset, monoforum_peer_id: directMessagesTopicId ? await this.#c.getInputPeer(directMessagesTopicId) : undefined };
+    if (params.replyTo.type === "message") {
+      return {
+        _: "inputReplyToMessage",
+        reply_to_msg_id: params.replyTo.messageId,
+        top_msg_id: topMsgId,
+        quote_text: params.replyTo.quote?.text,
+        quote_entities: await Promise.all(params.replyTo.quote?.entities.map((v) => messageEntityToTlObject(v, this.#c.getPeer)) ?? []),
+        quote_offset: params.replyTo.quote?.offset,
+        monoforum_peer_id: directMessagesTopicId ? await this.#c.getInputPeer(directMessagesTopicId) : undefined,
+        poll_option: params.replyTo.pollOptionId ? encodeText(String(params.replyTo.pollOptionId)) : undefined,
+        todo_item_id: params.replyTo.checklistItemId,
+      };
     } else {
       return { _: "inputReplyToStory", peer: await this.#c.getInputPeer(params.replyTo.chatId), story_id: params.replyTo.storyId };
     }
