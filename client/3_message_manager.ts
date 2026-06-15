@@ -1192,6 +1192,36 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return assertMessageType(message_, "text");
   }
 
+  async editMessageRichText(
+    chatId: ID,
+    messageId: number,
+    richText: InputRichText,
+    params?: EditMessageTextParams,
+  ) {
+    this.#checkParams(params);
+    {
+      const message = await this.getMessage(chatId, messageId);
+      if (!message) {
+        throw new InputError("Message not found.");
+      }
+      if (message.type !== "link" && message.type !== "richText") {
+        throw new InputError("The referenced message is not a rich text message.");
+      }
+    }
+    const rich_message = MessageManager.#inputRichTextToInputRichMessage(richText);
+
+    const result = await this.#c.invoke({
+      _: "messages.editMessage",
+      id: checkMessageId(messageId),
+      peer: await this.#c.getInputPeer(chatId),
+      rich_message,
+      reply_markup: await this.#constructReplyMarkup(params),
+    }, { businessConnectionId: params?.businessConnectionId });
+
+    const message_ = (await this.updatesToMessages(chatId, result))[0];
+    return assertMessageType(message_, "richText");
+  }
+
   static #CAPTIONABLE_MESSAGE_TYPES = ["photo", "document", "video", "animation", "voice", "audio", "video"] as const;
   async editMessageCaption(chatId: ID, messageId: number, params?: EditMessageCaptionParams) {
     let canHaveCaption = false;
