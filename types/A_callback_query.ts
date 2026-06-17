@@ -24,7 +24,7 @@ import { base64DecodeUrlSafe, base64EncodeUrlSafe, cleanObject, decodeText } fro
 import { Api } from "../2_tl.ts";
 import type { PeerGetter } from "./1_chat_p.ts";
 import { constructUser2, type User } from "./2_user.ts";
-import type { Message, MessageGetter } from "./6_message.ts";
+import type { Message, MessageGetter } from "./9_message.ts";
 
 /** A received callback query. */
 export interface CallbackQuery {

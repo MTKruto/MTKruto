@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import type { ChatP } from "./1_chat_p.ts";
-import type { Message, MessageForumTopicCreated, MessageForumTopicEdited } from "./6_message.ts";
+import type { Message, MessageForumTopicCreated, MessageForumTopicEdited } from "./9_message.ts";
 
 /** A forum topic. */
 export interface Topic {

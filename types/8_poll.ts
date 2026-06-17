@@ -21,8 +21,10 @@
 import { equals } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
+import type { PeerGetter } from "./1_chat_p.ts";
+import type { StickerSetNameGetter } from "./1_sticker.ts";
 import { constructMessageEntity, type MessageEntity } from "./2_message_entity.ts";
-import { constructPollOption, type PollOption } from "./3_poll_option.ts";
+import { constructPollOption, type PollOption } from "./7_poll_option.ts";
 
 /** A poll. */
 export interface Poll {
@@ -58,7 +60,7 @@ export interface Poll {
   countries?: string[];
 }
 
-export function constructPoll(media_: Api.messageMediaPoll): Poll {
+export async function constructPoll(media_: Api.messageMediaPoll, getStickerSetName: StickerSetNameGetter, getPeer: PeerGetter): Promise<Poll> {
   const poll = media_.poll;
   const correctOptions = media_.results.results?.filter((v) => v.correct).map((v) => v.option);
   const correctOptionIndexes = correctOptions !== undefined ? poll.answers.filter((v) => correctOptions.some((v_) => equals(v_, Api.as("pollAnswer", v).option))).map((_, i) => i) : undefined;
@@ -66,7 +68,7 @@ export function constructPoll(media_: Api.messageMediaPoll): Poll {
     id: String(poll.id),
     question: poll.question.text,
     questionEntities: poll.question.entities.map(constructMessageEntity).filter((v): v is MessageEntity => v !== null),
-    options: poll.answers.map((v) => constructPollOption(v, media_.results.results ?? [])),
+    options: await Promise.all(poll.answers.map((v) => constructPollOption(v, media_.results.results ?? [], getStickerSetName, getPeer))),
     totalVoterCount: media_.results.total_voters ?? 0,
     isClosed: poll.closed || false,
     isAnonymous: !poll.public_voters,

@@ -50,14 +50,14 @@ import { constructUser2, type User } from "./2_user.ts";
 import { type ChecklistItem, constructChecklistItem } from "./3_checklist_item.ts";
 import { constructForwardHeader, type ForwardHeader } from "./3_forward_header.ts";
 import { constructGame, type Game } from "./3_game.ts";
-import { constructPollOption, type PollOption } from "./3_poll_option.ts";
 import { constructReplyQuote, type ReplyQuote } from "./3_reply_quote.ts";
 import { type Checklist, constructChecklist } from "./4_checklist.ts";
 import { constructPageBlock, type PageBlock } from "./4_page_block.ts";
-import { constructPoll, type Poll } from "./4_poll.ts";
 import { constructGiftNonUpgradedInformation, type GiftNonUpgradedInformation } from "./5_gift_non_upgraded_information.ts";
 import { constructGiftUpgradedInformation, type GiftUpgradedInformation } from "./5_gift_upgraded_information.ts";
 import { constructLinkPreview, type LinkPreview } from "./5_link_preview.ts";
+import { constructPollOption, type PollOption } from "./7_poll_option.ts";
+import { constructPoll, type Poll } from "./8_poll.ts";
 
 const L = getLogger("Message");
 
@@ -856,7 +856,7 @@ async function getReply(message_: Api.message | Api.messageService, chat: ChatP,
   return { replyToMessage: undefined, threadId: undefined, isTopicMessage: false };
 }
 
-async function constructServiceMessage(message_: Api.messageService, chat: ChatP, getPeer: PeerGetter, getMessage: Message_MessageGetter, getReply_: boolean): Promise<Message> {
+async function constructServiceMessage(message_: Api.messageService, chat: ChatP, getPeer: PeerGetter, getMessage: Message_MessageGetter, getStickerSetName: StickerSetNameGetter, getReply_: boolean): Promise<Message> {
   const message: _MessageBase = {
     isOutgoing: message_.out ?? false,
     id: message_.id,
@@ -992,10 +992,10 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
     const giftUpgraded = constructGiftUpgradedInformation(message_.action, getPeer);
     return { type: "giftUpgraded", ...message, giftUpgraded };
   } else if (Api.is("messageActionPollAppendAnswer", message_.action)) {
-    const pollOptionAdded = constructPollOption(message_.action.answer, []);
+    const pollOptionAdded = await constructPollOption(message_.action.answer, [], getStickerSetName, getPeer);
     return { type: "pollOptionAdded", ...message, pollOptionAdded };
   } else if (Api.is("messageActionPollDeleteAnswer", message_.action)) {
-    const pollOptionRemoved = constructPollOption(message_.action.answer, []);
+    const pollOptionRemoved = await constructPollOption(message_.action.answer, [], getStickerSetName, getPeer);
     return { type: "pollOptionRemoved", ...message, pollOptionRemoved };
   }
   return { type: "unsupported", ...message };
@@ -1031,7 +1031,7 @@ export async function constructMessage(
   }
 
   if (Api.is("messageService", message_)) {
-    return cleanObject(await constructServiceMessage(message_, chat_, getPeer, getMessage, getReply_));
+    return cleanObject(await constructServiceMessage(message_, chat_, getPeer, getMessage, getStickerSetName, getReply_));
   }
 
   const message: _MessageBase = {
@@ -1268,7 +1268,7 @@ export async function constructMessage(
     if (pollResults) {
       message_.media.results = pollResults;
     }
-    const poll_ = constructPoll(message_.media);
+    const poll_ = await constructPoll(message_.media, getStickerSetName, getPeer);
     m = { type: "poll", ...message, poll: poll_ };
   } else if (Api.is("messageMediaToDo", message_.media)) {
     const checklist = constructChecklist(message_.media.todo, message_.media.completions ?? [], getPeer);

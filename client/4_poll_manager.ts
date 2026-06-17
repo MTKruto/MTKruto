@@ -25,9 +25,10 @@ import { Api } from "../2_tl.ts";
 import { constructPoll, constructPollAnswer, type ID, type InputPollOption, type Update } from "../3_types.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import type { C as C_ } from "./1_types.ts";
+import type { FileManager } from "./2_file_manager.ts";
 import type { MessageManager } from "./3_message_manager.ts";
 
-type C = C_ & { messageManager: MessageManager };
+type C = C_ & { fileManager: FileManager; messageManager: MessageManager };
 
 const pollManagerUpdates = [
   "updateMessagePoll",
@@ -126,7 +127,7 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate, true> {
       }
       if (poll) {
         const messageMediaPoll: Api.messageMediaPoll = { _: "messageMediaPoll", poll, results: update.results };
-        return { type: "poll", poll: constructPoll(messageMediaPoll) };
+        return { type: "poll", poll: await constructPoll(messageMediaPoll, this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager), this.#c.getPeer) };
       } else {
         return null;
       }

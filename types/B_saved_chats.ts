@@ -22,8 +22,8 @@ import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
 import type { PeerGetter } from "./1_chat_p.ts";
 import type { StickerSetNameGetter } from "./1_sticker.ts";
-import type { MessageGetter } from "./6_message.ts";
-import { constructSavedChat, type SavedChat } from "./7_saved_chat.ts";
+import type { MessageGetter } from "./9_message.ts";
+import { constructSavedChat, type SavedChat } from "./A_saved_chat.ts";
 
 /** A list of saved chats. */
 export interface SavedChats {

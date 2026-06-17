@@ -21,7 +21,10 @@
 import { equals } from "../0_deps.ts";
 import { decodeText } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
+import type { PeerGetter } from "../3_types.ts";
+import type { StickerSetNameGetter } from "./1_sticker.ts";
 import { constructMessageEntity, type MessageEntity } from "./2_message_entity.ts";
+import { constructPollMedia, type PollMedia } from "./6_poll_media.ts";
 
 /** A poll option. */
 export interface PollOption {
@@ -35,16 +38,20 @@ export interface PollOption {
   voterCount: number;
   /** Whether this option has been chosen. */
   isChosen: boolean;
+  /** The option's media. */
+  media?: PollMedia;
 }
 
-export function constructPollOption(option: Api.PollAnswer, results: Array<Api.PollAnswerVoters>): PollOption {
-  const result = results.find((v) => equals(v.option, Api.as("pollAnswer", option).option));
-  const id = decodeText(Api.as("pollAnswer", option).option);
+export async function constructPollOption(option: Api.PollAnswer, results: Array<Api.PollAnswerVoters>, getStickerSetName: StickerSetNameGetter, getPeer: PeerGetter): Promise<PollOption> {
+  const pollAnswer = Api.as("pollAnswer", option);
+  const result = results.find((v) => equals(v.option, pollAnswer.option));
+  const id = decodeText(pollAnswer.option);
   return {
     id,
     text: option.text.text,
     entities: option.text.entities?.map(constructMessageEntity).filter((v): v is MessageEntity => v !== null),
     voterCount: result?.voters ?? 0,
     isChosen: result?.chosen ?? false,
+    media: pollAnswer.media ? await constructPollMedia(pollAnswer.media, getStickerSetName, getPeer) : undefined,
   };
 }

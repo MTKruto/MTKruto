@@ -18,12 +18,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { Message } from "./6_message.ts";
+import type { Message } from "./9_message.ts";
 
-/** A list of messages. */
-export interface MessageList {
-  /** The messages. */
-  messages: Message[];
-  /** The total number of messages in the list. */
-  count: number;
+/** A guest query. */
+export interface GuestQuery {
+  /** The identifier of the query. */
+  id: string;
+  /** The guest query's message. */
+  message: Message;
 }

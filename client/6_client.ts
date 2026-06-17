@@ -337,7 +337,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     this.#giftManager = new GiftManager({ ...c, messageManager });
     this.#inlineQueryManager = new InlineQueryManager({ ...c, messageManager });
     this.#linkPreviewManager = new LinkPreviewManager({ ...c, messageManager });
-    this.#pollManager = new PollManager({ ...c, messageManager });
+    this.#pollManager = new PollManager({ ...c, fileManager, messageManager });
     this.#storyManager = new StoryManager({ ...c, fileManager, messageManager });
 
     this.#updateManager.setUpdateHandler(this.#handleUpdate.bind(this));

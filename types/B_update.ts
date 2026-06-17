@@ -42,12 +42,12 @@ import type { PreCheckoutQuery } from "./3_pre_checkout_query.ts";
 import type { Story } from "./3_story.ts";
 import type { ChatMemberUpdated } from "./4_chat_member_updated.ts";
 import type { JoinRequest } from "./4_join_request.ts";
-import type { Poll } from "./4_poll.ts";
 import type { LinkPreview } from "./5_link_preview.ts";
-import type { Message } from "./6_message.ts";
-import type { CallbackQuery } from "./7_callback_query.ts";
-import type { ChatListItem } from "./7_chat_list_item.ts";
-import type { GuestQuery } from "./7_guest_query.ts";
+import type { Poll } from "./8_poll.ts";
+import type { Message } from "./9_message.ts";
+import type { CallbackQuery } from "./A_callback_query.ts";
+import type { ChatListItem } from "./A_chat_list_item.ts";
+import type { GuestQuery } from "./A_guest_query.ts";
 
 /**
  * A client's connection state was changed.

@@ -24,7 +24,7 @@ import { Api } from "../2_tl.ts";
 import { type ChatFolder, constructChatFolder } from "./0_chat_folder.ts";
 import { type ChatP, constructChatP, type PeerGetter } from "./1_chat_p.ts";
 import type { StickerSetNameGetter } from "./1_sticker.ts";
-import { constructMessage, type Message, type MessageGetter } from "./6_message.ts";
+import { constructMessage, type Message, type MessageGetter } from "./9_message.ts";
 
 /** An item of a chat list. */
 export interface ChatListItem {

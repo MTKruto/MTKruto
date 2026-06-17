@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
 import { type ChatP, constructChatP, type PeerGetter } from "./1_chat_p.ts";
 import type { StickerSetNameGetter } from "./1_sticker.ts";
-import { constructMessage, type Message, type MessageGetter } from "./6_message.ts";
+import { constructMessage, type Message, type MessageGetter } from "./9_message.ts";
 
 /** Information on a saved chat. */
 export interface SavedChat {
