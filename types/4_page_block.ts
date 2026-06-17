@@ -36,52 +36,6 @@ export interface PageBlockUnsupported {
 }
 
 /**
- * A title page block.
- * @unlisted
- */
-export interface PageBlockTitle {
-  type: "title";
-  text: RichTextComponent;
-}
-
-/**
- * A subtitle page block.
- * @unlisted
- */
-export interface PageBlockSubtitle {
-  type: "subtitle";
-  text: RichTextComponent;
-}
-
-/**
- * An author-date page block.
- * @unlisted
- */
-export interface PageBlockAuthorDate {
-  type: "authorDate";
-  author: RichTextComponent;
-  date: number;
-}
-
-/**
- * A header page block.
- * @unlisted
- */
-export interface PageBlockHeader {
-  type: "header";
-  text: RichTextComponent;
-}
-
-/**
- * A subheader page block.
- * @unlisted
- */
-export interface PageBlockSubheader {
-  type: "subheader";
-  text: RichTextComponent;
-}
-
-/**
  * A paragraph page block.
  * @unlisted
  */
@@ -470,40 +424,6 @@ export interface PageBlockDetails {
   title: RichTextComponent;
 }
 
-/** @unlisted */
-export interface PageBlockRelatedArticle {
-  url: string;
-  linkPreviewId: string;
-  title?: string;
-  description?: string;
-  photoId?: string;
-  author?: string;
-  date?: number;
-}
-export function constructPageBlockRelatedArticle(pra: Api.PageRelatedArticle): PageBlockRelatedArticle {
-  return cleanObject({
-    url: pra.url,
-    linkPreviewId: String(pra.webpage_id),
-    title: pra.title,
-    description: pra.description,
-    photoId: pra.photo_id ? String(pra.photo_id) : undefined,
-    author: pra.author,
-    date: pra.published_date,
-  });
-}
-export function pageBlockRelatedArticleToTlObject(pbra: PageBlockRelatedArticle): Api.PageRelatedArticle {
-  return { _: "pageRelatedArticle", url: pbra.url, webpage_id: BigInt(pbra.linkPreviewId), title: pbra.title, description: pbra.description, photo_id: pbra.photoId ? BigInt(pbra.photoId) : undefined, author: pbra.author, published_date: pbra.date };
-}
-/**
- * A related articles page block.
- * @unlisted
- */
-export interface PageBlockRelatedArticles {
-  type: "relatedArticles";
-  title: RichTextComponent;
-  articles: PageBlockRelatedArticle[];
-}
-
 /**
  * A map page block.
  * @unlisted
@@ -602,11 +522,6 @@ export interface PageBlockBlockQuoteBlocks {
 /** Any type of page block. */
 export type PageBlock =
   | PageBlockUnsupported
-  | PageBlockTitle
-  | PageBlockSubtitle
-  | PageBlockAuthorDate
-  | PageBlockHeader
-  | PageBlockSubheader
   | PageBlockParagraph
   | PageBlockPre
   | PageBlockFooter
@@ -630,7 +545,6 @@ export type PageBlock =
   | PageBlockTable
   | PageBlockOrderedList
   | PageBlockDetails
-  | PageBlockRelatedArticles
   | PageBlockMap
   | PageBlockHeading1
   | PageBlockHeading2
@@ -646,16 +560,6 @@ export function constructPageBlock(pb: Api.PageBlock, photos: Api.Photo[], docum
   switch (pb._) {
     case "pageBlockUnsupported":
       return { type: "unsupported" };
-    case "pageBlockTitle":
-      return { type: "title", text: constructRichTextComponent(pb.text, photos) };
-    case "pageBlockSubtitle":
-      return { type: "subtitle", text: constructRichTextComponent(pb.text, photos) };
-    case "pageBlockAuthorDate":
-      return { type: "authorDate", author: constructRichTextComponent(pb.author, photos), date: pb.published_date };
-    case "pageBlockHeader":
-      return { type: "header", text: constructRichTextComponent(pb.text, photos) };
-    case "pageBlockSubheader":
-      return { type: "subheader", text: constructRichTextComponent(pb.text, photos) };
     case "pageBlockParagraph":
       return { type: "paragraph", text: constructRichTextComponent(pb.text, photos) };
     case "pageBlockPreformatted":
@@ -727,12 +631,6 @@ export function constructPageBlock(pb: Api.PageBlock, photos: Api.Photo[], docum
       });
     case "pageBlockDetails":
       return { type: "details", isOpen: !!pb.open, title: constructRichTextComponent(pb.title, photos), blocks: pb.blocks.map((v) => constructPageBlock(v, photos, documents)) };
-    case "pageBlockRelatedArticles":
-      return {
-        type: "relatedArticles",
-        title: constructRichTextComponent(pb.title, photos),
-        articles: pb.articles.map(constructPageBlockRelatedArticle),
-      };
     case "pageBlockMap":
       return {
         type: "map",
@@ -772,16 +670,6 @@ export function pageBlockToTlObject(pb: PageBlock): Api.PageBlock {
   switch (pb.type) {
     case "unsupported":
       return { _: "pageBlockUnsupported" };
-    case "title":
-      return { _: "pageBlockTitle", text: richTextComponentToTlObject(pb.text) };
-    case "subtitle":
-      return { _: "pageBlockSubtitle", text: richTextComponentToTlObject(pb.text) };
-    case "authorDate":
-      return { _: "pageBlockAuthorDate", author: richTextComponentToTlObject(pb.author), published_date: pb.date };
-    case "header":
-      return { _: "pageBlockHeader", text: richTextComponentToTlObject(pb.text) };
-    case "subheader":
-      return { _: "pageBlockSubheader", text: richTextComponentToTlObject(pb.text) };
     case "paragraph":
       return { _: "pageBlockParagraph", text: richTextComponentToTlObject(pb.text) };
     case "pre":
@@ -844,8 +732,6 @@ export function pageBlockToTlObject(pb: PageBlock): Api.PageBlock {
       return { _: "pageBlockOrderedList", items: pb.items.map(pageBlockOrderedListItemToTlObject), reversed: pb.isReversed || undefined, start: pb.start, type: pb.itemsType };
     case "details":
       return { _: "pageBlockDetails", title: richTextComponentToTlObject(pb.title), blocks: pb.blocks.map(pageBlockToTlObject), open: pb.isOpen || undefined };
-    case "relatedArticles":
-      return { _: "pageBlockRelatedArticles", title: richTextComponentToTlObject(pb.title), articles: pb.articles.map(pageBlockRelatedArticleToTlObject) };
     case "map":
       return { _: "inputPageBlockMap", geo: { _: "inputGeoPoint", lat: pb.location.latitude, long: pb.location.longitude, accuracy_radius: pb.location.horizontalAccuracy }, caption: pageBlockCaptionToTlObject(pb.caption), w: pb.width, h: pb.height, zoom: pb.zoom };
     case "heading1":
@@ -936,10 +822,6 @@ function collectRichTextComponents(pageBlocks: PageBlock[]): RichTextComponent[]
   const components = new Array<RichTextComponent>();
   for (const pb of pageBlocks) {
     switch (pb.type) {
-      case "title":
-      case "subtitle":
-      case "header":
-      case "subheader":
       case "paragraph":
       case "pre":
       case "footer":
@@ -952,9 +834,6 @@ function collectRichTextComponents(pageBlocks: PageBlock[]): RichTextComponent[]
       case "heading6":
       case "thinking":
         components.push(pb.text);
-        break;
-      case "authorDate":
-        components.push(pb.author);
         break;
       case "list":
       case "orderedList":
