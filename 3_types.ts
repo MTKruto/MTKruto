@@ -169,6 +169,7 @@ export * from "./types/5_gift_non_upgraded_information.ts";
 export * from "./types/5_gift_upgraded_information.ts";
 export * from "./types/5_input_rich_text.ts";
 export * from "./types/5_link_preview.ts";
+export * from "./types/5_rich_text.ts";
 export * from "./types/5_star_transaction.ts";
 export * from "./types/6_claimed_gifts.ts";
 export * from "./types/6_message_content.ts";

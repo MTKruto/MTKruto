@@ -52,10 +52,11 @@ import { constructForwardHeader, type ForwardHeader } from "./3_forward_header.t
 import { constructGame, type Game } from "./3_game.ts";
 import { constructReplyQuote, type ReplyQuote } from "./3_reply_quote.ts";
 import { type Checklist, constructChecklist } from "./4_checklist.ts";
-import { constructPageBlock, type PageBlock } from "./4_page_block.ts";
+import { constructPageBlock } from "./4_page_block.ts";
 import { constructGiftNonUpgradedInformation, type GiftNonUpgradedInformation } from "./5_gift_non_upgraded_information.ts";
 import { constructGiftUpgradedInformation, type GiftUpgradedInformation } from "./5_gift_upgraded_information.ts";
 import { constructLinkPreview, type LinkPreview } from "./5_link_preview.ts";
+import type { RichText } from "./5_rich_text.ts";
 import { constructPollOption, type PollOption } from "./7_poll_option.ts";
 import { constructPoll, type Poll } from "./8_poll.ts";
 
@@ -636,16 +637,7 @@ export interface MessagePollOptionRemoved extends _MessageBase {
  */
 export interface MessageRichText extends _MessageBase {
   type: "richText";
-  /** The blocks of the rich text. */
-  blocks: PageBlock[];
-  /** Whether the rich text is right-to-left. */
-  isRtl: boolean;
-  /** Whether the rich text is partial. */
-  isPartial: boolean;
-  /** The photos included in the rich text. */
-  photos: Photo[];
-  /** The documents included in the rich text. */
-  documents: Document[];
+  richText: RichText;
 }
 
 // message type map
@@ -1123,30 +1115,32 @@ export async function constructMessage(
     return cleanObject({
       ...message,
       type: "richText",
-      blocks: message_.rich_message.blocks.map((v) => constructPageBlock(v, message_.rich_message!.photos, message_.rich_message!.documents)),
-      isRtl: !!message_.rich_message.rtl,
-      isPartial: !!message_.rich_message.part,
-      photos: message_.rich_message.photos.map((v) => constructPhoto(Api.as("photo", v))),
-      documents: message_.rich_message.documents.map((v) => {
-        v = Api.as("document", v);
+      richText: {
+        blocks: message_.rich_message.blocks.map((v) => constructPageBlock(v, message_.rich_message!.photos, message_.rich_message!.documents)),
+        isRtl: !!message_.rich_message.rtl,
+        isPartial: !!message_.rich_message.part,
+        photos: message_.rich_message.photos.map((v) => constructPhoto(Api.as("photo", v))),
+        documents: message_.rich_message.documents.map((v) => {
+          v = Api.as("document", v);
 
-        const fileId: FileId = {
-          type: FileType.Document,
-          dcId: v.dc_id,
-          location: {
-            type: "common",
-            id: v.id,
-            accessHash: v.access_hash,
-          },
-          fileReference: v.file_reference,
-        };
-        return constructDocument(
-          v,
-          v.attributes.find((v) => Api.is("documentAttributeFilename", v)) ?? { _: "documentAttributeFilename", file_name: "unknown" },
-          serializeFileId(fileId),
-          toUniqueFileId(fileId),
-        );
-      }),
+          const fileId: FileId = {
+            type: FileType.Document,
+            dcId: v.dc_id,
+            location: {
+              type: "common",
+              id: v.id,
+              accessHash: v.access_hash,
+            },
+            fileReference: v.file_reference,
+          };
+          return constructDocument(
+            v,
+            v.attributes.find((v) => Api.is("documentAttributeFilename", v)) ?? { _: "documentAttributeFilename", file_name: "unknown" },
+            serializeFileId(fileId),
+            toUniqueFileId(fileId),
+          );
+        }),
+      },
     });
   }
 

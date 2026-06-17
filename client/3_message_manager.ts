@@ -2436,4 +2436,22 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     this.#c.storage.assertUser("translateMessage");
     return (await this.#translateMessages(toLanguage, chatId, [messageId], params))[0];
   }
+
+  async getRichText(chatId: ID, messageId: number) {
+    this.#c.storage.assertUser("getRichText");
+    const peer = await this.#c.getInputPeer(chatId);
+    const id = messageId;
+    const result = await this.#c.invoke({ _: "messages.getRichMessage", peer, id });
+    if (!Api.is("messages.messages", result)) {
+      unreachable();
+    }
+
+    const message_ = result.messages[0];
+    if (!message_) {
+      return null;
+    }
+
+    const message = assertMessageType(await this.constructMessage(message_, false), "richText");
+    return message.richText;
+  }
 }
