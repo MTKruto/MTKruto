@@ -21,7 +21,7 @@
 import { equals } from "../0_deps.ts";
 import { decodeText } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import type { PeerGetter } from "../3_types.ts";
+import type { PeerGetter } from "./1_chat_p.ts";
 import type { StickerSetNameGetter } from "./1_sticker.ts";
 import { constructMessageEntity, type MessageEntity } from "./2_message_entity.ts";
 import { constructPollMedia, type PollMedia } from "./6_poll_media.ts";
