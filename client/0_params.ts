@@ -131,7 +131,13 @@ export interface _EditMessageTextCommon extends _ReplyMarkupCommon {
 export interface EditMessageTextParams extends _BusinessConnectionIdCommon, _EditMessageTextCommon {
 }
 
+export interface EditMessageRichTextParams extends _BusinessConnectionIdCommon, _ReplyMarkupCommon {
+}
+
 export interface EditInlineMessageTextParams extends _EditMessageTextCommon {
+}
+
+export interface EditInlineMessageRichTextParams extends _ReplyMarkupCommon {
 }
 
 export interface _EditMessageCaptionCommon extends _ReplyMarkupCommon {
