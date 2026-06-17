@@ -21,8 +21,8 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { type Api, toJSON } from "../2_tl.ts";
-import type { AvailableReactions, BusinessConnection, CallbackQuery, Chat, ChatActionType, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ChosenInlineResult, ClaimedGifts, FailedInvitation, FileSource, GuestQuery, ID, InlineQuery, InlineQueryResult, InputChecklistItem, InputMedia, InputPollOption, InputStoryContent, InviteLink, JoinRequest, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, Poll, PriceTag, Reaction, ReplyTo, SlowModeDuration, Story, Topic, Update, User, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
-import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, ForwardMessagesParams, GetChatMembersParams, GetClaimedGiftsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetSavedMessagesParams, PinMessageParams, PromoteChatMemberParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetReactionsParams, StartVideoChatParams, StopPollParams, UpdateChecklistParams } from "./0_params.ts";
+import type { AvailableReactions, BusinessConnection, CallbackQuery, Chat, ChatActionType, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ChosenInlineResult, ClaimedGifts, FailedInvitation, FileSource, GuestQuery, ID, InlineQuery, InlineQueryResult, InputChecklistItem, InputMedia, InputPollOption, InputRichText, InputStoryContent, InviteLink, JoinRequest, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageRichText, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, Poll, PriceTag, Reaction, ReplyTo, RichText, SlowModeDuration, Story, Topic, Update, User, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
+import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageRichTextParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, ForwardMessagesParams, GetChatMembersParams, GetClaimedGiftsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetSavedMessagesParams, PinMessageParams, PromoteChatMemberParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetReactionsParams, StartVideoChatParams, StopPollParams, UpdateChecklistParams } from "./0_params.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
 import { type FilterQuery, match, type WithChatType, type WithFilter } from "./3_filters.ts";
 
@@ -706,6 +706,12 @@ export class Context {
     return await this.client.editInlineMessageText(inlineMessageId, text, params);
   }
 
+  /** Context-aware alias for {@link Client.editInlineMessageRichText}. */
+  async editInlineMessageRichText(richText: InputRichText, params?: EditInlineMessageRichTextParams): Promise<void> {
+    const inlineMessageId = this.#mustGetInlineMsgId();
+    return await this.client.editInlineMessageRichText(inlineMessageId, richText, params);
+  }
+
   /** Context-aware alias for {@link Client.editMessageCaption}. */
   async editMessageCaption(messageId: number, params?: EditMessageCaptionParams): Promise<Message> {
     const chatId = this.#mustGetChatId();
@@ -734,6 +740,18 @@ export class Context {
   async editMessageText(messageId: number, text: string, params?: EditMessageTextParams): Promise<MessageText> {
     const chatId = this.#mustGetChatId();
     return await this.client.editMessageText(chatId, messageId, text, params);
+  }
+
+  /** Context-aware alias for {@link Client.getRichText}. */
+  async getRichText(messageId: number): Promise<RichText | null> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.getRichText(chatId, messageId);
+  }
+
+  /** Context-aware alias for {@link Client.editMessageRichText}. */
+  async editMessageRichText(messageId: number, richText: InputRichText, params?: EditMessageRichTextParams): Promise<MessageRichText> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.editMessageRichText(chatId, messageId, richText, params);
   }
 
   /** Context-aware alias for {@link Client.editTopic}. */
@@ -1055,6 +1073,13 @@ export class Context {
     return await this.client.sendMessage(chatId, text, { ...params, ...replyTo, businessConnectionId });
   }
 
+  /** Context-aware alias for {@link Client.sendRichText}. */
+  async replyRichText(richText: InputRichText, params?: Omit<SendMessageParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageRichText> {
+    const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
+    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
+    return await this.client.sendRichText(chatId, richText, { ...params, ...replyTo, businessConnectionId });
+  }
+
   /** Context-aware alias for {@link Client.sendAnimation}. */
   async replyAnimation(animation: FileSource, params?: Omit<SendAnimationParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageAnimation> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
@@ -1102,6 +1127,13 @@ export class Context {
     const { chatId, messageId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
     return await this.client.sendMessageDraft(chatId, draftId, text, { ...params, ...replyTo });
+  }
+
+  /** Context-aware alias for {@link Client.sendRichTextDraft}. */
+  async replyRichTextDraft(draftId: number, richText: InputRichText, params?: Omit<SendRichTextDraftParams, "messageThreadId"> & ReplyParams): Promise<void> {
+    const { chatId, messageId } = this.#mustGetMsg();
+    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
+    return await this.client.sendRichTextDraft(chatId, draftId, richText, { ...params, ...replyTo });
   }
 
   /** Context-aware alias for {@link Client.sendInvoice}. */
