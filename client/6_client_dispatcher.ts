@@ -1645,7 +1645,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Get a message's full rich text.
+   * Get a message's full rich text. User-only.
    *
    * @method ms
    * @param chatId The identifier of the chat including the message.

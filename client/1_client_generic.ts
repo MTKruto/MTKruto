@@ -1204,7 +1204,7 @@ export abstract class ClientGeneric {
   abstract getMessageCounters(chatId: ID, messageId: number): Promise<MessageCounters>;
 
   /**
-   * Get a message's full rich text.
+   * Get a message's full rich text. User-only.
    *
    * @method ms
    * @param chatId The identifier of the chat including the message.

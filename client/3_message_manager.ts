@@ -2438,6 +2438,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   }
 
   async getRichText(chatId: ID, messageId: number) {
+    this.#c.storage.assertUser("getRichText");
     const peer = await this.#c.getInputPeer(chatId);
     const id = messageId;
     const result = await this.#c.invoke({ _: "messages.getRichMessage", peer, id });
