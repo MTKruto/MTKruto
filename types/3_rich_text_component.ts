@@ -291,7 +291,6 @@ export interface RichTextComponentTextMention {
  */
 export interface RichTextComponentDateTime {
   type: "dateTime";
-  isRelative: boolean;
   format?: string;
   date: number;
   text: RichTextComponent;
