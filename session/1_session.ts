@@ -148,4 +148,8 @@ export abstract class Session {
   }
 
   abstract send(body: Uint8Array): Promise<bigint>;
+
+  previewNextMessageId(): bigint {
+    return this.state.previewNextMessageId();
+  }
 }

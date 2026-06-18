@@ -18,12 +18,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { InputError } from "../0_errors.ts";
-import { getLogger, type Logger } from "../1_utilities.ts";
-import { Api, Mtproto, X } from "../2_tl.ts";
-import { ConnectionNotInited } from "../3_errors.ts";
+import { concat, delay, ige256Encrypt, SECOND } from "../0_deps.ts";
+import { drop, fromUnixTimestamp, getLogger, getRandomId, intFromBytes, type Logger, type MaybePromise, mod, sha1, toUnixTimestamp } from "../1_utilities.ts";
+import { Api, type message, Mtproto, serializeMessage, TLWriter, X } from "../2_tl.ts";
 import type { DC } from "../3_transport.ts";
-import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, SYSTEM_LANG_CODE, SYSTEM_VERSION } from "../4_constants.ts";
+import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, SYSTEM_LANG_CODE, SYSTEM_VERSION, TEMPORARY_AUTH_KEY_TTL } from "../4_constants.ts";
+import { ConnectionNotInited, InputError, type TransportError } from "../4_errors.ts";
 import { constructTelegramError } from "../4_errors.ts";
 import { SessionEncrypted, SessionError } from "../4_session.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
@@ -50,12 +50,14 @@ export interface ClientEncryptedParams extends ClientPlainParams {
   systemVersion?: string;
   /** Whether to disable receiving updates. Defaults to `false`. */
   disableUpdates?: boolean;
+  /** Whether perfect forward secrecy should be enabled. Defaults to `false`. */
+  isPerfectForwardSecrecyEnabled?: boolean;
 }
 
 export interface ClientEncryptedHandlers {
-  onNewServerSalt?: (newServerSalt: bigint) => void;
-  onUpdate?: (update: Api.Updates | Api.Update) => void;
-  onDeserializationError?: () => void;
+  onNewServerSalt?: (newServerSalt: bigint) => MaybePromise<void>;
+  onUpdate?: (update: Api.Updates | Api.Update) => MaybePromise<void>;
+  onDeserializationError?: () => MaybePromise<void>;
 }
 
 export class ClientEncrypted extends ClientAbstract {
@@ -65,69 +67,163 @@ export class ClientEncrypted extends ClientAbstract {
   handlers: ClientEncryptedHandlers = {};
 
   #L: Logger;
-  #plain: ClientPlain;
+  #dc: DC;
+  #apiId: number;
+  #params: ClientEncryptedParams | undefined;
+
+  #authKey = new Uint8Array();
+  #authKeyId = 0n;
+  #temporaryAuthKey = new Uint8Array();
+  #temporaryAuthKeyExpiresIn = 0;
   session: SessionEncrypted;
   #sentRequests = new Map<bigint, SentRequest>();
-
-  #apiId: number;
-  #appVersion: string;
-  #deviceModel: string;
-  #langCode: string;
-  #langPack: string;
-  #systemLangCode: string;
-  #systemVersion: string;
-  #disableUpdates: boolean;
+  #isAuthKeyBound = false;
+  #isPerfectForwardSecrecyEnabled = false;
 
   constructor(dc: DC, apiId: number, params?: ClientEncryptedParams) {
     super();
     this.#L = getLogger("ClientEncrypted").client(id++);
 
-    this.#plain = new ClientPlain(dc, params);
+    this.#dc = dc;
+    this.#apiId = apiId;
+    this.#params = params;
+    this.#isPerfectForwardSecrecyEnabled = params?.isPerfectForwardSecrecyEnabled ?? false;
+
     this.session = new SessionEncrypted(dc, params);
+    this.session.handlers.onTransportError = this.#onTransportError.bind(this);
     this.session.handlers.onUpdate = this.#onUpdate.bind(this);
     this.session.handlers.onNewServerSalt = this.#onNewServerSalt.bind(this);
     this.session.handlers.onMessageFailed = this.#onMessageFailed.bind(this);
     this.session.handlers.onRpcError = this.#onRpcError.bind(this);
     this.session.handlers.onRpcResult = this.#onRpcResult.bind(this);
     this.session.handlers.onPong = this.#onPong.bind(this);
+  }
 
-    this.#apiId = apiId;
-    this.#appVersion = params?.appVersion ?? APP_VERSION;
-    this.#deviceModel = params?.deviceModel ?? DEVICE_MODEL;
-    this.#langCode = params?.langCode ?? LANG_CODE;
-    this.#langPack = params?.langPack ?? LANG_PACK;
-    this.#systemLangCode = params?.systemLangCode ?? SYSTEM_LANG_CODE;
-    this.#systemVersion = params?.systemVersion ?? SYSTEM_VERSION;
-    this.#disableUpdates = params?.disableUpdates ?? false;
+  async #encryptMessage(message: message) {
+    const payloadWriter = new TLWriter();
+
+    payloadWriter.writeInt64(getRandomId());
+    payloadWriter.writeInt64(getRandomId());
+    payloadWriter.write(await serializeMessage(message));
+
+    let payload = payloadWriter.buffer;
+
+    const payloadSha1 = await sha1(payload);
+    const messageKey = payloadSha1.subarray(4, 20);
+
+    payloadWriter.write(new Uint8Array(mod(-payload.length, 16)));
+    payload = payloadWriter.buffer;
+
+    const sha1A = await sha1(concat([messageKey, this.#authKey.subarray(0, 32)]));
+    const sha1B = await sha1(concat([this.#authKey.slice(32, 48), messageKey, this.#authKey.slice(48, 64)]));
+    const sha1C = await sha1(concat([this.#authKey.slice(64, 96), messageKey]));
+    const sha1D = await sha1(concat([messageKey, this.#authKey.slice(96, 128)]));
+
+    const encryptionKey = concat([sha1A.slice(0, 8), sha1B.slice(8, 20), sha1C.slice(4, 16)]);
+    const encryptionIv = concat([sha1A.slice(8, 20), sha1B.slice(0, 8), sha1C.slice(16, 20), sha1D.slice(0, 8)]);
+
+    const encrypted = ige256Encrypt(payload, encryptionKey, encryptionIv);
+
+    const messageWriter = new TLWriter();
+    messageWriter.writeInt64(this.#authKeyId);
+    messageWriter.write(messageKey);
+    messageWriter.write(encrypted);
+    return messageWriter.buffer;
   }
 
   override async connect() {
     if (!this.authKey.byteLength) {
       await this.#createAuthKey();
+    } else if (this.#isPerfectForwardSecrecyEnabled) {
+      this.#L.debug("creating temporary auth key");
+      await this.#createAuthKeyInner(true);
     }
     await super.connect();
+
+    if (this.#isPerfectForwardSecrecyEnabled) {
+      this.#isAuthKeyBound = false;
+      await this.#bindTemporaryAuthKey();
+      drop(this.#refreshTemporaryAuthKey());
+    } else {
+      this.#isAuthKeyBound = true;
+    }
+  }
+
+  async #bindTemporaryAuthKey() {
+    const nonce = getRandomId();
+    const expires_at = toUnixTimestamp(new Date()) + TEMPORARY_AUTH_KEY_TTL;
+    this.#temporaryAuthKeyExpiresIn = fromUnixTimestamp(expires_at).getTime() - Date.now();
+    const object: Mtproto.bind_auth_key_inner = {
+      _: "bind_auth_key_inner",
+      perm_auth_key_id: this.#authKeyId,
+      nonce,
+      expires_at,
+      temp_auth_key_id: this.session.authKeyId,
+      temp_session_id: this.session.id,
+    };
+    const encrypted_message = await this.#encryptMessage({
+      _: "message",
+      seqno: 0,
+      msg_id: this.session.previewNextMessageId(),
+      body: Mtproto.serializeObject(object),
+    });
+    await this.invoke({
+      _: "auth.bindTempAuthKey",
+      perm_auth_key_id: this.#authKeyId,
+      nonce,
+      encrypted_message,
+      expires_at,
+    }), this.#isAuthKeyBound = true;
+  }
+
+  #temporaryAuthKeyTimeoutController?: AbortController;
+
+  async #refreshTemporaryAuthKey() {
+    this.#temporaryAuthKeyTimeoutController?.abort();
+    const controller = this.#temporaryAuthKeyTimeoutController = new AbortController();
+    await delay(Math.max(0, this.#temporaryAuthKeyExpiresIn - 5 * SECOND), { signal: controller.signal });
+    if (this.#temporaryAuthKeyTimeoutController !== controller) {
+      return;
+    }
+    this.#temporaryAuthKeyTimeoutController = undefined;
+    this.#L.debug("reconnecting with a new temporary auth key");
+    this.disconnect();
+    drop(this.connect());
   }
 
   override disconnect() {
     super.disconnect();
+    this.#temporaryAuthKeyTimeoutController?.abort();
+    this.#temporaryAuthKeyTimeoutController = undefined;
     this.lastRequest = undefined;
   }
 
-  #createAuthKeyPromise?: Promise<void>;
+  #createAuthKeyPromise?: Promise<unknown>;
   #createAuthKey() {
-    return this.#createAuthKeyPromise ??= this.#createAuthKeyInner().finally(() => {
+    return this.#createAuthKeyPromise ??= (this.#isPerfectForwardSecrecyEnabled ? Promise.all([this.#createAuthKeyInner(false), this.#createAuthKeyInner(true)]) : this.#createAuthKeyInner(false)).finally(() => {
       this.#createAuthKeyPromise = undefined;
     });
   }
-  async #createAuthKeyInner() {
+  async #createAuthKeyInner(isTemporary: boolean) {
     let lastErr: unknown;
     let errored = false;
+    const plain = new ClientPlain(this.#dc, this.#params);
     for (let i = 0; i < ClientEncrypted.#AUTH_KEY_CREATION_MAX_TRIES; ++i) {
       try {
-        await this.#plain.connect();
-        const [authKey, serverSalt] = await this.#plain.createAuthKey();
-        await this.setAuthKey(authKey);
-        this.serverSalt = serverSalt;
+        await plain.connect();
+        const [authKey, serverSalt] = await plain.createAuthKey(isTemporary);
+        if (isTemporary) {
+          this.#temporaryAuthKey = authKey;
+          await this.session.setAuthKey(this.#temporaryAuthKey);
+          this.session.serverSalt = serverSalt;
+          this.#isConnectionInited = false;
+        } else {
+          await this.setAuthKey(authKey);
+        }
+        if (!this.#isPerfectForwardSecrecyEnabled) {
+          await this.session.setAuthKey(authKey);
+          this.session.serverSalt = serverSalt;
+        }
         errored = false;
         break;
       } catch (err) {
@@ -138,7 +234,7 @@ export class ClientEncrypted extends ClientAbstract {
         }
         this.#L.error("failed to create auth key:", err);
       } finally {
-        this.#plain.disconnect();
+        plain.disconnect();
       }
     }
     if (errored) {
@@ -147,14 +243,20 @@ export class ClientEncrypted extends ClientAbstract {
   }
 
   get authKey(): Uint8Array<ArrayBuffer> {
-    return this.session.authKey;
+    return this.#isPerfectForwardSecrecyEnabled ? this.#authKey : this.session.authKey;
   }
 
   async setAuthKey(authKey: Uint8Array<ArrayBuffer>) {
-    await this.session.setAuthKey(authKey);
+    if (this.#isPerfectForwardSecrecyEnabled) {
+      const hash = await sha1(authKey);
+      this.#authKeyId = intFromBytes(hash.slice(-8));
+      this.#authKey = authKey;
+    } else {
+      await this.session.setAuthKey(authKey);
+    }
   }
 
-  #connectionInited = false;
+  #isConnectionInited = false;
   lastRequest?: Date;
   async #send(function_: Api.AnyFunction | Mtproto.ping) {
     this.lastRequest = new Date();
@@ -162,27 +264,27 @@ export class ClientEncrypted extends ClientAbstract {
     if (Mtproto.is("ping", function_)) {
       body = Mtproto.serializeObject(function_);
     } else {
-      if (this.#disableUpdates && !isMediaFunction(function_)) {
+      if (this.#isAuthKeyBound && this.#params?.disableUpdates && !isMediaFunction(function_)) {
         function_ = { _: "invokeWithoutUpdates", query: function_ };
       }
-      if (!this.#connectionInited) {
+      if (this.#isAuthKeyBound && !this.#isConnectionInited) {
         if (!this.#apiId) {
           throw new InputError("apiId not set");
         }
         function_ = {
           _: "initConnection",
           api_id: this.#apiId,
-          app_version: this.#appVersion,
-          device_model: this.#deviceModel,
-          lang_code: this.#langCode,
-          lang_pack: this.#langPack,
+          app_version: this.#params?.appVersion ?? APP_VERSION,
+          device_model: this.#params?.deviceModel ?? DEVICE_MODEL,
+          lang_code: this.#params?.langCode ?? LANG_CODE,
+          lang_pack: this.#params?.langPack ?? LANG_PACK,
           query: {
             _: "invokeWithLayer",
             layer: Api.LAYER,
             query: function_,
           } as Api.Function,
-          system_lang_code: this.#systemLangCode,
-          system_version: this.#systemVersion,
+          system_lang_code: this.#params?.systemLangCode ?? SYSTEM_LANG_CODE,
+          system_version: this.#params?.systemVersion ?? SYSTEM_VERSION,
         };
       }
       body = Api.serializeObject(function_);
@@ -227,24 +329,36 @@ export class ClientEncrypted extends ClientAbstract {
     return await sentRequest.promiseWithResolvers.promise as R;
   }
 
+  async #onTransportError(transportError: TransportError) {
+    this.#L.error("transport error:", transportError);
+    if (!this.#isPerfectForwardSecrecyEnabled) {
+      return;
+    }
+    if (transportError.code === -404) {
+      this.#L.debug("reconnecting with a new temporary auth key");
+      this.disconnect();
+      await this.connect();
+    }
+  }
+
   async #onUpdate(body: Uint8Array) {
     let type: Api.DeserializedType;
     try {
       type = await Api.deserializeType(X, body);
     } catch (err) {
       this.#L.error("failed to deserialize update:", err);
-      this.handlers.onDeserializationError?.();
+      await this.handlers.onDeserializationError?.();
       return;
     }
     if (Api.isOfEnum("Update", type) || Api.isOfEnum("Updates", type)) {
-      this.handlers.onUpdate?.(type);
+      await this.handlers.onUpdate?.(type);
     } else {
       this.#L.warning("received unknown type:", repr(type));
     }
   }
 
   #onNewServerSalt(serverSalt: bigint) {
-    this.handlers.onNewServerSalt?.(serverSalt);
+    drop(this.handlers.onNewServerSalt?.(serverSalt));
   }
 
   async #onMessageFailed(msgId: bigint, error: unknown) {
@@ -260,13 +374,19 @@ export class ClientEncrypted extends ClientAbstract {
   }
 
   async #onRpcError(msgId: bigint, error: Mtproto.rpc_error) {
+    if (error.error_message === "AUTH_KEY_PERM_EMPTY" || error.error_message === "ENCRYPTED_MESSAGE_INVALID") {
+      this.#L.debug("reconnecting with a new temporary auth key because of", error.error_message);
+      this.disconnect();
+      await this.connect();
+    }
+
     const request = this.#sentRequests.get(msgId);
     this.#L.debug("received rpc_error with req_msg_id =", msgId, "for", request === undefined ? "unknown" : "known", "request");
     if (request) {
       this.#sentRequests.delete(msgId);
       const reason = constructTelegramError(error, request.call);
       if (reason instanceof ConnectionNotInited) {
-        this.#connectionInited = false;
+        this.#isConnectionInited = false;
         await this.#resend(request);
       } else {
         request.promiseWithResolvers.reject(constructTelegramError(error, request.call));
@@ -287,14 +407,14 @@ export class ClientEncrypted extends ClientAbstract {
       } catch (err) {
         sentRequest.promiseWithResolvers.reject(err);
         this.#L.error("failed to deserialize rpc_result body:", err);
-        this.handlers.onDeserializationError?.();
+        await this.handlers.onDeserializationError?.();
         return;
       } finally {
         this.#sentRequests.delete(msgId);
       }
     }
-    if (!this.#connectionInited) {
-      this.#connectionInited = true;
+    if (!this.#isConnectionInited) {
+      this.#isConnectionInited = true;
     }
   }
 
