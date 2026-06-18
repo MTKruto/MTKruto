@@ -107,4 +107,4 @@ export const CHANNEL_DIFFERENCE_LIMIT_BOT = 100_000;
 
 export const DOWNLOAD_MAX_CHUNK_SIZE = 1 * megabyte;
 
-export const TEMPORARY_AUTH_KEY_TTL = 86_400;
+export const TEMPORARY_AUTH_KEY_TTL = 10;
