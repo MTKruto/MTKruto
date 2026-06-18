@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { drop } from "../utilities/0_misc.ts";
 import { getLogger, type Logger } from "../utilities/1_logger.ts";
 import type { C } from "./1_types.ts";
 
@@ -54,12 +55,12 @@ export class NetworkStatisticsManager {
       read: (count: number) => {
         const key = isMedia ? "netstat_media_read" : "netstat_messages_read";
         this.#pendingWrites[key] = (this.#pendingWrites[key] ?? 0) + count;
-        this.#write();
+        drop(this.#write());
       },
       write: (count: number) => {
         const key = isMedia ? "netstat_media_write" : "netstat_messages_write";
         this.#pendingWrites[key] = (this.#pendingWrites[key] ?? 0) + count;
-        this.#write();
+        drop(this.#write());
       },
     };
   }

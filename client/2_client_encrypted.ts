@@ -19,7 +19,7 @@
  */
 
 import { concat, delay, ige256Encrypt, SECOND } from "../0_deps.ts";
-import { fromUnixTimestamp, getLogger, getRandomId, intFromBytes, type Logger, mod, sha1, toUnixTimestamp } from "../1_utilities.ts";
+import { drop, fromUnixTimestamp, getLogger, getRandomId, intFromBytes, type Logger, type MaybePromise, mod, sha1, toUnixTimestamp } from "../1_utilities.ts";
 import { Api, type message, Mtproto, serializeMessage, TLWriter, X } from "../2_tl.ts";
 import type { DC } from "../3_transport.ts";
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, SYSTEM_LANG_CODE, SYSTEM_VERSION, TEMPORARY_AUTH_KEY_TTL } from "../4_constants.ts";
@@ -56,9 +56,9 @@ export interface ClientEncryptedParams extends ClientPlainParams {
 }
 
 export interface ClientEncryptedHandlers {
-  onNewServerSalt?: (newServerSalt: bigint) => void;
-  onUpdate?: (update: Api.Updates | Api.Update) => void;
-  onDeserializationError?: () => void;
+  onNewServerSalt?: (newServerSalt: bigint) => MaybePromise<void>;
+  onUpdate?: (update: Api.Updates | Api.Update) => MaybePromise<void>;
+  onDeserializationError?: () => MaybePromise<void>;
 }
 
 export class ClientEncrypted extends ClientAbstract {
@@ -142,10 +142,10 @@ export class ClientEncrypted extends ClientAbstract {
     await super.connect();
 
     if (this.#isPerfectForwardSecrecyEnabled) {
+      this.#isAuthKeyBound = false;
       await this.#bindTemporaryAuthKey();
       this.#temporaryAuthKeyLoop.start();
     } else {
-      console.log("connecting right away");
       this.#isAuthKeyBound = true;
     }
   }
@@ -340,18 +340,18 @@ export class ClientEncrypted extends ClientAbstract {
       type = await Api.deserializeType(X, body);
     } catch (err) {
       this.#L.error("failed to deserialize update:", err);
-      this.handlers.onDeserializationError?.();
+      await this.handlers.onDeserializationError?.();
       return;
     }
     if (Api.isOfEnum("Update", type) || Api.isOfEnum("Updates", type)) {
-      this.handlers.onUpdate?.(type);
+      await this.handlers.onUpdate?.(type);
     } else {
       this.#L.warning("received unknown type:", repr(type));
     }
   }
 
   #onNewServerSalt(serverSalt: bigint) {
-    this.handlers.onNewServerSalt?.(serverSalt);
+    drop(this.handlers.onNewServerSalt?.(serverSalt));
   }
 
   async #onMessageFailed(msgId: bigint, error: unknown) {
@@ -367,8 +367,13 @@ export class ClientEncrypted extends ClientAbstract {
   }
 
   async #onRpcError(msgId: bigint, error: Mtproto.rpc_error) {
+    if (error.error_message === "AUTH_KEY_PERM_EMPTY") {
+      this.#L.debug("reconnecting with a new temporary auth key because of AUTH_KEY_PERM_EMPTY");
+      this.disconnect();
+      await this.connect();
+    }
+
     const request = this.#sentRequests.get(msgId);
-    console.log(error);
     this.#L.debug("received rpc_error with req_msg_id =", msgId, "for", request === undefined ? "unknown" : "known", "request");
     if (request) {
       this.#sentRequests.delete(msgId);
@@ -395,7 +400,7 @@ export class ClientEncrypted extends ClientAbstract {
       } catch (err) {
         sentRequest.promiseWithResolvers.reject(err);
         this.#L.error("failed to deserialize rpc_result body:", err);
-        this.handlers.onDeserializationError?.();
+        await this.handlers.onDeserializationError?.();
         return;
       } finally {
         this.#sentRequests.delete(msgId);

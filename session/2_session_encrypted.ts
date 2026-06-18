@@ -20,7 +20,7 @@
 
 import { assertEquals, concat, delay, ige256Decrypt, ige256Encrypt, initTgCrypto, LruCache, SECOND } from "../0_deps.ts";
 import { ConnectionError, TransportError } from "../0_errors.ts";
-import { drop, getLogger, getRandomId, gunzip, intFromBytes, intToBytes, type Logger, mod, sha1, sha256, toUnixTimestamp } from "../1_utilities.ts";
+import { drop, getLogger, getRandomId, gunzip, intFromBytes, intToBytes, type Logger, type MaybePromise, mod, sha1, sha256, toUnixTimestamp } from "../1_utilities.ts";
 import { deserializeMessage, type message, type msg_container, Mtproto, repr, serializeMessage, TLReader, X } from "../2_tl.ts";
 import type { DC } from "../3_transport.ts";
 import { AbortableLoop } from "../client/0_abortable_loop.ts";
@@ -40,13 +40,13 @@ type PendingMessage = { body: Uint8Array<ArrayBuffer>; promiseWithResolvers: Pro
 type PendingPing = { call: Mtproto.ping_delay_disconnect; promiseWithResolvers: PromiseWithResolvers<Mtproto.pong> };
 
 export interface Handlers {
-  onTransportError?: (transportError: TransportError) => void;
-  onUpdate?: (body: Uint8Array) => void;
-  onNewServerSalt?: (serverSalt: bigint) => void;
-  onMessageFailed?: (id: bigint, reason: unknown) => void;
-  onPong?: (pong: Mtproto.pong) => void;
-  onRpcError?: (id: bigint, error: Mtproto.rpc_error) => void;
-  onRpcResult?: (id: bigint, result: Uint8Array) => void;
+  onTransportError?: (transportError: TransportError) => MaybePromise<void>;
+  onUpdate?: (body: Uint8Array) => MaybePromise<void>;
+  onNewServerSalt?: (serverSalt: bigint) => MaybePromise<void>;
+  onMessageFailed?: (id: bigint, reason: unknown) => MaybePromise<void>;
+  onPong?: (pong: Mtproto.pong) => MaybePromise<void>;
+  onRpcError?: (id: bigint, error: Mtproto.rpc_error) => MaybePromise<void>;
+  onRpcResult?: (id: bigint, result: Uint8Array) => MaybePromise<void>;
 }
 
 export class SessionEncrypted extends Session implements Session {
@@ -180,12 +180,12 @@ export class SessionEncrypted extends Session implements Session {
     }
 
     // message was not sent by us
-    this.handlers.onMessageFailed?.(id, reason);
+    drop(this.handlers.onMessageFailed?.(id, reason));
   }
 
   #setServerSalt(newServerSalt: bigint) {
     this.state.serverSalt = newServerSalt;
-    this.handlers.onNewServerSalt?.(newServerSalt);
+    drop(this.handlers.onNewServerSalt?.(newServerSalt));
   }
 
   async send(body: Uint8Array<ArrayBuffer>): Promise<bigint> {
@@ -367,7 +367,7 @@ export class SessionEncrypted extends Session implements Session {
         this.#LreceiveLoop.debug("aborting as not connected");
         loop.abort();
       } else if (err instanceof TransportError) {
-        this.handlers.onTransportError?.(err);
+        await this.handlers.onTransportError?.(err);
       }
 
       return;
@@ -395,13 +395,13 @@ export class SessionEncrypted extends Session implements Session {
       id = reader.readInt32(false);
     }
     if (id === RPC_RESULT) {
-      this.#onRpcResult(msgId, reader.buffer, logger);
+      await this.#onRpcResult(msgId, reader.buffer, logger);
       return;
     }
     if (!Mtproto.schema.identifierToName[id]) {
       logger.debug("identified body as a non-MTProto constructor");
       reader.unreadInt32();
-      this.handlers.onUpdate?.(reader.buffer);
+      await this.handlers.onUpdate?.(reader.buffer);
       return;
     }
     let type: Mtproto.DeserializedType;
@@ -447,9 +447,9 @@ export class SessionEncrypted extends Session implements Session {
     if (id === RPC_ERROR) {
       logger.debug("received rpc_error from message", msgId);
       const error = await Mtproto.deserializeType("rpc_error", reader);
-      this.handlers.onRpcError?.(reqMsgId, error);
+      await this.handlers.onRpcError?.(reqMsgId, error);
     } else {
-      this.handlers.onRpcResult?.(reqMsgId, reader.buffer);
+      await this.handlers.onRpcResult?.(reqMsgId, reader.buffer);
     }
   }
 
@@ -504,7 +504,7 @@ export class SessionEncrypted extends Session implements Session {
       this.#pendingPings.delete(pong.msg_id);
     } else {
       // pong is not ours
-      this.handlers.onPong?.(pong);
+      drop(this.handlers.onPong?.(pong));
     }
   }
 

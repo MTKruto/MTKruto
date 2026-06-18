@@ -686,7 +686,11 @@ export class UpdateManager {
             }
             continue;
           } else {
-            throw err;
+            if (this.#c.isDisconnected()) {
+              return;
+            } else {
+              throw err;
+            }
           }
         }
         if (Api.is("updates.difference", difference) || Api.is("updates.differenceSlice", difference)) {
