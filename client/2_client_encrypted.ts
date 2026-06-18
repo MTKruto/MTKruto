@@ -188,6 +188,7 @@ export class ClientEncrypted extends ClientAbstract {
 
   override disconnect() {
     super.disconnect();
+    this.#temporaryAuthKeyLoop.abort();
     this.lastRequest = undefined;
   }
 
@@ -367,10 +368,12 @@ export class ClientEncrypted extends ClientAbstract {
   }
 
   async #onRpcError(msgId: bigint, error: Mtproto.rpc_error) {
-    if (error.error_message === "AUTH_KEY_PERM_EMPTY") {
-      this.#L.debug("reconnecting with a new temporary auth key because of AUTH_KEY_PERM_EMPTY");
+    let shouldResend = false;
+    if (error.error_message === "AUTH_KEY_PERM_EMPTY" || error.error_message === "ENCRYPTED_MESSAGE_INVALID") {
+      this.#L.debug("reconnecting with a new temporary auth key because of", error.error_message);
       this.disconnect();
       await this.connect();
+      shouldResend = true;
     }
 
     const request = this.#sentRequests.get(msgId);
@@ -380,6 +383,8 @@ export class ClientEncrypted extends ClientAbstract {
       const reason = constructTelegramError(error, request.call);
       if (reason instanceof ConnectionNotInited) {
         this.#isConnectionInited = false;
+        await this.#resend(request);
+      } else if (shouldResend) {
         await this.#resend(request);
       } else {
         request.promiseWithResolvers.reject(constructTelegramError(error, request.call));
