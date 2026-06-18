@@ -153,7 +153,7 @@ export class ClientEncrypted extends ClientAbstract {
   async #bindTemporaryAuthKey() {
     const nonce = getRandomId();
     const expires_at = toUnixTimestamp(new Date()) + TEMPORARY_AUTH_KEY_TTL;
-    this.#temporaryAuthKeyExpiresIn = fromUnixTimestamp(expires_at, true) - Date.now();
+    this.#temporaryAuthKeyExpiresIn = fromUnixTimestamp(expires_at).getTime() - Date.now();
     const object: Mtproto.bind_auth_key_inner = {
       _: "bind_auth_key_inner",
       perm_auth_key_id: this.#authKeyId,
