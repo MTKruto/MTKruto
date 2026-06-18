@@ -61,8 +61,11 @@ export function toUnixTimestamp(date: Date) {
   return Math.floor(date.getTime() / SECOND);
 }
 
-export function fromUnixTimestamp(date: number) {
-  return new Date(date * SECOND);
+export function fromUnixTimestamp(date: number, isNumber: true): number;
+export function fromUnixTimestamp(date: number): Date;
+export function fromUnixTimestamp(date: number, isNumber?: true) {
+  const number = date * SECOND;
+  return isNumber ? number : new Date(number);
 }
 
 export async function* iterateReadableStream(stream: ReadableStream) {

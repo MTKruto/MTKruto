@@ -51,9 +51,9 @@ export class ClientPlain extends ClientAbstract implements ClientAbstract {
     return await Mtproto.deserializeType(Mtproto.mustGetReturnType(function_._), body) as R;
   }
 
-  async createAuthKey(): Promise<[Uint8Array<ArrayBuffer>, bigint]> {
+  async createAuthKey(isTemporary: boolean): Promise<[Uint8Array<ArrayBuffer>, bigint]> {
     const nonce = getRandomInt(16);
-    LcreateAuthKey.debug("auth key creation started");
+    LcreateAuthKey.debug(`${isTemporary ? "temporary " : ""}auth key creation started`);
 
     let resPq: Mtproto.resPQ | null = null;
     for (let i = 0; i < 10; i++) {
@@ -102,16 +102,30 @@ export class ClientPlain extends ClientAbstract implements ClientAbstract {
     const serverNonce = resPq.server_nonce;
     const newNonce = getRandomInt(32);
     let encryptedData = await rsaPad(
-      Mtproto.serializeObject({
-        _: "p_q_inner_data_dc",
-        pq,
-        p,
-        q,
-        dc,
-        new_nonce: newNonce,
-        nonce,
-        server_nonce: serverNonce,
-      }),
+      Mtproto.serializeObject(
+        isTemporary
+          ? {
+            _: "p_q_inner_data_temp_dc",
+            pq,
+            p,
+            q,
+            dc,
+            new_nonce: newNonce,
+            nonce,
+            server_nonce: serverNonce,
+            expires_in: 60,
+          }
+          : {
+            _: "p_q_inner_data_dc",
+            pq,
+            p,
+            q,
+            dc,
+            new_nonce: newNonce,
+            nonce,
+            server_nonce: serverNonce,
+          },
+      ),
       publicKey,
     );
 

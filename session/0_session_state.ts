@@ -27,15 +27,20 @@ export class SessionState {
   #messageId = 0n;
 
   nextMessageId(): bigint {
+    return this.#messageId = this.previewNextMessageId();
+  }
+
+  previewNextMessageId(): bigint {
     const now = toUnixTimestamp(new Date()) + this.timeDifference;
     const nanoseconds = Math.floor((now - Math.floor(now)) * 1e9);
     const newMessageId = (BigInt(Math.floor(now)) << 32n) || (BigInt(nanoseconds) << 2n);
-    if (this.#messageId >= newMessageId) {
-      this.#messageId += 4n;
+    let messageId = this.#messageId;
+    if (messageId >= newMessageId) {
+      messageId += 4n;
     } else {
-      this.#messageId = newMessageId;
+      messageId = newMessageId;
     }
-    return this.#messageId;
+    return messageId;
   }
 
   nextSeqNo(contentRelated: boolean): number {

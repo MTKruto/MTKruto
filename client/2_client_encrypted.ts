@@ -18,14 +18,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { concat, delay, ige256Encrypt, MINUTE, SECOND } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { getLogger, type Logger } from "../1_utilities.ts";
-import { Api, Mtproto, X } from "../2_tl.ts";
+import { fromUnixTimestamp, getLogger, getRandomId, intFromBytes, type Logger, mod, sha1, toUnixTimestamp } from "../1_utilities.ts";
+import { Api, type message, Mtproto, serializeMessage, TLWriter, X } from "../2_tl.ts";
 import { ConnectionNotInited } from "../3_errors.ts";
 import type { DC } from "../3_transport.ts";
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, SYSTEM_LANG_CODE, SYSTEM_VERSION } from "../4_constants.ts";
 import { constructTelegramError } from "../4_errors.ts";
 import { SessionEncrypted, SessionError } from "../4_session.ts";
+import { AbortableLoop } from "./0_abortable_loop.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
 import { isMediaFunction, repr } from "./0_utilities.ts";
 import { ClientPlain, type ClientPlainParams } from "./1_client_plain.ts";
@@ -65,7 +67,13 @@ export class ClientEncrypted extends ClientAbstract {
   handlers: ClientEncryptedHandlers = {};
 
   #L: Logger;
-  #plain: ClientPlain;
+  #dc: DC;
+  #params: ClientEncryptedParams | undefined;
+
+  #authKey = new Uint8Array();
+  #authKeyId = 0n;
+  #temporaryAuthKey = new Uint8Array();
+  #temporaryAuthKeyExpiresIn = 0;
   session: SessionEncrypted;
   #sentRequests = new Map<bigint, SentRequest>();
 
@@ -77,12 +85,14 @@ export class ClientEncrypted extends ClientAbstract {
   #systemLangCode: string;
   #systemVersion: string;
   #disableUpdates: boolean;
+  #isAuthKeyBound = false;
 
   constructor(dc: DC, apiId: number, params?: ClientEncryptedParams) {
     super();
     this.#L = getLogger("ClientEncrypted").client(id++);
 
-    this.#plain = new ClientPlain(dc, params);
+    this.#dc = dc;
+    this.#params = params;
     this.session = new SessionEncrypted(dc, params);
     this.session.handlers.onUpdate = this.#onUpdate.bind(this);
     this.session.handlers.onNewServerSalt = this.#onNewServerSalt.bind(this);
@@ -101,33 +111,113 @@ export class ClientEncrypted extends ClientAbstract {
     this.#disableUpdates = params?.disableUpdates ?? false;
   }
 
+  async #encryptMessage(message: message) {
+    const payloadWriter = new TLWriter();
+
+    payloadWriter.writeInt64(getRandomId());
+    payloadWriter.writeInt64(getRandomId());
+    payloadWriter.write(await serializeMessage(message));
+
+    let payload = payloadWriter.buffer;
+
+    const payloadSha1 = await sha1(payload);
+    const messageKey = payloadSha1.subarray(4, 20);
+
+    payloadWriter.write(new Uint8Array(mod(-payload.length, 16)));
+    payload = payloadWriter.buffer;
+
+    const sha1A = await sha1(concat([messageKey, this.#authKey.subarray(0, 32)]));
+    const sha1B = await sha1(concat([this.#authKey.slice(32, 48), messageKey, this.#authKey.slice(48, 64)]));
+    const sha1C = await sha1(concat([this.#authKey.slice(64, 96), messageKey]));
+    const sha1D = await sha1(concat([messageKey, this.#authKey.slice(96, 128)]));
+
+    const encryptionKey = concat([sha1A.slice(0, 8), sha1B.slice(8, 20), sha1C.slice(4, 16)]);
+    const encryptionIv = concat([sha1A.slice(8, 20), sha1B.slice(0, 8), sha1C.slice(16, 20), sha1D.slice(0, 8)]);
+
+    const encrypted = ige256Encrypt(payload, encryptionKey, encryptionIv);
+
+    const messageWriter = new TLWriter();
+    messageWriter.writeInt64(this.#authKeyId);
+    messageWriter.write(messageKey);
+    messageWriter.write(encrypted);
+    return messageWriter.buffer;
+  }
+
   override async connect() {
     if (!this.authKey.byteLength) {
       await this.#createAuthKey();
+    } else {
+      this.#L.debug("creating temporary auth key");
+      await this.#createAuthKeyInner(true);
     }
     await super.connect();
+    await this.#bindTemporaryAuthKey();
+    this.#temporaryAuthKeyLoop.start();
   }
+
+  async #bindTemporaryAuthKey() {
+    const nonce = getRandomId();
+    const expires_at = toUnixTimestamp(new Date(Date.now() + MINUTE));
+    this.#temporaryAuthKeyExpiresIn = fromUnixTimestamp(expires_at, true) - Date.now();
+    const object: Mtproto.bind_auth_key_inner = {
+      _: "bind_auth_key_inner",
+      perm_auth_key_id: this.#authKeyId,
+      nonce,
+      expires_at,
+      temp_auth_key_id: this.session.authKeyId,
+      temp_session_id: this.session.id,
+    };
+    const encrypted_message = await this.#encryptMessage({
+      _: "message",
+      seqno: 0,
+      msg_id: this.session.previewNextMessageId(),
+      body: Mtproto.serializeObject(object),
+    });
+    await this.invoke({
+      _: "auth.bindTempAuthKey",
+      perm_auth_key_id: this.#authKeyId,
+      nonce,
+      encrypted_message,
+      expires_at,
+    }), this.#isAuthKeyBound = true;
+  }
+
+  #temporaryAuthKeyLoop = new AbortableLoop(async (_loop, signal) => {
+    await delay(this.#temporaryAuthKeyExpiresIn - 2 * SECOND, { signal });
+    this.#L.debug("reconnecting with a new temporary auth key");
+    this.disconnect();
+    await this.connect();
+  }, (err) => {
+    this.#L.error(err);
+  });
 
   override disconnect() {
     super.disconnect();
     this.lastRequest = undefined;
   }
 
-  #createAuthKeyPromise?: Promise<void>;
+  #createAuthKeyPromise?: Promise<unknown>;
   #createAuthKey() {
-    return this.#createAuthKeyPromise ??= this.#createAuthKeyInner().finally(() => {
+    return this.#createAuthKeyPromise ??= Promise.all([this.#createAuthKeyInner(false), this.#createAuthKeyInner(true)]).finally(() => {
       this.#createAuthKeyPromise = undefined;
     });
   }
-  async #createAuthKeyInner() {
+  async #createAuthKeyInner(isTemporary: boolean) {
     let lastErr: unknown;
     let errored = false;
+    const plain = new ClientPlain(this.#dc, this.#params);
     for (let i = 0; i < ClientEncrypted.#AUTH_KEY_CREATION_MAX_TRIES; ++i) {
       try {
-        await this.#plain.connect();
-        const [authKey, serverSalt] = await this.#plain.createAuthKey();
-        await this.setAuthKey(authKey);
-        this.serverSalt = serverSalt;
+        await plain.connect();
+        const [authKey, serverSalt] = await plain.createAuthKey(isTemporary);
+        if (isTemporary) {
+          this.#temporaryAuthKey = authKey;
+          await this.session.setAuthKey(this.#temporaryAuthKey);
+          this.session.serverSalt = serverSalt;
+          this.#isConnectionInited = false;
+        } else {
+          await this.setAuthKey(authKey);
+        }
         errored = false;
         break;
       } catch (err) {
@@ -138,7 +228,7 @@ export class ClientEncrypted extends ClientAbstract {
         }
         this.#L.error("failed to create auth key:", err);
       } finally {
-        this.#plain.disconnect();
+        plain.disconnect();
       }
     }
     if (errored) {
@@ -147,14 +237,16 @@ export class ClientEncrypted extends ClientAbstract {
   }
 
   get authKey(): Uint8Array<ArrayBuffer> {
-    return this.session.authKey;
+    return this.#authKey;
   }
 
   async setAuthKey(authKey: Uint8Array<ArrayBuffer>) {
-    await this.session.setAuthKey(authKey);
+    const hash = await sha1(authKey);
+    this.#authKeyId = intFromBytes(hash.slice(-8));
+    this.#authKey = authKey;
   }
 
-  #connectionInited = false;
+  #isConnectionInited = false;
   lastRequest?: Date;
   async #send(function_: Api.AnyFunction | Mtproto.ping) {
     this.lastRequest = new Date();
@@ -162,10 +254,10 @@ export class ClientEncrypted extends ClientAbstract {
     if (Mtproto.is("ping", function_)) {
       body = Mtproto.serializeObject(function_);
     } else {
-      if (this.#disableUpdates && !isMediaFunction(function_)) {
+      if (this.#isAuthKeyBound && this.#disableUpdates && !isMediaFunction(function_)) {
         function_ = { _: "invokeWithoutUpdates", query: function_ };
       }
-      if (!this.#connectionInited) {
+      if (this.#isAuthKeyBound && !this.#isConnectionInited) {
         if (!this.#apiId) {
           throw new InputError("apiId not set");
         }
@@ -266,7 +358,7 @@ export class ClientEncrypted extends ClientAbstract {
       this.#sentRequests.delete(msgId);
       const reason = constructTelegramError(error, request.call);
       if (reason instanceof ConnectionNotInited) {
-        this.#connectionInited = false;
+        this.#isConnectionInited = false;
         await this.#resend(request);
       } else {
         request.promiseWithResolvers.reject(constructTelegramError(error, request.call));
@@ -293,8 +385,8 @@ export class ClientEncrypted extends ClientAbstract {
         this.#sentRequests.delete(msgId);
       }
     }
-    if (!this.#connectionInited) {
-      this.#connectionInited = true;
+    if (!this.#isConnectionInited) {
+      this.#isConnectionInited = true;
     }
   }
 
