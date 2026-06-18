@@ -115,6 +115,8 @@ export class SessionEncrypted extends Session implements Session {
     super.disconnect();
     this.state.reset();
     this.#id = getRandomId();
+    this.#receiveLoop.abort();
+    this.#sendLoop.abort();
     this.#pingLoop.abort();
     this.#awakeSendLoop?.();
     this.#rejectAllPending(new ConnectionError("The connection was disconnected."));
