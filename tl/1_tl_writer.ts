@@ -76,13 +76,13 @@ export class TLWriter {
 
   writeBytes(bytes: Uint8Array): typeof this {
     let padding: number;
-    if (bytes.length > 253) {
+    if (bytes.byteLength > 253) {
       this.write(new Uint8Array([254]));
-      this.writeInt24(bytes.length);
-      padding = bytes.length % 4;
+      this.writeInt24(bytes.byteLength);
+      padding = bytes.byteLength % 4;
     } else {
-      this.write(new Uint8Array([bytes.length]));
-      padding = (bytes.length + 1) % 4;
+      this.write(new Uint8Array([bytes.byteLength]));
+      padding = (bytes.byteLength + 1) % 4;
     }
     this.write(bytes);
     if (padding > 0) {

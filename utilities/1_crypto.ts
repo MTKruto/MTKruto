@@ -50,23 +50,23 @@ export class CTR {
   async #call(data: Uint8Array<ArrayBuffer>) {
     let header: Uint8Array<ArrayBuffer> | undefined;
     if (this.#bytesUntilNextBlock) {
-      const headerLength = Math.min(data.length, this.#iv.length - this.#bytesUntilNextBlock);
+      const headerLength = Math.min(data.byteLength, this.#iv.byteLength - this.#bytesUntilNextBlock);
       const encrypted = await this.#encrypt(concat([new Uint8Array(this.#bytesUntilNextBlock), data.subarray(0, headerLength)]));
       header = encrypted.subarray(this.#bytesUntilNextBlock);
       data = data.subarray(headerLength);
-      if (encrypted.length === this.#iv.length) {
+      if (encrypted.byteLength === this.#iv.byteLength) {
         this.#increaseIv(1);
         this.#bytesUntilNextBlock = 0;
       } else {
         this.#bytesUntilNextBlock += headerLength;
       }
     }
-    if (!data.length && header) {
+    if (!data.byteLength && header) {
       return header;
     }
     const encrypted = await this.#encrypt(data);
-    this.#bytesUntilNextBlock = encrypted.length % this.#iv.length;
-    this.#increaseIv((encrypted.length - this.#bytesUntilNextBlock) / this.#iv.length);
+    this.#bytesUntilNextBlock = encrypted.byteLength % this.#iv.byteLength;
+    this.#increaseIv((encrypted.byteLength - this.#bytesUntilNextBlock) / this.#iv.byteLength);
     return header ? concat([header, encrypted]) : encrypted;
   }
 
@@ -76,7 +76,7 @@ export class CTR {
         {
           name: "AES-CTR",
           counter: new Uint8Array(this.#iv),
-          length: this.#iv.length * 8,
+          length: this.#iv.byteLength * 8,
         },
         this.#key,
         data,
@@ -88,7 +88,7 @@ export class CTR {
     if (amount < 1) {
       return;
     }
-    this.#iv = intToBytes(intFromBytes(this.#iv, { byteOrder: "big", isSigned: false }) + BigInt(amount), this.#iv.length, { byteOrder: "big", isSigned: false });
+    this.#iv = intToBytes(intFromBytes(this.#iv, { byteOrder: "big", isSigned: false }) + BigInt(amount), this.#iv.byteLength, { byteOrder: "big", isSigned: false });
   }
 }
 

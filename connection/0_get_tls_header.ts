@@ -58,11 +58,11 @@ const ops: Op[] = [
 function getGrease() {
   const res = crypto.getRandomValues(new Uint8Array(7));
 
-  for (let i = 0; i < res.length; ++i) {
+  for (let i = 0; i < res.byteLength; ++i) {
     res[i] = (res[i] & 0xF0) + 0x0A;
   }
 
-  for (let i = 1; i < res.length; i += 2) {
+  for (let i = 1; i < res.byteLength; i += 2) {
     if (res[i] === res[i - 1]) {
       res[i] ^= 0x10;
     }
@@ -150,7 +150,7 @@ function serializeOps(ops: Op[], domain: Uint8Array) {
         break;
       }
       case "beginScope":
-        scopes.push(buffer.length);
+        scopes.push(buffer.byteLength);
         buffer = concat([buffer, new Uint8Array([0, 0])]);
         break;
       case "endScope": {
@@ -158,13 +158,13 @@ function serializeOps(ops: Op[], domain: Uint8Array) {
         if (beginOffset === undefined) {
           throw new TypeError("Invalid endScope");
         }
-        const endOffset = buffer.length;
+        const endOffset = buffer.byteLength;
         const size = endOffset - beginOffset - 2;
         new DataView(buffer.buffer).setUint16(beginOffset, size);
         break;
       }
       case "padding": {
-        const size = 513 - buffer.length;
+        const size = 513 - buffer.byteLength;
         if (size > 0) {
           serializeOp({ type: "string", data: new Uint8Array([0x00, 0x15]) });
           serializeOp({ type: "beginScope" });

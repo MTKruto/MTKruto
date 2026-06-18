@@ -48,8 +48,8 @@ export function transportProviderMtproxy(urlOrHostname: string, port?: number, s
     }
   }
 
-  return ({ dc, isCdn }) => {
-    const dcId = getDcId(dc, isCdn);
+  return ({ dc, isMedia }) => {
+    const dcId = getDcId(dc, isMedia);
     const connection = secret!.byteLength <= 17 ? new ConnectionTCP(hostname, port!) : new ConnectionTLS(hostname, port!, secret!);
     const transport = new TransportIntermediate(connection, { isPadded: true, isObfuscated: true, secret, dcId });
     return { connection, transport, dcId };

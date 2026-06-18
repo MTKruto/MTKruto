@@ -81,7 +81,7 @@ Deno.test("pad", () => {
     const bigint = 1n;
     const expected = concat([new Uint8Array(255), new Uint8Array([1])]);
     const result = pad(bigint);
-    assertEquals(result.length, expectedLength);
+    assertEquals(result.byteLength, expectedLength);
     assertEquals(result, expected);
   }
 
@@ -92,9 +92,9 @@ Deno.test("pad", () => {
       154, 209, 128, 209, 131,
       209, 130, 208, 190
     ]);
-    const expected = concat([new Uint8Array(256 - buffer.length), buffer]);
+    const expected = concat([new Uint8Array(256 - buffer.byteLength), buffer]);
     const result = pad(buffer);
-    assertEquals(result.length, expectedLength);
+    assertEquals(result.byteLength, expectedLength);
     assertEquals(result, expected);
   }
 });

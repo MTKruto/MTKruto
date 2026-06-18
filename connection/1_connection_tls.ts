@@ -63,7 +63,7 @@ export class ConnectionTLS implements Connection {
   async #read(array: Uint8Array) {
     let offset = 0;
     try {
-      while (offset < array.length) {
+      while (offset < array.byteLength) {
         const n = await this.#connection!.read(array.subarray(offset));
         if (n === null) {
           this.#canRead = false;

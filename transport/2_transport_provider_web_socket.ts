@@ -33,12 +33,12 @@ const dcToNameMap: Record<DC, string> = {
   "5": "flora",
 };
 export const transportProviderWebSocket = (params?: { wss?: boolean }): TransportProvider => {
-  return ({ dc, isCdn }) => {
+  return ({ dc, isMedia }) => {
     params ??= {};
     params.wss ??= typeof location !== "undefined" && location.protocol === "http:" && location.hostname !== "localhost" ? false : true;
-    const url = `${params.wss ? "wss" : "ws"}://${dcToNameMap[dc]}${isCdn ? "-1" : ""}.web.telegram.org/${dc.endsWith("-test") ? "apiws_test" : "apiws"}`;
+    const url = `${params.wss ? "wss" : "ws"}://${dcToNameMap[dc]}${isMedia ? "-1" : ""}.web.telegram.org/${dc.endsWith("-test") ? "apiws_test" : "apiws"}`;
     const connection = new ConnectionWebSocket(url);
-    const dcId = getDcId(dc, isCdn);
+    const dcId = getDcId(dc, isMedia);
     const transport = new TransportIntermediate(connection, { isObfuscated: true, dcId });
     return { connection, transport, dcId };
   };

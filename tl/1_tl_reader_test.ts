@@ -133,7 +133,7 @@ Deno.test("TLReader", async (t) => {
     0x6F, 0x4D, 0x54, 0x4B, 0x72, 0x75, 0x74, 0x6F,
     0x4D, 0x54, 0x4B, 0x72, 0x75, 0x74, 0x6F, 0x00 // string with more than 254 bytes
   ]);
-  const bufferLength = buffer.length;
+  const bufferLength = buffer.byteLength;
   const reader = new TLReader(buffer);
   let read = 0;
 
@@ -142,15 +142,15 @@ Deno.test("TLReader", async (t) => {
 
     await t.step("buffer", () => {
       read++;
-      assertEquals(reader.buffer.length, bufferLength - read);
+      assertEquals(reader.buffer.byteLength, bufferLength - read);
       assertEquals(reader.buffer, buffer.subarray(read));
     });
   });
 
   await t.step("unread", () => {
-    const previousLength = reader.buffer.length;
+    const previousLength = reader.buffer.byteLength;
     reader.unread(1);
-    assertEquals(reader.buffer.length, previousLength + 1);
+    assertEquals(reader.buffer.byteLength, previousLength + 1);
     reader.read(1);
   });
 
@@ -160,7 +160,7 @@ Deno.test("TLReader", async (t) => {
 
     await t.step("buffer", () => {
       read += 3 * 2;
-      assertEquals(reader.buffer.length, buffer.length - read);
+      assertEquals(reader.buffer.byteLength, buffer.byteLength - read);
       assertEquals(reader.buffer, buffer.subarray(read));
     });
   });
@@ -171,15 +171,15 @@ Deno.test("TLReader", async (t) => {
 
     await t.step("buffer", () => {
       read += 4 * 2;
-      assertEquals(reader.buffer.length, buffer.length - read);
+      assertEquals(reader.buffer.byteLength, buffer.byteLength - read);
       assertEquals(reader.buffer, buffer.subarray(read));
     });
   });
 
   await t.step("unreadInt32", () => {
-    const previousLength = reader.buffer.length;
+    const previousLength = reader.buffer.byteLength;
     reader.unreadInt32();
-    assertEquals(reader.buffer.length, previousLength + 4);
+    assertEquals(reader.buffer.byteLength, previousLength + 4);
     assertEquals(reader.buffer.slice(0, 4), new Uint8Array([0xFF, 0xFF, 0xFE, 0xFF]));
     reader.read(4);
   });
@@ -190,7 +190,7 @@ Deno.test("TLReader", async (t) => {
 
     await t.step("buffer", () => {
       read += 8 * 2;
-      assertEquals(reader.buffer.length, buffer.length - read);
+      assertEquals(reader.buffer.byteLength, buffer.byteLength - read);
       assertEquals(reader.buffer, buffer.subarray(read));
     });
   });
@@ -200,7 +200,7 @@ Deno.test("TLReader", async (t) => {
 
     await t.step("buffer", () => {
       read += 8;
-      assertEquals(reader.buffer.length, buffer.length - read);
+      assertEquals(reader.buffer.byteLength, buffer.byteLength - read);
       assertEquals(reader.buffer, buffer.subarray(read));
     });
   });
@@ -211,7 +211,7 @@ Deno.test("TLReader", async (t) => {
 
     await t.step("buffer", () => {
       read += 16 * 2;
-      assertEquals(reader.buffer.length, buffer.length - read);
+      assertEquals(reader.buffer.byteLength, buffer.byteLength - read);
       assertEquals(reader.buffer, buffer.subarray(read));
     });
   });
@@ -228,7 +228,7 @@ Deno.test("TLReader", async (t) => {
 
     await t.step("buffer", () => {
       read += 32 * 2;
-      assertEquals(reader.buffer.length, buffer.length - read);
+      assertEquals(reader.buffer.byteLength, buffer.byteLength - read);
       assertEquals(reader.buffer, buffer.subarray(read));
     });
   });
@@ -276,7 +276,7 @@ Deno.test("TLReader", async (t) => {
 
     await t.step("buffer", () => {
       read += 4 + (1 + 3 + 255 + 1);
-      assertEquals(reader.buffer.length, buffer.length - read);
+      assertEquals(reader.buffer.byteLength, buffer.byteLength - read);
       assertEquals(reader.buffer, buffer.subarray(read));
     });
   });
@@ -287,7 +287,7 @@ Deno.test("TLReader", async (t) => {
 
     await t.step("buffer", () => {
       read += 4 + (1 + 3 + 259 + 1);
-      assertEquals(reader.buffer.length, buffer.length - read);
+      assertEquals(reader.buffer.byteLength, buffer.byteLength - read);
       assertEquals(reader.buffer, buffer.subarray(read));
     });
   });
@@ -569,12 +569,12 @@ Deno.test("primitives", async (t) => {
   });
 
   await t.step("true", async () => {
-    const lengthBefore = reader.buffer.length;
+    const lengthBefore = reader.buffer.byteLength;
     for (let i = 0; i < 10; ++i) {
       const deserialized = await reader.readType("true", emptySchema);
       assertEquals(deserialized, true);
     }
-    assertEquals(reader.buffer.length, lengthBefore);
+    assertEquals(reader.buffer.byteLength, lengthBefore);
   });
 
   await t.step("int", async () => {

@@ -31,33 +31,33 @@ export class NetworkStatisticsManager {
   }
 
   async getNetworkStatistics() {
-    const [messagesRead, messagesWrite, cdnRead, cdnWrite] = await Promise.all([
+    const [messagesRead, messagesWrite, mediaRead, mediaWrite] = await Promise.all([
       this.#c.storage.get<number>(["netstat_messages_read"]),
       this.#c.storage.get<number>(["netstat_messages_write"]),
-      this.#c.storage.get<number>(["netstat_cdn_read"]),
-      this.#c.storage.get<number>(["netstat_cdn_write"]),
+      this.#c.storage.get<number>(["netstat_media_read"]),
+      this.#c.storage.get<number>(["netstat_media_write"]),
     ]);
     const messages = {
       sent: Number(messagesWrite || 0),
       received: Number(messagesRead || 0),
     };
-    const cdn = {
-      sent: Number(cdnWrite || 0),
-      received: Number(cdnRead || 0),
+    const media = {
+      sent: Number(mediaWrite || 0),
+      received: Number(mediaRead || 0),
     };
-    return { messages, cdn };
+    return { messages, media };
   }
 
   #pendingWrites: Record<string, number> = {};
-  getTransportReadWriteCallback(isCcdn: boolean) {
+  getTransportReadWriteCallback(isMedia: boolean) {
     return {
       read: (count: number) => {
-        const key = isCcdn ? "netstat_cdn_read" : "netstat_messages_read";
+        const key = isMedia ? "netstat_media_read" : "netstat_messages_read";
         this.#pendingWrites[key] = (this.#pendingWrites[key] ?? 0) + count;
         this.#write();
       },
       write: (count: number) => {
-        const key = isCcdn ? "netstat_cdn_write" : "netstat_messages_write";
+        const key = isMedia ? "netstat_media_write" : "netstat_messages_write";
         this.#pendingWrites[key] = (this.#pendingWrites[key] ?? 0) + count;
         this.#write();
       },

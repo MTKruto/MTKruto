@@ -293,7 +293,7 @@ function hasFileReference(fileType: FileType) {
 
 export function deserializeFileId(fileId: string): FileId {
   const reader = new TLReader(rleDecode(base64DecodeUrlSafe(fileId)));
-  if (reader.buffer[reader.buffer.length - 1] !== PERSISTENT_ID_VERSION) {
+  if (reader.buffer[reader.buffer.byteLength - 1] !== PERSISTENT_ID_VERSION) {
     throw new InputError("Unsupported file ID format");
   }
   const originalType = reader.readInt32() as FileType;

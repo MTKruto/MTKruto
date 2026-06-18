@@ -96,7 +96,7 @@ export function pad(bigint: number | bigint | Uint8Array) {
   if (typeof bigint === "bigint") {
     return intToBytes(bigint, 256, { byteOrder: "big", isSigned: false });
   } else {
-    return concat([new Uint8Array(256 - bigint.length), bigint]);
+    return concat([new Uint8Array(256 - bigint.byteLength), bigint]);
   }
 }
 

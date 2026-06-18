@@ -69,7 +69,7 @@ export class TransportAbridged extends Transport implements Transport {
   }
 
   async send(buffer: Uint8Array) {
-    const bufferLength = buffer.length / 4;
+    const bufferLength = buffer.byteLength / 4;
 
     const header = new Uint8Array([bufferLength >= 0x7F ? 0x7F : bufferLength]);
     const length = bufferLength >= 0x7F ? intToBytes(bufferLength, 3, { isSigned: false }) : new Uint8Array();

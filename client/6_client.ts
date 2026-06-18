@@ -371,7 +371,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     client.onConnectionStateChange = this.#onConnectionStateChange.bind(this);
   }
 
-  #newClient(dc: DC, main: boolean, isCdn: boolean) {
+  #newClient(dc: DC, main: boolean, isMedia: boolean) {
     const client = new ClientEncrypted(dc, this.#apiId, {
       appVersion: this.appVersion,
       deviceModel: this.deviceModel,
@@ -380,11 +380,11 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       systemLangCode: this.systemLangCode,
       systemVersion: this.systemVersion,
       transportProvider: this.#transportProvider,
-      isCdn: isCdn,
-      disableUpdates: !main || isCdn,
+      isMedia,
+      disableUpdates: !main || isMedia,
       publicKeys: this.#publicKeys,
     });
-    client.connectionCallback = this.#networkStatisticsManager.getTransportReadWriteCallback(isCdn);
+    client.connectionCallback = this.#networkStatisticsManager.getTransportReadWriteCallback(isMedia);
     return client;
   }
 
@@ -491,7 +491,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
 
   async [handleMigrationError](err: Migrate) {
     let newDc = String(err.dc);
-    if (Math.abs(getDcId(this.#client!.dc, this.#client!.isCdn)) >= 10_000) {
+    if (Math.abs(getDcId(this.#client!.dc, this.#client!.isMedia)) >= 10_000) {
       newDc += "-test";
     }
     this.disconnect();
@@ -810,7 +810,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       }
     }
     const client = pool.nextClient();
-    if (client.authKey.length) {
+    if (client.authKey.byteLength) {
       return client;
     }
     await this.#setupClient(client);
@@ -832,7 +832,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       }
     }
     const client = pool.nextClient();
-    if (client.authKey.length) {
+    if (client.authKey.byteLength) {
       return client;
     }
     await this.#setupClient(client);
@@ -840,7 +840,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   async #setupClient(client: ClientEncrypted) {
-    const storage = client.dc === this.#client!.dc ? this.storage : new StorageOperations(this.storage.provider.branch(client.dc + (client.isCdn ? "_cdn" : "")));
+    const storage = client.dc === this.#client!.dc ? this.storage : new StorageOperations(this.storage.provider.branch(client.dc + (client.isMedia ? "_media" : "")));
     await storage.initialize();
     const auth = storage.auth.mustGet();
     const serverSalt = await storage.getServerSalt();
@@ -864,7 +864,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   async #importAuthorization(client: ClientEncrypted) {
-    if (this.#client!.dc === client.dc && this.#client!.isCdn === client.isCdn) {
+    if (this.#client!.dc === client.dc && this.#client!.isMedia === client.isMedia) {
       const auth = this.storage.auth.mustGet();
       const serverSalt = await this.storage.getServerSalt();
       if (auth.authKey !== null) {
@@ -875,7 +875,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       }
       return;
     }
-    const exportedAuthorization = await this.#client!.invoke({ _: "auth.exportAuthorization", dc_id: getDcId(client.dc, client.isCdn) });
+    const exportedAuthorization = await this.#client!.invoke({ _: "auth.exportAuthorization", dc_id: getDcId(client.dc, client.isMedia) });
     await client.invoke({ ...exportedAuthorization, _: "auth.importAuthorization" });
   }
 

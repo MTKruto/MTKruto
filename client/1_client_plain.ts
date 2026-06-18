@@ -97,7 +97,7 @@ export class ClientPlain extends ClientAbstract implements ClientAbstract {
       throw new Error("No corresponding public key found");
     }
 
-    const dc = getDcId(this.dc, this.isCdn);
+    const dc = getDcId(this.dc, this.isMedia);
     const pq = resPq.pq;
     const serverNonce = resPq.server_nonce;
     const newNonce = getRandomInt(32);
@@ -152,7 +152,7 @@ export class ClientPlain extends ClientAbstract implements ClientAbstract {
 
     let dataWithHash = concat([await sha1(data), data]);
 
-    while (dataWithHash.length % 16 !== 0) {
+    while (dataWithHash.byteLength % 16 !== 0) {
       dataWithHash = concat([dataWithHash, new Uint8Array(1)]);
     }
 

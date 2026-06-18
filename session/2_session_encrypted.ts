@@ -193,7 +193,7 @@ export class SessionEncrypted extends Session implements Session {
   async #receive() {
     this.#assertNotDisconnected();
     const buffer = await this.transport.transport.receive();
-    if (buffer.length === 4) {
+    if (buffer.byteLength === 4) {
       const int = intFromBytes(buffer);
       throw new TransportError(Number(int));
     }
@@ -242,8 +242,8 @@ export class SessionEncrypted extends Session implements Session {
     const messageKey_ = reader.readInt128();
     const messageKey = intToBytes(messageKey_, 16);
 
-    if (reader.buffer.length % 16 !== 0) {
-      reader = new TLReader(reader.buffer.subarray(0, -(reader.buffer.length % 16)));
+    if (reader.buffer.byteLength % 16 !== 0) {
+      reader = new TLReader(reader.buffer.subarray(0, -(reader.buffer.byteLength % 16)));
     }
 
     const a = await sha256(concat([messageKey, this.#authKey.subarray(8, 44)]));
@@ -375,7 +375,7 @@ export class SessionEncrypted extends Session implements Session {
 
   //// RECEIVE LOOP HANDLERS ////
   async #onMessage(msgId: bigint, body: Uint8Array, containerId: bigint | null) {
-    this.#LreceiveLoop.debug("received message with ID", msgId, "and size", body.length, "inside", ...(containerId === null ? ["no container"] : ["container", containerId]));
+    this.#LreceiveLoop.debug("received message with ID", msgId, "and size", body.byteLength, "inside", ...(containerId === null ? ["no container"] : ["container", containerId]));
     const logger = this.#LreceiveLoop.branch(msgId + "");
     let reader = new TLReader(body);
     let id = reader.readInt32(false);

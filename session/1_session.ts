@@ -33,13 +33,13 @@ const defaultTransportProvider = typeof Deno === "undefined" ? transportProvider
 export interface SessionParams {
   /** The transport provider to use. Defaults to `transportProviderWebsocket` in browsers and `transportProviderTcp` in other runtimes. */
   transportProvider?: TransportProvider;
-  /** Whether the connection is with a CDN server. Defaults to false. */
-  isCdn?: boolean;
+  /** Whether the connection is with a media server. Defaults to false. */
+  isMedia?: boolean;
 }
 
 export abstract class Session {
   #dc: DC;
-  #isCdn: boolean;
+  #isMedia: boolean;
   protected state: SessionState = new SessionState();
   protected transport: ReturnType<TransportProvider>;
   #lastConnect?: Date;
@@ -49,10 +49,10 @@ export abstract class Session {
 
   constructor(dc: DC, params?: SessionParams) {
     this.#dc = dc;
-    this.#isCdn = params?.isCdn ?? false;
+    this.#isMedia = params?.isMedia ?? false;
 
     const transportProvider = params?.transportProvider ?? defaultTransportProvider();
-    this.transport = transportProvider({ dc: this.#dc, isCdn: this.#isCdn });
+    this.transport = transportProvider({ dc: this.#dc, isMedia: this.#isMedia });
     this.transport.connection.stateChangeHandler = (connected) => {
       setTimeout(() => {
         drop(this.#stateChangeHandler(connected));
@@ -73,8 +73,8 @@ export abstract class Session {
     return this.#dc;
   }
 
-  get isCdn(): boolean {
-    return this.#isCdn;
+  get isMedia(): boolean {
+    return this.#isMedia;
   }
 
   set serverSalt(serverSalt: bigint) {

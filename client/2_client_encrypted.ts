@@ -27,7 +27,7 @@ import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, SYSTEM_LANG_CODE, SYST
 import { constructTelegramError } from "../4_errors.ts";
 import { SessionEncrypted, SessionError } from "../4_session.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
-import { isCdnFunction, repr } from "./0_utilities.ts";
+import { isMediaFunction, repr } from "./0_utilities.ts";
 import { ClientPlain, type ClientPlainParams } from "./1_client_plain.ts";
 
 // global ClientEncrypted ID counter for logs
@@ -102,7 +102,7 @@ export class ClientEncrypted extends ClientAbstract {
   }
 
   override async connect() {
-    if (!this.authKey.length) {
+    if (!this.authKey.byteLength) {
       await this.#createAuthKey();
     }
     await super.connect();
@@ -162,7 +162,7 @@ export class ClientEncrypted extends ClientAbstract {
     if (Mtproto.is("ping", function_)) {
       body = Mtproto.serializeObject(function_);
     } else {
-      if (this.#disableUpdates && !isCdnFunction(function_)) {
+      if (this.#disableUpdates && !isMediaFunction(function_)) {
         function_ = { _: "invokeWithoutUpdates", query: function_ };
       }
       if (!this.#connectionInited) {

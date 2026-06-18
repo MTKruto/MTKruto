@@ -29,8 +29,8 @@ export abstract class ClientAbstract {
     return this.session.dc;
   }
 
-  get isCdn(): boolean {
-    return this.session.isCdn;
+  get isMedia(): boolean {
+    return this.session.isMedia;
   }
 
   set serverSalt(serverSalt: bigint) {

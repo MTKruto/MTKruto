@@ -208,10 +208,10 @@ export class ConnectionSocks5 implements Connection {
     const unlock = await this.#rMutex.lock();
     try {
       this.#assertConnected();
-      if (this.#buffer.length < p.length) {
-        await new Promise<void>((resolve, reject) => this.#nextResolve = [p.length, { resolve, reject }]);
+      if (this.#buffer.length < p.byteLength) {
+        await new Promise<void>((resolve, reject) => this.#nextResolve = [p.byteLength, { resolve, reject }]);
       }
-      p.set(this.#buffer.splice(0, p.length));
+      p.set(this.#buffer.splice(0, p.byteLength));
     } finally {
       unlock();
     }

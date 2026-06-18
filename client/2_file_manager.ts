@@ -77,7 +77,7 @@ export class FileManager {
     const mustTrackProgress = params?.progressId !== undefined;
     const fileId = params?.progressId !== undefined ? BigInt(params.progressId) : getRandomId();
 
-    const isBig = contents instanceof Uint8Array ? contents.length > FileManager.#BIG_FILE_THRESHOLD : true;
+    const isBig = contents instanceof Uint8Array ? contents.byteLength > FileManager.#BIG_FILE_THRESHOLD : true;
 
     const whatIsUploaded = contents instanceof Uint8Array ? (isBig ? "big file" : "file") + " of size " + size : "stream";
     this.#Lupload.debug("uploading " + whatIsUploaded + " with chunk size of " + chunkSize + " and pool size of " + poolSize + " and file ID of " + fileId);
@@ -118,7 +118,7 @@ export class FileManager {
       promises.push(
         this.#uploadPart(fileId, part.totalParts, !part.isSmall, part.part, part.bytes, signal).then(() => {
           if (mustTrackProgress) {
-            uploaded += part.bytes.length;
+            uploaded += part.bytes.byteLength;
             this.#c.handleUpdate({
               type: "uploadProgress",
               uploadProgress: {
@@ -163,7 +163,7 @@ export class FileManager {
           const start = part * chunkSize;
           const end = start + chunkSize;
           const bytes = buffer.subarray(start, end);
-          if (!bytes.length) {
+          if (!bytes.byteLength) {
             break main;
           }
           if (!started) {
@@ -178,13 +178,13 @@ export class FileManager {
           promises.push(
             this.#uploadPart(fileId, partCount, isBig, part++, bytes, signal).then(() => {
               if (mustTrackProgress) {
-                uploaded += bytes.length;
+                uploaded += bytes.byteLength;
                 this.#c.handleUpdate({
                   type: "uploadProgress",
                   uploadProgress: {
                     id: String(fileId),
                     uploaded,
-                    total: buffer.length,
+                    total: buffer.byteLength,
                     isUploaded: false,
                   },
                 });
@@ -377,14 +377,14 @@ export class FileManager {
             signal?.throwIfAborted();
           }
           ++part;
-          if (file.bytes.length < limit) {
+          if (file.bytes.byteLength < limit) {
             if (id !== null) {
               await this.#c.storage.setFilePartCount(id, part + 1, chunkSize);
               signal?.throwIfAborted();
             }
             break;
           } else {
-            offset += BigInt(file.bytes.length);
+            offset += BigInt(file.bytes.byteLength);
           }
         } else {
           unreachable();

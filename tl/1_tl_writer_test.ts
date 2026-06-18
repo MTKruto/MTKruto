@@ -36,7 +36,7 @@ Deno.test("TLWriter", async (t) => {
 
     const expected = new Uint8Array([0x00]);
     assertEquals(writer.buffer.subarray(wrote - size), expected);
-    assertEquals(writer.buffer.length, wrote);
+    assertEquals(writer.buffer.byteLength, wrote);
   });
 
   await t.step("writeInt24", () => {
@@ -53,7 +53,7 @@ Deno.test("TLWriter", async (t) => {
       0x01, 0x00, 0x80, // int24
     ]);
     assertEquals(writer.buffer.subarray(wrote - size), expected);
-    assertEquals(writer.buffer.length, wrote);
+    assertEquals(writer.buffer.byteLength, wrote);
   });
 
   await t.step("writeInt32", () => {
@@ -70,7 +70,7 @@ Deno.test("TLWriter", async (t) => {
       0xFF, 0xFF, 0xFE, 0xFF, // int32
     ]);
     assertEquals(writer.buffer.subarray(wrote - size), expected);
-    assertEquals(writer.buffer.length, wrote);
+    assertEquals(writer.buffer.byteLength, wrote);
   });
 
   await t.step("writeInt64", () => {
@@ -87,7 +87,7 @@ Deno.test("TLWriter", async (t) => {
       0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, // int64
     ]);
     assertEquals(writer.buffer.subarray(wrote - size), expected);
-    assertEquals(writer.buffer.length, wrote);
+    assertEquals(writer.buffer.byteLength, wrote);
   });
 
   await t.step("writeDouble", () => {
@@ -102,7 +102,7 @@ Deno.test("TLWriter", async (t) => {
       0xAA, 0xF1, 0xD2, 0x4D, 0x62, 0x10, 0x26, 0xC0, // double
     ]);
     assertEquals(writer.buffer.subarray(wrote - size), expected);
-    assertEquals(writer.buffer.length, wrote);
+    assertEquals(writer.buffer.byteLength, wrote);
   });
 
   await t.step("writeInt128", () => {
@@ -121,7 +121,7 @@ Deno.test("TLWriter", async (t) => {
       0xE5, 0x02, 0x96, 0x48, 0x24, 0xC6, 0x6E, 0x07, // int128
     ]);
     assertEquals(writer.buffer.subarray(wrote - size), expected);
-    assertEquals(writer.buffer.length, wrote);
+    assertEquals(writer.buffer.byteLength, wrote);
   });
 
   await t.step("writeInt256", () => {
@@ -144,7 +144,7 @@ Deno.test("TLWriter", async (t) => {
       0x95, 0xCE, 0xC6, 0xEF, 0x78, 0x95, 0xB9, 0x5F, // int256
     ]);
     assertEquals(writer.buffer.subarray(wrote - size), expected);
-    assertEquals(writer.buffer.length, wrote);
+    assertEquals(writer.buffer.byteLength, wrote);
   });
 
   await t.step("writeBytes", () => {
@@ -229,7 +229,7 @@ Deno.test("TLWriter", async (t) => {
       0x5E, 0x02, 0xD3, 0x00, // more than 254 bytes
     ]);
     assertEquals(writer.buffer.subarray(wrote - size), expected);
-    assertEquals(writer.buffer.length, wrote);
+    assertEquals(writer.buffer.byteLength, wrote);
   });
 
   await t.step("writeString", () => {
@@ -278,7 +278,7 @@ Deno.test("TLWriter", async (t) => {
       0x4D, 0x54, 0x4B, 0x72, 0x75, 0x74, 0x6F, 0x00 // string with more than 254 bytes
     ]);
     assertEquals(writer.buffer.subarray(wrote - size), expected);
-    assertEquals(writer.buffer.length, wrote);
+    assertEquals(writer.buffer.byteLength, wrote);
   });
 });
 

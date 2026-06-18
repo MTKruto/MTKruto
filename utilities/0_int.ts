@@ -66,7 +66,7 @@ export interface IntFromBytesParams {
  * @param params Additional parameters.
  */
 export function intFromBytes(bytes: Uint8Array, { byteOrder = "little", isSigned = true }: IntFromBytesParams = {}) {
-  const bytesLength = bytes.length;
+  const bytesLength = bytes.byteLength;
 
   if (byteOrder === "little") {
     bytes = bytes.toReversed();

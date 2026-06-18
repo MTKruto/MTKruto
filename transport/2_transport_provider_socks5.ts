@@ -47,8 +47,8 @@ export function transportProviderSocks5(urlOrHostname: string, port?: number, pa
     params = { ...(params ?? {}), username, password };
   }
 
-  return ({ dc, isCdn }) => {
-    const dcId = getDcId(dc, isCdn);
+  return ({ dc, isMedia }) => {
+    const dcId = getDcId(dc, isMedia);
     const connection = new ConnectionSocks5(getDcIps(dc, isIPv6(hostname) ? "ipv6" : "ipv4")[0], 80, hostname, port!, params);
     const transport = new TransportAbridged(connection, false);
     return { connection, transport, dcId };

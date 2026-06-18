@@ -34,7 +34,7 @@ export class SessionPlain extends Session implements Session {
     const writer = new TLWriter();
     writer.writeInt64(0n); // auth key ID
     writer.writeInt64(messageId);
-    writer.writeInt32(data.length);
+    writer.writeInt32(data.byteLength);
     writer.write(data);
 
     const payload = writer.buffer;
@@ -48,7 +48,7 @@ export class SessionPlain extends Session implements Session {
     }
 
     const buffer = await this.transport.transport.receive();
-    if (buffer.length === 4) {
+    if (buffer.byteLength === 4) {
       const int = intFromBytes(buffer);
       throw new TransportError(Number(int));
     }

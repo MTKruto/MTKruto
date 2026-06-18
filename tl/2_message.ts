@@ -40,7 +40,7 @@ export async function serializeMessage(message: message): Promise<Uint8Array> {
   const writer = new TLWriter()
     .writeInt64(message.msg_id)
     .writeInt32(message.seqno)
-    .writeInt32(body.length)
+    .writeInt32(body.byteLength)
     .write(body);
   return writer.buffer;
 }

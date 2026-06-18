@@ -110,12 +110,12 @@ export class ConnectionWebSocket implements Connection {
     const unlock = await this.#rMutex.lock();
     try {
       this.#assertConnected();
-      if (this.#buffer.length < p.length) {
-        await new Promise<void>((resolve, reject) => this.#nextResolve = [p.length, { resolve, reject }]);
+      if (this.#buffer.length < p.byteLength) {
+        await new Promise<void>((resolve, reject) => this.#nextResolve = [p.byteLength, { resolve, reject }]);
       }
-      const slice = this.#buffer.slice(0, p.length);
+      const slice = this.#buffer.slice(0, p.byteLength);
       p.set(slice);
-      this.#buffer = this.#buffer.slice(slice.length);
+      this.#buffer = this.#buffer.slice(slice.byteLength);
     } finally {
       unlock();
     }

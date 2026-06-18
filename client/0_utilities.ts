@@ -146,7 +146,7 @@ export function checkInlineQueryId(id: string) {
   }
 }
 
-const CDN_FUNCTIONS = [
+const MEDIA_FUNCTIONS = [
   "upload.saveFilePart",
   "upload.getFile",
   "upload.saveBigFilePart",
@@ -156,8 +156,8 @@ const CDN_FUNCTIONS = [
   "upload.getCdnFileHashes",
   "upload.getFileHashes",
 ] as (keyof Api.Functions)[];
-export function isCdnFunction(value: unknown) {
-  return Api.isOneOf(CDN_FUNCTIONS, value);
+export function isMediaFunction(value: unknown) {
+  return Api.isOneOf(MEDIA_FUNCTIONS, value);
 }
 
 export function canBeInputUser(inputPeer: Api.InputPeer) {
@@ -233,7 +233,7 @@ export function checkPhotoName(params?: { fileName?: string }) {
 export function checkStickerName(firstPart: Uint8Array) {
   if (startsWith(firstPart, new Uint8Array([0x1F, 0x8B]))) {
     return "file.tgs";
-  } else if (firstPart.length >= 12 && equals(firstPart.subarray(8, 12), new Uint8Array([0x57, 0x45, 0x42, 0x50]))) {
+  } else if (firstPart.byteLength >= 12 && equals(firstPart.subarray(8, 12), new Uint8Array([0x57, 0x45, 0x42, 0x50]))) {
     return "file.webp";
   } else {
     return "file.webm";

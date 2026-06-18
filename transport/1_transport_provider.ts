@@ -76,20 +76,20 @@ export function getDcIps(dc: DC, version: "ipv4" | "ipv6"): [string, ...string[]
 
 export interface TransportProviderParams {
   dc: DC;
-  isCdn: boolean;
+  isMedia: boolean;
 }
 
 export type TransportProvider = (params: TransportProviderParams) => { connection: Connection; transport: Transport; dcId: number };
 
-export function getDcId(dc: DC, isCdn: boolean): number {
-  return Number(dc[0]) + (dc.endsWith("-test") ? 10_000 : 0) * (isCdn ? -1 : 1);
+export function getDcId(dc: DC, isMedia: boolean): number {
+  return Number(dc[0]) + (dc.endsWith("-test") ? 10_000 : 0) * (isMedia ? -1 : 1);
 }
 
 export function getDc(dcId: number): DC {
   dcId = Math.abs(dcId);
-  const test = dcId >= 10_000;
-  if (dcId >= 10_000) {
+  const isTest = dcId >= 10_000;
+  if (isTest) {
     dcId -= 10_000;
   }
-  return `${dcId}${test ? "-test" : ""}` as DC;
+  return `${dcId}${isTest ? "-test" : ""}` as DC;
 }
