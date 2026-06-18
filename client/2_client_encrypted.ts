@@ -50,7 +50,7 @@ export interface ClientEncryptedParams extends ClientPlainParams {
   systemVersion?: string;
   /** Whether to disable receiving updates. Defaults to `false`. */
   disableUpdates?: boolean;
-  /** Whether perfect forward secrecy should be enabled. Defaults to `true`. */
+  /** Whether perfect forward secrecy should be enabled. Defaults to `false`. */
   isPerfectForwardSecrecyEnabled?: boolean;
 }
 
@@ -87,7 +87,7 @@ export class ClientEncrypted extends ClientAbstract {
     this.#dc = dc;
     this.#apiId = apiId;
     this.#params = params;
-    this.#isPerfectForwardSecrecyEnabled = params?.isPerfectForwardSecrecyEnabled ?? true;
+    this.#isPerfectForwardSecrecyEnabled = params?.isPerfectForwardSecrecyEnabled ?? false;
 
     this.session = new SessionEncrypted(dc, params);
     this.session.handlers.onTransportError = this.#onTransportError.bind(this);

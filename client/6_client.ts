@@ -125,7 +125,7 @@ export interface ClientParams extends ClientPlainParams {
   authString?: string;
   /** The first DC to connect to. This is commonly used to decide whether to connect to test or production servers. It is not necessarily the DC that the client will directly connect to or is currently connected to. Defaults to the default initial DC. */
   initialDc?: DC;
-  /** Whether perfect forward secrecy should be enabled. Defaults to `true`. */
+  /** Whether perfect forward secrecy should be enabled. Defaults to `false`. */
   isPerfectForwardSecrecyEnabled?: boolean;
 }
 
