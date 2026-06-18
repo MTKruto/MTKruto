@@ -22,7 +22,7 @@ import { assert, assertEquals, concat, ige256Decrypt, ige256Encrypt, unreachable
 import { factorize, getLogger, getRandomInt, intFromBytes, intToBytes, modExp, rsaPad, sha1 } from "../1_utilities.ts";
 import { Mtproto } from "../2_tl.ts";
 import { type DC, getDcId } from "../3_transport.ts";
-import { PUBLIC_KEYS, type PublicKeys } from "../4_constants.ts";
+import { PUBLIC_KEYS, type PublicKeys, TEMPORARY_AUTH_KEY_TTL } from "../4_constants.ts";
 import { type SessionParams, SessionPlain } from "../4_session.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
 
@@ -113,7 +113,7 @@ export class ClientPlain extends ClientAbstract implements ClientAbstract {
             new_nonce: newNonce,
             nonce,
             server_nonce: serverNonce,
-            expires_in: 60,
+            expires_in: TEMPORARY_AUTH_KEY_TTL,
           }
           : {
             _: "p_q_inner_data_dc",

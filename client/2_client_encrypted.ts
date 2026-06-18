@@ -18,13 +18,13 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { concat, delay, ige256Encrypt, MINUTE, SECOND } from "../0_deps.ts";
+import { concat, delay, ige256Encrypt, SECOND } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { fromUnixTimestamp, getLogger, getRandomId, intFromBytes, type Logger, mod, sha1, toUnixTimestamp } from "../1_utilities.ts";
 import { Api, type message, Mtproto, serializeMessage, TLWriter, X } from "../2_tl.ts";
 import { ConnectionNotInited } from "../3_errors.ts";
 import type { DC } from "../3_transport.ts";
-import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, SYSTEM_LANG_CODE, SYSTEM_VERSION } from "../4_constants.ts";
+import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, SYSTEM_LANG_CODE, SYSTEM_VERSION, TEMPORARY_AUTH_KEY_TTL } from "../4_constants.ts";
 import { constructTelegramError } from "../4_errors.ts";
 import { SessionEncrypted, SessionError } from "../4_session.ts";
 import { AbortableLoop } from "./0_abortable_loop.ts";
@@ -157,7 +157,7 @@ export class ClientEncrypted extends ClientAbstract {
 
   async #bindTemporaryAuthKey() {
     const nonce = getRandomId();
-    const expires_at = toUnixTimestamp(new Date(Date.now() + MINUTE));
+    const expires_at = toUnixTimestamp(new Date()) + TEMPORARY_AUTH_KEY_TTL;
     this.#temporaryAuthKeyExpiresIn = fromUnixTimestamp(expires_at, true) - Date.now();
     const object: Mtproto.bind_auth_key_inner = {
       _: "bind_auth_key_inner",
@@ -183,7 +183,7 @@ export class ClientEncrypted extends ClientAbstract {
   }
 
   #temporaryAuthKeyLoop = new AbortableLoop(async (_loop, signal) => {
-    await delay(this.#temporaryAuthKeyExpiresIn - 2 * SECOND, { signal });
+    await delay(this.#temporaryAuthKeyExpiresIn - 5 * SECOND, { signal });
     this.#L.debug("reconnecting with a new temporary auth key");
     this.disconnect();
     await this.connect();

@@ -44,7 +44,7 @@ export { LruCache } from "jsr:@std/cache@0.2.3/lru-cache";
 export { writeAll } from "jsr:@std/io@0.225.3/write-all";
 
 export { format } from "jsr:@std/datetime@0.225.7/format";
-export { DAY, MINUTE, SECOND } from "jsr:@std/datetime@0.225.7/constants";
+export { MINUTE, SECOND } from "jsr:@std/datetime@0.225.7/constants";
 
 export { toArrayBuffer } from "jsr:@std/streams@1.1.1/to-array-buffer";
 
