@@ -324,6 +324,9 @@ export class ClientEncrypted extends ClientAbstract {
 
   async #onTransportError(transportError: TransportError) {
     this.#L.error("transport error:", transportError);
+    if (!this.#isPerfectForwardSecrecyEnabled) {
+      return;
+    }
     if (transportError.code === -404) {
       this.#L.debug("reconnecting with a new temporary auth key");
       this.disconnect();
