@@ -125,6 +125,8 @@ export interface ClientParams extends ClientPlainParams {
   authString?: string;
   /** The first DC to connect to. This is commonly used to decide whether to connect to test or production servers. It is not necessarily the DC that the client will directly connect to or is currently connected to. Defaults to the default initial DC. */
   initialDc?: DC;
+  /** Whether perfect forward secrecy should be enabled. Defaults to `true`. */
+  isPerfectForwardSecrecyEnabled?: boolean;
 }
 
 /** An MTKruto client. */
@@ -221,6 +223,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   readonly #outgoingMessages: NonNullable<ClientParams["outgoingMessages"]>;
   #persistCache: boolean;
   #disableUpdates: boolean;
+  #isPerfectForwardSecrecyEnabled?: boolean;
   #authString?: string;
   #initialDc: DC;
 
@@ -252,6 +255,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     this.#disableUpdates = params?.disableUpdates ?? false;
     this.#authString = params?.authString;
 
+    this.#isPerfectForwardSecrecyEnabled = params?.isPerfectForwardSecrecyEnabled;
     this.appVersion = params?.appVersion ?? APP_VERSION;
     this.deviceModel = params?.deviceModel ?? DEVICE_MODEL;
     this.language = params?.language ?? LANG_CODE;
@@ -383,6 +387,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       isMedia,
       disableUpdates: !main || isMedia,
       publicKeys: this.#publicKeys,
+      isPerfectForwardSecrecyEnabled: this.#isPerfectForwardSecrecyEnabled,
     });
     client.connectionCallback = this.#networkStatisticsManager.getTransportReadWriteCallback(isMedia);
     return client;
@@ -828,7 +833,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     const pool = this.#uploadPools[dc] ??= new ClientEncryptedPool();
     if (!pool.size) {
       for (let i = 0; i < poolSize; ++i) {
-        pool.add(await this.#newClient(dc, false, true));
+        pool.add(this.#newClient(dc, false, true));
       }
     }
     const client = pool.nextClient();

@@ -51,6 +51,8 @@ export interface ClientEncryptedParams extends ClientPlainParams {
   systemVersion?: string;
   /** Whether to disable receiving updates. Defaults to `false`. */
   disableUpdates?: boolean;
+  /** Whether perfect forward secrecy should be enabled. Defaults to `true`. */
+  isPerfectForwardSecrecyEnabled?: boolean;
 }
 
 export interface ClientEncryptedHandlers {
@@ -67,6 +69,7 @@ export class ClientEncrypted extends ClientAbstract {
 
   #L: Logger;
   #dc: DC;
+  #apiId: number;
   #params: ClientEncryptedParams | undefined;
 
   #authKey = new Uint8Array();
@@ -75,23 +78,18 @@ export class ClientEncrypted extends ClientAbstract {
   #temporaryAuthKeyExpiresIn = 0;
   session: SessionEncrypted;
   #sentRequests = new Map<bigint, SentRequest>();
-
-  #apiId: number;
-  #appVersion: string;
-  #deviceModel: string;
-  #langCode: string;
-  #langPack: string;
-  #systemLangCode: string;
-  #systemVersion: string;
-  #disableUpdates: boolean;
   #isAuthKeyBound = false;
+  #isPerfectForwardSecrecyEnabled = false;
 
   constructor(dc: DC, apiId: number, params?: ClientEncryptedParams) {
     super();
     this.#L = getLogger("ClientEncrypted").client(id++);
 
     this.#dc = dc;
+    this.#apiId = apiId;
     this.#params = params;
+    this.#isPerfectForwardSecrecyEnabled = params?.isPerfectForwardSecrecyEnabled ?? true;
+
     this.session = new SessionEncrypted(dc, params);
     this.session.handlers.onTransportError = this.#onTransportError.bind(this);
     this.session.handlers.onUpdate = this.#onUpdate.bind(this);
@@ -100,15 +98,6 @@ export class ClientEncrypted extends ClientAbstract {
     this.session.handlers.onRpcError = this.#onRpcError.bind(this);
     this.session.handlers.onRpcResult = this.#onRpcResult.bind(this);
     this.session.handlers.onPong = this.#onPong.bind(this);
-
-    this.#apiId = apiId;
-    this.#appVersion = params?.appVersion ?? APP_VERSION;
-    this.#deviceModel = params?.deviceModel ?? DEVICE_MODEL;
-    this.#langCode = params?.langCode ?? LANG_CODE;
-    this.#langPack = params?.langPack ?? LANG_PACK;
-    this.#systemLangCode = params?.systemLangCode ?? SYSTEM_LANG_CODE;
-    this.#systemVersion = params?.systemVersion ?? SYSTEM_VERSION;
-    this.#disableUpdates = params?.disableUpdates ?? false;
   }
 
   async #encryptMessage(message: message) {
@@ -146,13 +135,19 @@ export class ClientEncrypted extends ClientAbstract {
   override async connect() {
     if (!this.authKey.byteLength) {
       await this.#createAuthKey();
-    } else {
+    } else if (this.#isPerfectForwardSecrecyEnabled) {
       this.#L.debug("creating temporary auth key");
       await this.#createAuthKeyInner(true);
     }
     await super.connect();
-    await this.#bindTemporaryAuthKey();
-    this.#temporaryAuthKeyLoop.start();
+
+    if (this.#isPerfectForwardSecrecyEnabled) {
+      await this.#bindTemporaryAuthKey();
+      this.#temporaryAuthKeyLoop.start();
+    } else {
+      console.log("connecting right away");
+      this.#isAuthKeyBound = true;
+    }
   }
 
   async #bindTemporaryAuthKey() {
@@ -198,7 +193,7 @@ export class ClientEncrypted extends ClientAbstract {
 
   #createAuthKeyPromise?: Promise<unknown>;
   #createAuthKey() {
-    return this.#createAuthKeyPromise ??= Promise.all([this.#createAuthKeyInner(false), this.#createAuthKeyInner(true)]).finally(() => {
+    return this.#createAuthKeyPromise ??= (this.#isPerfectForwardSecrecyEnabled ? Promise.all([this.#createAuthKeyInner(false), this.#createAuthKeyInner(true)]) : this.#createAuthKeyInner(false)).finally(() => {
       this.#createAuthKeyPromise = undefined;
     });
   }
@@ -217,6 +212,10 @@ export class ClientEncrypted extends ClientAbstract {
           this.#isConnectionInited = false;
         } else {
           await this.setAuthKey(authKey);
+        }
+        if (!this.#isPerfectForwardSecrecyEnabled) {
+          await this.session.setAuthKey(authKey);
+          this.session.serverSalt = serverSalt;
         }
         errored = false;
         break;
@@ -237,13 +236,17 @@ export class ClientEncrypted extends ClientAbstract {
   }
 
   get authKey(): Uint8Array<ArrayBuffer> {
-    return this.#authKey;
+    return this.#isPerfectForwardSecrecyEnabled ? this.#authKey : this.session.authKey;
   }
 
   async setAuthKey(authKey: Uint8Array<ArrayBuffer>) {
-    const hash = await sha1(authKey);
-    this.#authKeyId = intFromBytes(hash.slice(-8));
-    this.#authKey = authKey;
+    if (this.#isPerfectForwardSecrecyEnabled) {
+      const hash = await sha1(authKey);
+      this.#authKeyId = intFromBytes(hash.slice(-8));
+      this.#authKey = authKey;
+    } else {
+      await this.session.setAuthKey(authKey);
+    }
   }
 
   #isConnectionInited = false;
@@ -254,7 +257,7 @@ export class ClientEncrypted extends ClientAbstract {
     if (Mtproto.is("ping", function_)) {
       body = Mtproto.serializeObject(function_);
     } else {
-      if (this.#isAuthKeyBound && this.#disableUpdates && !isMediaFunction(function_)) {
+      if (this.#isAuthKeyBound && this.#params?.disableUpdates && !isMediaFunction(function_)) {
         function_ = { _: "invokeWithoutUpdates", query: function_ };
       }
       if (this.#isAuthKeyBound && !this.#isConnectionInited) {
@@ -264,17 +267,17 @@ export class ClientEncrypted extends ClientAbstract {
         function_ = {
           _: "initConnection",
           api_id: this.#apiId,
-          app_version: this.#appVersion,
-          device_model: this.#deviceModel,
-          lang_code: this.#langCode,
-          lang_pack: this.#langPack,
+          app_version: this.#params?.appVersion ?? APP_VERSION,
+          device_model: this.#params?.deviceModel ?? DEVICE_MODEL,
+          lang_code: this.#params?.langCode ?? LANG_CODE,
+          lang_pack: this.#params?.langPack ?? LANG_PACK,
           query: {
             _: "invokeWithLayer",
             layer: Api.LAYER,
             query: function_,
           } as Api.Function,
-          system_lang_code: this.#systemLangCode,
-          system_version: this.#systemVersion,
+          system_lang_code: this.#params?.systemLangCode ?? SYSTEM_LANG_CODE,
+          system_version: this.#params?.systemVersion ?? SYSTEM_VERSION,
         };
       }
       body = Api.serializeObject(function_);
@@ -362,6 +365,7 @@ export class ClientEncrypted extends ClientAbstract {
 
   async #onRpcError(msgId: bigint, error: Mtproto.rpc_error) {
     const request = this.#sentRequests.get(msgId);
+    console.log(error);
     this.#L.debug("received rpc_error with req_msg_id =", msgId, "for", request === undefined ? "unknown" : "known", "request");
     if (request) {
       this.#sentRequests.delete(msgId);
