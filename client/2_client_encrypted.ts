@@ -19,12 +19,11 @@
  */
 
 import { concat, delay, ige256Encrypt, SECOND } from "../0_deps.ts";
-import { InputError } from "../0_errors.ts";
 import { fromUnixTimestamp, getLogger, getRandomId, intFromBytes, type Logger, mod, sha1, toUnixTimestamp } from "../1_utilities.ts";
 import { Api, type message, Mtproto, serializeMessage, TLWriter, X } from "../2_tl.ts";
-import { ConnectionNotInited } from "../3_errors.ts";
 import type { DC } from "../3_transport.ts";
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, SYSTEM_LANG_CODE, SYSTEM_VERSION, TEMPORARY_AUTH_KEY_TTL } from "../4_constants.ts";
+import { InputError, type TransportError ,ConnectionNotInited} from "../4_errors.ts";
 import { constructTelegramError } from "../4_errors.ts";
 import { SessionEncrypted, SessionError } from "../4_session.ts";
 import { AbortableLoop } from "./0_abortable_loop.ts";
@@ -94,6 +93,7 @@ export class ClientEncrypted extends ClientAbstract {
     this.#dc = dc;
     this.#params = params;
     this.session = new SessionEncrypted(dc, params);
+    this.session.handlers.onTransportError = this.#onTransportError.bind(this);
     this.session.handlers.onUpdate = this.#onUpdate.bind(this);
     this.session.handlers.onNewServerSalt = this.#onNewServerSalt.bind(this);
     this.session.handlers.onMessageFailed = this.#onMessageFailed.bind(this);
@@ -317,6 +317,15 @@ export class ClientEncrypted extends ClientAbstract {
     const sentRequest: SentRequest = { call: function_, promiseWithResolvers: Promise.withResolvers() };
     this.#sentRequests.set(messageId, sentRequest);
     return await sentRequest.promiseWithResolvers.promise as R;
+  }
+
+  async #onTransportError(transportError: TransportError) {
+    this.#L.error("transport error:", transportError);
+    if (transportError.code === -404) {
+      this.#L.debug("reconnecting with a new temporary auth key");
+      this.disconnect();
+      await this.connect();
+    }
   }
 
   async #onUpdate(body: Uint8Array) {

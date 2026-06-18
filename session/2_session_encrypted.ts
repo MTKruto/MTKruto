@@ -40,6 +40,7 @@ type PendingMessage = { body: Uint8Array<ArrayBuffer>; promiseWithResolvers: Pro
 type PendingPing = { call: Mtproto.ping_delay_disconnect; promiseWithResolvers: PromiseWithResolvers<Mtproto.pong> };
 
 export interface Handlers {
+  onTransportError?: (transportError: TransportError) => void;
   onUpdate?: (body: Uint8Array) => void;
   onNewServerSalt?: (serverSalt: bigint) => void;
   onMessageFailed?: (id: bigint, reason: unknown) => void;
@@ -365,10 +366,11 @@ export class SessionEncrypted extends Session implements Session {
       if (!this.isConnected) {
         this.#LreceiveLoop.debug("aborting as not connected");
         loop.abort();
-        return;
-      } else {
-        return;
+      } else if (err instanceof TransportError) {
+        this.handlers.onTransportError?.(err);
       }
+
+      return;
     }
     try {
       if (message.body instanceof Uint8Array) {
