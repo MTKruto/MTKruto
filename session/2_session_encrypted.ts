@@ -84,7 +84,7 @@ export class SessionEncrypted extends Session implements Session {
     this.#authKey = key;
   }
 
-  get id() {
+  get id(): bigint {
     return this.#id;
   }
 
