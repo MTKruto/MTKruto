@@ -86,7 +86,7 @@ export interface PollMediaLivePhoto {
 /** @unlisted */
 export interface PollMediaLocation {
   type: "location";
-  /** The the location. */
+  /** The location. */
   location: Location;
 }
 

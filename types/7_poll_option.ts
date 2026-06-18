@@ -34,7 +34,7 @@ export interface PollOption {
   text: string;
   /** The entities of the option's text. */
   entities: MessageEntity[];
-  /** Number of users that voted this option. */
+  /** Number of users that voted for this option. */
   voterCount: number;
   /** Whether this option has been chosen. */
   isChosen: boolean;

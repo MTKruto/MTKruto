@@ -214,7 +214,7 @@ export interface SendPollParams extends _SendCommon, _ReplyMarkupCommon {
   isResultHidden?: boolean;
   /** Whether it is allowed for options to be added. Not supported for anonymous polls and quizzes. */
   isAddingOptionsAllowed?: boolean;
-  /** The codes of the countries where the poll is available in. */
+  /** The codes of the countries where the poll is available. */
   countries?: string[];
   /** Whether only channel subscribers can vote in the poll. */
   isSubscriberOnly?: boolean;

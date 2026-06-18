@@ -116,7 +116,7 @@ export interface InlineKeyboardButtonGame extends _InlineKeyboardButtonBase {
 }
 
 /**
- * An inline keyboard that, when pressed, initiates a payment.
+ * An inline keyboard button that, when pressed, initiates a payment.
  * @unlisted
  */
 export interface InlineKeyboardButtonPay extends _InlineKeyboardButtonBase {
@@ -124,7 +124,7 @@ export interface InlineKeyboardButtonPay extends _InlineKeyboardButtonBase {
 }
 
 /**
- * An inline keyboard that, when pressed, copies the text inside its `copy` field.
+ * An inline keyboard button that, when pressed, copies the text inside its `copy` field.
  * @unlisted
  */
 export interface InlineKeyboardButtonCopy extends _InlineKeyboardButtonBase {

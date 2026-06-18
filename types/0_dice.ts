@@ -22,7 +22,7 @@ import type { Api } from "../2_tl.ts";
 
 /** A rolled dice. */
 export interface Dice {
-  /** The emoji on which the dice is based on. */
+  /** The emoji on which the dice is based. */
   emoji: string;
   /** The result of the roll, which is in the range of 1-6 for the emojis "🎲", "🎯" and "🎳", 1-5 for the emojis "🏀" and "⚽", and 1-64 for the emoji "🎰". */
   value: number;
