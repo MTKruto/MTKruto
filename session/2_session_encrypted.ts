@@ -217,7 +217,7 @@ export class SessionEncrypted extends Session implements Session {
     }
   }
 
-  async encryptMessage(message: message) {
+  async #encryptMessage(message: message) {
     const payloadWriter = new TLWriter();
 
     payloadWriter.writeInt64(this.state.serverSalt);
@@ -333,7 +333,7 @@ export class SessionEncrypted extends Session implements Session {
     }
 
     try {
-      const payload = await this.encryptMessage(message);
+      const payload = await this.#encryptMessage(message);
       await this.transport.transport.send(payload);
       pendingMessage.promiseWithResolvers.resolve(msg_id);
     } catch (err) {
