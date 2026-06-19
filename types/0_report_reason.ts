@@ -1,3 +1,4 @@
+import { unreachable } from "../0_deps.ts";
 import type { Api } from "../2_tl.ts";
 
 export interface ReportReasonSpam {
@@ -65,4 +66,6 @@ export function reportReasonToTlObject(reportReason: ReportReason): Api.ReportRe
     case "personalDetails":
       return { _: "inputReportReasonPersonalDetails" };
   }
+
+  unreachable();
 }
