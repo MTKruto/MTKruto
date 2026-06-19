@@ -2714,6 +2714,15 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     return await this.#messageManager.getScheduledMessages(chatId);
   }
 
+  /**
+   * Get favorite stickers. User-only.
+   *
+   * @method ms
+   */
+  async getFavoriteStickers(): Promise<Sticker[]> {
+    return await this.#messageManager.getFavoriteStickers();
+  }
+
   //
   // ========================= POLLS ========================= //
   //

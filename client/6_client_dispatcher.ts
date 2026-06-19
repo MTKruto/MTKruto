@@ -1676,6 +1676,15 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("getScheduledMessages", chatId);
   }
 
+  /**
+   * Get favorite stickers. User-only.
+   *
+   * @method ms
+   */
+  async getFavoriteStickers(): Promise<Sticker[]> {
+    return await this.#dispatch("getFavoriteStickers");
+  }
+
   //
   // ========================= POLLS ========================= //
   //

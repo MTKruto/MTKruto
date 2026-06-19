@@ -1229,6 +1229,13 @@ export abstract class ClientGeneric {
    */
   abstract getScheduledMessages(chatId: ID): Promise<Message[]>;
 
+  /**
+   * Get favorite stickers. User-only.
+   *
+   * @method ms
+   */
+  abstract getFavoriteStickers(): Promise<Sticker[]>;
+
   //
   // ========================= POLLS ========================= //
   //
