@@ -3746,7 +3746,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    *
    * @method ch
    * @param chatId The identifier of a chat to report.
-   * @param reason The reason of the report
+   * @param reason The reason of the report.
    */
   async reportChat(chatId: ID, reason: ReportReason, params?: ReportChatParams): Promise<void> {
     return await this.#chatManager.reportChat(chatId, reason, params);
