@@ -65,6 +65,7 @@ export * from "./types/0_premium_subscription_duration.ts";
 export * from "./types/0_price_tag.ts";
 export * from "./types/0_reaction.ts";
 export * from "./types/0_refunded_payment.ts";
+export * from "./types/0_report_reason.ts";
 export * from "./types/0_restriction_reason.ts";
 export * from "./types/0_self_destruct_option.ts";
 export * from "./types/0_shipping_address.ts";
