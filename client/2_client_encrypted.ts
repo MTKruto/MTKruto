@@ -19,6 +19,7 @@
  */
 
 import { concat, delay, ige256Encrypt, SECOND } from "../0_deps.ts";
+import { ConnectionError } from "../0_errors.ts";
 import { drop, fromUnixTimestamp, getLogger, getRandomId, intFromBytes, type Logger, type MaybePromise, mod, sha1, toUnixTimestamp } from "../1_utilities.ts";
 import { Api, type message, Mtproto, serializeMessage, TLWriter, X } from "../2_tl.ts";
 import type { DC } from "../3_transport.ts";
@@ -131,7 +132,12 @@ export class ClientEncrypted extends ClientAbstract {
     return messageWriter.buffer;
   }
 
-  override async connect() {
+  #connectPromise?: Promise<void>;
+  override connect(): Promise<void> {
+    return this.#connectPromise ??= this.#connect().finally(() => this.#connectPromise = undefined);
+  }
+
+  async #connect() {
     if (!this.authKey.byteLength) {
       await this.#createAuthKey();
     } else if (this.#isPerfectForwardSecrecyEnabled) {
@@ -196,6 +202,11 @@ export class ClientEncrypted extends ClientAbstract {
     this.#temporaryAuthKeyTimeoutController?.abort();
     this.#temporaryAuthKeyTimeoutController = undefined;
     this.lastRequest = undefined;
+    const error = new ConnectionError("The connection was closed.");
+    for (const request of this.#sentRequests.values()) {
+      request.promiseWithResolvers.reject(error);
+    }
+    this.#sentRequests.clear();
   }
 
   #createAuthKeyPromise?: Promise<unknown>;
