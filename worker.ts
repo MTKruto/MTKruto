@@ -129,13 +129,13 @@ export function initClient(request: WorkerRequest): WorkerResponse {
       };
     } catch (err) {
       clientReceivers.delete(request.clientId);
-      logger.error("error initing client:", err);
+      logger.error("error initializing client:", err);
       return {
         type: "response",
         clientId: request.clientId,
         id: request.id,
         isError: true,
-        data: serializeWorkerError(new InputEvent("Could not init client")),
+        data: serializeWorkerError(new InputEvent("Could not initialize client.")),
       };
     }
   }

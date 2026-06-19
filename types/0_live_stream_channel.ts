@@ -24,7 +24,7 @@ import type { Api } from "../2_tl.ts";
 export interface LiveStreamChannel {
   /** The live stream channel's unique identifier. */
   id: number;
-  /** The scale of the live stream channel's chunks. Duration of each chunk is equal to 1000 / 2 ^ scale. ` */
+  /** The scale of the live stream channel's chunks. Duration of each chunk is equal to 1000 / 2 ^ scale. */
   scale: number;
   /** The live stream channel's last timestamp. */
   timestamp: number;

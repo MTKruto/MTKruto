@@ -2004,7 +2004,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * Get inactive chats. User-only.
    *
    * @method ch
-   * @returns A list of inactive chats the current user is member of.
+   * @returns A list of inactive chats the current user is a member of.
    */
   async getInactiveChats(): Promise<InactiveChat[]> {
     return await this.#dispatch("getInactiveChats");

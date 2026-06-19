@@ -1493,7 +1493,7 @@ export abstract class ClientGeneric {
    * Get inactive chats. User-only.
    *
    * @method ch
-   * @returns A list of inactive chats the current user is member of.
+   * @returns A list of inactive chats the current user is a member of.
    */
   abstract getInactiveChats(): Promise<InactiveChat[]>;
 
