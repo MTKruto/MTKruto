@@ -2763,6 +2763,24 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     return await this.#messageManager.removeStickerFromRecents(fileId);
   }
 
+  /**
+   * Get recent stickers. User-only.
+   *
+   * @method ms
+   */
+  async getRecentStickers(): Promise<Sticker[]> {
+    return await this.#messageManager.getRecentStickers();
+  }
+
+  /**
+   * Clear recent stickers. User-only.
+   *
+   * @method ms
+   */
+  async clearRecentStickers(): Promise<void> {
+    return await this.#messageManager.clearRecentStickers();
+  }
+
   //
   // ========================= POLLS ========================= //
   //

@@ -1725,6 +1725,24 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("removeStickerFromRecents", fileId);
   }
 
+  /**
+   * Get recent stickers. User-only.
+   *
+   * @method ms
+   */
+  async getRecentStickers(): Promise<Sticker[]> {
+    return await this.#dispatch("getRecentStickers");
+  }
+
+  /**
+   * Clear recent stickers. User-only.
+   *
+   * @method ms
+   */
+  async clearRecentStickers(): Promise<void> {
+    return await this.#dispatch("clearRecentStickers");
+  }
+
   //
   // ========================= POLLS ========================= //
   //
