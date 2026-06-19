@@ -19,7 +19,7 @@
  */
 
 import type { Api, Mtproto } from "../2_tl.ts";
-import type { AlbumStoryList, AppSupport, AuthorizationSession, AvailableReactions, Birthday, BlockedUserList, BotAccessSettings, BotCommand, BotTokenCheckResult, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatActionType, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ClaimedGifts, CodeCheckResult, Country, FailedInvitation, FileSource, Gift, GiftCollection, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputChecklistItem, InputEmojiStatus, InputGift, InputMedia, InputPollOption, InputRichText, InputSticker, InputStoryContent, InviteLink, JoinRequest, LeftChannelList, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageCounters, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLivePhoto, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageRichText, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, MiniAppInfo, NetworkStatistics, PasswordCheckResult, Poll, PremiumSubscriptionDuration, PriceTag, ProfilePhotoList, Reaction, ReportReason, RichText, SavedChats, SlowModeDuration, StarAmount, StarTransactionList, Sticker, StickerSet, Story, StoryAlbum, StoryReportResult, SummarizedText, TextToTranslate, Timezone, Topic, TranslatedText, Translation, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
+import type { AlbumStoryList, Animation, AppSupport, AuthorizationSession, AvailableReactions, Birthday, BlockedUserList, BotAccessSettings, BotCommand, BotTokenCheckResult, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatActionType, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ClaimedGifts, CodeCheckResult, Country, FailedInvitation, FileSource, Gift, GiftCollection, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputChecklistItem, InputEmojiStatus, InputGift, InputMedia, InputPollOption, InputRichText, InputSticker, InputStoryContent, InviteLink, JoinRequest, LeftChannelList, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageCounters, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLivePhoto, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageRichText, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, MiniAppInfo, NetworkStatistics, PasswordCheckResult, Poll, PremiumSubscriptionDuration, PriceTag, ProfilePhotoList, Reaction, ReportReason, RichText, SavedChats, SlowModeDuration, StarAmount, StarTransactionList, Sticker, StickerSet, Story, StoryAlbum, StoryReportResult, SummarizedText, TextToTranslate, Timezone, Topic, TranslatedText, Translation, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
 import type { AddBotToAttachmentsMenuParams, AddChatMemberParams, AddContactParams, AddReactionParams, AddStickerToStickerSetParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStickerSetParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteAccountParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageRichTextParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, EndTakeoutSessionParams, ForwardMessagesParams, GetBlockedUsersParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLeftChannelsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetProfilePhotosParams, GetSavedChatsParams, GetSavedMessagesParams, GetStarTransactionsParams, GetTranslationsParams, GiftPremiumSubscriptionParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, RemoveProfilePhotoParams, ReplaceStickerInStickerSetParams, ReportChatParams, ReportStoryParams, ResolveUsernameParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLivePhotoParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendRichTextParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetContactNoteParams, SetEmojiStatusParams, SetLocationParams, SetManagedBotAccessSettingsParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetWorkingHoursParams, SignInParams, StartBotParams, StartTakeoutSessionParams, StartVideoChatParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
 
 /** A generic MTKruto client. */
@@ -1281,6 +1281,29 @@ export abstract class ClientGeneric {
    * @method ms
    */
   abstract clearRecentStickers(): Promise<void>;
+
+  /**
+   * Get saved animations. User-only.
+   *
+   * @method ms
+   */
+  abstract getSavedAnimations(): Promise<Animation[]>;
+
+  /**
+   * Save an animation. User-only.
+   *
+   * @method ms
+   * @param fileId The file identifier of the animation.
+   */
+  abstract saveAnimation(fileId: string): Promise<void>;
+
+  /**
+   * Unsave an animation. User-only.
+   *
+   * @method ms
+   * @param fileId The file identifier of the animation.
+   */
+  abstract unsaveAnimation(fileId: string): Promise<void>;
 
   //
   // ========================= POLLS ========================= //
