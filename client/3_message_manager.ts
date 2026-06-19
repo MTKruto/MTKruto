@@ -23,7 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { base64EncodeUrlSafe, encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
-import { collectMediaFileIds, constructBlockedUserList, constructChatAction, constructMessageDraft, constructMessageEntity, constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructSummarizedText, constructVoiceTranscription, deserializeFileId, type FileId, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, type InputPollMedia, type InputPollMediaAnimation, type InputPollMediaSticker, type InputPollOption, type InputRichText, type MessageCounters, type MessageGetter, type MessageList, type MessageLivePhoto, type MessagePhoto, messageSearchFilterToTlObject, pageBlockToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type TextToTranslate, type TranslatedText, type VoiceTranscription } from "../3_types.ts";
+import { collectMediaFileIds, constructBlockedUserList, constructChatAction, constructMessageDraft, constructMessageEntity, constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructSticker, constructSummarizedText, constructVoiceTranscription, deserializeFileId, type FileId, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, type InputPollMedia, type InputPollMediaAnimation, type InputPollMediaSticker, type InputPollOption, type InputRichText, type MessageCounters, type MessageGetter, type MessageList, type MessageLivePhoto, type MessagePhoto, messageSearchFilterToTlObject, pageBlockToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, serializeFileId, type TextToTranslate, toUniqueFileId, type TranslatedText, type VoiceTranscription } from "../3_types.ts";
 import { assertMessageType, type ChatActionType, constructMessage as constructMessage_, deserializeInlineMessageId, type FileSource, FileType, type ID, type Message, type MessageEntity, messageEntityToTlObject, type ParseMode, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type Update, type UsernameResolver } from "../3_types.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
@@ -2472,5 +2472,26 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const peer = await this.#c.getInputPeer(chatId);
     const result = Api.as("messages.messages", await this.#c.invoke({ _: "messages.getScheduledHistory", peer, hash: 0n }));
     return await Promise.all(result.messages.map((v) => this.constructMessage(v, false)));
+  }
+
+  async getFavoriteStickers() {
+    this.#c.storage.assertUser("getFavoriteStickers");
+    const result = Api.as("messages.favedStickers", await this.#c.invoke({ _: "messages.getFavedStickers", hash: 0n }));
+    const stickers = await Promise.all(
+      result.stickers.map((v): Api.document => Api.as("document", v)).map((v) => {
+        const fileId: FileId = {
+          type: FileType.Sticker,
+          dcId: v.dc_id,
+          location: {
+            type: "common",
+            id: v.id,
+            accessHash: v.access_hash,
+          },
+          fileReference: v.file_reference,
+        };
+        return constructSticker(v, serializeFileId(fileId), toUniqueFileId(fileId), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager));
+      }),
+    );
+    return stickers;
   }
 }
