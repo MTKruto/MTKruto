@@ -269,9 +269,9 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
     title = this.#checkChatTitle(title);
     const updates = await this.#c.invoke({
       _: "channels.createChannel",
-      broadcast: type === "channel" ? true : undefined,
-      megagroup: type === "supergroup" ? true : undefined,
-      forum: params && ("isForum" in params) && params.isForum ? true : undefined,
+      broadcast: type === "channel" || undefined,
+      megagroup: type === "supergroup" || undefined,
+      forum: params && ("isForum" in params) && params.isForum || undefined,
       title,
       about: params?.description || "",
       ttl_period: params?.messageTtl || undefined,

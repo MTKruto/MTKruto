@@ -31,13 +31,13 @@ export class TakeoutManager {
 
   async startTakeoutSession(params?: StartTakeoutSessionParams) {
     this.#c.storage.assertUser("startTakeoutSession");
-    const result = await this.#c.invoke({ _: "account.initTakeoutSession", contacts: params?.isExportingContacts ? true : undefined, message_users: params?.isExportingPrivateChats ? true : undefined, message_chats: params?.isExportingGroupChats ? true : undefined, message_megagroups: params?.isExportingSupergroupChats ? true : undefined, message_channels: params?.isExportingChannelChats ? true : undefined, files: params?.isExportingFiles ? true : undefined, file_max_size: params?.maxFileSize ? BigInt(params.maxFileSize) : undefined });
+    const result = await this.#c.invoke({ _: "account.initTakeoutSession", contacts: params?.isExportingContacts || undefined, message_users: params?.isExportingPrivateChats || undefined, message_chats: params?.isExportingGroupChats || undefined, message_megagroups: params?.isExportingSupergroupChats || undefined, message_channels: params?.isExportingChannelChats || undefined, files: params?.isExportingFiles || undefined, file_max_size: params?.maxFileSize ? BigInt(params.maxFileSize) : undefined });
     return String(result.id);
   }
 
   async endTakeoutSession(takeoutId: string, params?: EndTakeoutSessionParams) {
     this.#c.storage.assertUser("endTakeoutSession");
-    await this.#c.invoke({ _: "account.finishTakeoutSession", success: params?.isFailed ? undefined : true }, { takeoutId });
+    await this.#c.invoke({ _: "account.finishTakeoutSession", success: !params?.isFailed || undefined }, { takeoutId });
   }
 
   async getLeftChannels(takeoutId: string, params?: GetLeftChannelsParams) {

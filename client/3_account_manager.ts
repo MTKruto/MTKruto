@@ -456,7 +456,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
 
   async #toggleBotAddedtoAttachmentsMenu(botId: ID, isWriteAllowed: boolean, enabled: boolean) {
     const bot = await this.#c.getInputUser(botId);
-    await this.#c.invoke({ _: "messages.toggleBotInAttachMenu", bot, write_allowed: isWriteAllowed ? true : undefined, enabled });
+    await this.#c.invoke({ _: "messages.toggleBotInAttachMenu", bot, write_allowed: isWriteAllowed || undefined, enabled });
   }
 
   async addBotToAttachmentsMenu(botId: ID, params?: AddBotToAttachmentsMenuParams) {
@@ -506,7 +506,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
 
     const bot = params?.botId ? await this.#c.getInputUser(params.botId) : undefined;
     const file = await this.#c.fileManager.upload(photo, params, checkPhotoName(params));
-    await this.#c.invoke({ _: "photos.uploadProfilePhoto", fallback: params?.isPublic ? true : undefined, file, bot });
+    await this.#c.invoke({ _: "photos.uploadProfilePhoto", fallback: params?.isPublic || undefined, file, bot });
   }
 
   async updateProfileVideo(photo: FileSource, params?: UpdateProfileVideoParams) {
@@ -516,7 +516,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
 
     const bot = params?.botId ? await this.#c.getInputUser(params.botId) : undefined;
     const video = await this.#c.fileManager.upload(photo, params, () => "video.mp4");
-    await this.#c.invoke({ _: "photos.uploadProfilePhoto", fallback: params?.isPublic ? true : undefined, video, video_start_ts: params?.thumbnailTimestamp, bot });
+    await this.#c.invoke({ _: "photos.uploadProfilePhoto", fallback: params?.isPublic || undefined, video, video_start_ts: params?.thumbnailTimestamp, bot });
   }
 
   async removeProfilePhoto(params?: RemoveProfilePhotoParams) {

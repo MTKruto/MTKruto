@@ -49,14 +49,14 @@ export interface GiftNonUpgradedInformation {
 }
 
 export function constructGiftNonUpgradedInformation(action: Api.messageActionStarGift, getPeer: PeerGetter): GiftNonUpgradedInformation {
-  const isNameHidden = action.name_hidden ? true : false;
-  const isSaved = action.saved ? true : false;
-  const isConverted = action.converted ? true : false;
-  const isUpgraded = action.upgraded ? true : false;
-  const isRefunded = action.refunded ? true : false;
-  const isUpgradable = action.can_upgrade ? true : false;
-  const isPrepaidUpgrade = action.prepaid_upgrade ? true : false;
-  const isUpgradedSeparately = action.upgrade_separate ? true : false;
+  const isNameHidden = !!action.name_hidden;
+  const isSaved = !!action.saved;
+  const isConverted = !!action.converted;
+  const isUpgraded = !!action.upgraded;
+  const isRefunded = !!action.refunded;
+  const isUpgradable = !!action.can_upgrade;
+  const isPrepaidUpgrade = !!action.prepaid_upgrade;
+  const isUpgradedSeparately = !!action.upgrade_separate;
   const gift = constructGiftNonUpgraded(Api.as("starGift", action.gift));
   const message = action.message?.text;
   const messageEntities = action.message?.entities.map((v) => constructMessageEntity(v)).filter((v) => v !== null);

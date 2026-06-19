@@ -115,7 +115,7 @@ export type ChatMember = ChatMemberCreator | ChatMemberAdministrator | ChatMembe
 
 export function constructChatMember(member: ChatP, participant: Api.ChannelParticipant | Api.ChatParticipant | (Omit<Api.ChannelParticipant, "peer"> & { peer: ReturnType<typeof getPeer> }), getPeer: PeerGetter): ChatMember {
   const peer = "user_id" in participant ? getPeer({ ...participant, _: "peerUser" }) : "peer" in participant ? Array.isArray(participant.peer) ? participant.peer : Api.is("peerUser", participant.peer) ? getPeer(participant.peer) : unreachable() : unreachable(); // TODO: support other peer types
-  if (peer === null || peer[0].type !== "private") unreachable();
+  if (!peer || peer[0].type !== "private") unreachable();
   if (Api.is("channelParticipant", participant) || Api.is("chatParticipant", participant)) {
     return {
       status: "member",
@@ -125,7 +125,7 @@ export function constructChatMember(member: ChatP, participant: Api.ChannelParti
     return cleanObject({
       status: "creator",
       member,
-      isAnonymous: participant.admin_rights.anonymous ? true : false,
+      isAnonymous: !!participant.admin_rights.anonymous,
       title: participant.rank,
     });
   } else if (Api.is("channelParticipantAdmin", participant)) {
@@ -145,7 +145,7 @@ export function constructChatMember(member: ChatP, participant: Api.ChannelParti
         until,
       });
     }
-    const isMember = participant.left ? true : false;
+    const isMember = !!participant.left;
     const rights = constructChatMemberRights(participant.banned_rights);
     const tag = participant.rank;
     return cleanObject({

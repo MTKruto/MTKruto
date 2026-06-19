@@ -124,8 +124,8 @@ export function constructStoryInteractiveArea(area: Api.MediaArea): StoryInterac
       position,
       reaction,
       count: 0, // TODO: count
-      isFlipped: area.flipped ? true : false,
-      isDark: area.dark ? true : false,
+      isFlipped: !!area.flipped,
+      isDark: !!area.dark,
     };
   } else if (Api.is("mediaAreaChannelPost", area)) {
     return {
@@ -187,7 +187,7 @@ export function storyInteractiveAreaToTlObject(area: StoryInteractiveArea, getPe
 
     case "reaction": {
       const reaction = reactionToTlObject(area.reaction);
-      return { _: "mediaAreaSuggestedReaction", coordinates, reaction, dark: area.isDark ? true : undefined, flipped: area.isFlipped ? true : undefined };
+      return { _: "mediaAreaSuggestedReaction", coordinates, reaction, dark: area.isDark || undefined, flipped: area.isFlipped || undefined };
     }
     case "messageReference": {
       const peer = getPeer(Api.chatIdToPeer(area.messageReference.chatId));

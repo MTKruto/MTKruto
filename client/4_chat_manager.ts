@@ -141,13 +141,13 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     if (params?.isApprovalRequired && params?.limit) {
       throw new InputError("isApprovalRequired cannot be true while limit is specified.");
     }
-    const result = await this.#c.invoke({ _: "messages.exportChatInvite", peer: await this.#c.getInputPeer(chatId), title: params?.title, expire_date: params?.expireAt, request_needed: params?.isApprovalRequired ? true : undefined, usage_limit: params?.limit });
+    const result = await this.#c.invoke({ _: "messages.exportChatInvite", peer: await this.#c.getInputPeer(chatId), title: params?.title, expire_date: params?.expireAt, request_needed: params?.isApprovalRequired || undefined, usage_limit: params?.limit });
     return constructInviteLink(Api.as("chatInviteExported", result), this.#c.getPeer);
   }
 
   async getCreatedInviteLinks(chatId: ID, params?: GetCreatedInviteLinksParams) {
     this.#c.storage.assertUser("getCreatedInviteLinks");
-    const { invites } = await this.#c.invoke({ _: "messages.getExportedChatInvites", peer: await this.#c.getInputPeer(chatId), revoked: params?.isRevoked ? true : undefined, admin_id: params?.by ? await this.#c.getInputUser(params.by) : { _: "inputUserEmpty" }, limit: getLimit(params?.limit), offset_date: params?.afterDate, offset_link: params?.afterInviteLink });
+    const { invites } = await this.#c.invoke({ _: "messages.getExportedChatInvites", peer: await this.#c.getInputPeer(chatId), revoked: params?.isRevoked || undefined, admin_id: params?.by ? await this.#c.getInputUser(params.by) : { _: "inputUserEmpty" }, limit: getLimit(params?.limit), offset_date: params?.afterDate, offset_link: params?.afterInviteLink });
     return await Promise.all(invites.map((v) => Api.as("chatInviteExported", v)).map((v) => constructInviteLink(v, this.#c.getPeer)));
   }
 
@@ -215,7 +215,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
       if (!canBeInputUser(member)) {
         throw new InputError(`Invalid user ID: ${memberId}`);
       }
-      await this.#c.invoke({ _: "messages.deleteChatUser", chat_id: chat.chat_id, user_id: toInputUser(member), revoke_history: params?.deleteMessages ? true : undefined });
+      await this.#c.invoke({ _: "messages.deleteChatUser", chat_id: chat.chat_id, user_id: toInputUser(member), revoke_history: params?.deleteMessages || undefined });
     }
   }
 
@@ -373,7 +373,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
 
   async #setIsSignaturesEnabled(chatId: ID, isEnabled: boolean, params?: EnableSignaturesParams) {
     const channel = await this.#c.getInputChannel(chatId);
-    await this.#c.invoke({ _: "channels.toggleSignatures", channel, signatures_enabled: isEnabled ? true : undefined, profiles_enabled: params?.showAuthorProfile ? true : undefined });
+    await this.#c.invoke({ _: "channels.toggleSignatures", channel, signatures_enabled: isEnabled || undefined, profiles_enabled: params?.showAuthorProfile || undefined });
   }
 
   async enableSignatures(chatId: ID, params?: EnableSignaturesParams) {

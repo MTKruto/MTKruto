@@ -87,7 +87,7 @@ export function constructSticker2(document: Api.document, fileId: string, fileUn
     premiumAnimation: undefined, // TODO
     maskPosition: stickerAttribute ? stickerAttribute.mask_coords ? constructMaskPosition(stickerAttribute.mask_coords) : undefined : undefined,
     customEmojiId: customEmojiAttribute ? customEmojiId : undefined,
-    needsRepainting: customEmojiAttribute ? Boolean(customEmojiAttribute.text_color) : undefined,
+    needsRepainting: customEmojiAttribute ? !!customEmojiAttribute.text_color : undefined,
     fileSize: Number(document.size),
   });
 }

@@ -169,7 +169,7 @@ export function constructGiftNonUpgraded(gift: Api.starGift): GiftNonUpgraded {
   const isSoldOut = isLimited ? !!gift.sold_out : undefined;
   const isBirthday = !!gift.birthday;
   const conversionPrice = Number(gift.convert_stars);
-  const firstSaleDate = isLimited ? gift.first_sale_date ? gift.first_sale_date : undefined : undefined;
+  const firstSaleDate = isLimited ? gift.first_sale_date || undefined : undefined;
   const lastSaleDate = isLimited ? gift.last_sale_date ? gift.last_sale_date : undefined : undefined;
   const upgradePrice = gift.upgrade_stars ? Number(gift.upgrade_stars) : undefined;
   return cleanObject({

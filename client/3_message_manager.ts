@@ -339,14 +339,14 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
-    const noWebpage = params?.linkPreview?.isDisabled ? true : undefined;
-    const invertMedia = params?.linkPreview?.isAboveText ? true : undefined;
-    const silent = params?.isSilent ? true : undefined;
-    const noforwards = params?.isContentProtected ? true : undefined;
+    const noWebpage = params?.linkPreview?.isDisabled || undefined;
+    const invertMedia = params?.linkPreview?.isAboveText || undefined;
+    const silent = params?.isSilent || undefined;
+    const noforwards = params?.isContentProtected || undefined;
     const sendAs = await this.#resolveSendAs(params);
     const effect = params?.effectId ? BigInt(params.effectId) : undefined;
     const schedule_date = params?.sendAt;
-    const allow_paid_floodskip = params?.isPaidBroadcast ? true : undefined;
+    const allow_paid_floodskip = params?.isPaidBroadcast || undefined;
 
     let result: Api.Updates;
     if (!noWebpage && params?.linkPreview?.url) {
@@ -357,9 +357,9 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         media: {
           _: "inputMediaWebPage",
           url: params.linkPreview.url,
-          force_large_media: params.linkPreview.mediaSize === "large" ? true : undefined,
-          force_small_media: params.linkPreview.mediaSize === "small" ? true : undefined,
-          optional: message.length ? undefined : true,
+          force_large_media: params.linkPreview.mediaSize === "large" || undefined,
+          force_small_media: params.linkPreview.mediaSize === "small" || undefined,
+          optional: !message.length || undefined,
         },
         message,
         invert_media: invertMedia,
@@ -411,12 +411,12 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
-    const silent = params?.isSilent ? true : undefined;
-    const noforwards = params?.isContentProtected ? true : undefined;
+    const silent = params?.isSilent || undefined;
+    const noforwards = params?.isContentProtected || undefined;
     const sendAs = await this.#resolveSendAs(params);
     const effect = params?.effectId ? BigInt(params.effectId) : undefined;
     const schedule_date = params?.sendAt;
-    const allow_paid_floodskip = params?.isPaidBroadcast ? true : undefined;
+    const allow_paid_floodskip = params?.isPaidBroadcast || undefined;
 
     const rich_message = MessageManager.inputRichTextToInputRichMessage(richText);
 
@@ -518,8 +518,8 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     this.#checkParams(params);
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
-    const silent = params?.isSilent ? true : undefined;
-    const noforwards = params?.isContentProtected ? true : undefined;
+    const silent = params?.isSilent || undefined;
+    const noforwards = params?.isContentProtected || undefined;
     const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined;
     const replyMarkup = await this.#constructReplyMarkup(params);
 
@@ -548,7 +548,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       message: "",
       effect: params?.effectId ? BigInt(params.effectId) : undefined,
       schedule_date: params?.sendAt,
-      allow_paid_floodskip: params?.isPaidBroadcast ? true : undefined,
+      allow_paid_floodskip: params?.isPaidBroadcast || undefined,
     }, { businessConnectionId: params?.businessConnectionId });
 
     const message = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
@@ -559,8 +559,8 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     this.#checkParams(params);
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
-    const silent = params?.isSilent ? true : undefined;
-    const noforwards = params?.isContentProtected ? true : undefined;
+    const silent = params?.isSilent || undefined;
+    const noforwards = params?.isContentProtected || undefined;
     const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined;
     const replyMarkup = await this.#constructReplyMarkup(params);
 
@@ -584,7 +584,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         message: "",
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
         schedule_date: params?.sendAt,
-        allow_paid_floodskip: params?.isPaidBroadcast ? true : undefined,
+        allow_paid_floodskip: params?.isPaidBroadcast || undefined,
       },
       { businessConnectionId: params?.businessConnectionId },
     );
@@ -597,8 +597,8 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     this.#checkParams(params);
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
-    const silent = params?.isSilent ? true : undefined;
-    const noforwards = params?.isContentProtected ? true : undefined;
+    const silent = params?.isSilent || undefined;
+    const noforwards = params?.isContentProtected || undefined;
     const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined;
     const replyMarkup = await this.#constructReplyMarkup(params);
 
@@ -618,7 +618,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       message: "",
       effect: params?.effectId ? BigInt(params.effectId) : undefined,
       schedule_date: params?.sendAt,
-      allow_paid_floodskip: params?.isPaidBroadcast ? true : undefined,
+      allow_paid_floodskip: params?.isPaidBroadcast || undefined,
     }, { businessConnectionId: params?.businessConnectionId });
 
     const message = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
@@ -629,8 +629,8 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     this.#checkParams(params);
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
-    const silent = params?.isSilent ? true : undefined;
-    const noforwards = params?.isContentProtected ? true : undefined;
+    const silent = params?.isSilent || undefined;
+    const noforwards = params?.isContentProtected || undefined;
     const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined;
     const replyMarkup = await this.#constructReplyMarkup(params);
 
@@ -669,7 +669,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         message: "",
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
         schedule_date: params?.sendAt,
-        allow_paid_floodskip: params?.isPaidBroadcast ? true : undefined,
+        allow_paid_floodskip: params?.isPaidBroadcast || undefined,
       },
       { businessConnectionId: params?.businessConnectionId },
     );
@@ -719,7 +719,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   }
 
   static #isM4a(firstPart: Uint8Array) {
-    return firstPart.length >= 10 && startsWith(firstPart.subarray(4), new Uint8Array([0x66, 0x74, 0x79, 0x70, 0x4D, 0x34]));
+    return firstPart.byteLength >= 10 && startsWith(firstPart.subarray(4), new Uint8Array([0x66, 0x74, 0x79, 0x70, 0x4D, 0x34]));
   }
 
   async sendVoice(chatId: ID, voice: FileSource, params?: SendVoiceParams) {
@@ -779,7 +779,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       params,
       FileType.Video,
       [
-        { _: "documentAttributeVideo", supports_streaming: params?.supportsStreaming ? true : undefined, w: params?.width ?? 0, h: params?.height ?? 0, duration: params?.duration ?? 0 },
+        { _: "documentAttributeVideo", supports_streaming: params?.supportsStreaming || undefined, w: params?.width ?? 0, h: params?.height ?? 0, duration: params?.duration ?? 0 },
       ],
       undefined,
       VIDEO_MIME_TYPES,
@@ -790,7 +790,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async #sendDocumentInner(chatId: ID, document: FileSource, params: SendDocumentParams & _SpoilCommon | undefined, fileType: FileType, otherAttribs: Api.DocumentAttribute[], urlSupported = true, expectedMimeTypes?: string[], createName?: (firstPart: Uint8Array) => string) {
     let media: Api.InputMedia | null = null;
-    const spoiler = params?.hasSpoiler ? true : undefined;
+    const spoiler = params?.hasSpoiler || undefined;
     const ttl_seconds = params && "selfDestruct" in params && typeof params.selfDestruct !== undefined ? selfDestructOptionToInt(params.selfDestruct as SelfDestructOption) : undefined;
 
     if (typeof document === "string") {
@@ -829,7 +829,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         if (params?.thumbnail) {
           thumb = await this.#c.fileManager.upload(params.thumbnail, { chunkSize: params?.chunkSize, signal: params?.signal });
         }
-        media = { _: "inputMediaUploadedDocument", file, thumb, spoiler, attributes: [{ _: "documentAttributeFilename", file_name: file.name }, ...otherAttribs], mime_type: mimeType, force_file: fileType === FileType.Document ? true : undefined, ttl_seconds };
+        media = { _: "inputMediaUploadedDocument", file, thumb, spoiler, attributes: [{ _: "documentAttributeFilename", file_name: file.name }, ...otherAttribs], mime_type: mimeType, force_file: fileType === FileType.Document || undefined, ttl_seconds };
       }
     }
 
@@ -873,8 +873,8 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     }
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
-    const silent = params?.isSilent ? true : undefined;
-    const noforwards = params?.isContentProtected ? true : undefined;
+    const silent = params?.isSilent || undefined;
+    const noforwards = params?.isContentProtected || undefined;
     const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined;
     const replyMarkup = await this.#constructReplyMarkup(params);
 
@@ -899,7 +899,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         entities: captionEntities,
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
         schedule_date: params?.sendAt,
-        allow_paid_floodskip: params?.isPaidBroadcast ? true : undefined,
+        allow_paid_floodskip: params?.isPaidBroadcast || undefined,
       },
       { businessConnectionId: params?.businessConnectionId },
     );
@@ -939,8 +939,8 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     }
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
-    const silent = params?.isSilent ? true : undefined;
-    const noforwards = params?.isContentProtected ? true : undefined;
+    const silent = params?.isSilent || undefined;
+    const noforwards = params?.isContentProtected || undefined;
     const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined;
     const replyMarkup = await this.#constructReplyMarkup(params);
 
@@ -970,17 +970,17 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       id: getRandomId(),
       answers,
       question: { _: "textWithEntities", text: questionParseResult[0], entities: questionParseResult[1] ?? [] },
-      closed: params?.isClosed ? true : undefined,
+      closed: params?.isClosed || undefined,
       close_date: params?.closeDate,
-      close_period: params?.openPeriod ? params.openPeriod : undefined,
-      multiple_choice: params?.isMultipleAnswersAllowed ? true : undefined,
-      public_voters: params?.isAnonymous === false ? true : undefined,
-      quiz: params?.type === "quiz" ? true : undefined,
+      close_period: params?.openPeriod || undefined,
+      multiple_choice: params?.isMultipleAnswersAllowed || undefined,
+      public_voters: params?.isAnonymous === false || undefined,
+      quiz: params?.type === "quiz" || undefined,
       hash: 0n,
-      revoting_disabled: params?.isRevotingAllowed === false ? true : undefined,
-      shuffle_answers: params?.isShuffled ? true : undefined,
-      hide_results_until_close: params?.isResultHidden ? true : undefined,
-      open_answers: params?.isAddingOptionsAllowed ? true : undefined,
+      revoting_disabled: params?.isRevotingAllowed === false || undefined,
+      shuffle_answers: params?.isShuffled || undefined,
+      hide_results_until_close: params?.isResultHidden || undefined,
+      open_answers: params?.isAddingOptionsAllowed || undefined,
       countries_iso2: params?.countries,
       subscribers_only: params?.isSubscriberOnly || undefined,
     };
@@ -1015,7 +1015,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         entities,
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
         schedule_date: params?.sendAt,
-        allow_paid_floodskip: params?.isPaidBroadcast ? true : undefined,
+        allow_paid_floodskip: params?.isPaidBroadcast || undefined,
       },
       { businessConnectionId: params?.businessConnectionId },
     );
@@ -1071,8 +1071,8 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     }
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
-    const silent = params?.isSilent ? true : undefined;
-    const noforwards = params?.isContentProtected ? true : undefined;
+    const silent = params?.isSilent || undefined;
+    const noforwards = params?.isContentProtected || undefined;
     const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined;
 
     const list: Api.todoItem[] = items.map((v, i) => {
@@ -1087,8 +1087,8 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       _: "todoList",
       title: { _: "textWithEntities", text: titleParseResult[0], entities: titleParseResult[1] ?? [] },
       list,
-      others_can_append: params?.isExtendableByOthers ? true : undefined,
-      others_can_complete: params?.isCompletableByOthers ? true : undefined,
+      others_can_append: params?.isExtendableByOthers || undefined,
+      others_can_complete: params?.isCompletableByOthers || undefined,
     };
 
     const media: Api.inputMediaTodo = { _: "inputMediaTodo", todo };
@@ -1106,7 +1106,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         message: "",
         effect: params?.effectId ? BigInt(params.effectId) : undefined,
         schedule_date: params?.sendAt,
-        allow_paid_floodskip: params?.isPaidBroadcast ? true : undefined,
+        allow_paid_floodskip: params?.isPaidBroadcast || undefined,
       },
       { businessConnectionId: params?.businessConnectionId },
     );
@@ -1168,12 +1168,12 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     if (params?.linkPreview && params.linkPreview.type !== "input") {
       throw new InputError("Expected link preview of type input.");
     }
-    const noWebpage = params?.linkPreview && params.linkPreview.type === "input" && params.linkPreview.isDisabled ? true : undefined;
-    const invertMedia = params?.linkPreview?.isAboveText ? true : undefined;
+    const noWebpage = params?.linkPreview && params.linkPreview.type === "input" && params.linkPreview.isDisabled || undefined;
+    const invertMedia = params?.linkPreview?.isAboveText || undefined;
 
     let media: Api.InputMedia | undefined = undefined;
     if (!noWebpage && params?.linkPreview?.url) {
-      media = { _: "inputMediaWebPage", url: params.linkPreview.url, force_large_media: params.linkPreview.mediaSize === "large" ? true : undefined, force_small_media: params.linkPreview.mediaSize === "small" ? true : undefined, optional: message.length ? undefined : true };
+      media = { _: "inputMediaWebPage", url: params.linkPreview.url, force_large_media: params.linkPreview.mediaSize === "large" || undefined, force_small_media: params.linkPreview.mediaSize === "small" || undefined, optional: !message.length || undefined };
     }
 
     const result = await this.#c.invoke({
@@ -1263,12 +1263,12 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     if (params?.linkPreview && params.linkPreview.type !== "input") {
       throw new InputError("Expected link preview of type input.");
     }
-    const noWebpage = params?.linkPreview && params.linkPreview.type === "input" && params.linkPreview.isDisabled ? true : undefined;
-    const invertMedia = params?.linkPreview?.isAboveText ? true : undefined;
+    const noWebpage = params?.linkPreview && params.linkPreview.type === "input" && params.linkPreview.isDisabled || undefined;
+    const invertMedia = params?.linkPreview?.isAboveText || undefined;
 
     let media: Api.InputMedia | undefined = undefined;
     if (!noWebpage && params?.linkPreview?.url) {
-      media = { _: "inputMediaWebPage", url: params.linkPreview.url, force_large_media: params.linkPreview.mediaSize === "large" ? true : undefined, force_small_media: params.linkPreview.mediaSize === "small" ? true : undefined, optional: message.length ? undefined : true };
+      media = { _: "inputMediaWebPage", url: params.linkPreview.url, force_large_media: params.linkPreview.mediaSize === "large" || undefined, force_small_media: params.linkPreview.mediaSize === "small" || undefined, optional: !message.length || undefined };
     }
 
     await this.#c.invoke({
@@ -1293,7 +1293,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async #resolveInputMediaInner(document: FileSource, media: InputMedia, fileType: FileType, otherAttribs: Api.DocumentAttribute[]) {
     let media_: Exclude<Api.InputMedia, Api.inputMediaEmpty> | null = null;
-    const spoiler = "hasSpoiler" in media && media.hasSpoiler ? true : undefined;
+    const spoiler = "hasSpoiler" in media && media.hasSpoiler || undefined;
 
     if (typeof document === "string") {
       const fileId = this.resolveFileId(document, fileType);
@@ -1321,7 +1321,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         if ("thumbnail" in media && media.thumbnail) {
           thumb = await this.#c.fileManager.upload(media.thumbnail, { chunkSize: media?.chunkSize, signal: media?.signal });
         }
-        media_ = { _: "inputMediaUploadedDocument", file, thumb, spoiler, attributes: [{ _: "documentAttributeFilename", file_name: file.name }, ...otherAttribs], mime_type: mimeType!, force_file: fileType === FileType.Document ? true : undefined };
+        media_ = { _: "inputMediaUploadedDocument", file, thumb, spoiler, attributes: [{ _: "documentAttributeFilename", file_name: file.name }, ...otherAttribs], mime_type: mimeType!, force_file: fileType === FileType.Document || undefined };
       }
     }
 
@@ -1342,7 +1342,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         return await this.#resolveInputMediaInner(media.document, media, FileType.Document, []);
       case "photo": {
         let media_: Api.InputMedia | null = null;
-        const spoiler = media.hasSpoiler ? true : undefined;
+        const spoiler = media.hasSpoiler || undefined;
         const ttl_seconds = "selfDestruct" in media && media.selfDestruct !== undefined ? selfDestructOptionToInt(media.selfDestruct) : undefined;
 
         if (typeof media.photo === "string") {
@@ -1366,7 +1366,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       case "video": {
         const ttl_seconds = "selfDestruct" in media && media.selfDestruct !== undefined ? selfDestructOptionToInt(media.selfDestruct) : undefined;
         const media_ = await this.#resolveInputMediaInner(media.video, media, FileType.Video, [
-          { _: "documentAttributeVideo", supports_streaming: media?.supportsStreaming ? true : undefined, w: media?.width ?? 0, h: media?.height ?? 0, duration: media?.duration ?? 0 },
+          { _: "documentAttributeVideo", supports_streaming: media?.supportsStreaming || undefined, w: media?.width ?? 0, h: media?.height ?? 0, duration: media?.duration ?? 0 },
         ]);
         media_.ttl_seconds = ttl_seconds;
         return media_;
@@ -1393,13 +1393,13 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
             access_hash: messageMedia.photo.access_hash,
             file_reference: messageMedia.photo.file_reference,
           },
-          spoiler: "hasSpoiler" in media && media.hasSpoiler ? true : undefined,
+          spoiler: "hasSpoiler" in media && media.hasSpoiler || undefined,
         };
       } else if ("document" in messageMedia && Api.is("document", messageMedia.document)) {
         return {
           _: "inputMediaDocument",
           id: { _: "inputDocument", id: messageMedia.document.id, access_hash: messageMedia.document.access_hash, file_reference: messageMedia.document.file_reference },
-          spoiler: "hasSpoiler" in media && media.hasSpoiler ? true : undefined,
+          spoiler: "hasSpoiler" in media && media.hasSpoiler || undefined,
         };
       } else {
         unreachable();
@@ -1426,7 +1426,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async #uploadPhoto(photo: FileSource, params?: SendPhotoParams & { video?: FileSource }) {
     let media: Api.InputMedia | null = null;
-    const spoiler = params?.hasSpoiler ? true : undefined;
+    const spoiler = params?.hasSpoiler || undefined;
     const ttl_seconds = params && "selfDestruct" in params && params.selfDestruct !== undefined ? selfDestructOptionToInt(params.selfDestruct) : undefined;
 
     let video: Api.InputDocument | undefined;
@@ -1437,7 +1437,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     if (typeof photo === "string") {
       const fileId = this.resolveFileId(photo, [FileType.Photo, FileType.ProfilePhoto]);
       if (fileId !== null) {
-        media = { _: "inputMediaPhoto", id: { ...fileId, _: "inputPhoto" }, spoiler, ttl_seconds, live_photo: video !== undefined ? true : undefined, video };
+        media = { _: "inputMediaPhoto", id: { ...fileId, _: "inputPhoto" }, spoiler, ttl_seconds, live_photo: video !== undefined || undefined, video };
       }
     }
 
@@ -1446,7 +1446,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         media = { _: "inputMediaPhotoExternal", url: photo, spoiler, ttl_seconds: (params && "selfDestruct" in params && params.selfDestruct !== undefined) ? selfDestructOptionToInt(params.selfDestruct) : undefined };
       } else {
         const file = await this.#c.fileManager.upload(photo, params, checkPhotoName(params), false);
-        media = { _: "inputMediaUploadedPhoto", file, spoiler, ttl_seconds: (params && "selfDestruct" in params && params.selfDestruct !== undefined) ? selfDestructOptionToInt(params.selfDestruct) : undefined, live_photo: video !== undefined ? true : undefined, video };
+        media = { _: "inputMediaUploadedPhoto", file, spoiler, ttl_seconds: (params && "selfDestruct" in params && params.selfDestruct !== undefined) ? selfDestructOptionToInt(params.selfDestruct) : undefined, live_photo: video !== undefined || undefined, video };
       }
     }
 
@@ -1588,7 +1588,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     if (canBeInputChannel(peer)) {
       await this.#c.invoke({ _: "channels.deleteMessages", channel: toInputChannel(peer), id: messageIds });
     } else {
-      await this.#c.invoke({ _: "messages.deleteMessages", id: messageIds, revoke: params?.onlyForMe ? undefined : true });
+      await this.#c.invoke({ _: "messages.deleteMessages", id: messageIds, revoke: !params?.onlyForMe || undefined });
     }
   }
 
@@ -1626,7 +1626,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async pinMessage(chatId: ID, messageId: number, params?: PinMessageParams) {
     this.#checkParams(params);
-    await this.#c.invoke({ _: "messages.updatePinnedMessage", peer: await this.#c.getInputPeer(chatId), id: checkMessageId(messageId), silent: params?.isSilent ? true : undefined, pm_oneside: params?.bothSides ? undefined : true });
+    await this.#c.invoke({ _: "messages.updatePinnedMessage", peer: await this.#c.getInputPeer(chatId), id: checkMessageId(messageId), silent: params?.isSilent || undefined, pm_oneside: !params?.bothSides || undefined });
   }
 
   async unpinMessage(chatId: ID, messageId: number, params?: UnpinMessageParams) {
@@ -1643,7 +1643,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   }
 
   async #sendReaction(chatId: ID, messageId: number, reactions: Reaction[], params?: AddReactionParams) {
-    await this.#c.invoke({ _: "messages.sendReaction", peer: await this.#c.getInputPeer(chatId), msg_id: checkMessageId(messageId), reaction: reactions.map((v) => reactionToTlObject(v)), big: params?.isBig ? true : undefined, add_to_recent: params?.addToRecents ? true : undefined });
+    await this.#c.invoke({ _: "messages.sendReaction", peer: await this.#c.getInputPeer(chatId), msg_id: checkMessageId(messageId), reaction: reactions.map((v) => reactionToTlObject(v)), big: params?.isBig || undefined, add_to_recent: params?.addToRecents || undefined });
   }
 
   async setReactions(chatId: ID, messageId: number, reactions: Reaction[], params?: SetReactionsParams) {
@@ -1908,7 +1908,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async getBlockedUsers(params?: GetBlockedUsersParams) {
     this.#c.storage.assertUser("getBlockedUsers");
-    const my_stories_from = params?.isBlockedFromViewingStories ? true : undefined;
+    const my_stories_from = params?.isBlockedFromViewingStories || undefined;
     const offset = params?.offset ?? 0;
     const limit = getLimit(params?.limit);
     const result = await this.#c.invoke({ _: "contacts.getBlocked", my_stories_from, offset, limit });
@@ -2081,8 +2081,8 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       }
     }
 
-    const silent = params?.isSilent ? true : undefined;
-    const noforwards = params?.isContentProtected ? true : undefined;
+    const silent = params?.isSilent || undefined;
+    const noforwards = params?.isContentProtected || undefined;
     const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined;
 
     const result = await this.#c.invoke({
@@ -2094,7 +2094,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       silent,
       send_as: sendAs,
       reply_to: await this.#constructReplyTo(params),
-      allow_paid_floodskip: params?.isPaidBroadcast ? true : undefined,
+      allow_paid_floodskip: params?.isPaidBroadcast || undefined,
     });
 
     return await this.updatesToMessages(chatId, result);
@@ -2242,10 +2242,10 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async openMiniApp(botId: ID, chatId: ID, params?: OpenMiniAppParams) {
     this.#c.storage.assertUser("openMiniApp");
-    const from_bot_menu = params?.isFromMenu ? true : undefined;
-    const silent = params?.isSilent ? true : undefined;
-    const compact = params?.mode === "compact" ? true : undefined;
-    const fullscreen = params?.mode === "fullscreen" ? true : undefined;
+    const from_bot_menu = params?.isFromMenu || undefined;
+    const silent = params?.isSilent || undefined;
+    const compact = params?.mode === "compact" || undefined;
+    const fullscreen = params?.mode === "fullscreen" || undefined;
     const peer = await this.#c.getInputPeer(chatId);
     const bot = await this.#c.getInputUser(botId);
     const url = params?.url;

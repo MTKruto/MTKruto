@@ -54,8 +54,8 @@ export function constructInviteLink(inviteLink_: Api.chatInviteExported, getPeer
   }
   const inviteLink = inviteLink_.link;
   const creator = constructUser2(peer[0]);
-  const requiresApproval = inviteLink_.request_needed ? true : false;
-  const isRevoked = inviteLink_.revoked ? true : false;
+  const requiresApproval = !!inviteLink_.request_needed;
+  const isRevoked = !!inviteLink_.revoked;
   const title = inviteLink_.title;
   const expiresAt = inviteLink_.expire_date;
   const limit = inviteLink_.usage_limit;

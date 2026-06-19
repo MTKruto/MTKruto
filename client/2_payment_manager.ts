@@ -61,7 +61,7 @@ export class PaymentManager implements UpdateProcessor<PaymentManagerUpdate> {
     if (!queryId) {
       throw new InputError("Invalid pre-checkout query ID");
     }
-    await this.#c.invoke({ _: "messages.setBotPrecheckoutResults", query_id: queryId, error: params?.error, success: ok ? true : undefined });
+    await this.#c.invoke({ _: "messages.setBotPrecheckoutResults", query_id: queryId, error: params?.error, success: ok || undefined });
   }
 
   async refundStarPayment(userId: ID, telegramPaymentChargeId: string) {
@@ -97,7 +97,7 @@ export class PaymentManager implements UpdateProcessor<PaymentManagerUpdate> {
     const peer = await this.#c.getInputPeer(chatId);
     const offset = params?.offset ?? "";
     const limit = getLimit(params?.limit);
-    const result = await this.#c.invoke({ _: "payments.getStarsTransactions", peer, ton: params?.isTon ? true : undefined, offset, limit, inbound: params?.isInbound ? true : undefined, outbound: params?.isOutbound ? true : undefined, ascending: params?.isAscending ? true : undefined, subscription_id: params?.subscriptionId });
+    const result = await this.#c.invoke({ _: "payments.getStarsTransactions", peer, ton: params?.isTon || undefined, offset, limit, inbound: params?.isInbound || undefined, outbound: params?.isOutbound || undefined, ascending: params?.isAscending || undefined, subscription_id: params?.subscriptionId });
     return constructStarTransactionList(result, this.#c.getPeer);
   }
 }

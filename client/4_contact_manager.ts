@@ -39,7 +39,7 @@ export class ContactManager {
 
     const noteParsed = params?.note ? this.#c.messageManager.parseText(params?.note, { parseMode: params?.noteParseMode, entities: params?.noteEntities }) : undefined;
 
-    await this.#c.invoke({ _: "contacts.addContact", add_phone_privacy_exception: params?.isPhoneNumberShared ? true : undefined, id: await this.#c.getInputUser(userId), first_name: firstName, last_name: params?.lastName ?? "", phone: params?.phoneNumber ?? "", note: noteParsed ? { _: "textWithEntities", text: noteParsed[0], entities: noteParsed[1] ?? [] } : undefined });
+    await this.#c.invoke({ _: "contacts.addContact", add_phone_privacy_exception: params?.isPhoneNumberShared || undefined, id: await this.#c.getInputUser(userId), first_name: firstName, last_name: params?.lastName ?? "", phone: params?.phoneNumber ?? "", note: noteParsed ? { _: "textWithEntities", text: noteParsed[0], entities: noteParsed[1] ?? [] } : undefined });
   }
 
   async #deleteContacts(userIds: ID[]) {

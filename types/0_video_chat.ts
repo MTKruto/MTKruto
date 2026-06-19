@@ -79,7 +79,7 @@ export function constructVideoChat(call: Api.GroupCall): VideoChat {
     };
   } else {
     const title = call.title ?? "";
-    const liveStream = call.rtmp_stream ? true : false;
+    const liveStream = !!call.rtmp_stream;
     const participantCount = call.participants_count;
     if (call.schedule_date) {
       return {
@@ -96,7 +96,7 @@ export function constructVideoChat(call: Api.GroupCall): VideoChat {
         id,
         title,
         isLiveStream: liveStream,
-        isRecording: call.record_video_active ? true : false,
+        isRecording: !!call.record_video_active,
         participantCount,
       };
     }

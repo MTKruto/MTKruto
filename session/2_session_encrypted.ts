@@ -225,7 +225,7 @@ export class SessionEncrypted extends Session implements Session {
     payloadWriter.writeInt64(this.state.serverSalt);
     payloadWriter.writeInt64(this.#id);
     payloadWriter.write(await serializeMessage(message));
-    payloadWriter.write(new Uint8Array(mod(-(payloadWriter.buffer.length + 12), 16) + 12));
+    payloadWriter.write(new Uint8Array(mod(-(payloadWriter.buffer.byteLength + 12), 16) + 12));
 
     const payload = payloadWriter.buffer;
 
@@ -388,7 +388,7 @@ export class SessionEncrypted extends Session implements Session {
   //// RECEIVE LOOP HANDLERS ////
   async #onMessage(msgId: bigint, body: Uint8Array, containerId: bigint | null) {
     this.#LreceiveLoop.debug("received message with ID", msgId, "and size", body.byteLength, "inside", ...(containerId === null ? ["no container"] : ["container", containerId]));
-    const logger = this.#LreceiveLoop.branch(msgId + "");
+    const logger = this.#LreceiveLoop.branch(String(msgId));
     let reader = new TLReader(body);
     let id = reader.readInt32(false);
     if (id === GZIP_PACKED) {

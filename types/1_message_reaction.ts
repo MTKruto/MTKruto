@@ -48,6 +48,6 @@ export function constructMessageReaction(reaction_: Api.reactionCount, recentRea
     .map((v) => Api.peerToChatId(v.peer_id));
   const reaction = constructReaction(reaction_.reaction);
   const count = reaction_.count;
-  const chosen = reaction_.chosen_order !== undefined ? true : false;
+  const chosen = reaction_.chosen_order !== undefined;
   return { reaction, count, choosers, isChosen: chosen };
 }

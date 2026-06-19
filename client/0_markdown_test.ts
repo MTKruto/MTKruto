@@ -44,7 +44,7 @@ Deno.test("bold", () => {
   assertEquals(parseMarkdown(text), expected);
 });
 
-Deno.test("Nested entities", () => {
+Deno.test("nested entities", () => {
   const text = "_*Some bold text*_";
   const expected = [
     "Some bold text",

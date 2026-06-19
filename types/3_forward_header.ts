@@ -82,7 +82,7 @@ export type ForwardHeader = ForwardHeaderUser | ForwardHeaderChannel | ForwardHe
 export function constructForwardHeader(fwdHeader: Api.MessageFwdHeader, getPeer: PeerGetter): ForwardHeader {
   if (fwdHeader.channel_post && fwdHeader.from_id?._ === "peerChannel") {
     const peer = getPeer(fwdHeader.from_id);
-    if (peer === null) {
+    if (!peer) {
       unreachable();
     }
     return cleanObject({
@@ -94,7 +94,7 @@ export function constructForwardHeader(fwdHeader: Api.MessageFwdHeader, getPeer:
     });
   } else if (fwdHeader.from_id?._ === "peerChannel") {
     const peer = getPeer(fwdHeader.from_id);
-    if (peer === null) {
+    if (!peer) {
       unreachable();
     }
     return cleanObject({
@@ -105,7 +105,7 @@ export function constructForwardHeader(fwdHeader: Api.MessageFwdHeader, getPeer:
     });
   } else if (fwdHeader.from_id?._ === "peerUser") {
     const peer = getPeer(fwdHeader.from_id);
-    if (peer === null || peer[0].type !== "private") {
+    if (!peer || peer[0].type !== "private") {
       unreachable();
     }
     return {

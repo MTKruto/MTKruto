@@ -34,6 +34,6 @@ export interface StoryReaction {
 export function constructStoryReaction(reaction_: Api.reactionCount): StoryReaction {
   const reaction = constructReaction(reaction_.reaction);
   const count = reaction_.count;
-  const chosen = reaction_.chosen_order !== undefined ? true : false;
+  const chosen = reaction_.chosen_order !== undefined;
   return { reaction, count, isChosen: chosen };
 }

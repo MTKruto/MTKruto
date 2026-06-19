@@ -34,7 +34,7 @@ export interface InlineQueryAnswer {
 
 export function constructInlineQueryAnswer(results: Api.messages_BotResults): InlineQueryAnswer {
   return cleanObject({
-    id: results.query_id + "",
+    id: String(results.query_id),
     results: results.results.map(constructInlineQueryResult),
     nextOffset: results.next_offset,
   });

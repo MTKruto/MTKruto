@@ -27,7 +27,7 @@ export function getString(name: string): string | null {
   if (globalName in global_) {
     const value = global_[globalName];
     if (value) {
-      const string = value + "";
+      const string = String(value);
       if (string) {
         return string;
       }

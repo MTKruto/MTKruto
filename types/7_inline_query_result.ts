@@ -627,7 +627,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
   const description = "description" in result_ ? result_.description : undefined;
 
   if (document !== null) {
-    return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb === null ? undefined : thumb, content: document, send_message: { _: "inputBotInlineMessageMediaAuto", message, entities, reply_markup: replyMarkup } };
+    return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb ?? undefined, content: document, send_message: { _: "inputBotInlineMessageMediaAuto", message, entities, reply_markup: replyMarkup } };
   } else if (fileId_ !== null) {
     const fileId = deserializeFileId(fileId_);
     return {
@@ -659,9 +659,9 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       send_message: sendMessage,
     };
   } else if (result_.type === "location") {
-    return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb === null ? undefined : thumb, send_message: { _: "inputBotInlineMessageMediaGeo", geo_point: { _: "inputGeoPoint", lat: result_.latitude, long: result_.longitude, accuracy_radius: result_.horizontalAccuracy }, heading: result_.heading, period: result_.livePeriod, proximity_notification_radius: result_.proximityAlertRadius, reply_markup: replyMarkup } };
+    return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb ?? undefined, send_message: { _: "inputBotInlineMessageMediaGeo", geo_point: { _: "inputGeoPoint", lat: result_.latitude, long: result_.longitude, accuracy_radius: result_.horizontalAccuracy }, heading: result_.heading, period: result_.livePeriod, proximity_notification_radius: result_.proximityAlertRadius, reply_markup: replyMarkup } };
   } else if (result_.type === "game") {
-    return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb === null ? undefined : thumb, send_message: { _: "inputBotInlineMessageGame", reply_markup: replyMarkup } };
+    return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb ?? undefined, send_message: { _: "inputBotInlineMessageGame", reply_markup: replyMarkup } };
   } else if (result_.type === "article") {
     let sendMessage: Api.InputBotInlineMessage;
 
@@ -705,11 +705,11 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
         break;
       case "text": {
         const [message, entities] = parseText(result_.messageContent.text, { entities: result_.messageContent.entities, parseMode: result_.messageContent.parseMode });
-        const noWebpage = result_.messageContent?.linkPreview && result_.messageContent?.linkPreview.type === "input" && result_.messageContent?.linkPreview.isDisabled ? true : undefined;
-        const invertMedia = result_.messageContent?.linkPreview?.isAboveText ? true : undefined;
+        const noWebpage = result_.messageContent?.linkPreview && result_.messageContent?.linkPreview.type === "input" && result_.messageContent?.linkPreview.isDisabled || undefined;
+        const invertMedia = result_.messageContent?.linkPreview?.isAboveText || undefined;
 
         if (result_.messageContent.linkPreview?.url) {
-          sendMessage = { _: "inputBotInlineMessageMediaWebPage", url: result_.messageContent.linkPreview.url, force_large_media: result_.messageContent.linkPreview.mediaSize === "large" ? true : undefined, force_small_media: result_.messageContent.linkPreview.mediaSize === "small" ? true : undefined, optional: message.length ? undefined : true, message, entities, invert_media: invertMedia, reply_markup: replyMarkup };
+          sendMessage = { _: "inputBotInlineMessageMediaWebPage", url: result_.messageContent.linkPreview.url, force_large_media: result_.messageContent.linkPreview.mediaSize === "large" || undefined, force_small_media: result_.messageContent.linkPreview.mediaSize === "small" || undefined, optional: !message.length || undefined, message, entities, invert_media: invertMedia, reply_markup: replyMarkup };
         } else {
           sendMessage = { _: "inputBotInlineMessageText", message, entities, no_webpage: noWebpage, invert_media: invertMedia, reply_markup: replyMarkup };
         }
@@ -717,12 +717,12 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       }
     }
 
-    return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb === null ? undefined : thumb, send_message: sendMessage };
+    return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb ?? undefined, send_message: sendMessage };
   } else if (result_.type === "venue") {
     if (!result_.foursquareId || !result_.foursquareType) {
       unreachable();
     }
-    return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb === null ? undefined : thumb, send_message: { _: "inputBotInlineMessageMediaVenue", geo_point: { _: "inputGeoPoint", long: result_.longitude, lat: result_.latitude }, address: result_.address, provider: "foursquare", title: result_.title, venue_id: result_.foursquareId, venue_type: result_.foursquareType, reply_markup: replyMarkup } };
+    return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb ?? undefined, send_message: { _: "inputBotInlineMessageMediaVenue", geo_point: { _: "inputGeoPoint", long: result_.longitude, lat: result_.latitude }, address: result_.address, provider: "foursquare", title: result_.title, venue_id: result_.foursquareId, venue_type: result_.foursquareType, reply_markup: replyMarkup } };
   } else {
     unreachable();
   }

@@ -448,7 +448,7 @@ export class FileManager {
           }
           const big = fileId_.location.source.type === PhotoSourceType.ChatPhotoBig;
           const peer = await this.#c.getInputPeer(Number(fileId_.location.source.chatId));
-          const location: Api.inputPeerPhotoFileLocation = { _: "inputPeerPhotoFileLocation", big: big ? true : undefined, peer, photo_id: fileId_.location.id };
+          const location: Api.inputPeerPhotoFileLocation = { _: "inputPeerPhotoFileLocation", big: big || undefined, peer, photo_id: fileId_.location.id };
           yield* this.downloadInner(location, fileId_.dcId, params);
           break;
         }

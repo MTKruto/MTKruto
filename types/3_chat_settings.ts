@@ -62,7 +62,7 @@ export function constructChatSettings(settings_: Api.messages_peerSettings): Cha
     businessBotCanReply: settings_.settings.business_bot_can_reply || false,
     distance: settings_.settings.geo_distance,
     joinRequestChatTitle: settings_.settings.request_chat_title,
-    joinRequestDate: settings_.settings.request_chat_date ? settings_.settings.request_chat_date : undefined,
+    joinRequestDate: settings_.settings.request_chat_date || undefined,
     businessBotUrl: settings_.settings.business_bot_manage_url,
     messagePrice: settings_.settings.charge_paid_message_stars ? Number(settings_.settings.charge_paid_message_stars) : undefined,
     registrationMonth: settings_.settings.registration_month,

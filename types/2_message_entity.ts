@@ -283,7 +283,7 @@ export function constructMessageEntity(obj: Api.MessageEntity): MessageEntity | 
   } else if (Api.is("messageEntityStrike", obj)) {
     return { type: "strikethrough", offset: obj.offset, length: obj.length };
   } else if (Api.is("messageEntityBlockquote", obj)) {
-    return cleanObject({ type: "blockquote", offset: obj.offset, length: obj.length, collapsible: obj.collapsed ? true : undefined } as const);
+    return cleanObject({ type: "blockquote", offset: obj.offset, length: obj.length, collapsible: obj.collapsed || undefined } as const);
   } else if (Api.is("messageEntityBankCard", obj)) {
     return { type: "bankCard", offset: obj.offset, length: obj.length };
   } else if (Api.is("messageEntitySpoiler", obj)) {

@@ -57,22 +57,22 @@ export class GiftManager {
       offset,
       limit,
       collection_id: params?.collectionId,
-      exclude_hosted: params?.isHostedExcluded ? true : undefined,
-      exclude_unupgradable: params?.isUnupgradableExcluded ? true : undefined,
-      exclude_upgradable: params?.isUpgradableExcluded ? true : undefined,
-      sort_by_value: params?.isSortedByValue ? true : undefined,
-      exclude_unique: params?.isUniqueExcluded ? true : undefined,
-      exclude_unlimited: params?.isUnlimitedExcluded ? true : undefined,
-      exclude_saved: params?.isSavedExcluded ? true : undefined,
-      exclude_unsaved: params?.isUnsavedExcluded ? true : undefined,
-      peer_color_available: params?.isWithColors ? true : undefined,
+      exclude_hosted: params?.isHostedExcluded || undefined,
+      exclude_unupgradable: params?.isUnupgradableExcluded || undefined,
+      exclude_upgradable: params?.isUpgradableExcluded || undefined,
+      sort_by_value: params?.isSortedByValue || undefined,
+      exclude_unique: params?.isUniqueExcluded || undefined,
+      exclude_unlimited: params?.isUnlimitedExcluded || undefined,
+      exclude_saved: params?.isSavedExcluded || undefined,
+      exclude_unsaved: params?.isUnsavedExcluded || undefined,
+      peer_color_available: params?.isWithColors || undefined,
     });
     return constructClaimedGifts(result, this.#c.getPeer);
   }
 
   async sendGift(chatId: ID, giftId: string, params?: SendGiftParams) {
-    const hide_name = params?.isPrivate ? true : undefined;
-    const include_upgrade = params?.upgrade ? true : undefined;
+    const hide_name = params?.isPrivate || undefined;
+    const include_upgrade = params?.upgrade || undefined;
     const peer = await this.#c.getInputPeer(chatId);
     const gift_id = BigInt(giftId);
     let message: Api.textWithEntities | undefined;

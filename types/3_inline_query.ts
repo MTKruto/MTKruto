@@ -43,7 +43,7 @@ export interface InlineQuery {
 
 export function constructInlineQuery(query_: Api.updateBotInlineQuery, getPeer: PeerGetter): InlineQuery {
   const peer = getPeer({ _: "peerUser", user_id: query_.user_id });
-  if (peer === null) {
+  if (!peer) {
     unreachable();
   }
 

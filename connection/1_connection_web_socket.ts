@@ -62,7 +62,7 @@ export class ConnectionWebSocket implements Connection {
         this.#buffer = concat([this.#buffer, data]);
 
         if (
-          this.#nextResolve !== null && this.#buffer.length >= this.#nextResolve[0]
+          this.#nextResolve !== null && this.#buffer.byteLength >= this.#nextResolve[0]
         ) {
           this.#nextResolve[1].resolve();
           this.#nextResolve = null;
@@ -110,7 +110,7 @@ export class ConnectionWebSocket implements Connection {
     const unlock = await this.#rMutex.lock();
     try {
       this.#assertConnected();
-      if (this.#buffer.length < p.byteLength) {
+      if (this.#buffer.byteLength < p.byteLength) {
         await new Promise<void>((resolve, reject) => this.#nextResolve = [p.byteLength, { resolve, reject }]);
       }
       const slice = this.#buffer.slice(0, p.byteLength);

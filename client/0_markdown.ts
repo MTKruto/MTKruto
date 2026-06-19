@@ -129,7 +129,7 @@ export function parseMarkdown(text_: string): [string, MessageEntity[]] {
 
   const nestedEntities: EntityInfo[] = [];
 
-  for (let i = 0; i < text.length; i++) {
+  for (let i = 0; i < text.byteLength; i++) {
     const c = text[i];
     if (c === CODEPOINTS["\\"] && text[i + 1] !== undefined && text[i + 1] > 0 && text[i + 1] <= 126) {
       i++;
@@ -225,7 +225,7 @@ export function parseMarkdown(text_: string): [string, MessageEntity[]] {
             while (text[languageEnd] !== null && !isWhitespace(text[languageEnd]) && text[languageEnd] !== CODEPOINTS["`"]) {
               languageEnd++;
             }
-            if (i !== languageEnd && languageEnd < text.length && text[languageEnd] !== CODEPOINTS["`"]) {
+            if (i !== languageEnd && languageEnd < text.byteLength && text[languageEnd] !== CODEPOINTS["`"]) {
               type = "pre";
               argument = text.slice(i, languageEnd);
               i = languageEnd;
@@ -284,7 +284,7 @@ export function parseMarkdown(text_: string): [string, MessageEntity[]] {
             i += 2;
             const urlBeginPos = i;
             const url_: number[] = [];
-            while (i < text.length && text[i] !== CODEPOINTS[")"]) {
+            while (i < text.byteLength && text[i] !== CODEPOINTS[")"]) {
               if (text[i] === CODEPOINTS["\\"] && text[i + 1] > 0 && text[i + 1] <= 126) {
                 url_.push(text[i + 1]);
                 i += 2;
@@ -316,7 +316,7 @@ export function parseMarkdown(text_: string): [string, MessageEntity[]] {
           i += 2;
           const url_: number[] = [];
           const urlBeginPos = i;
-          while (i < text.length && text[i] !== CODEPOINTS[")"]) {
+          while (i < text.byteLength && text[i] !== CODEPOINTS[")"]) {
             if (text[i] === CODEPOINTS["\\"] && text[i + 1] > 0 && text[i + 1] <= 126) {
               url_.push(text[i + 1]);
               i += 2;

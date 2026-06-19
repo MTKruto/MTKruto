@@ -854,7 +854,7 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
     id: message_.id,
     chat,
     date: message_.date,
-    isTopicMessage: message_.reply_to && Api.is("messageReplyHeader", message_.reply_to) && message_.reply_to.forum_topic ? true : false,
+    isTopicMessage: !!(message_.reply_to && Api.is("messageReplyHeader", message_.reply_to) && message_.reply_to.forum_topic),
     ...getSender(message_, getPeer),
   };
 
@@ -1034,11 +1034,11 @@ export async function constructMessage(
     date: message_.date,
     views: message_.views,
     forwards: message_.forwards,
-    isTopicMessage: message_.reply_to && Api.is("messageReplyHeader", message_.reply_to) && message_.reply_to.forum_topic ? true : false,
+    isTopicMessage: !!(message_.reply_to && Api.is("messageReplyHeader", message_.reply_to) && message_.reply_to.forum_topic),
     hasProtectedContent: message_.noforwards || false,
     senderBoostCount: message_.from_boosts_applied,
     effectId: message_.effect ? String(message_.effect) : undefined,
-    isScheduled: message_.from_scheduled ? true : undefined,
+    isScheduled: message_.from_scheduled || undefined,
     ...getSender(message_, getPeer),
     for: message_.guestchat_via_from ? getPeer(message_.guestchat_via_from)?.[0] : undefined,
   };

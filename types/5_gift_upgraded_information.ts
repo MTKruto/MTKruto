@@ -43,11 +43,11 @@ export interface GiftUpgradedInformation {
 }
 
 export function constructGiftUpgradedInformation(action: Api.messageActionStarGiftUnique, getPeer: PeerGetter): GiftUpgradedInformation {
-  const isUpgraded = action.upgrade ? true : false;
-  const isTransferred = action.transferred ? true : false;
-  const isSaved = action.saved ? true : false;
-  const isRefunded = action.refunded ? true : false;
-  const isPrepaidUpgrade = action.prepaid_upgrade ? true : false;
+  const isUpgraded = !!action.upgrade;
+  const isTransferred = !!action.transferred;
+  const isSaved = !!action.saved;
+  const isRefunded = !!action.refunded;
+  const isPrepaidUpgrade = !!action.prepaid_upgrade;
   const gift = constructGiftUpgraded(Api.as("starGiftUnique", action.gift), getPeer);
   const exportableAt = action.can_export_at;
   const transferPrice = action.transfer_stars ? Number(action.transfer_stars) : undefined;

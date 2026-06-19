@@ -70,8 +70,8 @@ export function constructChatPhoto(photo: Api.userProfilePhoto | Api.chatPhoto, 
       smallFileUniqueId,
       bigFileId,
       bigFileUniqueId,
-      hasVideo: photo.has_video || false,
-      isPersonal: photo.personal ? true : false,
+      hasVideo: !!photo.has_video,
+      isPersonal: !!photo.personal,
     });
   }
 }

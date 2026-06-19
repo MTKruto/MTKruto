@@ -465,13 +465,13 @@ export class UpdateManager {
   }
 
   async #processUpdates(updates_: Api.Update | Api.Updates, checkGap: boolean, call: Api.AnyObject | null = null) {
-    /// First, individual updates (Update[1]) are extracted from Updates.[2]
-    ///
-    /// If an updatesTooLong[3] was received, an update gap recovery is initiated and no further action will be taken.
-    ///
-    /// [1]: https://core.telegram.org/type/Update
-    /// [2]: https://core.telegram.org/type/Updates
-    /// [3]: https://core.telegram.org/constructor/updatesTooLong
+    // First, individual updates (Update[1]) are extracted from Updates.[2]
+    //
+    // If an updatesTooLong[3] was received, an update gap recovery is initiated and no further action will be taken.
+    //
+    // [1]: https://core.telegram.org/type/Update
+    // [2]: https://core.telegram.org/type/Updates
+    // [3]: https://core.telegram.org/constructor/updatesTooLong
     let updates: Api.Update[];
     if (Api.is("updatesCombined", updates_) || Api.is("updates", updates_)) {
       updates = updates_.updates;
@@ -496,7 +496,7 @@ export class UpdateManager {
             this.#L$processUpdates.debug("localSeq + 1 > seqStart");
             return;
           } else if (localSeq + 1 < seqStart) {
-            // There's an updates gap that must be filled.
+            // There's an update gap that must be filled.
             await this.recoverUpdateGap("localSeq + 1 < seqStart");
           }
         }
@@ -1016,7 +1016,7 @@ export class UpdateManager {
     }
     const controller = new AbortController();
     const promise = Promise.resolve().then(async () => {
-      const logger = this.#LopenChat.branch(Api.peerToChatId(channel) + "");
+      const logger = this.#LopenChat.branch(String(Api.peerToChatId(channel)));
       while (true) {
         if (this.#c.isDisconnected()) {
           logger.debug("disconnected, stopping the loop");

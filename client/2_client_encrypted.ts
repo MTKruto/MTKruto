@@ -112,7 +112,7 @@ export class ClientEncrypted extends ClientAbstract {
     const payloadSha1 = await sha1(payload);
     const messageKey = payloadSha1.subarray(4, 20);
 
-    payloadWriter.write(new Uint8Array(mod(-payload.length, 16)));
+    payloadWriter.write(new Uint8Array(mod(-payload.byteLength, 16)));
     payload = payloadWriter.buffer;
 
     const sha1A = await sha1(concat([messageKey, this.#authKey.subarray(0, 32)]));

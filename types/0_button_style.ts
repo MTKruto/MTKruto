@@ -44,5 +44,5 @@ export function buttonStyleToTlObject(buttonStyle: ButtonStyle | undefined): Api
     return undefined;
   }
 
-  return { _: "keyboardButtonStyle", bg_danger: buttonStyle.background === "danger" ? true : undefined, bg_primary: buttonStyle.background === "primary" ? true : undefined, bg_success: buttonStyle.background === "success" ? true : undefined, icon: buttonStyle.customEmojiId ? BigInt(buttonStyle.customEmojiId) : undefined };
+  return { _: "keyboardButtonStyle", bg_danger: buttonStyle.background === "danger" || undefined, bg_primary: buttonStyle.background === "primary" || undefined, bg_success: buttonStyle.background === "success" || undefined, icon: buttonStyle.customEmojiId ? BigInt(buttonStyle.customEmojiId) : undefined };
 }

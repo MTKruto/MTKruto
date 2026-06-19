@@ -53,7 +53,7 @@ export function constructStory(story: Api.storyItem, peer: Api.peerUser | Api.pe
   const chat = peer_[0];
   const date = story.date;
   const interactiveAreas = (story.media_areas ?? []).map(constructStoryInteractiveArea);
-  const isHighlighted = story.pinned ? true : false;
+  const isHighlighted = !!story.pinned;
   const content = constructStoryContent(story.media);
   const caption = story.caption;
   const captionEntities = story.entities?.map(constructMessageEntity).filter((v): v is NonNullable<typeof v> => !!v);
@@ -61,12 +61,12 @@ export function constructStory(story: Api.storyItem, peer: Api.peerUser | Api.pe
   const interactions = story.views ? constructStoryInteractions(story.views) : undefined;
 
   return cleanObject({
-    isOutgoing: story.out ? true : false,
+    isOutgoing: !!story.out,
     id,
     chat,
     date,
     content,
-    isEdited: story.edited ? true : false,
+    isEdited: !!story.edited,
     interactiveAreas,
     isHighlighted,
     interactions,

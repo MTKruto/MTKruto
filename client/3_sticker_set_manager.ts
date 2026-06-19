@@ -114,9 +114,9 @@ export class StickerSetManager {
 
     const result = await this.#c.invoke({
       _: "stickers.createStickerSet",
-      masks: params?.isMask ? true : undefined,
-      emojis: params?.isCustomEmoji ? true : undefined,
-      text_color: params?.isAdaptive ? true : undefined,
+      masks: params?.isMask || undefined,
+      emojis: params?.isCustomEmoji || undefined,
+      text_color: params?.isAdaptive || undefined,
       title: name,
       user_id,
       short_name: slug,

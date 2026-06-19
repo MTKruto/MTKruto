@@ -66,7 +66,7 @@ export function fromString<T>(string: string): T {
   const [type, value] = [Number(string[0]) as ValueType, string.slice(1)];
   switch (type) {
     case ValueType.Boolean:
-      return Boolean(Number(value)) as T;
+      return !!Number(value) as T;
     case ValueType.Number:
       return Number(value) as T;
     case ValueType.String:
@@ -92,7 +92,7 @@ export function fromString<T>(string: string): T {
       return arr as T;
     }
     case ValueType.Map:
-      //deno-lint-ignore no-explicit-any
+      // deno-lint-ignore no-explicit-any
       return Object.fromEntries(fromString(`${ValueType.Array}${value}`) as [string, any]) as T;
   }
 }
