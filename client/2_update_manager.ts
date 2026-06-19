@@ -588,7 +588,7 @@ export class UpdateManager {
     if (Api.is("updates", updates_) || Api.is("updatesCombined", updates_)) {
       this.processChats(updates_.chats, updates_);
       this.processUsers(updates_.users, updates_);
-      this.#setUpdateStateDate(updates_.date);
+      await this.#setUpdateStateDate(updates_.date);
     } else if (
       Api.isOneOf([
         "updateShort",

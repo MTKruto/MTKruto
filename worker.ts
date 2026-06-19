@@ -73,7 +73,7 @@ async function handleMessage(message: WorkerRequest | WorkerResponse) {
       isError: true,
       data: {
         name: "InputError",
-        args: "Client not inited",
+        args: "Client not initialized.",
       },
     };
   } else {
@@ -111,7 +111,7 @@ export function initClient(request: WorkerRequest): WorkerResponse {
       isError: true,
       data: {
         name: "InputError",
-        args: "Client already inited",
+        args: "Client already initialized.",
       },
     };
   } else {
