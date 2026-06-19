@@ -1236,6 +1236,22 @@ export abstract class ClientGeneric {
    */
   abstract getFavoriteStickers(): Promise<Sticker[]>;
 
+  /**
+   * Add a sticker to favorites. User-only.
+   *
+   * @method ms
+   * @param fileId The file identifier of the sticker.
+   */
+  abstract addStickerToFavorites(fileId: string): Promise<void>;
+
+  /**
+   * Remove a sticker from favorites. User-only.
+   *
+   * @method ms
+   * @param fileId The file identifier of the sticker.
+   */
+  abstract removeStickerFromFavorites(fileId: string): Promise<void>;
+
   //
   // ========================= POLLS ========================= //
   //

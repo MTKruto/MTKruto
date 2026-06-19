@@ -2494,4 +2494,26 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     );
     return stickers;
   }
+
+  async #faveSticker(fileId_: string, isFavorited: boolean) {
+    const fileId = deserializeFileId(fileId_);
+    if (fileId.type !== FileType.Sticker || fileId.location.type !== "common") {
+      throw new InputError("Invalid file ID.");
+    }
+    const id_ = fileId.location.id;
+    const access_hash = fileId.location.accessHash;
+    const file_reference = fileId.fileReference ?? new Uint8Array();
+    const id: Api.inputDocument = { _: "inputDocument", id: id_, access_hash, file_reference };
+    await this.#c.invoke({ _: "messages.faveSticker", id, unfave: !isFavorited });
+  }
+
+  async addStickerToFavorites(fileId: string) {
+    this.#c.storage.assertUser("addStickerToFavorites");
+    await this.#faveSticker(fileId, true);
+  }
+
+  async removeStickerFromFavorites(fileId: string) {
+    this.#c.storage.assertUser("removeStickerFromFavorites");
+    await this.#faveSticker(fileId, false);
+  }
 }
