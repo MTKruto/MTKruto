@@ -4087,7 +4087,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param storyIds The identifiers of the stories to report.
    */
   async reportStories(chatId: ID, storyIds: number[], params?: ReportStoryParams): Promise<StoryReportResult> {
-    return await this.#storyManager.reportStory(chatId, storyIds, params);
+    return await this.#storyManager.reportStories(chatId, storyIds, params);
   }
 
   //

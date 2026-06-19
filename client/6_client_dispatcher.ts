@@ -3049,7 +3049,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param storyIds The identifiers of the stories to report.
    */
   async reportStories(chatId: ID, storyIds: number[], params?: ReportStoryParams): Promise<StoryReportResult> {
-    return await this.#dispatch("reportStory", chatId, storyIds, params);
+    return await this.#dispatch("reportStories", chatId, storyIds, params);
   }
 
   //
