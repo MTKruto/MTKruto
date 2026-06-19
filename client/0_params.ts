@@ -1093,3 +1093,8 @@ export interface TranslateTextParams {
   /** The tone of the translation. */
   tone?: string;
 }
+
+export interface ReportChatParams {
+  /** The text of the report. */
+  text?: string;
+}

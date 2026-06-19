@@ -21,9 +21,9 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { type AvailableReactions, availableReactionsToTlObject, chatAdministratorRightsToTlObject, type ChatP, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, constructJoinRequest2, type SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
-import { chatMemberRightsToTlObject, type FileSource, type ID, type Update } from "../3_types.ts";
-import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, EnableSignaturesParams, GetCreatedInviteLinksParams, GetJoinRequestsParams, PromoteChatMemberParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams } from "./0_params.ts";
+import { type AvailableReactions, availableReactionsToTlObject, chatAdministratorRightsToTlObject, type ChatP, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, constructJoinRequest2, reportReasonToTlObject, type SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
+import { chatMemberRightsToTlObject, type FileSource, type ID, type ReportReason, type Update } from "../3_types.ts";
+import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, EnableSignaturesParams, GetCreatedInviteLinksParams, GetJoinRequestsParams, PromoteChatMemberParams, ReportChatParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, canBeInputUser, getLimit, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -561,5 +561,13 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     const peer = await this.#c.getInputPeer(chatId);
     const send_as = await this.#c.getInputPeer(sendAs);
     await this.#c.invoke({ _: "messages.saveDefaultSendAs", peer, send_as });
+  }
+
+  async reportChat(chatId: ID, reason_: ReportReason, params?: ReportChatParams) {
+    this.#c.storage.assertUser("reportChat");
+    const peer = await this.#c.getInputPeer(chatId);
+    const reason = reportReasonToTlObject(reason_);
+    const message = params?.text ?? "";
+    this.#c.invoke({ _: "account.reportPeer", peer, reason, message });
   }
 }
