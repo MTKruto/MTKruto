@@ -1098,3 +1098,10 @@ export interface ReportChatParams {
   /** The text of the report. */
   text?: string;
 }
+
+export interface ReportStoryParams {
+  /** The option of the report. */
+  option?: string;
+  /** The text of the report. */
+  text?: string;
+}
