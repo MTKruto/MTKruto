@@ -1221,6 +1221,14 @@ export abstract class ClientGeneric {
    */
   abstract getRichText(chatId: ID, messageId: number): Promise<RichText | null>;
 
+  /**
+   * Get the scheduled messages of a chat. User-only.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat including the scheduled messages.
+   */
+  abstract getScheduledMessages(chatId: ID): Promise<Message[]>;
+
   //
   // ========================= POLLS ========================= //
   //

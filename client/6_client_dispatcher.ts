@@ -1666,6 +1666,16 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("getRichText", chatId, messageId);
   }
 
+  /**
+   * Get the scheduled messages of a chat. User-only.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat including the scheduled messages.
+   */
+  async getScheduledMessages(chatId: ID): Promise<Message[]> {
+    return await this.#dispatch("getScheduledMessages", chatId);
+  }
+
   //
   // ========================= POLLS ========================= //
   //
