@@ -23,18 +23,21 @@ import { base64EncodeUrlSafe } from "../1_utilities.ts";
 import type { Api } from "../2_tl.ts";
 import { constructStoryReportOption, type StoryReportOption } from "./0_story_report_option.ts";
 
+/** @unlisted */
 export interface StoryReportResultOptionRequired {
   type: "optionRequired";
   title: string;
   options: StoryReportOption[];
 }
 
+/** @unlisted */
 export interface StoryReportResultTextRequired {
   type: "textRequired";
   option: string;
   isOptional: boolean;
 }
 
+/** @unlisted */
 export interface StoryReportResultReported {
   type: "reported";
 }

@@ -21,42 +21,52 @@
 import { unreachable } from "../0_deps.ts";
 import type { Api } from "../2_tl.ts";
 
+/** @unlisted */
 export interface ReportReasonSpam {
   type: "spam";
 }
 
+/** @unlisted */
 export interface ReportReasonViolence {
   type: "violence";
 }
 
+/** @unlisted */
 export interface ReportReasonPornography {
   type: "pornography";
 }
 
+/** @unlisted */
 export interface ReportReasonChildAbuse {
   type: "childAbuse";
 }
 
+/** @unlisted */
 export interface ReportReasonOther {
   type: "other";
 }
 
+/** @unlisted */
 export interface ReportReasonCopyright {
   type: "copyright";
 }
 
+/** @unlisted */
 export interface ReportReasonLocationIrrelevant {
   type: "locationIrrelevant";
 }
 
+/** @unlisted */
 export interface ReportReasonFake {
   type: "fake";
 }
 
+/** @unlisted */
 export interface ReportReasonIllegalDrugs {
   type: "illegalDrugs";
 }
 
+/** @unlisted */
 export interface ReportReasonPersonalDetails {
   type: "personalDetails";
 }
