@@ -2466,4 +2466,11 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const message = assertMessageType(await this.constructMessage(message_, false), "richText");
     return message.richText;
   }
+
+  async getScheduledMessages(chatId: ID) {
+    this.#c.storage.assertUser("getScheduledMessages");
+    const peer = await this.#c.getInputPeer(chatId);
+    const result = Api.as("messages.messages", await this.#c.invoke({ _: "messages.getScheduledHistory", peer, hash: 0n }));
+    return await Promise.all(result.messages.map((v) => this.constructMessage(v, false)));
+  }
 }

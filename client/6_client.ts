@@ -2704,6 +2704,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     return await this.#messageManager.getRichText(chatId, messageId);
   }
 
+  /**
+   * Get the scheduled messages of a chat. User-only.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat including the scheduled messages.
+   */
+  async getScheduledMessages(chatId: ID): Promise<Message[]> {
+    return await this.#messageManager.getScheduledMessages(chatId);
+  }
+
   //
   // ========================= POLLS ========================= //
   //
