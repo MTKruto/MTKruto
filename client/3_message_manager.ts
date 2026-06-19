@@ -2538,4 +2538,30 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     this.#c.storage.assertUser("removeStickerFromRecents");
     await this.#changeStickerRecentStatus(fileId, false);
   }
+
+  async clearRecentStickers() {
+    this.#c.storage.assertUser("clearRecentStickers");
+    await this.#c.invoke({ _: "messages.clearRecentStickers" });
+  }
+
+  async getRecentStickers() {
+    this.#c.storage.assertUser("getRecentStickers");
+    const result = Api.as("messages.recentStickers", await this.#c.invoke({ _: "messages.getRecentStickers", hash: 0n }));
+    const stickers = await Promise.all(
+      result.stickers.map((v): Api.document => Api.as("document", v)).map((v) => {
+        const fileId: FileId = {
+          type: FileType.Sticker,
+          dcId: v.dc_id,
+          location: {
+            type: "common",
+            id: v.id,
+            accessHash: v.access_hash,
+          },
+          fileReference: v.file_reference,
+        };
+        return constructSticker(v, serializeFileId(fileId), toUniqueFileId(fileId), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager));
+      }),
+    );
+    return stickers;
+  }
 }

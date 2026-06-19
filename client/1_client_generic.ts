@@ -1268,6 +1268,20 @@ export abstract class ClientGeneric {
    */
   abstract removeStickerFromRecents(fileId: string): Promise<void>;
 
+  /**
+   * Get recent stickers. User-only.
+   *
+   * @method ms
+   */
+  abstract getRecentStickers(): Promise<Sticker[]>;
+
+  /**
+   * Clear recent stickers. User-only.
+   *
+   * @method ms
+   */
+  abstract clearRecentStickers(): Promise<void>;
+
   //
   // ========================= POLLS ========================= //
   //
