@@ -2516,4 +2516,26 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     this.#c.storage.assertUser("removeStickerFromFavorites");
     await this.#faveSticker(fileId, false);
   }
+
+  async #changeStickerRecentStatus(fileId_: string, isSaved: boolean) {
+    const fileId = deserializeFileId(fileId_);
+    if (fileId.type !== FileType.Sticker || fileId.location.type !== "common") {
+      throw new InputError("Invalid file ID.");
+    }
+    const id_ = fileId.location.id;
+    const access_hash = fileId.location.accessHash;
+    const file_reference = fileId.fileReference ?? new Uint8Array();
+    const id: Api.inputDocument = { _: "inputDocument", id: id_, access_hash, file_reference };
+    await this.#c.invoke({ _: "messages.saveRecentSticker", id, unsave: !isSaved });
+  }
+
+  async addStickerToRecents(fileId: string) {
+    this.#c.storage.assertUser("addStickerToRecents");
+    await this.#changeStickerRecentStatus(fileId, true);
+  }
+
+  async removeStickerFromRecents(fileId: string) {
+    this.#c.storage.assertUser("removeStickerFromRecents");
+    await this.#changeStickerRecentStatus(fileId, false);
+  }
 }
