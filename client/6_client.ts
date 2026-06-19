@@ -2723,6 +2723,26 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     return await this.#messageManager.getFavoriteStickers();
   }
 
+  /**
+   * Add a sticker to favorites. User-only.
+   *
+   * @method ms
+   * @param fileId The file identifier of the sticker.
+   */
+  async addStickerToFavorites(fileId: string): Promise<void> {
+    return await this.#messageManager.addStickerToFavorites(fileId);
+  }
+
+  /**
+   * Remove a sticker from favorites. User-only.
+   *
+   * @method ms
+   * @param fileId The file identifier of the sticker.
+   */
+  async removeStickerFromFavorites(fileId: string): Promise<void> {
+    return await this.#messageManager.removeStickerFromFavorites(fileId);
+  }
+
   //
   // ========================= POLLS ========================= //
   //
