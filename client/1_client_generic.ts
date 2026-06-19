@@ -1252,6 +1252,22 @@ export abstract class ClientGeneric {
    */
   abstract removeStickerFromFavorites(fileId: string): Promise<void>;
 
+  /**
+   * Add a sticker to recents. User-only.
+   *
+   * @method ms
+   * @param fileId The file identifier of the sticker.
+   */
+  abstract addStickerToRecents(fileId: string): Promise<void>;
+
+  /**
+   * Remove a sticker from recents. User-only.
+   *
+   * @method ms
+   * @param fileId The file identifier of the sticker.
+   */
+  abstract removeStickerFromRecents(fileId: string): Promise<void>;
+
   //
   // ========================= POLLS ========================= //
   //
