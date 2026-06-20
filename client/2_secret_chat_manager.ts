@@ -196,7 +196,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
       _: "decryptedMessage",
       message: text,
       random_id,
-      ttl: 0,
+      ttl: params?.ttl ?? 0,
       silent: params?.isSilent || undefined,
       reply_to_random_id: params?.replyToMessageId ? BigInt(params.replyToMessageId) : undefined,
       entities: params?.entities?.length ? params.entities.map(secretMessageEntityToTlObject) : undefined,
