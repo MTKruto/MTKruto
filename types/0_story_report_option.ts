@@ -18,25 +18,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { unreachable } from "../0_deps.ts";
-import { Api } from "../2_tl.ts";
-import { type ChatP, constructChatP } from "./1_chat_p.ts";
+import { base64EncodeUrlSafe } from "../1_utilities.ts";
+import type { Api } from "../2_tl.ts";
 
-/** An inactive chat. */
-export interface InactiveChat {
-  /** The time when the chat was last active. */
-  lastActivity: number;
-  /** The chat that has been marked as inactive. */
-  chat: ChatP;
+export interface StoryReportOption {
+  text: string;
+  option: string;
 }
 
-export function constructInactiveChat(chat_: Api.Chat, lastActivity: number): InactiveChat {
-  if (Api.is("chatEmpty", chat_)) {
-    unreachable();
-  }
-  const chat = constructChatP(chat_);
-  return {
-    lastActivity: lastActivity,
-    chat,
-  };
+export function constructStoryReportOption(rr: Api.messageReportOption): StoryReportOption {
+  const text = rr.text;
+  const option = base64EncodeUrlSafe(rr.option);
+  return { text, option };
 }

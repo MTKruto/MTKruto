@@ -38,7 +38,7 @@ export interface GiftNonUpgraded {
   id: string;
   /** The sticker that represents the gift. */
   sticker: Sticker;
-  /** The price of the sticker in Telegram Stars. */
+  /** The price of the gift in Telegram Stars. */
   price: number;
   /** Whether the supply of this gift is limited. */
   isLimited: boolean;
@@ -79,7 +79,7 @@ export interface GiftUpgraded {
   ownerAddress?: string;
   /** The user or chat that owns the gift. */
   owner?: ChatP;
-  /** The count of the amount of upgraded gifts of the same type. */
+  /** The number of upgraded gifts of the same type. */
   currentUpgrades: number;
   /** The maximum count of gifts of the same type that can be upgraded. */
   maxUpgrades: number;

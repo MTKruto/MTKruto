@@ -19,8 +19,8 @@
  */
 
 import type { Api, Mtproto } from "../2_tl.ts";
-import type { AlbumStoryList, AppSupport, AuthorizationSession, AvailableReactions, Birthday, BlockedUserList, BotAccessSettings, BotCommand, BotTokenCheckResult, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatActionType, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ClaimedGifts, CodeCheckResult, Country, FailedInvitation, FileSource, Gift, GiftCollection, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputChecklistItem, InputEmojiStatus, InputGift, InputMedia, InputPollOption, InputRichText, InputSticker, InputStoryContent, InviteLink, JoinRequest, LeftChannelList, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageCounters, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLivePhoto, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageRichText, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, MiniAppInfo, NetworkStatistics, PasswordCheckResult, Poll, PremiumSubscriptionDuration, PriceTag, ProfilePhotoList, Reaction, RichText, SavedChats, SlowModeDuration, StarAmount, StarTransactionList, Sticker, StickerSet, Story, StoryAlbum, SummarizedText, TextToTranslate, Timezone, Topic, TranslatedText, Translation, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
-import type { AddBotToAttachmentsMenuParams, AddChatMemberParams, AddContactParams, AddReactionParams, AddStickerToStickerSetParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStickerSetParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteAccountParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageRichTextParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, EndTakeoutSessionParams, ForwardMessagesParams, GetBlockedUsersParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLeftChannelsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetProfilePhotosParams, GetSavedChatsParams, GetSavedMessagesParams, GetStarTransactionsParams, GetTranslationsParams, GiftPremiumSubscriptionParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, RemoveProfilePhotoParams, ReplaceStickerInStickerSetParams, ResolveUsernameParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLivePhotoParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendRichTextParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetContactNoteParams, SetEmojiStatusParams, SetLocationParams, SetManagedBotAccessSettingsParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetWorkingHoursParams, SignInParams, StartBotParams, StartTakeoutSessionParams, StartVideoChatParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
+import type { AlbumStoryList, Animation, AppSupport, AuthorizationSession, AvailableReactions, Birthday, BlockedUserList, BotAccessSettings, BotCommand, BotTokenCheckResult, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatActionType, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ClaimedGifts, CodeCheckResult, Country, FailedInvitation, FileSource, Gift, GiftCollection, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputChecklistItem, InputEmojiStatus, InputGift, InputMedia, InputPollOption, InputRichText, InputSticker, InputStoryContent, InviteLink, JoinRequest, LeftChannelList, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageCounters, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLivePhoto, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageRichText, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, MiniAppInfo, NetworkStatistics, PasswordCheckResult, Poll, PremiumSubscriptionDuration, PriceTag, ProfilePhotoList, Reaction, ReportReason, RichText, SavedChats, SecretChat, SlowModeDuration, StarAmount, StarTransactionList, Sticker, StickerSet, Story, StoryAlbum, StoryReportResult, SummarizedText, TextToTranslate, Timezone, Topic, TranslatedText, Translation, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
+import type { AddBotToAttachmentsMenuParams, AddChatMemberParams, AddContactParams, AddReactionParams, AddStickerToStickerSetParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStickerSetParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteAccountParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageRichTextParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, EndTakeoutSessionParams, ForwardMessagesParams, GetBlockedUsersParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLeftChannelsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetProfilePhotosParams, GetSavedChatsParams, GetSavedMessagesParams, GetStarTransactionsParams, GetTranslationsParams, GiftPremiumSubscriptionParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, RemoveProfilePhotoParams, ReplaceStickerInStickerSetParams, ReportChatParams, ReportStoryParams, ResolveUsernameParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLivePhotoParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendRichTextParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetContactNoteParams, SetEmojiStatusParams, SetLocationParams, SetManagedBotAccessSettingsParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetWorkingHoursParams, SignInParams, StartBotParams, StartTakeoutSessionParams, StartVideoChatParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
 
 /** A generic MTKruto client. */
 export abstract class ClientGeneric {
@@ -67,7 +67,7 @@ export abstract class ClientGeneric {
   /**
    * Check whether a bot token is valid.
    *
-   * @param password The password to check
+   * @param botToken The bot token to check
    * @returns The result of the check.
    * @method ac
    */
@@ -365,7 +365,7 @@ export abstract class ClientGeneric {
    * Resolve a phone number. User-only.
    *
    * @method ac
-   * @param username The phone number to resolve.
+   * @param phoneNumber The phone number to resolve.
    */
   abstract resolvePhoneNumber(phoneNumber: string): Promise<User>;
 
@@ -578,7 +578,7 @@ export abstract class ClientGeneric {
    *
    * @method ms
    * @param chatId The identifier of a chat to send the sticker to.
-   * @param document The sticker to send.
+   * @param sticker The sticker to send.
    * @returns The sent sticker.
    */
   abstract sendSticker(chatId: ID, sticker: FileSource, params?: SendStickerParams): Promise<MessageSticker>;
@@ -751,7 +751,6 @@ export abstract class ClientGeneric {
    * @method ms
    * @param chatId The identifier of the chat which the message belongs to.
    * @param messageId The identifier of the message.
-   * @param text The new caption of the message.
    * @returns The edited message.
    */
   abstract editMessageCaption(chatId: ID, messageId: number, params?: EditMessageCaptionParams): Promise<Message>;
@@ -1025,7 +1024,6 @@ export abstract class ClientGeneric {
    * @method ms
    * @param chatId The identifier of a chat to send the chat action to.
    * @param action The chat action.
-   * @param messageThreadId The thread to send the chat action to.
    */
   abstract sendChatAction(chatId: ID, action: ChatActionType, params?: { messageThreadId?: number }): Promise<void>;
 
@@ -1221,6 +1219,99 @@ export abstract class ClientGeneric {
    */
   abstract getRichText(chatId: ID, messageId: number): Promise<RichText | null>;
 
+  /**
+   * Get the scheduled messages of a chat. User-only.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat including the scheduled messages.
+   */
+  abstract getScheduledMessages(chatId: ID): Promise<Message[]>;
+
+  /**
+   * Get favorite stickers. User-only.
+   *
+   * @method ms
+   */
+  abstract getFavoriteStickers(): Promise<Sticker[]>;
+
+  /**
+   * Add a sticker to favorites. User-only.
+   *
+   * @method ms
+   * @param fileId The file identifier of the sticker.
+   */
+  abstract addStickerToFavorites(fileId: string): Promise<void>;
+
+  /**
+   * Remove a sticker from favorites. User-only.
+   *
+   * @method ms
+   * @param fileId The file identifier of the sticker.
+   */
+  abstract removeStickerFromFavorites(fileId: string): Promise<void>;
+
+  /**
+   * Add a sticker to recents. User-only.
+   *
+   * @method ms
+   * @param fileId The file identifier of the sticker.
+   */
+  abstract addStickerToRecents(fileId: string): Promise<void>;
+
+  /**
+   * Remove a sticker from recents. User-only.
+   *
+   * @method ms
+   * @param fileId The file identifier of the sticker.
+   */
+  abstract removeStickerFromRecents(fileId: string): Promise<void>;
+
+  /**
+   * Get recent stickers. User-only.
+   *
+   * @method ms
+   */
+  abstract getRecentStickers(): Promise<Sticker[]>;
+
+  /**
+   * Clear recent stickers. User-only.
+   *
+   * @method ms
+   */
+  abstract clearRecentStickers(): Promise<void>;
+
+  /**
+   * Get saved animations. User-only.
+   *
+   * @method ms
+   */
+  abstract getSavedAnimations(): Promise<Animation[]>;
+
+  /**
+   * Save an animation. User-only.
+   *
+   * @method ms
+   * @param fileId The file identifier of the animation.
+   */
+  abstract saveAnimation(fileId: string): Promise<void>;
+
+  /**
+   * Unsave an animation. User-only.
+   *
+   * @method ms
+   * @param fileId The file identifier of the animation.
+   */
+  abstract unsaveAnimation(fileId: string): Promise<void>;
+
+  /**
+   * Get a message's read date. User-only.
+   *
+   * @method ms
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the message.
+   */
+  abstract getMessageReadDate(chatId: ID, messageId: number): Promise<number>;
+
   //
   // ========================= POLLS ========================= //
   //
@@ -1258,7 +1349,7 @@ export abstract class ClientGeneric {
    *
    * @param chatId The identifier of the chat that includes the poll.
    * @param messageId The identifier of the message that includes the poll.
-   * @param option The identifier of the option to remove.
+   * @param optionId The identifier of the option to remove.
    */
   abstract removePollOption(chatId: ID, messageId: number, optionId: string): Promise<void>;
 
@@ -1361,7 +1452,7 @@ export abstract class ClientGeneric {
    * Get custom emoji documents for download.
    *
    * @method fs
-   * @param id Identifier of one or more of custom emojis.
+   * @param id Identifier of one or more custom emojis.
    * @returns The custom emoji documents.
    * @cache
    */
@@ -1631,7 +1722,7 @@ export abstract class ClientGeneric {
    *
    * @method ch
    * @param chatId The identifier of the channel or supergroup to add the users to.
-   * @param userId The identifiers of the users to add to the channel or supergroup.
+   * @param userIds The identifiers of the users to add to the channel or supergroup.
    * @returns An array of FailedInvitation that has at most a length that is the same as that of the parameter userIds. If empty, it means that all the provided users were added.
    */
   abstract addChatMembers(chatId: ID, userIds: ID[]): Promise<FailedInvitation[]>;
@@ -2053,6 +2144,31 @@ export abstract class ClientGeneric {
    */
   abstract setDefaultSendAs(chatId: ID, sendAs: ID): Promise<void>;
 
+  /**
+   * Report a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat to report.
+   * @param reason The reason of the report.
+   */
+  abstract reportChat(chatId: ID, reason: ReportReason, params?: ReportChatParams): Promise<void>;
+
+  /**
+   * Mark a chat as unread. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  abstract markChatAsUnread(chatId: ID): Promise<void>;
+
+  /**
+   * Mark a chat as read. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  abstract markChatAsRead(chatId: ID): Promise<void>;
+
   //
   // ========================= CALLBACK QUERIES ========================= //
   //
@@ -2311,6 +2427,24 @@ export abstract class ClientGeneric {
    * @param storyId The identifier of the story to remove from highlights.
    */
   abstract removeStoryFromHighlights(chatId: ID, storyId: number): Promise<void>;
+
+  /**
+   * Report a single story. User-only.
+   *
+   * @method st
+   * @param chatId The identifier of a chat that posted the story.
+   * @param storyId The identifier of the story to report.
+   */
+  abstract reportStory(chatId: ID, storyId: number, params?: ReportStoryParams): Promise<StoryReportResult>;
+
+  /**
+   * Report multiple stories. User-only.
+   *
+   * @method st
+   * @param chatId The identifier of a chat that posted the stories.
+   * @param storyIds The identifiers of the stories to report.
+   */
+  abstract reportStories(chatId: ID, storyIds: number[], params?: ReportStoryParams): Promise<StoryReportResult>;
 
   //
   // ========================= STORY ALBUMS ========================= //
@@ -2721,7 +2855,7 @@ export abstract class ClientGeneric {
    * @method gc
    * @param chatId The identifier of the chat that includes the gift collection.
    * @param collectionId The identifier of a gift collection.
-   * @param gifts The gifts to remove from the collection.
+   * @param gifts The new order of gifts.
    */
   abstract reorderGiftsInCollection(chatId: ID, collectionId: number, gifts: InputGift[]): Promise<GiftCollection>;
 
@@ -2805,7 +2939,7 @@ export abstract class ClientGeneric {
    *
    * @method ss
    * @param name The sticker set's name.
-   * @param slug The slug of the sticker set or its link.
+   * @param slug The sticker set's slug.
    * @param stickers The initial stickers of the set.
    */
   abstract createStickerSet(name: string, slug: string, stickers: InputSticker[], params?: CreateStickerSetParams): Promise<StickerSet>;
@@ -2869,7 +3003,7 @@ export abstract class ClientGeneric {
    * @param fileId The identifier of the sticker.
    * @param position The new position of the sticker.
    */
-  abstract changeStickerPositionInStickerSet(slug: string, position: number): Promise<void>;
+  abstract changeStickerPositionInStickerSet(fileId: string, position: number): Promise<void>;
 
   /**
    * Set a sticker set's thumbnail.
@@ -2940,4 +3074,33 @@ export abstract class ClientGeneric {
    * @returns The identifier of the sent message.
    */
   abstract answerGuestQuery(id: string, result: InlineQueryResult): Promise<string>;
+
+  //
+  // ========================= SECRET CHATS ========================= //
+  //
+
+  /**
+   * Request a secret chat. User-only.
+   *
+   * @method sc
+   * @param chatId The identifier of a chat.
+   */
+  abstract requestSecretChat(chatId: ID): Promise<SecretChat>;
+
+  /**
+   * Accept a secret chat. User-only.
+   *
+   * @method sc
+   * @param id The identifier of a secret chat.
+   */
+  abstract acceptSecretChat(id: number): Promise<SecretChat>;
+
+  /**
+   * Send a message to a secret chat. User-only.
+   *
+   * @method sc
+   * @param id The identifier of a secret chat.
+   * @param text The message's text.
+   */
+  abstract sendSecretChatMessage(id: number, text: string): Promise<void>;
 }

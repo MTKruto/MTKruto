@@ -62,7 +62,7 @@ export interface User {
   isMutualContact: boolean;
   /** Whether the user is a close friend. */
   isCloseFriend: boolean;
-  /** Whether the user has been identified as scam. */
+  /** Whether the user has been identified as a scam. */
   isScam: boolean;
   /** Whether the user has been identified as an impersonator. */
   isFake: boolean;

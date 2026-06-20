@@ -24,11 +24,11 @@ import { drop, getLogger, type Logger, MAX_MONOFORUM_CHANNEL_ID, type MaybePromi
 import { type Storage, StorageMemory } from "../2_storage.ts";
 import { Api, Mtproto } from "../2_tl.ts";
 import { type DC, getDcId, type TransportProvider } from "../3_transport.ts";
-import { type AlbumStoryList, type AppSupport, type AuthorizationSession, type AvailableReactions, type Birthday, type BlockedUserList, type BotAccessSettings, type BotCommand, type BotTokenCheckResult, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatActionType, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type CodeCheckResult, type ConnectionState, constructChatP, constructUser2, type Country, type FailedInvitation, type FileSource, type Gift, type GiftCollection, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputChecklistItem, type InputEmojiStatus, type InputGift, type InputMedia, type InputPollOption, type InputRichText, type InputSticker, type InputStoryContent, type InviteLink, type JoinRequest, type LeftChannelList, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageCounters, type MessageDice, type MessageDocument, type MessageInvoice, type MessageList, type MessageLivePhoto, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageRichText, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type PasswordCheckResult, type Poll, type PremiumSubscriptionDuration, type PriceTag, type ProfilePhotoList, type Reaction, type RichText, type SavedChats, type SlowModeDuration, type StarAmount, type StarTransactionList, type Sticker, type StickerSet, type Story, type StoryAlbum, type SummarizedText, type TextToTranslate, type Timezone, type Topic, type TranslatedText, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
+import { type AlbumStoryList, type Animation, type AppSupport, type AuthorizationSession, type AvailableReactions, type Birthday, type BlockedUserList, type BotAccessSettings, type BotCommand, type BotTokenCheckResult, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatActionType, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type CodeCheckResult, type ConnectionState, constructChatP, constructUser2, type Country, type FailedInvitation, type FileSource, type Gift, type GiftCollection, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputChecklistItem, type InputEmojiStatus, type InputGift, type InputMedia, type InputPollOption, type InputRichText, type InputSticker, type InputStoryContent, type InviteLink, type JoinRequest, type LeftChannelList, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageCounters, type MessageDice, type MessageDocument, type MessageInvoice, type MessageList, type MessageLivePhoto, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageRichText, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type PasswordCheckResult, type Poll, type PremiumSubscriptionDuration, type PriceTag, type ProfilePhotoList, type Reaction, type ReportReason, type RichText, type SavedChats, type SecretChat, type SlowModeDuration, type StarAmount, type StarTransactionList, type Sticker, type StickerSet, type Story, type StoryAlbum, type StoryReportResult, type SummarizedText, type TextToTranslate, type Timezone, type Topic, type TranslatedText, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, PHONE_NUMBER_TTL, type PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, SessionRevoked } from "../4_errors.ts";
 import { AbortableLoop } from "./0_abortable_loop.ts";
-import type { AddBotToAttachmentsMenuParams, AddChatMemberParams, AddContactParams, AddReactionParams, AddStickerToStickerSetParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStickerSetParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteAccountParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageRichTextParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, EndTakeoutSessionParams, ForwardMessagesParams, GetBlockedUsersParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLeftChannelsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetProfilePhotosParams, GetSavedChatsParams, GetSavedMessagesParams, GetStarTransactionsParams, GetTranslationsParams, GiftPremiumSubscriptionParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, RemoveProfilePhotoParams, ReplaceStickerInStickerSetParams, ResolveUsernameParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLivePhotoParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendRichTextParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetContactNoteParams, SetEmojiStatusParams, SetLocationParams, SetManagedBotAccessSettingsParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetWorkingHoursParams, SignInParams, StartBotParams, StartTakeoutSessionParams, StartVideoChatParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
+import type { AddBotToAttachmentsMenuParams, AddChatMemberParams, AddContactParams, AddReactionParams, AddStickerToStickerSetParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStickerSetParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteAccountParams, DeleteMessageParams, DeleteMessagesParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageRichTextParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, EndTakeoutSessionParams, ForwardMessagesParams, GetBlockedUsersParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLeftChannelsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetProfilePhotosParams, GetSavedChatsParams, GetSavedMessagesParams, GetStarTransactionsParams, GetTranslationsParams, GiftPremiumSubscriptionParams, InvokeParams, JoinVideoChatParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, RemoveProfilePhotoParams, ReplaceStickerInStickerSetParams, ReportChatParams, ReportStoryParams, ResolveUsernameParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLivePhotoParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendRichTextParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetContactNoteParams, SetEmojiStatusParams, SetLocationParams, SetManagedBotAccessSettingsParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetWorkingHoursParams, SignInParams, StartBotParams, StartTakeoutSessionParams, StartVideoChatParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 import { canBeInputChannel, canBeInputUser, DOWNLOAD_POOL_SIZE, getUsername, toInputChannel, toInputUser } from "./0_utilities.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
@@ -43,6 +43,7 @@ import { ManagedBotManager } from "./2_managed_bot_manager.ts";
 import { NetworkStatisticsManager } from "./2_network_statistics_manager.ts";
 import { PaymentManager } from "./2_payment_manager.ts";
 import { ReactionManager } from "./2_reaction_manager.ts";
+import { SecretChatManager } from "./2_secret_chat_manager.ts";
 import { signIn } from "./2_sign_in.ts";
 import { StoryAlbumManager } from "./2_story_album_manager.ts";
 import { TakeoutManager } from "./2_takeout_manager.ts";
@@ -119,7 +120,7 @@ export interface ClientParams extends ClientPlainParams {
    * When the provided storage takes advantage of memory, nothing changes, even if set to `true`.
    */
   persistCache?: boolean;
-  /** Whether to disable receiving updates. UpdateConnectionState and UpdatesAuthorizationState will always be received. Defaults to `false`. */
+  /** Whether to disable receiving updates. UpdateConnectionState and UpdateAuthorizationState will always be received. Defaults to `false`. */
   disableUpdates?: boolean;
   /** An auth string to automatically import. Can be overridden by a later importAuthString call. */
   authString?: string;
@@ -144,6 +145,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   #networkStatisticsManager: NetworkStatisticsManager;
   #paymentManager: PaymentManager;
   #reactionManager: ReactionManager;
+  #secretChatManager: SecretChatManager;
   #storyAlbumManager: StoryAlbumManager;
   #takeoutManager: TakeoutManager;
   #translationsManager: TranslationsManager;
@@ -180,6 +182,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       networkStatisticsManager: this.#networkStatisticsManager,
       paymentManager: this.#paymentManager,
       reactionManager: this.#reactionManager,
+      secretChatManager: this.#secretChatManager,
       storyAlbumManager: this.#storyAlbumManager,
       takeoutManager: this.#takeoutManager,
       translationsManager: this.#translationsManager,
@@ -322,6 +325,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     this.#networkStatisticsManager = new NetworkStatisticsManager(c);
     this.#paymentManager = new PaymentManager(c);
     this.#reactionManager = new ReactionManager(c);
+    this.#secretChatManager = new SecretChatManager(c);
     this.#storyAlbumManager = new StoryAlbumManager(c);
     this.#takeoutManager = new TakeoutManager(c);
     this.#translationsManager = new TranslationsManager(c);
@@ -689,7 +693,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   /**
    * Check whether a bot token is valid.
    *
-   * @param password The password to check
+   * @param botToken The bot token to check
    * @returns The result of the check.
    * @method ac
    */
@@ -1029,7 +1033,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   async getInputChannel(id: ID): Promise<Api.inputChannel | Api.inputChannelFromMessage> {
     const inputPeer = await this.getInputPeer(id);
     if (!canBeInputChannel(inputPeer)) {
-      throw new TypeError(`The chat ${id} is not a channel neither a supergroup.`);
+      throw new TypeError(`The chat ${id} is neither a channel nor a supergroup.`);
     }
     return toInputChannel(inputPeer);
   }
@@ -1108,7 +1112,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       const accessHash = await this.messageStorage.getChannelAccessHash(id);
       peer = { _: "inputPeerChannel", channel_id: Api.chatIdToPeerId(id), access_hash: accessHash ?? 0n } as Api.inputPeerChannel;
     } else {
-      throw new InputError("The ID is of an format unknown.");
+      throw new InputError("The ID is of an unknown format.");
     }
 
     if (!Api.is("inputPeerChat", peer) && !peer.access_hash) {
@@ -1273,6 +1277,10 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
 
     if (this.#accountManager.canHandleUpdate(update)) {
       maybePromises.push(() => this.#accountManager.handleUpdate(update));
+    }
+
+    if (this.#secretChatManager.canHandleUpdate(update)) {
+      maybePromises.push(() => this.#secretChatManager.handleUpdate(update));
     }
 
     return () =>
@@ -1668,7 +1676,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * Resolve a phone number. User-only.
    *
    * @method ac
-   * @param username The phone number to resolve.
+   * @param phoneNumber The phone number to resolve.
    */
   async resolvePhoneNumber(phoneNumber: string): Promise<User> {
     return await this.#accountManager.resolvePhoneNumber(phoneNumber);
@@ -1931,7 +1939,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    *
    * @method ms
    * @param chatId The identifier of a chat to send the sticker to.
-   * @param document The sticker to send.
+   * @param sticker The sticker to send.
    * @returns The sent sticker.
    */
   async sendSticker(chatId: ID, sticker: FileSource, params?: SendStickerParams): Promise<MessageSticker> {
@@ -2136,7 +2144,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ms
    * @param chatId The identifier of the chat which the message belongs to.
    * @param messageId The identifier of the message.
-   * @param text The new caption of the message.
    * @returns The edited message.
    */
   async editMessageCaption(chatId: ID, messageId: number, params?: EditMessageCaptionParams): Promise<Message> {
@@ -2462,7 +2469,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ms
    * @param chatId The identifier of a chat to send the chat action to.
    * @param action The chat action.
-   * @param messageThreadId The thread to send the chat action to.
    */
   async sendChatAction(chatId: ID, action: ChatActionType, params?: { messageThreadId?: number }) {
     await this.#messageManager.sendChatAction(chatId, action, params);
@@ -2704,6 +2710,123 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     return await this.#messageManager.getRichText(chatId, messageId);
   }
 
+  /**
+   * Get the scheduled messages of a chat. User-only.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat including the scheduled messages.
+   */
+  async getScheduledMessages(chatId: ID): Promise<Message[]> {
+    return await this.#messageManager.getScheduledMessages(chatId);
+  }
+
+  /**
+   * Get favorite stickers. User-only.
+   *
+   * @method ms
+   */
+  async getFavoriteStickers(): Promise<Sticker[]> {
+    return await this.#messageManager.getFavoriteStickers();
+  }
+
+  /**
+   * Add a sticker to favorites. User-only.
+   *
+   * @method ms
+   * @param fileId The file identifier of the sticker.
+   */
+  async addStickerToFavorites(fileId: string): Promise<void> {
+    return await this.#messageManager.addStickerToFavorites(fileId);
+  }
+
+  /**
+   * Remove a sticker from favorites. User-only.
+   *
+   * @method ms
+   * @param fileId The file identifier of the sticker.
+   */
+  async removeStickerFromFavorites(fileId: string): Promise<void> {
+    return await this.#messageManager.removeStickerFromFavorites(fileId);
+  }
+
+  /**
+   * Add a sticker to recents. User-only.
+   *
+   * @method ms
+   * @param fileId The file identifier of the sticker.
+   */
+  async addStickerToRecents(fileId: string): Promise<void> {
+    return await this.#messageManager.addStickerToRecents(fileId);
+  }
+
+  /**
+   * Remove a sticker from recents. User-only.
+   *
+   * @method ms
+   * @param fileId The file identifier of the sticker.
+   */
+  async removeStickerFromRecents(fileId: string): Promise<void> {
+    return await this.#messageManager.removeStickerFromRecents(fileId);
+  }
+
+  /**
+   * Get recent stickers. User-only.
+   *
+   * @method ms
+   */
+  async getRecentStickers(): Promise<Sticker[]> {
+    return await this.#messageManager.getRecentStickers();
+  }
+
+  /**
+   * Clear recent stickers. User-only.
+   *
+   * @method ms
+   */
+  async clearRecentStickers(): Promise<void> {
+    return await this.#messageManager.clearRecentStickers();
+  }
+
+  /**
+   * Get saved animations. User-only.
+   *
+   * @method ms
+   */
+  async getSavedAnimations(): Promise<Animation[]> {
+    return await this.#messageManager.getSavedAnimations();
+  }
+
+  /**
+   * Save an animation. User-only.
+   *
+   * @method ms
+   * @param fileId The file identifier of the animation.
+   */
+  async saveAnimation(fileId: string): Promise<void> {
+    return await this.#messageManager.saveAnimation(fileId);
+  }
+
+  /**
+   * Unsave an animation. User-only.
+   *
+   * @method ms
+   * @param fileId The file identifier of the animation.
+   */
+  async unsaveAnimation(fileId: string): Promise<void> {
+    return await this.#messageManager.unsaveAnimation(fileId);
+  }
+
+  /**
+   * Get a message's read date. User-only.
+   *
+   * @method ms
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the message.
+   */
+  async getMessageReadDate(chatId: ID, messageId: number): Promise<number> {
+    return await this.#messageManager.getMessageReadDate(chatId, messageId);
+  }
+
   //
   // ========================= POLLS ========================= //
   //
@@ -2747,7 +2870,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    *
    * @param chatId The identifier of the chat that includes the poll.
    * @param messageId The identifier of the message that includes the poll.
-   * @param option The identifier of the option to remove.
+   * @param optionId The identifier of the option to remove.
    */
   async removePollOption(chatId: ID, messageId: number, optionId: string) {
     await this.#pollManager.removePollOption(chatId, messageId, optionId);
@@ -3209,7 +3332,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    *
    * @method ch
    * @param chatId The identifier of the channel or supergroup to add the users to.
-   * @param userId The identifiers of the users to add to the channel or supergroup.
+   * @param userIds The identifiers of the users to add to the channel or supergroup.
    * @returns An array of FailedInvitation that has at most a length that is the same as that of the parameter userIds. If empty, it means that all the provided users were added.
    */
   async addChatMembers(chatId: ID, userIds: ID[]): Promise<FailedInvitation[]> {
@@ -3731,6 +3854,37 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     await this.#chatManager.setDefaultSendAs(chatId, sendAs);
   }
 
+  /**
+   * Report a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat to report.
+   * @param reason The reason of the report.
+   */
+  async reportChat(chatId: ID, reason: ReportReason, params?: ReportChatParams): Promise<void> {
+    return await this.#chatManager.reportChat(chatId, reason, params);
+  }
+
+  /**
+   * Mark a chat as unread. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  async markChatAsUnread(chatId: ID): Promise<void> {
+    return await this.#chatManager.markChatAsUnread(chatId);
+  }
+
+  /**
+   * Mark a chat as read. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  async markChatAsRead(chatId: ID): Promise<void> {
+    return await this.#chatManager.markChatAsRead(chatId);
+  }
+
   //
   // ========================= CALLBACK QUERIES ========================= //
   //
@@ -3758,6 +3912,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   async answerCallbackQuery(id: string, params?: AnswerCallbackQueryParams) {
     await this.#callbackQueryManager.answerCallbackQuery(id, params);
   }
+
   //
   // ========================= INLINE QUERIES ========================= //
   //
@@ -4045,6 +4200,28 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async removeStoryFromHighlights(chatId: ID, storyId: number) {
     await this.#storyManager.removeStoryFromHighlights(chatId, storyId);
+  }
+
+  /**
+   * Report a single story. User-only.
+   *
+   * @method st
+   * @param chatId The identifier of a chat that posted the story.
+   * @param storyId The identifier of the story to report.
+   */
+  async reportStory(chatId: ID, storyId: number, params?: ReportStoryParams): Promise<StoryReportResult> {
+    return await this.#storyManager.reportStory(chatId, storyId, params);
+  }
+
+  /**
+   * Report multiple stories. User-only.
+   *
+   * @method st
+   * @param chatId The identifier of a chat that posted the stories.
+   * @param storyIds The identifiers of the stories to report.
+   */
+  async reportStories(chatId: ID, storyIds: number[], params?: ReportStoryParams): Promise<StoryReportResult> {
+    return await this.#storyManager.reportStories(chatId, storyIds, params);
   }
 
   //
@@ -4434,7 +4611,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * Craft gifts.
    *
    * @method gf
-   * @param gift The gifts to craft.
+   * @param gifts The gifts to craft.
    */
   async craftGifts(gifts: InputGift[]): Promise<void> {
     await this.#giftManager.craftGifts(gifts);
@@ -4540,7 +4717,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method gc
    * @param chatId The identifier of the chat that includes the gift collection.
    * @param collectionId The identifier of a gift collection.
-   * @param gifts The gifts to remove from the collection.
+   * @param gifts The new order of gifts.
    */
   async reorderGiftsInCollection(chatId: ID, collectionId: number, gifts: InputGift[]): Promise<GiftCollection> {
     return await this.#giftCollectionManager.reorderGiftsInCollection(chatId, collectionId, gifts);
@@ -4601,8 +4778,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ss
    * @param slug The slug of the sticker set or its link.
    */
-  async getStickerSet(name: string): Promise<StickerSet> {
-    return await this.#stickerSetManager.getStickerSet(name);
+  async getStickerSet(slug: string): Promise<StickerSet> {
+    return await this.#stickerSetManager.getStickerSet(slug);
   }
 
   /**
@@ -4720,8 +4897,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param fileId The identifier of the sticker.
    * @param position The new position of the sticker.
    */
-  async changeStickerPositionInStickerSet(slug: string, position: number): Promise<void> {
-    return await this.#stickerSetManager.changeStickerPositionInStickerSet(slug, position);
+  async changeStickerPositionInStickerSet(fileId: string, position: number): Promise<void> {
+    return await this.#stickerSetManager.changeStickerPositionInStickerSet(fileId, position);
   }
 
   /**
@@ -4806,5 +4983,40 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async answerGuestQuery(id: string, result: InlineQueryResult): Promise<string> {
     return await this.#messageManager.answerGuestQuery(id, result);
+  }
+
+  //
+  // ========================= SECRET CHATS ========================= //
+  //
+
+  /**
+   * Request a secret chat. User-only.
+   *
+   * @method sc
+   * @param chatId The identifier of a chat.
+   */
+  async requestSecretChat(chatId: ID): Promise<SecretChat> {
+    return await this.#secretChatManager.requestSecretChat(chatId);
+  }
+
+  /**
+   * Accept a secret chat. User-only.
+   *
+   * @method sc
+   * @param id The identifier of a secret chat.
+   */
+  async acceptSecretChat(id: number): Promise<SecretChat> {
+    return await this.#secretChatManager.acceptSecretChat(id);
+  }
+
+  /**
+   * Send a message to a secret chat. User-only.
+   *
+   * @method sc
+   * @param id The identifier of a secret chat.
+   * @param text The message's text.
+   */
+  async sendSecretChatMessage(id: number, text: string): Promise<void> {
+    return await this.#secretChatManager.sendSecretChatMessage(id, text);
   }
 }

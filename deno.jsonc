@@ -2,7 +2,8 @@
   "lock": false,
   "exports": {
     ".": "./mod.ts",
-    "./worker": "./worker.ts"
+    "./worker": "./worker.ts",
+    "./storage-deno-kv": "./storage/1_storage_deno_kv.ts"
   },
   "exclude": [".github/"],
   "compilerOptions": {

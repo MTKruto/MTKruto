@@ -23,7 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { base64EncodeUrlSafe, encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
-import { collectMediaFileIds, constructBlockedUserList, constructChatAction, constructMessageDraft, constructMessageEntity, constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructSummarizedText, constructVoiceTranscription, deserializeFileId, type FileId, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, type InputPollMedia, type InputPollMediaAnimation, type InputPollMediaSticker, type InputPollOption, type InputRichText, type MessageCounters, type MessageGetter, type MessageList, type MessageLivePhoto, type MessagePhoto, messageSearchFilterToTlObject, pageBlockToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, type TextToTranslate, type TranslatedText, type VoiceTranscription } from "../3_types.ts";
+import { collectMediaFileIds, constructAnimation, constructBlockedUserList, constructChatAction, constructMessageDraft, constructMessageEntity, constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructSticker, constructSummarizedText, constructVoiceTranscription, deserializeFileId, type FileId, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, type InputPollMedia, type InputPollMediaAnimation, type InputPollMediaSticker, type InputPollOption, type InputRichText, type MessageCounters, type MessageGetter, type MessageList, type MessageLivePhoto, type MessagePhoto, messageSearchFilterToTlObject, pageBlockToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, serializeFileId, type TextToTranslate, toUniqueFileId, type TranslatedText, type VoiceTranscription } from "../3_types.ts";
 import { assertMessageType, type ChatActionType, constructMessage as constructMessage_, deserializeInlineMessageId, type FileSource, FileType, type ID, type Message, type MessageEntity, messageEntityToTlObject, type ParseMode, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type Update, type UsernameResolver } from "../3_types.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
@@ -2465,5 +2465,153 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
     const message = assertMessageType(await this.constructMessage(message_, false), "richText");
     return message.richText;
+  }
+
+  async getScheduledMessages(chatId: ID) {
+    this.#c.storage.assertUser("getScheduledMessages");
+    const peer = await this.#c.getInputPeer(chatId);
+    const result = Api.as("messages.messages", await this.#c.invoke({ _: "messages.getScheduledHistory", peer, hash: 0n }));
+    return await Promise.all(result.messages.map((v) => this.constructMessage(v, false)));
+  }
+
+  async getFavoriteStickers() {
+    this.#c.storage.assertUser("getFavoriteStickers");
+    const result = Api.as("messages.favedStickers", await this.#c.invoke({ _: "messages.getFavedStickers", hash: 0n }));
+    const stickers = await Promise.all(
+      result.stickers.map((v): Api.document => Api.as("document", v)).map((v) => {
+        const fileId: FileId = {
+          type: FileType.Sticker,
+          dcId: v.dc_id,
+          location: {
+            type: "common",
+            id: v.id,
+            accessHash: v.access_hash,
+          },
+          fileReference: v.file_reference,
+        };
+        return constructSticker(v, serializeFileId(fileId), toUniqueFileId(fileId), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager));
+      }),
+    );
+    return stickers;
+  }
+
+  async #faveSticker(fileId_: string, isFavorited: boolean) {
+    const fileId = deserializeFileId(fileId_);
+    if (fileId.type !== FileType.Sticker || fileId.location.type !== "common") {
+      throw new InputError("Invalid file ID.");
+    }
+    const id_ = fileId.location.id;
+    const access_hash = fileId.location.accessHash;
+    const file_reference = fileId.fileReference ?? new Uint8Array();
+    const id: Api.inputDocument = { _: "inputDocument", id: id_, access_hash, file_reference };
+    await this.#c.invoke({ _: "messages.faveSticker", id, unfave: !isFavorited });
+  }
+
+  async addStickerToFavorites(fileId: string) {
+    this.#c.storage.assertUser("addStickerToFavorites");
+    await this.#faveSticker(fileId, true);
+  }
+
+  async removeStickerFromFavorites(fileId: string) {
+    this.#c.storage.assertUser("removeStickerFromFavorites");
+    await this.#faveSticker(fileId, false);
+  }
+
+  async #changeStickerRecentStatus(fileId_: string, isSaved: boolean) {
+    const fileId = deserializeFileId(fileId_);
+    if (fileId.type !== FileType.Sticker || fileId.location.type !== "common") {
+      throw new InputError("Invalid file ID.");
+    }
+    const id_ = fileId.location.id;
+    const access_hash = fileId.location.accessHash;
+    const file_reference = fileId.fileReference ?? new Uint8Array();
+    const id: Api.inputDocument = { _: "inputDocument", id: id_, access_hash, file_reference };
+    await this.#c.invoke({ _: "messages.saveRecentSticker", id, unsave: !isSaved });
+  }
+
+  async addStickerToRecents(fileId: string) {
+    this.#c.storage.assertUser("addStickerToRecents");
+    await this.#changeStickerRecentStatus(fileId, true);
+  }
+
+  async removeStickerFromRecents(fileId: string) {
+    this.#c.storage.assertUser("removeStickerFromRecents");
+    await this.#changeStickerRecentStatus(fileId, false);
+  }
+
+  async clearRecentStickers() {
+    this.#c.storage.assertUser("clearRecentStickers");
+    await this.#c.invoke({ _: "messages.clearRecentStickers" });
+  }
+
+  async getRecentStickers() {
+    this.#c.storage.assertUser("getRecentStickers");
+    const result = Api.as("messages.recentStickers", await this.#c.invoke({ _: "messages.getRecentStickers", hash: 0n }));
+    const stickers = await Promise.all(
+      result.stickers.map((v): Api.document => Api.as("document", v)).map((v) => {
+        const fileId: FileId = {
+          type: FileType.Sticker,
+          dcId: v.dc_id,
+          location: {
+            type: "common",
+            id: v.id,
+            accessHash: v.access_hash,
+          },
+          fileReference: v.file_reference,
+        };
+        return constructSticker(v, serializeFileId(fileId), toUniqueFileId(fileId), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager));
+      }),
+    );
+    return stickers;
+  }
+
+  async getSavedAnimations() {
+    this.#c.storage.assertUser("getSavedAnimations");
+    const result = Api.as("messages.savedGifs", await this.#c.invoke({ _: "messages.getSavedGifs", hash: 0n }));
+    const animations = await Promise.all(
+      result.gifs.map((v): Api.document => Api.as("document", v)).map((v) => {
+        const fileId: FileId = {
+          type: FileType.Sticker,
+          dcId: v.dc_id,
+          location: {
+            type: "common",
+            id: v.id,
+            accessHash: v.access_hash,
+          },
+          fileReference: v.file_reference,
+        };
+        return constructAnimation(v, v.attributes.find((v) => Api.is("documentAttributeVideo", v)), v.attributes.find((v) => Api.is("documentAttributeFilename", v)), serializeFileId(fileId), toUniqueFileId(fileId));
+      }),
+    );
+    return animations;
+  }
+
+  async #setIsAnimationSaved(fileId_: string, isSaved: boolean) {
+    const fileId = deserializeFileId(fileId_);
+    if (fileId.type !== FileType.Animation || fileId.location.type !== "common") {
+      throw new InputError("Invalid file ID.");
+    }
+    const id_ = fileId.location.id;
+    const access_hash = fileId.location.accessHash;
+    const file_reference = fileId.fileReference ?? new Uint8Array();
+    const id: Api.inputDocument = { _: "inputDocument", id: id_, access_hash, file_reference };
+    await this.#c.invoke({ _: "messages.saveGif", id, unsave: !isSaved });
+  }
+
+  async saveAnimation(fileId: string) {
+    this.#c.storage.assertUser("saveAnimation");
+    await this.#setIsAnimationSaved(fileId, true);
+  }
+
+  async unsaveAnimation(fileId: string) {
+    this.#c.storage.assertUser("unsaveAnimation");
+    await this.#setIsAnimationSaved(fileId, false);
+  }
+
+  async getMessageReadDate(chatId: ID, messageId: number) {
+    const peer = await this.#c.getInputPeer(chatId);
+    const msg_id = messageId;
+    const result = await this.#c.invoke({ _: "messages.getOutboxReadDate", peer, msg_id });
+    return result.date;
   }
 }

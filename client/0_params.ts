@@ -20,7 +20,7 @@
 
 import type { MaybePromise } from "../1_utilities.ts";
 import type { DC } from "../3_transport.ts";
-import type { Birthday, BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, InputLinkPreview, InputPollMedia, LinkPreview, MessageEntity, MessageSearchFilter, MiniAppMode, ParseMode, Reaction, ReplyMarkup, ReplyTo, SelfDestructOption, StoryInteractiveArea, StoryPrivacy, WorkingHours } from "../3_types.ts";
+import type { Birthday, BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, InputLinkPreview, InputPollMedia, LinkPreview, MessageEntity, MessageSearchFilter, MiniAppMode, ParseMode, Reaction, ReplyMarkup, ReplyTo, SecretMessageEntity, SelfDestructOption, StoryInteractiveArea, StoryPrivacy, WorkingHours } from "../3_types.ts";
 
 export interface InvokeParams {
   dc?: DC;
@@ -355,9 +355,9 @@ export interface SendStickerParams extends _UploadCommon, _SendCommon {
 export interface SendVideoParams extends _CaptionCommon, _ThumbnailCommon, _SpoilCommon, _UploadCommon, _SendCommon, _StarCount {
   /** The duration of the video in seconds. */
   duration?: number;
-  /** The width of the photo in pixels. */
+  /** The width of the video in pixels. */
   width?: number;
-  /** The height of the photo in pixels. */
+  /** The height of the video in pixels. */
   height?: number;
   /** Whether the video is suitable for streaming. */
   supportsStreaming?: boolean;
@@ -642,7 +642,7 @@ export interface DeclineJoinRequestsParams {
 }
 
 export interface AddChatMemberParams {
-  /** The number of current messages to make visible to the user that is about to be added. */
+  /** The number of recent messages to make visible to the user that is about to be added. */
   historyLimit?: number;
 }
 
@@ -1092,4 +1092,29 @@ export interface DeleteAccountParams {
 export interface TranslateTextParams {
   /** The tone of the translation. */
   tone?: string;
+}
+
+export interface ReportChatParams {
+  /** The text of the report. */
+  text?: string;
+}
+
+export interface ReportStoryParams {
+  /** The option of the report. */
+  option?: string;
+  /** The text of the report. */
+  text?: string;
+}
+
+export interface SendSecretChatMessageParams {
+  /** The entities of the message's text. */
+  entities?: SecretMessageEntity[];
+  /** Whether the message should be sent silently. */
+  isSilent?: boolean;
+  /** The identifier of a message to reply to. */
+  replyToMessageId?: string;
+  /** The message's time-to-live. */
+  ttl?: number;
+  /** The name of the bot that was used to send the message. */
+  viaBot?: string;
 }

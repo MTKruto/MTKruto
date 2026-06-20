@@ -55,7 +55,7 @@ class CTROld {
     this.#key = key;
   }
 
-  /** This must not be called after destroying. */
+  /** This must not be called after destruction. */
   call(data: Uint8Array) {
     ctr256(data, this.#key, this.#state);
   }

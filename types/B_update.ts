@@ -23,6 +23,7 @@ import type { AuthorizationState } from "./0_authorization_state.ts";
 import type { ConnectionState } from "./0_connection_state.ts";
 import type { EmojiStatus } from "./0_emoji_status.ts";
 import type { MessageReference } from "./0_message_reference.ts";
+import type { SecretChat } from "./0_secret_chat.ts";
 import type { StoryReference } from "./0_story_reference.ts";
 import type { Translation } from "./0_translation.ts";
 import type { UploadProgress } from "./0_upload_progress.ts";
@@ -39,6 +40,7 @@ import type { InlineQuery } from "./3_inline_query.ts";
 import type { MessageDraft } from "./3_message_draft.ts";
 import type { MessageReactions } from "./3_message_reactions.ts";
 import type { PreCheckoutQuery } from "./3_pre_checkout_query.ts";
+import type { SecretMessage } from "./3_secret_message.ts";
 import type { Story } from "./3_story.ts";
 import type { ChatMemberUpdated } from "./4_chat_member_updated.ts";
 import type { JoinRequest } from "./4_join_request.ts";
@@ -263,12 +265,12 @@ export interface UpdateEditedChat {
 }
 
 /**
- * A chat was removed from the chat list. User-only.
+ * A chat was deleted. User-only.
  * @unlisted
  */
 export interface UpdateDeletedChat {
   type: "deletedChat";
-  /** The chat that was deleted */
+  /** The chat that was deleted. */
   deletedChat: { chatId: number };
 }
 
@@ -578,6 +580,36 @@ export interface UpdateMessageDraft {
   messageDraft: MessageDraft;
 }
 
+/**
+ * A secret chat was updated. User-only.
+ *
+ * ```
+ * client.on("secretChat", (ctx) => {
+ *   // ctx.update.secretChat
+ * });
+ * ```
+ * @unlisted
+ */
+export interface UpdateSecretChat {
+  type: "secretChat";
+  secretChat: SecretChat;
+}
+
+/**
+ * A message was received from a secret chat. User-only.
+ *
+ * ```
+ * client.on("secretMessage", (ctx) => {
+ *   // ctx.update.secretMessage
+ * });
+ * ```
+ * @unlisted
+ */
+export interface UpdateSecretMessage {
+  type: "secretMessage";
+  secretMessage: SecretMessage;
+}
+
 /** @unlisted */
 export interface UpdateMap {
   message: UpdateNewMessage;
@@ -616,6 +648,8 @@ export interface UpdateMap {
   emojiStatusRemoved: UpdateEmojiStatusRemoved;
   chatAction: UpdateChatAction;
   messageDraft: UpdateMessageDraft;
+  secretChat: UpdateSecretChat;
+  secretMessage: UpdateSecretMessage;
 }
 
 /** An incoming update. */
@@ -655,4 +689,6 @@ export type Update =
   | UpdateEmojiStatus
   | UpdateEmojiStatusRemoved
   | UpdateChatAction
-  | UpdateMessageDraft;
+  | UpdateMessageDraft
+  | UpdateSecretChat
+  | UpdateSecretMessage;

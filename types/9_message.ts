@@ -79,7 +79,7 @@ export interface _MessageBase {
   from: ChatP;
   /** The point in time when the message was sent. */
   date: number;
-  /** The chat where the message was sent to. */
+  /** The chat where the message was sent. */
   chat: ChatP;
   /** A link to the message. */
   link?: string;
@@ -101,7 +101,7 @@ export interface _MessageBase {
   viaBot?: User;
   /** The point in time when the message's last edit was made. */
   editDate?: number;
-  /** Whether the contents of the message is protected. */
+  /** Whether the contents of the message are protected. */
   hasProtectedContent?: boolean;
   /** The identifier of the message's media group. */
   mediaGroupId?: string;
@@ -602,7 +602,7 @@ export interface MessageGiftNonUpgraded extends _MessageBase {
 }
 
 /**
- * An action related an upgraded gift.
+ * An action related to an upgraded gift.
  * @unlisted
  */
 export interface MessageGiftUpgraded extends _MessageBase {
@@ -627,7 +627,7 @@ export interface MessagePollOptionAdded extends _MessageBase {
  */
 export interface MessagePollOptionRemoved extends _MessageBase {
   type: "pollOptionRemoved";
-  /** The option that was added. */
+  /** The option that was removed. */
   pollOptionRemoved: PollOption;
 }
 
