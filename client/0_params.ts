@@ -20,7 +20,7 @@
 
 import type { MaybePromise } from "../1_utilities.ts";
 import type { DC } from "../3_transport.ts";
-import type { Birthday, BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, InputLinkPreview, InputPollMedia, LinkPreview, MessageEntity, MessageSearchFilter, MiniAppMode, ParseMode, Reaction, ReplyMarkup, ReplyTo, SelfDestructOption, StoryInteractiveArea, StoryPrivacy, WorkingHours } from "../3_types.ts";
+import type { Birthday, BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, InputLinkPreview, InputPollMedia, LinkPreview, MessageEntity, MessageSearchFilter, MiniAppMode, ParseMode, Reaction, ReplyMarkup, ReplyTo, SecretMessageEntity, SelfDestructOption, StoryInteractiveArea, StoryPrivacy, WorkingHours } from "../3_types.ts";
 
 export interface InvokeParams {
   dc?: DC;
@@ -1104,4 +1104,17 @@ export interface ReportStoryParams {
   option?: string;
   /** The text of the report. */
   text?: string;
+}
+
+export interface SendSecretChatMessageParams {
+  /** The entities of the message's text. */
+  entities?: SecretMessageEntity[];
+  /** Whether the message should be sent silently. */
+  isSilent?: boolean;
+  /** The identifier of a message to reply to. */
+  replyToMessageId?: string;
+  /** The message's time-to-live. */
+  ttl?: number;
+  /** The name of the bot that was used to send the message. */
+  viaBot?: string;
 }

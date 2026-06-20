@@ -23,6 +23,7 @@ import type { AuthorizationState } from "./0_authorization_state.ts";
 import type { ConnectionState } from "./0_connection_state.ts";
 import type { EmojiStatus } from "./0_emoji_status.ts";
 import type { MessageReference } from "./0_message_reference.ts";
+import type { SecretChat } from "./0_secret_chat.ts";
 import type { StoryReference } from "./0_story_reference.ts";
 import type { Translation } from "./0_translation.ts";
 import type { UploadProgress } from "./0_upload_progress.ts";
@@ -30,6 +31,7 @@ import type { VideoChat } from "./0_video_chat.ts";
 import type { VoiceTranscription } from "./0_voice_transcription.ts";
 import type { BotCommands } from "./1_bot_commands.ts";
 import type { ChatAction } from "./1_chat_action.ts";
+import type { SecretMessage } from "./1_secret_message.ts";
 import type { MessageInteractions } from "./2_message_interactions.ts";
 import type { MessageReactionCount } from "./2_message_reaction_count.ts";
 import type { PollAnswer } from "./2_poll_answer.ts";
@@ -578,6 +580,36 @@ export interface UpdateMessageDraft {
   messageDraft: MessageDraft;
 }
 
+/**
+ * A secret chat was updated. User-only.
+ *
+ * ```
+ * client.on("secretChat", (ctx) => {
+ *   // ctx.update.secretChat
+ * });
+ * ```
+ * @unlisted
+ */
+export interface UpdateSecretChat {
+  type: "secretChat";
+  secretChat: SecretChat;
+}
+
+/**
+ * A message was received from a secret chat. User-only.
+ *
+ * ```
+ * client.on("secretMessage", (ctx) => {
+ *   // ctx.update.secretMessage
+ * });
+ * ```
+ * @unlisted
+ */
+export interface UpdateSecretMessage {
+  type: "secretMessage";
+  secretMessage: SecretMessage;
+}
+
 /** @unlisted */
 export interface UpdateMap {
   message: UpdateNewMessage;
@@ -616,6 +648,8 @@ export interface UpdateMap {
   emojiStatusRemoved: UpdateEmojiStatusRemoved;
   chatAction: UpdateChatAction;
   messageDraft: UpdateMessageDraft;
+  secretChat: UpdateSecretChat;
+  secretMessage: UpdateSecretMessage;
 }
 
 /** An incoming update. */
@@ -655,4 +689,6 @@ export type Update =
   | UpdateEmojiStatus
   | UpdateEmojiStatusRemoved
   | UpdateChatAction
-  | UpdateMessageDraft;
+  | UpdateMessageDraft
+  | UpdateSecretChat
+  | UpdateSecretMessage;

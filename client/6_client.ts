@@ -24,7 +24,7 @@ import { drop, getLogger, type Logger, MAX_MONOFORUM_CHANNEL_ID, type MaybePromi
 import { type Storage, StorageMemory } from "../2_storage.ts";
 import { Api, Mtproto } from "../2_tl.ts";
 import { type DC, getDcId, type TransportProvider } from "../3_transport.ts";
-import { type AlbumStoryList, type Animation, type AppSupport, type AuthorizationSession, type AvailableReactions, type Birthday, type BlockedUserList, type BotAccessSettings, type BotCommand, type BotTokenCheckResult, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatActionType, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type CodeCheckResult, type ConnectionState, constructChatP, constructUser2, type Country, type FailedInvitation, type FileSource, type Gift, type GiftCollection, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputChecklistItem, type InputEmojiStatus, type InputGift, type InputMedia, type InputPollOption, type InputRichText, type InputSticker, type InputStoryContent, type InviteLink, type JoinRequest, type LeftChannelList, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageCounters, type MessageDice, type MessageDocument, type MessageInvoice, type MessageList, type MessageLivePhoto, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageRichText, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type PasswordCheckResult, type Poll, type PremiumSubscriptionDuration, type PriceTag, type ProfilePhotoList, type Reaction, type ReportReason, type RichText, type SavedChats, type SlowModeDuration, type StarAmount, type StarTransactionList, type Sticker, type StickerSet, type Story, type StoryAlbum, type StoryReportResult, type SummarizedText, type TextToTranslate, type Timezone, type Topic, type TranslatedText, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
+import { type AlbumStoryList, type Animation, type AppSupport, type AuthorizationSession, type AvailableReactions, type Birthday, type BlockedUserList, type BotAccessSettings, type BotCommand, type BotTokenCheckResult, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatActionType, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type CodeCheckResult, type ConnectionState, constructChatP, constructUser2, type Country, type FailedInvitation, type FileSource, type Gift, type GiftCollection, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputChecklistItem, type InputEmojiStatus, type InputGift, type InputMedia, type InputPollOption, type InputRichText, type InputSticker, type InputStoryContent, type InviteLink, type JoinRequest, type LeftChannelList, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageCounters, type MessageDice, type MessageDocument, type MessageInvoice, type MessageList, type MessageLivePhoto, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageRichText, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type PasswordCheckResult, type Poll, type PremiumSubscriptionDuration, type PriceTag, type ProfilePhotoList, type Reaction, type ReportReason, type RichText, type SavedChats, type SecretChat, type SlowModeDuration, type StarAmount, type StarTransactionList, type Sticker, type StickerSet, type Story, type StoryAlbum, type StoryReportResult, type SummarizedText, type TextToTranslate, type Timezone, type Topic, type TranslatedText, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, PHONE_NUMBER_TTL, type PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, SessionRevoked } from "../4_errors.ts";
 import { AbortableLoop } from "./0_abortable_loop.ts";
@@ -43,6 +43,7 @@ import { ManagedBotManager } from "./2_managed_bot_manager.ts";
 import { NetworkStatisticsManager } from "./2_network_statistics_manager.ts";
 import { PaymentManager } from "./2_payment_manager.ts";
 import { ReactionManager } from "./2_reaction_manager.ts";
+import { SecretChatManager } from "./2_secret_chat_manager.ts";
 import { signIn } from "./2_sign_in.ts";
 import { StoryAlbumManager } from "./2_story_album_manager.ts";
 import { TakeoutManager } from "./2_takeout_manager.ts";
@@ -144,6 +145,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   #networkStatisticsManager: NetworkStatisticsManager;
   #paymentManager: PaymentManager;
   #reactionManager: ReactionManager;
+  #secretChatManager: SecretChatManager;
   #storyAlbumManager: StoryAlbumManager;
   #takeoutManager: TakeoutManager;
   #translationsManager: TranslationsManager;
@@ -180,6 +182,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       networkStatisticsManager: this.#networkStatisticsManager,
       paymentManager: this.#paymentManager,
       reactionManager: this.#reactionManager,
+      secretChatManager: this.#secretChatManager,
       storyAlbumManager: this.#storyAlbumManager,
       takeoutManager: this.#takeoutManager,
       translationsManager: this.#translationsManager,
@@ -322,6 +325,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     this.#networkStatisticsManager = new NetworkStatisticsManager(c);
     this.#paymentManager = new PaymentManager(c);
     this.#reactionManager = new ReactionManager(c);
+    this.#secretChatManager = new SecretChatManager(c);
     this.#storyAlbumManager = new StoryAlbumManager(c);
     this.#takeoutManager = new TakeoutManager(c);
     this.#translationsManager = new TranslationsManager(c);
@@ -1273,6 +1277,10 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
 
     if (this.#accountManager.canHandleUpdate(update)) {
       maybePromises.push(() => this.#accountManager.handleUpdate(update));
+    }
+
+    if (this.#secretChatManager.canHandleUpdate(update)) {
+      maybePromises.push(() => this.#secretChatManager.handleUpdate(update));
     }
 
     return () =>
@@ -4975,5 +4983,40 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async answerGuestQuery(id: string, result: InlineQueryResult): Promise<string> {
     return await this.#messageManager.answerGuestQuery(id, result);
+  }
+
+  //
+  // ========================= SECRET CHATS ========================= //
+  //
+
+  /**
+   * Request a secret chat. User-only.
+   *
+   * @method sc
+   * @param chatId The identifier of a chat.
+   */
+  async requestSecretChat(chatId: ID): Promise<SecretChat> {
+    return await this.#secretChatManager.requestSecretChat(chatId);
+  }
+
+  /**
+   * Accept a secret chat. User-only.
+   *
+   * @method sc
+   * @param id The identifier of a secret chat.
+   */
+  async acceptSecretChat(id: number): Promise<SecretChat> {
+    return await this.#secretChatManager.acceptSecretChat(id);
+  }
+
+  /**
+   * Send a message to a secret chat. User-only.
+   *
+   * @method sc
+   * @param id The identifier of a secret chat.
+   * @param text The message's text.
+   */
+  async sendSecretChatMessage(id: number, text: string): Promise<void> {
+    return await this.#secretChatManager.sendSecretChatMessage(id, text);
   }
 }
