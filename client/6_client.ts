@@ -2810,6 +2810,17 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     return await this.#messageManager.unsaveAnimation(fileId);
   }
 
+  /**
+   * Get a message's read date. User-only.
+   *
+   * @method ms
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the message.
+   */
+  async getMessageReadDate(chatId: ID, messageId: number): Promise<number> {
+    return await this.#messageManager.getMessageReadDate(chatId, messageId);
+  }
+
   //
   // ========================= POLLS ========================= //
   //
@@ -3895,6 +3906,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   async answerCallbackQuery(id: string, params?: AnswerCallbackQueryParams) {
     await this.#callbackQueryManager.answerCallbackQuery(id, params);
   }
+
   //
   // ========================= INLINE QUERIES ========================= //
   //
