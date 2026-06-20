@@ -21,7 +21,7 @@
 /** Copyright (C) 2023 Dunkan */
 
 import { unreachable } from "../0_deps.ts";
-import { type MessageEntity, type MessageEntityType, sortMessageEntities } from "../3_types.ts";
+import { type MessageEntity, sortMessageEntities } from "../3_types.ts";
 import { InputError } from "../0_errors.ts";
 import { decodeText, encodeText } from "../1_utilities.ts";
 
@@ -120,7 +120,7 @@ export function parseMarkdown(text_: string): [string, MessageEntity[]] {
   let utf16Offset = 0;
 
   interface EntityInfo {
-    type: MessageEntityType;
+    type: MessageEntity["type"];
     argument: Uint8Array | string;
     entityOffset: number;
     entityByteOffset: number;
@@ -187,7 +187,7 @@ export function parseMarkdown(text_: string): [string, MessageEntity[]] {
     }
 
     if (!isEndOfAnEntity) {
-      let type: MessageEntityType;
+      let type: MessageEntity["type"];
       let argument = new Uint8Array();
       const entityByteOffset = i;
 

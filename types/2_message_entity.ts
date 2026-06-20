@@ -24,31 +24,7 @@ import { Api } from "../2_tl.ts";
 import type { PeerGetter } from "./1_chat_p.ts";
 
 /** @unlisted */
-export type MessageEntityType =
-  | "mention"
-  | "hashtag"
-  | "botCommand"
-  | "url"
-  | "email"
-  | "bold"
-  | "italic"
-  | "code"
-  | "pre"
-  | "textLink"
-  | "textMention"
-  | "cashtag"
-  | "phoneNumber"
-  | "underline"
-  | "strikethrough"
-  | "blockquote"
-  | "bankCard"
-  | "spoiler"
-  | "customEmoji"
-  | "dateTime";
-
-/** @unlisted */
 export interface _MessageEntityBase {
-  type: MessageEntityType;
   offset: number;
   length: number;
 }
@@ -377,7 +353,7 @@ export function messageEntityToTlObject(entity: MessageEntity, getPeer: PeerGett
   }
 }
 
-const priorities: Record<MessageEntityType, number> = {
+const priorities: Record<MessageEntity["type"], number> = {
   "mention": 50,
   "hashtag": 50,
   "botCommand": 50,
