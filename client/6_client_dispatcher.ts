@@ -2813,6 +2813,26 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("reportChat", chatId, reason, params);
   }
 
+  /**
+   * Mark a chat as unread. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  async markChatAsUnread(chatId: ID): Promise<void> {
+    return await this.#dispatch("markChatAsUnread", chatId);
+  }
+
+  /**
+   * Mark a chat as read. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  async markChatAsRead(chatId: ID): Promise<void> {
+    return await this.#dispatch("markChatAsRead", chatId);
+  }
+
   //
   // ========================= CALLBACK QUERIES ========================= //
   //

@@ -3848,6 +3848,26 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     return await this.#chatManager.reportChat(chatId, reason, params);
   }
 
+  /**
+   * Mark a chat as unread. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  async markChatAsUnread(chatId: ID): Promise<void> {
+    return await this.#chatManager.markChatAsUnread(chatId);
+  }
+
+  /**
+   * Mark a chat as read. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  async markChatAsRead(chatId: ID): Promise<void> {
+    return await this.#chatManager.markChatAsRead(chatId);
+  }
+
   //
   // ========================= CALLBACK QUERIES ========================= //
   //

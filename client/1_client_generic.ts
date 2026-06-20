@@ -2146,6 +2146,22 @@ export abstract class ClientGeneric {
    */
   abstract reportChat(chatId: ID, reason: ReportReason, params?: ReportChatParams): Promise<void>;
 
+  /**
+   * Mark a chat as unread. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  abstract markChatAsUnread(chatId: ID): Promise<void>;
+
+  /**
+   * Mark a chat as read. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  abstract markChatAsRead(chatId: ID): Promise<void>;
+
   //
   // ========================= CALLBACK QUERIES ========================= //
   //
