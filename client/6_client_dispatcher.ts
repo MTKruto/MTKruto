@@ -1772,6 +1772,17 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("unsaveAnimation", fileId);
   }
 
+  /**
+   * Get a message's read date. User-only.
+   *
+   * @method ms
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the message.
+   */
+  async getMessageReadDate(chatId: ID, messageId: number): Promise<number> {
+    return await this.#dispatch("getMessageReadDate", chatId, messageId);
+  }
+
   //
   // ========================= POLLS ========================= //
   //

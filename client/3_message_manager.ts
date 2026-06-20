@@ -2607,4 +2607,11 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     this.#c.storage.assertUser("unsaveAnimation");
     await this.#setIsAnimationSaved(fileId, false);
   }
+
+  async getMessageReadDate(chatId: ID, messageId: number) {
+    const peer = await this.#c.getInputPeer(chatId);
+    const msg_id = messageId;
+    const result = await this.#c.invoke({ _: "messages.getOutboxReadDate", peer, msg_id });
+    return result.date;
+  }
 }

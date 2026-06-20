@@ -1305,6 +1305,15 @@ export abstract class ClientGeneric {
    */
   abstract unsaveAnimation(fileId: string): Promise<void>;
 
+  /**
+   * Get a message's read date. User-only.
+   *
+   * @method ms
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the message.
+   */
+  abstract getMessageReadDate(chatId: ID, messageId: number): Promise<number>;
+
   //
   // ========================= POLLS ========================= //
   //
