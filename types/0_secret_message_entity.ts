@@ -130,7 +130,7 @@ export interface SecretMessageEntityCustomEmoji extends _SecretMessageEntityBase
   customEmojiId: string;
 }
 
-/** A single entity of a message's text or caption. */
+/** Any type of secret message entity. */
 export type SecretMessageEntity =
   | SecretMessageEntityMention
   | SecretMessageEntityHashtag
