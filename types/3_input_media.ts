@@ -105,9 +105,9 @@ export interface InputMediaVideo extends _InputMediaCommon {
   thumbnail?: FileSource;
   /** The duration of the video in seconds. */
   duration?: number;
-  /** The width of the photo in pixels. */
+  /** The width of the video in pixels. */
   width?: number;
-  /** The height of the photo in pixels. */
+  /** The height of the video in pixels. */
   height?: number;
   /** Whether the video is suitable for streaming. */
   supportsStreaming?: boolean;

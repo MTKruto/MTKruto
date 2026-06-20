@@ -67,7 +67,7 @@ export abstract class ClientGeneric {
   /**
    * Check whether a bot token is valid.
    *
-   * @param password The password to check
+   * @param botToken The bot token to check
    * @returns The result of the check.
    * @method ac
    */
@@ -365,7 +365,7 @@ export abstract class ClientGeneric {
    * Resolve a phone number. User-only.
    *
    * @method ac
-   * @param username The phone number to resolve.
+   * @param phoneNumber The phone number to resolve.
    */
   abstract resolvePhoneNumber(phoneNumber: string): Promise<User>;
 
@@ -578,7 +578,7 @@ export abstract class ClientGeneric {
    *
    * @method ms
    * @param chatId The identifier of a chat to send the sticker to.
-   * @param document The sticker to send.
+   * @param sticker The sticker to send.
    * @returns The sent sticker.
    */
   abstract sendSticker(chatId: ID, sticker: FileSource, params?: SendStickerParams): Promise<MessageSticker>;
@@ -751,7 +751,6 @@ export abstract class ClientGeneric {
    * @method ms
    * @param chatId The identifier of the chat which the message belongs to.
    * @param messageId The identifier of the message.
-   * @param text The new caption of the message.
    * @returns The edited message.
    */
   abstract editMessageCaption(chatId: ID, messageId: number, params?: EditMessageCaptionParams): Promise<Message>;
@@ -1025,7 +1024,6 @@ export abstract class ClientGeneric {
    * @method ms
    * @param chatId The identifier of a chat to send the chat action to.
    * @param action The chat action.
-   * @param messageThreadId The thread to send the chat action to.
    */
   abstract sendChatAction(chatId: ID, action: ChatActionType, params?: { messageThreadId?: number }): Promise<void>;
 
@@ -1351,7 +1349,7 @@ export abstract class ClientGeneric {
    *
    * @param chatId The identifier of the chat that includes the poll.
    * @param messageId The identifier of the message that includes the poll.
-   * @param option The identifier of the option to remove.
+   * @param optionId The identifier of the option to remove.
    */
   abstract removePollOption(chatId: ID, messageId: number, optionId: string): Promise<void>;
 
@@ -1454,7 +1452,7 @@ export abstract class ClientGeneric {
    * Get custom emoji documents for download.
    *
    * @method fs
-   * @param id Identifier of one or more of custom emojis.
+   * @param id Identifier of one or more custom emojis.
    * @returns The custom emoji documents.
    * @cache
    */
@@ -1724,7 +1722,7 @@ export abstract class ClientGeneric {
    *
    * @method ch
    * @param chatId The identifier of the channel or supergroup to add the users to.
-   * @param userId The identifiers of the users to add to the channel or supergroup.
+   * @param userIds The identifiers of the users to add to the channel or supergroup.
    * @returns An array of FailedInvitation that has at most a length that is the same as that of the parameter userIds. If empty, it means that all the provided users were added.
    */
   abstract addChatMembers(chatId: ID, userIds: ID[]): Promise<FailedInvitation[]>;
@@ -2857,7 +2855,7 @@ export abstract class ClientGeneric {
    * @method gc
    * @param chatId The identifier of the chat that includes the gift collection.
    * @param collectionId The identifier of a gift collection.
-   * @param gifts The gifts to remove from the collection.
+   * @param gifts The new order of gifts.
    */
   abstract reorderGiftsInCollection(chatId: ID, collectionId: number, gifts: InputGift[]): Promise<GiftCollection>;
 
@@ -2941,7 +2939,7 @@ export abstract class ClientGeneric {
    *
    * @method ss
    * @param name The sticker set's name.
-   * @param slug The slug of the sticker set or its link.
+   * @param slug The sticker set's slug.
    * @param stickers The initial stickers of the set.
    */
   abstract createStickerSet(name: string, slug: string, stickers: InputSticker[], params?: CreateStickerSetParams): Promise<StickerSet>;
@@ -3005,7 +3003,7 @@ export abstract class ClientGeneric {
    * @param fileId The identifier of the sticker.
    * @param position The new position of the sticker.
    */
-  abstract changeStickerPositionInStickerSet(slug: string, position: number): Promise<void>;
+  abstract changeStickerPositionInStickerSet(fileId: string, position: number): Promise<void>;
 
   /**
    * Set a sticker set's thumbnail.

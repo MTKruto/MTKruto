@@ -227,7 +227,7 @@ export class ClientEncrypted extends ClientAbstract {
           this.#temporaryAuthKey = authKey;
           await this.session.setAuthKey(this.#temporaryAuthKey);
           this.session.serverSalt = serverSalt;
-          this.#isConnectionInited = false;
+          this.#isConnectionInitialized = false;
         } else {
           await this.setAuthKey(authKey);
         }
@@ -267,7 +267,7 @@ export class ClientEncrypted extends ClientAbstract {
     }
   }
 
-  #isConnectionInited = false;
+  #isConnectionInitialized = false;
   lastRequest?: Date;
   async #send(function_: Api.AnyFunction | Mtproto.ping) {
     this.lastRequest = new Date();
@@ -278,7 +278,7 @@ export class ClientEncrypted extends ClientAbstract {
       if (this.#isAuthKeyBound && this.#params?.disableUpdates && !isMediaFunction(function_)) {
         function_ = { _: "invokeWithoutUpdates", query: function_ };
       }
-      if (this.#isAuthKeyBound && !this.#isConnectionInited) {
+      if (this.#isAuthKeyBound && !this.#isConnectionInitialized) {
         if (!this.#apiId) {
           throw new InputError("apiId not set");
         }
@@ -397,7 +397,7 @@ export class ClientEncrypted extends ClientAbstract {
       this.#sentRequests.delete(msgId);
       const reason = constructTelegramError(error, request.call);
       if (reason instanceof ConnectionNotInited) {
-        this.#isConnectionInited = false;
+        this.#isConnectionInitialized = false;
         await this.#resend(request);
       } else {
         request.promiseWithResolvers.reject(constructTelegramError(error, request.call));
@@ -424,8 +424,8 @@ export class ClientEncrypted extends ClientAbstract {
         this.#sentRequests.delete(msgId);
       }
     }
-    if (!this.#isConnectionInited) {
-      this.#isConnectionInited = true;
+    if (!this.#isConnectionInitialized) {
+      this.#isConnectionInitialized = true;
     }
   }
 

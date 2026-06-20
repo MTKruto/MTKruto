@@ -76,7 +76,7 @@ export interface ChatPPrivate extends _ChatPBase {
   isCloseFriend: boolean;
   /** The user's [IETF language tag](https://en.wikipedia.org/wiki/IETF_language_tag). */
   languageCode?: string;
-  /** Whether the user has been identified as scam. */
+  /** Whether the user has been identified as a scam. */
   isScam: boolean;
   /** Whether the user has been identified as an impersonator. */
   isFake: boolean;
@@ -92,7 +92,7 @@ export interface ChatPPrivate extends _ChatPBase {
   restrictionReason?: RestrictionReason[];
   /** Whether the user is a bot that has been added to the attachment menu by the current user. */
   isAddedToAttachmentsMenu?: boolean;
-  /** Whether the user is a bot that has been added to the attachment menu by the current user. */
+  /** Whether the user is a bot that has a main mini app. */
   hasMainMiniApp?: boolean;
   /** Whether the user is a bot that supports guest queries. */
   isGuestQuerySupported?: boolean;
@@ -115,7 +115,7 @@ export interface ChatPChannelBase extends _ChatPBase {
   username?: string;
   /** The chat or channel's additional usernames. */
   also?: string[];
-  /** Whether the chat or channel has been identified as scam. */
+  /** Whether the chat or channel has been identified as a scam. */
   isScam: boolean;
   /** Whether the chat or channel has been identified as an impersonator. */
   isFake: boolean;

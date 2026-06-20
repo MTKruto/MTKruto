@@ -24,7 +24,7 @@ import { type ChatP, constructChatP } from "./1_chat_p.ts";
 
 /** An inactive chat. */
 export interface InactiveChat {
-  /** The time which the chat was last active. */
+  /** The time when the chat was last active. */
   lastActivity: number;
   /** The chat that has been marked as inactive. */
   chat: ChatP;

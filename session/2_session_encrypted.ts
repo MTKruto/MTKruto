@@ -50,7 +50,7 @@ export interface Handlers {
 }
 
 export class SessionEncrypted extends Session implements Session {
-  static #TGCRYPTO_INITED = false;
+  static #IS_TGCRYPTO_INITIALIZED = false;
 
   #id = getRandomId();
   handlers: Handlers = {};
@@ -101,9 +101,9 @@ export class SessionEncrypted extends Session implements Session {
       this.#rejectAllPending(new ConnectionError("The connection was closed."));
     }
     await super.connect();
-    if (!SessionEncrypted.#TGCRYPTO_INITED) {
+    if (!SessionEncrypted.#IS_TGCRYPTO_INITIALIZED) {
       await initTgCrypto();
-      SessionEncrypted.#TGCRYPTO_INITED = true;
+      SessionEncrypted.#IS_TGCRYPTO_INITIALIZED = true;
     }
     this.#receiveLoop.start();
     this.#sendLoop.start();
@@ -277,7 +277,7 @@ export class SessionEncrypted extends Session implements Session {
   //// SEND LOOP ////
   #awakeSendLoop?: () => void;
   #sendLoop = new AbortableLoop(this.#sendLoopBody.bind(this), (err) => {
-    this.#LsendLoop.error("unhandled receive loop error:", err);
+    this.#LsendLoop.error("unhandled send loop error:", err);
   });
   async #sendLoopBody(loop: AbortableLoop, signal: AbortSignal) {
     if (!this.isConnected) {
@@ -295,7 +295,7 @@ export class SessionEncrypted extends Session implements Session {
         };
         signal.addEventListener("abort", onAbort);
         this.#awakeSendLoop = () => {
-          this.#LsendLoop.debug("got awaken");
+          this.#LsendLoop.debug("woke up");
           resolve();
           signal.removeEventListener("abort", onAbort);
         };

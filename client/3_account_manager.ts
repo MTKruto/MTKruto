@@ -454,19 +454,19 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     await this.#c.invoke({ _: "users.suggestBirthday", id, birthday });
   }
 
-  async #toggleBotAddedtoAttachmentsMenu(botId: ID, isWriteAllowed: boolean, enabled: boolean) {
+  async #toggleBotAddedToAttachmentsMenu(botId: ID, isWriteAllowed: boolean, enabled: boolean) {
     const bot = await this.#c.getInputUser(botId);
     await this.#c.invoke({ _: "messages.toggleBotInAttachMenu", bot, write_allowed: isWriteAllowed || undefined, enabled });
   }
 
   async addBotToAttachmentsMenu(botId: ID, params?: AddBotToAttachmentsMenuParams) {
     this.#c.storage.assertUser("addBotToAttachmentsMenu");
-    await this.#toggleBotAddedtoAttachmentsMenu(botId, params?.isWriteAllowed ?? false, true);
+    await this.#toggleBotAddedToAttachmentsMenu(botId, params?.isWriteAllowed ?? false, true);
   }
 
   async removeBotFromAttachmentsMenu(botId: ID) {
     this.#c.storage.assertUser("addBotToAttachmentsMenu");
-    await this.#toggleBotAddedtoAttachmentsMenu(botId, false, false);
+    await this.#toggleBotAddedToAttachmentsMenu(botId, false, false);
   }
 
   async getAppSupport() {

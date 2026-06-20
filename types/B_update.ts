@@ -263,12 +263,12 @@ export interface UpdateEditedChat {
 }
 
 /**
- * A chat was removed from the chat list. User-only.
+ * A chat was deleted. User-only.
  * @unlisted
  */
 export interface UpdateDeletedChat {
   type: "deletedChat";
-  /** The chat that was deleted */
+  /** The chat that was deleted. */
   deletedChat: { chatId: number };
 }
 

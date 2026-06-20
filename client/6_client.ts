@@ -119,7 +119,7 @@ export interface ClientParams extends ClientPlainParams {
    * When the provided storage takes advantage of memory, nothing changes, even if set to `true`.
    */
   persistCache?: boolean;
-  /** Whether to disable receiving updates. UpdateConnectionState and UpdatesAuthorizationState will always be received. Defaults to `false`. */
+  /** Whether to disable receiving updates. UpdateConnectionState and UpdateAuthorizationState will always be received. Defaults to `false`. */
   disableUpdates?: boolean;
   /** An auth string to automatically import. Can be overridden by a later importAuthString call. */
   authString?: string;
@@ -689,7 +689,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   /**
    * Check whether a bot token is valid.
    *
-   * @param password The password to check
+   * @param botToken The bot token to check
    * @returns The result of the check.
    * @method ac
    */
@@ -1029,7 +1029,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   async getInputChannel(id: ID): Promise<Api.inputChannel | Api.inputChannelFromMessage> {
     const inputPeer = await this.getInputPeer(id);
     if (!canBeInputChannel(inputPeer)) {
-      throw new TypeError(`The chat ${id} is not a channel neither a supergroup.`);
+      throw new TypeError(`The chat ${id} is neither a channel nor a supergroup.`);
     }
     return toInputChannel(inputPeer);
   }
@@ -1108,7 +1108,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       const accessHash = await this.messageStorage.getChannelAccessHash(id);
       peer = { _: "inputPeerChannel", channel_id: Api.chatIdToPeerId(id), access_hash: accessHash ?? 0n } as Api.inputPeerChannel;
     } else {
-      throw new InputError("The ID is of an format unknown.");
+      throw new InputError("The ID is of an unknown format.");
     }
 
     if (!Api.is("inputPeerChat", peer) && !peer.access_hash) {
@@ -1668,7 +1668,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * Resolve a phone number. User-only.
    *
    * @method ac
-   * @param username The phone number to resolve.
+   * @param phoneNumber The phone number to resolve.
    */
   async resolvePhoneNumber(phoneNumber: string): Promise<User> {
     return await this.#accountManager.resolvePhoneNumber(phoneNumber);
@@ -1931,7 +1931,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    *
    * @method ms
    * @param chatId The identifier of a chat to send the sticker to.
-   * @param document The sticker to send.
+   * @param sticker The sticker to send.
    * @returns The sent sticker.
    */
   async sendSticker(chatId: ID, sticker: FileSource, params?: SendStickerParams): Promise<MessageSticker> {
@@ -2136,7 +2136,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ms
    * @param chatId The identifier of the chat which the message belongs to.
    * @param messageId The identifier of the message.
-   * @param text The new caption of the message.
    * @returns The edited message.
    */
   async editMessageCaption(chatId: ID, messageId: number, params?: EditMessageCaptionParams): Promise<Message> {
@@ -2462,7 +2461,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ms
    * @param chatId The identifier of a chat to send the chat action to.
    * @param action The chat action.
-   * @param messageThreadId The thread to send the chat action to.
    */
   async sendChatAction(chatId: ID, action: ChatActionType, params?: { messageThreadId?: number }) {
     await this.#messageManager.sendChatAction(chatId, action, params);
@@ -2864,7 +2862,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    *
    * @param chatId The identifier of the chat that includes the poll.
    * @param messageId The identifier of the message that includes the poll.
-   * @param option The identifier of the option to remove.
+   * @param optionId The identifier of the option to remove.
    */
   async removePollOption(chatId: ID, messageId: number, optionId: string) {
     await this.#pollManager.removePollOption(chatId, messageId, optionId);
@@ -3326,7 +3324,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    *
    * @method ch
    * @param chatId The identifier of the channel or supergroup to add the users to.
-   * @param userId The identifiers of the users to add to the channel or supergroup.
+   * @param userIds The identifiers of the users to add to the channel or supergroup.
    * @returns An array of FailedInvitation that has at most a length that is the same as that of the parameter userIds. If empty, it means that all the provided users were added.
    */
   async addChatMembers(chatId: ID, userIds: ID[]): Promise<FailedInvitation[]> {
@@ -4605,7 +4603,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * Craft gifts.
    *
    * @method gf
-   * @param gift The gifts to craft.
+   * @param gifts The gifts to craft.
    */
   async craftGifts(gifts: InputGift[]): Promise<void> {
     await this.#giftManager.craftGifts(gifts);
@@ -4711,7 +4709,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method gc
    * @param chatId The identifier of the chat that includes the gift collection.
    * @param collectionId The identifier of a gift collection.
-   * @param gifts The gifts to remove from the collection.
+   * @param gifts The new order of gifts.
    */
   async reorderGiftsInCollection(chatId: ID, collectionId: number, gifts: InputGift[]): Promise<GiftCollection> {
     return await this.#giftCollectionManager.reorderGiftsInCollection(chatId, collectionId, gifts);
@@ -4772,8 +4770,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ss
    * @param slug The slug of the sticker set or its link.
    */
-  async getStickerSet(name: string): Promise<StickerSet> {
-    return await this.#stickerSetManager.getStickerSet(name);
+  async getStickerSet(slug: string): Promise<StickerSet> {
+    return await this.#stickerSetManager.getStickerSet(slug);
   }
 
   /**
@@ -4891,8 +4889,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param fileId The identifier of the sticker.
    * @param position The new position of the sticker.
    */
-  async changeStickerPositionInStickerSet(slug: string, position: number): Promise<void> {
-    return await this.#stickerSetManager.changeStickerPositionInStickerSet(slug, position);
+  async changeStickerPositionInStickerSet(fileId: string, position: number): Promise<void> {
+    return await this.#stickerSetManager.changeStickerPositionInStickerSet(fileId, position);
   }
 
   /**

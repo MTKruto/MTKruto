@@ -355,9 +355,9 @@ export interface SendStickerParams extends _UploadCommon, _SendCommon {
 export interface SendVideoParams extends _CaptionCommon, _ThumbnailCommon, _SpoilCommon, _UploadCommon, _SendCommon, _StarCount {
   /** The duration of the video in seconds. */
   duration?: number;
-  /** The width of the photo in pixels. */
+  /** The width of the video in pixels. */
   width?: number;
-  /** The height of the photo in pixels. */
+  /** The height of the video in pixels. */
   height?: number;
   /** Whether the video is suitable for streaming. */
   supportsStreaming?: boolean;
@@ -642,7 +642,7 @@ export interface DeclineJoinRequestsParams {
 }
 
 export interface AddChatMemberParams {
-  /** The number of current messages to make visible to the user that is about to be added. */
+  /** The number of recent messages to make visible to the user that is about to be added. */
   historyLimit?: number;
 }
 

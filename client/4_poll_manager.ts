@@ -63,7 +63,7 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate, true> {
       throw new InputError("Message not a poll.");
     }
     if (message.poll.options.filter((v) => v.isChosen).length === 0 && optionIndexes.length === 0) {
-      throw new InputError("No vote has been casted.");
+      throw new InputError("No vote has been cast.");
     }
     if (!message.poll.allowMultipleAnswers && optionIndexes.length > 1) {
       throw new InputError("Cannot cast multiple options for this vote.");
@@ -74,7 +74,7 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate, true> {
       }
     }
     if (optionIndexes.length > 0 && message.poll.options.map((v, i): [number, boolean] => [i, v.isChosen]).filter((v) => v[1]).every(([v]) => optionIndexes.includes(v))) {
-      throw new InputError("The same options are already casted.");
+      throw new InputError("The same options are already cast.");
     }
     const peer = await this.#c.getInputPeer(chatId);
     const chatId_ = Api.peerToChatId(peer as Api.IdentifierContainer);

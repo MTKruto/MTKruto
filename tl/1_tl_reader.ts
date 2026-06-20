@@ -47,12 +47,12 @@ export class TLReader {
   }
 
   unread(count: number) {
-    const newOffest = this._buffer.byteOffset - count;
-    if (newOffest < 0) {
+    const newOffset = this._buffer.byteOffset - count;
+    if (newOffset < 0) {
       throw new TLError("No data has been read", this.#path);
     }
 
-    this._buffer = new Uint8Array(this._buffer.buffer, newOffest);
+    this._buffer = new Uint8Array(this._buffer.buffer, newOffset);
   }
 
   readInt24(isSigned = true): number {
