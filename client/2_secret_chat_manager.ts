@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { concat, equals, ige256Decrypt, ige256Encrypt } from "../0_deps.ts";
+import { concat, equals, ige256Decrypt, ige256Encrypt, WEEK } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, getRandomInt, intFromBytes, intToBytes, type Logger, mod, modExp, sha1, sha256 } from "../1_utilities.ts";
 import { Api, SecretChats, TLReader, TLWriter, X } from "../2_tl.ts";
@@ -27,6 +27,7 @@ import { constructSecretChat } from "../types/0_secret_chat.ts";
 import { constructSecretMessage } from "../types/1_secret_message.ts";
 import type { SendSecretChatMessageParams } from "./0_params.ts";
 import { isGoodModExpFirst, isSafePrime } from "./0_password.ts";
+import { SecretChatState, type SerializedSecretChatState } from "./0_secret_chat_state.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import type { C } from "./1_types.ts";
 
@@ -44,6 +45,20 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
   constructor(c: C) {
     this.#c = c;
     this.#L = getLogger("SecretChatManager");
+  }
+
+  async loadSecretChats() {
+    let loaded = 0;
+    for await (const [k, v] of await this.#c.messageStorage.storage.getMany<SerializedSecretChatState>({ prefix: ["secretChats"] })) {
+      if (typeof k[1] !== "number") {
+        continue;
+      }
+
+      this.#states.set(k[1], SecretChatState.load(v));
+      ++loaded;
+    }
+
+    this.#L.debug("loaded", loaded, "secret chats");
   }
 
   static #checkDhConfig(dhConfig: Api.messages_dhConfig) {
@@ -97,13 +112,17 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     return result;
   }
 
-  #encryptedChats = new Map<number, Api.EncryptedChat>();
-  #authKeys = new Map<number, Uint8Array<ArrayBuffer>>();
-  #authKeyIds = new Map<number, Uint8Array<ArrayBuffer>>();
-  #pendingExponents = new Map<number, { exponent: bigint; prime: bigint }>();
+  #states = new Map<number, SecretChatState>();
 
-  #inSeqNo = new Map<number, number>();
-  #outSeqNo = new Map<number, number>();
+  #getSecretChatState(id: number) {
+    let state = this.#states.get(id);
+    if (state === undefined) {
+      state = new SecretChatState();
+      this.#states.set(id, state);
+    }
+
+    return state;
+  }
 
   async requestSecretChat(chatId: ID) {
     const user_id = await this.#c.getInputUser(chatId);
@@ -116,7 +135,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
 
     const a = getRandomInt(256, false);
 
-    const g_a = intToBytes(modExp(BigInt(dhConfig.g), a, prime), 256, { isSigned: false, byteOrder: "big" });
+    const g_a = intToBytes(modExp(BigInt(dhConfig.g), a, prime), 256, { byteOrder: "big", isSigned: false });
 
     const result = await this.#c.invoke({
       _: "messages.requestEncryption",
@@ -124,41 +143,51 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
       g_a,
       random_id: getRandomId(true),
     });
-    this.#pendingExponents.set(result.id, { exponent: a, prime });
-
+    const state = this.#getSecretChatState(result.id);
+    state.g = dhConfig.g;
+    state.prime = prime;
+    state.a = a;
+    state.pendingExponent = a;
     return constructSecretChat(result);
   }
 
   async acceptSecretChat(id: number) {
-    const encryptedChat = this.#encryptedChats.get(id);
-    if (!Api.is("encryptedChatRequested", encryptedChat)) {
+    const state = this.#getSecretChatState(id);
+    if (!Api.is("encryptedChatRequested", state.encryptedChat)) {
       throw new InputError("Invalid secret chat identifier received.");
     }
 
     const dhConfig = await this.#getDhConfig();
     const prime = intFromBytes(dhConfig.p, { byteOrder: "big", isSigned: false });
+    state.g = dhConfig.g;
+    state.prime = prime;
 
     const b = getRandomInt(256, false);
 
     // key = (pow(g_a, b) mod dh_prime)
-    const gA = intFromBytes(encryptedChat.g_a, { byteOrder: "big", isSigned: false });
+    const gA = intFromBytes(state.encryptedChat.g_a, { byteOrder: "big", isSigned: false });
     if (!isGoodModExpFirst(gA, prime)) {
       throw new TypeError("Received invalid g_a.");
     }
+
     let authKey = intToBytes(modExp(gA, b, prime), 256, { byteOrder: "big", isSigned: false });
     if (authKey.byteLength < 256) {
       authKey = concat([new Uint8Array(256 - authKey.byteLength), authKey]);
     }
-    this.#authKeys.set(id, authKey);
+    state.authKey = authKey;
+    state.authKeyCreatedAt = Date.now();
+    state.authKeyUseCount = 0;
+    state.isAuthKeyUsed = false;
 
     const authKeyId = (await sha1(authKey)).subarray(-8);
-    this.#authKeyIds.set(id, authKeyId);
+    state.authKeyId_ = authKeyId;
     const key_fingerprint = intFromBytes(authKeyId);
+    state.authKeyId = key_fingerprint;
 
     // g_b := pow(g, b) mod dh_prime
     const g_b = intToBytes(modExp(BigInt(dhConfig.g), b, prime), 256, { byteOrder: "big", isSigned: false });
 
-    const peer: Api.inputEncryptedChat = { _: "inputEncryptedChat", chat_id: encryptedChat.id, access_hash: encryptedChat.access_hash };
+    const peer: Api.inputEncryptedChat = { _: "inputEncryptedChat", chat_id: state.encryptedChat.id, access_hash: state.encryptedChat.access_hash };
 
     const result = await this.#c.invoke({
       _: "messages.acceptEncryption",
@@ -166,30 +195,28 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
       g_b,
       key_fingerprint,
     });
-    this.#encryptedChats.set(result.id, result);
+    state.encryptedChat = result;
     return constructSecretChat(result);
   }
 
   #getNextOutSeqNo(id: number, isCreator: boolean) {
-    const rawOutSeqNo = this.#outSeqNo.get(id) ?? 0;
-    this.#outSeqNo.set(id, rawOutSeqNo + 1);
+    const state = this.#getSecretChatState(id);
+    const rawOutSeqNo = state.outSeqNo;
+    state.outSeqNo = rawOutSeqNo + 1;
     return 2 * rawOutSeqNo + (isCreator ? 1 : 0);
   }
 
   #getInSeqNo(id: number, isCreator: boolean) {
-    const rawInSeqNo = this.#inSeqNo.get(id) ?? 0;
+    const state = this.#getSecretChatState(id);
+    const rawInSeqNo = state.inSeqNo;
     return 2 * rawInSeqNo + (isCreator ? 0 : 1);
   }
 
   async sendSecretChatMessage(id: number, text: string, params?: SendSecretChatMessageParams) {
-    const encryptedChat = this.#encryptedChats.get(id);
-    const authKeyId = this.#authKeyIds.get(id);
-    const authKey = this.#authKeys.get(id);
-    if (!Api.is("encryptedChat", encryptedChat) || authKeyId === undefined || authKey === undefined) {
+    const state = this.#getSecretChatState(id);
+    if (!Api.is("encryptedChat", state.encryptedChat)) {
       throw new InputError("Received invalid secret chat identifier.");
     }
-
-    const isCreator = Number(encryptedChat.admin_id) === await this.#c.getSelfId();
 
     const random_id = getRandomId();
     const decryptedMessage: SecretChats.decryptedMessage = {
@@ -202,13 +229,55 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
       entities: params?.entities?.length ? params.entities.map(secretMessageEntityToTlObject) : undefined,
       via_bot_name: params?.viaBot,
     };
-    const out_seq_no = this.#getNextOutSeqNo(id, isCreator);
-    const in_seq_no = this.#getInSeqNo(id, isCreator);
-    const decryptedMessageLayer: SecretChats.decryptedMessageLayer = { _: "decryptedMessageLayer", in_seq_no, layer: 144, message: decryptedMessage, out_seq_no, random_bytes: crypto.getRandomValues(new Uint8Array(15)) };
+
+    await this.#sendMessage(decryptedMessage, state.encryptedChat, state.authKey, state.authKeyId_);
+    state.isJustLoaded = false;
+    await this.#maybeStartRekey(state);
+  }
+
+  #sendTails = new Map<number, Promise<void>>();
+  async #sendMessage(message: SecretChats.DecryptedMessage, encryptedChat: Api.encryptedChat, authKey: Uint8Array<ArrayBuffer>, authKeyId: Uint8Array<ArrayBuffer>) {
+    try {
+      await this.#sendMessageInner(message, encryptedChat, authKey, authKeyId);
+    } finally {
+      await this.#getSecretChatState(encryptedChat.id).commit(this.#c.messageStorage.storage);
+    }
+  }
+
+  async #sendMessageInner(message: SecretChats.DecryptedMessage, encryptedChat: Api.encryptedChat, authKey: Uint8Array<ArrayBuffer>, authKeyId: Uint8Array<ArrayBuffer>) {
+    const previous = this.#sendTails.get(encryptedChat.id) ?? Promise.resolve();
+    const { promise, resolve } = Promise.withResolvers<void>();
+    const tail = previous.then(() => promise);
+    this.#sendTails.set(encryptedChat.id, tail);
+    await previous;
+    try {
+      await this.#sendMessageUnlocked(message, encryptedChat, authKey, authKeyId);
+    } finally {
+      resolve();
+      if (this.#sendTails.get(encryptedChat.id) === tail) {
+        this.#sendTails.delete(encryptedChat.id);
+      }
+    }
+  }
+
+  async #sendMessageUnlocked(message: SecretChats.DecryptedMessage, encryptedChat: Api.encryptedChat, authKey: Uint8Array<ArrayBuffer>, authKeyId: Uint8Array<ArrayBuffer>) {
+    const random_id = getRandomId();
+
+    const isCreator = Number(encryptedChat.admin_id) === await this.#c.getSelfId();
+    const out_seq_no = this.#getNextOutSeqNo(encryptedChat.id, isCreator);
+    const in_seq_no = this.#getInSeqNo(encryptedChat.id, isCreator);
+
+    const decryptedMessageLayer: SecretChats.decryptedMessageLayer = { _: "decryptedMessageLayer", in_seq_no, layer: 144, message, out_seq_no, random_bytes: crypto.getRandomValues(new Uint8Array(15)) };
 
     const data = await this.#encryptMessage(isCreator, authKeyId, authKey, decryptedMessageLayer);
 
+    this.#getSecretChatState(encryptedChat.id).outgoingMessages.set((out_seq_no - (isCreator ? 1 : 0)) / 2, data);
     await this.#c.invoke({ _: "messages.sendEncrypted", peer: { _: "inputEncryptedChat", chat_id: encryptedChat.id, access_hash: encryptedChat.access_hash }, random_id, data });
+    const state = this.#getSecretChatState(encryptedChat.id);
+    if (equals(state.authKeyId_, authKeyId)) {
+      ++state.authKeyUseCount;
+      state.isAuthKeyUsed = true;
+    }
   }
 
   async #encryptMessage(isCreator: boolean, authKeyId: Uint8Array<ArrayBuffer>, authKey: Uint8Array<ArrayBuffer>, message: SecretChats.decryptedMessageLayer) {
@@ -285,24 +354,343 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     return await SecretChats.deserializeType(X, serializedMessage);
   }
 
+  async #checkGap(chatId: number, message: SecretChats.decryptedMessageLayer) {
+    const state = this.#getSecretChatState(chatId);
+    if (!Api.is("encryptedChat", state.encryptedChat)) {
+      return;
+    }
+    const isCreator = Number(state.encryptedChat.admin_id) === await this.#c.getSelfId();
+    const x = isCreator ? 0 : 1;
+    const inX = isCreator ? 1 : 0;
+    if (message.out_seq_no < 0 || message.out_seq_no % 2 !== x) {
+      this.#L.debug("discarding secret chat", chatId, "because an invalid out_seq_no was received");
+      await this.#c.invoke({ _: "messages.discardEncryption", chat_id: chatId });
+      throw new TypeError("Received invalid secret chat out_seq_no.");
+    }
+    const outSeqNo = (message.out_seq_no - x) / 2;
+    const inSeqNo = (message.in_seq_no - inX) / 2;
+    if (inSeqNo % 1 !== 0 || inSeqNo < 0 || inSeqNo > state.outSeqNo) {
+      this.#L.debug("discarding secret chat", chatId, "because an invalid in_seq_no was received");
+      await this.#c.invoke({ _: "messages.discardEncryption", chat_id: chatId });
+      throw new TypeError("Received invalid secret chat in_seq_no.");
+    }
+    if (outSeqNo < state.inSeqNo) { // old
+      return;
+    }
+    const alreadyPending = state.pendingMessages.some((v) => v.out_seq_no === message.out_seq_no);
+    if (!alreadyPending && SecretChats.is("decryptedMessageService", message.message) && SecretChats.is("decryptedMessageActionResend", message.message.action)) {
+      await this.#resendMessages(state, message.message.action, isCreator);
+    }
+    if (outSeqNo > state.inSeqNo) { // gap
+      if (!state.pendingMessages.some((v) => v.out_seq_no === message.out_seq_no)) {
+        state.pendingMessages.push(message);
+      }
+      if (state.isGapRequested) {
+        return;
+      }
+      await this.#sendMessage(
+        {
+          _: "decryptedMessageService",
+          random_id: getRandomId(),
+          action: {
+            _: "decryptedMessageActionResend",
+            start_seq_no: state.inSeqNo * 2 + x,
+            end_seq_no: message.out_seq_no - 2,
+          },
+        },
+        state.encryptedChat,
+        state.authKey,
+        state.authKeyId_,
+      );
+      state.isGapRequested = true;
+      state.gapEndSeqNo = outSeqNo - 1;
+      return;
+    }
+
+    const handle = async (message: SecretChats.decryptedMessageLayer) => {
+      const inSeqNo = (message.in_seq_no - inX) / 2;
+      if (inSeqNo < state.remoteInSeqNo && !state.isJustLoaded) {
+        this.#L.debug("discarding secret chat", chatId, "because of decreasing in_seq_no");
+        await this.#c.invoke({ _: "messages.discardEncryption", chat_id: chatId });
+        throw new TypeError("Received decreasing secret chat in_seq_no.");
+      }
+      state.remoteInSeqNo = Math.max(state.remoteInSeqNo, inSeqNo);
+      ++state.inSeqNo;
+      await this.#handleDecryptedMessageLayer(chatId, message);
+    };
+    await handle(message);
+    while (true) {
+      const index = state.pendingMessages.findIndex((v) => (v.out_seq_no - x) / 2 === state.inSeqNo);
+      if (index === -1) {
+        break;
+      }
+      const [pendingMessage] = state.pendingMessages.splice(index, 1);
+      await handle(pendingMessage);
+    }
+    if (state.pendingMessages.length === 0) {
+      state.isGapRequested = false;
+      state.gapEndSeqNo = -1;
+    } else if (state.inSeqNo > state.gapEndSeqNo) {
+      state.isGapRequested = false;
+      const next = state.pendingMessages.reduce((a, b) => a.out_seq_no < b.out_seq_no ? a : b);
+      await this.#checkGap(chatId, next);
+    }
+  }
+
+  async #resendMessages(state: SecretChatState, action: SecretChats.decryptedMessageActionResend, isCreator: boolean) {
+    if (!Api.is("encryptedChat", state.encryptedChat)) {
+      return;
+    }
+    const x = isCreator ? 1 : 0;
+    const start = (action.start_seq_no - x) / 2;
+    const end = (action.end_seq_no - x) / 2;
+    if (start % 1 !== 0 || end % 1 !== 0 || start < 0 || end < start || end >= state.outSeqNo) {
+      this.#L.debug("discarding secret chat", state.encryptedChat.id, "because an invalid resend rage was received");
+      await this.#c.invoke({ _: "messages.discardEncryption", chat_id: state.encryptedChat.id });
+      throw new TypeError("Received invalid secret chat resend range.");
+    }
+    const peer: Api.inputEncryptedChat = { _: "inputEncryptedChat", chat_id: state.encryptedChat.id, access_hash: state.encryptedChat.access_hash };
+    for (let seqNo = start; seqNo <= end; ++seqNo) {
+      const message = state.outgoingMessages.get(seqNo);
+      if (!message) {
+        this.#L.debug("discarding secret chat", state.encryptedChat.id, "because unable to resend message");
+        await this.#c.invoke({ _: "messages.discardEncryption", chat_id: state.encryptedChat.id });
+        throw new TypeError("Unable to resend secret chat message.");
+      }
+      await this.#c.invoke({ _: "messages.sendEncrypted", peer, random_id: getRandomId(), data: message });
+    }
+  }
+
+  #clearPreviousKey(state: SecretChatState) {
+    state.previousAuthKey.fill(0);
+    state.previousAuthKey = new Uint8Array();
+    state.previousAuthKeyId_ = new Uint8Array();
+    state.previousAuthKeyDiscardAfterSeqNo = -1;
+    state.isAwaitingNewAuthKeyConfirmation = false;
+  }
+
+  #installNewKey(state: SecretChatState, authKey: Uint8Array<ArrayBuffer>, authKeyId: bigint, authKeyId_: Uint8Array<ArrayBuffer>, awaitingConfirmation: boolean, discardAfterSeqNo = -1) {
+    state.previousAuthKey = state.authKey;
+    state.previousAuthKeyId_ = state.authKeyId_;
+    state.previousAuthKeyDiscardAfterSeqNo = discardAfterSeqNo;
+    state.isAwaitingNewAuthKeyConfirmation = awaitingConfirmation;
+    state.authKey = authKey;
+    state.authKeyId = authKeyId;
+    state.authKeyId_ = authKeyId_;
+    state.authKeyCreatedAt = Date.now();
+    state.authKeyUseCount = 0;
+    state.isAuthKeyUsed = false;
+  }
+
+  async #abortRekey(state: SecretChatState, exchangeId: bigint) {
+    if (!Api.is("encryptedChat", state.encryptedChat)) {
+      return;
+    }
+    const action: SecretChats.decryptedMessageActionAbortKey = { _: "decryptedMessageActionAbortKey", exchange_id: exchangeId };
+    await this.#sendMessage({ _: "decryptedMessageService", random_id: getRandomId(), action }, state.encryptedChat, state.authKey, state.authKeyId_);
+  }
+
+  #clearInitiatedRekey(state: SecretChatState) {
+    state.rekeyId = 0n;
+    state.rekeyA = 0n;
+  }
+
+  async #processDecryptedMessageActionAcceptKey(chatId: number, action_: SecretChats.decryptedMessageActionAcceptKey) {
+    const state = this.#getSecretChatState(chatId);
+    if (state.rekeyId !== action_.exchange_id || !Api.is("encryptedChat", state.encryptedChat)) {
+      return;
+    }
+
+    const gB = intFromBytes(action_.g_b, { byteOrder: "big", isSigned: false });
+    if (!isGoodModExpFirst(gB, state.prime)) {
+      await this.#abortRekey(state, action_.exchange_id);
+      this.#clearInitiatedRekey(state);
+      return;
+    }
+    const authKey = intToBytes(modExp(gB, state.rekeyA, state.prime), 256, { byteOrder: "big", isSigned: false });
+    const authKeyId_ = (await sha1(authKey)).subarray(-8);
+    const authKeyId = intFromBytes(authKeyId_);
+    if (action_.key_fingerprint !== authKeyId) {
+      await this.#abortRekey(state, action_.exchange_id);
+      this.#clearInitiatedRekey(state);
+      return;
+    }
+
+    const random_id = getRandomId();
+    const action: SecretChats.decryptedMessageActionCommitKey = {
+      _: "decryptedMessageActionCommitKey",
+      exchange_id: state.rekeyId,
+      key_fingerprint: authKeyId,
+    };
+    await this.#sendMessage({ _: "decryptedMessageService", random_id, action }, state.encryptedChat, state.authKey, state.authKeyId_);
+    this.#installNewKey(state, authKey, authKeyId, authKeyId_, true);
+    this.#clearInitiatedRekey(state);
+  }
+
+  async #processDecryptedMessageActionRequestKey(chatId: number, action_: SecretChats.decryptedMessageActionRequestKey) {
+    const state = this.#getSecretChatState(chatId);
+    if (!Api.is("encryptedChat", state.encryptedChat)) {
+      return;
+    }
+
+    if (state.previousAuthKey.byteLength !== 0) {
+      await this.#abortRekey(state, action_.exchange_id);
+      return;
+    }
+    if (state.toCommitId !== 0n) {
+      await this.#abortRekey(state, action_.exchange_id);
+      return;
+    }
+    if (state.rekeyId !== 0n) {
+      if (state.rekeyId >= action_.exchange_id) {
+        if (state.rekeyId === action_.exchange_id) {
+          this.#clearInitiatedRekey(state);
+        }
+        return;
+      }
+      this.#clearInitiatedRekey(state);
+    }
+
+    const gA = intFromBytes(action_.g_a, { byteOrder: "big", isSigned: false });
+    if (!isGoodModExpFirst(gA, state.prime)) {
+      await this.#abortRekey(state, action_.exchange_id);
+      return;
+    }
+
+    let b: bigint;
+    let gB: bigint;
+    do {
+      b = getRandomInt(256, false);
+      gB = modExp(BigInt(state.g), b, state.prime);
+    } while (!isGoodModExpFirst(gB, state.prime));
+
+    // pow(g_a, b) mod p
+    const authKey = intToBytes(modExp(gA, b, state.prime), 256, { byteOrder: "big", isSigned: false });
+    const authKeyId_ = (await sha1(authKey)).subarray(-8);
+    const authKeyId = intFromBytes(authKeyId_);
+
+    // pow(g,b) mod p
+    const g_b = intToBytes(gB, 256, { byteOrder: "big", isSigned: false });
+    const action: SecretChats.decryptedMessageActionAcceptKey = {
+      _: "decryptedMessageActionAcceptKey",
+      exchange_id: action_.exchange_id,
+      g_b,
+      key_fingerprint: authKeyId,
+    };
+    const random_id = getRandomId();
+    state.toCommitId = action_.exchange_id;
+    state.toCommitAuthKey = authKey;
+    state.toCommitAuthKeyId = authKeyId;
+    state.toCommitAuthKeyId_ = authKeyId_;
+    await this.#sendMessage({ _: "decryptedMessageService", random_id, action }, state.encryptedChat, state.authKey, state.authKeyId_);
+  }
+
+  async #processDecryptedMessageActionCommitKey(chatId: number, action: SecretChats.decryptedMessageActionCommitKey) {
+    const state = this.#getSecretChatState(chatId);
+    if (state.toCommitId !== action.exchange_id) {
+      return;
+    }
+    if (state.toCommitAuthKeyId !== action.key_fingerprint || !Api.is("encryptedChat", state.encryptedChat)) {
+      this.#L.debug(`discarding secret chat ${chatId}: re-key fingerprint mismatch`);
+      await this.#c.invoke({ _: "messages.discardEncryption", chat_id: chatId });
+      throw new TypeError("Secret chat re-key fingerprint mismatch.");
+    }
+    this.#installNewKey(state, state.toCommitAuthKey, state.toCommitAuthKeyId, state.toCommitAuthKeyId_, false);
+    state.toCommitId = 0n;
+    state.toCommitAuthKey = new Uint8Array();
+    state.toCommitAuthKeyId = 0n;
+    state.toCommitAuthKeyId_ = new Uint8Array();
+    const noop: SecretChats.decryptedMessageActionNoop = { _: "decryptedMessageActionNoop" };
+    await this.#sendMessage({ _: "decryptedMessageService", random_id: getRandomId(), action: noop }, state.encryptedChat, state.authKey, state.authKeyId_);
+    this.#clearPreviousKey(state);
+  }
+
+  async #handleDecryptedMessageLayer(chatId: number, decryptedMessageLayer: SecretChats.decryptedMessageLayer) {
+    const state = this.#getSecretChatState(chatId);
+    if (SecretChats.is("decryptedMessage", decryptedMessageLayer.message)) {
+      const secretMessage = constructSecretMessage(state.encryptedChat.id, decryptedMessageLayer.message);
+      this.#c.handleUpdate({ type: "secretMessage", secretMessage });
+    } else if (SecretChats.is("decryptedMessageService", decryptedMessageLayer.message)) {
+      await this.#processServiceMessage(state.encryptedChat.id, decryptedMessageLayer.message);
+    }
+  }
+
+  async #processServiceMessage(chatId: number, message: SecretChats.decryptedMessageService) {
+    switch (message.action._) {
+      case "decryptedMessageActionAcceptKey":
+        await this.#processDecryptedMessageActionAcceptKey(chatId, message.action);
+        break;
+      case "decryptedMessageActionRequestKey":
+        await this.#processDecryptedMessageActionRequestKey(chatId, message.action);
+        break;
+      case "decryptedMessageActionCommitKey":
+        await this.#processDecryptedMessageActionCommitKey(chatId, message.action);
+        break;
+      case "decryptedMessageActionAbortKey": {
+        const state = this.#getSecretChatState(chatId);
+        if (state.rekeyId === message.action.exchange_id) {
+          this.#clearInitiatedRekey(state);
+        }
+        break;
+      }
+    }
+  }
+
   async #processUpdateNewMessageEncrypted(update: Api.updateNewEncryptedMessage): Promise<Update | null> {
-    const authKey = this.#authKeys.get(update.message.chat_id);
-    const authKeyId = this.#authKeyIds.get(update.message.chat_id);
-    const encryptedChat = this.#encryptedChats.get(update.message.chat_id);
-    if (authKey === undefined || authKeyId === undefined || !Api.is("encryptedChat", encryptedChat)) {
+    try {
+      return await this.#processUpdateNewMessageEncryptedInner(update);
+    } finally {
+      await this.#getSecretChatState(update.message.chat_id).commit(this.#c.messageStorage.storage);
+    }
+  }
+
+  async #processUpdateNewMessageEncryptedInner(update: Api.updateNewEncryptedMessage): Promise<Update | null> {
+    const state = this.#getSecretChatState(update.message.chat_id);
+    if (!Api.is("encryptedChat", state.encryptedChat)) {
       this.#L.debug("ignoring encrypted message");
       return null;
     }
 
-    const isCreator = Number(encryptedChat.admin_id) === await this.#c.getSelfId();
+    const isCreator = Number(state.encryptedChat.admin_id) === await this.#c.getSelfId();
+    const receivedKeyId = update.message.bytes.subarray(0, 8);
+    let authKey = state.authKey;
+    let authKeyId = state.authKeyId_;
+    let pendingKey = false;
+    if (equals(receivedKeyId, state.toCommitAuthKeyId_)) {
+      authKey = state.toCommitAuthKey;
+      authKeyId = state.toCommitAuthKeyId_;
+      pendingKey = true;
+    } else if (equals(receivedKeyId, state.previousAuthKeyId_)) {
+      authKey = state.previousAuthKey;
+      authKeyId = state.previousAuthKeyId_;
+    }
     const decryptedMessage = await this.#decryptMessage(authKeyId, authKey, isCreator, update.message.bytes);
     this.#L.debug("received", decryptedMessage);
     if (SecretChats.is("decryptedMessageLayer", decryptedMessage)) {
-      this.#inSeqNo.set(encryptedChat.id, (this.#inSeqNo.get(encryptedChat.id) ?? 0) + 1);
-      if (SecretChats.is("decryptedMessage", decryptedMessage.message)) {
-        const secretMessage = constructSecretMessage(encryptedChat.id, decryptedMessage.message);
-        return { type: "secretMessage", secretMessage };
+      const x = isCreator ? 0 : 1;
+      const rawOutSeqNo = (decryptedMessage.out_seq_no - x) / 2;
+      if (pendingKey) {
+        this.#installNewKey(state, state.toCommitAuthKey, state.toCommitAuthKeyId, state.toCommitAuthKeyId_, false, rawOutSeqNo);
+        ++state.authKeyUseCount;
+        state.toCommitId = 0n;
+        state.toCommitAuthKey = new Uint8Array();
+        state.toCommitAuthKeyId = 0n;
+        state.toCommitAuthKeyId_ = new Uint8Array();
+      } else if (equals(authKeyId, state.authKeyId_)) {
+        ++state.authKeyUseCount;
+        if (state.previousAuthKey.byteLength !== 0) {
+          state.previousAuthKeyDiscardAfterSeqNo = rawOutSeqNo;
+        }
       }
+      await this.#checkGap(state.encryptedChat.id, decryptedMessage);
+      if (pendingKey && Api.is("encryptedChat", state.encryptedChat)) {
+        const noop: SecretChats.decryptedMessageActionNoop = { _: "decryptedMessageActionNoop" };
+        await this.#sendMessage({ _: "decryptedMessageService", random_id: getRandomId(), action: noop }, state.encryptedChat, state.authKey, state.authKeyId_);
+      }
+      if (state.previousAuthKeyDiscardAfterSeqNo >= 0 && state.inSeqNo > state.previousAuthKeyDiscardAfterSeqNo) {
+        this.#clearPreviousKey(state);
+      }
+      await this.#maybeStartRekey(state);
     }
 
     return null;
@@ -318,40 +706,101 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     }
 
     if (Api.is("encryptedChatDiscarded", update.chat)) {
-      this.#encryptedChats.delete(update.chat.id);
-      this.#authKeys.delete(update.chat.id);
-      this.#authKeyIds.delete(update.chat.id);
-      this.#pendingExponents.delete(update.chat.id);
-      this.#inSeqNo.delete(update.chat.id);
-      this.#outSeqNo.delete(update.chat.id);
+      const state = this.#states.get(update.chat.id);
+      if (state !== undefined) {
+        this.#states.delete(update.chat.id);
+        state.encryptedChat = update.chat;
+        await state.commit(this.#c.messageStorage.storage);
+      }
     } else {
+      const state = this.#getSecretChatState(update.chat.id);
       if (Api.is("encryptedChat", update.chat)) {
-        const pending = this.#pendingExponents.get(update.chat.id);
-        if (pending !== undefined) {
+        const pending = state.pendingExponent;
+        if (pending !== 0n) {
           const gB = intFromBytes(update.chat.g_a_or_b, { byteOrder: "big", isSigned: false });
-          if (!isGoodModExpFirst(gB, pending.prime)) {
+          if (!isGoodModExpFirst(gB, state.prime)) {
+            this.#L.debug("discarding secret chat", update.chat.id, "because an invalid g_b was received");
             await this.#c.invoke({ _: "messages.discardEncryption", chat_id: update.chat.id });
-            this.#pendingExponents.delete(update.chat.id);
+            state.pendingExponent = 0n;
             throw new TypeError("Received invalid g_b.");
           }
 
-          const authKey = intToBytes(modExp(gB, pending.exponent, pending.prime), 256, { byteOrder: "big", isSigned: false });
-          const authKeyId = (await sha1(authKey)).subarray(-8);
-          if (intFromBytes(authKeyId) !== update.chat.key_fingerprint) {
+          const authKey = intToBytes(modExp(gB, pending, state.prime), 256, { byteOrder: "big", isSigned: false });
+          const authKeyId_ = (await sha1(authKey)).subarray(-8);
+          const authKeyId = intFromBytes(authKeyId_);
+          if (authKeyId !== update.chat.key_fingerprint) {
+            this.#L.debug("discarding secret chat", update.chat.id, "because of key fingerprint mismatch");
             await this.#c.invoke({ _: "messages.discardEncryption", chat_id: update.chat.id });
-            this.#pendingExponents.delete(update.chat.id);
+            state.pendingExponent = 0n;
             throw new TypeError("Secret chat key fingerprint mismatch.");
           }
 
-          this.#authKeys.set(update.chat.id, authKey);
-          this.#authKeyIds.set(update.chat.id, authKeyId);
-          this.#pendingExponents.delete(update.chat.id);
+          state.authKey = authKey;
+          state.authKeyId = authKeyId;
+          state.authKeyId_ = authKeyId_;
+          state.authKeyCreatedAt = Date.now();
+          state.authKeyUseCount = 0;
+          state.isAuthKeyUsed = false;
+          state.pendingExponent = 0n;
         }
       }
-      this.#encryptedChats.set(update.chat.id, update.chat);
+
+      state.encryptedChat = update.chat;
     }
 
     const secretChat = constructSecretChat(update.chat);
     return { type: "secretChat", secretChat };
+  }
+
+  async #startRekey(encryptedChat: Api.encryptedChat, authKeyId: Uint8Array<ArrayBuffer>, authKey: Uint8Array<ArrayBuffer>) {
+    const state = this.#getSecretChatState(encryptedChat.id);
+    if (state.rekeyId !== 0n || state.toCommitId !== 0n || state.previousAuthKey.byteLength !== 0) {
+      return;
+    }
+
+    let g_a_: bigint;
+    let a: bigint;
+
+    do {
+      a = getRandomInt(256, false);
+      g_a_ = modExp(BigInt(state.g), a, state.prime);
+    } while (!isGoodModExpFirst(g_a_, state.prime));
+
+    const exchange_id = getRandomId();
+    state.rekeyId = exchange_id;
+    state.rekeyA = a;
+
+    const g_a = intToBytes(g_a_, 256, { byteOrder: "big", isSigned: false });
+
+    const random_id = getRandomId();
+    const action: SecretChats.decryptedMessageActionRequestKey = {
+      _: "decryptedMessageActionRequestKey",
+      exchange_id,
+      g_a,
+    };
+    try {
+      await this.#sendMessage(
+        {
+          _: "decryptedMessageService",
+          random_id,
+          action,
+        },
+        encryptedChat,
+        authKey,
+        authKeyId,
+      );
+    } catch (err) {
+      this.#clearInitiatedRekey(state);
+      throw err;
+    }
+  }
+
+  async #maybeStartRekey(state: SecretChatState) {
+    if (!Api.is("encryptedChat", state.encryptedChat) || state.rekeyId !== 0n || state.toCommitId !== 0n || state.previousAuthKey.byteLength !== 0) {
+      return;
+    }
+    if (state.authKeyUseCount > 100 || state.isAuthKeyUsed && Date.now() - state.authKeyCreatedAt >= WEEK) {
+      await this.#startRekey(state.encryptedChat, state.authKeyId_, state.authKey);
+    }
   }
 }

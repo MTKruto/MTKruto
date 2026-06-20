@@ -442,6 +442,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
         await this.storage.deleteUpdates();
         await this.storage.commit(true);
       }
+      await this.#secretChatManager.loadSecretChats();
       this.#storageInited = true;
     }
   }

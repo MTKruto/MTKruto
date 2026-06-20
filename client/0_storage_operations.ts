@@ -117,6 +117,10 @@ export class StorageOperations {
     this.translations = this.#addMap(new StorageMap(storage, "translations"));
   }
 
+  get storage() {
+    return this.#storage;
+  }
+
   #addMap<T extends StorageMap<StorageKeyPart[], unknown>>(map: T): T {
     this.#maps.push(map);
     return map;
