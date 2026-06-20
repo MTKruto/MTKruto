@@ -18,10 +18,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { SecretChats } from "../2_tl.ts";
-import type { PeerGetter } from "./1_chat_p.ts";
 
 /** @unlisted */
 export interface _SecretMessageEntityBase {

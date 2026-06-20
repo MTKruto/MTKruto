@@ -1,6 +1,6 @@
 import { cleanObject } from "../1_utilities.ts";
 import type { SecretChats } from "../2_tl.ts";
-import { constructSecretMessageEntity, type SecretMessageEntity } from "./2_secret_message_entity.ts";
+import { constructSecretMessageEntity, type SecretMessageEntity } from "./0_secret_message_entity.ts";
 
 /** A secret chat message. */
 export interface SecretMessage {

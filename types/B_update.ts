@@ -40,7 +40,7 @@ import type { InlineQuery } from "./3_inline_query.ts";
 import type { MessageDraft } from "./3_message_draft.ts";
 import type { MessageReactions } from "./3_message_reactions.ts";
 import type { PreCheckoutQuery } from "./3_pre_checkout_query.ts";
-import type { SecretMessage } from "./3_secret_message.ts";
+import type { SecretMessage } from "./1_secret_message.ts";
 import type { Story } from "./3_story.ts";
 import type { ChatMemberUpdated } from "./4_chat_member_updated.ts";
 import type { JoinRequest } from "./4_join_request.ts";
