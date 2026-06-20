@@ -570,4 +570,19 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     const message = params?.text ?? "";
     this.#c.invoke({ _: "account.reportPeer", peer, reason, message });
   }
+
+  async #setIsChatUnread(chatId: ID, isUnread: boolean) {
+    const peer = await this.#c.getInputPeer(chatId);
+    await this.#c.invoke({ _: "messages.markDialogUnread", peer: { _: "inputDialogPeer", peer }, unread: isUnread || undefined });
+  }
+
+  async markChatAsUnread(chatId: ID) {
+    this.#c.storage.assertUser("markChatAsUnread");
+    await this.#setIsChatUnread(chatId, true);
+  }
+
+  async markChatAsRead(chatId: ID) {
+    this.#c.storage.assertUser("markChatAsRead");
+    await this.#setIsChatUnread(chatId, false);
+  }
 }
