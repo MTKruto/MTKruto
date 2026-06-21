@@ -1108,7 +1108,18 @@ export interface ReportStoryParams {
   text?: string;
 }
 
-export interface SendSecretChatMessageParams {
+export interface _SendSecretCommon {
+  /** Whether the message should be sent silently. */
+  isSilent?: boolean;
+  /** The identifier of a message to reply to. */
+  replyToMessageId?: string;
+  /** The message's time-to-live. */
+  ttl?: number;
+  /** The name of the bot that was used to send the message. */
+  viaBot?: string;
+}
+
+export interface SendSecretMessageParams extends _SendSecretCommon {
   /** The entities of the message's text. */
   entities?: SecretMessageEntity[];
   /** Whether the message should be sent silently. */
@@ -1119,4 +1130,7 @@ export interface SendSecretChatMessageParams {
   ttl?: number;
   /** The name of the bot that was used to send the message. */
   viaBot?: string;
+}
+
+export interface SendSecretLocationParams extends _SendSecretCommon {
 }
