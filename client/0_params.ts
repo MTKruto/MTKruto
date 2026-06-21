@@ -1134,3 +1134,8 @@ export interface SendSecretMessageParams extends _SendSecretCommon {
 
 export interface SendSecretLocationParams extends _SendSecretCommon {
 }
+
+export interface SendSecretVenueParams extends _SendSecretCommon {
+  /** Foursquare identifier of the venue. */
+  foursquareId?: string;
+}
