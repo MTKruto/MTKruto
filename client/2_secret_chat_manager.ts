@@ -212,12 +212,22 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     return 2 * rawInSeqNo + (isCreator ? 0 : 1);
   }
 
-  async sendSecretMessage(id: number, text: string, params?: SendSecretMessageParams) {
-    this.#c.storage.assertUser("sendSecretMessage");
+  #mustGetEncryptedChat(id: number): SecretChatState & { encryptedChat: Api.encryptedChat } {
     const state = this.#getSecretChatState(id);
     if (!Api.is("encryptedChat", state.encryptedChat)) {
       throw new InputError("Received invalid secret chat identifier.");
     }
+    return state as SecretChatState & { encryptedChat: Api.encryptedChat };
+  }
+
+  async #postSendMessage(state: SecretChatState) {
+    state.isJustLoaded = false;
+    await this.#maybeStartRekey(state);
+  }
+
+  async sendSecretMessage(id: number, text: string, params?: SendSecretMessageParams) {
+    this.#c.storage.assertUser("sendSecretMessage");
+    const state = this.#mustGetEncryptedChat(id);
 
     const random_id = getRandomId();
     const decryptedMessage: SecretChats.decryptedMessage = {
@@ -232,16 +242,12 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     };
 
     await this.#sendMessage(decryptedMessage, state.encryptedChat, state.authKey, state.authKeyId_);
-    state.isJustLoaded = false;
-    await this.#maybeStartRekey(state);
+    await this.#postSendMessage(state);
   }
 
   async sendSecretLocation(id: number, latitude: number, longitude: number, params?: SendSecretLocationParams) {
     this.#c.storage.assertUser("sendSecretLocation");
-    const state = this.#getSecretChatState(id);
-    if (!Api.is("encryptedChat", state.encryptedChat)) {
-      throw new InputError("Received invalid secret chat identifier.");
-    }
+    const state = this.#mustGetEncryptedChat(id);
 
     const random_id = getRandomId();
     const decryptedMessage: SecretChats.decryptedMessage = {
@@ -256,8 +262,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     };
 
     await this.#sendMessage(decryptedMessage, state.encryptedChat, state.authKey, state.authKeyId_);
-    state.isJustLoaded = false;
-    await this.#maybeStartRekey(state);
+    await this.#postSendMessage(state);
   }
 
   #sendTails = new Map<number, Promise<void>>();
