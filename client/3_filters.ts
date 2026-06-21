@@ -19,7 +19,7 @@
  */
 
 import type { Api } from "../2_tl.ts";
-import type { CallbackQuery, ChatP, ChosenInlineResult, Message, Update } from "../3_types.ts";
+import type { CallbackQuery, ChatP, ChosenInlineResult, Message, SecretMessage, Update } from "../3_types.ts";
 
 type AnyLevel1 = Update["type"];
 type GetLevel1Type<L1 extends AnyLevel1> = Update & { type: L1 };
@@ -28,6 +28,7 @@ interface Level2Map {
   "message": Message["type"];
   "editedMessage": Message["type"];
   "scheduledMessage": Message["type"];
+  "secretMessage": SecretMessage["type"];
   "callbackQuery": "message" | "inlineMessageId" | "data" | "gameShortName";
   "chosenInlineResult": "inlineMessageId";
 }
@@ -45,10 +46,11 @@ type GetLevel2Type<L1 extends string, L2 extends string> = L2 extends Message["t
       | { type: "editedMessage"; editedMessage: Extract<Message, { type: L2 }> }
       | { type: "scheduledMessage"; scheduledMessage: Extract<Message, { type: L2 }> }
     )
-  : L1 extends "message" | "editedMessage" | "scheduledMessage" ? { type: L1 } & { [P in L1]: Extract<Message, { type: L2 }> }
+  : L1 extends "message" | "editedMessage" ? { type: L1 } & { [P in L1]: Extract<Message, { type: L2 }> }
+  : L1 extends "secretMessage" ? { type: L1 } & { [P in L1]: Extract<SecretMessage, { type: L2 }> }
   : never
   : L1 extends keyof Level2TypeMap ? L2 extends Level2Map[L1] ? { type: L1 } & { [P in L1]: Level2TypeMap[P] & { [P in L2]-?: P extends keyof Level2TypeMap[L1] ? NonNullable<Level2TypeMap[L1][P]> : never } } : never
-  : false;
+  : never;
 
 type AnyLevelX = AnyLevel1 | AnyLevel2 | Api.Update["_"];
 
