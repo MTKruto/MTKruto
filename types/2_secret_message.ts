@@ -19,11 +19,21 @@
  */
 
 import { cleanObject } from "../1_utilities.ts";
-import type { Api, SecretChats } from "../2_tl.ts";
+import { Api, SecretChats } from "../2_tl.ts";
+import { PhotoSourceType, serializeFileId, toUniqueFileId } from "../3_types.ts";
+import { type FileId, FileType } from "./_file_id.ts";
 import type { Contact } from "./0_contact.ts";
 import type { Location } from "./0_location.ts";
 import { constructSecretMessageEntity, type SecretMessageEntity } from "./0_secret_message_entity.ts";
+import type { Voice } from "./0_voice.ts";
+import type { Animation } from "./1_animation.ts";
+import type { Audio } from "./1_audio.ts";
+import type { Document } from "./1_document.ts";
+import type { Photo } from "./1_photo.ts";
+import { constructSticker3, type Sticker } from "./1_sticker.ts";
 import type { Venue } from "./1_venue.ts";
+import type { VideoNote } from "./1_video_note.ts";
+import type { Video } from "./1_video.ts";
 
 /** @unlisted */
 export interface _SecretMessageBase {
@@ -44,6 +54,10 @@ export interface _SecretMessageBase {
 export interface _SecretMessageMediaBase extends _SecretMessageBase {
   /** The message's media group ID. */
   mediaGroupId?: string;
+  /** The message's caption. */
+  caption: string;
+  /** The entities of the message's caption. */
+  entities: SecretMessageEntity[];
 }
 
 /**
@@ -102,10 +116,90 @@ export interface SecretMessageWebPage extends _SecretMessageBase {
   entities: SecretMessageEntity[];
 }
 
-/** Any type of secret message. */
-export type SecretMessage = SecretMessageText | SecretMessageLocation | SecretMessageContact | SecretMessageVenue | SecretMessageWebPage;
+/**
+ * A secret message sharing a photo.
+ * @unlisted
+ */
+export interface SecretMessagePhoto extends _SecretMessageMediaBase {
+  type: "photo";
+  /** The photo included in the message. */
+  photo: Photo;
+}
 
-export function constructSecretMessage(chatId: number, message: SecretChats.decryptedMessage, _encryptedMessage: Api.EncryptedMessage): SecretMessage {
+/**
+ * A secret message sharing a video.
+ * @unlisted
+ */
+export interface SecretMessageVideo extends _SecretMessageMediaBase {
+  type: "video";
+  /** The video included in the message. */
+  video: Video;
+}
+
+/**
+ * A secret message sharing a video note.
+ * @unlisted
+ */
+export interface SecretMessageVideoNote extends _SecretMessageMediaBase {
+  type: "videoNote";
+  /** The video note included in the message. */
+  videoNote: VideoNote;
+}
+
+/**
+ * A secret message sharing an audio.
+ * @unlisted
+ */
+export interface SecretMessageAudio extends _SecretMessageMediaBase {
+  type: "audio";
+  /** The audio included in the message. */
+  audio: Audio;
+}
+
+/**
+ * A secret message sharing a document.
+ * @unlisted
+ */
+export interface SecretMessageDocument extends _SecretMessageMediaBase {
+  type: "document";
+  /** The document included in the message. */
+  document: Document;
+}
+
+/**
+ * A secret message sharing a sticker.
+ * @unlisted
+ */
+export interface SecretMessageSticker extends _SecretMessageBase {
+  type: "sticker";
+  /** The sticker included in the message. */
+  sticker: Sticker;
+}
+
+/**
+ * A secret message sharing an animation.
+ * @unlisted
+ */
+export interface SecretMessageAnimation extends _SecretMessageMediaBase {
+  type: "animation";
+  /** The animation included in the message. */
+  animation: Animation;
+}
+
+/**
+ * A secret message sharing a voice.
+ * @unlisted
+ */
+export interface SecretMessageVoice extends _SecretMessageMediaBase {
+  type: "voice";
+  /** The voice included in the message. */
+  voice: Voice;
+}
+
+/** Any type of secret message. */
+export type SecretMessage = SecretMessageText | SecretMessageLocation | SecretMessageContact | SecretMessageVenue | SecretMessageWebPage | SecretMessagePhoto | SecretMessageVideo | SecretMessageVideoNote | SecretMessageAudio | SecretMessageDocument | SecretMessageSticker | SecretMessageAnimation | SecretMessageVoice;
+
+export function constructSecretMessage(chatId: number, message: SecretChats.decryptedMessage, encryptedMessage: Api.EncryptedMessage): SecretMessage {
   const isSilent = !!message.silent;
   const id = String(message.random_id);
   const text = message.message;
@@ -114,7 +208,36 @@ export function constructSecretMessage(chatId: number, message: SecretChats.decr
   const replyToMessageId = message.reply_to_random_id ? String(message.reply_to_random_id) : undefined;
   const ttl = message.ttl;
   const viaBot = message.via_bot_name;
-  const messageBase = { chatId, id, mediaGroupId, isSilent, replyToMessageId, ttl, viaBot };
+  const messageBase = { chatId, id, isSilent, replyToMessageId, ttl, viaBot };
+
+  function getFileIds(type: FileType) {
+    let fileId_: FileId;
+    if (SecretChats.is("decryptedMessageMediaExternalDocument", message.media)) {
+      fileId_ = {
+        type,
+        dcId: message.media.dc_id,
+        location: {
+          type: "common",
+          id: message.media.id,
+          accessHash: message.media.access_hash,
+        },
+      };
+    } else {
+      const file = Api.as("encryptedFile", Api.as("encryptedMessage", encryptedMessage).file);
+      fileId_ = {
+        type: FileType.Encrypted,
+        dcId: file.dc_id,
+        location: {
+          type: "common",
+          id: file.id,
+          accessHash: file.access_hash,
+        },
+      };
+    }
+    const fileId = serializeFileId(fileId_);
+    const fileUniqueId = toUniqueFileId(fileId_);
+    return { fileId, fileUniqueId };
+  }
 
   if (message.media) {
     switch (message.media._) {
@@ -134,9 +257,221 @@ export function constructSecretMessage(chatId: number, message: SecretChats.decr
           contact,
         });
       }
-      case "decryptedMessageMediaAudio":
+      case "decryptedMessageMediaPhoto": {
+        const file = Api.as("encryptedFile", Api.as("encryptedMessage", encryptedMessage).file);
+        const fileId_: FileId = {
+          type: FileType.Encrypted,
+          dcId: file.dc_id,
+          location: {
+            type: "photo",
+            id: file.id,
+            accessHash: file.access_hash,
+            source: {
+              type: PhotoSourceType.Thumbnail,
+              fileType: FileType.EncryptedThumbnail,
+              thumbnailType: "t".charCodeAt(0),
+            },
+          },
+        };
+        const fileId = serializeFileId(fileId_);
+        const fileUniqueId = toUniqueFileId(fileId_);
+        const photo: Photo = {
+          fileId,
+          fileUniqueId,
+          width: message.media.w,
+          height: message.media.h,
+          fileSize: message.media.size,
+          thumbnails: [],
+        };
+        return cleanObject({
+          type: "photo",
+          ...messageBase,
+          photo,
+          mediaGroupId,
+          caption: text,
+          entities,
+        });
+      }
+
+      case "decryptedMessageMediaAudio": {
+        const { fileId, fileUniqueId } = getFileIds(FileType.Audio);
+        const audio: Audio = cleanObject({
+          fileId,
+          fileUniqueId,
+          duration: message.media.duration,
+          mimeType: message.media.mime_type,
+          fileSize: message.media.size,
+          thumbnails: [],
+        });
+        return cleanObject({
+          type: "audio",
+          ...messageBase,
+          audio,
+          mediaGroupId,
+          caption: text,
+          entities,
+        });
+      }
+      case "decryptedMessageMediaDocument8": {
+        const { fileId, fileUniqueId } = getFileIds(FileType.Document);
+        const document: Document = cleanObject({
+          fileId,
+          fileUniqueId,
+          thumbnails: [],
+          fileName: message.media.file_name,
+          mimeType: message.media.mime_type,
+          fileSize: message.media.size,
+        });
+        return cleanObject({
+          type: "document",
+          ...messageBase,
+          document,
+          mediaGroupId,
+          caption: text,
+          entities,
+        });
+      }
       case "decryptedMessageMediaExternalDocument":
-      case "decryptedMessageMediaPhoto":
+      case "decryptedMessageMediaDocument46":
+      case "decryptedMessageMediaDocument": {
+        const animated = message.media.attributes.find((v): v is SecretChats.documentAttributeAnimated => SecretChats.is("documentAttributeAnimated", v));
+        const audio = message.media.attributes.find((v): v is SecretChats.documentAttributeAudio => SecretChats.is("documentAttributeAudio", v));
+        const fileName = message.media.attributes.find((v): v is SecretChats.documentAttributeFilename => SecretChats.is("documentAttributeFilename", v));
+        const sticker = message.media.attributes.find((v): v is SecretChats.documentAttributeSticker => SecretChats.is("documentAttributeSticker", v));
+        const video = message.media.attributes.find((v): v is SecretChats.documentAttributeVideo => SecretChats.is("documentAttributeVideo", v));
+
+        if (sticker) {
+          const { fileId, fileUniqueId } = getFileIds(FileType.Sticker);
+          const sticker = constructSticker3(message.media, fileId, fileUniqueId);
+          return cleanObject({
+            type: "sticker",
+            ...messageBase,
+            sticker,
+          });
+        } else if (animated) {
+          const { fileId, fileUniqueId } = getFileIds(FileType.Animation);
+          const animation: Animation = {
+            fileId,
+            fileUniqueId,
+            width: video?.w ?? 0,
+            height: video?.h ?? 0,
+            duration: video?.duration ?? 0,
+            thumbnails: [],
+            fileName: fileName?.file_name,
+            mimeType: message.media.mime_type,
+            fileSize: Number(message.media.size),
+          };
+          return cleanObject({
+            type: "animation",
+            ...messageBase,
+            animation,
+            mediaGroupId,
+            caption: text,
+            entities,
+          });
+        } else if (video) {
+          if (video.round_message) {
+            const { fileId, fileUniqueId } = getFileIds(FileType.VideoNote);
+            const videoNote: VideoNote = {
+              fileId,
+              fileUniqueId,
+              length: video.w,
+              duration: video.duration,
+              thumbnails: [],
+              fileName: fileName?.file_name,
+              fileSize: Number(message.media.size),
+            };
+            return cleanObject({
+              type: "videoNote",
+              ...messageBase,
+              videoNote,
+              mediaGroupId,
+              caption: text,
+              entities,
+            });
+          } else {
+            const { fileId, fileUniqueId } = getFileIds(FileType.Video);
+            const video_: Video = {
+              fileId,
+              fileUniqueId,
+              width: video.w,
+              height: video.h,
+              duration: video.duration,
+              thumbnails: [],
+              fileName: fileName?.file_name,
+              mimeType: message.media.mime_type,
+              fileSize: Number(message.media.size),
+            };
+            return cleanObject({
+              type: "video",
+              ...messageBase,
+              video: video_,
+              mediaGroupId,
+              caption: text,
+              entities,
+            });
+          }
+        } else if (audio) {
+          if (audio.voice) {
+            const { fileId, fileUniqueId } = getFileIds(FileType.Audio);
+            const voice: Voice = {
+              fileId,
+              fileUniqueId,
+              duration: audio.duration,
+              mimeType: message.media.mime_type,
+              fileSize: Number(message.media.size),
+            };
+            return cleanObject({
+              type: "voice",
+              ...messageBase,
+              voice,
+              mediaGroupId,
+              caption: text,
+              entities,
+            });
+          } else {
+            const { fileId, fileUniqueId } = getFileIds(FileType.Audio);
+            const audio_: Audio = {
+              fileId,
+              fileUniqueId,
+              duration: audio.duration,
+              performer: audio.performer,
+              title: audio.title,
+              mimeType: message.media.mime_type,
+              fileSize: Number(message.media.size),
+              thumbnails: [],
+            };
+
+            return cleanObject({
+              type: "audio",
+              ...messageBase,
+              audio: audio_,
+              mediaGroupId,
+              caption: text,
+              entities,
+            });
+          }
+        } else {
+          const { fileId, fileUniqueId } = getFileIds(FileType.Document);
+          const document: Document = {
+            fileId,
+            fileUniqueId,
+            thumbnails: [],
+            fileName: fileName?.file_name ?? "unknown",
+            mimeType: message.media.mime_type,
+            fileSize: Number(message.media.size),
+          };
+
+          return cleanObject({
+            type: "document",
+            ...messageBase,
+            document,
+            mediaGroupId,
+            caption: text,
+            entities,
+          });
+        }
+      }
       case "decryptedMessageMediaVideo":
         break;
       case "decryptedMessageMediaVenue": {
@@ -157,7 +492,6 @@ export function constructSecretMessage(chatId: number, message: SecretChats.decr
           entities,
         });
       }
-      case "decryptedMessageMediaDocument":
     }
   }
 

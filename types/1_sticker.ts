@@ -19,7 +19,7 @@
  */
 
 import { cleanObject, type MaybePromise } from "../1_utilities.ts";
-import { Api } from "../2_tl.ts";
+import { Api, SecretChats } from "../2_tl.ts";
 import { constructMaskPosition, type MaskPosition } from "./0_mask_position.ts";
 import { constructThumbnail, type Thumbnail } from "./0_thumbnail.ts";
 
@@ -88,6 +88,30 @@ export function constructSticker2(document: Api.document, fileId: string, fileUn
     maskPosition: stickerAttribute ? stickerAttribute.mask_coords ? constructMaskPosition(stickerAttribute.mask_coords) : undefined : undefined,
     customEmojiId: customEmojiAttribute ? customEmojiId : undefined,
     needsRepainting: customEmojiAttribute ? !!customEmojiAttribute.text_color : undefined,
+    fileSize: Number(document.size),
+  });
+}
+
+export function constructSticker3(document: SecretChats.decryptedMessageMediaExternalDocument | SecretChats.decryptedMessageMediaDocument46 | SecretChats.decryptedMessageMediaDocument, fileId: string, fileUniqueId: string): Sticker {
+  const stickerAttribute = document.attributes.find((v): v is SecretChats.documentAttributeSticker => SecretChats.is("documentAttributeSticker", v))!;
+  const imageSizeAttribute = document.attributes.find((v): v is Api.documentAttributeImageSize => SecretChats.is("documentAttributeImageSize", v))!;
+  const videoAttribute = document.attributes.find((v): v is SecretChats.documentAttributeVideo => SecretChats.is("documentAttributeVideo", v))!;
+
+  return cleanObject({
+    fileId,
+    fileUniqueId,
+    type: "regular",
+    width: imageSizeAttribute ? imageSizeAttribute.w : videoAttribute ? videoAttribute.w : 512,
+    height: imageSizeAttribute ? imageSizeAttribute.h : videoAttribute ? videoAttribute.h : 512,
+    isAnimated: document.mime_type === "application/x-tgsticker",
+    isVideo: document.mime_type === "video/webm",
+    thumbnails: [],
+    emoji: stickerAttribute.alt || undefined,
+    setName: Api.is("inputStickerSetShortName", stickerAttribute.stickerset) ? stickerAttribute.stickerset.short_name : undefined,
+    premiumAnimation: undefined, // TODO
+    maskPosition: undefined,
+    customEmojiId: undefined,
+    needsRepainting: undefined,
     fileSize: Number(document.size),
   });
 }
