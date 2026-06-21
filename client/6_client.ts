@@ -43,7 +43,6 @@ import { ManagedBotManager } from "./2_managed_bot_manager.ts";
 import { NetworkStatisticsManager } from "./2_network_statistics_manager.ts";
 import { PaymentManager } from "./2_payment_manager.ts";
 import { ReactionManager } from "./2_reaction_manager.ts";
-import { SecretChatManager } from "./2_secret_chat_manager.ts";
 import { signIn } from "./2_sign_in.ts";
 import { StoryAlbumManager } from "./2_story_album_manager.ts";
 import { TakeoutManager } from "./2_takeout_manager.ts";
@@ -52,6 +51,7 @@ import { UpdateManager } from "./2_update_manager.ts";
 import { AccountManager } from "./3_account_manager.ts";
 import { ClientEncryptedPool } from "./3_client_encrypted_pool.ts";
 import { MessageManager } from "./3_message_manager.ts";
+import { SecretChatManager } from "./3_secret_chat_manager.ts";
 import { StickerSetManager } from "./3_sticker_set_manager.ts";
 import { VideoChatManager } from "./3_video_chat_manager.ts";
 import { CallbackQueryManager } from "./4_callback_query_manager.ts";
@@ -145,7 +145,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   #networkStatisticsManager: NetworkStatisticsManager;
   #paymentManager: PaymentManager;
   #reactionManager: ReactionManager;
-  #secretChatManager: SecretChatManager;
   #storyAlbumManager: StoryAlbumManager;
   #takeoutManager: TakeoutManager;
   #translationsManager: TranslationsManager;
@@ -153,6 +152,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   // 3_
   #accountManager: AccountManager;
   #messageManager: MessageManager;
+  #secretChatManager: SecretChatManager;
   #stickerSetManager: StickerSetManager;
   #videoChatManager: VideoChatManager;
   // 4_
@@ -182,7 +182,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       networkStatisticsManager: this.#networkStatisticsManager,
       paymentManager: this.#paymentManager,
       reactionManager: this.#reactionManager,
-      secretChatManager: this.#secretChatManager,
       storyAlbumManager: this.#storyAlbumManager,
       takeoutManager: this.#takeoutManager,
       translationsManager: this.#translationsManager,
@@ -190,6 +189,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       // 3_
       accountManager: this.#accountManager,
       messageManager: this.#messageManager,
+      secretChatManager: this.#secretChatManager,
       stickerSetManager: this.#stickerSetManager,
       videoChatManager: this.#videoChatManager,
       // 4_
@@ -325,7 +325,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     this.#networkStatisticsManager = new NetworkStatisticsManager(c);
     this.#paymentManager = new PaymentManager(c);
     this.#reactionManager = new ReactionManager(c);
-    this.#secretChatManager = new SecretChatManager(c);
     this.#storyAlbumManager = new StoryAlbumManager(c);
     this.#takeoutManager = new TakeoutManager(c);
     this.#translationsManager = new TranslationsManager(c);
@@ -333,6 +332,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     // 3_
     this.#accountManager = new AccountManager({ ...c, fileManager });
     const messageManager = this.#messageManager = new MessageManager({ ...c, fileManager });
+    this.#secretChatManager = new SecretChatManager({ ...c, fileManager });
     this.#stickerSetManager = new StickerSetManager({ ...c, fileManager });
     this.#videoChatManager = new VideoChatManager({ ...c, fileManager });
     // 4_
