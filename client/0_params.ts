@@ -1139,3 +1139,8 @@ export interface SendSecretVenueParams extends _SendSecretCommon {
   /** Foursquare identifier of the venue. */
   foursquareId?: string;
 }
+
+export interface SendSecretContactParams extends _SendSecretCommon {
+  /** The contact's last name. */
+  lastName?: string;
+}

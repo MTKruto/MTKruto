@@ -25,7 +25,7 @@ import { Api, SecretChats, TLReader, TLWriter, X } from "../2_tl.ts";
 import { type ID, secretMessageEntityToTlObject, type Update } from "../3_types.ts";
 import { constructSecretChat } from "../types/0_secret_chat.ts";
 import { constructSecretMessage } from "../types/2_secret_message.ts";
-import type { SendSecretLocationParams, SendSecretMessageParams, SendSecretVenueParams } from "./0_params.ts";
+import type { SendSecretLocationParams, SendSecretMessageParams } from "./0_params.ts";
 import { isGoodModExpFirst, isSafePrime } from "./0_password.ts";
 import { SecretChatState, type SerializedSecretChatState } from "./0_secret_chat_state.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
@@ -259,26 +259,6 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
       reply_to_random_id: params?.replyToMessageId ? BigInt(params.replyToMessageId) : undefined,
       via_bot_name: params?.viaBot,
       media: { _: "decryptedMessageMediaGeoPoint", lat: latitude, long: longitude },
-    };
-
-    await this.#sendMessage(decryptedMessage, state.encryptedChat, state.authKey, state.authKeyId_);
-    await this.#postSendMessage(state);
-  }
-
-  async sendSecretVenue(id: number, latitude: number, longitude: number, title: string, address: string, params?: SendSecretVenueParams) {
-    this.#c.storage.assertUser("sendSecretVenue");
-    const state = this.#mustGetEncryptedChat(id);
-
-    const random_id = getRandomId();
-    const decryptedMessage: SecretChats.decryptedMessage = {
-      _: "decryptedMessage",
-      message: "",
-      random_id,
-      ttl: params?.ttl ?? 0,
-      silent: params?.isSilent || undefined,
-      reply_to_random_id: params?.replyToMessageId ? BigInt(params.replyToMessageId) : undefined,
-      via_bot_name: params?.viaBot,
-      media: { _: "decryptedMessageMediaVenue", lat: latitude, long: longitude, title, address, provider: "foursquare", venue_id: params?.foursquareId ?? "" },
     };
 
     await this.#sendMessage(decryptedMessage, state.encryptedChat, state.authKey, state.authKeyId_);
