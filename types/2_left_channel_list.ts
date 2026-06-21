@@ -25,7 +25,7 @@ import { type ChatP, constructChatP } from "./1_chat_p.ts";
 export interface LeftChannelList {
   /** The left channels. */
   leftChannels: ChatP[];
-  /** The total number of left channels */
+  /** The total number of left channels. */
   count: number;
 }
 

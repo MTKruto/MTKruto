@@ -931,7 +931,7 @@ export interface AddContactParams {
   note?: string;
   /** The note's entities. */
   noteEntities?: MessageEntity[];
-  /** The parse mode to use for the note */
+  /** The parse mode to use for the note. */
   noteParseMode?: ParseMode;
 }
 

@@ -28,12 +28,13 @@ export interface Photo {
   fileId: string;
   /** A file identifier that can be used to identify this file. */
   fileUniqueId: string;
-  /** Photo width */
+  /** The width of the photo. */
   width: number;
-  /** Photo height */
+  /** The height of the photo. */
   height: number;
   /** Size of the file in bytes. */
   fileSize: number;
+  /** The photo's thumbnails. */
   thumbnails: Thumbnail[];
 }
 

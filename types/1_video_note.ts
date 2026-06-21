@@ -27,7 +27,7 @@ export interface VideoNote {
   fileId: string;
   /** A file identifier that can be used to identify this file. */
   fileUniqueId: string;
-  /** Video width and height (diameter of the video message) as defined by sender */
+  /** Video width and height (diameter of the video message) as defined by its sender. */
   length: number;
   /** Duration of the video in seconds as defined by sender */
   duration: number;

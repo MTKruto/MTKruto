@@ -671,7 +671,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   /**
    * Check whether a password entered by the user is the same as the account's one.
    *
-   * @param password The password to check
+   * @param password The password to check.
    * @returns The result of the check.
    * @method ac
    */
