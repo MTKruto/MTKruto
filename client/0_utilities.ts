@@ -214,8 +214,8 @@ export function getLimit(limit: number | undefined) {
 
 export const UPLOAD_REQUEST_PER_CONNECTION = 2;
 
-export const DOWNLOAD_POOL_SIZE = 1;
-export const DOWNLOAD_REQUEST_PER_CONNECTION = 1;
+export const DOWNLOAD_POOL_SIZE = 2;
+export const DOWNLOAD_REQUEST_PER_CONNECTION = 2;
 
 export function checkPhotoName(params?: { fileName?: string }) {
   return (name: string, firstPart?: Uint8Array) => {
