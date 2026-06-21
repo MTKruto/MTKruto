@@ -2038,11 +2038,11 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method ms
    * @param chatId The identifier of a chat to send the contact to.
    * @param firstName The contact's first name.
-   * @param number The contact's phone number.
+   * @param phoneNumber The contact's phone number.
    * @returns The sent contact.
    */
-  async sendContact(chatId: ID, firstName: string, number: string, params?: SendContactParams): Promise<MessageContact> {
-    return await this.#messageManager.sendContact(chatId, firstName, number, params);
+  async sendContact(chatId: ID, firstName: string, phoneNumber: string, params?: SendContactParams): Promise<MessageContact> {
+    return await this.#messageManager.sendContact(chatId, firstName, phoneNumber, params);
   }
 
   /**
@@ -5045,5 +5045,17 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async sendSecretVenue(id: number, latitude: number, longitude: number, title: string, address: string, params?: SendSecretVenueParams): Promise<void> {
     return await this.#secretChatManager.sendSecretVenue(id, latitude, longitude, title, address, params);
+  }
+
+  /**
+   * Send a contact to a secret chat. User-only.
+   *
+   * @method sc
+   * @param id The identifier of the secret chat.
+   * @param firstName The contact's first name.
+   * @param phoneNumber The contact's phone number.
+   */
+  async sendSecretContact(id: number, firstName: string, phoneNumber: string, params?: SendSecretContactParams): Promise<void> {
+    return await this.#secretChatManager.sendSecretContact(id, firstName, phoneNumber, params);
   }
 }
