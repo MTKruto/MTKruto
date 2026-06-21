@@ -25,7 +25,7 @@ import { Api, SecretChats, TLReader, TLWriter, X } from "../2_tl.ts";
 import { type ID, secretMessageEntityToTlObject, type Update } from "../3_types.ts";
 import { constructSecretChat } from "../types/0_secret_chat.ts";
 import { constructSecretMessage } from "../types/2_secret_message.ts";
-import type { SendSecretChatMessageParams } from "./0_params.ts";
+import type { SendSecretLocationParams, SendSecretMessageParams } from "./0_params.ts";
 import { isGoodModExpFirst, isSafePrime } from "./0_password.ts";
 import { SecretChatState, type SerializedSecretChatState } from "./0_secret_chat_state.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
@@ -212,7 +212,8 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     return 2 * rawInSeqNo + (isCreator ? 0 : 1);
   }
 
-  async sendSecretMessage(id: number, text: string, params?: SendSecretChatMessageParams) {
+  async sendSecretMessage(id: number, text: string, params?: SendSecretMessageParams) {
+    this.#c.storage.assertUser("sendSecretMessage");
     const state = this.#getSecretChatState(id);
     if (!Api.is("encryptedChat", state.encryptedChat)) {
       throw new InputError("Received invalid secret chat identifier.");
@@ -228,6 +229,30 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
       reply_to_random_id: params?.replyToMessageId ? BigInt(params.replyToMessageId) : undefined,
       entities: params?.entities?.length ? params.entities.map(secretMessageEntityToTlObject) : undefined,
       via_bot_name: params?.viaBot,
+    };
+
+    await this.#sendMessage(decryptedMessage, state.encryptedChat, state.authKey, state.authKeyId_);
+    state.isJustLoaded = false;
+    await this.#maybeStartRekey(state);
+  }
+
+  async sendSecretLocation(id: number, latitude: number, longitude: number, params?: SendSecretLocationParams) {
+    this.#c.storage.assertUser("sendSecretLocation");
+    const state = this.#getSecretChatState(id);
+    if (!Api.is("encryptedChat", state.encryptedChat)) {
+      throw new InputError("Received invalid secret chat identifier.");
+    }
+
+    const random_id = getRandomId();
+    const decryptedMessage: SecretChats.decryptedMessage = {
+      _: "decryptedMessage",
+      message: "",
+      random_id,
+      ttl: params?.ttl ?? 0,
+      silent: params?.isSilent || undefined,
+      reply_to_random_id: params?.replyToMessageId ? BigInt(params.replyToMessageId) : undefined,
+      via_bot_name: params?.viaBot,
+      media: { _: "decryptedMessageMediaGeoPoint", lat: latitude, long: longitude },
     };
 
     await this.#sendMessage(decryptedMessage, state.encryptedChat, state.authKey, state.authKeyId_);
