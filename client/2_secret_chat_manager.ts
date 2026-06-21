@@ -212,7 +212,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     return 2 * rawInSeqNo + (isCreator ? 0 : 1);
   }
 
-  async sendSecretChatMessage(id: number, text: string, params?: SendSecretChatMessageParams) {
+  async sendSecretMessage(id: number, text: string, params?: SendSecretChatMessageParams) {
     const state = this.#getSecretChatState(id);
     if (!Api.is("encryptedChat", state.encryptedChat)) {
       throw new InputError("Received invalid secret chat identifier.");

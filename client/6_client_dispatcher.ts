@@ -3969,7 +3969,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param id The identifier of a secret chat.
    * @param text The message's text.
    */
-  async sendSecretChatMessage(id: number, text: string, params?: SendSecretChatMessageParams): Promise<void> {
-    return await this.#dispatch("sendSecretChatMessage", id, text, params);
+  async sendSecretMessage(id: number, text: string, params?: SendSecretChatMessageParams): Promise<void> {
+    return await this.#dispatch("sendSecretMessage", id, text, params);
   }
 }

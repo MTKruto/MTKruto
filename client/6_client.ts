@@ -5017,7 +5017,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param id The identifier of a secret chat.
    * @param text The message's text.
    */
-  async sendSecretChatMessage(id: number, text: string, params?: SendSecretChatMessageParams): Promise<void> {
-    return await this.#secretChatManager.sendSecretChatMessage(id, text, params);
+  async sendSecretMessage(id: number, text: string, params?: SendSecretChatMessageParams): Promise<void> {
+    return await this.#secretChatManager.sendSecretMessage(id, text, params);
   }
 }

@@ -3102,5 +3102,5 @@ export abstract class ClientGeneric {
    * @param id The identifier of a secret chat.
    * @param text The message's text.
    */
-  abstract sendSecretChatMessage(id: number, text: string): Promise<void>;
+  abstract sendSecretMessage(id: number, text: string): Promise<void>;
 }
