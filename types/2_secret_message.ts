@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { encodeHex } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api, SecretChats } from "../2_tl.ts";
 import { PhotoSourceType, serializeFileId, toUniqueFileId } from "../3_types.ts";
@@ -58,6 +59,8 @@ export interface _SecretMessageMediaBase extends _SecretMessageBase {
   caption: string;
   /** The entities of the message's caption. */
   entities: SecretMessageEntity[];
+  /** Information required for downloading the file. */
+  fileInformation: string;
 }
 
 /**
@@ -210,6 +213,11 @@ export function constructSecretMessage(chatId: number, message: SecretChats.decr
   const viaBot = message.via_bot_name;
   const messageBase = { chatId, id, isSilent, replyToMessageId, ttl, viaBot };
 
+  let fileInformation = "";
+  if (message.media && "key" in message.media && "iv" in message.media) {
+    fileInformation = `0${encodeHex(message.media.key)}${encodeHex(message.media.iv)}${message.media.size}`;
+  }
+
   function getFileIds(type: FileType) {
     let fileId_: FileId;
     if (SecretChats.is("decryptedMessageMediaExternalDocument", message.media)) {
@@ -290,6 +298,7 @@ export function constructSecretMessage(chatId: number, message: SecretChats.decr
           mediaGroupId,
           caption: text,
           entities,
+          fileInformation,
         });
       }
 
@@ -310,6 +319,7 @@ export function constructSecretMessage(chatId: number, message: SecretChats.decr
           mediaGroupId,
           caption: text,
           entities,
+          fileInformation,
         });
       }
       case "decryptedMessageMediaDocument8": {
@@ -329,6 +339,7 @@ export function constructSecretMessage(chatId: number, message: SecretChats.decr
           mediaGroupId,
           caption: text,
           entities,
+          fileInformation,
         });
       }
       case "decryptedMessageMediaExternalDocument":
@@ -368,6 +379,7 @@ export function constructSecretMessage(chatId: number, message: SecretChats.decr
             mediaGroupId,
             caption: text,
             entities,
+            fileInformation,
           });
         } else if (video) {
           if (video.round_message) {
@@ -388,6 +400,7 @@ export function constructSecretMessage(chatId: number, message: SecretChats.decr
               mediaGroupId,
               caption: text,
               entities,
+              fileInformation,
             });
           } else {
             const { fileId, fileUniqueId } = getFileIds(FileType.Video);
@@ -409,6 +422,7 @@ export function constructSecretMessage(chatId: number, message: SecretChats.decr
               mediaGroupId,
               caption: text,
               entities,
+              fileInformation,
             });
           }
         } else if (audio) {
@@ -428,6 +442,7 @@ export function constructSecretMessage(chatId: number, message: SecretChats.decr
               mediaGroupId,
               caption: text,
               entities,
+              fileInformation,
             });
           } else {
             const { fileId, fileUniqueId } = getFileIds(FileType.Audio);
@@ -449,6 +464,7 @@ export function constructSecretMessage(chatId: number, message: SecretChats.decr
               mediaGroupId,
               caption: text,
               entities,
+              fileInformation,
             });
           }
         } else {
@@ -469,6 +485,7 @@ export function constructSecretMessage(chatId: number, message: SecretChats.decr
             mediaGroupId,
             caption: text,
             entities,
+            fileInformation,
           });
         }
       }

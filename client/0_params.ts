@@ -264,6 +264,8 @@ export interface DownloadParams {
   offset?: number;
   /** Download abort signal. */
   signal?: AbortSignal;
+  /** Additional file information. Required for secret chat files. */
+  fileInformation?: string;
 }
 
 export interface _UploadCommon {

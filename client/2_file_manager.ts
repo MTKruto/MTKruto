@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { AssertionError, basename, delay, extension, extname, isAbsolute, join, MINUTE, SECOND, toFileUrl, unreachable } from "../0_deps.ts";
+import { AssertionError, basename, decodeHex, delay, extension, extname, ige256Decrypt, isAbsolute, join, MINUTE, SECOND, toFileUrl, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, iterateReadableStream, kilobyte, type Logger, megabyte, mod, type Part, PartStream } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
@@ -348,6 +348,21 @@ export class FileManager {
       }
     }
 
+    let fileSize = 0;
+    let decryptionInformation: { key: Uint8Array<ArrayBuffer>; iv: Uint8Array<ArrayBuffer> } | undefined;
+    if (params?.fileInformation) {
+      const version = params.fileInformation[0];
+      if (version !== "0") {
+        throw new InputError("Unsupported file information version.");
+      }
+
+      const withoutVersion = params.fileInformation.slice(1);
+      const key = decodeHex(withoutVersion.slice(0, 64));
+      const iv = decodeHex(withoutVersion.slice(64, 128));
+      decryptionInformation = { key, iv };
+      fileSize = Number(withoutVersion.slice(128));
+    }
+
     const chunkSize = params?.chunkSize ?? DOWNLOAD_MAX_CHUNK_SIZE;
     FileManager.validateChunkSize(chunkSize, DOWNLOAD_MAX_CHUNK_SIZE);
     if (params?.offset !== undefined) {
@@ -361,6 +376,7 @@ export class FileManager {
     let offset = params?.offset ? BigInt(params.offset) : 0n;
     let part = 0;
 
+    let totalSize = 0;
     let ms = 0.05;
     while (true) {
       signal?.throwIfAborted();
@@ -371,20 +387,30 @@ export class FileManager {
         signal?.throwIfAborted();
 
         if (Api.is("upload.file", file)) {
+          const downloadedSize = file.bytes.byteLength;
+          let finished = downloadedSize < limit;
+          if (decryptionInformation) {
+            const decryptedBytes = ige256Decrypt(file.bytes, decryptionInformation.key, decryptionInformation.iv);
+
+            const remainingSize = Math.max(0, fileSize - totalSize);
+            file.bytes = decryptedBytes.slice(0, remainingSize);
+            totalSize += file.bytes.byteLength;
+            finished = totalSize >= fileSize;
+          }
           yield file.bytes;
           if (id !== null) {
             await this.#c.storage.saveFilePart(id, part, file.bytes);
             signal?.throwIfAborted();
           }
           ++part;
-          if (file.bytes.byteLength < limit) {
+          if (finished) {
             if (id !== null) {
               await this.#c.storage.setFilePartCount(id, part + 1, chunkSize);
               signal?.throwIfAborted();
             }
             break;
           } else {
-            offset += BigInt(file.bytes.byteLength);
+            offset += BigInt(downloadedSize);
           }
         } else {
           unreachable();
