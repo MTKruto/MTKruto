@@ -3096,6 +3096,14 @@ export abstract class ClientGeneric {
   abstract acceptSecretChat(id: number): Promise<SecretChat>;
 
   /**
+   * End a secret chat. User-only.
+   *
+   * @method sc
+   * @param id The identifier of the secret chat.
+   */
+  abstract endSecretChat(id: number): Promise<SecretChat>;
+
+  /**
    * Send a message to a secret chat. User-only.
    *
    * @method sc

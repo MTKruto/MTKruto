@@ -25,7 +25,7 @@ import { Api, SecretChats, TLReader, TLWriter, X } from "../2_tl.ts";
 import { type ID, secretMessageEntityToTlObject, type Update } from "../3_types.ts";
 import { constructSecretChat } from "../types/0_secret_chat.ts";
 import { constructSecretMessage } from "../types/2_secret_message.ts";
-import type { SendSecretContactParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretVenueParams } from "./0_params.ts";
+import type { EndSecretChatParams, SendSecretContactParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretVenueParams } from "./0_params.ts";
 import { isGoodModExpFirst, isSafePrime } from "./0_password.ts";
 import { SecretChatState, type SerializedSecretChatState } from "./0_secret_chat_state.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
@@ -202,6 +202,21 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     });
     state.encryptedChat = result;
     return constructSecretChat(result);
+  }
+
+  async endSecretChat(id: number, params?: EndSecretChatParams) {
+    this.#c.storage.assertUser("endSecretChat");
+    const state = this.#getSecretChatState(id);
+    switch (state.encryptedChat._) {
+      case "encryptedChatEmpty":
+      case "encryptedChatDiscarded":
+        throw new InputError("The secret chat has already ended.");
+    }
+
+    await this.#c.invoke({ _: "messages.discardEncryption", chat_id: state.encryptedChat.id, delete_history: params?.isHistoryDeleted || undefined });
+    state.encryptedChat = { _: "encryptedChatDiscarded", id: state.encryptedChat.id, history_deleted: params?.isHistoryDeleted || undefined };
+    await state.commit(this.#c.messageStorage.storage);
+    return constructSecretChat(state.encryptedChat);
   }
 
   #getNextOutSeqNo(id: number, isCreator: boolean) {

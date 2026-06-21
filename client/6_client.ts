@@ -5011,6 +5011,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * End a secret chat. User-only.
+   *
+   * @method sc
+   * @param id The identifier of the secret chat.
+   */
+  async endSecretChat(id: number): Promise<SecretChat> {
+    return await this.#secretChatManager.endSecretChat(id);
+  }
+
+  /**
    * Send a message to a secret chat. User-only.
    *
    * @method sc

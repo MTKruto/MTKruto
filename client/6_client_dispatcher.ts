@@ -3963,6 +3963,16 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
+   * End a secret chat. User-only.
+   *
+   * @method sc
+   * @param id The identifier of the secret chat.
+   */
+  async endSecretChat(id: number): Promise<SecretChat> {
+    return await this.#dispatch("endSecretChat", id);
+  }
+
+  /**
    * Send a message to a secret chat. User-only.
    *
    * @method sc

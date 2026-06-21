@@ -1144,3 +1144,8 @@ export interface SendSecretContactParams extends _SendSecretCommon {
   /** The contact's last name. */
   lastName?: string;
 }
+
+export interface EndSecretChatParams {
+  /** Whether to delete the history of the secret chat. */
+  isHistoryDeleted?: boolean;
+}
