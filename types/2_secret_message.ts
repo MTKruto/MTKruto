@@ -21,8 +21,7 @@
 import { encodeHex } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api, SecretChats } from "../2_tl.ts";
-import { PhotoSourceType, serializeFileId, toUniqueFileId } from "../3_types.ts";
-import { type FileId, FileType } from "./_file_id.ts";
+import { type FileId, FileType, PhotoSourceType, serializeFileId, toUniqueFileId } from "./_file_id.ts";
 import type { Contact } from "./0_contact.ts";
 import type { Location } from "./0_location.ts";
 import { constructSecretMessageEntity, type SecretMessageEntity } from "./0_secret_message_entity.ts";
