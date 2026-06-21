@@ -96,6 +96,10 @@ export interface SecretMessageWebPage extends _SecretMessageBase {
   type: "webPage";
   /** The URL of the web page. */
   url: string;
+  /** The message's caption. */
+  caption: string;
+  /** The entities of the message's caption. */
+  entities: SecretMessageEntity[];
 }
 
 /** Any type of secret message. */
@@ -149,6 +153,8 @@ export function constructSecretMessage(chatId: number, message: SecretChats.decr
           type: "webPage",
           ...messageBase,
           url,
+          caption: text,
+          entities,
         });
       }
       case "decryptedMessageMediaDocument":
