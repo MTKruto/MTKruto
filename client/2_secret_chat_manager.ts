@@ -24,7 +24,7 @@ import { getLogger, getRandomId, getRandomInt, intFromBytes, intToBytes, type Lo
 import { Api, SecretChats, TLReader, TLWriter, X } from "../2_tl.ts";
 import { type ID, secretMessageEntityToTlObject, type Update } from "../3_types.ts";
 import { constructSecretChat } from "../types/0_secret_chat.ts";
-import { constructSecretMessage } from "../types/1_secret_message.ts";
+import { constructSecretMessage } from "../types/2_secret_message.ts";
 import type { SendSecretChatMessageParams } from "./0_params.ts";
 import { isGoodModExpFirst, isSafePrime } from "./0_password.ts";
 import { SecretChatState, type SerializedSecretChatState } from "./0_secret_chat_state.ts";
@@ -354,7 +354,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     return await SecretChats.deserializeType(X, serializedMessage);
   }
 
-  async #checkGap(chatId: number, message: SecretChats.decryptedMessageLayer) {
+  async #checkGap(chatId: number, message: SecretChats.decryptedMessageLayer, encryptedMessage: Api.EncryptedMessage) {
     const state = this.#getSecretChatState(chatId);
     if (!Api.is("encryptedChat", state.encryptedChat)) {
       return;
@@ -377,13 +377,13 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     if (outSeqNo < state.inSeqNo) { // old
       return;
     }
-    const alreadyPending = state.pendingMessages.some((v) => v.out_seq_no === message.out_seq_no);
+    const alreadyPending = state.pendingMessages.some((v) => v[0].out_seq_no === message.out_seq_no);
     if (!alreadyPending && SecretChats.is("decryptedMessageService", message.message) && SecretChats.is("decryptedMessageActionResend", message.message.action)) {
       await this.#resendMessages(state, message.message.action, isCreator);
     }
     if (outSeqNo > state.inSeqNo) { // gap
-      if (!state.pendingMessages.some((v) => v.out_seq_no === message.out_seq_no)) {
-        state.pendingMessages.push(message);
+      if (!state.pendingMessages.some((v) => v[0].out_seq_no === message.out_seq_no)) {
+        state.pendingMessages.push([message, encryptedMessage]);
       }
       if (state.isGapRequested) {
         return;
@@ -407,7 +407,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
       return;
     }
 
-    const handle = async (message: SecretChats.decryptedMessageLayer) => {
+    const handle = async (message: SecretChats.decryptedMessageLayer, encryptedMessage: Api.EncryptedMessage) => {
       const inSeqNo = (message.in_seq_no - inX) / 2;
       if (inSeqNo < state.remoteInSeqNo && !state.isJustLoaded) {
         this.#L.debug("discarding secret chat", chatId, "because of decreasing in_seq_no");
@@ -416,24 +416,24 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
       }
       state.remoteInSeqNo = Math.max(state.remoteInSeqNo, inSeqNo);
       ++state.inSeqNo;
-      await this.#handleDecryptedMessageLayer(chatId, message);
+      await this.#handleDecryptedMessageLayer(chatId, message, encryptedMessage);
     };
-    await handle(message);
+    await handle(message, encryptedMessage);
     while (true) {
-      const index = state.pendingMessages.findIndex((v) => (v.out_seq_no - x) / 2 === state.inSeqNo);
+      const index = state.pendingMessages.findIndex((v) => (v[0].out_seq_no - x) / 2 === state.inSeqNo);
       if (index === -1) {
         break;
       }
       const [pendingMessage] = state.pendingMessages.splice(index, 1);
-      await handle(pendingMessage);
+      await handle(pendingMessage[0], pendingMessage[1]);
     }
     if (state.pendingMessages.length === 0) {
       state.isGapRequested = false;
       state.gapEndSeqNo = -1;
     } else if (state.inSeqNo > state.gapEndSeqNo) {
       state.isGapRequested = false;
-      const next = state.pendingMessages.reduce((a, b) => a.out_seq_no < b.out_seq_no ? a : b);
-      await this.#checkGap(chatId, next);
+      const next = state.pendingMessages.reduce((a, b) => a[0].out_seq_no < b[0].out_seq_no ? a : b);
+      await this.#checkGap(chatId, next[0], next[1]);
     }
   }
 
@@ -605,10 +605,10 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     this.#clearPreviousKey(state);
   }
 
-  async #handleDecryptedMessageLayer(chatId: number, decryptedMessageLayer: SecretChats.decryptedMessageLayer) {
+  async #handleDecryptedMessageLayer(chatId: number, decryptedMessageLayer: SecretChats.decryptedMessageLayer, encryptedMessage: Api.EncryptedMessage) {
     const state = this.#getSecretChatState(chatId);
     if (SecretChats.is("decryptedMessage", decryptedMessageLayer.message)) {
-      const secretMessage = constructSecretMessage(state.encryptedChat.id, decryptedMessageLayer.message);
+      const secretMessage = constructSecretMessage(state.encryptedChat.id, decryptedMessageLayer.message, encryptedMessage);
       this.#c.handleUpdate({ type: "secretMessage", secretMessage });
     } else if (SecretChats.is("decryptedMessageService", decryptedMessageLayer.message)) {
       await this.#processServiceMessage(state.encryptedChat.id, decryptedMessageLayer.message);
@@ -682,7 +682,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
           state.previousAuthKeyDiscardAfterSeqNo = rawOutSeqNo;
         }
       }
-      await this.#checkGap(state.encryptedChat.id, decryptedMessage);
+      await this.#checkGap(state.encryptedChat.id, decryptedMessage, update.message);
       if (pendingKey && Api.is("encryptedChat", state.encryptedChat)) {
         const noop: SecretChats.decryptedMessageActionNoop = { _: "decryptedMessageActionNoop" };
         await this.#sendMessage({ _: "decryptedMessageService", random_id: getRandomId(), action: noop }, state.encryptedChat, state.authKey, state.authKeyId_);

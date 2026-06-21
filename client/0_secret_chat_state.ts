@@ -56,7 +56,7 @@ export interface SerializedSecretChatState {
 
   isGapRequested: boolean;
   gapEndSeqNo: number;
-  pendingMessages: SecretChats.decryptedMessageLayer[];
+  pendingMessages: [SecretChats.decryptedMessageLayer, Api.EncryptedMessage][];
   outgoingMessages: [number, Uint8Array<ArrayBuffer>][];
 }
 
@@ -95,7 +95,7 @@ export class SecretChatState {
 
   isGapRequested = false;
   gapEndSeqNo = -1;
-  pendingMessages = new Array<SecretChats.decryptedMessageLayer>();
+  pendingMessages = new Array<[SecretChats.decryptedMessageLayer, Api.EncryptedMessage]>();
   outgoingMessages = new LruCache<number, Uint8Array<ArrayBuffer>>(1_000);
 
   async commit(storage: Storage) {
