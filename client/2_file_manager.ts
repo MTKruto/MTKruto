@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { AssertionError, basename, decodeHex, delay, extension, extname, ige256Decrypt, isAbsolute, join, MINUTE, SECOND, toFileUrl, unreachable } from "../0_deps.ts";
+import { AssertionError, basename, concat, decodeHex, delay, extension, extname, ige256Decrypt, isAbsolute, join, MINUTE, SECOND, toFileUrl, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, iterateReadableStream, kilobyte, type Logger, megabyte, mod, type Part, PartStream } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
@@ -390,12 +390,17 @@ export class FileManager {
           const downloadedSize = file.bytes.byteLength;
           let finished = downloadedSize < limit;
           if (decryptionInformation) {
+            const left = file.bytes.subarray(-16);
+
             const decryptedBytes = ige256Decrypt(file.bytes, decryptionInformation.key, decryptionInformation.iv);
+            const right = decryptedBytes.subarray(-16);
 
             const remainingSize = Math.max(0, fileSize - totalSize);
             file.bytes = decryptedBytes.slice(0, remainingSize);
             totalSize += file.bytes.byteLength;
             finished = totalSize >= fileSize;
+
+            decryptionInformation.iv = concat([left, right]);
           }
           yield file.bytes;
           if (id !== null) {
