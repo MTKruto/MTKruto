@@ -3119,7 +3119,6 @@ export abstract class ClientGeneric {
    *
    * @method sc
    * @param id The identifier of the secret chat.
-   * @param chatId The identifier of a chat to send the venue to.
    * @param latitude The latitude of the venue.
    * @param longitude The longitude of the venue.
    * @param title The title of the venue.
