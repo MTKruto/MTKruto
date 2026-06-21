@@ -610,48 +610,6 @@ export interface UpdateSecretMessage {
   secretMessage: SecretMessage;
 }
 
-/** @unlisted */
-export interface UpdateMap {
-  message: UpdateNewMessage;
-  editedMessage: UpdateMessageEdited;
-  scheduledMessage: UpdateMessageScheduled;
-  connectionState: UpdateConnectionState;
-  authorizationState: UpdateAuthorizationState;
-  update: UpdateLowLevel;
-  deletedMessages: UpdateMessagesDeleted;
-  callbackQuery: UpdateCallbackQuery;
-  inlineQuery: UpdateInlineQuery;
-  guestQuery: UpdateGuestQuery;
-  chosenInlineResult: UpdateChosenInlineResult;
-  newChat: UpdateNewChat;
-  editedChat: UpdateEditedChat;
-  deletedChat: UpdateDeletedChat;
-  messageInteractions: UpdateMessageInteractions;
-  messageReactionCount: UpdateMessageReactionCount;
-  messageReactions: UpdateMessageReactions;
-  chatMember: UpdateChatMember;
-  myChatMember: UpdateMyChatMember;
-  deletedStory: UpdateDeletedStory;
-  story: UpdateNewStory;
-  businessConnection: UpdateBusinessConnection;
-  videoChat: UpdateVideoChat;
-  preCheckoutQuery: UpdatePreCheckoutQuery;
-  joinRequest: UpdateJoinRequest;
-  translations: UpdateTranslations;
-  poll: UpdatePoll;
-  pollAnswer: UpdatePollAnswer;
-  voiceTranscription: UpdateVoiceTranscription;
-  linkPreview: UpdateLinkPreview;
-  uploadProgress: UpdateUploadProgress;
-  botCommands: UpdateBotCommands;
-  emojiStatus: UpdateEmojiStatus;
-  emojiStatusRemoved: UpdateEmojiStatusRemoved;
-  chatAction: UpdateChatAction;
-  messageDraft: UpdateMessageDraft;
-  secretChat: UpdateSecretChat;
-  secretMessage: UpdateSecretMessage;
-}
-
 /** An incoming update. */
 export type Update =
   | UpdateConnectionState

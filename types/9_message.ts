@@ -641,63 +641,7 @@ export interface MessageRichText extends _MessageBase {
 }
 
 // message type map
-
-/** @unlisted */
-export interface MessageTypes {
-  text: MessageText;
-  link: MessageLink;
-  photo: MessagePhoto;
-  livePhoto: MessageLivePhoto;
-  document: MessageDocument;
-  video: MessageVideo;
-  sticker: MessageSticker;
-  animation: MessageAnimation;
-  voice: MessageVoice;
-  audio: MessageAudio;
-  dice: MessageDice;
-  videoNote: MessageVideoNote;
-  contact: MessageContact;
-  game: MessageGame;
-  poll: MessagePoll;
-  checklist: MessageChecklist;
-  invoice: MessageInvoice;
-  venue: MessageVenue;
-  location: MessageLocation;
-  newChatMembers: MessageNewChatMembers;
-  leftChatMember: MessageLeftChatMember;
-  newChatTitle: MessageNewChatTitle;
-  newChatPhoto: MessageNewChatPhoto;
-  deletedChatPhoto: MessageDeletedChatPhoto;
-  groupCreated: MessageGroupCreated;
-  supergroupCreated: MessageSupergroupCreated;
-  channelCreated: MessageChannelCreated;
-  newAutoDeleteTime: MessageAutoDeleteTimerChanged;
-  chatMigratedTo: MessageChatMigratedTo;
-  chatMigratedFrom: MessageChatMigratedFrom;
-  pinnedMessage: MessagePinnedMessage;
-  userShared: MessageUserShared;
-  writeAccessAllowed: MessageWriteAccessAllowed;
-  forumTopicCreated: MessageForumTopicCreated;
-  forumTopicEdited: MessageForumTopicEdited;
-  forumTopicClosed: MessageForumTopicClosed;
-  forumTopicReopened: MessageForumTopicReopened;
-  videoChatScheduled: MessageVideoChatScheduled;
-  videoChatStarted: MessageVideoChatStarted;
-  videoChatEnded: MessageVideoChatEnded;
-  giveaway: MessageGiveaway;
-  unsupported: MessageUnsupported;
-  successfulPayment: MessageSuccessfulPayment;
-  refundedPayment: MessageRefundedPayment;
-  checklistChanged: MessageChecklistChanged;
-  checklistExtended: MessageChecklistExtended;
-  giftNonUpgraded: MessageGiftNonUpgraded;
-  giftUpgraded: MessageGiftUpgraded;
-  pollOptionAdded: MessagePollOptionAdded;
-  pollOptionRemoved: MessagePollOptionRemoved;
-  richText: MessageRichText;
-}
-
-export const messageTypes: (keyof MessageTypes)[] = [
+export const messageTypes: Message["type"][] = [
   "text",
   "link",
   "photo",
@@ -749,11 +693,11 @@ export const messageTypes: (keyof MessageTypes)[] = [
   "pollOptionAdded",
   "richText",
 ];
-export function assertMessageType<T extends keyof MessageTypes>(message: Message, type: T): MessageTypes[T] {
+export function assertMessageType<T extends Message["type"]>(message: Message, type: T): Message & { type: T } {
   if (message.type !== type) {
     unreachable();
   }
-  return message as MessageTypes[T];
+  return message as Message & { type: T };
 }
 
 /** Any type of message. */

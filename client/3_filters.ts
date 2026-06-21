@@ -19,15 +19,15 @@
  */
 
 import type { Api } from "../2_tl.ts";
-import type { CallbackQuery, ChatP, ChosenInlineResult, Message, MessageTypes, Update, UpdateMap } from "../3_types.ts";
+import type { CallbackQuery, ChatP, ChosenInlineResult, Message, Update } from "../3_types.ts";
 
 type AnyLevel1 = Update["type"];
-type GetLevel1Type<L1 extends AnyLevel1> = UpdateMap[L1];
+type GetLevel1Type<L1 extends AnyLevel1> = Update & { type: L1 };
 
 interface Level2Map {
-  "message": keyof MessageTypes;
-  "editedMessage": keyof MessageTypes;
-  "scheduledMessage": keyof MessageTypes;
+  "message": Message["type"];
+  "editedMessage": Message["type"];
+  "scheduledMessage": Message["type"];
   "callbackQuery": "message" | "inlineMessageId" | "data" | "gameShortName";
   "chosenInlineResult": "inlineMessageId";
 }
