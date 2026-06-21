@@ -89,6 +89,8 @@ interface Shortcuts<T extends Update> {
     : undefined;
   message: T extends { type: "message" } ? T["message"] : undefined;
   editedMessage: T extends { type: "editedMessage" } ? T["editedMessage"] : undefined;
+  scheduledMessage: T extends { type: "scheduledMessage" } ? T["scheduledMessage"] : undefined;
+  secretMessage: T extends { type: "secretMessage" } ? T["secretMessage"] : undefined;
   guestQuery: T extends { type: "guestQuery" } ? T["guestQuery"] : undefined;
   callbackQuery: T extends { type: "callbackQuery" } ? T["callbackQuery"] : undefined;
   inlineQuery: T extends { type: "inlineQuery" } ? T["inlineQuery"] : undefined;

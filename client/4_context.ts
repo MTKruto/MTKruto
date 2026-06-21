@@ -21,8 +21,8 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { type Api, toJSON } from "../2_tl.ts";
-import type { AvailableReactions, BusinessConnection, CallbackQuery, Chat, ChatActionType, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ChosenInlineResult, ClaimedGifts, FailedInvitation, FileSource, GuestQuery, ID, InlineQuery, InlineQueryResult, InputChecklistItem, InputMedia, InputPollOption, InputRichText, InputStoryContent, InviteLink, JoinRequest, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageRichText, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, Poll, PriceTag, Reaction, ReplyTo, RichText, SlowModeDuration, Story, Topic, Update, User, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
-import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageRichTextParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, ForwardMessagesParams, GetChatMembersParams, GetClaimedGiftsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetSavedMessagesParams, PinMessageParams, PromoteChatMemberParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetReactionsParams, StartVideoChatParams, StopPollParams, UpdateChecklistParams } from "./0_params.ts";
+import type { AvailableReactions, BusinessConnection, CallbackQuery, Chat, ChatActionType, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ChosenInlineResult, ClaimedGifts, FailedInvitation, FileSource, GuestQuery, ID, InlineQuery, InlineQueryResult, InputChecklistItem, InputMedia, InputPollOption, InputRichText, InputStoryContent, InviteLink, JoinRequest, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageRichText, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, Poll, PriceTag, Reaction, ReplyTo, RichText, SecretChat, SecretMessage, SlowModeDuration, Story, Topic, Update, User, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
+import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageRichTextParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, ForwardMessagesParams, GetChatMembersParams, GetClaimedGiftsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetSavedMessagesParams, PinMessageParams, PromoteChatMemberParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendSecretContactParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretVenueParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetReactionsParams, StartVideoChatParams, StopPollParams, UpdateChecklistParams } from "./0_params.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
 import { type FilterQuery, match, type WithChatType, type WithFilter } from "./3_filters.ts";
 
@@ -186,31 +186,43 @@ export class Context {
   }
 
   get msg(): Message | undefined {
-    return "message" in this.update ? this.update.message : "editedMessage" in this.update ? this.update.editedMessage : "scheduledMessage" in this.update ? this.update.scheduledMessage : "callbackQuery" in this.update ? this.update.callbackQuery.message : "guestQuery" in this.update ? this.update.guestQuery.message : undefined;
+    return this.update.type === "message" ? this.update.message : this.update.type === "editedMessage" ? this.update.editedMessage : this.update.type === "scheduledMessage" ? this.update.scheduledMessage : this.update.type === "callbackQuery" ? this.update.callbackQuery.message : this.update.type === "guestQuery" ? this.update.guestQuery.message : undefined;
   }
 
   get message(): Message | undefined {
-    return "message" in this.update ? this.update.message : undefined;
+    return this.update.type === "message" ? this.update.message : undefined;
   }
 
   get editedMessage(): Message | undefined {
-    return "editedMessage" in this.update ? this.update.editedMessage : undefined;
+    return this.update.type === "editedMessage" ? this.update.editedMessage : undefined;
+  }
+
+  get scheduledMessage(): Message | undefined {
+    return this.update.type === "scheduledMessage" ? this.update.scheduledMessage : undefined;
+  }
+
+  get secretMessage(): SecretMessage | undefined {
+    return this.update.type === "secretMessage" ? this.update.secretMessage : undefined;
+  }
+
+  get secretChat(): SecretChat | undefined {
+    return this.update.type === "secretChat" ? this.update.secretChat : undefined;
   }
 
   get guestQuery(): GuestQuery | undefined {
-    return "guestQuery" in this.update ? this.update.guestQuery : undefined;
+    return this.update.type === "guestQuery" ? this.update.guestQuery : undefined;
   }
 
   get callbackQuery(): CallbackQuery | undefined {
-    return "callbackQuery" in this.update ? this.update.callbackQuery : undefined;
+    return this.update.type === "callbackQuery" ? this.update.callbackQuery : undefined;
   }
 
   get inlineQuery(): InlineQuery | undefined {
-    return "inlineQuery" in this.update ? this.update.inlineQuery : undefined;
+    return this.update.type === "inlineQuery" ? this.update.inlineQuery : undefined;
   }
 
   get chosenInlineResult(): ChosenInlineResult | undefined {
-    return "chosenInlineResult" in this.update ? this.update.chosenInlineResult : undefined;
+    return this.update.type === "chosenInlineResult" ? this.update.chosenInlineResult : undefined;
   }
 
   #mustGetMsg() {
@@ -218,12 +230,28 @@ export class Context {
       return { chatId: this.msg.chat.id, messageId: this.msg.id, businessConnectionId: this.msg.businessConnectionId, senderId: this.msg.from?.id, userId: this.msg.from?.id };
     }
 
-    const reactions = "messageInteractions" in this.update ? this.update.messageInteractions : undefined;
+    const reactions = this.update.type === "messageInteractions" ? this.update.messageInteractions : undefined;
     if (reactions !== undefined) {
       return { chatId: reactions.chatId, messageId: reactions.messageId };
     } else {
       unreachable();
     }
+  }
+
+  #mustGetSecretMsg() {
+    if (this.secretMessage !== undefined) {
+      return { chatId: this.secretMessage.chatId, messageId: this.secretMessage.id };
+    }
+
+    unreachable();
+  }
+
+  #mustGetSecretChatId() {
+    if (this.secretMessage !== undefined) {
+      return this.secretMessage.chatId;
+    }
+
+    unreachable();
   }
 
   #mustGetChatId() {
@@ -1066,6 +1094,46 @@ export class Context {
     return await this.client.reopenTopic(chatId, topicId);
   }
 
+  /** Context-aware alias for {@link Client.sendSecretMessage}. */
+  async replySecret(text: string, params?: Omit<SendSecretMessageParams, "replyToMessaegId"> & ReplyParams): Promise<void> {
+    const { chatId, messageId } = this.#mustGetSecretMsg();
+    const replyToMessageId = params?.isQuoted ? messageId : undefined;
+    return await this.client.sendSecretMessage(chatId, text, { ...params, replyToMessageId });
+  }
+
+  /** Context-aware alias for {@link Client.sendSecretLocation}. */
+  async replySecretLocation(latitude: number, longitude: number, params?: Omit<SendSecretLocationParams, "replyToMessaegId"> & ReplyParams): Promise<void> {
+    const { chatId, messageId } = this.#mustGetSecretMsg();
+    const replyToMessageId = params?.isQuoted ? messageId : undefined;
+    return await this.client.sendSecretLocation(chatId, latitude, longitude, { ...params, replyToMessageId });
+  }
+
+  /** Context-aware alias for {@link Client.sendSecretVenue}. */
+  async replySecretVenue(latitude: number, longitude: number, title: string, address: string, params?: Omit<SendSecretVenueParams, "replyToMessaegId"> & ReplyParams): Promise<void> {
+    const { chatId, messageId } = this.#mustGetSecretMsg();
+    const replyToMessageId = params?.isQuoted ? messageId : undefined;
+    return await this.client.sendSecretVenue(chatId, latitude, longitude, title, address, { ...params, replyToMessageId });
+  }
+
+  /** Context-aware alias for {@link Client.sendSecretContact}. */
+  async replySecretContact(firstName: string, phoneNumber: string, params?: Omit<SendSecretContactParams, "replyToMessaegId"> & ReplyParams): Promise<void> {
+    const { chatId, messageId } = this.#mustGetSecretMsg();
+    const replyToMessageId = params?.isQuoted ? messageId : undefined;
+    return await this.client.sendSecretContact(chatId, firstName, phoneNumber, { ...params, replyToMessageId });
+  }
+
+  /** Context-aware alias for {@link Client.acceptSecretChat}. */
+  async acceptSecretChat(): Promise<SecretChat> {
+    const id = this.#mustGetSecretChatId();
+    return await this.client.acceptSecretChat(id);
+  }
+
+  /** Context-aware alias for {@link Client.requestSecretChat}. */
+  async requestSecretChat(): Promise<SecretChat> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.requestSecretChat(chatId);
+  }
+
   /** Context-aware alias for {@link Client.sendMessage}. */
   async reply(text: string, params?: Omit<SendMessageParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageText> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
@@ -1102,10 +1170,10 @@ export class Context {
   }
 
   /** Context-aware alias for {@link Client.sendContact}. */
-  async replyContact(firstName: string, number: string, params?: Omit<SendContactParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageContact> {
+  async replyContact(firstName: string, phoneNumber: string, params?: Omit<SendContactParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageContact> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
     const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
-    return await this.client.sendContact(chatId, firstName, number, { ...params, ...replyTo, businessConnectionId });
+    return await this.client.sendContact(chatId, firstName, phoneNumber, { ...params, ...replyTo, businessConnectionId });
   }
 
   /** Context-aware alias for {@link Client.sendDice}. */
