@@ -117,7 +117,7 @@ export class StorageOperations {
     this.translations = this.#addMap(new StorageMap(storage, "translations"));
   }
 
-  get storage() {
+  get storage(): Storage {
     return this.#storage;
   }
 
