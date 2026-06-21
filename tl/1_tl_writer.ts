@@ -28,17 +28,22 @@ import { encodeText } from "../1_utilities.ts";
 
 export class TLWriter {
   protected _buffer: Uint8Array<ArrayBuffer> = new Uint8Array();
+  #chunks = new Array<Uint8Array>();
   #path = new Array<string>();
 
   constructor() {
   }
 
   get buffer(): Uint8Array<ArrayBuffer> {
+    if (this.#chunks.length > 0) {
+      this._buffer = concat([this._buffer, ...this.#chunks]);
+      this.#chunks.length = 0;
+    }
     return this._buffer;
   }
 
   write(buffer: Uint8Array): typeof this {
-    this._buffer = concat([this._buffer, buffer]);
+    this.#chunks.push(buffer);
     return this;
   }
 
