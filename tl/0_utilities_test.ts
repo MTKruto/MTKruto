@@ -18,9 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { assert, assertEquals, assertFalse, encodeHex } from "../0_deps.ts";
+import { assert, assertEquals, assertFalse, encodeBase64, encodeHex } from "../0_deps.ts";
 import { assertThrows } from "../0_test_deps.ts";
-import { analyzeOptionalParam, isOptionalParam, toJSON } from "./0_utilities.ts";
+import { analyzeOptionalParam, isOptionalParam, repr, toJSON } from "./0_utilities.ts";
 
 Deno.test("isOptionalParam", () => {
   assert(isOptionalParam("flags.8?string"));
@@ -59,5 +59,20 @@ Deno.test("toJSON", () => {
       bigint: { _: "bigint", bigint: "1234" },
       bigints: [{ _: "bigint", bigint: "1" }, { _: "bigint", bigint: "2" }, { _: "bigint", bigint: "3" }, { _: "bigint", bigint: "4" }],
     },
+  );
+});
+
+Deno.test("repr", () => {
+  assertEquals(repr(1n), "1n");
+  assertEquals(repr("hello"), '"hello"');
+  assertEquals(repr(1), "1");
+  assertEquals(repr(new Uint8Array(100)), `Uint8Array.fromBase64("${encodeBase64(new Uint8Array(100))}")`);
+  assertEquals(
+    repr({ _: "outer", inner: { _: "inner", value: 1 } }),
+    `{\n  _: "outer"\n  inner: {\n    _: "inner"\n    value: 1\n  }\n}`,
+  );
+  assertEquals(
+    repr([{ _: "outer", inner: [{ _: "inner" }] }]),
+    `[\n  {\n    _: "outer"\n    inner: [\n      {\n        _: "inner"\n      }\n    ]\n  }\n]`,
   );
 });
