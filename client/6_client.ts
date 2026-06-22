@@ -5151,7 +5151,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    *
    * @method sc
    * @param id The identifier of the secret chat.
-   * @param voice The sticker to send.
+   * @param sticker The sticker to send.
    */
   async sendSecretSticker(id: number, sticker: Sticker, params?: SendSecretStickerParams): Promise<void> {
     return await this.#secretChatManager.sendSecretSticker(id, sticker, params);

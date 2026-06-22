@@ -3212,7 +3212,7 @@ export abstract class ClientGeneric {
    *
    * @method sc
    * @param id The identifier of the secret chat.
-   * @param voice The sticker to send.
+   * @param sticker The sticker to send.
    */
   abstract sendSecretSticker(id: number, sticker: FileSource | Sticker, params?: SendSecretStickerParams): Promise<void>;
 }
