@@ -1189,6 +1189,9 @@ export interface SendSecretVoiceParams extends _SendSecretCommon, _UploadCommon,
   duration?: number;
 }
 
+export interface SendSecretStickerParams extends _SendSecretCommon, _UploadCommon {
+}
+
 export interface SendSecretAnimationParams extends _SendSecretCommon, _UploadCommon, _SendSecretCaptionCommon {
   /** The duration of the animation in seconds. */
   duration?: number;

@@ -18,14 +18,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { concat, equals, ige256Decrypt, ige256Encrypt, WEEK } from "../0_deps.ts";
+import { concat, equals, ige256Decrypt, ige256Encrypt, unreachable, WEEK } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, getRandomInt, intFromBytes, intToBytes, type Logger, mod, modExp, sha1, sha256 } from "../1_utilities.ts";
-import { Api, SecretChats, TLReader, TLWriter, X } from "../2_tl.ts";
-import { type FileSource, type ID, secretMessageEntityToTlObject, type Update } from "../3_types.ts";
+import { Api, repr, SecretChats, TLReader, TLWriter, X } from "../2_tl.ts";
+import { deserializeFileId, type FileSource, type ID, secretMessageEntityToTlObject, type Sticker, type Update } from "../3_types.ts";
 import { constructSecretChat } from "../types/0_secret_chat.ts";
 import { constructSecretMessage } from "../types/2_secret_message.ts";
-import type { EndSecretChatParams, SendSecretAnimationParams, SendSecretAudioParams, SendSecretContactParams, SendSecretDocumentParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretPhotoParams, SendSecretVenueParams, SendSecretVideoNoteParams, SendSecretVideoParams, SendSecretVoiceParams } from "./0_params.ts";
+import type { EndSecretChatParams, SendSecretAnimationParams, SendSecretAudioParams, SendSecretContactParams, SendSecretDocumentParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretPhotoParams, SendSecretStickerParams, SendSecretVenueParams, SendSecretVideoNoteParams, SendSecretVideoParams, SendSecretVoiceParams } from "./0_params.ts";
 import { isGoodModExpFirst, isSafePrime } from "./0_password.ts";
 import { SecretChatState, type SerializedSecretChatState } from "./0_secret_chat_state.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
@@ -600,6 +600,51 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     await this.#postSendMessage(state);
   }
 
+  async sendSecretSticker(id: number, sticker: Sticker, params?: SendSecretStickerParams) {
+    this.#c.storage.assertUser("sendSecretSticker");
+    if (!sticker.setName) {
+      throw new InputError("This sticker cannot be sent to a secret chat.");
+    }
+
+    const state = this.#mustGetEncryptedChat(id);
+    let inputEncryptedFile: Api.InputEncryptedFile | undefined;
+
+    const fileID = deserializeFileId(sticker.fileId);
+    if (fileID.location.type !== "common") {
+      unreachable();
+    }
+
+    const media: SecretChats.decryptedMessageMediaExternalDocument = {
+      _: "decryptedMessageMediaExternalDocument",
+      dc_id: fileID.dcId,
+      access_hash: fileID.location.accessHash,
+      attributes: [
+        { _: "documentAttributeImageSize", w: sticker.width, h: sticker.height },
+        { _: "documentAttributeSticker", alt: sticker.emoji ?? "", stickerset: { _: "inputStickerSetShortName", short_name: sticker.setName } },
+      ],
+      date: 0,
+      id: fileID.location.id,
+      size: sticker.fileSize ?? 0,
+      thumb: { _: "photoSizeEmpty", type: "s" },
+      mime_type: sticker.isVideo ? "video/webm" : sticker.isAnimated ? "application/x-tgsticker" : "image/webp",
+    };
+
+    const random_id = getRandomId();
+    const decryptedMessage: SecretChats.decryptedMessage = {
+      _: "decryptedMessage",
+      message: "",
+      random_id,
+      ttl: params?.ttl ?? 0,
+      silent: params?.isSilent || undefined,
+      reply_to_random_id: params?.replyToMessageId ? BigInt(params.replyToMessageId) : undefined,
+      via_bot_name: params?.viaBot,
+      media,
+    };
+
+    await this.#sendMessage(decryptedMessage, state.encryptedChat, state.authKey, state.authKeyId_, inputEncryptedFile);
+    await this.#postSendMessage(state);
+  }
+
   #sendTails = new Map<number, Promise<void>>();
   async #sendMessage(message: SecretChats.DecryptedMessage, encryptedChat: Api.encryptedChat, authKey: Uint8Array<ArrayBuffer>, authKeyId: Uint8Array<ArrayBuffer>, file?: Api.InputEncryptedFile) {
     try {
@@ -626,8 +671,6 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
   }
 
   async #sendMessageUnlocked(message: SecretChats.DecryptedMessage, encryptedChat: Api.encryptedChat, authKey: Uint8Array<ArrayBuffer>, authKeyId: Uint8Array<ArrayBuffer>, file: Api.InputEncryptedFile | undefined) {
-    const random_id = getRandomId();
-
     const isCreator = Number(encryptedChat.admin_id) === await this.#c.getSelfId();
     const out_seq_no = this.#getNextOutSeqNo(encryptedChat.id, isCreator);
     const in_seq_no = this.#getInSeqNo(encryptedChat.id, isCreator);
@@ -638,18 +681,23 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
 
     this.#getSecretChatState(encryptedChat.id).outgoingMessages.set((out_seq_no - (isCreator ? 1 : 0)) / 2, data);
     if (file) {
-      await this.#c.invoke({
+      const result = await this.#c.invoke({
         _: "messages.sendEncryptedFile",
+        silent: SecretChats.is("decryptedMessage", message) && message.silent ? true : undefined,
         peer: { _: "inputEncryptedChat", chat_id: encryptedChat.id, access_hash: encryptedChat.access_hash },
-        random_id,
+        random_id: message.random_id,
         data,
         file,
       });
+      if (!Api.is("messages.sentEncryptedFile", result) || !Api.is("encryptedFile", result.file) || result.file.size <= 0n) {
+        throw new InputError("Telegram did not attach the encrypted file to the secret message.");
+      }
     } else {
       await this.#c.invoke({
         _: "messages.sendEncrypted",
+        silent: SecretChats.is("decryptedMessage", message) && message.silent ? true : undefined,
         peer: { _: "inputEncryptedChat", chat_id: encryptedChat.id, access_hash: encryptedChat.access_hash },
-        random_id,
+        random_id: message.random_id,
         data,
       });
     }
@@ -1045,7 +1093,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
       authKeyId = state.previousAuthKeyId_;
     }
     const decryptedMessage = await this.#decryptMessage(authKeyId, authKey, isCreator, update.message.bytes);
-    this.#L.debug("received", decryptedMessage);
+    this.#L.debug("received", repr(decryptedMessage));
     if (SecretChats.is("decryptedMessageLayer", decryptedMessage)) {
       const x = isCreator ? 0 : 1;
       const rawOutSeqNo = (decryptedMessage.out_seq_no - x) / 2;
