@@ -28,13 +28,13 @@ export interface InvokeParams {
 }
 
 export interface AnswerCallbackQueryParams {
-  /** A text to be shown to the user. */
+  /** Text to be shown to the user. */
   text?: string;
   /** Whether to show the text as an alert (popup). */
   isAlert?: boolean;
   /** A URL to be opened. */
   url?: string;
-  /** TTL of answer caches in seconds. */
+  /** The TTL of cached answers, in seconds. */
   cacheTime?: number;
 }
 
@@ -165,9 +165,9 @@ export interface EditInlineMessageMediaParams extends _ReplyMarkupCommon {
 }
 
 export interface ForwardMessagesParams extends Omit<_SendCommon, "replyToMessageId" | "replyMarkup"> {
-  /** Whether to not include the original sender of the message that is going to be forwarded. */
+  /** Whether to omit the original sender of the message that is going to be forwarded. */
   isSenderNameDropped?: boolean;
-  /** Whether to not include the original caption of the message that is going to be forwarded. */
+  /** Whether to omit the original caption of the message that is going to be forwarded. */
   isCaptionDropped?: boolean;
 }
 
@@ -176,7 +176,7 @@ export interface SendPollParams extends _SendCommon, _ReplyMarkupCommon {
   questionEntities?: MessageEntity[];
   /** The parse mode to use for the poll's question. If omitted, the default parse mode will be used. */
   questionParseMode?: ParseMode;
-  /** A media to attach. */
+  /** Media to attach. */
   media?: InputPollMedia;
   /** Whether the poll should be anonymous. */
   isAnonymous?: boolean;
@@ -186,7 +186,7 @@ export interface SendPollParams extends _SendCommon, _ReplyMarkupCommon {
   isMultipleAnswersAllowed?: boolean;
   /** Index of the correct option. Required for quiz polls. */
   correctOptionIndexes?: number[];
-  /** A text that will be shown to the user when the poll is answered. Only valid for quiz polls. */
+  /** Text that will be shown to the user when the poll is answered. Only valid for quiz polls. */
   explanation?: string;
   /** The parse mode to use for the explanation. If omitted, the default parse mode will be used. */
   explanationParseMode?: ParseMode;
@@ -273,7 +273,7 @@ export interface _UploadCommon {
   fileName?: string;
   /** The file's size. */
   fileSize?: number;
-  /** The mime type to assign if applicable. */
+  /** The MIME type to assign if applicable. */
   mimeType?: string;
   /** Size of each upload chunk in bytes. */
   chunkSize?: number;
@@ -284,7 +284,7 @@ export interface _UploadCommon {
 }
 
 export interface AnswerInlineQueryParams {
-  /** TTL of the caches of the results in seconds. Defaults to 300. */
+  /** The TTL of cached results, in seconds. Defaults to 300. */
   cacheTime?: number;
   /** Whether the result caches should only be for the user who made the inline query. */
   isPersonal?: boolean;
@@ -405,9 +405,9 @@ export interface SendLocationParams extends _SendCommon, _ReplyMarkupCommon {
   horizontalAccuracy?: number;
   /** The duration for which the location can be updated, in seconds. Must be in the range of 80-864,000. */
   livePeriod?: number;
-  /** The direction which the user is moving towards. Must be in the range of 1-350. */
+  /** The direction in which the user is moving. Must be in the range of 1-350. */
   heading?: number;
-  /** The maximum distance for proximity alerts on approaching another chat member in meters. Must be in the range 1-100,000. */
+  /** The maximum distance for proximity alerts when approaching another chat member, in meters. Must be in the range of 1-100,000. */
   proximityAlertRadius?: number;
 }
 
@@ -572,7 +572,7 @@ export interface CreateInviteLinkParams {
 export interface GetCreatedInviteLinksParams {
   /** The identifier of an admin. If specified, only invite links created by this admin will be returned. */
   by?: ID;
-  /** The maximum number of results to return. Must be in the range 1-100. Defaults to 100. */
+  /** The maximum number of results to return. Must be in the range of 1-100. Defaults to 100. */
   limit?: number;
   /** Whether only revoked invite links must be returned. */
   isRevoked?: boolean;
@@ -588,9 +588,9 @@ export interface StopPollParams extends _BusinessConnectionIdCommon, _ReplyMarku
 export interface EditMessageLiveLocationParams extends _BusinessConnectionIdCommon, _ReplyMarkupCommon {
   /** The accuracy radius of the location in meters. Must be in the range of 0-1500. */
   horizontalAccuracy?: number;
-  /** The direction which the user is moving towards. Must be in the range of 1-350. */
+  /** The direction in which the user is moving. Must be in the range of 1-350. */
   heading?: number;
-  /** The maximum distance for proximity alerts on approaching another chat member in meters. Must be in the range 1-100,000. */
+  /** The maximum distance for proximity alerts when approaching another chat member, in meters. Must be in the range of 1-100,000. */
   proximityAlertRadius?: number;
 }
 
@@ -658,7 +658,7 @@ export interface GetChatMembersParams {
 export interface CreateGroupParams {
   /** Users to invite after creating the group. */
   users?: ID[];
-  /** Time to live of the messages of the group that is to be created in seconds. */
+  /** The time to live, in seconds, for messages in the group to be created. */
   messageTtl?: number;
 }
 
@@ -667,19 +667,19 @@ export interface CreateSupergroupParams {
   description?: string;
   /** Whether a forum should be created. */
   isForum?: boolean;
-  /** Time to live of the messages of the supergroup that is to be created in seconds. */
+  /** The time to live, in seconds, for messages in the supergroup to be created. */
   messageTtl?: number;
 }
 
 export interface CreateChannelParams {
   /** The description of the channel that is to be created. */
   description?: string;
-  /** Time to live of the messages of the channel that is to be created in seconds. */
+  /** The time to live, in seconds, for messages in the channel to be created. */
   messageTtl?: number;
 }
 
 export interface StartBotParams {
-  /** A deeplink to follow. */
+  /** A deep link to follow. */
   deeplink?: string;
   /** If specified, the bot will be started in that chat instead of its own private chat. */
   chatId?: ID;
@@ -894,7 +894,7 @@ export interface PromoteChatMemberParams {
 }
 
 export interface OpenChatParams {
-  /** TTL of update differences for unpolled chats in seconds. Defaults to a value specified by Telegram. */
+  /** The TTL of update differences for unpolled chats, in seconds. Defaults to a value specified by Telegram. */
   timeout?: number;
 }
 
@@ -1025,7 +1025,7 @@ export interface GetStarTransactionsParams {
   isInbound?: boolean;
   /** Whether only outbound transactions should be returned. */
   isOutbound?: boolean;
-  /** Whether results should be sorted in an ascending order. */
+  /** Whether results should be sorted in ascending order. */
   isAscending?: boolean;
   /** Whether only transactions related to a specific subscription should be returned. */
   subscriptionId?: string;

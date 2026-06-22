@@ -503,7 +503,7 @@ export class FileManager {
 
   static validateChunkSize(chunkSize: number, max: number) {
     if (chunkSize <= 0) {
-      throw new InputError("chunkSize must be bigger than zero.");
+      throw new InputError("chunkSize must be greater than zero.");
     }
     if (chunkSize % 1 !== 0) {
       throw new InputError("chunkSize must be a whole number.");

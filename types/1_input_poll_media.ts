@@ -24,7 +24,7 @@ import type { FileSource } from "./0_file_source.ts";
 export interface _InputPollOptionMediaCommon {
   /** The file name to assign if applicable. */
   fileName?: string;
-  /** The mime type to assign if applicable. */
+  /** The MIME type to assign if applicable. */
   mimeType?: string;
   /** Size of each upload chunk in bytes. */
   chunkSize?: number;

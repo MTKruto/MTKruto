@@ -27,7 +27,7 @@ import type { MessageEntity } from "./2_message_entity.ts";
 export interface _InputMediaCommon {
   /** The file name to assign if applicable. */
   fileName?: string;
-  /** The mime type to assign if applicable. */
+  /** The MIME type to assign if applicable. */
   mimeType?: string;
   /** Size of each upload chunk in bytes. */
   chunkSize?: number;

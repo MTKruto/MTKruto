@@ -66,7 +66,7 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate, true> {
       throw new InputError("No vote has been cast.");
     }
     if (!message.poll.allowMultipleAnswers && optionIndexes.length > 1) {
-      throw new InputError("Cannot cast multiple options for this vote.");
+      throw new InputError("Cannot cast a vote for multiple options.");
     }
     for (const optionIndex of optionIndexes) {
       if (optionIndex + 1 > message.poll.options.length) {

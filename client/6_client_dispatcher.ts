@@ -60,7 +60,7 @@ export interface ClientDispatcherParams {
   outgoingMessages?: boolean;
   /** Whether to guarantee that order-sensitive updates are delivered at least once before delivering next ones. Useful mainly for clients providing a user interface à la Telegram Desktop. Defaults to `false`. */
   guaranteeUpdateDelivery?: boolean;
-  /** Whether to not handle updates received when the client was not running. Defaults to `true` for bots, and `false` for users. */
+  /** Whether to ignore updates received while the client was not running. Defaults to `true` for bots and `false` for users. */
   dropPendingUpdates?: boolean;
   /**
    * Whether to persist cache to the provided storage, and not memory. Defaults to `false`.

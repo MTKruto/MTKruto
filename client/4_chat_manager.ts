@@ -424,7 +424,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     const user_id = await this.#c.getInputUser(userId);
     const isSelf = Api.is("inputUserSelf", user_id);
     if (isSelf || Api.peerToChatId(user_id) === await this.#c.getSelfId()) {
-      throw new InputError("A user ID except that of the current one was expected.");
+      throw new InputError("A user ID other than that of the current user was expected.");
     }
     const peer = await this.#c.getInputPeer(chatId);
     const ap = await this.#c.invoke({ _: "account.getPassword" });

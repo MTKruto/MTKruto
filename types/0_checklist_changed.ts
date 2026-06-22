@@ -20,7 +20,7 @@
 
 import type { Api } from "../2_tl.ts";
 
-/** A change in checklist. */
+/** A change to a checklist. */
 export interface ChecklistChanged {
   /** The identifiers of the checked items. */
   checkedItems: number[];

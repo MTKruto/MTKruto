@@ -31,9 +31,9 @@ export interface Location {
   horizontalAccuracy?: number;
   /** The duration for which the location can be updated, in seconds. Must be in the range of 80-864,000. */
   livePeriod?: number;
-  /** The direction which the user is moving towards. Must be in the range of 1-350. */
+  /** The direction in which the user is moving. Must be in the range of 1-350. */
   heading?: number;
-  /** The maximum distance for proximity alerts on approaching another chat member in meters. Must be in the range 1-100,000. */
+  /** The maximum distance for proximity alerts when approaching another chat member, in meters. Must be in the range of 1-100,000. */
   proximityAlertRadius?: number;
 }
 

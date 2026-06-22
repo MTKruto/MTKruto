@@ -873,7 +873,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     const start = (action.start_seq_no - x) / 2;
     const end = (action.end_seq_no - x) / 2;
     if (start % 1 !== 0 || end % 1 !== 0 || start < 0 || end < start || end >= state.outSeqNo) {
-      this.#L.debug("discarding secret chat", state.encryptedChat.id, "because an invalid resend rage was received");
+      this.#L.debug("discarding secret chat", state.encryptedChat.id, "because an invalid resend range was received");
       await this.#c.invoke({ _: "messages.discardEncryption", chat_id: state.encryptedChat.id });
       throw new TypeError("Received invalid secret chat resend range.");
     }
@@ -881,7 +881,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     for (let seqNo = start; seqNo <= end; ++seqNo) {
       const message = state.outgoingMessages.get(seqNo);
       if (!message) {
-        this.#L.debug("discarding secret chat", state.encryptedChat.id, "because unable to resend message");
+        this.#L.debug("discarding secret chat", state.encryptedChat.id, "because the message could not be resent");
         await this.#c.invoke({ _: "messages.discardEncryption", chat_id: state.encryptedChat.id });
         throw new TypeError("Unable to resend secret chat message.");
       }

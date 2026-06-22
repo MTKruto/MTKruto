@@ -2111,7 +2111,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     this.#c.storage.assertUser("startBot");
     const start_param = params?.deeplink?.trim() || "";
     if (params?.chatId !== undefined && !start_param) {
-      throw new InputError("deeplink cannot be unspecified while chatId is specified.");
+      throw new InputError("deeplink must be specified when chatId is specified.");
     }
     if (!params?.deeplink) {
       return await this.sendMessage(botId, "/start");

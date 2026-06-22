@@ -30,7 +30,7 @@ export interface InputSticker {
   fileName?: string;
   /** The file's size. */
   fileSize?: number;
-  /** The mime type to assign if applicable. */
+  /** The MIME type to assign if applicable. */
   mimeType?: string;
   /** Size of each upload chunk in bytes. */
   chunkSize?: number;
