@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { type Api, toJSON } from "../2_tl.ts";
 import type { AvailableReactions, BusinessConnection, CallbackQuery, Chat, ChatActionType, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ChosenInlineResult, ClaimedGifts, FailedInvitation, FileSource, GuestQuery, ID, InlineQuery, InlineQueryResult, InputChecklistItem, InputMedia, InputPollOption, InputRichText, InputStoryContent, InviteLink, JoinRequest, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageRichText, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, Poll, PriceTag, Reaction, ReplyTo, RichText, SecretChat, SecretMessage, SlowModeDuration, Story, Topic, Update, User, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
-import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageRichTextParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, EndSecretChatParams, ForwardMessagesParams, GetChatMembersParams, GetClaimedGiftsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetSavedMessagesParams, PinMessageParams, PromoteChatMemberParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendSecretContactParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretVenueParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetReactionsParams, StartVideoChatParams, StopPollParams, UpdateChecklistParams } from "./0_params.ts";
+import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageRichTextParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, EndSecretChatParams, ForwardMessagesParams, GetChatMembersParams, GetClaimedGiftsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetSavedMessagesParams, PinMessageParams, PromoteChatMemberParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendSecretAnimationParams, SendSecretContactParams, SendSecretDocumentParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretPhotoParams, SendSecretVenueParams, SendSecretVideoParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetReactionsParams, StartVideoChatParams, StopPollParams, UpdateChecklistParams } from "./0_params.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
 import { type FilterQuery, match, type WithChatType, type WithFilter } from "./3_filters.ts";
 
@@ -1095,31 +1095,80 @@ export class Context {
   }
 
   /** Context-aware alias for {@link Client.sendSecretMessage}. */
-  async replySecret(text: string, params?: Omit<SendSecretMessageParams, "replyToMessaegId"> & ReplyParams): Promise<void> {
+  async replySecret(text: string, params?: Omit<SendSecretMessageParams, "replyToMessageId"> & ReplyParams): Promise<void> {
     const { chatId, messageId } = this.#mustGetSecretMsg();
     const replyToMessageId = params?.isQuoted ? messageId : undefined;
     return await this.client.sendSecretMessage(chatId, text, { ...params, replyToMessageId });
   }
 
   /** Context-aware alias for {@link Client.sendSecretLocation}. */
-  async replySecretLocation(latitude: number, longitude: number, params?: Omit<SendSecretLocationParams, "replyToMessaegId"> & ReplyParams): Promise<void> {
+  async replySecretLocation(latitude: number, longitude: number, params?: Omit<SendSecretLocationParams, "replyToMessageId"> & ReplyParams): Promise<void> {
     const { chatId, messageId } = this.#mustGetSecretMsg();
     const replyToMessageId = params?.isQuoted ? messageId : undefined;
     return await this.client.sendSecretLocation(chatId, latitude, longitude, { ...params, replyToMessageId });
   }
 
   /** Context-aware alias for {@link Client.sendSecretVenue}. */
-  async replySecretVenue(latitude: number, longitude: number, title: string, address: string, params?: Omit<SendSecretVenueParams, "replyToMessaegId"> & ReplyParams): Promise<void> {
+  async replySecretVenue(latitude: number, longitude: number, title: string, address: string, params?: Omit<SendSecretVenueParams, "replyToMessageId"> & ReplyParams): Promise<void> {
     const { chatId, messageId } = this.#mustGetSecretMsg();
     const replyToMessageId = params?.isQuoted ? messageId : undefined;
     return await this.client.sendSecretVenue(chatId, latitude, longitude, title, address, { ...params, replyToMessageId });
   }
 
   /** Context-aware alias for {@link Client.sendSecretContact}. */
-  async replySecretContact(firstName: string, phoneNumber: string, params?: Omit<SendSecretContactParams, "replyToMessaegId"> & ReplyParams): Promise<void> {
+  async replySecretContact(firstName: string, phoneNumber: string, params?: Omit<SendSecretContactParams, "replyToMessageId"> & ReplyParams): Promise<void> {
     const { chatId, messageId } = this.#mustGetSecretMsg();
     const replyToMessageId = params?.isQuoted ? messageId : undefined;
     return await this.client.sendSecretContact(chatId, firstName, phoneNumber, { ...params, replyToMessageId });
+  }
+
+  /** Context-aware alias for {@link Client.sendSecretDocument}. */
+  async replySecretDocument(document: FileSource, params?: Omit<SendSecretDocumentParams, "replyToMessageId"> & ReplyParams): Promise<void> {
+    const { chatId, messageId } = this.#mustGetSecretMsg();
+    const replyToMessageId = params?.isQuoted ? messageId : undefined;
+    return await this.client.sendSecretDocument(chatId, document, { ...params, replyToMessageId });
+  }
+
+  /** Context-aware alias for {@link Client.sendSecretPhoto}. */
+  async replySecretPhoto(photo: FileSource, params?: Omit<SendSecretPhotoParams, "replyToMessageId"> & ReplyParams): Promise<void> {
+    const { chatId, messageId } = this.#mustGetSecretMsg();
+    const replyToMessageId = params?.isQuoted ? messageId : undefined;
+    return await this.client.sendSecretPhoto(chatId, photo, { ...params, replyToMessageId });
+  }
+
+  /** Context-aware alias for {@link Client.sendSecretVideo}. */
+  async replySecretVideo(video: FileSource, params?: Omit<SendSecretVideoParams, "replyToMessageId"> & ReplyParams): Promise<void> {
+    const { chatId, messageId } = this.#mustGetSecretMsg();
+    const replyToMessageId = params?.isQuoted ? messageId : undefined;
+    return await this.client.sendSecretVideo(chatId, video, { ...params, replyToMessageId });
+  }
+
+  /** Context-aware alias for {@link Client.sendSecretVideoNote}. */
+  async replySecretVideoNote(videoNote: FileSource, params?: Omit<SendSecretVideoParams, "replyToMessageId"> & ReplyParams): Promise<void> {
+    const { chatId, messageId } = this.#mustGetSecretMsg();
+    const replyToMessageId = params?.isQuoted ? messageId : undefined;
+    return await this.client.sendSecretVideoNote(chatId, videoNote, { ...params, replyToMessageId });
+  }
+
+  /** Context-aware alias for {@link Client.sendSecretAnimation}. */
+  async replySecretAnimation(animation: FileSource, params?: Omit<SendSecretAnimationParams, "replyToMessageId"> & ReplyParams): Promise<void> {
+    const { chatId, messageId } = this.#mustGetSecretMsg();
+    const replyToMessageId = params?.isQuoted ? messageId : undefined;
+    return await this.client.sendSecretVideoNote(chatId, animation, { ...params, replyToMessageId });
+  }
+
+  /** Context-aware alias for {@link Client.sendSecretAudio}. */
+  async replySecretAudio(audio: FileSource, params?: Omit<SendSecretAnimationParams, "replyToMessageId"> & ReplyParams): Promise<void> {
+    const { chatId, messageId } = this.#mustGetSecretMsg();
+    const replyToMessageId = params?.isQuoted ? messageId : undefined;
+    return await this.client.sendSecretAudio(chatId, audio, { ...params, replyToMessageId });
+  }
+
+  /** Context-aware alias for {@link Client.sendSecretVoice}. */
+  async replySecretVoice(voice: FileSource, params?: Omit<SendSecretAnimationParams, "replyToMessageId"> & ReplyParams): Promise<void> {
+    const { chatId, messageId } = this.#mustGetSecretMsg();
+    const replyToMessageId = params?.isQuoted ? messageId : undefined;
+    return await this.client.sendSecretVoice(chatId, voice, { ...params, replyToMessageId });
   }
 
   /** Context-aware alias for {@link Client.acceptSecretChat}. */

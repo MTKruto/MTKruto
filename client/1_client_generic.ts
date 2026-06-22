@@ -3205,5 +3205,5 @@ export abstract class ClientGeneric {
    * @param id The identifier of the secret chat.
    * @param voice The voice message to send.
    */
-  abstract sendSecretAudio(id: number, voice: FileSource, params?: SendSecretVoiceParams): Promise<void>;
+  abstract sendSecretVoice(id: number, voice: FileSource, params?: SendSecretVoiceParams): Promise<void>;
 }
