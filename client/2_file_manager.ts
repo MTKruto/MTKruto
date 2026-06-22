@@ -28,7 +28,7 @@ import { constructSticker, deserializeFileId, type FileId, type FileSource, File
 import { DOWNLOAD_MAX_CHUNK_SIZE, STICKER_SET_NAME_TTL } from "../4_constants.ts";
 import { FloodWait, StickersetInvalid } from "../4_errors.ts";
 import type { _UploadCommon, DownloadParams } from "./0_params.ts";
-import { UPLOAD_REQUEST_PER_CONNECTION } from "./0_utilities.ts";
+import { DOWNLOAD_POOL_SIZE, DOWNLOAD_REQUEST_PER_CONNECTION, UPLOAD_REQUEST_PER_CONNECTION } from "./0_utilities.ts";
 import type { C } from "./1_types.ts";
 
 export interface EncryptionInformation {
@@ -426,34 +426,33 @@ export class FileManager {
     let part = 0;
 
     let totalSize = 0;
-    let ms = 0.05;
+    const requestCount = DOWNLOAD_POOL_SIZE * DOWNLOAD_REQUEST_PER_CONNECTION;
+    let finished = false;
     while (true) {
       signal?.throwIfAborted();
-      let retryIn = 1;
-      let errorCount = 0;
-      try {
-        const file = await this.#c.invoke({ _: "upload.getFile", location, offset, limit }, { dc, type: "download" });
+      const results = await Promise.all(Array.from({ length: requestCount }, (_, i) => this.#downloadPart(location, offset + BigInt(i * limit), limit, dc, signal, id, part + i)));
+      for (const result of results) {
         signal?.throwIfAborted();
 
-        if (Api.is("upload.file", file)) {
-          const downloadedSize = file.bytes.byteLength;
-          let finished = downloadedSize < limit;
+        if (Api.is("upload.file", result)) {
+          const downloadedSize = result.bytes.byteLength;
+          finished = downloadedSize < limit;
           if (decryptionInformation) {
-            const left = file.bytes.subarray(-16);
+            const left = result.bytes.subarray(-16);
 
-            const decryptedBytes = ige256Decrypt(file.bytes, decryptionInformation.key, decryptionInformation.iv);
+            const decryptedBytes = ige256Decrypt(result.bytes, decryptionInformation.key, decryptionInformation.iv);
             const right = decryptedBytes.subarray(-16);
 
             const remainingSize = Math.max(0, fileSize - totalSize);
-            file.bytes = decryptedBytes.slice(0, remainingSize);
-            totalSize += file.bytes.byteLength;
+            result.bytes = decryptedBytes.slice(0, remainingSize);
+            totalSize += result.bytes.byteLength;
             finished = totalSize >= fileSize;
 
             decryptionInformation.iv = concat([left, right]);
           }
-          yield file.bytes;
+          yield result.bytes;
           if (id !== null) {
-            await this.#c.storage.saveFilePart(id, part, file.bytes);
+            await this.#c.storage.saveFilePart(id, part, result.bytes);
             signal?.throwIfAborted();
           }
           ++part;
@@ -469,9 +468,20 @@ export class FileManager {
         } else {
           unreachable();
         }
+      }
+      if (finished) {
+        break;
+      }
+    }
+  }
 
-        await delay(ms);
-        ms = Math.max(ms * .8, 0.003);
+  async #downloadPart(location: Api.InputFileLocation, offset: bigint, limit: number, dc: ReturnType<typeof getDc>, signal: AbortSignal | undefined, id: bigint | null, part: number) {
+    let retryIn = 1;
+    let errorCount = 0;
+    while (true) {
+      try {
+        signal?.throwIfAborted();
+        return await this.#c.invoke({ _: "upload.getFile", location, offset, limit }, { dc, type: "download" });
       } catch (err) {
         if (typeof err === "object" && err instanceof AssertionError) {
           throw err;
@@ -479,7 +489,7 @@ export class FileManager {
         ++errorCount;
         if (errorCount > 20) {
           retryIn = 0;
-          errorCount = 0;
+          errorCount = 20;
         }
         await this.#handleError(err, retryIn, `[${id}-${part + 1}]`);
         signal?.throwIfAborted();
