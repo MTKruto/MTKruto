@@ -602,6 +602,9 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
 
   async sendSecretSticker(id: number, sticker: Sticker, params?: SendSecretStickerParams) {
     this.#c.storage.assertUser("sendSecretSticker");
+    if (!sticker.setName) {
+      throw new InputError("This sticker cannot be sent to a secret chat.");
+    }
 
     const state = this.#mustGetEncryptedChat(id);
     let inputEncryptedFile: Api.InputEncryptedFile | undefined;
@@ -617,7 +620,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
       access_hash: fileID.location.accessHash,
       attributes: [
         { _: "documentAttributeImageSize", w: sticker.width, h: sticker.height },
-        { _: "documentAttributeSticker", alt: sticker.emoji ?? "", stickerset: sticker.setName ? { _: "inputStickerSetShortName", short_name: sticker.setName } : { _: "inputStickerSetEmpty" } },
+        { _: "documentAttributeSticker", alt: sticker.emoji ?? "", stickerset: { _: "inputStickerSetShortName", short_name: sticker.setName } },
       ],
       date: 0,
       id: fileID.location.id,
