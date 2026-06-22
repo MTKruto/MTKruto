@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { assertEquals, assertFalse, encodeHex } from "../0_deps.ts";
+import { assertEquals, assertFalse, encodeBase64, encodeHex } from "../0_deps.ts";
 
 export function isOptionalParam(ntype: string): boolean {
   return ntype.includes("?");
@@ -41,7 +41,37 @@ export function analyzeOptionalParam(ntype: string): { flagField: string; bitInd
 }
 
 export function repr(value: unknown): string | null {
-  return value === undefined ? "undefined" : value === null ? null : (typeof value === "object" && "_" in value) ? value._ as string : value.constructor.name;
+  if (typeof value === "bigint") {
+    return `${value}n`;
+  } else if (typeof value === "string") {
+    return `"${value}"`;
+  } else if (typeof value === "number" || typeof value === "boolean") {
+    return `${value}`;
+  } else if (value === undefined) {
+    return "undefined";
+  } else if (value instanceof Uint8Array) {
+    return `Uint8Array.fromBase64("${encodeBase64(value)}")`;
+  } else if (Array.isArray(value)) {
+    if (value.length === 0) {
+      return "[]";
+    }
+    return `[\n  ${value.map((value) => indentRepr(value)).join(",\n  ")}\n]`;
+  } else if (value === null) {
+    return value;
+  } else if (typeof value === "object" && "_" in value) {
+    let s = "{\n";
+    for (const [k, v] of Object.entries(value)) {
+      s += `  ${k}: ${indentRepr(v)}\n`;
+    }
+    s += "}";
+    return s;
+  } else {
+    return value.constructor.name;
+  }
+}
+
+function indentRepr(value: unknown): string {
+  return `${repr(value)}`.replaceAll("\n", "\n  ");
 }
 
 // deno-lint-ignore no-explicit-any
