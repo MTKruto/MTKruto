@@ -35,24 +35,22 @@ export interface Sticker {
   width: number;
   /** The height of the sticker. */
   height: number;
-  /** True, if the sticker is [animated](https://telegram.org/blog/animated-stickers) */
+  /** Whether the sticker is animated. */
   isAnimated: boolean;
-  /** True, if the sticker is a [video sticker](https://telegram.org/blog/video-stickers-better-reactions) */
+  /** Whether the sticker is a video. */
   isVideo: boolean;
-  /** Sticker thumbnail in the .WEBP or .JPG format */
+  /** Thumbnails of the sticker in the WebP or JPG. */
   thumbnails: Thumbnail[];
-  /** Emoji associated with the sticker */
+  /** The emoji associated with the sticker. */
   emoji?: string;
-  /** Name of the sticker set to which the sticker belongs */
+  /** Name of the sticker set where the sticker belongs. */
   setName?: string;
-  /** For premium regular stickers, premium animation for the sticker */
-  premiumAnimation?: File;
   /** For mask stickers, the position where the mask should be placed */
   maskPosition?: MaskPosition;
   /** For custom emoji stickers, unique identifier of the custom emoji */
   customEmojiId?: string;
-  /** True, if the sticker must be repainted to a text color in messages, the color of the Telegram Premium badge in emoji status, white color on chat photos, or another appropriate color in other places */
-  needsRepainting?: boolean;
+  /** Whether the sticker needs repainting. */
+  isRepaintingNeeded?: boolean;
   /** File size in bytes */
   fileSize?: number;
 }
@@ -84,10 +82,9 @@ export function constructSticker2(document: Api.document, fileId: string, fileUn
     thumbnails: document.thumbs ? document.thumbs.map((v) => Api.is("photoSize", v) ? constructThumbnail(v, document) : null).filter((v) => v) as Thumbnail[] : [],
     emoji: (customEmojiAttribute ? customEmojiAttribute.alt : stickerAttribute.alt) || undefined,
     setName,
-    premiumAnimation: undefined, // TODO
     maskPosition: stickerAttribute ? stickerAttribute.mask_coords ? constructMaskPosition(stickerAttribute.mask_coords) : undefined : undefined,
     customEmojiId: customEmojiAttribute ? customEmojiId : undefined,
-    needsRepainting: customEmojiAttribute ? !!customEmojiAttribute.text_color : undefined,
+    isRepaintingNeeded: customEmojiAttribute ? !!customEmojiAttribute.text_color : undefined,
     fileSize: Number(document.size),
   });
 }
@@ -108,10 +105,6 @@ export function constructSticker3(document: SecretChats.decryptedMessageMediaExt
     thumbnails: [],
     emoji: stickerAttribute.alt || undefined,
     setName: Api.is("inputStickerSetShortName", stickerAttribute.stickerset) ? stickerAttribute.stickerset.short_name : undefined,
-    premiumAnimation: undefined, // TODO
-    maskPosition: undefined,
-    customEmojiId: undefined,
-    needsRepainting: undefined,
     fileSize: Number(document.size),
   });
 }
