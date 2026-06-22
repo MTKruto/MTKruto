@@ -1119,6 +1119,13 @@ export interface _SendSecretCommon {
   viaBot?: string;
 }
 
+export interface _SendSecretCaptionCommon {
+  /** The caption to attach. */
+  caption?: string;
+  /** The caption's entities. */
+  entities?: SecretMessageEntity[];
+}
+
 export interface SendSecretMessageParams extends _SendSecretCommon {
   /** The entities of the message's text. */
   entities?: SecretMessageEntity[];
@@ -1143,6 +1150,9 @@ export interface SendSecretVenueParams extends _SendSecretCommon {
 export interface SendSecretContactParams extends _SendSecretCommon {
   /** The contact's last name. */
   lastName?: string;
+}
+
+export interface SendSecretDocumentParams extends _SendSecretCommon, _UploadCommon, _SendSecretCaptionCommon {
 }
 
 export interface EndSecretChatParams {

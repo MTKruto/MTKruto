@@ -50,7 +50,11 @@ export function repr(value: unknown): string | null {
   } else if (value === undefined) {
     return "undefined";
   } else if (value instanceof Uint8Array) {
-    return `Uint8Array.fromBase64("${encodeBase64(value)}")`;
+    if (value.byteLength > 1024) {
+      return `${value.byteLength} bytes`;
+    } else {
+      return `Uint8Array.fromBase64("${encodeBase64(value)}")`;
+    }
   } else if (Array.isArray(value)) {
     if (value.length === 0) {
       return "[]";
