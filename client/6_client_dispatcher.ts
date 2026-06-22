@@ -258,7 +258,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   /**
    * Check whether a password entered by the user is the same as the account's one.
    *
-   * @param password The password to check
+   * @param password The password to check.
    * @returns The result of the check.
    * @method ac
    */
@@ -3960,6 +3960,16 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async acceptSecretChat(id: number): Promise<SecretChat> {
     return await this.#dispatch("acceptSecretChat", id);
+  }
+
+  /**
+   * End a secret chat. User-only.
+   *
+   * @method sc
+   * @param id The identifier of the secret chat.
+   */
+  async endSecretChat(id: number, params?: EndSecretChatParams): Promise<SecretChat> {
+    return await this.#dispatch("endSecretChat", id, params);
   }
 
   /**

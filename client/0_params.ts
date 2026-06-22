@@ -931,7 +931,7 @@ export interface AddContactParams {
   note?: string;
   /** The note's entities. */
   noteEntities?: MessageEntity[];
-  /** The parse mode to use for the note */
+  /** The parse mode to use for the note. */
   noteParseMode?: ParseMode;
 }
 
@@ -1153,4 +1153,9 @@ export interface SendSecretContactParams extends _SendSecretCommon {
 }
 
 export interface SendSecretDocumentParams extends _SendSecretCommon, _UploadCommon, _SendSecretCaptionCommon {
+}
+
+export interface EndSecretChatParams {
+  /** Whether to delete the history of the secret chat. */
+  isHistoryDeleted?: boolean;
 }

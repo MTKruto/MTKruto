@@ -29,11 +29,11 @@ export interface Sticker {
   fileId: string;
   /** A file identifier that can be used to identify this file. */
   fileUniqueId: string;
-  /** Type of the sticker, currently one of "regular", "mask", "customEmoji". The type of the sticker is independent from its format, which is determined by the fields is_animated and is_video. */
+  /** Type of the sticker, currently one of "regular", "mask", "customEmoji". The type of the sticker is independent from its format, which is determined by the fields isAnimated and isVideo. */
   type: "regular" | "mask" | "customEmoji";
-  /** Sticker width */
+  /** The width of the sticker. */
   width: number;
-  /** Sticker height */
+  /** The height of the sticker. */
   height: number;
   /** True, if the sticker is [animated](https://telegram.org/blog/animated-stickers) */
   isAnimated: boolean;

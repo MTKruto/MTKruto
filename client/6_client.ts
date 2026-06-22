@@ -671,7 +671,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   /**
    * Check whether a password entered by the user is the same as the account's one.
    *
-   * @param password The password to check
+   * @param password The password to check.
    * @returns The result of the check.
    * @method ac
    */
@@ -5008,6 +5008,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async acceptSecretChat(id: number): Promise<SecretChat> {
     return await this.#secretChatManager.acceptSecretChat(id);
+  }
+
+  /**
+   * End a secret chat. User-only.
+   *
+   * @method sc
+   * @param id The identifier of the secret chat.
+   */
+  async endSecretChat(id: number, params?: EndSecretChatParams): Promise<SecretChat> {
+    return await this.#secretChatManager.endSecretChat(id, params);
   }
 
   /**

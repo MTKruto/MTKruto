@@ -371,7 +371,7 @@ export interface MessageNewChatTitle extends _MessageBase {
  */
 export interface MessageNewChatPhoto extends _MessageBase {
   type: "newChatPhoto";
-  /** The new photo of the chat */
+  /** The new photo of the chat. */
   newChatPhoto: Photo;
 }
 

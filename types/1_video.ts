@@ -28,9 +28,9 @@ export interface Video {
   fileId: string;
   /** A file identifier that can be used to identify this file. */
   fileUniqueId: string;
-  /** Video width as defined by sender */
+  /** Video width as defined by its sender. */
   width: number;
-  /** Video height as defined by sender */
+  /** Video height as defined by its sender. */
   height: number;
   /** Duration of the video in seconds as defined by sender */
   duration: number;

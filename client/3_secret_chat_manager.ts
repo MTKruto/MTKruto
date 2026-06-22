@@ -204,6 +204,21 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     return constructSecretChat(result);
   }
 
+  async endSecretChat(id: number, params?: EndSecretChatParams) {
+    this.#c.storage.assertUser("endSecretChat");
+    const state = this.#getSecretChatState(id);
+    switch (state.encryptedChat._) {
+      case "encryptedChatEmpty":
+      case "encryptedChatDiscarded":
+        throw new InputError("The secret chat has already ended.");
+    }
+
+    await this.#c.invoke({ _: "messages.discardEncryption", chat_id: state.encryptedChat.id, delete_history: params?.isHistoryDeleted || undefined });
+    state.encryptedChat = { _: "encryptedChatDiscarded", id: state.encryptedChat.id, history_deleted: params?.isHistoryDeleted || undefined };
+    await state.commit(this.#c.messageStorage.storage);
+    return constructSecretChat(state.encryptedChat);
+  }
+
   #getNextOutSeqNo(id: number, isCreator: boolean) {
     const state = this.#getSecretChatState(id);
     const rawOutSeqNo = state.outSeqNo;

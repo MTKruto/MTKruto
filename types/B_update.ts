@@ -63,7 +63,7 @@ import type { GuestQuery } from "./A_guest_query.ts";
  */
 export interface UpdateConnectionState {
   type: "connectionState";
-  /** The client's new connection state */
+  /** The client's new connection state. */
   connectionState: ConnectionState;
 }
 

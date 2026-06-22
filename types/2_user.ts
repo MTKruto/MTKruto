@@ -28,7 +28,7 @@ import type { ChatPPrivate } from "./1_chat_p.ts";
 
 /** A user. */
 export interface User {
-  /** Unique identifier for this user or bot */
+  /** The identifier of the user. */
   id: number;
   /** Identifier of color that can be displayed instead of the user's photo. */
   color: number;

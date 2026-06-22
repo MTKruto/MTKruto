@@ -439,12 +439,17 @@ export class FileManager {
           const downloadedSize = file.bytes.byteLength;
           let finished = downloadedSize < limit;
           if (decryptionInformation) {
+            const left = file.bytes.subarray(-16);
+
             const decryptedBytes = ige256Decrypt(file.bytes, decryptionInformation.key, decryptionInformation.iv);
+            const right = decryptedBytes.subarray(-16);
 
             const remainingSize = Math.max(0, fileSize - totalSize);
             file.bytes = decryptedBytes.slice(0, remainingSize);
             totalSize += file.bytes.byteLength;
             finished = totalSize >= fileSize;
+
+            decryptionInformation.iv = concat([left, right]);
           }
           yield file.bytes;
           if (id !== null) {
