@@ -68,4 +68,6 @@ export function extension(mimeType: string) {
   }
 }
 
+export { crypto } from "jsr:@std/crypto@1.1.0";
+
 export { ige256Decrypt, ige256Encrypt, init as initTgCrypto } from "jsr:@roj/tgcrypto@1.0.1";

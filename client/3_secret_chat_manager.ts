@@ -22,10 +22,10 @@ import { concat, equals, ige256Decrypt, ige256Encrypt, WEEK } from "../0_deps.ts
 import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, getRandomInt, intFromBytes, intToBytes, type Logger, mod, modExp, sha1, sha256 } from "../1_utilities.ts";
 import { Api, SecretChats, TLReader, TLWriter, X } from "../2_tl.ts";
-import { type ID, secretMessageEntityToTlObject, type Update } from "../3_types.ts";
+import { type FileSource, type ID, secretMessageEntityToTlObject, type Update } from "../3_types.ts";
 import { constructSecretChat } from "../types/0_secret_chat.ts";
 import { constructSecretMessage } from "../types/2_secret_message.ts";
-import type { SendSecretContactParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretVenueParams } from "./0_params.ts";
+import type { SendSecretContactParams, SendSecretDocumentParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretVenueParams } from "./0_params.ts";
 import { isGoodModExpFirst, isSafePrime } from "./0_password.ts";
 import { SecretChatState, type SerializedSecretChatState } from "./0_secret_chat_state.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
@@ -310,23 +310,59 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     await this.#postSendMessage(state);
   }
 
+  async sendSecretDocument(id: number, document: FileSource, params?: SendSecretDocumentParams) {
+    this.#c.storage.assertUser("sendSecretDocument");
+    const state = this.#mustGetEncryptedChat(id);
+
+    const key = crypto.getRandomValues(new Uint8Array(32));
+    const iv = crypto.getRandomValues(new Uint8Array(32));
+
+    const { inputEncryptedFile, fileSize } = await this.#c.fileManager.upload(document, params, null, true, { key, iv });
+
+    const random_id = getRandomId();
+    const decryptedMessage: SecretChats.decryptedMessage = {
+      _: "decryptedMessage",
+      message: "",
+      random_id,
+      ttl: params?.ttl ?? 0,
+      silent: params?.isSilent || undefined,
+      reply_to_random_id: params?.replyToMessageId ? BigInt(params.replyToMessageId) : undefined,
+      via_bot_name: params?.viaBot,
+      media: {
+        _: "decryptedMessageMediaDocument",
+        key,
+        iv,
+        caption: "",
+        size: BigInt(fileSize),
+        mime_type: params?.mimeType ?? "",
+        attributes: params?.fileName ? [{ _: "documentAttributeFilename", file_name: params.fileName }] : [],
+        thumb: new Uint8Array(),
+        thumb_w: 0,
+        thumb_h: 0,
+      },
+    };
+
+    await this.#sendMessage(decryptedMessage, state.encryptedChat, state.authKey, state.authKeyId_, inputEncryptedFile);
+    await this.#postSendMessage(state);
+  }
+
   #sendTails = new Map<number, Promise<void>>();
-  async #sendMessage(message: SecretChats.DecryptedMessage, encryptedChat: Api.encryptedChat, authKey: Uint8Array<ArrayBuffer>, authKeyId: Uint8Array<ArrayBuffer>) {
+  async #sendMessage(message: SecretChats.DecryptedMessage, encryptedChat: Api.encryptedChat, authKey: Uint8Array<ArrayBuffer>, authKeyId: Uint8Array<ArrayBuffer>, file?: Api.InputEncryptedFile) {
     try {
-      await this.#sendMessageInner(message, encryptedChat, authKey, authKeyId);
+      await this.#sendMessageInner(message, encryptedChat, authKey, authKeyId, file);
     } finally {
       await this.#getSecretChatState(encryptedChat.id).commit(this.#c.messageStorage.storage);
     }
   }
 
-  async #sendMessageInner(message: SecretChats.DecryptedMessage, encryptedChat: Api.encryptedChat, authKey: Uint8Array<ArrayBuffer>, authKeyId: Uint8Array<ArrayBuffer>) {
+  async #sendMessageInner(message: SecretChats.DecryptedMessage, encryptedChat: Api.encryptedChat, authKey: Uint8Array<ArrayBuffer>, authKeyId: Uint8Array<ArrayBuffer>, file: Api.InputEncryptedFile | undefined) {
     const previous = this.#sendTails.get(encryptedChat.id) ?? Promise.resolve();
     const { promise, resolve } = Promise.withResolvers<void>();
     const tail = previous.then(() => promise);
     this.#sendTails.set(encryptedChat.id, tail);
     await previous;
     try {
-      await this.#sendMessageUnlocked(message, encryptedChat, authKey, authKeyId);
+      await this.#sendMessageUnlocked(message, encryptedChat, authKey, authKeyId, file);
     } finally {
       resolve();
       if (this.#sendTails.get(encryptedChat.id) === tail) {
@@ -335,7 +371,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     }
   }
 
-  async #sendMessageUnlocked(message: SecretChats.DecryptedMessage, encryptedChat: Api.encryptedChat, authKey: Uint8Array<ArrayBuffer>, authKeyId: Uint8Array<ArrayBuffer>) {
+  async #sendMessageUnlocked(message: SecretChats.DecryptedMessage, encryptedChat: Api.encryptedChat, authKey: Uint8Array<ArrayBuffer>, authKeyId: Uint8Array<ArrayBuffer>, file: Api.InputEncryptedFile | undefined) {
     const random_id = getRandomId();
 
     const isCreator = Number(encryptedChat.admin_id) === await this.#c.getSelfId();
@@ -347,7 +383,22 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     const data = await this.#encryptMessage(isCreator, authKeyId, authKey, decryptedMessageLayer);
 
     this.#getSecretChatState(encryptedChat.id).outgoingMessages.set((out_seq_no - (isCreator ? 1 : 0)) / 2, data);
-    await this.#c.invoke({ _: "messages.sendEncrypted", peer: { _: "inputEncryptedChat", chat_id: encryptedChat.id, access_hash: encryptedChat.access_hash }, random_id, data });
+    if (file) {
+      await this.#c.invoke({
+        _: "messages.sendEncryptedFile",
+        peer: { _: "inputEncryptedChat", chat_id: encryptedChat.id, access_hash: encryptedChat.access_hash },
+        random_id,
+        data,
+        file,
+      });
+    } else {
+      await this.#c.invoke({
+        _: "messages.sendEncrypted",
+        peer: { _: "inputEncryptedChat", chat_id: encryptedChat.id, access_hash: encryptedChat.access_hash },
+        random_id,
+        data,
+      });
+    }
     const state = this.#getSecretChatState(encryptedChat.id);
     if (equals(state.authKeyId_, authKeyId)) {
       ++state.authKeyUseCount;

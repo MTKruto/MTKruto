@@ -18,9 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { AssertionError, basename, decodeHex, delay, extension, extname, ige256Decrypt, isAbsolute, join, MINUTE, SECOND, toFileUrl, unreachable } from "../0_deps.ts";
+import { AssertionError, basename, concat, crypto, decodeHex, delay, extension, extname, ige256Decrypt, ige256Encrypt, isAbsolute, join, MINUTE, SECOND, toFileUrl, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
-import { getLogger, getRandomId, iterateReadableStream, kilobyte, type Logger, megabyte, mod, type Part, PartStream } from "../1_utilities.ts";
+import { getLogger, getRandomId, intFromBytes, iterateReadableStream, kilobyte, type Logger, megabyte, mod, type Part, PartStream } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { TimeTooBig, TimeTooSmall } from "../3_errors.ts";
 import { getDc } from "../3_transport.ts";
@@ -30,6 +30,11 @@ import { FloodWait, StickersetInvalid } from "../4_errors.ts";
 import type { _UploadCommon, DownloadParams } from "./0_params.ts";
 import { UPLOAD_REQUEST_PER_CONNECTION } from "./0_utilities.ts";
 import type { C } from "./1_types.ts";
+
+export interface EncryptionInformation {
+  key: Uint8Array<ArrayBuffer>;
+  iv: Uint8Array<ArrayBuffer>;
+}
 
 export class FileManager {
   #c: C;
@@ -54,7 +59,9 @@ export class FileManager {
     return Promise.resolve(String(id));
   }
 
-  async upload(file: FileSource, params?: _UploadCommon, checkName?: null | ((name: string, firstPart?: Uint8Array) => string), allowStream = true): Promise<Api.InputFile> {
+  async upload(file: FileSource, params: _UploadCommon | undefined, checkName: null | ((name: string, firstPart?: Uint8Array) => string), allowStream: boolean, encryptionInformation: EncryptionInformation): Promise<{ inputEncryptedFile: Api.InputEncryptedFile; fileSize: number }>;
+  async upload(file: FileSource, params?: _UploadCommon, checkName?: null | ((name: string, firstPart?: Uint8Array) => string), allowStream?: boolean, encryptionInformation?: undefined): Promise<Api.InputFile>;
+  async upload(file: FileSource, params?: _UploadCommon, checkName?: null | ((name: string, firstPart?: Uint8Array) => string), allowStream = true, encryptionInformation?: EncryptionInformation): Promise<Api.InputFile | { inputEncryptedFile: Api.InputEncryptedFile; fileSize: number }> {
     if (params?.progressId !== undefined && !this.#progressIds.has(BigInt(params.progressId))) {
       throw new InputError("Invalid progressId.");
     }
@@ -82,16 +89,30 @@ export class FileManager {
     const whatIsUploaded = contents instanceof Uint8Array ? (isBig ? "big file" : "file") + " of size " + size : "stream";
     this.#Lupload.debug("uploading " + whatIsUploaded + " with chunk size of " + chunkSize + " and pool size of " + poolSize + " and file ID of " + fileId);
 
-    let result: { isSmall: boolean; parts: number; firstPart?: Uint8Array };
+    let result: { isSmall: boolean; parts: number; firstPart?: Uint8Array; fileSize: number };
     if (contents instanceof Uint8Array) {
-      result = await this.#uploadBuffer(contents, fileId, mustTrackProgress, chunkSize, poolSize, params?.signal);
+      result = await this.#uploadBuffer(contents, fileId, mustTrackProgress, chunkSize, poolSize, params?.signal, encryptionInformation);
     } else {
-      result = await this.#uploadStream(contents, fileId, mustTrackProgress, chunkSize, poolSize, params?.signal);
+      result = await this.#uploadStream(contents, fileId, mustTrackProgress, chunkSize, poolSize, params?.signal, encryptionInformation);
     }
 
     this.#Lupload.debug(`[${fileId}] uploaded ` + result.parts + " part(s)");
     if (checkName) {
       name = checkName(name, result.firstPart);
+    }
+
+    if (encryptionInformation) {
+      const digest = new Uint8Array(await crypto.subtle.digest("MD5", concat([encryptionInformation.key, encryptionInformation.iv])));
+      const right = digest.subarray(4, 8);
+      const key_fingerprint = Number(intFromBytes(digest.subarray(0, 4).map((v, i) => v ^ right[i])));
+
+      if (result.isSmall) {
+        const inputEncryptedFile: Api.InputEncryptedFile = { _: "inputEncryptedFileUploaded", id: fileId, parts: result.parts, key_fingerprint, md5_checksum: "" };
+        return { inputEncryptedFile, fileSize: result.fileSize };
+      } else {
+        const inputEncryptedFile: Api.InputEncryptedFile = { _: "inputEncryptedFileBigUploaded", id: fileId, parts: result.parts, key_fingerprint };
+        return { inputEncryptedFile, fileSize: result.fileSize };
+      }
     }
 
     if (result.isSmall) {
@@ -101,16 +122,30 @@ export class FileManager {
     }
   }
 
-  async #uploadStream(stream: ReadableStream<Uint8Array>, fileId: bigint, mustTrackProgress: boolean, chunkSize: number, poolSize: number, signal: AbortSignal | undefined) {
+  async #uploadStream(stream: ReadableStream<Uint8Array>, fileId: bigint, mustTrackProgress: boolean, chunkSize: number, poolSize: number, signal: AbortSignal | undefined, encryptionInformation: EncryptionInformation | undefined) {
     let part: Part;
     let promises = new Array<Promise<void>>();
     let ms = 0.05;
     let uploaded = 0;
     let firstPart: Uint8Array | undefined;
+    let iv = encryptionInformation?.iv;
+    let fileSize = 0;
     for await (part of iterateReadableStream(stream.pipeThrough(new PartStream(chunkSize)))) {
       if (!part.isSmall && part.part > 0) {
         await delay(ms);
         ms = Math.max(ms * .8, 0.003);
+      }
+      if (encryptionInformation) {
+        fileSize += part.bytes.byteLength;
+        if (part.bytes.byteLength % 16 !== 0) {
+          part.bytes = concat([part.bytes, crypto.getRandomValues(new Uint8Array((16 - part.bytes.length % 16) % 16))]);
+        }
+        const right = part.bytes.subarray(-16);
+
+        part.bytes = ige256Encrypt(part.bytes, encryptionInformation.key, iv!);
+        const left = part.bytes.subarray(-16);
+
+        iv = concat([left, right]);
       }
       if (!firstPart) {
         firstPart = part.bytes;
@@ -146,10 +181,10 @@ export class FileManager {
         isUploaded: true,
       },
     });
-    return { isSmall: part!.isSmall, parts: part!.totalParts, firstPart };
+    return { isSmall: part!.isSmall, parts: part!.totalParts, firstPart, fileSize };
   }
 
-  async #uploadBuffer(buffer: Uint8Array<ArrayBuffer>, fileId: bigint, mustTrackProgress: boolean, chunkSize: number, poolSize: number, signal: AbortSignal | undefined) {
+  async #uploadBuffer(buffer: Uint8Array<ArrayBuffer>, fileId: bigint, mustTrackProgress: boolean, chunkSize: number, poolSize: number, signal: AbortSignal | undefined, encryptionInformation: EncryptionInformation | undefined) {
     const isBig = buffer.byteLength > FileManager.#BIG_FILE_THRESHOLD;
     const partCount = Math.ceil(buffer.byteLength / chunkSize);
     let promises = new Array<Promise<void>>();
@@ -157,14 +192,28 @@ export class FileManager {
     let ms = 0.05;
     let uploaded = 0;
     let firstPart: Uint8Array | undefined;
+    let iv = encryptionInformation?.iv;
+    let fileSize = 0;
     main: for (let part = 0; part < partCount;) {
       for (let i = 0; i < poolSize; ++i) {
         for (let i = 0; i < UPLOAD_REQUEST_PER_CONNECTION; ++i) {
           const start = part * chunkSize;
           const end = start + chunkSize;
-          const bytes = buffer.subarray(start, end);
+          let bytes = buffer.subarray(start, end);
           if (!bytes.byteLength) {
             break main;
+          }
+          if (encryptionInformation) {
+            fileSize += bytes.byteLength;
+            if (bytes.byteLength % 16 !== 0) {
+              bytes = concat([bytes, crypto.getRandomValues(new Uint8Array((16 - bytes.length % 16) % 16))]);
+            }
+            const right = bytes.subarray(-16);
+
+            bytes = ige256Encrypt(bytes, encryptionInformation.key, iv!);
+            const left = bytes.subarray(-16);
+
+            iv = concat([left, right]);
           }
           if (!started) {
             started = true;
@@ -210,7 +259,7 @@ export class FileManager {
         isUploaded: true,
       },
     });
-    return { isSmall: !isBig, parts: partCount, firstPart };
+    return { isSmall: !isBig, parts: partCount, firstPart, fileSize };
   }
 
   async #uploadPart(fileId: bigint, partCount: number, isBig: boolean, index: number, bytes: Uint8Array<ArrayBuffer>, signal: AbortSignal | undefined) {
