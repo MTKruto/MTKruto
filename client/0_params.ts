@@ -1182,3 +1182,12 @@ export interface SendSecretVideoNoteParams extends _SendSecretCommon, _UploadCom
   /** The video's width and height (diameter). */
   length?: number;
 }
+
+export interface SendSecretAudioParams extends _SendSecretCommon, _UploadCommon, _SendSecretCaptionCommon {
+  /** The duration of the audio file in seconds. */
+  duration?: number;
+  /** Names of the entities that are being featured in the audio. */
+  performer?: string;
+  /** The title of the audio. */
+  title?: string;
+}
