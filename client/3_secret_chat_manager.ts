@@ -337,7 +337,8 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     const random_id = getRandomId();
     const decryptedMessage: SecretChats.decryptedMessage = {
       _: "decryptedMessage",
-      message: "",
+      message: params?.caption ?? "",
+      entities: params?.entities?.length ? params.entities.map(secretMessageEntityToTlObject) : undefined,
       random_id,
       ttl: params?.ttl ?? 0,
       silent: params?.isSilent || undefined,
