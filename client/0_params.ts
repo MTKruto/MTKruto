@@ -1175,3 +1175,10 @@ export interface SendSecretVideoParams extends _SendSecretCommon, _UploadCommon,
   /** The height of the video in pixels. */
   height?: number;
 }
+
+export interface SendSecretVideoNoteParams extends _SendSecretCommon, _UploadCommon, _SendSecretCaptionCommon {
+  /** The duration of the video note in seconds. */
+  duration?: number;
+  /** The video's width and height (diameter). */
+  length?: number;
+}
