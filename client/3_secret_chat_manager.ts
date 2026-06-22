@@ -25,10 +25,11 @@ import { Api, SecretChats, TLReader, TLWriter, X } from "../2_tl.ts";
 import { type FileSource, type ID, secretMessageEntityToTlObject, type Update } from "../3_types.ts";
 import { constructSecretChat } from "../types/0_secret_chat.ts";
 import { constructSecretMessage } from "../types/2_secret_message.ts";
-import type { EndSecretChatParams, SendSecretContactParams, SendSecretDocumentParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretVenueParams } from "./0_params.ts";
+import type { EndSecretChatParams, SendSecretContactParams, SendSecretDocumentParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretPhotoParams, SendSecretVenueParams } from "./0_params.ts";
 import { isGoodModExpFirst, isSafePrime } from "./0_password.ts";
 import { SecretChatState, type SerializedSecretChatState } from "./0_secret_chat_state.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
+import { checkPhotoName } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
 import type { FileManager } from "./2_file_manager.ts";
 
@@ -325,12 +326,17 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     await this.#postSendMessage(state);
   }
 
+  #generateKeyIv(): [Uint8Array<ArrayBuffer>, Uint8Array<ArrayBuffer>] {
+    const key = crypto.getRandomValues(new Uint8Array(32));
+    const iv = crypto.getRandomValues(new Uint8Array(32));
+    return [key, iv];
+  }
+
   async sendSecretDocument(id: number, document: FileSource, params?: SendSecretDocumentParams) {
     this.#c.storage.assertUser("sendSecretDocument");
     const state = this.#mustGetEncryptedChat(id);
 
-    const key = crypto.getRandomValues(new Uint8Array(32));
-    const iv = crypto.getRandomValues(new Uint8Array(32));
+    const [key, iv] = this.#generateKeyIv();
 
     const { inputEncryptedFile, fileSize } = await this.#c.fileManager.upload(document, params, null, true, { key, iv });
 
@@ -352,6 +358,42 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
         size: BigInt(fileSize),
         mime_type: params?.mimeType ?? "",
         attributes: params?.fileName ? [{ _: "documentAttributeFilename", file_name: params.fileName }] : [],
+        thumb: new Uint8Array(),
+        thumb_w: 0,
+        thumb_h: 0,
+      },
+    };
+
+    await this.#sendMessage(decryptedMessage, state.encryptedChat, state.authKey, state.authKeyId_, inputEncryptedFile);
+    await this.#postSendMessage(state);
+  }
+
+  async sendSecretPhoto(id: number, photo: FileSource, params?: SendSecretPhotoParams) {
+    this.#c.storage.assertUser("sendSecretPhoto");
+    const state = this.#mustGetEncryptedChat(id);
+
+    const [key, iv] = this.#generateKeyIv();
+
+    const { inputEncryptedFile, fileSize } = await this.#c.fileManager.upload(photo, params, checkPhotoName(params), true, { key, iv });
+
+    const random_id = getRandomId();
+    const decryptedMessage: SecretChats.decryptedMessage = {
+      _: "decryptedMessage",
+      message: params?.caption ?? "",
+      entities: params?.entities?.length ? params.entities.map(secretMessageEntityToTlObject) : undefined,
+      random_id,
+      ttl: params?.ttl ?? 0,
+      silent: params?.isSilent || undefined,
+      reply_to_random_id: params?.replyToMessageId ? BigInt(params.replyToMessageId) : undefined,
+      via_bot_name: params?.viaBot,
+      media: {
+        _: "decryptedMessageMediaPhoto",
+        key,
+        iv,
+        caption: "",
+        size: fileSize,
+        w: params?.width ?? 0,
+        h: params?.height ?? 0,
         thumb: new Uint8Array(),
         thumb_w: 0,
         thumb_h: 0,
