@@ -25,7 +25,7 @@ import { Api, SecretChats, TLReader, TLWriter, X } from "../2_tl.ts";
 import { type FileSource, type ID, secretMessageEntityToTlObject, type Update } from "../3_types.ts";
 import { constructSecretChat } from "../types/0_secret_chat.ts";
 import { constructSecretMessage } from "../types/2_secret_message.ts";
-import type { EndSecretChatParams, SendSecretAudioParams, SendSecretContactParams, SendSecretDocumentParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretPhotoParams, SendSecretVenueParams, SendSecretVideoNoteParams, SendSecretVideoParams, SendSecretVoiceParams } from "./0_params.ts";
+import type { EndSecretChatParams, SendSecretAnimationParams, SendSecretAudioParams, SendSecretContactParams, SendSecretDocumentParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretPhotoParams, SendSecretVenueParams, SendSecretVideoNoteParams, SendSecretVideoParams, SendSecretVoiceParams } from "./0_params.ts";
 import { isGoodModExpFirst, isSafePrime } from "./0_password.ts";
 import { SecretChatState, type SerializedSecretChatState } from "./0_secret_chat_state.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
@@ -513,6 +513,46 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
         attributes: [
           ...(params?.fileName ? [{ _: "documentAttributeFilename", file_name: params.fileName } satisfies SecretChats.documentAttributeFilename] : []),
           { _: "documentAttributeAudio", duration: params?.duration ?? 0, voice: true },
+        ],
+        thumb: new Uint8Array(),
+        thumb_w: 0,
+        thumb_h: 0,
+      },
+    };
+
+    await this.#sendMessage(decryptedMessage, state.encryptedChat, state.authKey, state.authKeyId_, inputEncryptedFile);
+    await this.#postSendMessage(state);
+  }
+
+  async sendSecretAnimation(id: number, animation: FileSource, params?: SendSecretAnimationParams) {
+    this.#c.storage.assertUser("sendSecretAnimation");
+    const state = this.#mustGetEncryptedChat(id);
+
+    const [key, iv] = this.#generateKeyIv();
+
+    const { inputEncryptedFile, fileSize } = await this.#c.fileManager.upload(animation, params, null, true, { key, iv });
+
+    const random_id = getRandomId();
+    const decryptedMessage: SecretChats.decryptedMessage = {
+      _: "decryptedMessage",
+      message: params?.caption ?? "",
+      entities: params?.entities?.length ? params.entities.map(secretMessageEntityToTlObject) : undefined,
+      random_id,
+      ttl: params?.ttl ?? 0,
+      silent: params?.isSilent || undefined,
+      reply_to_random_id: params?.replyToMessageId ? BigInt(params.replyToMessageId) : undefined,
+      via_bot_name: params?.viaBot,
+      media: {
+        _: "decryptedMessageMediaDocument",
+        key,
+        iv,
+        caption: "",
+        size: BigInt(fileSize),
+        mime_type: params?.mimeType ?? "",
+        attributes: [
+          ...(params?.fileName ? [{ _: "documentAttributeFilename", file_name: params.fileName } satisfies SecretChats.documentAttributeFilename] : []),
+          { _: "documentAttributeVideo", duration: params?.duration ?? 0, w: params?.width ?? 0, h: params?.height ?? 0 },
+          { _: "documentAttributeAnimated" },
         ],
         thumb: new Uint8Array(),
         thumb_w: 0,

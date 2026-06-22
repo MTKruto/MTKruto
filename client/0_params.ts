@@ -1196,3 +1196,12 @@ export interface SendSecretVoiceParams extends _SendSecretCommon, _UploadCommon,
   /** The duration of the voice message in seconds. */
   duration?: number;
 }
+
+export interface SendSecretAnimationParams extends _SendSecretCommon, _UploadCommon, _SendSecretCaptionCommon {
+  /** The duration of the animation in seconds. */
+  duration?: number;
+  /** The width of the animation in pixels. */
+  width?: number;
+  /** The height of the animation in pixels. */
+  height?: number;
+}
