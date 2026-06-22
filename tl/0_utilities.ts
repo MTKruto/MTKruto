@@ -65,7 +65,7 @@ export function repr(value: unknown): string | null {
   } else if (typeof value === "object" && "_" in value) {
     let s = "{\n";
     for (const [k, v] of Object.entries(value)) {
-      s += `  ${k}: ${indentRepr(v)}\n`;
+      s += `  ${k}: ${indentRepr(v)},\n`;
     }
     s += "}";
     return s;
