@@ -135,6 +135,9 @@ export class FileManager {
         await delay(ms);
         ms = Math.max(ms * .8, 0.003);
       }
+      if (!firstPart) {
+        firstPart = part.bytes;
+      }
       if (encryptionInformation) {
         fileSize += part.bytes.byteLength;
         if (part.bytes.byteLength % 16 !== 0) {
@@ -146,9 +149,6 @@ export class FileManager {
         const left = part.bytes.subarray(-16);
 
         iv = concat([left, right]);
-      }
-      if (!firstPart) {
-        firstPart = part.bytes;
       }
       promises.push(
         this.#uploadPart(fileId, part.totalParts, !part.isSmall, part.part, part.bytes, signal).then(() => {
@@ -203,6 +203,9 @@ export class FileManager {
           if (!bytes.byteLength) {
             break main;
           }
+          if (!firstPart) {
+            firstPart = bytes;
+          }
           if (encryptionInformation) {
             fileSize += bytes.byteLength;
             if (bytes.byteLength % 16 !== 0) {
@@ -220,9 +223,6 @@ export class FileManager {
           } else if (isBig && part > 0) {
             await delay(ms);
             ms = Math.max(ms * .8, 0.003);
-          }
-          if (!firstPart) {
-            firstPart = bytes;
           }
           promises.push(
             this.#uploadPart(fileId, partCount, isBig, part++, bytes, signal).then(() => {
@@ -579,13 +579,19 @@ export class FileManager {
         }
       }
     } else if (fileId_.location.type === "common") {
-      const location: Api.inputDocumentFileLocation = {
-        _: "inputDocumentFileLocation",
-        id: fileId_.location.id,
-        access_hash: fileId_.location.accessHash,
-        file_reference: fileId_.fileReference ?? new Uint8Array(),
-        thumb_size: "",
-      };
+      const location: Api.inputDocumentFileLocation | Api.inputEncryptedFileLocation = fileId_.type === FileType.Encrypted
+        ? {
+          _: "inputEncryptedFileLocation",
+          id: fileId_.location.id,
+          access_hash: fileId_.location.accessHash,
+        }
+        : {
+          _: "inputDocumentFileLocation",
+          id: fileId_.location.id,
+          access_hash: fileId_.location.accessHash,
+          file_reference: fileId_.fileReference ?? new Uint8Array(),
+          thumb_size: "",
+        };
       yield* this.downloadInner(location, fileId_.dcId, params);
     } else {
       unreachable();

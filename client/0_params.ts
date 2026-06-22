@@ -1129,14 +1129,6 @@ export interface _SendSecretCaptionCommon {
 export interface SendSecretMessageParams extends _SendSecretCommon {
   /** The entities of the message's text. */
   entities?: SecretMessageEntity[];
-  /** Whether the message should be sent silently. */
-  isSilent?: boolean;
-  /** The identifier of a message to reply to. */
-  replyToMessageId?: string;
-  /** The message's time-to-live. */
-  ttl?: number;
-  /** The name of the bot that was used to send the message. */
-  viaBot?: string;
 }
 
 export interface SendSecretLocationParams extends _SendSecretCommon {
@@ -1195,4 +1187,18 @@ export interface SendSecretAudioParams extends _SendSecretCommon, _UploadCommon,
 export interface SendSecretVoiceParams extends _SendSecretCommon, _UploadCommon, _SendSecretCaptionCommon {
   /** The duration of the voice message in seconds. */
   duration?: number;
+}
+
+export interface SendSecretStickerParams extends _SendSecretCommon, _UploadCommon {
+  /** Emoji to bind to the sticker. */
+  emoji?: string;
+}
+
+export interface SendSecretAnimationParams extends _SendSecretCommon, _UploadCommon, _SendSecretCaptionCommon {
+  /** The duration of the animation in seconds. */
+  duration?: number;
+  /** The width of the animation in pixels. */
+  width?: number;
+  /** The height of the animation in pixels. */
+  height?: number;
 }
