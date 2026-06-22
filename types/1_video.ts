@@ -32,11 +32,11 @@ export interface Video {
   width: number;
   /** Video height as defined by its sender. */
   height: number;
-  /** Duration of the video in seconds as defined by sender */
+  /** Duration of the video in seconds as defined by sender. */
   duration: number;
-  /** Video thumbnail */
+  /** The video's thumbnails. */
   thumbnails: Thumbnail[];
-  /** Original filename as defined by sender */
+  /** Original filename as defined by sender. */
   fileName?: string;
   /** MIME type of the file. */
   mimeType: string;

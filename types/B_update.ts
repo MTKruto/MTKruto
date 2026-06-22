@@ -84,7 +84,7 @@ export interface UpdateConnectionState {
  */
 export interface UpdateAuthorizationState {
   type: "authorizationState";
-  /** The client's new authorization state */
+  /** The client's new authorization state. */
   authorizationState: AuthorizationState;
 }
 
@@ -127,7 +127,7 @@ export interface UpdateLowLevel {
  */
 export interface UpdateNewMessage {
   type: "message";
-  /** The sent or received message */
+  /** The sent or received message. */
   message: Message;
 }
 
@@ -179,7 +179,7 @@ export interface UpdateMessageScheduled {
  */
 export interface UpdateMessagesDeleted {
   type: "deletedMessages";
-  /** The deleted messages */
+  /** The deleted messages. */
   deletedMessages: MessageReference[];
   isScheduled?: boolean;
   businessConnectionId?: string;
@@ -197,7 +197,7 @@ export interface UpdateMessagesDeleted {
  */
 export interface UpdateCallbackQuery {
   type: "callbackQuery";
-  /** The received callback query */
+  /** The received callback query. */
   callbackQuery: CallbackQuery;
 }
 
@@ -214,7 +214,7 @@ export interface UpdateCallbackQuery {
  */
 export interface UpdateInlineQuery {
   type: "inlineQuery";
-  /** The received inline query */
+  /** The received inline query. */
   inlineQuery: InlineQuery;
 }
 
@@ -241,7 +241,7 @@ export interface UpdateGuestQuery {
  */
 export interface UpdateChosenInlineResult {
   type: "chosenInlineResult";
-  /** The chosen inline query result */
+  /** The chosen inline query result. */
   chosenInlineResult: ChosenInlineResult;
 }
 
@@ -251,7 +251,7 @@ export interface UpdateChosenInlineResult {
  */
 export interface UpdateNewChat {
   type: "newChat";
-  /** The newly added chat */
+  /** The newly added chat. */
   newChat: ChatListItem;
 }
 
@@ -280,7 +280,7 @@ export interface UpdateDeletedChat {
  */
 export interface UpdateMessageInteractions {
   type: "messageInteractions";
-  /** The new message interactions */
+  /** The new message interactions. */
   messageInteractions: MessageInteractions;
 }
 
@@ -290,7 +290,7 @@ export interface UpdateMessageInteractions {
  */
 export interface UpdateMessageReactionCount {
   type: "messageReactionCount";
-  /** The new message reactions */
+  /** The new message reactions. */
   messageReactionCount: MessageReactionCount;
 }
 

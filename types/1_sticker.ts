@@ -45,13 +45,13 @@ export interface Sticker {
   emoji?: string;
   /** Name of the sticker set where the sticker belongs. */
   setName?: string;
-  /** For mask stickers, the position where the mask should be placed */
+  /** For mask stickers, the position where the mask should be placed. */
   maskPosition?: MaskPosition;
-  /** For custom emoji stickers, unique identifier of the custom emoji */
+  /** For custom emoji stickers, unique identifier of the custom emoji. */
   customEmojiId?: string;
   /** Whether the sticker needs repainting. */
   isRepaintingNeeded?: boolean;
-  /** File size in bytes */
+  /** File size in bytes. */
   fileSize?: number;
 }
 

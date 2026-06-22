@@ -29,11 +29,11 @@ export interface VideoNote {
   fileUniqueId: string;
   /** Video width and height (diameter of the video message) as defined by its sender. */
   length: number;
-  /** Duration of the video in seconds as defined by sender */
+  /** Duration of the video in seconds as defined by sender. */
   duration: number;
-  /** Video thumbnail */
+  /** The video note's thumbnails. */
   thumbnails: Thumbnail[];
-  /** Original filename as defined by sender */
+  /** Original filename as defined by sender. */
   fileName?: string;
   /** Size of the file in bytes. */
   fileSize: number;
