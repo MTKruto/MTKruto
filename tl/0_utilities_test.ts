@@ -69,10 +69,10 @@ Deno.test("repr", () => {
   assertEquals(repr(new Uint8Array(100)), `Uint8Array.fromBase64("${encodeBase64(new Uint8Array(100))}")`);
   assertEquals(
     repr({ _: "outer", inner: { _: "inner", value: 1 } }),
-    `{\n  _: "outer"\n  inner: {\n    _: "inner"\n    value: 1\n  }\n}`,
+    `{\n  _: "outer",\n  inner: {\n    _: "inner",\n    value: 1,\n  },\n}`,
   );
   assertEquals(
     repr([{ _: "outer", inner: [{ _: "inner" }] }]),
-    `[\n  {\n    _: "outer"\n    inner: [\n      {\n        _: "inner"\n      }\n    ]\n  }\n]`,
+    `[\n  {\n    _: "outer",\n    inner: [\n      {\n        _: "inner",\n      }\n    ],\n  }\n]`,
   );
 });
