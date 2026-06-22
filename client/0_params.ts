@@ -1190,8 +1190,6 @@ export interface SendSecretVoiceParams extends _SendSecretCommon, _UploadCommon,
 }
 
 export interface SendSecretStickerParams extends _SendSecretCommon, _UploadCommon {
-  /** Emoji to bind to the sticker. */
-  emoji?: string;
 }
 
 export interface SendSecretAnimationParams extends _SendSecretCommon, _UploadCommon, _SendSecretCaptionCommon {
