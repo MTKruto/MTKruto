@@ -1155,6 +1155,13 @@ export interface SendSecretContactParams extends _SendSecretCommon {
 export interface SendSecretDocumentParams extends _SendSecretCommon, _UploadCommon, _SendSecretCaptionCommon {
 }
 
+export interface SendSecretPhotoParams extends _SendSecretCommon, _UploadCommon, _SendSecretCaptionCommon {
+  /** The width of the photo in pixels. */
+  width?: number;
+  /** The height of the photo in pixels. */
+  height?: number;
+}
+
 export interface EndSecretChatParams {
   /** Whether to delete the history of the secret chat. */
   isHistoryDeleted?: boolean;
