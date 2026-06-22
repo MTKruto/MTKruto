@@ -1191,3 +1191,8 @@ export interface SendSecretAudioParams extends _SendSecretCommon, _UploadCommon,
   /** The title of the audio. */
   title?: string;
 }
+
+export interface SendSecretVoiceParams extends _SendSecretCommon, _UploadCommon, _SendSecretCaptionCommon {
+  /** The duration of the voice message in seconds. */
+  duration?: number;
+}
