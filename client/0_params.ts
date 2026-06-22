@@ -1166,3 +1166,12 @@ export interface EndSecretChatParams {
   /** Whether to delete the history of the secret chat. */
   isHistoryDeleted?: boolean;
 }
+
+export interface SendSecretVideoParams extends _SendSecretCommon, _UploadCommon, _SendSecretCaptionCommon {
+  /** The duration of the video in seconds. */
+  duration?: number;
+  /** The width of the video in pixels. */
+  width?: number;
+  /** The height of the video in pixels. */
+  height?: number;
+}
