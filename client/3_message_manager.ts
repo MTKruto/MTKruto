@@ -779,7 +779,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       params,
       FileType.Video,
       [
-        { _: "documentAttributeVideo", supports_streaming: params?.supportsStreaming || undefined, w: params?.width ?? 0, h: params?.height ?? 0, duration: params?.duration ?? 0 },
+        { _: "documentAttributeVideo", supports_streaming: params?.isStreamingSupported || undefined, w: params?.width ?? 0, h: params?.height ?? 0, duration: params?.duration ?? 0 },
       ],
       undefined,
       VIDEO_MIME_TYPES,
@@ -790,7 +790,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async #sendDocumentInner(chatId: ID, document: FileSource, params: SendDocumentParams & _SpoilCommon | undefined, fileType: FileType, otherAttribs: Api.DocumentAttribute[], urlSupported = true, expectedMimeTypes?: string[], createName?: (firstPart: Uint8Array) => string) {
     let media: Api.InputMedia | null = null;
-    const spoiler = params?.hasSpoiler || undefined;
+    const spoiler = params?.isSpoiler || undefined;
     const ttl_seconds = params && "selfDestruct" in params && typeof params.selfDestruct !== undefined ? selfDestructOptionToInt(params.selfDestruct as SelfDestructOption) : undefined;
 
     if (typeof document === "string") {
@@ -1293,7 +1293,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async #resolveInputMediaInner(document: FileSource, media: InputMedia, fileType: FileType, otherAttribs: Api.DocumentAttribute[]) {
     let media_: Exclude<Api.InputMedia, Api.inputMediaEmpty> | null = null;
-    const spoiler = "hasSpoiler" in media && media.hasSpoiler || undefined;
+    const spoiler = "isSpoiler" in media && media.isSpoiler || undefined;
 
     if (typeof document === "string") {
       const fileId = this.resolveFileId(document, fileType);
@@ -1342,7 +1342,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         return await this.#resolveInputMediaInner(media.document, media, FileType.Document, []);
       case "photo": {
         let media_: Api.InputMedia | null = null;
-        const spoiler = media.hasSpoiler || undefined;
+        const spoiler = media.isSpoiler || undefined;
         const ttl_seconds = "selfDestruct" in media && media.selfDestruct !== undefined ? selfDestructOptionToInt(media.selfDestruct) : undefined;
 
         if (typeof media.photo === "string") {
@@ -1366,7 +1366,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       case "video": {
         const ttl_seconds = "selfDestruct" in media && media.selfDestruct !== undefined ? selfDestructOptionToInt(media.selfDestruct) : undefined;
         const media_ = await this.#resolveInputMediaInner(media.video, media, FileType.Video, [
-          { _: "documentAttributeVideo", supports_streaming: media?.supportsStreaming || undefined, w: media?.width ?? 0, h: media?.height ?? 0, duration: media?.duration ?? 0 },
+          { _: "documentAttributeVideo", supports_streaming: media?.isStreamingSupported || undefined, w: media?.width ?? 0, h: media?.height ?? 0, duration: media?.duration ?? 0 },
         ]);
         media_.ttl_seconds = ttl_seconds;
         return media_;
@@ -1393,13 +1393,13 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
             access_hash: messageMedia.photo.access_hash,
             file_reference: messageMedia.photo.file_reference,
           },
-          spoiler: "hasSpoiler" in media && media.hasSpoiler || undefined,
+          spoiler: "isSpoiler" in media && media.isSpoiler || undefined,
         };
       } else if ("document" in messageMedia && Api.is("document", messageMedia.document)) {
         return {
           _: "inputMediaDocument",
           id: { _: "inputDocument", id: messageMedia.document.id, access_hash: messageMedia.document.access_hash, file_reference: messageMedia.document.file_reference },
-          spoiler: "hasSpoiler" in media && media.hasSpoiler || undefined,
+          spoiler: "isSpoiler" in media && media.isSpoiler || undefined,
         };
       } else {
         unreachable();
@@ -1426,7 +1426,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async #uploadPhoto(photo: FileSource, params?: SendPhotoParams & { video?: FileSource }) {
     let media: Api.InputMedia | null = null;
-    const spoiler = params?.hasSpoiler || undefined;
+    const spoiler = params?.isSpoiler || undefined;
     const ttl_seconds = params && "selfDestruct" in params && params.selfDestruct !== undefined ? selfDestructOptionToInt(params.selfDestruct) : undefined;
 
     let video: Api.InputDocument | undefined;
@@ -1453,13 +1453,13 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return media;
   }
 
-  async #uploadDocument(document: FileSource, attributes: Api.DocumentAttribute[], mimeType: string, params?: _UploadCommon & { hasSpoiler?: boolean }, checkName?: null | ((name: string, firstPart?: Uint8Array) => string), allowStream?: boolean): Promise<Api.messageMediaDocument> {
+  async #uploadDocument(document: FileSource, attributes: Api.DocumentAttribute[], mimeType: string, params?: _UploadCommon & { isSpoiler?: boolean }, checkName?: null | ((name: string, firstPart?: Uint8Array) => string), allowStream?: boolean): Promise<Api.messageMediaDocument> {
     const result = await this.#c.fileManager.upload(document, params, checkName, allowStream);
 
     const uploadedMedia = await this.#c.invoke({
       _: "messages.uploadMedia",
       peer: { _: "inputPeerSelf" },
-      media: { _: "inputMediaUploadedDocument", file: result, attributes, mime_type: mimeType, spoiler: params?.hasSpoiler || undefined },
+      media: { _: "inputMediaUploadedDocument", file: result, attributes, mime_type: mimeType, spoiler: params?.isSpoiler || undefined },
     });
 
     return Api.as("messageMediaDocument", uploadedMedia);
@@ -1588,7 +1588,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     if (canBeInputChannel(peer)) {
       await this.#c.invoke({ _: "channels.deleteMessages", channel: toInputChannel(peer), id: messageIds });
     } else {
-      await this.#c.invoke({ _: "messages.deleteMessages", id: messageIds, revoke: !params?.onlyForMe || undefined });
+      await this.#c.invoke({ _: "messages.deleteMessages", id: messageIds, revoke: !params?.isOnlyForMe || undefined });
     }
   }
 
@@ -2001,12 +2001,12 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       prices: prices.map((v) => ({ _: "labeledPrice", label: v.label, amount: BigInt(v.amount) })),
       max_tip_amount: params?.maxTipAmount ? BigInt(params.maxTipAmount) : undefined,
       suggested_tip_amounts: params?.suggestedTipAmounts?.map(BigInt),
-      name_requested: params?.needName || undefined,
-      phone_requested: params?.needPhoneNumber || undefined,
-      email_requested: params?.needEmail || undefined,
-      shipping_address_requested: params?.needShippingAddress || undefined,
-      email_to_provider: params?.sendEmailToProvider || undefined,
-      phone_to_provider: params?.sendPhoneNumberToProvider || undefined,
+      name_requested: params?.isNameNeeded || undefined,
+      phone_requested: params?.isPhoneNumberNeeded || undefined,
+      email_requested: params?.isEmailNeeded || undefined,
+      shipping_address_requested: params?.isShippingAddressNeeded || undefined,
+      email_to_provider: params?.isEmailSentToProvider || undefined,
+      phone_to_provider: params?.isPhoneNumberSentToProvider || undefined,
       flexible: params?.isFlexible || undefined,
     };
 

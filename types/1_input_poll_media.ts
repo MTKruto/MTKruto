@@ -46,7 +46,7 @@ export interface InputPollMediaAnimation extends _InputPollOptionMediaCommon {
   /** The height of the animation file. */
   height?: number;
   /** Whether to mark the media as a spoiler. */
-  hasSpoiler?: boolean;
+  isSpoiler?: boolean;
 }
 
 /** @unlisted */
@@ -59,7 +59,7 @@ export interface InputPollMediaPhoto extends _InputPollOptionMediaCommon {
   /** The height of the photo in pixels. */
   height?: number;
   /** Whether to mark the media as a spoiler. */
-  hasSpoiler?: boolean;
+  isSpoiler?: boolean;
 }
 
 /** @unlisted */
@@ -76,9 +76,9 @@ export interface InputPollMediaVideo extends _InputPollOptionMediaCommon {
   /** The height of the video in pixels. */
   height?: number;
   /** Whether the video is suitable for streaming. */
-  supportsStreaming?: boolean;
+  isStreamingSupported?: boolean;
   /** Whether to mark the media as a spoiler. */
-  hasSpoiler?: boolean;
+  isSpoiler?: boolean;
 }
 
 /** @unlisted */

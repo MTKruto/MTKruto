@@ -241,12 +241,12 @@ export interface SendInvoiceParams extends _SendCommon, _ReplyMarkupCommon {
   photoSize?: number;
   photoWidth?: number;
   photoHeight?: number;
-  needName?: boolean;
-  needPhoneNumber?: boolean;
-  needEmail?: boolean;
-  needShippingAddress?: boolean;
-  sendPhoneNumberToProvider?: boolean;
-  sendEmailToProvider?: boolean;
+  isNameNeeded?: boolean;
+  isPhoneNumberNeeded?: boolean;
+  isEmailNeeded?: boolean;
+  isShippingAddressNeeded?: boolean;
+  isPhoneNumberSentToProvider?: boolean;
+  isEmailSentToProvider?: boolean;
   isFlexible?: boolean;
 }
 
@@ -306,12 +306,12 @@ export type GetMyCommandsParams = SetMyCommandsParams;
 
 export interface DeleteMessagesParams {
   /** Whether to delete the messages only for this side. */
-  onlyForMe?: boolean;
+  isOnlyForMe?: boolean;
 }
 
 export interface DeleteMessageParams {
   /** Whether to delete the message only for this side. */
-  onlyForMe?: boolean;
+  isOnlyForMe?: boolean;
 }
 
 export interface _CaptionCommon {
@@ -324,7 +324,7 @@ export interface _CaptionCommon {
 }
 export interface _SpoilCommon {
   /** Whether to mark the media as a spoiler. */
-  hasSpoiler?: boolean;
+  isSpoiler?: boolean;
 }
 export interface _StarCount {
   /** The amount of stars that will be required to unlock the media. */
@@ -362,7 +362,7 @@ export interface SendVideoParams extends _CaptionCommon, _ThumbnailCommon, _Spoi
   /** The height of the video in pixels. */
   height?: number;
   /** Whether the video is suitable for streaming. */
-  supportsStreaming?: boolean;
+  isStreamingSupported?: boolean;
   /** The video's self-destruct preference. */
   selfDestruct?: SelfDestructOption;
 }
