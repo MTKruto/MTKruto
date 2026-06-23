@@ -20,7 +20,8 @@
 
 export * from "./types/_file_id.ts";
 export * from "./types/_getters.ts";
-export * from "./types/0_message_viewer.ts";
+export * from "./types/2_poll_voter.ts";
+export * from "./types/3_poll_voter_list.ts";
 export * from "./types/0_authorization_session.ts";
 export * from "./types/0_authorization_state.ts";
 export * from "./types/0_birthday.ts";
@@ -58,6 +59,7 @@ export * from "./types/0_mask_position.ts";
 export * from "./types/0_message_counters.ts";
 export * from "./types/0_message_reference.ts";
 export * from "./types/0_message_search_filter.ts";
+export * from "./types/0_message_viewer.ts";
 export * from "./types/0_mini_app_mode.ts";
 export * from "./types/0_network_statistics_entry.ts";
 export * from "./types/0_parse_mode.ts";

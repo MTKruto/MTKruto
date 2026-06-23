@@ -1205,3 +1205,12 @@ export interface MarkAllMentionsAsReadParams {
   /** If specified, only mentions that topic will be marked as read. */
   topicId?: number;
 }
+
+export interface GetPollVotersParams {
+  /** The index of an option. If specified, only voters of that option will be returned. */
+  optionIndex?: number;
+  /** An offset key returned by a previous result. */
+  offset?: string;
+  /** The maximum number of results to return. */
+  limit?: number;
+}

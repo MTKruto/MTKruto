@@ -22,8 +22,10 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { encodeText } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { constructPoll, constructPollAnswer, type ID, type InputPollOption, type Update } from "../3_types.ts";
+import { constructPoll, constructPollAnswer, constructPollVoterList, type ID, type InputPollOption, type Update } from "../3_types.ts";
+import type { GetPollVotersParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
+import { getLimit } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
 import type { FileManager } from "./2_file_manager.ts";
 import type { MessageManager } from "./3_message_manager.ts";
@@ -60,7 +62,7 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate, true> {
   async #voteInner(chatId: ID, messageId: number, optionIndexes: number[]) {
     const message = await this.#c.messageManager.getMessage(chatId, messageId);
     if (!("poll" in message)) {
-      throw new InputError("Message not a poll.");
+      throw new InputError("The message is not a poll.");
     }
     if (message.poll.options.filter((v) => v.isChosen).length === 0 && optionIndexes.length === 0) {
       throw new InputError("No vote has been cast.");
@@ -135,5 +137,17 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate, true> {
       const pollAnswer = constructPollAnswer(update, this.#c.getPeer);
       return { type: "pollAnswer", pollAnswer };
     }
+  }
+
+  async getPollVoters(chatId: ID, messageId: number, params?: GetPollVotersParams) {
+    this.#c.storage.assertUser("getPollVoters");
+    const peer = await this.#c.getInputPeer(chatId);
+    const option = params?.optionIndex ? encodeText(String(params.optionIndex)) : undefined;
+    const id = messageId;
+    const limit = getLimit(params?.limit);
+    const offset = params?.offset;
+
+    const result = await this.#c.invoke({ _: "messages.getPollVotes", peer, id, option, limit, offset });
+    return constructPollVoterList(result, this.#c.getPeer);
   }
 }
