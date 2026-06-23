@@ -27,18 +27,9 @@ import { constructRestrictionReason, type RestrictionReason } from "./0_restrict
 import { constructUserStatus, type UserStatus } from "./0_user_status.ts";
 
 /** @unlisted */
-export type ChatType =
-  | "private"
-  | "group"
-  | "supergroup"
-  | "channel";
-
-/** @unlisted */
 export interface _ChatPBase {
   /** The identifier of the chat. */
   id: number;
-  /** The type of the chat. */
-  type: ChatType;
   /** Identifier of a color that can be displayed instead of the chat's photo. */
   color: number;
   /** The chat's photo. */
@@ -143,7 +134,7 @@ export interface ChatPSupergroup extends ChatPChannelBase {
   isDirectMessagesChat: boolean;
 }
 
-/** A chat with lesser fields. */
+/** A partial chat. */
 export type ChatP = ChatPPrivate | ChatPGroup | ChatPSupergroup | ChatPChannel;
 
 export function constructChatP(chat: Api.user): ChatPPrivate;
