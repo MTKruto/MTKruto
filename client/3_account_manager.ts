@@ -563,4 +563,16 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     this.#c.storage.assertUser("removeAuthorizationSessions");
     await this.#c.invoke({ _: "auth.resetAuthorizations" });
   }
+
+  async getAccountTtl() {
+    this.#c.storage.assertUser("getAccountTtl");
+    const result = await this.#c.invoke({ _: "account.getAccountTTL" });
+    return result.days;
+  }
+
+  async setAccountTtl(dayCount: number) {
+    this.#c.storage.assertUser("setAccountTtl");
+    const days = dayCount;
+    await this.#c.invoke({ _: "account.setAccountTTL", ttl: { _: "accountDaysTTL", days } });
+  }
 }

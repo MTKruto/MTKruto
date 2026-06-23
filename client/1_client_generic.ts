@@ -498,6 +498,22 @@ export abstract class ClientGeneric {
    */
   abstract removeAuthorizationSessions(): Promise<void>;
 
+  /**
+   * Get the current account's TTL. User-only.
+   *
+   * @method ac
+   * @returns The current account's TTL in days.
+   */
+  abstract getAccountTtl(): Promise<number>;
+
+  /**
+   * Set the current account's TTL. User-only.
+   *
+   * @method ac
+   * @param dayCount The current account's TTL in days.
+   */
+  abstract setAccountTtl(dayCount: number): Promise<void>;
+
   //
   // ========================= MESSAGES ========================= //
   //

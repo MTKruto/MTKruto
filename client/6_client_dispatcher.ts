@@ -814,6 +814,26 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("removeAuthorizationSessions");
   }
 
+  /**
+   * Get the current account's TTL. User-only.
+   *
+   * @method ac
+   * @returns The current account's TTL in days.
+   */
+  async getAccountTtl(): Promise<number> {
+    return await this.#dispatch("getAccountTtl");
+  }
+
+  /**
+   * Set the current account's TTL. User-only.
+   *
+   * @method ac
+   * @param dayCount The current account's TTL in days.
+   */
+  async setAccountTtl(dayCount: number): Promise<void> {
+    return await this.#dispatch("setAccountTtl", dayCount);
+  }
+
   //
   // ========================= MESSAGES ========================= //
   //
