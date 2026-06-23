@@ -21,8 +21,8 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { type Api, toJSON } from "../2_tl.ts";
-import type { AvailableReactions, BusinessConnection, CallbackQuery, Chat, ChatActionType, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ChosenInlineResult, ClaimedGifts, FailedInvitation, FileSource, GuestQuery, ID, InlineQuery, InlineQueryResult, InputChecklistItem, InputMedia, InputPollOption, InputRichText, InputStoryContent, InviteLink, JoinRequest, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageRichText, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, Poll, PriceTag, Reaction, ReplyTo, RichText, SecretChat, SecretMessage, SlowModeDuration, Sticker, Story, Topic, Update, User, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
-import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageRichTextParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, EndSecretChatParams, ForwardMessagesParams, GetChatMembersParams, GetClaimedGiftsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetSavedMessagesParams, PinMessageParams, PromoteChatMemberParams, ReplyParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendSecretAnimationParams, SendSecretContactParams, SendSecretDocumentParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretPhotoParams, SendSecretStickerParams, SendSecretVenueParams, SendSecretVideoParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetReactionsParams, StartVideoChatParams, StopPollParams, UpdateChecklistParams } from "./0_params.ts";
+import type { AlbumStoryList, AvailableReactions, BusinessConnection, CallbackQuery, Chat, ChatActionType, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ChosenInlineResult, ClaimedGifts, FailedInvitation, FileSource, GuestQuery, ID, InlineQuery, InlineQueryResult, InputChecklistItem, InputGift, InputMedia, InputPollOption, InputRichText, InputStoryContent, InviteLink, JoinRequest, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageCounters, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLivePhoto, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageRichText, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, Poll, PriceTag, Reaction, ReplyTo, ReportReason, RichText, SecretChat, SecretMessage, SlowModeDuration, StarAmount, StarTransactionList, Sticker, Story, StoryAlbum, StoryReportResult, Topic, TranslatedText, Update, User, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
+import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, CreateStoryParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageRichTextParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, EndSecretChatParams, ForwardMessagesParams, GetChatMembersParams, GetClaimedGiftsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetSavedMessagesParams, GetStarTransactionsParams, PinMessageParams, PromoteChatMemberParams, ReplyParams, ReportChatParams, ReportStoryParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInvoiceParams, SendLivePhotoParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendSecretAnimationParams, SendSecretContactParams, SendSecretDocumentParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretPhotoParams, SendSecretStickerParams, SendSecretVenueParams, SendSecretVideoParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetReactionsParams, StartVideoChatParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UpdateChecklistParams } from "./0_params.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
 import { type FilterQuery, match, type WithChatType, type WithFilter } from "./3_filters.ts";
 
@@ -1294,6 +1294,13 @@ export class Context {
     return await this.client.sendPhoto(chatId, photo, { ...params, ...replyTo, businessConnectionId });
   }
 
+  /** Context-aware alias for {@link Client.sendLivePhoto}. */
+  async replyLivePhoto(photo: FileSource, video: FileSource, params?: Omit<SendLivePhotoParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageLivePhoto> {
+    const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
+    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
+    return await this.client.sendLivePhoto(chatId, photo, video, { ...params, ...replyTo, businessConnectionId });
+  }
+
   /** Context-aware alias for {@link Client.sendPoll}. */
   async replyPoll(question: string, options: InputPollOption[], params?: Omit<SendPollParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessagePoll> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
@@ -1348,6 +1355,222 @@ export class Context {
     return await this.client.scheduleVideoChat(chatId, startAt, params);
   }
 
+  /** Context-aware alias for {@link Client.getMessageReadDate}. */
+  async getMessageReadDate(messageId: number): Promise<number> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.getMessageReadDate(chatId, messageId);
+  }
+
+  /** Context-aware alias for {@link Client.viewMessage}. */
+  async viewMessage(messageId: number): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.viewMessage(chatId, messageId);
+  }
+
+  /** Context-aware alias for {@link Client.viewMessages}. */
+  async viewMessages(messageIds: number[]): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.viewMessages(chatId, messageIds);
+  }
+
+  /** Context-aware alias for {@link Client.getMessageCounters}. */
+  async getMessageCounters(messageId: number): Promise<MessageCounters> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.getMessageCounters(chatId, messageId);
+  }
+
+  /** Context-aware alias for {@link Client.getMessagesCounters}. */
+  async getMessagesCounters(messageIds: number[]): Promise<MessageCounters[]> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.getMessagesCounters(chatId, messageIds);
+  }
+
+  /** Context-aware alias for {@link Client.getScheduledMessages}. */
+  async getScheduledMessages(): Promise<Message[]> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.getScheduledMessages(chatId);
+  }
+
+  /** Context-aware alias for {@link Client.addPollOption}. */
+  async addPollOption(messageId: number, option: InputPollOption): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.addPollOption(chatId, messageId, option);
+  }
+
+  /** Context-aware alias for {@link Client.removePollOption}. */
+  async removePollOption(messageId: number, optionId: string): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.removePollOption(chatId, messageId, optionId);
+  }
+
+  /** Context-aware alias for {@link Client.retractVote}. */
+  async retractVote(messageId: number): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.retractVote(chatId, messageId);
+  }
+
+  /** Context-aware alias for {@link Client.vote}. */
+  async vote(messageId: number, optionIndexes: number[]): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.vote(chatId, messageId, optionIndexes);
+  }
+
+  /** Context-aware alias for {@link Client.reportChat}. */
+  async reportChat(reason: ReportReason, params?: ReportChatParams): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.reportChat(chatId, reason, params);
+  }
+
+  /** Context-aware alias for {@link Client.getOnlineCount}. */
+  async getOnlineCount(): Promise<number> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.getOnlineCount(chatId);
+  }
+
+  /** Context-aware alias for {@link Client.joinChat}. */
+  async joinChat(): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.joinChat(chatId);
+  }
+
+  /** Context-aware alias for {@link Client.enableChatHistoryForNewMembers}. */
+  async enableChatHistoryForNewMembers(): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.enableChatHistoryForNewMembers(chatId);
+  }
+
+  /** Context-aware alias for {@link Client.disableChatHistoryForNewMembers}. */
+  async disableChatHistoryForNewMembers(): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.disableChatHistoryForNewMembers(chatId);
+  }
+
+  /** Context-aware alias for {@link Client.markChatAsUnread}. */
+  async markChatAsUnread(): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.markChatAsUnread(chatId);
+  }
+
+  /** Context-aware alias for {@link Client.markChatAsRead}. */
+  async markChatAsRead(): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.markChatAsRead(chatId);
+  }
+
+  /** Context-aware alias for {@link Client.setDefaultSendAs}. */
+  async setDefaultSendAs(sendAs: ID): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.setDefaultSendAs(chatId, sendAs);
+  }
+
+  /** Context-aware alias for {@link Client.reportStory}. */
+  async reportStory(storyId: number, params?: ReportStoryParams): Promise<StoryReportResult> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.reportStory(chatId, storyId, params);
+  }
+
+  /** Context-aware alias for {@link Client.reportStories}. */
+  async reportStories(storyIds: number[], params?: ReportStoryParams): Promise<StoryReportResult> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.reportStories(chatId, storyIds, params);
+  }
+
+  /** Context-aware alias for {@link Client.createStoryAlbum}. */
+  async createStoryAlbum(name: string, storyIds: number[]): Promise<StoryAlbum> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.createStoryAlbum(chatId, name, storyIds);
+  }
+
+  /** Context-aware alias for {@link Client.setStoryAlbumName}. */
+  async setStoryAlbumName(albumId: number, name: string): Promise<StoryAlbum> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.setStoryAlbumName(chatId, albumId, name);
+  }
+
+  /** Context-aware alias for {@link Client.addStoriesToAlbum}. */
+  async addStoriesToAlbum(albumId: number, storyIds: number[]): Promise<StoryAlbum> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.addStoriesToAlbum(chatId, albumId, storyIds);
+  }
+
+  /** Context-aware alias for {@link Client.addStoryToAlbum}. */
+  async addStoryToAlbum(albumId: number, storyId: number): Promise<StoryAlbum> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.addStoryToAlbum(chatId, albumId, storyId);
+  }
+
+  /** Context-aware alias for {@link Client.removeStoriesFromAlbum}. */
+  async removeStoriesFromAlbum(albumId: number, storyIds: number[]): Promise<StoryAlbum> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.removeStoriesFromAlbum(chatId, albumId, storyIds);
+  }
+
+  /** Context-aware alias for {@link Client.removeStoryFromAlbum}. */
+  async removeStoryFromAlbum(albumId: number, storyId: number): Promise<StoryAlbum> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.removeStoryFromAlbum(chatId, albumId, storyId);
+  }
+
+  /** Context-aware alias for {@link Client.reorderStoriesInAlbum}. */
+  async reorderStoriesInAlbum(albumId: number, storyIds: number[]): Promise<StoryAlbum> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.reorderStoriesInAlbum(chatId, albumId, storyIds);
+  }
+
+  /** Context-aware alias for {@link Client.getStoryAlbums}. */
+  async getStoryAlbums(): Promise<StoryAlbum[]> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.getStoryAlbums(chatId);
+  }
+
+  /** Context-aware alias for {@link Client.getStoriesInAlbum}. */
+  async getStoriesInAlbum(albumId: number): Promise<AlbumStoryList> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.getStoriesInAlbum(chatId, albumId);
+  }
+
+  /** Context-aware alias for {@link Client.getStarBalance}. */
+  async getStarBalance(): Promise<StarAmount> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.getStarBalance(chatId);
+  }
+
+  /** Context-aware alias for {@link Client.getTonBalance}. */
+  async getTonBalance(): Promise<number> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.getTonBalance(chatId);
+  }
+
+  /** Context-aware alias for {@link Client.getStarTransactions}. */
+  async getStarTransactions(params?: GetStarTransactionsParams): Promise<StarTransactionList> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.getStarTransactions(chatId, params);
+  }
+
+  /** Context-aware alias for {@link Client.transferGift}. */
+  async transferGift(gift: InputGift): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.transferGift(chatId, gift);
+  }
+
+  /** Context-aware alias for {@link Client.translateMessage}. */
+  async translateMessage(toLanguage: string, messageId: number, params?: TranslateTextParams): Promise<TranslatedText> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.translateMessage(toLanguage, chatId, messageId, params);
+  }
+
+  /** Context-aware alias for {@link Client.translateMessages}. */
+  async translateMessages(toLanguage: string, messageIds: number[], params?: TranslateTextParams): Promise<TranslatedText[]> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.translateMessages(toLanguage, chatId, messageIds, params);
+  }
+
+  /** Context-aware alias for {@link Client.summarizeText}. */
+  async summarizeText(messageId: number, params?: SummarizeTextParams): Promise<TranslatedText> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.summarizeText(chatId, messageId, params);
+  }
+
   /** Context-aware alias for {@link Client.searchMessages}. */
   async searchMessages(params?: Omit<SearchMessagesParams, "chatId">): Promise<MessageList> {
     const chatId = this.#mustGetChatId();
@@ -1366,6 +1589,12 @@ export class Context {
   async sendScheduledMessage(messageId: number): Promise<Message> {
     const chatId = this.#mustGetChatId();
     return await this.client.sendScheduledMessage(chatId, messageId);
+  }
+
+  /** Context-aware alias for {@link Client.sendScheduledMessages}. */
+  async sendScheduledMessages(messageIds: number[]): Promise<Message[]> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.sendScheduledMessages(chatId, messageIds);
   }
 
   /** Context-aware alias for {@link Client.setAvailableReactions}. */
