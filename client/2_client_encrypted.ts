@@ -27,6 +27,7 @@ import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, SYSTEM_LANG_CODE, SYST
 import { ConnectionNotInited, InputError, type TransportError } from "../4_errors.ts";
 import { constructTelegramError } from "../4_errors.ts";
 import { SessionEncrypted, SessionError } from "../4_session.ts";
+import { AbortableLoop } from "./0_abortable_loop.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
 import { isMediaFunction, repr } from "./0_utilities.ts";
 import { ClientPlain, type ClientPlainParams } from "./1_client_plain.ts";
@@ -75,7 +76,7 @@ export class ClientEncrypted extends ClientAbstract {
   #authKey = new Uint8Array();
   #authKeyId = 0n;
   #temporaryAuthKey = new Uint8Array();
-  #temporaryAuthKeyExpiresIn = 0;
+  #temporaryAuthKeyExpiresAt = 0;
   session: SessionEncrypted;
   #sentRequests = new Map<bigint, SentRequest>();
   #isAuthKeyBound = false;
@@ -149,7 +150,7 @@ export class ClientEncrypted extends ClientAbstract {
     if (this.#isPerfectForwardSecrecyEnabled) {
       this.#isAuthKeyBound = false;
       await this.#bindTemporaryAuthKey();
-      drop(this.#refreshTemporaryAuthKey());
+      this.#refreshTemporaryAuthKey();
     } else {
       this.#isAuthKeyBound = true;
     }
@@ -158,7 +159,7 @@ export class ClientEncrypted extends ClientAbstract {
   async #bindTemporaryAuthKey() {
     const nonce = getRandomId();
     const expires_at = toUnixTimestamp(new Date()) + TEMPORARY_AUTH_KEY_TTL;
-    this.#temporaryAuthKeyExpiresIn = fromUnixTimestamp(expires_at).getTime() - Date.now();
+    this.#temporaryAuthKeyExpiresAt = fromUnixTimestamp(expires_at).getTime();
     const object: Mtproto.bind_auth_key_inner = {
       _: "bind_auth_key_inner",
       perm_auth_key_id: this.#authKeyId,
@@ -182,25 +183,30 @@ export class ClientEncrypted extends ClientAbstract {
     }), this.#isAuthKeyBound = true;
   }
 
-  #temporaryAuthKeyTimeoutController?: AbortController;
-
-  async #refreshTemporaryAuthKey() {
-    this.#temporaryAuthKeyTimeoutController?.abort();
-    const controller = this.#temporaryAuthKeyTimeoutController = new AbortController();
-    await delay(Math.max(0, this.#temporaryAuthKeyExpiresIn - 5 * SECOND), { signal: controller.signal });
-    if (this.#temporaryAuthKeyTimeoutController !== controller) {
+  #temporaryAuthKeyRefreshLoop = new AbortableLoop(async (_loop, signal) => {
+    await delay(60 * SECOND, { signal });
+    signal.throwIfAborted();
+    if (this.#temporaryAuthKeyExpiresAt - Date.now() > 5 * SECOND) {
       return;
     }
-    this.#temporaryAuthKeyTimeoutController = undefined;
     this.#L.debug("reconnecting with a new temporary auth key");
     this.disconnect();
     drop(this.connect());
+  }, (loop, err) => {
+    if (this.isDisconnected) {
+      loop.abort();
+    } else {
+      this.#L.error("temporary auth key refresh loop error:", err);
+    }
+  });
+
+  #refreshTemporaryAuthKey() {
+    this.#temporaryAuthKeyRefreshLoop.start();
   }
 
   override disconnect() {
     super.disconnect();
-    this.#temporaryAuthKeyTimeoutController?.abort();
-    this.#temporaryAuthKeyTimeoutController = undefined;
+    this.#temporaryAuthKeyRefreshLoop.abort();
     this.lastRequest = undefined;
     const error = new ConnectionError("The connection was closed.");
     for (const request of this.#sentRequests.values()) {
