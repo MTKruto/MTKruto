@@ -20,8 +20,8 @@
 
 import { cleanObject } from "../1_utilities.ts";
 import type { Api } from "../2_tl.ts";
-import { constructPollVoter, type PollVoter } from "./2_poll_voter.ts";
 import type { PeerGetter } from "./1_chat_p.ts";
+import { constructPollVoter, type PollVoter } from "./2_poll_voter.ts";
 
 export interface PollVoterList {
   voters: PollVoter[];

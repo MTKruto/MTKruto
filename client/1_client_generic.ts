@@ -1523,6 +1523,14 @@ export abstract class ClientGeneric {
   abstract getChat(chatId: ID): Promise<Chat>;
 
   /**
+   * Get a partial chat.
+   *
+   * @method ch
+   * @cache
+   */
+  abstract getChatP(chatId: ID): Promise<ChatP>;
+
+  /**
    * Get chat history. User-only.
    *
    * @method ch

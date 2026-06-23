@@ -3087,6 +3087,22 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Get a partial chat.
+   *
+   * @method ch
+   * @cache
+   */
+  async getChatP(chatId: ID): Promise<ChatP> {
+    const inputPeer = await this.getInputPeer(chatId);
+    const peer = await this.#inputPeerToPeer(inputPeer);
+    const chatP = await this[getPeer](peer);
+    if (chatP === null) {
+      throw new InputError("Chat not found.");
+    }
+    return chatP[0];
+  }
+
+  /**
    * Get chat history. User-only.
    *
    * @method ch
