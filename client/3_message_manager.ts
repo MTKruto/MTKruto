@@ -23,7 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { base64EncodeUrlSafe, encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
-import { collectMediaFileIds, constructAnimation, constructBlockedUserList, constructChatAction, constructMessageDraft, constructMessageEntity, constructMessageReactionList, constructMiniAppInfo, constructSavedChats, constructSticker, constructSummarizedText, constructVoiceTranscription, deserializeFileId, type FileId, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, type InputPollMedia, type InputPollMediaAnimation, type InputPollMediaSticker, type InputPollOption, type InputRichText, type MessageCounters, type MessageGetter, type MessageList, type MessageLivePhoto, type MessagePhoto, messageSearchFilterToTlObject, pageBlockToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, serializeFileId, type TextToTranslate, toUniqueFileId, type TranslatedText, type VoiceTranscription } from "../3_types.ts";
+import { collectMediaFileIds, constructAnimation, constructBlockedUserList, constructChatAction, constructMessageDraft, constructMessageEntity, constructMessageReactionList, constructMessageViewer, constructMiniAppInfo, constructSavedChats, constructSticker, constructSummarizedText, constructVoiceTranscription, deserializeFileId, type FileId, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, type InputPollMedia, type InputPollMediaAnimation, type InputPollMediaSticker, type InputPollOption, type InputRichText, type MessageCounters, type MessageGetter, type MessageList, type MessageLivePhoto, type MessagePhoto, messageSearchFilterToTlObject, pageBlockToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, serializeFileId, type TextToTranslate, toUniqueFileId, type TranslatedText, type VoiceTranscription } from "../3_types.ts";
 import { assertMessageType, type ChatActionType, constructMessage as constructMessage_, deserializeInlineMessageId, type FileSource, FileType, type ID, type Message, type MessageEntity, messageEntityToTlObject, type ParseMode, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type Update, type UsernameResolver } from "../3_types.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
@@ -2613,5 +2613,13 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const msg_id = messageId;
     const result = await this.#c.invoke({ _: "messages.getOutboxReadDate", peer, msg_id });
     return result.date;
+  }
+
+  async getMessageViewers(chatId: ID, messageId: number) {
+    this.#c.storage.assertUser("getMessageViewers");
+    const peer = await this.#c.getInputPeer(chatId);
+    const msg_id = messageId;
+    const result = await this.#c.invoke({ _: "messages.getMessageReadParticipants", peer, msg_id });
+    return result.map(constructMessageViewer);
   }
 }
