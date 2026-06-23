@@ -1856,10 +1856,10 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    *
    * @param chatId The identifier of the chat that includes the poll.
    * @param messageId The identifier of the message that includes the poll.
-   * @param optionId The identifier of the option to remove.
+   * @param optionIndex The index of the option to remove.
    */
-  async removePollOption(chatId: ID, messageId: number, optionId: string): Promise<void> {
-    return await this.#dispatch("removePollOption", chatId, messageId, optionId);
+  async removePollOption(chatId: ID, messageId: number, optionIndex: number): Promise<void> {
+    return await this.#dispatch("removePollOption", chatId, messageId, optionIndex);
   }
 
   /**

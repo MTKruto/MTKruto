@@ -28,8 +28,8 @@ export interface ReplyToMessage {
   messageId: number;
   /** A quoted part of the message that is being replied to. */
   quote?: ReplyQuote;
-  /** The identifier of a poll option to reply to. */
-  pollOptionId?: number;
+  /** The index of a poll option to reply to. */
+  pollOptionIndex?: number;
   /** The identifier of a checklist item to reply to. */
   checklistItemId?: number;
 }

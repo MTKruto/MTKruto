@@ -105,11 +105,11 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate, true> {
     await this.#c.invoke({ _: "messages.addPollAnswer", peer, msg_id, answer });
   }
 
-  async removePollOption(chatId: ID, messageId: number, optionId: string) {
+  async removePollOption(chatId: ID, messageId: number, optionIndex: number) {
     this.#c.storage.assertUser("removePollOption");
     const peer = await this.#c.getInputPeer(chatId);
     const msg_id = messageId;
-    const option = encodeText(optionId);
+    const option = encodeText(String(optionIndex));
     await this.#c.invoke({ _: "messages.deletePollAnswer", peer, msg_id, option });
   }
 

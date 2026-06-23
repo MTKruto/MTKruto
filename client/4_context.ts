@@ -1191,9 +1191,9 @@ export class Context {
   }
 
   /** Context-aware alias for {@link Client.removePollOption}. */
-  async removePollOption(messageId: number, optionId: string): Promise<void> {
+  async removePollOption(messageId: number, optionIndex: number): Promise<void> {
     const chatId = this.#mustGetChatId();
-    return await this.client.removePollOption(chatId, messageId, optionId);
+    return await this.client.removePollOption(chatId, messageId, optionIndex);
   }
 
   /** Context-aware alias for {@link Client.removeReaction}. */

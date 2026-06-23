@@ -1375,9 +1375,9 @@ export abstract class ClientGeneric {
    *
    * @param chatId The identifier of the chat that includes the poll.
    * @param messageId The identifier of the message that includes the poll.
-   * @param optionId The identifier of the option to remove.
+   * @param optionIndex The index of the option to remove.
    */
-  abstract removePollOption(chatId: ID, messageId: number, optionId: string): Promise<void>;
+  abstract removePollOption(chatId: ID, messageId: number, optionIndex: number): Promise<void>;
 
   /**
    * Get poll voters. User-only.

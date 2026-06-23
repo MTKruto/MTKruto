@@ -506,7 +506,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         quote_entities: await Promise.all(params.replyTo.quote?.entities.map((v) => messageEntityToTlObject(v, this.#c.getPeer)) ?? []),
         quote_offset: params.replyTo.quote?.offset,
         monoforum_peer_id: directMessagesTopicId ? await this.#c.getInputPeer(directMessagesTopicId) : undefined,
-        poll_option: params.replyTo.pollOptionId ? encodeText(String(params.replyTo.pollOptionId)) : undefined,
+        poll_option: params.replyTo.pollOptionIndex ? encodeText(String(params.replyTo.pollOptionIndex)) : undefined,
         todo_item_id: params.replyTo.checklistItemId,
       };
     } else {

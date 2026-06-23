@@ -2905,10 +2905,10 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @method pl
    * @param chatId The identifier of the chat that includes the poll.
    * @param messageId The identifier of the message that includes the poll.
-   * @param optionId The identifier of the option to remove.
+   * @param optionIndex The index of the option to remove.
    */
-  async removePollOption(chatId: ID, messageId: number, optionId: string) {
-    await this.#pollManager.removePollOption(chatId, messageId, optionId);
+  async removePollOption(chatId: ID, messageId: number, optionIndex: number) {
+    await this.#pollManager.removePollOption(chatId, messageId, optionIndex);
   }
 
   /**
