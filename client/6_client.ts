@@ -1846,6 +1846,26 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     return await this.#accountManager.removeAuthorizationSessions();
   }
 
+  /**
+   * Get the current account's TTL. User-only.
+   *
+   * @method ac
+   * @returns The current account's TTL in days.
+   */
+  async getAccountTtl(): Promise<number> {
+    return await this.#accountManager.getAccountTtl();
+  }
+
+  /**
+   * Set the current account's TTL. User-only.
+   *
+   * @method ac
+   * @param dayCount The current account's TTL in days.
+   */
+  async setAccountTtl(dayCount: number): Promise<void> {
+    return await this.#accountManager.setAccountTtl(dayCount);
+  }
+
   //
   // ========================= MESSAGES ========================= //
   //
