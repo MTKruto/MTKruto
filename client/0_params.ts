@@ -1200,3 +1200,8 @@ export interface SendSecretAnimationParams extends _SendSecretCommon, _UploadCom
   /** The height of the animation in pixels. */
   height?: number;
 }
+
+export interface MarkAllMentionsAsReadParams {
+  /** If specified, only mentions that topic will be marked as read. */
+  topicId?: number;
+}
