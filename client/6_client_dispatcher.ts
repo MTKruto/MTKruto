@@ -1491,7 +1491,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("transcribeVoice", chatId, messageId);
   }
 
-  /*
+  /**
    * Get the link preview for a message that is about to be sent. User-only.
    *
    * @method ms
@@ -1843,6 +1843,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   /**
    * Add an option to a poll. User-only.
    *
+   * @method pl
    * @param chatId The identifier of the chat that includes the poll.
    * @param messageId The identifier of the message that includes the poll.
    * @param option The option to add.
@@ -1854,6 +1855,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   /**
    * Remove an option from a poll. User-only.
    *
+   * @method pl
    * @param chatId The identifier of the chat that includes the poll.
    * @param messageId The identifier of the message that includes the poll.
    * @param optionIndex The index of the option to remove.

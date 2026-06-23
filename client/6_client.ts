@@ -2538,7 +2538,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     return await this.#messageManager.transcribeVoice(chatId, messageId);
   }
 
-  /*
+  /**
    * Get the link preview for a message that is about to be sent. User-only.
    *
    * @method ms

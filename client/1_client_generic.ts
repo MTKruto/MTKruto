@@ -1078,7 +1078,7 @@ export abstract class ClientGeneric {
    */
   abstract transcribeVoice(chatId: ID, messageId: number): Promise<VoiceTranscription>;
 
-  /*
+  /**
    * Get the link preview for a message that is about to be sent. User-only.
    *
    * @method ms
@@ -1364,6 +1364,7 @@ export abstract class ClientGeneric {
   /**
    * Add an option to a poll. User-only.
    *
+   * @method pl
    * @param chatId The identifier of the chat that includes the poll.
    * @param messageId The identifier of the message that includes the poll.
    * @param option The option to add.
@@ -1373,6 +1374,7 @@ export abstract class ClientGeneric {
   /**
    * Remove an option from a poll. User-only.
    *
+   * @method pl
    * @param chatId The identifier of the chat that includes the poll.
    * @param messageId The identifier of the message that includes the poll.
    * @param optionIndex The index of the option to remove.
