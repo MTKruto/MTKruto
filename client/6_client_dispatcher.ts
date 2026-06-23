@@ -2044,6 +2044,16 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
+   * Get a partial chat.
+   *
+   * @method ch
+   * @cache
+   */
+  async getChatP(chatId: ID): Promise<ChatP> {
+    return await this.#dispatch("getChatP", chatId);
+  }
+
+  /**
    * Get chat history. User-only.
    *
    * @method ch
