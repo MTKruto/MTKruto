@@ -3664,6 +3664,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Get the topics of a forum chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat.
+   */
+  async getTopics(chatId: ID, params?: GetTopicsParams): Promise<TopicList> {
+    return await this.#forumManager.getTopics(chatId, params);
+  }
+
+  /**
    * Hide the general forum topic.
    *
    * @method ch
@@ -4003,16 +4013,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async unpinTopic(chatId: ID, topicId: number): Promise<void> {
     await this.#forumManager.unpinTopic(chatId, topicId);
-  }
-
-  /**
-   * Get the topics of a forum chat. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of the chat.
-   */
-  async getTopics(chatId: ID, params?: GetTopicsParams): Promise<TopicList> {
-    return await this.#forumManager.getTopics(chatId, params);
   }
 
   //

@@ -2615,6 +2615,16 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
+   * Get the topics of a forum chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat.
+   */
+  async getTopics(chatId: ID, params?: GetTopicsParams): Promise<TopicList> {
+    return await this.#dispatch("getTopics", chatId, params);
+  }
+
+  /**
    * Hide the general forum topic.
    *
    * @method ch
@@ -2953,16 +2963,6 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async unpinTopic(chatId: ID, topicId: number): Promise<void> {
     return await this.#dispatch("unpinTopic", chatId, topicId);
-  }
-
-  /**
-   * Get the topics of a forum chat. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of the chat.
-   */
-  async getTopics(chatId: ID, params?: GetTopicsParams): Promise<TopicList> {
-    return await this.#dispatch("getTopics", chatId, params);
   }
 
   //

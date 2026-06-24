@@ -1984,6 +1984,14 @@ export abstract class ClientGeneric {
   abstract getSimilarChannels(chatId: ID): Promise<ChatPChannel[]>;
 
   /**
+   * Get the topics of a forum chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat.
+   */
+  abstract getTopics(chatId: ID, params?: GetTopicsParams): Promise<TopicList>;
+
+  /**
    * Hide the general forum topic.
    *
    * @method ch
@@ -2259,14 +2267,6 @@ export abstract class ClientGeneric {
    * @param topicId The identifier of the topic.
    */
   abstract unpinTopic(chatId: ID, topicId: number): Promise<void>;
-
-  /**
-   * Get the topics of a forum chat. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of the chat.
-   */
-  abstract getTopics(chatId: ID, params?: GetTopicsParams): Promise<TopicList>;
 
   //
   // ========================= CALLBACK QUERIES ========================= //
