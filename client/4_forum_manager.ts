@@ -177,4 +177,10 @@ export class ForumManager {
     const messages = await Promise.all(result.messages.map((v) => this.#c.messageManager.constructMessage(v, false)));
     return constructTopicList(result, messages, this.#c.getPeer);
   }
+
+  async getTopic(chatId: ID, topicId: number) {
+    this.#c.storage.assertUser("getTopic");
+    const result = await this.getTopicsById(chatId, [topicId]);
+    return result.items[0] ?? null;
+  }
 }
