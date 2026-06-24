@@ -536,6 +536,13 @@ export abstract class ClientGeneric {
    */
   abstract disconnectConnectedWebsites(): Promise<void>;
 
+  /**
+   * Get the country code for the current user based on its IP address. User-only.
+   *
+   * @method ac
+   */
+  abstract getCountryCode(): Promise<string>;
+
   //
   // ========================= MESSAGES ========================= //
   //

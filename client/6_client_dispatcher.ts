@@ -862,6 +862,15 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("disconnectConnectedWebsites");
   }
 
+  /**
+   * Get the country code for the current user based on its IP address. User-only.
+   *
+   * @method ac
+   */
+  async getCountryCode(): Promise<string> {
+    return await this.#dispatch("getCountryCode");
+  }
+
   //
   // ========================= MESSAGES ========================= //
   //
