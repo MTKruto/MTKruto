@@ -1894,6 +1894,15 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     return await this.#accountManager.disconnectConnectedWebsites();
   }
 
+  /**
+   * Get the country code for the current user based on its IP address. User-only.
+   *
+   * @method ac
+   */
+  async getCountryCode(): Promise<string> {
+    return await this.#accountManager.getCountryCode();
+  }
+
   //
   // ========================= MESSAGES ========================= //
   //

@@ -592,4 +592,10 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     this.#c.storage.assertUser("disconnectWebsites");
     await this.#c.invoke({ _: "account.resetWebAuthorizations" });
   }
+
+  async getCountryCode() {
+    this.#c.storage.assertUser("getCountryCode");
+    const result = await this.#c.invoke({ _: "help.getNearestDc" });
+    return result.country;
+  }
 }
