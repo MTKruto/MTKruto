@@ -1549,6 +1549,12 @@ export class Context {
     return await this.client.sendScheduledMessages(chatId, messageIds);
   }
 
+  /** Context-aware alias for {@link Client.sendScreenshotNotification}. */
+  async sendScreenshotNotification(replyToMessageId: number): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.sendScreenshotNotification(chatId, replyToMessageId);
+  }
+
   /** Context-aware alias for {@link Client.sendSecretChatAction}. */
   async sendSecretChatAction(action: SecretChatActionType): Promise<void> {
     const chatId = this.#mustGetSecretChatId();

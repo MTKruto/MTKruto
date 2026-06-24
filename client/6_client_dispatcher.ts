@@ -1850,6 +1850,17 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("getMessageViewers", chatId, messageId);
   }
 
+  /**
+   * Send a screenshot notification. User-only.
+   *
+   * @method ms
+   * @param chatId The identifier of a chat.
+   * @param replyToMessageId The identifier of the message.
+   */
+  async sendScreenshotNotification(chatId: ID, replyToMessageId: number): Promise<void> {
+    return await this.#dispatch("sendScreenshotNotification", chatId, replyToMessageId);
+  }
+
   //
   // ========================= POLLS ========================= //
   //

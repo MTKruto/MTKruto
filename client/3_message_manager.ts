@@ -2622,4 +2622,12 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const result = await this.#c.invoke({ _: "messages.getMessageReadParticipants", peer, msg_id });
     return result.map(constructMessageViewer);
   }
+
+  async sendScreenshotNotification(chatId: ID, replyToMessageId: number) {
+    this.#c.storage.assertUser("sendScreenshotNotification");
+    const peer = await this.#c.getInputPeer(chatId);
+    const random_id = getRandomId();
+    const reply_to: Api.inputReplyToMessage = { _: "inputReplyToMessage", reply_to_msg_id: replyToMessageId };
+    await this.#c.invoke({ _: "messages.sendScreenshotNotification", peer, random_id, reply_to });
+  }
 }
