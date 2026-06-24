@@ -3674,6 +3674,17 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Get topics of a forum chat by their identifiers. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat.
+   * @param topicIds The identifiers of the topics.
+   */
+  async getTopicsById(chatId: ID, topicIds: number[]): Promise<TopicList> {
+    return await this.#forumManager.getTopicsById(chatId, topicIds);
+  }
+
+  /**
    * Hide the general forum topic.
    *
    * @method ch

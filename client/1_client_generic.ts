@@ -1992,6 +1992,15 @@ export abstract class ClientGeneric {
   abstract getTopics(chatId: ID, params?: GetTopicsParams): Promise<TopicList>;
 
   /**
+   * Get topics of a forum chat by their identifiers. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat.
+   * @param topicIds The identifiers of the topics.
+   */
+  abstract getTopicsById(chatId: ID, topicIds: number[]): Promise<TopicList>;
+
+  /**
    * Hide the general forum topic.
    *
    * @method ch

@@ -168,4 +168,13 @@ export class ForumManager {
     const messages = await Promise.all(result.messages.map((v) => this.#c.messageManager.constructMessage(v, false)));
     return constructTopicList(result, messages, this.#c.getPeer);
   }
+
+  async getTopicsById(chatId: ID, topicIds: number[]) {
+    this.#c.storage.assertUser("getTopicsById");
+    const peer = await this.#c.getInputPeer(chatId);
+    const topics = topicIds;
+    const result = await this.#c.invoke({ _: "messages.getForumTopicsByID", peer, topics });
+    const messages = await Promise.all(result.messages.map((v) => this.#c.messageManager.constructMessage(v, false)));
+    return constructTopicList(result, messages, this.#c.getPeer);
+  }
 }
