@@ -1875,6 +1875,25 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     return await this.#accountManager.getConnectedWebsites();
   }
 
+  /**
+   * Disconnect a connected website. User-only.
+   *
+   * @method ac
+   * @param id The identifier of a connected website.
+   */
+  async disconnectConnectedWebsite(id: string): Promise<void> {
+    return await this.#accountManager.disconnectConnectedWebsite(id);
+  }
+
+  /**
+   * Disconnect all connected websites. User-only.
+   *
+   * @method ac
+   */
+  async disconnectConnectedWebsites(): Promise<void> {
+    return await this.#accountManager.disconnectConnectedWebsites();
+  }
+
   //
   // ========================= MESSAGES ========================= //
   //

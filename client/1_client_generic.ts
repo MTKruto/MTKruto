@@ -521,6 +521,21 @@ export abstract class ClientGeneric {
    */
   abstract getConnectedWebsites(): Promise<ConnectedWebsite[]>;
 
+  /**
+   * Disconnect a connected website. User-only.
+   *
+   * @method ac
+   * @param id The identifier of a connected website.
+   */
+  abstract disconnectConnectedWebsite(id: string): Promise<void>;
+
+  /**
+   * Disconnect all connected websites. User-only.
+   *
+   * @method ac
+   */
+  abstract disconnectConnectedWebsites(): Promise<void>;
+
   //
   // ========================= MESSAGES ========================= //
   //

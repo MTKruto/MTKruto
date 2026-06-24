@@ -581,4 +581,15 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     const result = await this.#c.invoke({ _: "account.getWebAuthorizations" });
     return result.authorizations.map((v) => constructConnectedWebsite(v, this.#c.getPeer));
   }
+
+  async disconnectConnectedWebsite(id: string) {
+    this.#c.storage.assertUser("disconnectWebsite");
+    const hash = BigInt(id);
+    await this.#c.invoke({ _: "account.resetWebAuthorization", hash });
+  }
+
+  async disconnectConnectedWebsites() {
+    this.#c.storage.assertUser("disconnectWebsites");
+    await this.#c.invoke({ _: "account.resetWebAuthorizations" });
+  }
 }
