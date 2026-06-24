@@ -3214,6 +3214,14 @@ export abstract class ClientGeneric {
   abstract sendSecretAudio(id: number, audio: FileSource, params?: SendSecretAudioParams): Promise<void>;
 
   /**
+   * Send a cancel typing action to a secret chat. User-only.
+   *
+   * @method sc
+   * @param id The identifier of the secret chat.
+   */
+  abstract sendSecretCancelTypingAction(id: number): Promise<void>;
+
+  /**
    * Send a contact to a secret chat. User-only.
    *
    * @method sc
@@ -3277,6 +3285,14 @@ export abstract class ClientGeneric {
    * @param sticker The sticker to send.
    */
   abstract sendSecretSticker(id: number, sticker: FileSource | Sticker, params?: SendSecretStickerParams): Promise<void>;
+
+  /**
+   * Send a typing action to a secret chat. User-only.
+   *
+   * @method sc
+   * @param id The identifier of the secret chat.
+   */
+  abstract sendSecretTypingAction(id: number): Promise<void>;
 
   /**
    * Send a venue to a secret chat. User-only.

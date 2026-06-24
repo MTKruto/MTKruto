@@ -663,6 +663,20 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     await this.#postSendMessage(state);
   }
 
+  async sendSecretTypingAction(id: number) {
+    this.#c.storage.assertUser("sendSecretChatTypingAction");
+    const { encryptedChat } = this.#mustGetEncryptedChat(id);
+    const peer: Api.inputEncryptedChat = { _: "inputEncryptedChat", chat_id: encryptedChat.id, access_hash: encryptedChat.access_hash };
+    await this.#c.invoke({ _: "messages.setEncryptedTyping", peer, typing: true });
+  }
+
+  async sendSecretCancelTypingAction(id: number) {
+    this.#c.storage.assertUser("sendSecretChatCancelTypingAction");
+    const { encryptedChat } = this.#mustGetEncryptedChat(id);
+    const peer: Api.inputEncryptedChat = { _: "inputEncryptedChat", chat_id: encryptedChat.id, access_hash: encryptedChat.access_hash };
+    await this.#c.invoke({ _: "messages.setEncryptedTyping", peer, typing: false });
+  }
+
   #sendTails = new Map<number, Promise<void>>();
   async #sendMessage(message: SecretChats.DecryptedMessage, encryptedChat: Api.encryptedChat, authKey: Uint8Array<ArrayBuffer>, authKeyId: Uint8Array<ArrayBuffer>, file?: Api.InputEncryptedFile) {
     try {
