@@ -21,8 +21,9 @@
 import { InputError } from "../0_errors.ts";
 import { getRandomId } from "../1_utilities.ts";
 import type { Api } from "../2_tl.ts";
-import { assertMessageType, constructTopic, type ID } from "../3_types.ts";
-import type { CreateTopicParams, EditTopicParams } from "./0_params.ts";
+import { assertMessageType, constructTopic, constructTopicList, type ID } from "../3_types.ts";
+import type { CreateTopicParams, EditTopicParams, GetTopicsParams } from "./0_params.ts";
+import { getLimit } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
 import type { MessageManager } from "./3_message_manager.ts";
 
@@ -147,5 +148,24 @@ export class ForumManager {
 
   async unpinTopic(chatId: ID, topicId: number) {
     await this.#setTopicPinned(chatId, topicId, false);
+  }
+
+  async getTopics(chatId: ID, params?: GetTopicsParams) {
+    this.#c.storage.assertUser("getTopics");
+    const peer = await this.#c.getInputPeer(chatId);
+    const offset_id = params?.offsetId ?? 0;
+    const offset_date = params?.offsetDate ?? 0;
+    const offset_topic = params?.offsetTopicId ?? 0;
+    const limit = getLimit(params?.limit);
+    const result = await this.#c.invoke({
+      _: "messages.getForumTopics",
+      peer,
+      offset_id,
+      offset_date,
+      limit,
+      offset_topic,
+    });
+    const messages = await Promise.all(result.messages.map((v) => this.#c.messageManager.constructMessage(v, false)));
+    return constructTopicList(result, messages, this.#c.getPeer);
   }
 }

@@ -20,7 +20,8 @@
 
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
-import type { ChatP } from "./1_chat_p.ts";
+import { Api } from "../2_tl.ts";
+import type { ChatP, PeerGetter } from "./1_chat_p.ts";
 import type { Message, MessageForumTopicCreated, MessageForumTopicEdited } from "./9_message.ts";
 
 /** A forum topic. */
@@ -75,6 +76,35 @@ export function constructTopic(message: Message): Topic {
     id,
     date,
     creator: creator!,
+    isGeneral,
+    isClosed,
+    isHidden,
+    name,
+    color,
+    customEmojiId,
+  });
+}
+
+export function constructTopic2(ft: Api.ForumTopic, getPeer: PeerGetter): Topic {
+  ft = Api.as("forumTopic", ft);
+  const peer = getPeer(ft.from_id);
+  if (peer === null) {
+    unreachable();
+  }
+
+  const id = ft.id;
+  const date = ft.date;
+  const creator = peer[0];
+  const isGeneral = id === 1;
+  const isClosed = !!ft.closed;
+  const isHidden = !!ft.hidden;
+  const name = ft.title;
+  const color = ft.icon_color;
+  const customEmojiId = ft.icon_emoji_id ? String(ft.icon_emoji_id) : undefined;
+  return cleanObject({
+    id,
+    date,
+    creator,
     isGeneral,
     isClosed,
     isHidden,
