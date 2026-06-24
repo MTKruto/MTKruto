@@ -20,7 +20,6 @@
 
 export * from "./types/_file_id.ts";
 export * from "./types/_getters.ts";
-export * from "./types/C_topic_list.ts";
 export * from "./types/0_authorization_session.ts";
 export * from "./types/0_authorization_state.ts";
 export * from "./types/0_birthday.ts";
@@ -93,6 +92,7 @@ export * from "./types/1_audio.ts";
 export * from "./types/1_available_reactions.ts";
 export * from "./types/1_bot_command_scope.ts";
 export * from "./types/1_bot_commands.ts";
+export * from "./types/1_channel_location.ts";
 export * from "./types/1_chat_action.ts";
 export * from "./types/1_chat_p.ts";
 export * from "./types/1_country.ts";
@@ -198,6 +198,9 @@ export * from "./types/A_guest_query.ts";
 export * from "./types/A_message_list.ts";
 export * from "./types/A_saved_chat.ts";
 export * from "./types/A_topic.ts";
+export * from "./types/B_recent_action.ts";
 export * from "./types/B_saved_chats.ts";
-export * from "./types/B_update.ts";
 export * from "./types/B_topic_list_item.ts";
+export * from "./types/B_update.ts";
+export * from "./types/C_recent_actions_entry.ts"
+export * from "./types/C_topic_list.ts";
