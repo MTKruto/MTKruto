@@ -610,6 +610,22 @@ export interface UpdateSecretMessage {
   secretMessage: SecretMessage;
 }
 
+/**
+ * The other participant of a secret chat is currently typing. User-only.
+ *
+ * ```
+ * client.on("secretTyping", (ctx) => {
+ *   // ctx.update.secretTyping
+ * });
+ * ```
+ * @unlisted
+ */
+export interface UpdateSecretTyping {
+  type: "secretTyping";
+  /** The identifier of the secret chat. */
+  chatId: number;
+}
+
 /** An incoming update. */
 export type Update =
   | UpdateConnectionState
@@ -649,4 +665,5 @@ export type Update =
   | UpdateChatAction
   | UpdateMessageDraft
   | UpdateSecretChat
-  | UpdateSecretMessage;
+  | UpdateSecretMessage
+  | UpdateSecretTyping;

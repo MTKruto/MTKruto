@@ -40,6 +40,7 @@ interface C extends C_ {
 const secretChatManagerUpdates = [
   "updateEncryption",
   "updateNewEncryptedMessage",
+  "updateEncryptedChatTyping",
 ] as const;
 
 type SecretChatManagerUpdate = Api.Types[(typeof secretChatManagerUpdates)[number]];
@@ -1161,6 +1162,10 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
   }
 
   async handleUpdate(update: SecretChatManagerUpdate): Promise<Update | null> {
+    if (Api.is("updateEncryptedChatTyping", update)) {
+      return { type: "secretTyping", chatId: update.chat_id };
+    }
+
     if (Api.is("updateNewEncryptedMessage", update)) {
       return await this.#processUpdateNewMessageEncrypted(update);
     }
