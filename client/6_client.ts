@@ -5162,6 +5162,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Send a cancel typing action to a secret chat. User-only.
+   *
+   * @method sc
+   * @param id The identifier of the secret chat.
+   */
+  async sendSecretCancelTypingAction(id: number): Promise<void> {
+    return await this.#secretChatManager.sendSecretTypingAction(id);
+  }
+
+  /**
    * Send a contact to a secret chat. User-only.
    *
    * @method sc
@@ -5238,6 +5248,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async sendSecretSticker(id: number, sticker: Sticker, params?: SendSecretStickerParams): Promise<void> {
     return await this.#secretChatManager.sendSecretSticker(id, sticker, params);
+  }
+
+  /**
+   * Send a typing action to a secret chat. User-only.
+   *
+   * @method sc
+   * @param id The identifier of the secret chat.
+   */
+  async sendSecretTypingAction(id: number): Promise<void> {
+    return await this.#secretChatManager.sendSecretCancelTypingAction(id);
   }
 
   /**
