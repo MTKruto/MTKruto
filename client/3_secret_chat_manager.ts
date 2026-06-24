@@ -22,7 +22,7 @@ import { concat, equals, ige256Decrypt, ige256Encrypt, unreachable, WEEK } from 
 import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, getRandomInt, intFromBytes, intToBytes, type Logger, mod, modExp, sha1, sha256 } from "../1_utilities.ts";
 import { Api, repr, SecretChats, TLReader, TLWriter, X } from "../2_tl.ts";
-import { deserializeFileId, type FileSource, type ID, secretMessageEntityToTlObject, type Sticker, type Update } from "../3_types.ts";
+import { constructSecretChatAction, deserializeFileId, type FileSource, type ID, secretMessageEntityToTlObject, type Sticker, type Update } from "../3_types.ts";
 import { constructSecretChat } from "../types/0_secret_chat.ts";
 import { constructSecretMessage } from "../types/2_secret_message.ts";
 import type { EndSecretChatParams, SendSecretAnimationParams, SendSecretAudioParams, SendSecretContactParams, SendSecretDocumentParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretPhotoParams, SendSecretStickerParams, SendSecretVenueParams, SendSecretVideoNoteParams, SendSecretVideoParams, SendSecretVoiceParams } from "./0_params.ts";
@@ -1060,6 +1060,12 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
           this.#clearInitiatedRekey(state);
         }
         break;
+      }
+      case "decryptedMessageActionTyping": {
+        const secretChatAction = constructSecretChatAction(chatId, message.action);
+        if (secretChatAction !== null) {
+          this.#c.handleUpdate({ type: "secretChatAction", secretChatAction });
+        }
       }
     }
   }
