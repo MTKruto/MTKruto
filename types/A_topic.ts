@@ -24,7 +24,10 @@ import { Api } from "../2_tl.ts";
 import type { ChatP, PeerGetter } from "./1_chat_p.ts";
 import type { Message, MessageForumTopicCreated, MessageForumTopicEdited } from "./9_message.ts";
 
-/** An active forum topic. */
+/**
+ * An active forum topic.
+ * @unlisted
+ */
 export interface TopicActive {
   type: "active";
   /** The ID of the topic. */
@@ -47,7 +50,10 @@ export interface TopicActive {
   customEmojiId?: string;
 }
 
-/** An active forum topic. */
+/**
+ * An active forum topic.
+ * @unlisted
+ */
 export interface TopicDeleted {
   type: "deleted";
   /** The ID of the topic. */
