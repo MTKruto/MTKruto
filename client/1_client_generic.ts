@@ -1367,6 +1367,15 @@ export abstract class ClientGeneric {
    */
   abstract getMessageViewers(chatId: ID, messageId: number): Promise<MessageViewer[]>;
 
+  /**
+   * Send a screenshot notification. User-only.
+   *
+   * @method ms
+   * @param chatId The identifier of a chat.
+   * @param replyToMessageId The identifier of the message.
+   */
+  abstract sendScreenshotNotification(chatId: ID, replyToMessageId: number): Promise<void>;
+
   //
   // ========================= POLLS ========================= //
   //

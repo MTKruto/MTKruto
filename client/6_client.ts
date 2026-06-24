@@ -2897,6 +2897,17 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     return await this.#messageManager.getMessageViewers(chatId, messageId);
   }
 
+  /**
+   * Send a screenshot notification. User-only.
+   *
+   * @method ms
+   * @param chatId The identifier of a chat.
+   * @param replyToMessageId The identifier of the message.
+   */
+  async sendScreenshotNotification(chatId: ID, replyToMessageId: number): Promise<void> {
+    return await this.#messageManager.sendScreenshotNotification(chatId, replyToMessageId);
+  }
+
   //
   // ========================= POLLS ========================= //
   //
