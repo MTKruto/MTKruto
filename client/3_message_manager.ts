@@ -183,7 +183,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   }
 
   parseText(text_: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }, isEmptyAllowed?: boolean) {
-    const [text, entities_] = MessageManager.parseText(text_, params?.entities ?? [], params?.parseMode ?? this.#c.parseMode, isEmptyAllowed);
+    const [text, entities_] = MessageManager.parseText(text_, params?.entities ?? [], params?.parseMode === null ? null : params?.parseMode ?? this.#c.parseMode, isEmptyAllowed);
     const entities = entities_?.length > 0 ? entities_.map((v) => messageEntityToTlObject(v, this.#c.getPeer)) : undefined;
     return [text, entities] as const;
   }
