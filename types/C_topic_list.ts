@@ -17,8 +17,8 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { cleanObject } from "../1_utilities.ts";
 
+import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import type { PeerGetter } from "./1_chat_p.ts";
 import type { Message } from "./9_message.ts";

@@ -692,6 +692,12 @@ export class Context {
     return await this.client.deleteStory(chatId, storyId);
   }
 
+  /** Context-aware alias for {@link Client.deleteTopic}. */
+  async deleteTopic(topicId: number): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.deleteTopic(chatId, topicId);
+  }
+
   /** Context-aware alias for {@link Client.disableAntispam}. */
   async disableAntispam(): Promise<void> {
     const chatId = this.#mustGetChatId();

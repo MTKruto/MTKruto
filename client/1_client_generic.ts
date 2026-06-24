@@ -1704,6 +1704,15 @@ export abstract class ClientGeneric {
   abstract deleteChatStickerSet(chatId: ID): Promise<void>;
 
   /**
+   * Delete a forum topic.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat.
+   * @param topicId The identifier of the topic.
+   */
+  abstract deleteTopic(chatId: ID, topicId: number): Promise<void>;
+
+  /**
    * Disable automatic anti-spam in a group. User-only.
    *
    * @method ch
