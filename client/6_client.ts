@@ -24,7 +24,7 @@ import { drop, getLogger, type Logger, MAX_MONOFORUM_CHANNEL_ID, type MaybePromi
 import { type Storage, StorageMemory } from "../2_storage.ts";
 import { Api, Mtproto } from "../2_tl.ts";
 import { type DC, getDcId, type TransportProvider } from "../3_transport.ts";
-import { type AlbumStoryList, type Animation, type AppSupport, type AuthorizationSession, type AvailableReactions, type Birthday, type BlockedUserList, type BotAccessSettings, type BotCommand, type BotTokenCheckResult, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatActionType, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type CodeCheckResult, type ConnectedWebsite, type ConnectionState, constructChatP, constructUser2, type Country, type FailedInvitation, type FileSource, type Gift, type GiftCollection, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputChecklistItem, type InputEmojiStatus, type InputGift, type InputMedia, type InputPollOption, type InputRichText, type InputSticker, type InputStoryContent, type InviteLink, type JoinRequest, type LeftChannelList, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageCounters, type MessageDice, type MessageDocument, type MessageInvoice, type MessageList, type MessageLivePhoto, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageRichText, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageViewer, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type PasswordCheckResult, type Poll, type PollVoterList, type PremiumSubscriptionDuration, type PriceTag, type ProfilePhotoList, type Reaction, type ReportReason, type RichText, type SavedChats, type SecretChat, type SlowModeDuration, type StarAmount, type StarTransactionList, type Sticker, type StickerSet, type Story, type StoryAlbum, type StoryReportResult, type SummarizedText, type TextToTranslate, type Timezone, type Topic, type TranslatedText, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
+import { type AlbumStoryList, type Animation, type AppSupport, type AuthorizationSession, type AvailableReactions, type Birthday, type BlockedUserList, type BotAccessSettings, type BotCommand, type BotTokenCheckResult, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatActionType, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type CodeCheckResult, type ConnectedWebsite, type ConnectionState, constructChatP, constructUser2, type Country, type FailedInvitation, type FileSource, type Gift, type GiftCollection, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputChecklistItem, type InputEmojiStatus, type InputGift, type InputMedia, type InputPollOption, type InputRichText, type InputSticker, type InputStoryContent, type InviteLink, type JoinRequest, type LeftChannelList, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageCounters, type MessageDice, type MessageDocument, type MessageInvoice, type MessageList, type MessageLivePhoto, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageRichText, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageViewer, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type PasswordCheckResult, type Poll, type PollVoterList, type PremiumSubscriptionDuration, type PriceTag, type ProfilePhotoList, type Reaction, type ReportReason, type RichText, type SavedChats, type SecretChat, type SecretChatActionType, type SlowModeDuration, type StarAmount, type StarTransactionList, type Sticker, type StickerSet, type Story, type StoryAlbum, type StoryReportResult, type SummarizedText, type TextToTranslate, type Timezone, type Topic, type TranslatedText, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, PHONE_NUMBER_TTL, type PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, SessionRevoked } from "../4_errors.ts";
 import { AbortableLoop } from "./0_abortable_loop.ts";
@@ -5264,4 +5264,19 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   async sendSecretSticker(id: number, sticker: Sticker, params?: SendSecretStickerParams): Promise<void> {
     return await this.#secretChatManager.sendSecretSticker(id, sticker, params);
   }
+
+
+  
+      /**
+       * Send a secret chat action. User-only.
+       *
+       * @method sc
+       * @param id The identifier of the secret chat.
+       * @param action The type of action to send.
+       */
+      async sendSecretChatAction(id: number, action:SecretChatActionType): Promise<void> {
+            return await this.#secretChatManager.sendSecretChatAction( id, action);
+  
+      }
+    
 }

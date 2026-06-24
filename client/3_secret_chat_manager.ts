@@ -22,7 +22,7 @@ import { concat, equals, ige256Decrypt, ige256Encrypt, unreachable, WEEK } from 
 import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, getRandomInt, intFromBytes, intToBytes, type Logger, mod, modExp, sha1, sha256 } from "../1_utilities.ts";
 import { Api, repr, SecretChats, TLReader, TLWriter, X } from "../2_tl.ts";
-import { constructSecretChatAction, deserializeFileId, type FileSource, type ID, secretMessageEntityToTlObject, type Sticker, type Update } from "../3_types.ts";
+import { constructSecretChatAction, deserializeFileId, type FileSource, type ID, type SecretChatActionType, secretMessageEntityToTlObject, type Sticker, type Update } from "../3_types.ts";
 import { constructSecretChat } from "../types/0_secret_chat.ts";
 import { constructSecretMessage } from "../types/2_secret_message.ts";
 import type { EndSecretChatParams, SendSecretAnimationParams, SendSecretAudioParams, SendSecretContactParams, SendSecretDocumentParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretPhotoParams, SendSecretStickerParams, SendSecretVenueParams, SendSecretVideoNoteParams, SendSecretVideoParams, SendSecretVoiceParams } from "./0_params.ts";
@@ -561,6 +561,62 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     };
 
     await this.#sendMessage(decryptedMessage, state.encryptedChat, state.authKey, state.authKeyId_, inputEncryptedFile);
+    await this.#postSendMessage(state);
+  }
+
+  async sendSecretChatAction(id: number, action: SecretChatActionType) {
+    this.#c.storage.assertUser("sendSecretChatAction");
+    const state = this.#mustGetEncryptedChat(id);
+
+    const random_id = getRandomId();
+    let action_: SecretChats.SendMessageAction;
+    switch (action.type) {
+      case "typing":
+        action_ = { _: "sendMessageTypingAction" };
+        break;
+      case "uploadingPhoto":
+        action_ = { _: "sendMessageUploadPhotoAction" };
+        break;
+      case "recordingVideo":
+        action_ = { _: "sendMessageRecordVideoAction" };
+        break;
+      case "uploadingVideo":
+        action_ = { _: "sendMessageUploadVideoAction" };
+        break;
+      case "recordingVoice":
+        action_ = { _: "sendMessageRecordAudioAction" };
+        break;
+      case "uploadingAudio":
+        action_ = { _: "sendMessageUploadAudioAction" };
+        break;
+      case "uploadingDocument":
+        action_ = { _: "sendMessageUploadDocumentAction" };
+        break;
+      case "choosingLocation":
+        action_ = { _: "sendMessageGeoLocationAction" };
+        break;
+      case "recordingVideoNote":
+        action_ = { _: "sendMessageRecordRoundAction" };
+        break;
+      case "uploadingVideoNote":
+        action_ = { _: "sendMessageUploadRoundAction" };
+        break;
+      case "cancel":
+        action_ = { _: "sendMessageCancelAction" };
+        break;
+      default:
+        unreachable();
+    }
+    const decryptedMessageService: SecretChats.decryptedMessageService = {
+      _: "decryptedMessageService",
+      action: {
+        _: "decryptedMessageActionTyping",
+        action: action_,
+      },
+      random_id,
+    };
+
+    await this.#sendMessage(decryptedMessageService, state.encryptedChat, state.authKey, state.authKeyId_);
     await this.#postSendMessage(state);
   }
 
