@@ -31,7 +31,6 @@ import type { VideoChat } from "./0_video_chat.ts";
 import type { VoiceTranscription } from "./0_voice_transcription.ts";
 import type { BotCommands } from "./1_bot_commands.ts";
 import type { ChatAction } from "./1_chat_action.ts";
-import type { SecretChatAction } from "./1_secret_chat_action.ts";
 import type { MessageInteractions } from "./2_message_interactions.ts";
 import type { MessageReactionCount } from "./2_message_reaction_count.ts";
 import type { PollAnswer } from "./2_poll_answer.ts";
@@ -567,21 +566,6 @@ export interface UpdateChatAction {
 }
 
 /**
- * A participant of a secret chat made an action.
- *
- * ```
- * client.on("secretChatAction", (ctx) => {
- *   // ctx.update.secretChatAction
- * });
- * ```
- * @unlisted
- */
-export interface UpdateSecretChatAction {
-  type: "secretChatAction";
-  secretChatAction: SecretChatAction;
-}
-
-/**
  * A message draft was received. User-only.
  *
  * ```
@@ -663,7 +647,6 @@ export type Update =
   | UpdateEmojiStatus
   | UpdateEmojiStatusRemoved
   | UpdateChatAction
-  | UpdateSecretChatAction
   | UpdateMessageDraft
   | UpdateSecretChat
   | UpdateSecretMessage;

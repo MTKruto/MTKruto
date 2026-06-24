@@ -111,7 +111,6 @@ export * from "./types/1_network_statistics.ts";
 export * from "./types/1_order_info.ts";
 export * from "./types/1_photo.ts";
 export * from "./types/1_reaction_count.ts";
-export * from "./types/1_secret_chat_action.ts";
 export * from "./types/1_sticker.ts";
 export * from "./types/1_story_reaction.ts";
 export * from "./types/1_story_report_result.ts";
