@@ -247,6 +247,9 @@ export class Context {
   }
 
   #mustGetSecretChatId() {
+    if (this.secretChat !== undefined) {
+      return this.secretChat.id;
+    }
     if (this.secretMessage !== undefined) {
       return this.secretMessage.chatId;
     }
