@@ -21,7 +21,10 @@
 import type { Message } from "./9_message.ts";
 import type { Topic } from "./A_topic.ts";
 
+/** An item of a topic list. */
 export interface TopicListItem {
+  /** The topic. */
   topic: Topic;
+  /** The topic's last message. */
   lastMessage?: Message;
 }

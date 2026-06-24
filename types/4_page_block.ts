@@ -41,6 +41,7 @@ export interface PageBlockUnsupported {
  */
 export interface PageBlockParagraph {
   type: "paragraph";
+  /** The block's text. */
   text: RichTextComponent;
 }
 
@@ -50,7 +51,9 @@ export interface PageBlockParagraph {
  */
 export interface PageBlockPre {
   type: "pre";
+  /** The block's code language. */
   language?: string;
+  /** The block's text. */
   text: RichTextComponent;
 }
 
@@ -60,6 +63,7 @@ export interface PageBlockPre {
  */
 export interface PageBlockFooter {
   type: "footer";
+  /** The block's text. */
   text: RichTextComponent;
 }
 
@@ -77,21 +81,28 @@ export interface PageBlockDivider {
  */
 export interface PageBlockAnchor {
   type: "anchor";
+  /** The name of the anchor. */
   name: string;
 }
 
 /** @unlisted */
 export interface PageBlockListItemText {
   type: "text";
+  /** Whether the item is a checkbox. */
   isCheckbox: boolean;
+  /** Whether the item is a checked checkbox. */
   isChecked: boolean;
+  /** The text of the item. */
   text: RichTextComponent;
 }
 /** @unlisted */
 export interface PageBlockListItemBlockList {
   type: "blockList";
+  /** Whether the item is a checkbox. */
   isCheckbox: boolean;
+  /** Whether the item is a checked checkbox. */
   isChecked: boolean;
+  /** The blocks of the item. */
   blocks: PageBlock[];
 }
 /** @unlisted */
@@ -118,6 +129,7 @@ export function pageBlockListItemToTlObject(pbli: PageBlockListItem): Api.PageLi
  */
 export interface PageBlockList {
   type: "list";
+  /** The list's items. */
   items: PageBlockListItem[];
 }
 
@@ -127,7 +139,9 @@ export interface PageBlockList {
  */
 export interface PageBlockBlockQuote {
   type: "blockQuote";
+  /** The block quote's text. */
   text: RichTextComponent;
+  /** The block quote's caption. */
   caption: RichTextComponent;
 }
 
@@ -137,13 +151,21 @@ export interface PageBlockBlockQuote {
  */
 export interface PageBlockPullQuote {
   type: "pullQuote";
+  /** The pull quote's text. */
   text: RichTextComponent;
+  /** The pull quote's caption. */
   caption: RichTextComponent;
 }
 
-/** @unlisted */
+/**
+ * A page block's caption.
+ *
+ * @unlisted
+ */
 export interface PageBlockCaption {
+  /** The caption's text. */
   text: RichTextComponent;
+  /** The caption's credit text. */
   credit: RichTextComponent;
 }
 export function constructPageBlockCaption(pc: Api.PageCaption, photos: Api.Photo[]): PageBlockCaption {
@@ -165,8 +187,11 @@ export function pageBlockCaptionToTlObject(pbc: PageBlockCaption): Api.PageCapti
  */
 export interface PageBlockPhoto {
   type: "photo";
+  /** The file identifier of the photo. */
   fileId: string;
+  /** The photo's caption. */
   caption: PageBlockCaption;
+  /** Whether the photo is a spoiler. */
   isSpoiler: boolean;
   url?: string;
   linkPreviewId?: string;
@@ -178,10 +203,15 @@ export interface PageBlockPhoto {
  */
 export interface PageBlockVideo {
   type: "video";
+  /** The file identifier of the video. */
   fileId: string;
+  /** The video's caption. */
   caption: PageBlockCaption;
+  /** Whether the video is a spoiler. */
   isSpoiler: boolean;
+  /** Whether the video is played in loop. */
   isLoop: boolean;
+  /** Whether the video is automatically played. */
   isAutoplay: boolean;
   linkPreviewId?: string;
 }
@@ -192,10 +222,15 @@ export interface PageBlockVideo {
  */
 export interface PageBlockAnimation {
   type: "animation";
+  /** The file identifier of the animation. */
   fileId: string;
+  /** The animation's caption. */
   caption: PageBlockCaption;
+  /** Whether the animation is a spoiler. */
   isSpoiler: boolean;
+  /** Whether the animation is played in loop. */
   isLoop: boolean;
+  /** Whether the animation is automatically played. */
   isAutoplay: boolean;
   linkPreviewId?: string;
 }
@@ -206,6 +241,7 @@ export interface PageBlockAnimation {
  */
 export interface PageBlockCover {
   type: "cover";
+  /** The cover. */
   cover: PageBlock;
 }
 
@@ -443,6 +479,7 @@ export interface PageBlockMap {
  */
 export interface PageBlockHeading1 {
   type: "heading1";
+  /** The block's text. */
   text: RichTextComponent;
 }
 
@@ -452,6 +489,7 @@ export interface PageBlockHeading1 {
  */
 export interface PageBlockHeading2 {
   type: "heading2";
+  /** The block's text. */
   text: RichTextComponent;
 }
 
@@ -461,6 +499,7 @@ export interface PageBlockHeading2 {
  */
 export interface PageBlockHeading3 {
   type: "heading3";
+  /** The block's text. */
   text: RichTextComponent;
 }
 
@@ -470,6 +509,7 @@ export interface PageBlockHeading3 {
  */
 export interface PageBlockHeading4 {
   type: "heading4";
+  /** The block's text. */
   text: RichTextComponent;
 }
 
@@ -479,6 +519,7 @@ export interface PageBlockHeading4 {
  */
 export interface PageBlockHeading5 {
   type: "heading5";
+  /** The block's text. */
   text: RichTextComponent;
 }
 
@@ -488,6 +529,7 @@ export interface PageBlockHeading5 {
  */
 export interface PageBlockHeading6 {
   type: "heading6";
+  /** The block's text. */
   text: RichTextComponent;
 }
 
@@ -497,6 +539,7 @@ export interface PageBlockHeading6 {
  */
 export interface PageBlockMath {
   type: "math";
+  /** The math code. */
   code: string;
 }
 
@@ -506,6 +549,7 @@ export interface PageBlockMath {
  */
 export interface PageBlockThinking {
   type: "thinking";
+  /** The block's text. */
   text: RichTextComponent;
 }
 

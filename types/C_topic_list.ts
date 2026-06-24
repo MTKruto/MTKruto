@@ -25,6 +25,7 @@ import type { Message } from "./9_message.ts";
 import { constructTopic2 } from "./A_topic.ts";
 import type { TopicListItem } from "./B_topic_list_item.ts";
 
+/** A list of topics. */
 export interface TopicList {
   /** The items in this list. */
   items: TopicListItem[];
