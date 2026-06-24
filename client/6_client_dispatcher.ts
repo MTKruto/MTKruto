@@ -4232,4 +4232,15 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   async sendSecretChatAction(id: number, action: SecretChatActionType): Promise<void> {
     return await this.#dispatch("sendSecretChatAction", id, action);
   }
+
+  /**
+   * Send a secret chat screenshot notification. User-only.
+   *
+   * @method sc
+   * @param id The identifier of the secret chat.
+   * @param messageIds Identifiers of messages.
+   */
+  async sendSecretScreenshotNotification(id: number, messageIds: string[]): Promise<void> {
+    return await this.#dispatch("sendSecretScreenshotNotification", id, messageIds);
+  }
 }
