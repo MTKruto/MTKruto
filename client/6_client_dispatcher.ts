@@ -4211,16 +4211,14 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("sendSecretSticker", id, sticker, params);
   }
 
-    /**
-     * Send a secret chat action. User-only.
-     *
-     * @method sc
-     * @param id The identifier of the secret chat.
-     * @param action The type of action to send.
-     */
-    async sendSecretChatAction(id: number, action:SecretChatActionType): Promise<void> {
-          return await this.#dispatch("sendSecretChatAction", id, action);
-
-    }
-  
+  /**
+   * Send a secret chat action. User-only.
+   *
+   * @method sc
+   * @param id The identifier of the secret chat.
+   * @param action The type of action to send.
+   */
+  async sendSecretChatAction(id: number, action: SecretChatActionType): Promise<void> {
+    return await this.#dispatch("sendSecretChatAction", id, action);
+  }
 }

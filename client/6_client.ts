@@ -5265,18 +5265,14 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     return await this.#secretChatManager.sendSecretSticker(id, sticker, params);
   }
 
-
-  
-      /**
-       * Send a secret chat action. User-only.
-       *
-       * @method sc
-       * @param id The identifier of the secret chat.
-       * @param action The type of action to send.
-       */
-      async sendSecretChatAction(id: number, action:SecretChatActionType): Promise<void> {
-            return await this.#secretChatManager.sendSecretChatAction( id, action);
-  
-      }
-    
+  /**
+   * Send a secret chat action. User-only.
+   *
+   * @method sc
+   * @param id The identifier of the secret chat.
+   * @param action The type of action to send.
+   */
+  async sendSecretChatAction(id: number, action: SecretChatActionType): Promise<void> {
+    return await this.#secretChatManager.sendSecretChatAction(id, action);
+  }
 }

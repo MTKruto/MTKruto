@@ -3305,5 +3305,5 @@ export abstract class ClientGeneric {
    * @param id The identifier of the secret chat.
    * @param action The type of action to send.
    */
-  abstract sendSecretChatAction(id: number, action:SecretChatActionType): Promise<void>;
+  abstract sendSecretChatAction(id: number, action: SecretChatActionType): Promise<void>;
 }
