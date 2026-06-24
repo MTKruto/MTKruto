@@ -146,6 +146,7 @@ export * from "./types/3_business_connection.ts";
 export * from "./types/3_chat_settings.ts";
 export * from "./types/3_checklist_item.ts";
 export * from "./types/3_chosen_inline_result.ts";
+export * from "./types/3_connected_website.ts";
 export * from "./types/3_forward_header.ts";
 export * from "./types/3_game.ts";
 export * from "./types/3_gift_upgraded_component.ts";
