@@ -19,7 +19,7 @@
  */
 
 import { InputError } from "../0_errors.ts";
-import { type MessageEntity, type MessageEntityBlockquote, sortMessageEntities } from "../3_types.ts";
+import { type MessageEntity, type MessageEntityBlockquote, type SecretMessageEntity, sortMessageEntities, sortSecretMessageEntities } from "../3_types.ts";
 
 const TAG_NAMES: string[] = [
   "a",
@@ -58,7 +58,9 @@ const ENTITY_TYPES = [
   "blockquote",
 ] satisfies MessageEntity["type"][];
 
-export function parseHtml(html_: string): [string, MessageEntity[]] {
+export function parseHtml(html_: string): [string, MessageEntity[]];
+export function parseHtml(html_: string, isSecret: true): [string, SecretMessageEntity[]];
+export function parseHtml(html_: string, isSecret?: boolean): [string, (MessageEntity | SecretMessageEntity)[]] {
   html_ = html_.trim();
   let text = "";
 
@@ -68,7 +70,7 @@ export function parseHtml(html_: string): [string, MessageEntity[]] {
     url?: string;
     language?: string;
     userId?: number;
-    collapsible?: true;
+    isCollapsible?: true;
     customEmojiId?: string;
     time?: number;
     timeFormat?: string;
@@ -206,12 +208,12 @@ export function parseHtml(html_: string): [string, MessageEntity[]] {
           offset,
           length,
         };
-        if (openTag.collapsible) {
+        if (openTag.isCollapsible) {
           entity.collapsible = true;
         }
         entities.push(entity);
         entityTags.push(openTag);
-        if (openTag.collapsible) {
+        if (openTag.isCollapsible) {
           (entities[entities.length - 1] as MessageEntityBlockquote).collapsible = true;
         }
       } else if (openTag.customEmojiId !== undefined) {
@@ -236,7 +238,7 @@ export function parseHtml(html_: string): [string, MessageEntity[]] {
       let url: string | undefined;
       let language: string | undefined;
       let userId: number | undefined;
-      let collapsible: true | undefined;
+      let isCollapsible: true | undefined;
       let time: number | undefined;
       let timeFormat: string | undefined;
       let customEmojiId: string | undefined;
@@ -266,20 +268,22 @@ export function parseHtml(html_: string): [string, MessageEntity[]] {
               throw new InputError(`Invalid ID specified for mention at offset ${i}.`);
             }
           }
-          if (url_.protocol === "tg:" && url_.hostname === "time") {
-            time = Number(url_.searchParams.get("unix"));
-            if (!isNaN(time) && time > 0) {
-              timeFormat = url_.searchParams.get("format") ?? undefined;
-              url = undefined;
-            } else {
-              throw new InputError(`Invalid time specified at offset ${i}.`);
+          if (!isSecret) {
+            if (url_.protocol === "tg:" && url_.hostname === "time") {
+              time = Number(url_.searchParams.get("unix"));
+              if (!isNaN(time) && time > 0) {
+                timeFormat = url_.searchParams.get("format") ?? undefined;
+                url = undefined;
+              } else {
+                throw new InputError(`Invalid time specified at offset ${i}.`);
+              }
             }
           }
         }
       } else if (tagName === "code") {
         language = attributes?.class?.replace("language-", "");
       } else if (tagName === "blockquote" && attributes?.expandable !== undefined) {
-        collapsible = true;
+        isCollapsible = true;
       } else if (tagName === "tg-emoji") {
         customEmojiId = attributes?.["emoji-id"];
         let isValid: boolean;
@@ -292,13 +296,13 @@ export function parseHtml(html_: string): [string, MessageEntity[]] {
           throw new InputError(`Invalid emoji-id specified for tag tg-emoji at offset ${i}.`);
         }
       }
-      tagStack.push({ tagName, openedAt: text.length, url, language, userId, collapsible, customEmojiId, time, timeFormat });
+      tagStack.push({ tagName, openedAt: text.length, url, language, userId, isCollapsible, customEmojiId, time, timeFormat });
     }
     i += end - i;
   }
 
   entities = entities.filter((v) => v.length);
-  entities = sortMessageEntities(entities);
+  entities = isSecret ? sortSecretMessageEntities(entities as SecretMessageEntity[]) : sortMessageEntities(entities);
   return [text, entities];
 }
 export function parseAttributes(attributes: string[]): Record<string, string> {
