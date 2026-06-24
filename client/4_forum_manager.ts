@@ -67,6 +67,12 @@ export class ForumManager {
     return constructTopic(assertMessageType(message, "forumTopicCreated"));
   }
 
+  async deleteTopic(chatId: ID, topicId: number) {
+    const peer = await this.#c.getInputPeer(chatId);
+    const top_msg_id = topicId;
+    await this.#c.invoke({ _: "messages.deleteTopicHistory", peer, top_msg_id });
+  }
+
   static #assertNongenralTopicIdValid(topicId: number) {
     if (!topicId || topicId < 2) {
       throw new InputError("Invalid topic ID.");

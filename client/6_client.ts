@@ -3310,6 +3310,17 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Delete a forum topic.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat.
+   * @param topicId The identifier of the topic.
+   */
+  async deleteTopic(chatId: ID, topicId: number): Promise<void> {
+    return await this.#forumManager.deleteTopic(chatId, topicId);
+  }
+
+  /**
    * Disable automatic anti-spam in a group. User-only.
    *
    * @method ch
