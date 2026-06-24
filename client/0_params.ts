@@ -1214,3 +1214,14 @@ export interface GetPollVotersParams {
   /** The maximum number of results to return. */
   limit?: number;
 }
+
+export interface GetTopicsParams {
+  /** Offset message ID from a previous result. */
+  offsetId?: number;
+  /** Offset topic ID from a previous result. */
+  offsetTopicId?: number;
+  /** Offset date from a previous result. */
+  offsetDate?: number;
+  /** The maximum number of results to return. */
+  limit?: number;
+}
