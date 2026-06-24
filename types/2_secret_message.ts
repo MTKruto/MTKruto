@@ -51,6 +51,7 @@ export interface _SecretMessageBase {
   viaBot?: string;
 }
 
+/** @unlisted */
 export interface _SecretMessageMediaBase extends _SecretMessageBase {
   /** The message's media group ID. */
   mediaGroupId?: string;

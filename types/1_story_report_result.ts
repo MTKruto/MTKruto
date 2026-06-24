@@ -23,25 +23,39 @@ import { base64EncodeUrlSafe } from "../1_utilities.ts";
 import type { Api } from "../2_tl.ts";
 import { constructStoryReportOption, type StoryReportOption } from "./0_story_report_option.ts";
 
-/** @unlisted */
+/**
+ * A story report result indicating that a report option is required to complete the report.
+ * @unlisted
+ */
 export interface StoryReportResultOptionRequired {
   type: "optionRequired";
+  /** The title of the report result. */
   title: string;
+  /** The available report options. */
   options: StoryReportOption[];
 }
 
-/** @unlisted */
+/**
+ * A story report result indicating that a text is required to complete the report.
+ * @unlisted
+ */
 export interface StoryReportResultTextRequired {
   type: "textRequired";
+  /** The identifier of the option requiring text. */
   option: string;
+  /** Whether the text is optional. */
   isOptional: boolean;
 }
 
-/** @unlisted */
+/**
+ * A story report result indicating that the story was reported.
+ * @unlisted
+ */
 export interface StoryReportResultReported {
   type: "reported";
 }
 
+/** Any type of story report result. */
 export type StoryReportResult = StoryReportResultOptionRequired | StoryReportResultTextRequired | StoryReportResultReported;
 
 export function constructStoryReportResult(rr: Api.ReportResult): StoryReportResult {

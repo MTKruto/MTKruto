@@ -21,8 +21,11 @@
 import { Api } from "../2_tl.ts";
 import { constructUser, type User } from "./2_user.ts";
 
+/** A bot's access settings. */
 export interface BotAccessSettings {
+  /** Whether access is restricted to specific users. */
   isAccessRestricted: boolean;
+  /** List of users with access. */
   usersWithAccess: User[];
 }
 

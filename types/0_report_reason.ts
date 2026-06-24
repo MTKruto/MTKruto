@@ -71,6 +71,7 @@ export interface ReportReasonPersonalDetails {
   type: "personalDetails";
 }
 
+/** Any type of report reason. */
 export type ReportReason = ReportReasonSpam | ReportReasonViolence | ReportReasonPornography | ReportReasonChildAbuse | ReportReasonOther | ReportReasonCopyright | ReportReasonLocationIrrelevant | ReportReasonFake | ReportReasonIllegalDrugs | ReportReasonPersonalDetails;
 
 export function reportReasonToTlObject(reportReason: ReportReason): Api.ReportReason {

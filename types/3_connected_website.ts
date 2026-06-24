@@ -23,15 +23,25 @@ import type { Api } from "../2_tl.ts";
 import type { PeerGetter } from "./1_chat_p.ts";
 import { constructUser2, type User } from "./2_user.ts";
 
+/** A user's connected website. */
 export interface ConnectedWebsite {
+  /** The identifier of the connected website. */
   id: string;
+  /** The bot that made the connection. */
   bot: User;
+  /** The domain of the website. */
   domain: string;
+  /** The browser used in the connection. */
   browser: string;
+  /** The platform used in the connection. */
   platform: string;
+  /** The point in time when the connection was made. */
   createdAt: number;
+  /** The point in time when the connection was last active. */
   lastActiveAt: number;
+  /** The IP address of the connection. */
   ipAddress: string;
+  /** The region of the connection's IP address. */
   ipAddressRegion: string;
 }
 

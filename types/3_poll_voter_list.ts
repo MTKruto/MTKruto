@@ -23,6 +23,7 @@ import type { Api } from "../2_tl.ts";
 import type { PeerGetter } from "./1_chat_p.ts";
 import { constructPollVoter, type PollVoter } from "./2_poll_voter.ts";
 
+/** A list of poll voters. */
 export interface PollVoterList {
   voters: PollVoter[];
   /** The total number of items in the list. */

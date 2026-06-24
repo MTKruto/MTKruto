@@ -20,7 +20,10 @@
 
 import type { MessageEntity } from "./2_message_entity.ts";
 
+/** A text to translate. */
 export interface TextToTranslate {
+  /** The text to translate. */
   text: string;
+  /** The entities of the text to translate. */
   entities: MessageEntity[];
 }

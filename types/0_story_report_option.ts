@@ -21,8 +21,11 @@
 import { base64EncodeUrlSafe } from "../1_utilities.ts";
 import type { Api } from "../2_tl.ts";
 
+/** A story report option. */
 export interface StoryReportOption {
+  /** The option's text. */
   text: string;
+  /** The option's identifier. */
   option: string;
 }
 
