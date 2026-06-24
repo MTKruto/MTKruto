@@ -296,7 +296,6 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
   async sendSecretMessage(id: number, text: string, params?: SendSecretMessageParams) {
     this.#c.storage.assertUser("sendSecretMessage");
     const state = this.#mustGetEncryptedChat(id);
-
     const [message, entities] = this.parseText(text, params);
 
     const random_id = getRandomId();
@@ -384,6 +383,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
   async sendSecretDocument(id: number, document: FileSource, params?: SendSecretDocumentParams) {
     this.#c.storage.assertUser("sendSecretDocument");
     const state = this.#mustGetEncryptedChat(id);
+    const [message, entities] = this.parseText(params?.caption ?? "", params);
 
     const [key, iv] = this.#generateKeyIv();
 
@@ -392,8 +392,8 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     const random_id = getRandomId();
     const decryptedMessage: SecretChats.decryptedMessage = {
       _: "decryptedMessage",
-      message: params?.caption ?? "",
-      entities: params?.entities?.length ? params.entities.map(secretMessageEntityToTlObject) : undefined,
+      message,
+      entities,
       random_id,
       ttl: params?.ttl ?? 0,
       silent: params?.isSilent || undefined,
@@ -420,6 +420,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
   async sendSecretVideo(id: number, video: FileSource, params?: SendSecretVideoParams) {
     this.#c.storage.assertUser("sendSecretVideo");
     const state = this.#mustGetEncryptedChat(id);
+    const [message, entities] = this.parseText(params?.caption ?? "", params);
 
     const [key, iv] = this.#generateKeyIv();
 
@@ -428,8 +429,8 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     const random_id = getRandomId();
     const decryptedMessage: SecretChats.decryptedMessage = {
       _: "decryptedMessage",
-      message: params?.caption ?? "",
-      entities: params?.entities?.length ? params.entities.map(secretMessageEntityToTlObject) : undefined,
+      message,
+      entities,
       random_id,
       ttl: params?.ttl ?? 0,
       silent: params?.isSilent || undefined,
@@ -459,6 +460,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
   async sendSecretVideoNote(id: number, videoNote: FileSource, params?: SendSecretVideoNoteParams) {
     this.#c.storage.assertUser("sendSecretVideoNote");
     const state = this.#mustGetEncryptedChat(id);
+    const [message, entities] = this.parseText(params?.caption ?? "", params);
 
     const [key, iv] = this.#generateKeyIv();
 
@@ -467,8 +469,8 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     const random_id = getRandomId();
     const decryptedMessage: SecretChats.decryptedMessage = {
       _: "decryptedMessage",
-      message: params?.caption ?? "",
-      entities: params?.entities?.length ? params.entities.map(secretMessageEntityToTlObject) : undefined,
+      message,
+      entities,
       random_id,
       ttl: params?.ttl ?? 0,
       silent: params?.isSilent || undefined,
@@ -498,6 +500,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
   async sendSecretAudio(id: number, audio: FileSource, params?: SendSecretAudioParams) {
     this.#c.storage.assertUser("sendSecretAudio");
     const state = this.#mustGetEncryptedChat(id);
+    const [message, entities] = this.parseText(params?.caption ?? "", params);
 
     const [key, iv] = this.#generateKeyIv();
 
@@ -506,8 +509,8 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     const random_id = getRandomId();
     const decryptedMessage: SecretChats.decryptedMessage = {
       _: "decryptedMessage",
-      message: params?.caption ?? "",
-      entities: params?.entities?.length ? params.entities.map(secretMessageEntityToTlObject) : undefined,
+      message,
+      entities,
       random_id,
       ttl: params?.ttl ?? 0,
       silent: params?.isSilent || undefined,
@@ -537,6 +540,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
   async sendSecretVoice(id: number, voice: FileSource, params?: SendSecretVoiceParams) {
     this.#c.storage.assertUser("sendSecretVoice");
     const state = this.#mustGetEncryptedChat(id);
+    const [message, entities] = this.parseText(params?.caption ?? "", params);
 
     const [key, iv] = this.#generateKeyIv();
 
@@ -545,8 +549,8 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     const random_id = getRandomId();
     const decryptedMessage: SecretChats.decryptedMessage = {
       _: "decryptedMessage",
-      message: params?.caption ?? "",
-      entities: params?.entities?.length ? params.entities.map(secretMessageEntityToTlObject) : undefined,
+      message,
+      entities,
       random_id,
       ttl: params?.ttl ?? 0,
       silent: params?.isSilent || undefined,
@@ -576,6 +580,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
   async sendSecretAnimation(id: number, animation: FileSource, params?: SendSecretAnimationParams) {
     this.#c.storage.assertUser("sendSecretAnimation");
     const state = this.#mustGetEncryptedChat(id);
+    const [message, entities] = this.parseText(params?.caption ?? "", params);
 
     const [key, iv] = this.#generateKeyIv();
 
@@ -584,8 +589,8 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     const random_id = getRandomId();
     const decryptedMessage: SecretChats.decryptedMessage = {
       _: "decryptedMessage",
-      message: params?.caption ?? "",
-      entities: params?.entities?.length ? params.entities.map(secretMessageEntityToTlObject) : undefined,
+      message,
+      entities,
       random_id,
       ttl: params?.ttl ?? 0,
       silent: params?.isSilent || undefined,
@@ -634,6 +639,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
   async sendSecretPhoto(id: number, photo: FileSource, params?: SendSecretPhotoParams) {
     this.#c.storage.assertUser("sendSecretPhoto");
     const state = this.#mustGetEncryptedChat(id);
+    const [message, entities] = this.parseText(params?.caption ?? "", params);
 
     const [key, iv] = this.#generateKeyIv();
 
@@ -642,8 +648,8 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     const random_id = getRandomId();
     const decryptedMessage: SecretChats.decryptedMessage = {
       _: "decryptedMessage",
-      message: params?.caption ?? "",
-      entities: params?.entities?.length ? params.entities.map(secretMessageEntityToTlObject) : undefined,
+      message,
+      entities,
       random_id,
       ttl: params?.ttl ?? 0,
       silent: params?.isSilent || undefined,

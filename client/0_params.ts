@@ -1124,6 +1124,8 @@ export interface _SendSecretCaptionCommon {
   caption?: string;
   /** The caption's entities. */
   entities?: SecretMessageEntity[];
+  /** The parse mode to use. If omitted, the default parse mode will be used. */
+  parseMode?: ParseMode;
 }
 
 export interface SendSecretMessageParams extends _SendSecretCommon {
