@@ -632,6 +632,14 @@ export interface MessagePollOptionRemoved extends _MessageBase {
 }
 
 /**
+ * A screenshot was taken.
+ * @unlisted
+ */
+export interface MessageScreenshotTaken extends _MessageBase {
+  type: "screenshotTaken";
+}
+
+/**
  * A message with rich text.
  * @unlisted
  */
@@ -752,6 +760,7 @@ export type Message =
   | MessageGiftUpgraded
   | MessagePollOptionAdded
   | MessagePollOptionRemoved
+  | MessageScreenshotTaken
   | MessageRichText;
 
 /** @unlisted */
@@ -933,6 +942,8 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
   } else if (Api.is("messageActionPollDeleteAnswer", message_.action)) {
     const pollOptionRemoved = await constructPollOption(message_.action.answer, [], getStickerSetName, getPeer);
     return { type: "pollOptionRemoved", ...message, pollOptionRemoved };
+  } else if (Api.is("messageActionScreenshotTaken", message_.action)) {
+    return { type: "screenshotTaken", ...message };
   }
   return { type: "unsupported", ...message };
 }
