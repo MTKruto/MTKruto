@@ -24,8 +24,9 @@ import { Api } from "../2_tl.ts";
 import type { ChatP, PeerGetter } from "./1_chat_p.ts";
 import type { Message, MessageForumTopicCreated, MessageForumTopicEdited } from "./9_message.ts";
 
-/** A forum topic. */
-export interface Topic {
+/** An active forum topic. */
+export interface TopicActive {
+  type: "active";
   /** The ID of the topic. */
   id: number;
   /** The point in time when the topic was created. */
@@ -45,6 +46,16 @@ export interface Topic {
   /** The icon of the topic. */
   customEmojiId?: string;
 }
+
+/** An active forum topic. */
+export interface TopicDeleted {
+  type: "deleted";
+  /** The ID of the topic. */
+  id: number;
+}
+
+/** Any type of forum topic. */
+export type Topic = TopicActive | TopicDeleted;
 
 export function constructTopic(message: Message): Topic {
   let forumTopicCreated: MessageForumTopicCreated | undefined;
@@ -73,6 +84,7 @@ export function constructTopic(message: Message): Topic {
     customEmojiId = forumTopicEdited.forumTopicEdited.customEmojiId;
   }
   return cleanObject({
+    type: "active",
     id,
     date,
     creator: creator!,
@@ -82,11 +94,17 @@ export function constructTopic(message: Message): Topic {
     name,
     color,
     customEmojiId,
+    isDeleted: false,
   });
 }
 
 export function constructTopic2(ft: Api.ForumTopic, getPeer: PeerGetter): Topic {
-  ft = Api.as("forumTopic", ft);
+  if (Api.is("forumTopicDeleted", ft)) {
+    return {
+      type: "deleted",
+      id: ft.id,
+    };
+  }
   const peer = getPeer(ft.from_id);
   if (peer === null) {
     unreachable();
@@ -102,6 +120,7 @@ export function constructTopic2(ft: Api.ForumTopic, getPeer: PeerGetter): Topic 
   const color = ft.icon_color;
   const customEmojiId = ft.icon_emoji_id ? String(ft.icon_emoji_id) : undefined;
   return cleanObject({
+    type: "active",
     id,
     date,
     creator,
@@ -111,5 +130,6 @@ export function constructTopic2(ft: Api.ForumTopic, getPeer: PeerGetter): Topic 
     name,
     color,
     customEmojiId,
+    isDeleted: false,
   });
 }

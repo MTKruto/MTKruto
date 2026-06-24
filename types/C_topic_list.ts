@@ -1,3 +1,4 @@
+import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import type { PeerGetter } from "./1_chat_p.ts";
 import type { Message } from "./9_message.ts";
@@ -14,7 +15,7 @@ export interface TopicList {
 }
 
 export function constructTopicList(result: Api.messages_forumTopics, messages: Message[], getPeer: PeerGetter): TopicList {
-  const items = result.topics.map((v) => ({ topic: constructTopic2(v, getPeer), lastMessage: messages.find((v) => v.id === (Api.as("forumTopic", v).top_message)) }));
+  const items = result.topics.map((v) => ({ topic: constructTopic2(v, getPeer), lastMessage: messages.find((m) => Api.is("forumTopic", v) ? m.id === v.top_message : false) })).map(cleanObject);
   const count = result.count;
   const isOrderedByCreationDate = !!result.order_by_create_date;
   return { items, isOrderedByCreationDate, count };
