@@ -115,6 +115,134 @@ export abstract class ClientGeneric {
   //
 
   /**
+   * Add a bot to the attachments menu. User-only.
+   *
+   * @method ac
+   * @param botId The identifier of the bot to add to the attachments menu.
+   */
+  abstract addBotToAttachmentsMenu(botId: ID, params?: AddBotToAttachmentsMenuParams): Promise<void>;
+
+  /**
+   * Block a user. User-only.
+   *
+   * @method ac
+   * @param userId The identifier of the user to block.
+   */
+  abstract blockUser(userId: ID): Promise<void>;
+
+  /**
+   * Check the availability of a username. User-only.
+   *
+   * @method ac
+   * @param username The username to check.
+   * @returns Whether the username is available.
+   */
+  abstract checkUsername(username: string, params?: CheckUsernameParams): Promise<boolean>;
+
+  /**
+   * Delete the current account. User-only.
+   *
+   * @method ac
+   * @param reason The reason of the deletion.
+   */
+  abstract deleteAccount(reason: string, params?: DeleteAccountParams): Promise<void>;
+
+  /**
+   * Disable sponsored messages on the current user. User-only.
+   *
+   * @method ac
+   */
+  abstract disableSponsoredMessages(): Promise<void>;
+
+  /**
+   * Disconnect a connected website. User-only.
+   *
+   * @method ac
+   * @param id The identifier of a connected website.
+   */
+  abstract disconnectConnectedWebsite(id: string): Promise<void>;
+
+  /**
+   * Disconnect all connected websites. User-only.
+   *
+   * @method ac
+   */
+  abstract disconnectConnectedWebsites(): Promise<void>;
+
+  /**
+   * Enable sponsored messages on the current user. User-only.
+   *
+   * @method ac
+   */
+  abstract enableSponsoredMessages(): Promise<void>;
+
+  /**
+   * Get the current account's TTL. User-only.
+   *
+   * @method ac
+   * @returns The current account's TTL in days.
+   */
+  abstract getAccountTtl(): Promise<number>;
+
+  /**
+   * Get app support. User-only.
+   *
+   * @method ac
+   */
+  abstract getAppSupport(): Promise<AppSupport>;
+
+  /**
+   * Get app support name. User-only.
+   *
+   * @method ac
+   */
+  abstract getAppSupportName(): Promise<string>;
+
+  /**
+   * Get the authorization sessions. User-only.
+   *
+   * @method ac
+   */
+  abstract getAuthorizationSessions(): Promise<AuthorizationSession[]>;
+
+  /**
+   * Get blocked users. User-only.
+   *
+   * @method ac
+   */
+  abstract getBlockedUsers(params?: GetBlockedUsersParams): Promise<BlockedUserList>;
+
+  /**
+   * Get a business connection. Bot-only.
+   *
+   * @method ac
+   * @param id The identifier of the business connection.
+   * @cache
+   */
+  abstract getBusinessConnection(id: string): Promise<BusinessConnection>;
+
+  /**
+   * Get connected websites. User-only.
+   *
+   * @method ac
+   */
+  abstract getConnectedWebsites(): Promise<ConnectedWebsite[]>;
+
+  /**
+   * Get countries. User-only.
+   *
+   * @method ac
+   */
+  abstract getCountries(languageCode: string): Promise<Country[]>;
+
+  /**
+   * Get the country code for the current user based on its IP address. User-only.
+   *
+   * @method ac
+   */
+  abstract getCountryCode(): Promise<string>;
+
+  /**
    * Get information on the currently authorized user.
    *
    * @method ac
@@ -123,13 +251,26 @@ export abstract class ClientGeneric {
   abstract getMe(): Promise<User>;
 
   /**
-   * Show a username in the current account, a bot account, a supergroup, or a channel's profile. User-only.
+   * Get owned bots. User-only.
    *
    * @method ac
-   * @param id `"me"`, a bot ID, a supergroup ID, or a channel ID.
-   * @param username The username to show.
    */
-  abstract showUsername(id: ID, username: string): Promise<void>;
+  abstract getOwnedBots(): Promise<User[]>;
+
+  /**
+   * Get the profile photos of a user.
+   *
+   * @method ac
+   * @param userId The identifier of a user.
+   */
+  abstract getProfilePhotos(userId: ID, params?: GetProfilePhotosParams): Promise<ProfilePhotoList>;
+
+  /**
+   * Get timezones. User-only.
+   *
+   * @method ac
+   */
+  abstract getTimezones(): Promise<Timezone[]>;
 
   /**
    * Hide a username from the current account, a bot account, a supergroup, or a channel's profile. User-only.
@@ -139,6 +280,83 @@ export abstract class ClientGeneric {
    * @param username The username to hide.
    */
   abstract hideUsername(id: ID, username: string): Promise<void>;
+
+  /**
+   * Hide all usernames from a supergroup or a channel's profile. User-only.
+   *
+   * @method ac
+   * @param id A supergroup ID or a channel ID.
+   * @returns Whether any username was hidden.
+   */
+  abstract hideUsernames(id: ID): Promise<boolean>;
+
+  /**
+   * Pause the business bot in a chat. User-only.
+   *
+   * @method ac
+   * @param chatId The identifier of a chat.
+   */
+  abstract pauseBusinessBotConnection(chatId: ID): Promise<void>;
+
+  /**
+   * Remove an authorization session. User-only.
+   *
+   * @method ac
+   * @param id The identifier of the authorization session to remove.
+   */
+  abstract removeAuthorizationSession(id: string): Promise<void>;
+
+  /**
+   * Remove all authorization sessions except for the current one. User-only.
+   *
+   * @method ac
+   */
+  abstract removeAuthorizationSessions(): Promise<void>;
+
+  /**
+   * Remove a bot from the attachments menu. User-only.
+   *
+   * @method ac
+   * @param botId The identifier of the bot to remove from the attachments menu.
+   */
+  abstract removeBotFromAttachmentsMenu(botId: ID): Promise<void>;
+
+  /**
+   * Remove the emoji status of a channel. User-only.
+   *
+   * @method ac
+   * @param chatId The identifier of a channel.
+   */
+  abstract removeChannelEmojiStatus(chatId: ID): Promise<void>;
+
+  /**
+   * Remove the current account's emoji status. User-only.
+   *
+   * @method ac
+   */
+  abstract removeEmojiStatus(): Promise<void>;
+
+  /**
+   * Remove the profile video of the current user or a bot managed by the current user.
+   *
+   * @method ac
+   */
+  abstract removeProfilePhoto(params?: RemoveProfilePhotoParams): Promise<void>;
+
+  /**
+   * Remove the emoji status of a bot's user. Bot-only.
+   *
+   * @method ac
+   * @param userId The identifier of a user of the bot.
+   */
+  abstract removeUserEmojiStatus(userId: ID): Promise<void>;
+
+  /**
+   * Remove the current account's username. User-only.
+   *
+   * @method ac
+   */
+  abstract removeUsername(): Promise<void>;
 
   /**
    * Reorder the usernames of the current account, a bot account, a supergroup, or a channel's profile. User-only.
@@ -151,69 +369,43 @@ export abstract class ClientGeneric {
   abstract reorderUsernames(id: ID, order: string[]): Promise<boolean>;
 
   /**
-   * Hide all usernames from a supergroup or a channel's profile. User-only.
+   * Resolve a phone number. User-only.
    *
    * @method ac
-   * @param id A supergroup ID or a channel ID.
-   * @returns Whether any username was hidden.
+   * @param phoneNumber The phone number to resolve.
    */
-  abstract hideUsernames(id: ID): Promise<boolean>;
+  abstract resolvePhoneNumber(phoneNumber: string): Promise<User>;
 
   /**
-   * Check the availability of a username. User-only.
+   * Resolve a username.
    *
    * @method ac
-   * @param username The username to check.
-   * @returns Whether the username is available.
+   * @param username The username to resolve.
    */
-  abstract checkUsername(username: string, params?: CheckUsernameParams): Promise<boolean>;
+  abstract resolveUsername(username: string, params?: ResolveUsernameParams): Promise<ChatP>;
 
   /**
-   * Set the username of the current account. User-only.
+   * Resume the business bot in a chat. User-only.
    *
    * @method ac
-   * @param username The username to set.
+   * @param chatId The identifier of a chat.
    */
-  abstract setUsername(username: string): Promise<void>;
+  abstract resumeBusinessBotConnection(chatId: ID): Promise<void>;
 
   /**
-   * Remove the current account's username. User-only.
+   * Set the current account's TTL. User-only.
    *
    * @method ac
+   * @param dayCount The current account's TTL in days.
    */
-  abstract removeUsername(): Promise<void>;
+  abstract setAccountTtl(dayCount: number): Promise<void>;
 
   /**
-   * Get a business connection. Bot-only.
-   *
-   * @method ac
-   * @param id The identifier of the business connection.
-   * @cache
-   */
-  abstract getBusinessConnection(id: string): Promise<BusinessConnection>;
-
-  /**
-   * Set the current account's online status. User-only.
-   *
-   * @method ac
-   * @param isOnline The new online status.
-   */
-  abstract setIsOnline(isOnline: boolean): Promise<void>;
-
-  /**
-   * Set the current account's emoji status. User-only.
-   *
-   * @method ac
-   * @param emojiStatus The emoji or gift to set as the new emoji status.
-   */
-  abstract setEmojiStatus(emojiStatus: InputEmojiStatus, params?: SetEmojiStatusParams): Promise<void>;
-
-  /**
-   * Remove the current account's emoji status. User-only.
+   * Set the birthday of the current user. User-only.
    *
    * @method ac
    */
-  abstract removeEmojiStatus(): Promise<void>;
+  abstract setBirthday(params?: SetBirthdayParams): Promise<void>;
 
   /**
    * Set the emoji status of a channel. User-only.
@@ -225,12 +417,58 @@ export abstract class ClientGeneric {
   abstract setChannelEmojiStatus(chatId: ID, emojiStatus: InputEmojiStatus, params?: SetEmojiStatusParams): Promise<void>;
 
   /**
-   * Remove the emoji status of a channel. User-only.
+   * Set the list of close friends. User-only.
    *
    * @method ac
-   * @param chatId The identifier of a channel.
+   * @param userIds The identifiers of users to set as close friends.
    */
-  abstract removeChannelEmojiStatus(chatId: ID): Promise<void>;
+  abstract setCloseFriends(userIds: ID[]): Promise<void>;
+
+  /**
+   * Set the current account's emoji status. User-only.
+   *
+   * @method ac
+   * @param emojiStatus The emoji or gift to set as the new emoji status.
+   */
+  abstract setEmojiStatus(emojiStatus: InputEmojiStatus, params?: SetEmojiStatusParams): Promise<void>;
+
+  /**
+   * Set the current account's online status. User-only.
+   *
+   * @method ac
+   * @param isOnline The new online status.
+   */
+  abstract setIsOnline(isOnline: boolean): Promise<void>;
+
+  /**
+   * Set the location of the current user. User-only.
+   *
+   * @method ac
+   */
+  abstract setLocation(params?: SetLocationParams): Promise<void>;
+
+  /**
+   * Set the name color of the current user. User-only.
+   *
+   * @method ac
+   * @param color The identifier of the color to set.
+   */
+  abstract setNameColor(color: number, params?: SetNameColorParams): Promise<void>;
+
+  /**
+   * Set the personal channel of the current user. User-only.
+   *
+   * @method ac
+   */
+  abstract setPersonalChannel(params?: SetPersonalChannelParams): Promise<void>;
+
+  /**
+   * Set the profile color of the current user. User-only.
+   *
+   * @method ac
+   * @param color The identifier of the color to set.
+   */
+  abstract setProfileColor(color: number, params?: SetProfileColorParams): Promise<void>;
 
   /**
    * Set the emoji status of a bot's user. Bot-only.
@@ -242,12 +480,45 @@ export abstract class ClientGeneric {
   abstract setUserEmojiStatus(userId: ID, emojiStatus: InputEmojiStatus, params?: SetEmojiStatusParams): Promise<void>;
 
   /**
-   * Remove the emoji status of a bot's user. Bot-only.
+   * Set the username of the current account. User-only.
    *
    * @method ac
-   * @param userId The identifier of a user of the bot.
+   * @param username The username to set.
    */
-  abstract removeUserEmojiStatus(userId: ID): Promise<void>;
+  abstract setUsername(username: string): Promise<void>;
+
+  /**
+   * Set the working hours of the current user. User-only.
+   *
+   * @method ac
+   */
+  abstract setWorkingHours(params?: SetWorkingHoursParams): Promise<void>;
+
+  /**
+   * Show a username in the current account, a bot account, a supergroup, or a channel's profile. User-only.
+   *
+   * @method ac
+   * @param id `"me"`, a bot ID, a supergroup ID, or a channel ID.
+   * @param username The username to show.
+   */
+  abstract showUsername(id: ID, username: string): Promise<void>;
+
+  /**
+   * Suggest a birthday. User-only.
+   *
+   * @method ac
+   * @param userId The identifier of the user to suggest a birthday for.
+   * @param birthday The birthday to suggest.
+   */
+  abstract suggestBirthday(userId: ID, birthday: Birthday): Promise<void>;
+
+  /**
+   * Unblock a user. User-only.
+   *
+   * @method ac
+   * @param userId The identifier of the user to unblock.
+   */
+  abstract unblockUser(userId: ID): Promise<void>;
 
   /**
    * Update the profile of the current user. At least one parameter must be specified. User-only.
@@ -272,371 +543,454 @@ export abstract class ClientGeneric {
    */
   abstract updateProfileVideo(video: FileSource, params?: UpdateProfileVideoParams): Promise<void>;
 
-  /**
-   * Remove the profile video of the current user or a bot managed by the current user.
-   *
-   * @method ac
-   */
-  abstract removeProfilePhoto(params?: RemoveProfilePhotoParams): Promise<void>;
-
-  /**
-   * Set the birthday of the current user. User-only.
-   *
-   * @method ac
-   */
-  abstract setBirthday(params?: SetBirthdayParams): Promise<void>;
-
-  /**
-   * Set the personal channel of the current user. User-only.
-   *
-   * @method ac
-   */
-  abstract setPersonalChannel(params?: SetPersonalChannelParams): Promise<void>;
-
-  /**
-   * Set the name color of the current user. User-only.
-   *
-   * @method ac
-   * @param color The identifier of the color to set.
-   */
-  abstract setNameColor(color: number, params?: SetNameColorParams): Promise<void>;
-
-  /**
-   * Set the profile color of the current user. User-only.
-   *
-   * @method ac
-   * @param color The identifier of the color to set.
-   */
-  abstract setProfileColor(color: number, params?: SetProfileColorParams): Promise<void>;
-
-  /**
-   * Set the location of the current user. User-only.
-   *
-   * @method ac
-   */
-  abstract setLocation(params?: SetLocationParams): Promise<void>;
-
-  /**
-   * Set the working hours of the current user. User-only.
-   *
-   * @method ac
-   */
-  abstract setWorkingHours(params?: SetWorkingHoursParams): Promise<void>;
-
-  /**
-   * Enable sponsored messages on the current user. User-only.
-   *
-   * @method ac
-   */
-  abstract enableSponsoredMessages(): Promise<void>;
-
-  /**
-   * Disable sponsored messages on the current user. User-only.
-   *
-   * @method ac
-   */
-  abstract disableSponsoredMessages(): Promise<void>;
-
-  /**
-   * Pause the business bot in a chat. User-only.
-   *
-   * @method ac
-   * @param chatId The identifier of a chat.
-   */
-  abstract pauseBusinessBotConnection(chatId: ID): Promise<void>;
-
-  /**
-   * Resume the business bot in a chat. User-only.
-   *
-   * @method ac
-   * @param chatId The identifier of a chat.
-   */
-  abstract resumeBusinessBotConnection(chatId: ID): Promise<void>;
-
-  /**
-   * Resolve a username.
-   *
-   * @method ac
-   * @param username The username to resolve.
-   */
-  abstract resolveUsername(username: string, params?: ResolveUsernameParams): Promise<ChatP>;
-
-  /**
-   * Resolve a phone number. User-only.
-   *
-   * @method ac
-   * @param phoneNumber The phone number to resolve.
-   */
-  abstract resolvePhoneNumber(phoneNumber: string): Promise<User>;
-
-  /**
-   * Set the list of close friends. User-only.
-   *
-   * @method ac
-   * @param userIds The identifiers of users to set as close friends.
-   */
-  abstract setCloseFriends(userIds: ID[]): Promise<void>;
-
-  /**
-   * Suggest a birthday. User-only.
-   *
-   * @method ac
-   * @param userId The identifier of the user to suggest a birthday for.
-   * @param birthday The birthday to suggest.
-   */
-  abstract suggestBirthday(userId: ID, birthday: Birthday): Promise<void>;
-
-  /**
-   * Block a user. User-only.
-   *
-   * @method ac
-   * @param userId The identifier of the user to block.
-   */
-  abstract blockUser(userId: ID): Promise<void>;
-
-  /**
-   * Unblock a user. User-only.
-   *
-   * @method ac
-   * @param userId The identifier of the user to unblock.
-   */
-  abstract unblockUser(userId: ID): Promise<void>;
-
-  /**
-   * Get blocked users. User-only.
-   *
-   * @method ac
-   */
-  abstract getBlockedUsers(params?: GetBlockedUsersParams): Promise<BlockedUserList>;
-
-  /**
-   * Add a bot to the attachments menu. User-only.
-   *
-   * @method ac
-   * @param botId The identifier of the bot to add to the attachments menu.
-   */
-  abstract addBotToAttachmentsMenu(botId: ID, params?: AddBotToAttachmentsMenuParams): Promise<void>;
-
-  /**
-   * Remove a bot from the attachments menu. User-only.
-   *
-   * @method ac
-   * @param botId The identifier of the bot to remove from the attachments menu.
-   */
-  abstract removeBotFromAttachmentsMenu(botId: ID): Promise<void>;
-
-  /**
-   * Get app support. User-only.
-   *
-   * @method ac
-   */
-  abstract getAppSupport(): Promise<AppSupport>;
-
-  /**
-   * Get app support name. User-only.
-   *
-   * @method ac
-   */
-  abstract getAppSupportName(): Promise<string>;
-
-  /**
-   * Get owned bots. User-only.
-   *
-   * @method ac
-   */
-  abstract getOwnedBots(): Promise<User[]>;
-
-  /**
-   * Get timezones. User-only.
-   *
-   * @method ac
-   */
-  abstract getTimezones(): Promise<Timezone[]>;
-
-  /**
-   * Get countries. User-only.
-   *
-   * @method ac
-   */
-  abstract getCountries(languageCode: string): Promise<Country[]>;
-
-  /**
-   * Get the profile photos of a user.
-   *
-   * @method ac
-   * @param userId The identifier of a user.
-   */
-  abstract getProfilePhotos(userId: ID, params?: GetProfilePhotosParams): Promise<ProfilePhotoList>;
-
-  /**
-   * Delete the current account. User-only.
-   *
-   * @method ac
-   * @param reason The reason of the deletion.
-   */
-  abstract deleteAccount(reason: string, params?: DeleteAccountParams): Promise<void>;
-
-  /**
-   * Get the authorization sessions. User-only.
-   *
-   * @method ac
-   */
-  abstract getAuthorizationSessions(): Promise<AuthorizationSession[]>;
-
-  /**
-   * Remove an authorization session. User-only.
-   *
-   * @method ac
-   * @param id The identifier of the authorization session to remove.
-   */
-  abstract removeAuthorizationSession(id: string): Promise<void>;
-
-  /**
-   * Remove all authorization sessions except for the current one. User-only.
-   *
-   * @method ac
-   */
-  abstract removeAuthorizationSessions(): Promise<void>;
-
-  /**
-   * Get the current account's TTL. User-only.
-   *
-   * @method ac
-   * @returns The current account's TTL in days.
-   */
-  abstract getAccountTtl(): Promise<number>;
-
-  /**
-   * Set the current account's TTL. User-only.
-   *
-   * @method ac
-   * @param dayCount The current account's TTL in days.
-   */
-  abstract setAccountTtl(dayCount: number): Promise<void>;
-
-  /**
-   * Get connected websites. User-only.
-   *
-   * @method ac
-   */
-  abstract getConnectedWebsites(): Promise<ConnectedWebsite[]>;
-
-  /**
-   * Disconnect a connected website. User-only.
-   *
-   * @method ac
-   * @param id The identifier of a connected website.
-   */
-  abstract disconnectConnectedWebsite(id: string): Promise<void>;
-
-  /**
-   * Disconnect all connected websites. User-only.
-   *
-   * @method ac
-   */
-  abstract disconnectConnectedWebsites(): Promise<void>;
-
-  /**
-   * Get the country code for the current user based on its IP address. User-only.
-   *
-   * @method ac
-   */
-  abstract getCountryCode(): Promise<string>;
-
   //
   // ========================= MESSAGES ========================= //
   //
 
   /**
-   * Send a text message.
+   * Add a sticker to favorites. User-only.
    *
    * @method ms
-   * @param chatId The identifier of a chat to send the message to.
+   * @param fileId The file identifier of the sticker.
+   */
+  abstract addStickerToFavorites(fileId: string): Promise<void>;
+
+  /**
+   * Add a sticker to recents. User-only.
+   *
+   * @method ms
+   * @param fileId The file identifier of the sticker.
+   */
+  abstract addStickerToRecents(fileId: string): Promise<void>;
+
+  /**
+   * Clear all message drafts. User-only.
+   *
+   * @method ms
+   */
+  abstract clearDrafts(): Promise<void>;
+
+  /**
+   * Clear recent stickers. User-only.
+   *
+   * @method ms
+   */
+  abstract clearRecentStickers(): Promise<void>;
+
+  /**
+   * Delete all messages sent by a specific member of a chat. User-only.
+   *
+   * @method ms
+   * @param chatId The identifier of a chat. Must be a supergroup.
+   * @param memberId The identifier of the member.
+   */
+  abstract deleteChatMemberMessages(chatId: ID, memberId: ID): Promise<void>;
+
+  /**
+   * Delete a single message.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageId The identifier of the message to delete.
+   */
+  abstract deleteMessage(chatId: ID, messageId: number, params?: DeleteMessageParams): Promise<void>;
+
+  /**
+   * Delete multiple messages.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageIds The identifiers of the messages to delete.
+   */
+  abstract deleteMessages(chatId: ID, messageIds: number[], params?: DeleteMessagesParams): Promise<void>;
+
+  /**
+   * Delete a scheduled message.
+   *
+   * @method ms
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the scheduled message to delete.
+   */
+  abstract deleteScheduledMessage(chatId: ID, messageId: number): Promise<void>;
+
+  /**
+   * Delete multiple scheduled messages.
+   *
+   * @method ms
+   * @param chatId The identifier of a chat.
+   * @param messageIds The identifiers of the scheduled messages to delete.
+   */
+  abstract deleteScheduledMessages(chatId: ID, messageIds: number[]): Promise<void>;
+
+  /**
+   * Edit an inline message's caption. Bot-only.
+   *
+   * @method ms
+   * @param inlineMessageId The identifier of the inline message.
+   */
+  abstract editInlineMessageCaption(inlineMessageId: string, params?: EditInlineMessageCaptionParams): Promise<void>;
+
+  /**
+   * Edit an inline message's live location. Bot-only.
+   *
+   * @method ms
+   * @param inlineMessageId The identifier of the inline message.
+   * @param latitude The new latitude.
+   * @param longitude The new longitude.
+   * @returns The edited location message.
+   */
+  abstract editInlineMessageLiveLocation(
+    inlineMessageId: string,
+    latitude: number,
+    longitude: number,
+    params?: EditMessageLiveLocationParams,
+  ): Promise<void>;
+
+  /**
+   * Edit an inline message's media.
+   *
+   * @method ms
+   * @param inlineMessageId The identifier of the inline message.
+   * @param media The new media of the message.
+   */
+  abstract editInlineMessageMedia(inlineMessageId: string, media: InputMedia, params?: EditInlineMessageMediaParams): Promise<void>;
+
+  /**
+   * Edit an inline message's reply markup. Bot-only.
+   *
+   * @method ms
+   * @param inlineMessageId The identifier of the inline message.
+   */
+  abstract editInlineMessageReplyMarkup(inlineMessageId: string, params?: EditMessageReplyMarkupParams): Promise<void>;
+
+  /**
+   * Edit an inline message's rich text. Bot-only.
+   *
+   * @method ms
+   * @param inlineMessageId The identifier of the inline message.
+   * @param richText The new rich text of the message.
+   */
+  abstract editInlineMessageRichText(inlineMessageId: string, richText: InputRichText, params?: EditInlineMessageRichTextParams): Promise<void>;
+
+  /**
+   * Edit an inline message's text. Bot-only.
+   *
+   * @method ms
+   * @param inlineMessageId The identifier of the inline message.
+   * @param text The new text of the message.
+   */
+  abstract editInlineMessageText(inlineMessageId: string, text: string, params?: EditInlineMessageTextParams): Promise<void>;
+
+  /**
+   * Edit a message's caption.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageId The identifier of the message.
+   * @returns The edited message.
+   */
+  abstract editMessageCaption(chatId: ID, messageId: number, params?: EditMessageCaptionParams): Promise<Message>;
+
+  /**
+   * Edit a message's live location.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageId The identifier of the message.
+   * @param latitude The new latitude.
+   * @param longitude The new longitude.
+   * @returns The edited location message.
+   */
+  abstract editMessageLiveLocation(
+    chatId: ID,
+    messageId: number,
+    latitude: number,
+    longitude: number,
+    params?: EditMessageLiveLocationParams,
+  ): Promise<MessageLocation>;
+
+  /**
+   * Edit a message's media.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageId The identifier of the message.
+   * @param media The new media of the message.
+   * @returns The edited message.
+   */
+  abstract editMessageMedia(chatId: ID, messageId: number, media: InputMedia, params?: EditMessageMediaParams): Promise<Message>;
+
+  /**
+   * Edit a message's reply markup.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageId The identifier of the message.
+   * @returns The edited message.
+   */
+  abstract editMessageReplyMarkup(
+    chatId: ID,
+    messageId: number,
+    params?: EditMessageReplyMarkupParams,
+  ): Promise<Message>;
+
+  /**
+   * Edit a message's rich text.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageId The identifier of the message.
+   * @param richText The new rich text of the message.
+   * @returns The edited rich text message.
+   */
+  abstract editMessageRichText(chatId: ID, messageId: number, richText: InputRichText, params?: EditMessageRichTextParams): Promise<MessageRichText>;
+
+  /**
+   * Edit a message's text.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageId The identifier of the message.
+   * @param text The new text of the message.
+   * @returns The edited text message.
+   */
+  abstract editMessageText(chatId: ID, messageId: number, text: string, params?: EditMessageTextParams): Promise<MessageText>;
+
+  /**
+   * Forward a single message.
+   *
+   * @method ms
+   * @param from The identifier of a chat to forward the message from.
+   * @param to The identifier of a chat to forward the message to.
+   * @param messageId The identifier of the message to forward.
+   * @returns The forwarded message.
+   */
+  abstract forwardMessage(from: ID, to: ID, messageId: number, params?: ForwardMessagesParams): Promise<Message>;
+
+  /**
+   * Forward multiple messages.
+   *
+   * @method ms
+   * @param from The identifier of a chat to forward the messages from.
+   * @param to The identifier of a chat to forward the messages to.
+   * @param messageIds The identifiers of the messages to forward.
+   * @returns The forwarded messages.
+   */
+  abstract forwardMessages(from: ID, to: ID, messageIds: number[], params?: ForwardMessagesParams): Promise<Message[]>;
+
+  /**
+   * Get favorite stickers. User-only.
+   *
+   * @method ms
+   */
+  abstract getFavoriteStickers(): Promise<Sticker[]>;
+
+  /**
+   * Get the link preview for a message that is about to be sent. User-only.
+   *
+   * @method ms
    * @param text The message's text.
-   * @returns The sent text message.
    */
-  abstract sendMessage(chatId: ID, text: string, params?: SendMessageParams): Promise<MessageText>;
+  abstract getLinkPreview(text: string, params?: GetLinkPreviewParams): Promise<LinkPreview | null>;
 
   /**
-   * Send a rich text message.
+   * Retrieve a single message.
    *
    * @method ms
-   * @param chatId The identifier of a chat to send the message to.
-   * @param richText The message's rich text.
-   * @returns The sent rich text message.
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the message to retrieve.
+   * @example ```ts
+   * const message = await client.getMessage("@MTKruto", 212);
+   * ```
+   * @returns The retrieved message.
+   * @cache
    */
-  abstract sendRichText(chatId: ID, richText: InputRichText, params?: SendRichTextParams): Promise<MessageRichText>;
+  abstract getMessage(chatId: ID, messageId: number): Promise<Message | null>;
 
   /**
-   * Stream a drafted text message. Bot-only.
+   * Get the counters of a single message. User-only.
    *
    * @method ms
-   * @param chatId The identifier of a chat to send the message to.
-   * @param draftId The identifier of the draft.
-   * @param text The message's text.
+   * @param chatId The identifier of the chat including the message.
+   * @param messageId The identifier of the message.
    */
-  abstract sendMessageDraft(chatId: ID, draftId: number, text: string, params?: SendMessageDraftParams): Promise<void>;
+  abstract getMessageCounters(chatId: ID, messageId: number): Promise<MessageCounters>;
 
   /**
-   * Stream a drafted rich text message. Bot-only.
+   * Get a list of reactions made to a message. User-only.
    *
    * @method ms
-   * @param chatId The identifier of a chat to send the message to.
-   * @param draftId The identifier of the draft.
-   * @param richText The message's rich text.
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the message.
    */
-  abstract sendRichTextDraft(chatId: ID, draftId: number, richText: InputRichText, params?: SendRichTextDraftParams): Promise<void>;
+  abstract getMessageReactions(chatId: ID, messageId: number, params?: GetMessageReactionsParams): Promise<MessageReactionList>;
 
   /**
-   * Send a photo.
+   * Get a message's read date. User-only.
    *
    * @method ms
-   * @param chatId The identifier of a chat to send the photo to.
-   * @param photo The photo to send.
-   * @returns The sent photo.
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the message.
    */
-  abstract sendPhoto(chatId: ID, photo: FileSource, params?: SendPhotoParams): Promise<MessagePhoto>;
+  abstract getMessageReadDate(chatId: ID, messageId: number): Promise<number>;
 
   /**
-   * Send a live photo.
+   * Retrieve multiple messages.
    *
    * @method ms
-   * @param chatId The identifier of a chat to send the photo to.
-   * @param photo The photo to send.
-   * @param video The video version of the photo.
-   * @returns The sent live photo.
+   * @param chatId The identifier of a chat to retrieve the messages from.
+   * @param messageIds The identifiers of the messages to retrieve.
+   * @example ```ts
+   * const messages = await client.getMessages("@MTKruto", [210, 212]);
+   * ```
+   * @returns The retrieved messages.
+   * @cache
    */
-  abstract sendLivePhoto(chatId: ID, photo: FileSource, video: FileSource, params?: SendLivePhotoParams): Promise<MessageLivePhoto>;
+  abstract getMessages(chatId: ID, messageIds: number[]): Promise<Message[]>;
 
   /**
-   * Send a document.
+   * Get the counters of multiple messages. User-only.
    *
    * @method ms
-   * @param chatId The identifier of a chat to send the document to.
-   * @param document The document to send.
-   * @returns The sent document.
+   * @param chatId The identifier of the chat including the messages.
+   * @param messageIds The identifiers of the messages.
    */
-  abstract sendDocument(chatId: ID, document: FileSource, params?: SendDocumentParams): Promise<MessageDocument>;
+  abstract getMessagesCounters(chatId: ID, messageIds: number[]): Promise<MessageCounters[]>;
 
   /**
-   * Send a sticker.
+   * Get a message's viewers. User-only.
    *
    * @method ms
-   * @param chatId The identifier of a chat to send the sticker to.
-   * @param sticker The sticker to send.
-   * @returns The sent sticker.
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the message.
+   * @returns The message's viewers.
    */
-  abstract sendSticker(chatId: ID, sticker: FileSource, params?: SendStickerParams): Promise<MessageSticker>;
+  abstract getMessageViewers(chatId: ID, messageId: number): Promise<MessageViewer[]>;
 
   /**
-   * Send a video.
+   * Get a progress ID that can be passed to relevant send* methods to receive upload progress updates for them.
    *
    * @method ms
-   * @param chatId The identifier of a chat to send the video to.
-   * @param video The video to send.
-   * @returns The sent video.
+   * @cache
    */
-  abstract sendVideo(chatId: ID, video: FileSource, params?: SendVideoParams): Promise<MessageVideo>;
+  abstract getProgressId(): Promise<string>;
+
+  /**
+   * Get recent stickers. User-only.
+   *
+   * @method ms
+   */
+  abstract getRecentStickers(): Promise<Sticker[]>;
+
+  /**
+   * Get a message's full rich text. User-only.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat including the message.
+   * @param messageId The identifier of the message.
+   */
+  abstract getRichText(chatId: ID, messageId: number): Promise<RichText | null>;
+
+  /**
+   * Get saved animations. User-only.
+   *
+   * @method ms
+   */
+  abstract getSavedAnimations(): Promise<Animation[]>;
+
+  /**
+   * Get a list of saved chats.
+   *
+   * @method ms
+   */
+  abstract getSavedChats(params?: GetSavedChatsParams): Promise<SavedChats>;
+
+  /**
+   * Get messages saved from a specific chat.
+   *
+   * @method ms
+   * @param chatId The identifier of a chat.
+   */
+  abstract getSavedMessages(chatId: ID, params?: GetSavedMessagesParams): Promise<Message[]>;
+
+  /**
+   * Get the scheduled messages of a chat. User-only.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat including the scheduled messages.
+   */
+  abstract getScheduledMessages(chatId: ID): Promise<Message[]>;
+
+  /**
+   * Open a mini app. User-only.
+   *
+   * @method ms
+   * @param botId The identifier of a bot with the mini app.
+   * @param chatId The identifier of the chat from which the mini app is opened.
+   * @cache
+   */
+  abstract openMiniApp(botId: ID, chatId: ID, params?: OpenMiniAppParams): Promise<MiniAppInfo>;
+
+  /**
+   * Pin a message in a chat.
+   *
+   * @method ms
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the message.
+   */
+  abstract pinMessage(chatId: ID, messageId: number, params?: PinMessageParams): Promise<void>;
+
+  /**
+   * Mark messages as read. User-only.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat which the messages belong to.
+   * @param untilMessageId The identifier of the message that will be marked as read, along with any other unread messages before it.
+   */
+  abstract readMessages(chatId: ID, untilMessageId: number): Promise<void>;
+
+  /**
+   * Remove a sticker from favorites. User-only.
+   *
+   * @method ms
+   * @param fileId The file identifier of the sticker.
+   */
+  abstract removeStickerFromFavorites(fileId: string): Promise<void>;
+
+  /**
+   * Remove a sticker from recents. User-only.
+   *
+   * @method ms
+   * @param fileId The file identifier of the sticker.
+   */
+  abstract removeStickerFromRecents(fileId: string): Promise<void>;
+
+  /**
+   * Retrieve a message using its link.
+   *
+   * @method ms
+   * @param link A message link.
+   * @example ```ts
+   * const message = await client.resolveMessageLink("https://t.me/MTKruto/212");
+   * ```
+   * @returns The message that was linked to.
+   */
+  abstract resolveMessageLink(link: string): Promise<Message | null>;
+
+  /**
+   * Save an animation. User-only.
+   *
+   * @method ms
+   * @param fileId The file identifier of the animation.
+   */
+  abstract saveAnimation(fileId: string): Promise<void>;
+
+  /**
+   * Search for messages. User-only.
+   *
+   * @method ms
+   */
+  abstract searchMessages(params?: SearchMessagesParams): Promise<MessageList>;
 
   /**
    * Send an animation.
@@ -649,16 +1003,6 @@ export abstract class ClientGeneric {
   abstract sendAnimation(chatId: ID, animation: FileSource, params?: SendAnimationParams): Promise<MessageAnimation>;
 
   /**
-   * Send a voice message.
-   *
-   * @method ms
-   * @param chatId The identifier of a chat to send the voice message to.
-   * @param voice The voice to send.
-   * @returns The sent voice message.
-   */
-  abstract sendVoice(chatId: ID, voice: FileSource, params?: SendVoiceParams): Promise<MessageVoice>;
-
-  /**
    * Send an audio file.
    *
    * @method ms
@@ -669,35 +1013,24 @@ export abstract class ClientGeneric {
   abstract sendAudio(chatId: ID, audio: FileSource, params?: SendAudioParams): Promise<MessageAudio>;
 
   /**
-   * Send a media group.
+   * Send a chat action.
    *
    * @method ms
-   * @param chatId The identifier of a chat to send the media group to.
-   * @param media The media to include in the media group. Animations are not allowed. All of them must be of the same media type, but an exception is that photos and videos can be mixed.
-   * @returns The sent messages.
+   * @param chatId The identifier of a chat to send the chat action to.
+   * @param action The chat action.
    */
-  abstract sendMediaGroup(chatId: ID, media: InputMedia[], params?: SendMediaGroupParams): Promise<Message[]>;
+  abstract sendChatAction(chatId: ID, action: ChatActionType, params?: { messageThreadId?: number }): Promise<void>;
 
   /**
-   * Send a video note.
+   * Send a checklist.
    *
    * @method ms
-   * @param chatId The identifier of a chat to send the video note to.
-   * @param videoNote The video note to send.
-   * @returns The sent video note.
+   * @param chatId The identifier of a chat to send the checklist to.
+   * @param title The checklist's title.
+   * @param items The checklist's items.
+   * @returns The sent checklist.
    */
-  abstract sendVideoNote(chatId: ID, videoNote: FileSource, params?: SendVideoNoteParams): Promise<MessageVideoNote>;
-
-  /**
-   * Send a location.
-   *
-   * @method ms
-   * @param chatId The identifier of a chat to send the location to.
-   * @param latitude The location's latitude.
-   * @param longitude The location's longitude.
-   * @returns The sent location.
-   */
-  abstract sendLocation(chatId: ID, latitude: number, longitude: number, params?: SendLocationParams): Promise<MessageLocation>;
+  abstract sendChecklist(chatId: ID, title: string, items: InputChecklistItem[], params?: SendChecklistParams): Promise<MessageChecklist>;
 
   /**
    * Send a contact.
@@ -720,39 +1053,14 @@ export abstract class ClientGeneric {
   abstract sendDice(chatId: ID, params?: SendDiceParams): Promise<MessageDice>;
 
   /**
-   * Send a venue.
+   * Send a document.
    *
    * @method ms
-   * @param chatId The identifier of a chat to send the venue to.
-   * @param latitude The latitude of the venue.
-   * @param longitude The longitude of the venue.
-   * @param title The title of the venue.
-   * @param address The written address of the venue.
-   * @returns The sent venue.
+   * @param chatId The identifier of a chat to send the document to.
+   * @param document The document to send.
+   * @returns The sent document.
    */
-  abstract sendVenue(chatId: ID, latitude: number, longitude: number, title: string, address: string, params?: SendVenueParams): Promise<MessageVenue>;
-
-  /**
-   * Send a poll.
-   *
-   * @method ms
-   * @param chatId The identifier of a chat to send the poll to.
-   * @param question The poll's question.
-   * @param options The poll's options.
-   * @returns The sent poll.
-   */
-  abstract sendPoll(chatId: ID, question: string, options: InputPollOption[], params?: SendPollParams): Promise<MessagePoll>;
-
-  /**
-   * Send a checklist.
-   *
-   * @method ms
-   * @param chatId The identifier of a chat to send the checklist to.
-   * @param title The checklist's title.
-   * @param items The checklist's items.
-   * @returns The sent checklist.
-   */
-  abstract sendChecklist(chatId: ID, title: string, items: InputChecklistItem[], params?: SendChecklistParams): Promise<MessageChecklist>;
+  abstract sendDocument(chatId: ID, document: FileSource, params?: SendDocumentParams): Promise<MessageDocument>;
 
   /**
    * Send an invoice. Bot-only.
@@ -769,232 +1077,97 @@ export abstract class ClientGeneric {
   abstract sendInvoice(chatId: ID, title: string, description: string, payload: string, currency: string, prices: PriceTag[], params?: SendInvoiceParams): Promise<MessageInvoice>;
 
   /**
-   * Edit a message's text.
+   * Send a live photo.
    *
    * @method ms
-   * @param chatId The identifier of the chat which the message belongs to.
-   * @param messageId The identifier of the message.
-   * @param text The new text of the message.
-   * @returns The edited text message.
+   * @param chatId The identifier of a chat to send the photo to.
+   * @param photo The photo to send.
+   * @param video The video version of the photo.
+   * @returns The sent live photo.
    */
-  abstract editMessageText(chatId: ID, messageId: number, text: string, params?: EditMessageTextParams): Promise<MessageText>;
+  abstract sendLivePhoto(chatId: ID, photo: FileSource, video: FileSource, params?: SendLivePhotoParams): Promise<MessageLivePhoto>;
 
   /**
-   * Edit a message's rich text.
+   * Send a location.
    *
    * @method ms
-   * @param chatId The identifier of the chat which the message belongs to.
-   * @param messageId The identifier of the message.
-   * @param richText The new rich text of the message.
-   * @returns The edited rich text message.
+   * @param chatId The identifier of a chat to send the location to.
+   * @param latitude The location's latitude.
+   * @param longitude The location's longitude.
+   * @returns The sent location.
    */
-  abstract editMessageRichText(chatId: ID, messageId: number, richText: InputRichText, params?: EditMessageRichTextParams): Promise<MessageRichText>;
+  abstract sendLocation(chatId: ID, latitude: number, longitude: number, params?: SendLocationParams): Promise<MessageLocation>;
 
   /**
-   * Edit a message's caption.
+   * Send a media group.
    *
    * @method ms
-   * @param chatId The identifier of the chat which the message belongs to.
-   * @param messageId The identifier of the message.
-   * @returns The edited message.
+   * @param chatId The identifier of a chat to send the media group to.
+   * @param media The media to include in the media group. Animations are not allowed. All of them must be of the same media type, but an exception is that photos and videos can be mixed.
+   * @returns The sent messages.
    */
-  abstract editMessageCaption(chatId: ID, messageId: number, params?: EditMessageCaptionParams): Promise<Message>;
+  abstract sendMediaGroup(chatId: ID, media: InputMedia[], params?: SendMediaGroupParams): Promise<Message[]>;
 
   /**
-   * Edit a message's media.
+   * Send a text message.
    *
    * @method ms
-   * @param chatId The identifier of the chat which the message belongs to.
-   * @param messageId The identifier of the message.
-   * @param media The new media of the message.
-   * @returns The edited message.
+   * @param chatId The identifier of a chat to send the message to.
+   * @param text The message's text.
+   * @returns The sent text message.
    */
-  abstract editMessageMedia(chatId: ID, messageId: number, media: InputMedia, params?: EditMessageMediaParams): Promise<Message>;
+  abstract sendMessage(chatId: ID, text: string, params?: SendMessageParams): Promise<MessageText>;
 
   /**
-   * Edit an inline message's media.
+   * Stream a drafted text message. Bot-only.
    *
    * @method ms
-   * @param inlineMessageId The identifier of the inline message.
-   * @param media The new media of the message.
+   * @param chatId The identifier of a chat to send the message to.
+   * @param draftId The identifier of the draft.
+   * @param text The message's text.
    */
-  abstract editInlineMessageMedia(inlineMessageId: string, media: InputMedia, params?: EditInlineMessageMediaParams): Promise<void>;
+  abstract sendMessageDraft(chatId: ID, draftId: number, text: string, params?: SendMessageDraftParams): Promise<void>;
 
   /**
-   * Edit an inline message's text. Bot-only.
+   * Send a photo.
    *
    * @method ms
-   * @param inlineMessageId The identifier of the inline message.
-   * @param text The new text of the message.
+   * @param chatId The identifier of a chat to send the photo to.
+   * @param photo The photo to send.
+   * @returns The sent photo.
    */
-  abstract editInlineMessageText(inlineMessageId: string, text: string, params?: EditInlineMessageTextParams): Promise<void>;
+  abstract sendPhoto(chatId: ID, photo: FileSource, params?: SendPhotoParams): Promise<MessagePhoto>;
 
   /**
-   * Edit an inline message's rich text. Bot-only.
+   * Send a poll.
    *
    * @method ms
-   * @param inlineMessageId The identifier of the inline message.
-   * @param richText The new rich text of the message.
+   * @param chatId The identifier of a chat to send the poll to.
+   * @param question The poll's question.
+   * @param options The poll's options.
+   * @returns The sent poll.
    */
-  abstract editInlineMessageRichText(inlineMessageId: string, richText: InputRichText, params?: EditInlineMessageRichTextParams): Promise<void>;
+  abstract sendPoll(chatId: ID, question: string, options: InputPollOption[], params?: SendPollParams): Promise<MessagePoll>;
 
   /**
-   * Edit an inline message's caption. Bot-only.
+   * Send a rich text message.
    *
    * @method ms
-   * @param inlineMessageId The identifier of the inline message.
+   * @param chatId The identifier of a chat to send the message to.
+   * @param richText The message's rich text.
+   * @returns The sent rich text message.
    */
-  abstract editInlineMessageCaption(inlineMessageId: string, params?: EditInlineMessageCaptionParams): Promise<void>;
+  abstract sendRichText(chatId: ID, richText: InputRichText, params?: SendRichTextParams): Promise<MessageRichText>;
 
   /**
-   * Edit a message's reply markup.
+   * Stream a drafted rich text message. Bot-only.
    *
    * @method ms
-   * @param chatId The identifier of the chat which the message belongs to.
-   * @param messageId The identifier of the message.
-   * @returns The edited message.
+   * @param chatId The identifier of a chat to send the message to.
+   * @param draftId The identifier of the draft.
+   * @param richText The message's rich text.
    */
-  abstract editMessageReplyMarkup(
-    chatId: ID,
-    messageId: number,
-    params?: EditMessageReplyMarkupParams,
-  ): Promise<Message>;
-
-  /**
-   * Edit an inline message's reply markup. Bot-only.
-   *
-   * @method ms
-   * @param inlineMessageId The identifier of the inline message.
-   */
-  abstract editInlineMessageReplyMarkup(inlineMessageId: string, params?: EditMessageReplyMarkupParams): Promise<void>;
-
-  /**
-   * Edit a message's live location.
-   *
-   * @method ms
-   * @param chatId The identifier of the chat which the message belongs to.
-   * @param messageId The identifier of the message.
-   * @param latitude The new latitude.
-   * @param longitude The new longitude.
-   * @returns The edited location message.
-   */
-  abstract editMessageLiveLocation(
-    chatId: ID,
-    messageId: number,
-    latitude: number,
-    longitude: number,
-    params?: EditMessageLiveLocationParams,
-  ): Promise<MessageLocation>;
-
-  /**
-   * Edit an inline message's live location. Bot-only.
-   *
-   * @method ms
-   * @param inlineMessageId The identifier of the inline message.
-   * @param latitude The new latitude.
-   * @param longitude The new longitude.
-   * @returns The edited location message.
-   */
-  abstract editInlineMessageLiveLocation(
-    inlineMessageId: string,
-    latitude: number,
-    longitude: number,
-    params?: EditMessageLiveLocationParams,
-  ): Promise<void>;
-
-  /**
-   * Retrieve multiple messages.
-   *
-   * @method ms
-   * @param chatId The identifier of a chat to retrieve the messages from.
-   * @param messageIds The identifiers of the messages to retrieve.
-   * @example ```ts
-   * const messages = await client.getMessages("@MTKruto", [210, 212]);
-   * ```
-   * @returns The retrieved messages.
-   * @cache
-   */
-  abstract getMessages(chatId: ID, messageIds: number[]): Promise<Message[]>;
-
-  /**
-   * Retrieve a single message.
-   *
-   * @method ms
-   * @param chatId The identifier of a chat.
-   * @param messageId The identifier of the message to retrieve.
-   * @example ```ts
-   * const message = await client.getMessage("@MTKruto", 212);
-   * ```
-   * @returns The retrieved message.
-   * @cache
-   */
-  abstract getMessage(chatId: ID, messageId: number): Promise<Message | null>;
-
-  /**
-   * Retrieve a message using its link.
-   *
-   * @method ms
-   * @param link A message link.
-   * @example ```ts
-   * const message = await client.resolveMessageLink("https://t.me/MTKruto/212");
-   * ```
-   * @returns The message that was linked to.
-   */
-  abstract resolveMessageLink(link: string): Promise<Message | null>;
-
-  /**
-   * Delete multiple messages.
-   *
-   * @method ms
-   * @param chatId The identifier of the chat which the message belongs to.
-   * @param messageIds The identifiers of the messages to delete.
-   */
-  abstract deleteMessages(chatId: ID, messageIds: number[], params?: DeleteMessagesParams): Promise<void>;
-
-  /**
-   * Delete a single message.
-   *
-   * @method ms
-   * @param chatId The identifier of the chat which the message belongs to.
-   * @param messageId The identifier of the message to delete.
-   */
-  abstract deleteMessage(chatId: ID, messageId: number, params?: DeleteMessageParams): Promise<void>;
-
-  /**
-   * Delete all messages sent by a specific member of a chat. User-only.
-   *
-   * @method ms
-   * @param chatId The identifier of a chat. Must be a supergroup.
-   * @param memberId The identifier of the member.
-   */
-  abstract deleteChatMemberMessages(chatId: ID, memberId: ID): Promise<void>;
-
-  /**
-   * Delete multiple scheduled messages.
-   *
-   * @method ms
-   * @param chatId The identifier of a chat.
-   * @param messageIds The identifiers of the scheduled messages to delete.
-   */
-  abstract deleteScheduledMessages(chatId: ID, messageIds: number[]): Promise<void>;
-
-  /**
-   * Delete a scheduled message.
-   *
-   * @method ms
-   * @param chatId The identifier of a chat.
-   * @param messageId The identifier of the scheduled message to delete.
-   */
-  abstract deleteScheduledMessage(chatId: ID, messageId: number): Promise<void>;
-
-  /**
-   * Send multiple scheduled messages before their schedule.
-   *
-   * @method ms
-   * @param chatId The identifier of a chat.
-   * @param messageIds The identifiers of the scheduled messages to send.
-   */
-  abstract sendScheduledMessages(chatId: ID, messageIds: number[]): Promise<Message[]>;
+  abstract sendRichTextDraft(chatId: ID, draftId: number, richText: InputRichText, params?: SendRichTextDraftParams): Promise<void>;
 
   /**
    * Send a scheduled message before its schedule.
@@ -1006,13 +1179,159 @@ export abstract class ClientGeneric {
   abstract sendScheduledMessage(chatId: ID, messageId: number): Promise<Message>;
 
   /**
-   * Pin a message in a chat.
+   * Send multiple scheduled messages before their schedule.
    *
    * @method ms
    * @param chatId The identifier of a chat.
-   * @param messageId The identifier of the message.
+   * @param messageIds The identifiers of the scheduled messages to send.
    */
-  abstract pinMessage(chatId: ID, messageId: number, params?: PinMessageParams): Promise<void>;
+  abstract sendScheduledMessages(chatId: ID, messageIds: number[]): Promise<Message[]>;
+
+  /**
+   * Send a screenshot notification. User-only.
+   *
+   * @method ms
+   * @param chatId The identifier of a chat.
+   * @param replyToMessageId The identifier of the message.
+   */
+  abstract sendScreenshotNotification(chatId: ID, replyToMessageId: number): Promise<void>;
+
+  /**
+   * Send a sticker.
+   *
+   * @method ms
+   * @param chatId The identifier of a chat to send the sticker to.
+   * @param sticker The sticker to send.
+   * @returns The sent sticker.
+   */
+  abstract sendSticker(chatId: ID, sticker: FileSource, params?: SendStickerParams): Promise<MessageSticker>;
+
+  /**
+   * Send a venue.
+   *
+   * @method ms
+   * @param chatId The identifier of a chat to send the venue to.
+   * @param latitude The latitude of the venue.
+   * @param longitude The longitude of the venue.
+   * @param title The title of the venue.
+   * @param address The written address of the venue.
+   * @returns The sent venue.
+   */
+  abstract sendVenue(chatId: ID, latitude: number, longitude: number, title: string, address: string, params?: SendVenueParams): Promise<MessageVenue>;
+
+  /**
+   * Send a video.
+   *
+   * @method ms
+   * @param chatId The identifier of a chat to send the video to.
+   * @param video The video to send.
+   * @returns The sent video.
+   */
+  abstract sendVideo(chatId: ID, video: FileSource, params?: SendVideoParams): Promise<MessageVideo>;
+
+  /**
+   * Send a video note.
+   *
+   * @method ms
+   * @param chatId The identifier of a chat to send the video note to.
+   * @param videoNote The video note to send.
+   * @returns The sent video note.
+   */
+  abstract sendVideoNote(chatId: ID, videoNote: FileSource, params?: SendVideoNoteParams): Promise<MessageVideoNote>;
+
+  /**
+   * Send a voice message.
+   *
+   * @method ms
+   * @param chatId The identifier of a chat to send the voice message to.
+   * @param voice The voice to send.
+   * @returns The sent voice message.
+   */
+  abstract sendVoice(chatId: ID, voice: FileSource, params?: SendVoiceParams): Promise<MessageVoice>;
+
+  /**
+   * Set a reaction as default. User-only.
+   *
+   * @method ms
+   * @param reaction The reaction to set as default.
+   */
+  abstract setDefaultReaction(reaction: Reaction): Promise<void>;
+
+  /**
+   * Start a bot. User-only.
+   *
+   * @method ms
+   * @param botId The identifier of the bot to start.
+   * @returns The start message.
+   */
+  abstract startBot(botId: number, params?: StartBotParams): Promise<Message>;
+
+  /**
+   * Stop a poll.
+   *
+   * @method ms
+   * @param chatId The chat that includes the poll.
+   * @param messageId The identifier of the poll's message.
+   * @returns The new state of the poll.
+   */
+  abstract stopPoll(chatId: ID, messageId: number, params?: StopPollParams): Promise<Poll>;
+
+  /**
+   * Summarize a message's text. User-only.
+   *
+   * @method ms
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of a message.
+   */
+  abstract summarizeText(chatId: ID, messageId: number, params?: SummarizeTextParams): Promise<SummarizedText>;
+
+  /**
+   * Transcribe a voice message. User-only.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageId The identifier of the message.
+   * @cache
+   */
+  abstract transcribeVoice(chatId: ID, messageId: number): Promise<VoiceTranscription>;
+
+  /**
+   * Translate a single text. User-only.
+   *
+   * @method ms
+   * @param toLanguage The code of the language to translate into.
+   * @param chatId The identifier of the chat including the message.
+   * @param messageId The identifier of the message to translate.
+   */
+  abstract translateMessage(toLanguage: string, chatId: ID, messageId: number, params?: TranslateTextParams): Promise<TranslatedText>;
+
+  /**
+   * Translate multiple texts. User-only.
+   *
+   * @method ms
+   * @param toLanguage The code of the language to translate into.
+   * @param chatId The identifier of the chat including the messages.
+   * @param messageIds The identifiers of the messages to translate.
+   */
+  abstract translateMessages(toLanguage: string, chatId: ID, messageIds: number[], params?: TranslateTextParams): Promise<TranslatedText[]>;
+
+  /**
+   * Translate a single text. User-only.
+   *
+   * @method ms
+   * @param toLanguage The code of the language to translate into.
+   * @param text The text to translate.
+   */
+  abstract translateText(toLanguage: string, text: TextToTranslate, params?: TranslateTextParams): Promise<TranslatedText>;
+
+  /**
+   * Translate multiple texts. User-only.
+   *
+   * @method ms
+   * @param toLanguage The code of the language to translate into.
+   * @param texts The texts to translate.
+   */
+  abstract translateTexts(toLanguage: string, texts: TextToTranslate[], params?: TranslateTextParams): Promise<TranslatedText[]>;
 
   /**
    * Unpin a pinned message.
@@ -1032,163 +1351,12 @@ export abstract class ClientGeneric {
   abstract unpinMessages(chatId: ID, params?: UnpinMessagesParams): Promise<void>;
 
   /**
-   * Forward multiple messages.
+   * Unsave an animation. User-only.
    *
    * @method ms
-   * @param from The identifier of a chat to forward the messages from.
-   * @param to The identifier of a chat to forward the messages to.
-   * @param messageIds The identifiers of the messages to forward.
-   * @returns The forwarded messages.
+   * @param fileId The file identifier of the animation.
    */
-  abstract forwardMessages(from: ID, to: ID, messageIds: number[], params?: ForwardMessagesParams): Promise<Message[]>;
-
-  /**
-   * Forward a single message.
-   *
-   * @method ms
-   * @param from The identifier of a chat to forward the message from.
-   * @param to The identifier of a chat to forward the message to.
-   * @param messageId The identifier of the message to forward.
-   * @returns The forwarded message.
-   */
-  abstract forwardMessage(from: ID, to: ID, messageId: number, params?: ForwardMessagesParams): Promise<Message>;
-
-  /**
-   * Stop a poll.
-   *
-   * @method ms
-   * @param chatId The chat that includes the poll.
-   * @param messageId The identifier of the poll's message.
-   * @returns The new state of the poll.
-   */
-  abstract stopPoll(chatId: ID, messageId: number, params?: StopPollParams): Promise<Poll>;
-
-  /**
-   * Send a chat action.
-   *
-   * @method ms
-   * @param chatId The identifier of a chat to send the chat action to.
-   * @param action The chat action.
-   */
-  abstract sendChatAction(chatId: ID, action: ChatActionType, params?: { messageThreadId?: number }): Promise<void>;
-
-  /**
-   * Search for messages. User-only.
-   *
-   * @method ms
-   */
-  abstract searchMessages(params?: SearchMessagesParams): Promise<MessageList>;
-
-  /**
-   * Mark messages as read. User-only.
-   *
-   * @method ms
-   * @param chatId The identifier of the chat which the messages belong to.
-   * @param untilMessageId The identifier of the message that will be marked as read, along with any other unread messages before it.
-   */
-  abstract readMessages(chatId: ID, untilMessageId: number): Promise<void>;
-
-  /**
-   * Start a bot. User-only.
-   *
-   * @method ms
-   * @param botId The identifier of the bot to start.
-   * @returns The start message.
-   */
-  abstract startBot(botId: number, params?: StartBotParams): Promise<Message>;
-
-  /**
-   * Transcribe a voice message. User-only.
-   *
-   * @method ms
-   * @param chatId The identifier of the chat which the message belongs to.
-   * @param messageId The identifier of the message.
-   * @cache
-   */
-  abstract transcribeVoice(chatId: ID, messageId: number): Promise<VoiceTranscription>;
-
-  /**
-   * Get the link preview for a message that is about to be sent. User-only.
-   *
-   * @method ms
-   * @param text The message's text.
-   */
-  abstract getLinkPreview(text: string, params?: GetLinkPreviewParams): Promise<LinkPreview | null>;
-
-  /**
-   * Open a mini app. User-only.
-   *
-   * @method ms
-   * @param botId The identifier of a bot with the mini app.
-   * @param chatId The identifier of the chat from which the mini app is opened.
-   * @cache
-   */
-  abstract openMiniApp(botId: ID, chatId: ID, params?: OpenMiniAppParams): Promise<MiniAppInfo>;
-
-  /**
-   * Get a progress ID that can be passed to relevant send* methods to receive upload progress updates for them.
-   *
-   * @method ms
-   * @cache
-   */
-  abstract getProgressId(): Promise<string>;
-
-  /**
-   * Get messages saved from a specific chat.
-   *
-   * @method ms
-   * @param chatId The identifier of a chat.
-   */
-  abstract getSavedMessages(chatId: ID, params?: GetSavedMessagesParams): Promise<Message[]>;
-
-  /**
-   * Get a list of saved chats.
-   *
-   * @method ms
-   */
-  abstract getSavedChats(params?: GetSavedChatsParams): Promise<SavedChats>;
-
-  /**
-   * Get a list of reactions made to a message. User-only.
-   *
-   * @method ms
-   * @param chatId The identifier of a chat.
-   * @param messageId The identifier of the message.
-   */
-  abstract getMessageReactions(chatId: ID, messageId: number, params?: GetMessageReactionsParams): Promise<MessageReactionList>;
-
-  /**
-   * Set a reaction as default. User-only.
-   *
-   * @method ms
-   * @param reaction The reaction to set as default.
-   */
-  abstract setDefaultReaction(reaction: Reaction): Promise<void>;
-
-  /**
-   * Clear all message drafts. User-only.
-   *
-   * @method ms
-   */
-  abstract clearDrafts(): Promise<void>;
-
-  /**
-   * Summarize a message's text. User-only.
-   *
-   * @method ms
-   * @param chatId The identifier of a chat.
-   * @param messageId The identifier of a message.
-   */
-  abstract summarizeText(chatId: ID, messageId: number, params?: SummarizeTextParams): Promise<SummarizedText>;
-
-  /**
-   * View multiple messages. User-only.
-   *
-   * @method ms
-   * @param chatId The identifier of the chat including the messages.
-   * @param messageIds The identifiers of the messages.
-   */
-  abstract viewMessages(chatId: ID, messageIds: number[]): Promise<void>;
+  abstract unsaveAnimation(fileId: string): Promise<void>;
 
   /**
    * View a single message. User-only.
@@ -1200,204 +1368,17 @@ export abstract class ClientGeneric {
   abstract viewMessage(chatId: ID, messageId: number): Promise<void>;
 
   /**
-   * Translate multiple texts. User-only.
-   *
-   * @method ms
-   * @param toLanguage The code of the language to translate into.
-   * @param texts The texts to translate.
-   */
-  abstract translateTexts(toLanguage: string, texts: TextToTranslate[], params?: TranslateTextParams): Promise<TranslatedText[]>;
-
-  /**
-   * Translate a single text. User-only.
-   *
-   * @method ms
-   * @param toLanguage The code of the language to translate into.
-   * @param text The text to translate.
-   */
-  abstract translateText(toLanguage: string, text: TextToTranslate, params?: TranslateTextParams): Promise<TranslatedText>;
-
-  /**
-   * Translate multiple texts. User-only.
-   *
-   * @method ms
-   * @param toLanguage The code of the language to translate into.
-   * @param chatId The identifier of the chat including the messages.
-   * @param messageIds The identifiers of the messages to translate.
-   */
-  abstract translateMessages(toLanguage: string, chatId: ID, messageIds: number[], params?: TranslateTextParams): Promise<TranslatedText[]>;
-
-  /**
-   * Translate a single text. User-only.
-   *
-   * @method ms
-   * @param toLanguage The code of the language to translate into.
-   * @param chatId The identifier of the chat including the message.
-   * @param messageId The identifier of the message to translate.
-   */
-  abstract translateMessage(toLanguage: string, chatId: ID, messageId: number, params?: TranslateTextParams): Promise<TranslatedText>;
-
-  /**
-   * Get the counters of multiple messages. User-only.
+   * View multiple messages. User-only.
    *
    * @method ms
    * @param chatId The identifier of the chat including the messages.
    * @param messageIds The identifiers of the messages.
    */
-  abstract getMessagesCounters(chatId: ID, messageIds: number[]): Promise<MessageCounters[]>;
-
-  /**
-   * Get the counters of a single message. User-only.
-   *
-   * @method ms
-   * @param chatId The identifier of the chat including the message.
-   * @param messageId The identifier of the message.
-   */
-  abstract getMessageCounters(chatId: ID, messageId: number): Promise<MessageCounters>;
-
-  /**
-   * Get a message's full rich text. User-only.
-   *
-   * @method ms
-   * @param chatId The identifier of the chat including the message.
-   * @param messageId The identifier of the message.
-   */
-  abstract getRichText(chatId: ID, messageId: number): Promise<RichText | null>;
-
-  /**
-   * Get the scheduled messages of a chat. User-only.
-   *
-   * @method ms
-   * @param chatId The identifier of the chat including the scheduled messages.
-   */
-  abstract getScheduledMessages(chatId: ID): Promise<Message[]>;
-
-  /**
-   * Get favorite stickers. User-only.
-   *
-   * @method ms
-   */
-  abstract getFavoriteStickers(): Promise<Sticker[]>;
-
-  /**
-   * Add a sticker to favorites. User-only.
-   *
-   * @method ms
-   * @param fileId The file identifier of the sticker.
-   */
-  abstract addStickerToFavorites(fileId: string): Promise<void>;
-
-  /**
-   * Remove a sticker from favorites. User-only.
-   *
-   * @method ms
-   * @param fileId The file identifier of the sticker.
-   */
-  abstract removeStickerFromFavorites(fileId: string): Promise<void>;
-
-  /**
-   * Add a sticker to recents. User-only.
-   *
-   * @method ms
-   * @param fileId The file identifier of the sticker.
-   */
-  abstract addStickerToRecents(fileId: string): Promise<void>;
-
-  /**
-   * Remove a sticker from recents. User-only.
-   *
-   * @method ms
-   * @param fileId The file identifier of the sticker.
-   */
-  abstract removeStickerFromRecents(fileId: string): Promise<void>;
-
-  /**
-   * Get recent stickers. User-only.
-   *
-   * @method ms
-   */
-  abstract getRecentStickers(): Promise<Sticker[]>;
-
-  /**
-   * Clear recent stickers. User-only.
-   *
-   * @method ms
-   */
-  abstract clearRecentStickers(): Promise<void>;
-
-  /**
-   * Get saved animations. User-only.
-   *
-   * @method ms
-   */
-  abstract getSavedAnimations(): Promise<Animation[]>;
-
-  /**
-   * Save an animation. User-only.
-   *
-   * @method ms
-   * @param fileId The file identifier of the animation.
-   */
-  abstract saveAnimation(fileId: string): Promise<void>;
-
-  /**
-   * Unsave an animation. User-only.
-   *
-   * @method ms
-   * @param fileId The file identifier of the animation.
-   */
-  abstract unsaveAnimation(fileId: string): Promise<void>;
-
-  /**
-   * Get a message's read date. User-only.
-   *
-   * @method ms
-   * @param chatId The identifier of a chat.
-   * @param messageId The identifier of the message.
-   */
-  abstract getMessageReadDate(chatId: ID, messageId: number): Promise<number>;
-
-  /**
-   * Get a message's viewers. User-only.
-   *
-   * @method ms
-   * @param chatId The identifier of a chat.
-   * @param messageId The identifier of the message.
-   * @returns The message's viewers.
-   */
-  abstract getMessageViewers(chatId: ID, messageId: number): Promise<MessageViewer[]>;
-
-  /**
-   * Send a screenshot notification. User-only.
-   *
-   * @method ms
-   * @param chatId The identifier of a chat.
-   * @param replyToMessageId The identifier of the message.
-   */
-  abstract sendScreenshotNotification(chatId: ID, replyToMessageId: number): Promise<void>;
+  abstract viewMessages(chatId: ID, messageIds: number[]): Promise<void>;
 
   //
   // ========================= POLLS ========================= //
   //
-
-  /**
-   * Cast a vote. User-only.
-   *
-   * @method pl
-   * @param chatId The identifier of the chat that includes the poll.
-   * @param messageId The identifier of the message that includes the poll.
-   * @param optionIndexes The indexes of the options to cast for.
-   */
-  abstract vote(chatId: ID, messageId: number, optionIndexes: number[]): Promise<void>;
-
-  /**
-   * Retract a vote. User-only.
-   *
-   * @method pl
-   * @param chatId The identifier of the chat that includes the poll.
-   * @param messageId The identifier of the message that includes the poll.
-   */
-  abstract retractVote(chatId: ID, messageId: number): Promise<void>;
 
   /**
    * Add an option to a poll. User-only.
@@ -1410,6 +1391,15 @@ export abstract class ClientGeneric {
   abstract addPollOption(chatId: ID, messageId: number, option: InputPollOption): Promise<void>;
 
   /**
+   * Get poll voters. User-only.
+   *
+   * @method pl
+   * @param chatId The identifier of the chat that includes the poll.
+   * @param messageId The identifier of the message that includes the poll.
+   */
+  abstract getPollVoters(chatId: ID, messageId: number, params?: GetPollVotersParams): Promise<PollVoterList>;
+
+  /**
    * Remove an option from a poll. User-only.
    *
    * @method pl
@@ -1420,13 +1410,23 @@ export abstract class ClientGeneric {
   abstract removePollOption(chatId: ID, messageId: number, optionIndex: number): Promise<void>;
 
   /**
-   * Get poll voters. User-only.
+   * Retract a vote. User-only.
    *
    * @method pl
    * @param chatId The identifier of the chat that includes the poll.
    * @param messageId The identifier of the message that includes the poll.
    */
-  abstract getPollVoters(chatId: ID, messageId: number, params?: GetPollVotersParams): Promise<PollVoterList>;
+  abstract retractVote(chatId: ID, messageId: number): Promise<void>;
+
+  /**
+   * Cast a vote. User-only.
+   *
+   * @method pl
+   * @param chatId The identifier of the chat that includes the poll.
+   * @param messageId The identifier of the message that includes the poll.
+   * @param optionIndexes The indexes of the options to cast for.
+   */
+  abstract vote(chatId: ID, messageId: number, optionIndexes: number[]): Promise<void>;
 
   //
   // ========================= CHECKLISTS ========================= //
@@ -1443,13 +1443,14 @@ export abstract class ClientGeneric {
   abstract addToChecklist(chatId: ID, messageId: number, items: InputChecklistItem[]): Promise<void>;
 
   /**
-   * Update a checklist. User-only.
+   * Check a single item of a checklist. User-only.
    *
    * @param chatId The identifier of a chat.
    * @param messageId The identifier of the checklist message.
+   * @param item The identifier of the item to check.
    * @method cl
    */
-  abstract updateChecklist(chatId: ID, messageId: number, params?: UpdateChecklistParams): Promise<void>;
+  abstract checkChecklistItem(chatId: ID, messageId: number, item: number): Promise<void>;
 
   /**
    * Check multiple items of a checklist. User-only.
@@ -1462,6 +1463,16 @@ export abstract class ClientGeneric {
   abstract checkChecklistItems(chatId: ID, messageId: number, items: number[]): Promise<void>;
 
   /**
+   * Uncheck a single item of a checklist. User-only.
+   *
+   * @param chatId The identifier of a chat.
+   * @param messageId The identifier of the checklist message.
+   * @param item The identifier of the item to uncheck.
+   * @method cl
+   */
+  abstract uncheckChecklistItem(chatId: ID, messageId: number, item: number): Promise<void>;
+
+  /**
    * Uncheck multiple items of a checklist. User-only.
    *
    * @param chatId The identifier of a chat.
@@ -1472,41 +1483,17 @@ export abstract class ClientGeneric {
   abstract uncheckChecklistItems(chatId: ID, messageId: number, items: number[]): Promise<void>;
 
   /**
-   * Check a single item of a checklist. User-only.
+   * Update a checklist. User-only.
    *
    * @param chatId The identifier of a chat.
    * @param messageId The identifier of the checklist message.
-   * @param item The identifier of the item to check.
    * @method cl
    */
-  abstract checkChecklistItem(chatId: ID, messageId: number, item: number): Promise<void>;
-
-  /**
-   * Uncheck a single item of a checklist. User-only.
-   *
-   * @param chatId The identifier of a chat.
-   * @param messageId The identifier of the checklist message.
-   * @param item The identifier of the item to uncheck.
-   * @method cl
-   */
-  abstract uncheckChecklistItem(chatId: ID, messageId: number, item: number): Promise<void>;
+  abstract updateChecklist(chatId: ID, messageId: number, params?: UpdateChecklistParams): Promise<void>;
 
   //
   // ========================= FILES ========================= //
   //
-
-  /**
-   * Download a chunk of a file.
-   *
-   * @method fs
-   * @param fileId The identifier of a file.
-   * @example ```ts
-   * const chunk = await client.downloadChunk(fileId, { chunkSize: 256 * 1024 });
-   * ```
-   * @returns The downloaded chunk.
-   * @cache file
-   */
-  abstract downloadChunk(fileId: string, params?: DownloadParams): Promise<Uint8Array>;
 
   /**
    * Download a file.
@@ -1524,6 +1511,19 @@ export abstract class ClientGeneric {
   abstract download(fileId: string, params?: DownloadParams): AsyncGenerator<Uint8Array, void, unknown>;
 
   /**
+   * Download a chunk of a file.
+   *
+   * @method fs
+   * @param fileId The identifier of a file.
+   * @example ```ts
+   * const chunk = await client.downloadChunk(fileId, { chunkSize: 256 * 1024 });
+   * ```
+   * @returns The downloaded chunk.
+   * @cache file
+   */
+  abstract downloadChunk(fileId: string, params?: DownloadParams): Promise<Uint8Array>;
+
+  /**
    * Get custom emoji documents for download.
    *
    * @method fs
@@ -1536,259 +1536,6 @@ export abstract class ClientGeneric {
   //
   // ========================= CHATS ========================= //
   //
-
-  /**
-   * Get chats from a chat list. User-only.
-   *
-   * @method ch
-   */
-  abstract getChats(params?: GetChatsParams): Promise<ChatListItem[]>;
-
-  /**
-   * Get pinned chats from a chat list. User-only.
-   *
-   * @method ch
-   * @param from The chat list to get the pinned chats from. Defaults to main.
-   */
-  abstract getPinnedChats(from?: "archived" | "main"): Promise<ChatListItem[]>;
-
-  /**
-   * Get a chat.
-   *
-   * @method ch
-   * @cache
-   */
-  abstract getChat(chatId: ID): Promise<Chat>;
-
-  /**
-   * Get a partial chat.
-   *
-   * @method ch
-   * @cache
-   */
-  abstract getChatP(chatId: ID): Promise<ChatP>;
-
-  /**
-   * Get chat history. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat.
-   */
-  abstract getHistory(chatId: ID, params?: GetHistoryParams): Promise<Message[]>;
-
-  /**
-   * Set a chat's available reactions. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat.
-   * @param availableReactions The new available reactions.
-   */
-  abstract setAvailableReactions(chatId: ID, availableReactions: AvailableReactions): Promise<void>;
-
-  /**
-   * Set a chat's photo.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat.
-   * @param photo A photo to set as the chat's photo.
-   */
-  abstract setChatPhoto(chatId: ID, photo: FileSource, params?: SetChatPhotoParams): Promise<void>;
-
-  /**
-   * Delete a chat's photo.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat.
-   */
-  abstract deleteChatPhoto(chatId: ID): Promise<void>;
-
-  /**
-   * Ban a member from a chat.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat.
-   * @param memberId The identifier of the member.
-   */
-  abstract banChatMember(chatId: ID, memberId: ID, params?: BanChatMemberParams): Promise<void>;
-
-  /**
-   * Unban a member from a chat.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat. Must be a supergroup.
-   * @param memberId The identifier of the member.
-   */
-  abstract unbanChatMember(chatId: ID, memberId: ID): Promise<void>;
-
-  /**
-   * Kick a member from a chat. Same as a banChatMember call followed by unbanChatMember.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat. Must be a supergroup.
-   * @param memberId The identifier of the member.
-   */
-  abstract kickChatMember(chatId: ID, memberId: ID): Promise<void>;
-
-  /**
-   * Set the rights of a chat member.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat. Must be a supergroup.
-   * @param memberId The identifier of the member.
-   */
-  abstract setChatMemberRights(chatId: ID, memberId: ID, params?: SetChatMemberRightsParams): Promise<void>;
-
-  /**
-   * Get the administrators of a chat.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat.
-   * @returns The chat's administrators.
-   */
-  abstract getChatAdministrators(chatId: ID): Promise<ChatMember[]>;
-
-  /**
-   * Enable join requests in a chat. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat. Must be a channel or a supergroup.
-   */
-  abstract enableJoinRequests(chatId: ID): Promise<void>;
-
-  /**
-   * Disable join requests in a chat. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat. Must be a channel or a supergroup.
-   */
-  abstract disableJoinRequests(chatId: ID): Promise<void>;
-
-  /**
-   * Get inactive chats. User-only.
-   *
-   * @method ch
-   * @returns A list of inactive chats the current user is a member of.
-   */
-  abstract getInactiveChats(): Promise<InactiveChat[]>;
-
-  /**
-   * Get the invite links created for a chat. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat.
-   * @returns The invite links created for the chat. This might be a subset of the results if they were less than `limit`. The parameters `afterDate` and `afterInviteLink` can be used for pagination.
-   */
-  abstract getCreatedInviteLinks(chatId: ID, params?: GetCreatedInviteLinksParams): Promise<InviteLink[]>;
-
-  /**
-   * Join a chat. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat.
-   */
-  abstract joinChat(chatId: ID): Promise<void>;
-
-  /**
-   * Leave a chat.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat.
-   */
-  abstract leaveChat(chatId: ID): Promise<void>;
-
-  /**
-   * Get information on a user's chat membership.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat.
-   * @param userId The identifier of the user.
-   */
-  abstract getChatMember(chatId: ID, userId: ID): Promise<ChatMember>;
-
-  /**
-   * Get the members of a chat.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat.
-   */
-  abstract getChatMembers(chatId: ID, params?: GetChatMembersParams): Promise<ChatMember[]>;
-
-  /**
-   * Set a chat's sticker set.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat. Must be a supergroup.
-   * @param setName The name of the set.
-   */
-  abstract setChatStickerSet(chatId: ID, setName: string): Promise<void>;
-
-  /**
-   * Delete a chat's sticker set.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat. Must be a supergroup.
-   */
-  abstract deleteChatStickerSet(chatId: ID): Promise<void>;
-
-  /**
-   * Set the number of boosts required to circumvent a chat's default restrictions. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat.
-   * @param boosts The number of boosts required to circumvent its restrictions.
-   */
-  abstract setBoostsRequiredToCircumventRestrictions(chatId: ID, boosts: number): Promise<void>;
-
-  /**
-   * Create an invite link.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat to create the invite link for.
-   * @returns The newly created invite link.
-   */
-  abstract createInviteLink(chatId: ID, params?: CreateInviteLinkParams): Promise<InviteLink>;
-
-  /**
-   * Approve a join request.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat with the join request.
-   * @param userId The user who made the join request.
-   */
-  abstract approveJoinRequest(chatId: ID, userId: ID): Promise<void>;
-
-  /**
-   * Decline a join request.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat with the join request.
-   * @param userId The user who made the join request.
-   */
-  abstract declineJoinRequest(chatId: ID, userId: ID): Promise<void>;
-
-  /**
-   * Approve all join requests. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat with the join requests.
-   */
-  abstract approveJoinRequests(chatId: ID, params?: ApproveJoinRequestsParams): Promise<void>;
-
-  /**
-   * Decline all join requests. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat with the join requests.
-   */
-  abstract declineJoinRequests(chatId: ID, params?: DeclineJoinRequestsParams): Promise<void>;
-
-  /**
-   * Get pending join requests in a chat. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat with the join requests.
-   */
-  abstract getJoinRequests(chatId: ID, params?: GetJoinRequestsParams): Promise<JoinRequest[]>;
 
   /**
    * Add a single user to a chat.
@@ -1811,12 +1558,46 @@ export abstract class ClientGeneric {
   abstract addChatMembers(chatId: ID, userIds: ID[]): Promise<FailedInvitation[]>;
 
   /**
-   * Open a chat.
+   * Approve a join request.
    *
    * @method ch
-   * @param chatId The identifier of a chat to open.
+   * @param chatId The identifier of a chat with the join request.
+   * @param userId The user who made the join request.
    */
-  abstract openChat(chatId: ID, params?: OpenChatParams): Promise<void>;
+  abstract approveJoinRequest(chatId: ID, userId: ID): Promise<void>;
+
+  /**
+   * Approve all join requests. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat with the join requests.
+   */
+  abstract approveJoinRequests(chatId: ID, params?: ApproveJoinRequestsParams): Promise<void>;
+
+  /**
+   * Archive a single chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  abstract archiveChat(chatId: ID): Promise<void>;
+
+  /**
+   * Archive multiple chats. User-only.
+   *
+   * @method ch
+   * @param chatIds The identifiers of the chats to archive.
+   */
+  abstract archiveChats(chatIds: ID[]): Promise<void>;
+
+  /**
+   * Ban a member from a chat.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param memberId The identifier of the member.
+   */
+  abstract banChatMember(chatId: ID, memberId: ID, params?: BanChatMemberParams): Promise<void>;
 
   /**
    * Close a chat previously opened by openChat.
@@ -1827,22 +1608,13 @@ export abstract class ClientGeneric {
   abstract closeChat(chatId: ID): Promise<void>;
 
   /**
-   * Create a group. User-only.
+   * Close a forum topic.
    *
    * @method ch
-   * @param title The title of the group.
-   * @returns The created group.
+   * @param chatId The identifier of a chat.
+   * @param topicId The identifier of the topic.
    */
-  abstract createGroup(title: string, params?: CreateGroupParams): Promise<ChatPGroup>;
-
-  /**
-   * Create a supergroup. User-only.
-   *
-   * @method ch
-   * @param title The title of the supergroup.
-   * @returns The created supergroup.
-   */
-  abstract createSupergroup(title: string, params?: CreateSupergroupParams): Promise<ChatPSupergroup>;
+  abstract closeTopic(chatId: ID, topicId: number): Promise<void>;
 
   /**
    * Create a channel. User-only.
@@ -1854,211 +1626,31 @@ export abstract class ClientGeneric {
   abstract createChannel(title: string, params?: CreateChannelParams): Promise<ChatPChannel>;
 
   /**
-   * Set the time to live of the messages of a chat. User-only.
+   * Create a group. User-only.
    *
    * @method ch
-   * @param chatId The identifier of a chat.
-   * @param messageTtl The time to live of the messages in seconds.
+   * @param title The title of the group.
+   * @returns The created group.
    */
-  abstract setMessageTtl(chatId: ID, messageTtl: number): Promise<void>;
+  abstract createGroup(title: string, params?: CreateGroupParams): Promise<ChatPGroup>;
 
   /**
-   * Archive multiple chats. User-only.
+   * Create an invite link.
    *
    * @method ch
-   * @param chatIds The identifiers of the chats to archive.
+   * @param chatId The identifier of a chat to create the invite link for.
+   * @returns The newly created invite link.
    */
-  abstract archiveChats(chatIds: ID[]): Promise<void>;
+  abstract createInviteLink(chatId: ID, params?: CreateInviteLinkParams): Promise<InviteLink>;
 
   /**
-   * Archive a single chat. User-only.
+   * Create a supergroup. User-only.
    *
    * @method ch
-   * @param chatId The identifier of a chat.
+   * @param title The title of the supergroup.
+   * @returns The created supergroup.
    */
-  abstract archiveChat(chatId: ID): Promise<void>;
-
-  /**
-   * Unarchive multiple chats. User-only.
-   *
-   * @method ch
-   * @param chatIds The identifiers of the chats to unarchive.
-   */
-  abstract unarchiveChats(chatIds: ID[]): Promise<void>;
-
-  /**
-   * Unarchive a single chat. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat.
-   */
-  abstract unarchiveChat(chatId: ID): Promise<void>;
-
-  /**
-   * Get common chats between a user and the current one. User-only.
-   *
-   * @method ch
-   * @param userId The identifier of the user to get the common chats with them.
-   */
-  abstract getCommonChats(userId: ID, params?: GetCommonChatsParams): Promise<ChatP[]>;
-
-  /**
-   * Get the settings of a chat. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat.
-   */
-  abstract getChatSettings(chatId: ID): Promise<ChatSettings>;
-
-  /**
-   * Disable business bots in a private chat. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of the private chat to disable business bots in.
-   */
-  abstract disableBusinessBots(chatId: ID): Promise<void>;
-
-  /**
-   * Enable business bots in a private chat. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of the private chat to enable business bots in.
-   */
-  abstract enableBusinessBots(chatId: ID): Promise<void>;
-
-  /**
-   * Disable slow mode in a group. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of the group to disable slow mode in.
-   */
-  abstract disableSlowMode(chatId: ID): Promise<void>;
-
-  /**
-   * Change slow mode in a group. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of the group to change slow mode in.
-   * @param duration New slow mode duration.
-   */
-  abstract setSlowMode(chatId: ID, duration: SlowModeDuration): Promise<void>;
-
-  /**
-   * Change the title of a chat.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat.
-   * @param title The new title.
-   */
-  abstract setChatTitle(chatId: ID, title: string): Promise<void>;
-
-  /**
-   * Change the description of a chat.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat.
-   * @param description The new description.
-   */
-  abstract setChatDescription(chatId: ID, description: string): Promise<void>;
-
-  /**
-   * Hide the member list of a group to non-admins. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of the group.
-   */
-  abstract hideMemberList(chatId: ID): Promise<void>;
-
-  /**
-   * Show the member list of a group to non-admins. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of the group.
-   */
-  abstract showMemberList(chatId: ID): Promise<void>;
-
-  /**
-   * Enable topics in a group. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of the group.
-   * @param isShownAsTabs Whether topics should be displayed as tabs.
-   */
-  abstract enableTopics(chatId: ID, isShownAsTabs: boolean): Promise<void>;
-
-  /**
-   * Disable topics in a group. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of the group.
-   */
-  abstract disableTopics(chatId: ID): Promise<void>;
-
-  /**
-   * Enable automatic anti-spam in a group. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of the group.
-   */
-  abstract enableAntispam(chatId: ID): Promise<void>;
-
-  /**
-   * Disable automatic anti-spam in a group. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of the group.
-   */
-  abstract disableAntispam(chatId: ID): Promise<void>;
-
-  /**
-   * Enable post signatures in a channel. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of the channel.
-   */
-  abstract enableSignatures(chatId: ID, params?: EnableSignaturesParams): Promise<void>;
-
-  /**
-   * Disable post signatures in a channel. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of the channel.
-   */
-  abstract disableSignatures(chatId: ID): Promise<void>;
-
-  /**
-   * Delete a chat. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat.
-   */
-  abstract deleteChat(chatId: ID): Promise<void>;
-
-  /**
-   * Get discussion chat suggestions. User-only.
-   *
-   * @method ch
-   */
-  abstract getDiscussionChatSuggestions(): Promise<ChatP[]>;
-
-  /**
-   * Set a channel's discussion chat. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of a channel.
-   * @param discussionChatId The identifier of a chat to use as discussion for the channel.
-   */
-  abstract setDiscussionChat(chatId: ID, discussionChatId: ID): Promise<void>;
-
-  /**
-   * Transfer the ownership of a chat. User-only.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat.
-   * @param userId The identifier of the new owner.
-   * @param password The password of the current account.
-   */
-  abstract transferChatOwnership(chatId: ID, userId: ID, password: string): Promise<void>;
+  abstract createSupergroup(title: string, params?: CreateSupergroupParams): Promise<ChatPSupergroup>;
 
   /**
    * Create a forum topic.
@@ -2069,6 +1661,111 @@ export abstract class ClientGeneric {
    * @returns The created topic.
    */
   abstract createTopic(chatId: ID, title: string, params?: CreateTopicParams): Promise<Topic>;
+
+  /**
+   * Decline a join request.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat with the join request.
+   * @param userId The user who made the join request.
+   */
+  abstract declineJoinRequest(chatId: ID, userId: ID): Promise<void>;
+
+  /**
+   * Decline all join requests. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat with the join requests.
+   */
+  abstract declineJoinRequests(chatId: ID, params?: DeclineJoinRequestsParams): Promise<void>;
+
+  /**
+   * Delete a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  abstract deleteChat(chatId: ID): Promise<void>;
+
+  /**
+   * Delete a chat's photo.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  abstract deleteChatPhoto(chatId: ID): Promise<void>;
+
+  /**
+   * Delete a chat's sticker set.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat. Must be a supergroup.
+   */
+  abstract deleteChatStickerSet(chatId: ID): Promise<void>;
+
+  /**
+   * Disable automatic anti-spam in a group. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the group.
+   */
+  abstract disableAntispam(chatId: ID): Promise<void>;
+
+  /**
+   * Disable business bots in a private chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the private chat to disable business bots in.
+   */
+  abstract disableBusinessBots(chatId: ID): Promise<void>;
+
+  /**
+   * Disable chat history for new members. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  abstract disableChatHistoryForNewMembers(chatId: ID): Promise<void>;
+
+  /**
+   * Disable join requests in a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat. Must be a channel or a supergroup.
+   */
+  abstract disableJoinRequests(chatId: ID): Promise<void>;
+
+  /**
+   * Disable sharing in a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  abstract disableSharing(chatId: ID): Promise<void>;
+
+  /**
+   * Disable post signatures in a channel. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the channel.
+   */
+  abstract disableSignatures(chatId: ID): Promise<void>;
+
+  /**
+   * Disable slow mode in a group. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the group to disable slow mode in.
+   */
+  abstract disableSlowMode(chatId: ID): Promise<void>;
+
+  /**
+   * Disable topics in a group. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the group.
+   */
+  abstract disableTopics(chatId: ID): Promise<void>;
 
   /**
    * Edit a forum topic.
@@ -2082,74 +1779,36 @@ export abstract class ClientGeneric {
   abstract editTopic(chatId: ID, topicId: number, title: string, params?: EditTopicParams): Promise<Topic>;
 
   /**
-   * Hide the general forum topic.
+   * Enable automatic anti-spam in a group. User-only.
    *
    * @method ch
-   * @param chatId The identifier of a chat.
+   * @param chatId The identifier of the group.
    */
-  abstract hideGeneralTopic(chatId: ID): Promise<void>;
+  abstract enableAntispam(chatId: ID): Promise<void>;
 
   /**
-   * Show the general forum topic.
+   * Enable business bots in a private chat. User-only.
    *
    * @method ch
-   * @param chatId The identifier of a chat.
+   * @param chatId The identifier of the private chat to enable business bots in.
    */
-  abstract showGeneralTopic(chatId: ID): Promise<void>;
+  abstract enableBusinessBots(chatId: ID): Promise<void>;
 
   /**
-   * Close a forum topic.
+   * Enable chat history for new members. User-only.
    *
    * @method ch
    * @param chatId The identifier of a chat.
-   * @param topicId The identifier of the topic.
    */
-  abstract closeTopic(chatId: ID, topicId: number): Promise<void>;
+  abstract enableChatHistoryForNewMembers(chatId: ID): Promise<void>;
 
   /**
-   * Reopen a forum topic.
+   * Enable join requests in a chat. User-only.
    *
    * @method ch
-   * @param chatId The identifier of a chat.
-   * @param topicId The identifier of the topic.
+   * @param chatId The identifier of a chat. Must be a channel or a supergroup.
    */
-  abstract reopenTopic(chatId: ID, topicId: number): Promise<void>;
-
-  /**
-   * Pin a forum topic.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat.
-   * @param topicId The identifier of the topic.
-   */
-  abstract pinTopic(chatId: ID, topicId: number): Promise<void>;
-
-  /**
-   * Unpin a forum topic.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat.
-   * @param topicId The identifier of the topic.
-   */
-  abstract unpinTopic(chatId: ID, topicId: number): Promise<void>;
-
-  /**
-   * Promote a chat member.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat.
-   * @param userId The identifier of the user to promote.
-   */
-  abstract promoteChatMember(chatId: ID, userId: ID, params?: PromoteChatMemberParams): Promise<void>;
-
-  /**
-   * Change the tag of a chat member.
-   *
-   * @method ch
-   * @param chatId The identifier of a chat.
-   * @param userId The identifier of the user that is a member of the chat.
-   */
-  abstract setChatMemberTag(chatId: ID, userId: ID, params?: SetChatMemberTagParams): Promise<void>;
+  abstract enableJoinRequests(chatId: ID): Promise<void>;
 
   /**
    * Enable sharing in a chat. User-only.
@@ -2160,38 +1819,126 @@ export abstract class ClientGeneric {
   abstract enableSharing(chatId: ID): Promise<void>;
 
   /**
-   * Disable sharing in a chat. User-only.
+   * Enable post signatures in a channel. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the channel.
+   */
+  abstract enableSignatures(chatId: ID, params?: EnableSignaturesParams): Promise<void>;
+
+  /**
+   * Enable topics in a group. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the group.
+   * @param isShownAsTabs Whether topics should be displayed as tabs.
+   */
+  abstract enableTopics(chatId: ID, isShownAsTabs: boolean): Promise<void>;
+
+  /**
+   * Get a chat.
+   *
+   * @method ch
+   * @cache
+   */
+  abstract getChat(chatId: ID): Promise<Chat>;
+
+  /**
+   * Get the administrators of a chat.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @returns The chat's administrators.
+   */
+  abstract getChatAdministrators(chatId: ID): Promise<ChatMember[]>;
+
+  /**
+   * Get information on a user's chat membership.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param userId The identifier of the user.
+   */
+  abstract getChatMember(chatId: ID, userId: ID): Promise<ChatMember>;
+
+  /**
+   * Get the members of a chat.
    *
    * @method ch
    * @param chatId The identifier of a chat.
    */
-  abstract disableSharing(chatId: ID): Promise<void>;
+  abstract getChatMembers(chatId: ID, params?: GetChatMembersParams): Promise<ChatMember[]>;
 
   /**
-   * Get recommended channels. User-only.
+   * Get a partial chat.
    *
    * @method ch
-   * @returns A list of recommended channels.
+   * @cache
    */
-  abstract getRecommendedChannels(): Promise<ChatPChannel[]>;
+  abstract getChatP(chatId: ID): Promise<ChatP>;
 
   /**
-   * Get similar channels. User-only.
+   * Get chats from a chat list. User-only.
    *
    * @method ch
-   * @param chatId The identifier of a channel to get similar channels for.
-   * @returns A list of similar channels.
    */
-  abstract getSimilarChannels(chatId: ID): Promise<ChatPChannel[]>;
+  abstract getChats(params?: GetChatsParams): Promise<ChatListItem[]>;
 
   /**
-   * Get similar bots. User-only.
+   * Get the settings of a chat. User-only.
    *
    * @method ch
-   * @param chatId The identifier of a bot to get similar bots for.
-   * @returns A list of similar bots.
+   * @param chatId The identifier of a chat.
    */
-  abstract getSimilarBots(chatId: ID): Promise<ChatPPrivate[]>;
+  abstract getChatSettings(chatId: ID): Promise<ChatSettings>;
+
+  /**
+   * Get common chats between a user and the current one. User-only.
+   *
+   * @method ch
+   * @param userId The identifier of the user to get the common chats with them.
+   */
+  abstract getCommonChats(userId: ID, params?: GetCommonChatsParams): Promise<ChatP[]>;
+
+  /**
+   * Get the invite links created for a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @returns The invite links created for the chat. This might be a subset of the results if they were less than `limit`. The parameters `afterDate` and `afterInviteLink` can be used for pagination.
+   */
+  abstract getCreatedInviteLinks(chatId: ID, params?: GetCreatedInviteLinksParams): Promise<InviteLink[]>;
+
+  /**
+   * Get discussion chat suggestions. User-only.
+   *
+   * @method ch
+   */
+  abstract getDiscussionChatSuggestions(): Promise<ChatP[]>;
+
+  /**
+   * Get chat history. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  abstract getHistory(chatId: ID, params?: GetHistoryParams): Promise<Message[]>;
+
+  /**
+   * Get inactive chats. User-only.
+   *
+   * @method ch
+   * @returns A list of inactive chats the current user is a member of.
+   */
+  abstract getInactiveChats(): Promise<InactiveChat[]>;
+
+  /**
+   * Get pending join requests in a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat with the join requests.
+   */
+  abstract getJoinRequests(chatId: ID, params?: GetJoinRequestsParams): Promise<JoinRequest[]>;
 
   /**
    * Get the count of online members in a chat. User-only.
@@ -2203,29 +1950,138 @@ export abstract class ClientGeneric {
   abstract getOnlineCount(chatId: ID): Promise<number>;
 
   /**
-   * Enable chat history for new members. User-only.
+   * Get pinned chats from a chat list. User-only.
    *
    * @method ch
-   * @param chatId The identifier of a chat.
+   * @param from The chat list to get the pinned chats from. Defaults to main.
    */
-  abstract enableChatHistoryForNewMembers(chatId: ID): Promise<void>;
+  abstract getPinnedChats(from?: "archived" | "main"): Promise<ChatListItem[]>;
 
   /**
-   * Disable chat history for new members. User-only.
+   * Get recommended channels. User-only.
    *
    * @method ch
-   * @param chatId The identifier of a chat.
+   * @returns A list of recommended channels.
    */
-  abstract disableChatHistoryForNewMembers(chatId: ID): Promise<void>;
+  abstract getRecommendedChannels(): Promise<ChatPChannel[]>;
 
   /**
-   * Set the default send as chat of a chat. User-only.
+   * Get similar bots. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a bot to get similar bots for.
+   * @returns A list of similar bots.
+   */
+  abstract getSimilarBots(chatId: ID): Promise<ChatPPrivate[]>;
+
+  /**
+   * Get similar channels. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a channel to get similar channels for.
+   * @returns A list of similar channels.
+   */
+  abstract getSimilarChannels(chatId: ID): Promise<ChatPChannel[]>;
+
+  /**
+   * Hide the general forum topic.
    *
    * @method ch
    * @param chatId The identifier of a chat.
-   * @param sendAs The new default send as chat.
    */
-  abstract setDefaultSendAs(chatId: ID, sendAs: ID): Promise<void>;
+  abstract hideGeneralTopic(chatId: ID): Promise<void>;
+
+  /**
+   * Hide the member list of a group to non-admins. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the group.
+   */
+  abstract hideMemberList(chatId: ID): Promise<void>;
+
+  /**
+   * Join a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  abstract joinChat(chatId: ID): Promise<void>;
+
+  /**
+   * Kick a member from a chat. Same as a banChatMember call followed by unbanChatMember.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat. Must be a supergroup.
+   * @param memberId The identifier of the member.
+   */
+  abstract kickChatMember(chatId: ID, memberId: ID): Promise<void>;
+
+  /**
+   * Leave a chat.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  abstract leaveChat(chatId: ID): Promise<void>;
+
+  /**
+   * Mark all mentions in a chat as read. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat.
+   */
+  abstract markAllMentionsAsRead(chatId: ID, params?: MarkAllMentionsAsReadParams): Promise<void>;
+
+  /**
+   * Mark a chat as read. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  abstract markChatAsRead(chatId: ID): Promise<void>;
+
+  /**
+   * Mark a chat as unread. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   */
+  abstract markChatAsUnread(chatId: ID): Promise<void>;
+
+  /**
+   * Open a chat.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat to open.
+   */
+  abstract openChat(chatId: ID, params?: OpenChatParams): Promise<void>;
+
+  /**
+   * Pin a forum topic.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param topicId The identifier of the topic.
+   */
+  abstract pinTopic(chatId: ID, topicId: number): Promise<void>;
+
+  /**
+   * Promote a chat member.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param userId The identifier of the user to promote.
+   */
+  abstract promoteChatMember(chatId: ID, userId: ID, params?: PromoteChatMemberParams): Promise<void>;
+
+  /**
+   * Reopen a forum topic.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param topicId The identifier of the topic.
+   */
+  abstract reopenTopic(chatId: ID, topicId: number): Promise<void>;
 
   /**
    * Report a chat. User-only.
@@ -2237,32 +2093,184 @@ export abstract class ClientGeneric {
   abstract reportChat(chatId: ID, reason: ReportReason, params?: ReportChatParams): Promise<void>;
 
   /**
-   * Mark a chat as unread. User-only.
+   * Set a chat's available reactions. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param availableReactions The new available reactions.
+   */
+  abstract setAvailableReactions(chatId: ID, availableReactions: AvailableReactions): Promise<void>;
+
+  /**
+   * Set the number of boosts required to circumvent a chat's default restrictions. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param boosts The number of boosts required to circumvent its restrictions.
+   */
+  abstract setBoostsRequiredToCircumventRestrictions(chatId: ID, boosts: number): Promise<void>;
+
+  /**
+   * Change the description of a chat.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param description The new description.
+   */
+  abstract setChatDescription(chatId: ID, description: string): Promise<void>;
+
+  /**
+   * Set the rights of a chat member.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat. Must be a supergroup.
+   * @param memberId The identifier of the member.
+   */
+  abstract setChatMemberRights(chatId: ID, memberId: ID, params?: SetChatMemberRightsParams): Promise<void>;
+
+  /**
+   * Change the tag of a chat member.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param userId The identifier of the user that is a member of the chat.
+   */
+  abstract setChatMemberTag(chatId: ID, userId: ID, params?: SetChatMemberTagParams): Promise<void>;
+
+  /**
+   * Set a chat's photo.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param photo A photo to set as the chat's photo.
+   */
+  abstract setChatPhoto(chatId: ID, photo: FileSource, params?: SetChatPhotoParams): Promise<void>;
+
+  /**
+   * Set a chat's sticker set.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat. Must be a supergroup.
+   * @param setName The name of the set.
+   */
+  abstract setChatStickerSet(chatId: ID, setName: string): Promise<void>;
+
+  /**
+   * Change the title of a chat.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param title The new title.
+   */
+  abstract setChatTitle(chatId: ID, title: string): Promise<void>;
+
+  /**
+   * Set the default send as chat of a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param sendAs The new default send as chat.
+   */
+  abstract setDefaultSendAs(chatId: ID, sendAs: ID): Promise<void>;
+
+  /**
+   * Set a channel's discussion chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a channel.
+   * @param discussionChatId The identifier of a chat to use as discussion for the channel.
+   */
+  abstract setDiscussionChat(chatId: ID, discussionChatId: ID): Promise<void>;
+
+  /**
+   * Set the time to live of the messages of a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param messageTtl The time to live of the messages in seconds.
+   */
+  abstract setMessageTtl(chatId: ID, messageTtl: number): Promise<void>;
+
+  /**
+   * Change slow mode in a group. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the group to change slow mode in.
+   * @param duration New slow mode duration.
+   */
+  abstract setSlowMode(chatId: ID, duration: SlowModeDuration): Promise<void>;
+
+  /**
+   * Show the general forum topic.
    *
    * @method ch
    * @param chatId The identifier of a chat.
    */
-  abstract markChatAsUnread(chatId: ID): Promise<void>;
+  abstract showGeneralTopic(chatId: ID): Promise<void>;
 
   /**
-   * Mark a chat as read. User-only.
+   * Show the member list of a group to non-admins. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the group.
+   */
+  abstract showMemberList(chatId: ID): Promise<void>;
+
+  /**
+   * Transfer the ownership of a chat. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param userId The identifier of the new owner.
+   * @param password The password of the current account.
+   */
+  abstract transferChatOwnership(chatId: ID, userId: ID, password: string): Promise<void>;
+
+  /**
+   * Unarchive a single chat. User-only.
    *
    * @method ch
    * @param chatId The identifier of a chat.
    */
-  abstract markChatAsRead(chatId: ID): Promise<void>;
+  abstract unarchiveChat(chatId: ID): Promise<void>;
 
   /**
-   * Mark all mentions in a chat as read. User-only.
+   * Unarchive multiple chats. User-only.
    *
    * @method ch
-   * @param chatId The identifier of the chat.
+   * @param chatIds The identifiers of the chats to unarchive.
    */
-  abstract markAllMentionsAsRead(chatId: ID, params?: MarkAllMentionsAsReadParams): Promise<void>;
+  abstract unarchiveChats(chatIds: ID[]): Promise<void>;
+
+  /**
+   * Unban a member from a chat.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat. Must be a supergroup.
+   * @param memberId The identifier of the member.
+   */
+  abstract unbanChatMember(chatId: ID, memberId: ID): Promise<void>;
+
+  /**
+   * Unpin a forum topic.
+   *
+   * @method ch
+   * @param chatId The identifier of a chat.
+   * @param topicId The identifier of the topic.
+   */
+  abstract unpinTopic(chatId: ID, topicId: number): Promise<void>;
 
   //
   // ========================= CALLBACK QUERIES ========================= //
   //
+
+  /**
+   * Answer a callback query. Bot-only.
+   *
+   * @method cq
+   * @param id ID of the callback query to answer.
+   */
+  abstract answerCallbackQuery(id: string, params?: AnswerCallbackQueryParams): Promise<void>;
 
   /**
    * Send a callback query. User-only.
@@ -2276,17 +2284,18 @@ export abstract class ClientGeneric {
    */
   abstract sendCallbackQuery(botId: ID, messageId: number, question: CallbackQueryQuestion): Promise<CallbackQueryAnswer>;
 
-  /**
-   * Answer a callback query. Bot-only.
-   *
-   * @method cq
-   * @param id ID of the callback query to answer.
-   */
-  abstract answerCallbackQuery(id: string, params?: AnswerCallbackQueryParams): Promise<void>;
-
   //
   // ========================= INLINE QUERIES ========================= //
   //
+
+  /**
+   * Answer an inline query. Bot-only.
+   *
+   * @method iq
+   * @param id The identifier of the inline query to answer.
+   * @param results The results to answer with.
+   */
+  abstract answerInlineQuery(id: string, results: InlineQueryResult[], params?: AnswerInlineQueryParams): Promise<void>;
 
   /**
    * Send an inline query. User-only.
@@ -2299,39 +2308,17 @@ export abstract class ClientGeneric {
    */
   abstract sendInlineQuery(botId: ID, chatId: ID, params?: SendInlineQueryParams): Promise<InlineQueryAnswer>;
 
-  /**
-   * Answer an inline query. Bot-only.
-   *
-   * @method iq
-   * @param id The identifier of the inline query to answer.
-   * @param results The results to answer with.
-   */
-  abstract answerInlineQuery(id: string, results: InlineQueryResult[], params?: AnswerInlineQueryParams): Promise<void>;
-
   //
   // ========================= BOTS ========================= //
   //
 
   /**
-   * Set the bot's description in the given language. Bot-only.
+   * Get the bot's commands in the given scope and/or language. Bot-only.
    *
    * @method bo
+   * @returns The current bot's commands in the specified language.
    */
-  abstract setMyDescription(params?: { description?: string; languageCode?: string }): Promise<void>;
-
-  /**
-   * Set the bot's name in the given language. Bot-only.
-   *
-   * @method bo
-   */
-  abstract setMyName(params?: { name?: string; languageCode?: string }): Promise<void>;
-
-  /**
-   * Set the bot's short description in the given language. Bot-only.
-   *
-   * @method bo
-   */
-  abstract setMyShortDescription(params?: { shortDescription?: string; languageCode?: string }): Promise<void>;
+  abstract getMyCommands(params?: GetMyCommandsParams): Promise<BotCommand[]>;
 
   /**
    * Get the bot's description in the given language. Bot-only.
@@ -2366,26 +2353,29 @@ export abstract class ClientGeneric {
   abstract setMyCommands(commands: BotCommand[], params?: SetMyCommandsParams): Promise<void>;
 
   /**
-   * Get the bot's commands in the given scope and/or language. Bot-only.
+   * Set the bot's description in the given language. Bot-only.
    *
    * @method bo
-   * @returns The current bot's commands in the specified language.
    */
-  abstract getMyCommands(params?: GetMyCommandsParams): Promise<BotCommand[]>;
+  abstract setMyDescription(params?: { description?: string; languageCode?: string }): Promise<void>;
+
+  /**
+   * Set the bot's name in the given language. Bot-only.
+   *
+   * @method bo
+   */
+  abstract setMyName(params?: { name?: string; languageCode?: string }): Promise<void>;
+
+  /**
+   * Set the bot's short description in the given language. Bot-only.
+   *
+   * @method bo
+   */
+  abstract setMyShortDescription(params?: { shortDescription?: string; languageCode?: string }): Promise<void>;
 
   //
   // ========================= REACTIONS ========================= //
   //
-
-  /**
-   * Change reactions made to a message.
-   *
-   * @method re
-   * @param chatId The identifier of the chat which the message belongs to.
-   * @param messageId The identifier of the message to add the reaction to.
-   * @param reactions The new reactions.
-   */
-  abstract setReactions(chatId: ID, messageId: number, reactions: Reaction[], params?: SetReactionsParams): Promise<void>;
 
   /**
    * Make a reaction to a message.
@@ -2396,6 +2386,13 @@ export abstract class ClientGeneric {
    * @param reaction The reaction to add.
    */
   abstract addReaction(chatId: ID, messageId: number, reaction: Reaction, params?: AddReactionParams): Promise<void>;
+
+  /**
+   * Clear recent reactions. User-only.
+   *
+   * @method re
+   */
+  abstract clearRecentReactions(): Promise<void>;
 
   /**
    * Undo a reaction made to a message.
@@ -2427,15 +2424,36 @@ export abstract class ClientGeneric {
   abstract removeUserReactions(chatId: ID, userId: ID): Promise<void>;
 
   /**
-   * Clear recent reactions. User-only.
+   * Change reactions made to a message.
    *
    * @method re
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageId The identifier of the message to add the reaction to.
+   * @param reactions The new reactions.
    */
-  abstract clearRecentReactions(): Promise<void>;
+  abstract setReactions(chatId: ID, messageId: number, reactions: Reaction[], params?: SetReactionsParams): Promise<void>;
 
   //
   // ========================= STORIES ========================= //
   //
+
+  /**
+   * Add multiple stories to highlights. User-only.
+   *
+   * @method st
+   * @param chatId The identifier of a chat.
+   * @param storyIds The identifiers of the stories to add to highlights.
+   */
+  abstract addStoriesToHighlights(chatId: ID, storyIds: number[]): Promise<void>;
+
+  /**
+   * Add a single story to highlights. User-only.
+   *
+   * @method st
+   * @param chatId The identifier of a chat.
+   * @param storyId The identifier of the story to add to highlights.
+   */
+  abstract addStoryToHighlights(chatId: ID, storyId: number): Promise<void>;
 
   /**
    * Create a story. User-only.
@@ -2445,6 +2463,24 @@ export abstract class ClientGeneric {
    * @returns The created story.
    */
   abstract createStory(chatId: ID, content: InputStoryContent, params?: CreateStoryParams): Promise<Story>;
+
+  /**
+   * Delete multiple stories. User-only.
+   *
+   * @method st
+   * @param chatId The identifier of a chat.
+   * @param storyIds The identifiers of the stories to delete.
+   */
+  abstract deleteStories(chatId: ID, storyIds: number[]): Promise<void>;
+
+  /**
+   * Delete a single story. User-only.
+   *
+   * @method st
+   * @param chatId The identifier of a chat.
+   * @param storyId The identifier of the story to delete.
+   */
+  abstract deleteStory(chatId: ID, storyId: number): Promise<void>;
 
   /**
    * Retrieve multiple stories. User-only.
@@ -2467,41 +2503,6 @@ export abstract class ClientGeneric {
   abstract getStory(chatId: ID, storyId: number): Promise<Story | null>;
 
   /**
-   * Delete multiple stories. User-only.
-   *
-   * @method st
-   * @param chatId The identifier of a chat.
-   * @param storyIds The identifiers of the stories to delete.
-   */
-  abstract deleteStories(chatId: ID, storyIds: number[]): Promise<void>;
-
-  /**
-   * Delete a single story. User-only.
-   *
-   * @method st
-   * @param chatId The identifier of a chat.
-   * @param storyId The identifier of the story to delete.
-   */
-  abstract deleteStory(chatId: ID, storyId: number): Promise<void>;
-  /**
-   * Add multiple stories to highlights. User-only.
-   *
-   * @method st
-   * @param chatId The identifier of a chat.
-   * @param storyIds The identifiers of the stories to add to highlights.
-   */
-  abstract addStoriesToHighlights(chatId: ID, storyIds: number[]): Promise<void>;
-
-  /**
-   * Add a single story to highlights. User-only.
-   *
-   * @method st
-   * @param chatId The identifier of a chat.
-   * @param storyId The identifier of the story to add to highlights.
-   */
-  abstract addStoryToHighlights(chatId: ID, storyId: number): Promise<void>;
-
-  /**
    * Remove multiple stories from highlights. User-only.
    *
    * @method st
@@ -2520,15 +2521,6 @@ export abstract class ClientGeneric {
   abstract removeStoryFromHighlights(chatId: ID, storyId: number): Promise<void>;
 
   /**
-   * Report a single story. User-only.
-   *
-   * @method st
-   * @param chatId The identifier of a chat that posted the story.
-   * @param storyId The identifier of the story to report.
-   */
-  abstract reportStory(chatId: ID, storyId: number, params?: ReportStoryParams): Promise<StoryReportResult>;
-
-  /**
    * Report multiple stories. User-only.
    *
    * @method st
@@ -2537,29 +2529,18 @@ export abstract class ClientGeneric {
    */
   abstract reportStories(chatId: ID, storyIds: number[], params?: ReportStoryParams): Promise<StoryReportResult>;
 
+  /**
+   * Report a single story. User-only.
+   *
+   * @method st
+   * @param chatId The identifier of a chat that posted the story.
+   * @param storyId The identifier of the story to report.
+   */
+  abstract reportStory(chatId: ID, storyId: number, params?: ReportStoryParams): Promise<StoryReportResult>;
+
   //
   // ========================= STORY ALBUMS ========================= //
   //
-
-  /**
-   * Create a story album. User-only.
-   *
-   * @method sa
-   * @param chatId The identifier of the chat to create the album in.
-   * @param name The name of the album.
-   * @param storyIds The initial stories inside the album.
-   */
-  abstract createStoryAlbum(chatId: ID, name: string, storyIds: number[]): Promise<StoryAlbum>;
-
-  /**
-   * Set the name of a story album. User-only.
-   *
-   * @method sa
-   * @param chatId The identifier of the chat including the album.
-   * @param albumId The identifier of the album to rename.
-   * @param name The new name of the album.
-   */
-  abstract setStoryAlbumName(chatId: ID, albumId: number, name: string): Promise<StoryAlbum>;
 
   /**
    * Add multiple stories to an album. User-only.
@@ -2580,6 +2561,33 @@ export abstract class ClientGeneric {
    * @param storyId The identifier of the story to add.
    */
   abstract addStoryToAlbum(chatId: ID, albumId: number, storyId: number): Promise<StoryAlbum>;
+
+  /**
+   * Create a story album. User-only.
+   *
+   * @method sa
+   * @param chatId The identifier of the chat to create the album in.
+   * @param name The name of the album.
+   * @param storyIds The initial stories inside the album.
+   */
+  abstract createStoryAlbum(chatId: ID, name: string, storyIds: number[]): Promise<StoryAlbum>;
+
+  /**
+   * Get stories inside an album. User-only.
+   *
+   * @method sa
+   * @param chatId The identifier of the chat including albums.
+   * @param albumId The identifier of an album.
+   */
+  abstract getStoriesInAlbum(chatId: ID, albumId: number): Promise<AlbumStoryList>;
+
+  /**
+   * Get story albums in a chat. User-only.
+   *
+   * @method sa
+   * @param chatId The identifier of a chat including albums.
+   */
+  abstract getStoryAlbums(chatId: ID): Promise<StoryAlbum[]>;
 
   /**
    * Remove multiple stories from an album. User-only.
@@ -2612,21 +2620,14 @@ export abstract class ClientGeneric {
   abstract reorderStoriesInAlbum(chatId: ID, albumId: number, storyIds: number[]): Promise<StoryAlbum>;
 
   /**
-   * Get story albums in a chat. User-only.
+   * Set the name of a story album. User-only.
    *
    * @method sa
-   * @param chatId The identifier of a chat including albums.
+   * @param chatId The identifier of the chat including the album.
+   * @param albumId The identifier of the album to rename.
+   * @param name The new name of the album.
    */
-  abstract getStoryAlbums(chatId: ID): Promise<StoryAlbum[]>;
-
-  /**
-   * Get stories inside an album. User-only.
-   *
-   * @method sa
-   * @param chatId The identifier of the chat including albums.
-   * @param albumId The identifier of an album.
-   */
-  abstract getStoriesInAlbum(chatId: ID, albumId: number): Promise<AlbumStoryList>;
+  abstract setStoryAlbumName(chatId: ID, albumId: number, name: string): Promise<StoryAlbum>;
 
   //
   // ========================= NETWORK STATISTICS ========================= //
@@ -2644,23 +2645,40 @@ export abstract class ClientGeneric {
   //
 
   /**
-   * Start a video chat. User-only.
+   * Download a live stream segment. User-only.
    *
    * @method vc
-   * @param chatId The identifier of a chat to start the video chat in.
-   * @returns The started video chat.
+   * @param id The identifier of a video chat retrieved from getChat, startVideoChat, or scheduleVideoChat.
+   * @param channelId Stream channel ID.
+   * @param scale Stream channel scale.
+   * @param timestamp Millisecond timestamp of the chunk to download.
    */
-  abstract startVideoChat(chatId: ID, params?: StartVideoChatParams): Promise<VideoChatActive>;
+  abstract downloadLiveStreamSegment(id: string, channelId: number, scale: number, timestamp: number, params?: DownloadLiveStreamSegmentParams): Promise<Uint8Array>;
 
   /**
-   * Schedule a video chat. User-only.
+   * Get live stream channels. User-only.
    *
    * @method vc
-   * @param chatId The identifier of a chat to schedule the video chat in.
-   * @param startAt A point in time in the future when the video chat will be started.
-   * @returns The scheduled video chat.
+   * @param id The identifier of a video chat retrieved from getChat, startVideoChat, or scheduleVideoChat.
    */
-  abstract scheduleVideoChat(chatId: ID, startAt: number, params?: ScheduleVideoChatParams): Promise<VideoChatScheduled>;
+  abstract getLiveStreamChannels(id: string): Promise<LiveStreamChannel[]>;
+
+  /**
+   * Get a video chat. User-only.
+   *
+   * @method vc
+   * @param id The identifier of a video chat retrieved from getChat, startVideoChat, or scheduleVideoChat.
+   * @cache
+   */
+  abstract getVideoChat(id: string): Promise<VideoChat>;
+
+  /**
+   * Join a live stream. User-only.
+   *
+   * @method vc
+   * @param id The identifier of a video chat retrieved from getChat, startVideoChat, or scheduleVideoChat.
+   */
+  abstract joinLiveStream(id: string): Promise<void>;
 
   /**
    * Join a video chat. User-only.
@@ -2681,40 +2699,23 @@ export abstract class ClientGeneric {
   abstract leaveVideoChat(id: string): Promise<void>;
 
   /**
-   * Join a live stream. User-only.
+   * Schedule a video chat. User-only.
    *
    * @method vc
-   * @param id The identifier of a video chat retrieved from getChat, startVideoChat, or scheduleVideoChat.
+   * @param chatId The identifier of a chat to schedule the video chat in.
+   * @param startAt A point in time in the future when the video chat will be started.
+   * @returns The scheduled video chat.
    */
-  abstract joinLiveStream(id: string): Promise<void>;
+  abstract scheduleVideoChat(chatId: ID, startAt: number, params?: ScheduleVideoChatParams): Promise<VideoChatScheduled>;
 
   /**
-   * Get a video chat. User-only.
+   * Start a video chat. User-only.
    *
    * @method vc
-   * @param id The identifier of a video chat retrieved from getChat, startVideoChat, or scheduleVideoChat.
-   * @cache
+   * @param chatId The identifier of a chat to start the video chat in.
+   * @returns The started video chat.
    */
-  abstract getVideoChat(id: string): Promise<VideoChat>;
-
-  /**
-   * Get live stream channels. User-only.
-   *
-   * @method vc
-   * @param id The identifier of a video chat retrieved from getChat, startVideoChat, or scheduleVideoChat.
-   */
-  abstract getLiveStreamChannels(id: string): Promise<LiveStreamChannel[]>;
-
-  /**
-   * Download a live stream segment. User-only.
-   *
-   * @method vc
-   * @param id The identifier of a video chat retrieved from getChat, startVideoChat, or scheduleVideoChat.
-   * @param channelId Stream channel ID.
-   * @param scale Stream channel scale.
-   * @param timestamp Millisecond timestamp of the chunk to download.
-   */
-  abstract downloadLiveStreamSegment(id: string, channelId: number, scale: number, timestamp: number, params?: DownloadLiveStreamSegmentParams): Promise<Uint8Array>;
+  abstract startVideoChat(chatId: ID, params?: StartVideoChatParams): Promise<VideoChatActive>;
 
   //
   // ========================= PAYMENTS ========================= //
@@ -2730,21 +2731,20 @@ export abstract class ClientGeneric {
   abstract answerPreCheckoutQuery(preCheckoutQueryId: string, ok: boolean, params?: AnswerPreCheckoutQueryParams): Promise<void>;
 
   /**
-   * Refund a star payment. Bot-only.
-   *
-   * @method pa
-   * @param userId The identifier of the user that was charged.
-   * @param telegramPaymentChargeId The identifier of the charge.
-   */
-  abstract refundStarPayment(userId: ID, telegramPaymentChargeId: string): Promise<void>;
-
-  /**
    * Get the star balance of a chat.
    *
    * @method pa
    * @param chatId The identifier of the chat to get the star balance for.
    */
   abstract getStarBalance(chatId: ID): Promise<StarAmount>;
+
+  /**
+   * Get star transactions.
+   *
+   * @method pa
+   * @param chatId The identifier of the chat to get star transactions for.
+   */
+  abstract getStarTransactions(chatId: ID, params?: GetStarTransactionsParams): Promise<StarTransactionList>;
 
   /**
    * Get the TON balance of a chat.
@@ -2755,31 +2755,26 @@ export abstract class ClientGeneric {
   abstract getTonBalance(chatId: ID): Promise<number>;
 
   /**
-   * Get star transactions.
+   * Refund a star payment. Bot-only.
    *
    * @method pa
-   * @param chatId The identifier of the chat to get star transactions for.
+   * @param userId The identifier of the user that was charged.
+   * @param telegramPaymentChargeId The identifier of the charge.
    */
-  abstract getStarTransactions(chatId: ID, params?: GetStarTransactionsParams): Promise<StarTransactionList>;
+  abstract refundStarPayment(userId: ID, telegramPaymentChargeId: string): Promise<void>;
 
   //
   // ========================= CONTACTS ========================= //
   //
 
   /**
-   * Get contacts. User-only.
+   * Add a contact. User-only.
    *
    * @method co
+   * @param userId The identifier of the user to add as contact.
+   * @param firstName The contact's first name.
    */
-  abstract getContacts(): Promise<User[]>;
-
-  /**
-   * Delete multiple contacts. User-only.
-   *
-   * @method co
-   * @param userIds The identifiers of contacts to delete.
-   */
-  abstract deleteContacts(userIds: ID[]): Promise<void>;
+  abstract addContact(userId: ID, firstName: string, params?: AddContactParams): Promise<void>;
 
   /**
    * Delete a single contact. User-only.
@@ -2790,13 +2785,19 @@ export abstract class ClientGeneric {
   abstract deleteContact(userId: ID): Promise<void>;
 
   /**
-   * Add a contact. User-only.
+   * Delete multiple contacts. User-only.
    *
    * @method co
-   * @param userId The identifier of the user to add as contact.
-   * @param firstName The contact's first name.
+   * @param userIds The identifiers of contacts to delete.
    */
-  abstract addContact(userId: ID, firstName: string, params?: AddContactParams): Promise<void>;
+  abstract deleteContacts(userIds: ID[]): Promise<void>;
+
+  /**
+   * Get contacts. User-only.
+   *
+   * @method co
+   */
+  abstract getContacts(): Promise<User[]>;
 
   /**
    * Set a contact note.
@@ -2823,11 +2824,12 @@ export abstract class ClientGeneric {
   //
 
   /**
-   * Get available gifts.
+   * Craft gifts.
    *
    * @method gf
+   * @param gifts The gifts to craft.
    */
-  abstract getGifts(): Promise<Gift[]>;
+  abstract craftGifts(gifts: InputGift[]): Promise<void>;
 
   /**
    * Get gifts claimed by a user or a channel. User-only.
@@ -2836,6 +2838,38 @@ export abstract class ClientGeneric {
    * @param chatId The identifier of a user or a channel to get gifts for.
    */
   abstract getClaimedGifts(chatId: ID, params?: GetClaimedGiftsParams): Promise<ClaimedGifts>;
+
+  /**
+   * Get a gift using its slug.
+   *
+   * @method gf
+   * @param slug The slug of a gift.
+   */
+  abstract getGift(slug: string): Promise<Gift>;
+
+  /**
+   * Get available gifts.
+   *
+   * @method gf
+   */
+  abstract getGifts(): Promise<Gift[]>;
+
+  /**
+   * Gift a Telegram Premium subscription. Bot-only.
+   *
+   * @method gf
+   * @param userId The identifier of a user to gift the Telegram Premium subscription to.
+   * @param duration The duration of the subscription.
+   */
+  abstract giftPremiumSubscription(userId: ID, duration: PremiumSubscriptionDuration, params?: GiftPremiumSubscriptionParams): Promise<void>;
+
+  /**
+   * Sell a gift.
+   *
+   * @method gf
+   * @param gift The gift to sell.
+   */
+  abstract sellGift(gift: InputGift): Promise<void>;
 
   /**
    * Send a gift.
@@ -2847,30 +2881,6 @@ export abstract class ClientGeneric {
   abstract sendGift(chatId: ID, giftId: string, params?: SendGiftParams): Promise<void>;
 
   /**
-   * Sell a gift.
-   *
-   * @method gf
-   * @param gift The gift to sell.
-   */
-  abstract sellGift(gift: InputGift): Promise<void>;
-
-  /**
-   * Craft gifts.
-   *
-   * @method gf
-   * @param gifts The gifts to craft.
-   */
-  abstract craftGifts(gifts: InputGift[]): Promise<void>;
-
-  /**
-   * Get a gift using its slug.
-   *
-   * @method gf
-   * @param slug The slug of a gift.
-   */
-  abstract getGift(slug: string): Promise<Gift>;
-
-  /**
    * Transfer a gift. User-only.
    *
    * @method gf
@@ -2879,26 +2889,19 @@ export abstract class ClientGeneric {
    */
   abstract transferGift(chatId: ID, gift: InputGift): Promise<void>;
 
-  /**
-   * Gift a Telegram Premium subscription. Bot-only.
-   *
-   * @method gf
-   * @param userId The identifier of a user to gift the Telegram Premium subscription to.
-   * @param duration The duration of the subscription.
-   */
-  abstract giftPremiumSubscription(userId: ID, duration: PremiumSubscriptionDuration, params?: GiftPremiumSubscriptionParams): Promise<void>;
-
   //
   // ========================= GIFT COLLECTIONS ========================= //
   //
 
   /**
-   * Get gift collections of a chat. User-only.
+   * Add gifts to a gift collection. User-only.
    *
    * @method gc
-   * @param chatId The identifier of a chat to get gift collections for.
+   * @param chatId The identifier of the chat that includes the gift collection.
+   * @param collectionId The identifier of a gift collection.
+   * @param gifts The gifts to add to the collection.
    */
-  abstract getGiftCollections(chatId: ID): Promise<GiftCollection[]>;
+  abstract addGiftsToCollection(chatId: ID, collectionId: number, gifts: InputGift[]): Promise<GiftCollection>;
 
   /**
    * Create a gift collection. User-only.
@@ -2911,24 +2914,21 @@ export abstract class ClientGeneric {
   abstract createGiftCollection(chatId: ID, name: string, gifts: InputGift[]): Promise<GiftCollection>;
 
   /**
-   * Set the name of a gift collection. User-only.
+   * Delete a gift collection. User-only.
    *
    * @method gc
    * @param chatId The identifier of the chat that includes the gift collection.
    * @param collectionId The identifier of a gift collection.
-   * @param name The gift collection's new name.
    */
-  abstract setGiftCollectionName(chatId: ID, collectionId: number, name: string): Promise<GiftCollection>;
+  abstract deleteGiftCollection(chatId: ID, collectionId: number): Promise<void>;
 
   /**
-   * Add gifts to a gift collection. User-only.
+   * Get gift collections of a chat. User-only.
    *
    * @method gc
-   * @param chatId The identifier of the chat that includes the gift collection.
-   * @param collectionId The identifier of a gift collection.
-   * @param gifts The gifts to add to the collection.
+   * @param chatId The identifier of a chat to get gift collections for.
    */
-  abstract addGiftsToCollection(chatId: ID, collectionId: number, gifts: InputGift[]): Promise<GiftCollection>;
+  abstract getGiftCollections(chatId: ID): Promise<GiftCollection[]>;
 
   /**
    * Remove gifts from a gift collection. User-only.
@@ -2951,25 +2951,18 @@ export abstract class ClientGeneric {
   abstract reorderGiftsInCollection(chatId: ID, collectionId: number, gifts: InputGift[]): Promise<GiftCollection>;
 
   /**
-   * Delete a gift collection. User-only.
+   * Set the name of a gift collection. User-only.
    *
    * @method gc
    * @param chatId The identifier of the chat that includes the gift collection.
    * @param collectionId The identifier of a gift collection.
+   * @param name The gift collection's new name.
    */
-  abstract deleteGiftCollection(chatId: ID, collectionId: number): Promise<void>;
+  abstract setGiftCollectionName(chatId: ID, collectionId: number, name: string): Promise<GiftCollection>;
 
   //
   // ========================= TAKEOUTS ========================= //
   //
-
-  /**
-   * Start a takeout session. User-only.
-   *
-   * @method to
-   * @returns The identifier of the takeout session.
-   */
-  abstract startTakeoutSession(params?: StartTakeoutSessionParams): Promise<string>;
 
   /**
    * End a takeout session. User-only.
@@ -2987,25 +2980,35 @@ export abstract class ClientGeneric {
    */
   abstract getLeftChannels(takeoutId: string, params?: GetLeftChannelsParams): Promise<LeftChannelList>;
 
+  /**
+   * Start a takeout session. User-only.
+   *
+   * @method to
+   * @returns The identifier of the takeout session.
+   */
+  abstract startTakeoutSession(params?: StartTakeoutSessionParams): Promise<string>;
+
   //
   // ========================= STICKER SETS ========================= //
   //
 
   /**
-   * Get a sticker set.
+   * Add a sticker to a sticker set.
    *
    * @method ss
    * @param slug The slug of the sticker set or its link.
+   * @param sticker The sticker to add.
    */
-  abstract getStickerSet(slug: string): Promise<StickerSet>;
+  abstract addStickerToStickerSet(slug: string, sticker: InputSticker, params?: AddStickerToStickerSetParams): Promise<void>;
 
   /**
-   * Get a dice sticker set.
+   * Change the position of a sticker in its set.
    *
    * @method ss
-   * @param emoji The emoji of the dice.
+   * @param fileId The identifier of the sticker.
+   * @param position The new position of the sticker.
    */
-  abstract getDiceStickerSet(emoji: string): Promise<StickerSet>;
+  abstract changeStickerPositionInStickerSet(fileId: string, position: number): Promise<void>;
 
   /**
    * Check the availability of a sticker set slug.
@@ -3015,15 +3018,6 @@ export abstract class ClientGeneric {
    * @returns Whether the slug is available.
    */
   abstract checkStickerSetSlug(slug: string): Promise<boolean>;
-
-  /**
-   * Suggest a sticker set slug from its title.
-   *
-   * @method ss
-   * @param title A title of a sticker set.
-   * @returns The suggested slug.
-   */
-  abstract suggestStickerSetSlug(title: string): Promise<string>;
 
   /**
    * Create a sticker set.
@@ -3036,13 +3030,28 @@ export abstract class ClientGeneric {
   abstract createStickerSet(name: string, slug: string, stickers: InputSticker[], params?: CreateStickerSetParams): Promise<StickerSet>;
 
   /**
-   * Add a sticker to a sticker set.
+   * Delete a sticker set.
    *
    * @method ss
    * @param slug The slug of the sticker set or its link.
-   * @param sticker The sticker to add.
    */
-  abstract addStickerToStickerSet(slug: string, sticker: InputSticker, params?: AddStickerToStickerSetParams): Promise<void>;
+  abstract deleteStickerSet(slug: string): Promise<void>;
+
+  /**
+   * Get a dice sticker set.
+   *
+   * @method ss
+   * @param emoji The emoji of the dice.
+   */
+  abstract getDiceStickerSet(emoji: string): Promise<StickerSet>;
+
+  /**
+   * Get a sticker set.
+   *
+   * @method ss
+   * @param slug The slug of the sticker set or its link.
+   */
+  abstract getStickerSet(slug: string): Promise<StickerSet>;
 
   /**
    * Remove a sticker from its set.
@@ -3071,30 +3080,13 @@ export abstract class ClientGeneric {
   abstract replaceStickerInStickerSet(currentStickerFileId: string, newSticker: InputSticker, params?: ReplaceStickerInStickerSetParams): Promise<void>;
 
   /**
-   * Delete a sticker set.
+   * Set a custom emoji as a sticker set's thumbnail.
    *
    * @method ss
    * @param slug The slug of the sticker set or its link.
+   * @param customEmojiId The identifier of the custom emoji to use as thumbnail.
    */
-  abstract deleteStickerSet(slug: string): Promise<void>;
-
-  /**
-   * Set the title of a sticker set.
-   *
-   * @method ss
-   * @param slug The slug of the sticker set or its link.
-   * @param title The sticker set's new title.
-   */
-  abstract setStickerSetTitle(slug: string, title: string): Promise<void>;
-
-  /**
-   * Change the position of a sticker in its set.
-   *
-   * @method ss
-   * @param fileId The identifier of the sticker.
-   * @param position The new position of the sticker.
-   */
-  abstract changeStickerPositionInStickerSet(fileId: string, position: number): Promise<void>;
+  abstract setCustomEmojiAsStickerSetThumbnail(slug: string, customEmojiId: string): Promise<void>;
 
   /**
    * Set a sticker set's thumbnail.
@@ -3106,17 +3098,34 @@ export abstract class ClientGeneric {
   abstract setStickerSetThumbnail(slug: string, thumbnail: FileSource): Promise<void>;
 
   /**
-   * Set a custom emoji as a sticker set's thumbnail.
+   * Set the title of a sticker set.
    *
    * @method ss
    * @param slug The slug of the sticker set or its link.
-   * @param customEmojiId The identifier of the custom emoji to use as thumbnail.
+   * @param title The sticker set's new title.
    */
-  abstract setCustomEmojiAsStickerSetThumbnail(slug: string, customEmojiId: string): Promise<void>;
+  abstract setStickerSetTitle(slug: string, title: string): Promise<void>;
+
+  /**
+   * Suggest a sticker set slug from its title.
+   *
+   * @method ss
+   * @param title A title of a sticker set.
+   * @returns The suggested slug.
+   */
+  abstract suggestStickerSetSlug(title: string): Promise<string>;
 
   //
   // ========================= MANAGED BOTS ========================= //
   //
+
+  /**
+   * Set the access settings of a managed bot. Bot-only.
+   *
+   * @method mb
+   * @param userId The identifier of the bot user.
+   */
+  abstract getManagedBotAccessSettings(userId: ID): Promise<BotAccessSettings>;
 
   /**
    * Get the token of a managed bot. Bot-only.
@@ -3145,14 +3154,6 @@ export abstract class ClientGeneric {
    */
   abstract setManagedBotAccessSettings(userId: ID, isAccessRestricted: boolean, params?: SetManagedBotAccessSettingsParams): Promise<void>;
 
-  /**
-   * Set the access settings of a managed bot. Bot-only.
-   *
-   * @method mb
-   * @param userId The identifier of the bot user.
-   */
-  abstract getManagedBotAccessSettings(userId: ID): Promise<BotAccessSettings>;
-
   //
   // ========================= GUEST QUERIES ========================= //
   //
@@ -3171,14 +3172,6 @@ export abstract class ClientGeneric {
   //
 
   /**
-   * Request a secret chat. User-only.
-   *
-   * @method sc
-   * @param chatId The identifier of a chat.
-   */
-  abstract requestSecretChat(chatId: ID): Promise<SecretChat>;
-
-  /**
    * Accept a secret chat. User-only.
    *
    * @method sc
@@ -3195,35 +3188,39 @@ export abstract class ClientGeneric {
   abstract endSecretChat(id: number, params?: EndSecretChatParams): Promise<SecretChat>;
 
   /**
-   * Send a message to a secret chat. User-only.
+   * Request a secret chat. User-only.
    *
    * @method sc
-   * @param id The identifier of the secret chat.
-   * @param text The message's text.
+   * @param chatId The identifier of a chat.
    */
-  abstract sendSecretMessage(id: number, text: string, params?: SendSecretMessageParams): Promise<void>;
+  abstract requestSecretChat(chatId: ID): Promise<SecretChat>;
 
   /**
-   * Send a location to a secret chat. User-only.
+   * Send an animation to a secret chat. User-only.
    *
    * @method sc
    * @param id The identifier of the secret chat.
-   * @param latitude The location's latitude.
-   * @param longitude The location's longitude.
+   * @param animation The animation to send.
    */
-  abstract sendSecretLocation(id: number, latitude: number, longitude: number, params?: SendSecretLocationParams): Promise<void>;
+  abstract sendSecretAnimation(id: number, animation: FileSource, params?: SendSecretAnimationParams): Promise<void>;
 
   /**
-   * Send a venue to a secret chat. User-only.
+   * Send an audio file to a secret chat. User-only.
    *
    * @method sc
    * @param id The identifier of the secret chat.
-   * @param latitude The latitude of the venue.
-   * @param longitude The longitude of the venue.
-   * @param title The title of the venue.
-   * @param address The written address of the venue.
+   * @param audio The audio file to send.
    */
-  abstract sendSecretVenue(id: number, latitude: number, longitude: number, title: string, address: string, params?: SendSecretVenueParams): Promise<void>;
+  abstract sendSecretAudio(id: number, audio: FileSource, params?: SendSecretAudioParams): Promise<void>;
+
+  /**
+   * Send a secret chat action. User-only.
+   *
+   * @method sc
+   * @param id The identifier of the secret chat.
+   * @param action The type of action to send.
+   */
+  abstract sendSecretChatAction(id: number, action: SecretChatActionType): Promise<void>;
 
   /**
    * Send a contact to a secret chat. User-only.
@@ -3245,6 +3242,25 @@ export abstract class ClientGeneric {
   abstract sendSecretDocument(id: number, document: FileSource, params?: SendSecretDocumentParams): Promise<void>;
 
   /**
+   * Send a location to a secret chat. User-only.
+   *
+   * @method sc
+   * @param id The identifier of the secret chat.
+   * @param latitude The location's latitude.
+   * @param longitude The location's longitude.
+   */
+  abstract sendSecretLocation(id: number, latitude: number, longitude: number, params?: SendSecretLocationParams): Promise<void>;
+
+  /**
+   * Send a message to a secret chat. User-only.
+   *
+   * @method sc
+   * @param id The identifier of the secret chat.
+   * @param text The message's text.
+   */
+  abstract sendSecretMessage(id: number, text: string, params?: SendSecretMessageParams): Promise<void>;
+
+  /**
    * Send a photo to a secret chat. User-only.
    *
    * @method sc
@@ -3252,6 +3268,36 @@ export abstract class ClientGeneric {
    * @param photo The photo to send.
    */
   abstract sendSecretPhoto(id: number, photo: FileSource, params?: SendSecretPhotoParams): Promise<void>;
+
+  /**
+   * Send a secret chat screenshot notification. User-only.
+   *
+   * @method sc
+   * @param id The identifier of the secret chat.
+   * @param messageIds Identifiers of messages.
+   */
+  abstract sendSecretScreenshotNotification(id: number, messageIds: string[]): Promise<void>;
+
+  /**
+   * Send a sticker to a secret chat. User-only.
+   *
+   * @method sc
+   * @param id The identifier of the secret chat.
+   * @param sticker The sticker to send.
+   */
+  abstract sendSecretSticker(id: number, sticker: FileSource | Sticker, params?: SendSecretStickerParams): Promise<void>;
+
+  /**
+   * Send a venue to a secret chat. User-only.
+   *
+   * @method sc
+   * @param id The identifier of the secret chat.
+   * @param latitude The latitude of the venue.
+   * @param longitude The longitude of the venue.
+   * @param title The title of the venue.
+   * @param address The written address of the venue.
+   */
+  abstract sendSecretVenue(id: number, latitude: number, longitude: number, title: string, address: string, params?: SendSecretVenueParams): Promise<void>;
 
   /**
    * Send a video to a secret chat. User-only.
@@ -3272,24 +3318,6 @@ export abstract class ClientGeneric {
   abstract sendSecretVideoNote(id: number, videoNote: FileSource, params?: SendSecretVideoNoteParams): Promise<void>;
 
   /**
-   * Send an animation to a secret chat. User-only.
-   *
-   * @method sc
-   * @param id The identifier of the secret chat.
-   * @param animation The animation to send.
-   */
-  abstract sendSecretAnimation(id: number, animation: FileSource, params?: SendSecretAnimationParams): Promise<void>;
-
-  /**
-   * Send an audio file to a secret chat. User-only.
-   *
-   * @method sc
-   * @param id The identifier of the secret chat.
-   * @param audio The audio file to send.
-   */
-  abstract sendSecretAudio(id: number, audio: FileSource, params?: SendSecretAudioParams): Promise<void>;
-
-  /**
    * Send a voice message to a secret chat. User-only.
    *
    * @method sc
@@ -3297,31 +3325,4 @@ export abstract class ClientGeneric {
    * @param voice The voice message to send.
    */
   abstract sendSecretVoice(id: number, voice: FileSource, params?: SendSecretVoiceParams): Promise<void>;
-
-  /**
-   * Send a sticker to a secret chat. User-only.
-   *
-   * @method sc
-   * @param id The identifier of the secret chat.
-   * @param sticker The sticker to send.
-   */
-  abstract sendSecretSticker(id: number, sticker: FileSource | Sticker, params?: SendSecretStickerParams): Promise<void>;
-
-  /**
-   * Send a secret chat action. User-only.
-   *
-   * @method sc
-   * @param id The identifier of the secret chat.
-   * @param action The type of action to send.
-   */
-  abstract sendSecretChatAction(id: number, action: SecretChatActionType): Promise<void>;
-
-  /**
-   * Send a secret chat screenshot notification. User-only.
-   *
-   * @method sc
-   * @param id The identifier of the secret chat.
-   * @param messageIds Identifiers of messages.
-   */
-  abstract sendSecretScreenshotNotification(id: number, messageIds: string[]): Promise<void>;
 }
