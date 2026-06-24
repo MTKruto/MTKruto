@@ -3315,4 +3315,13 @@ export abstract class ClientGeneric {
    * @param action The type of action to send.
    */
   abstract sendSecretChatAction(id: number, action: SecretChatActionType): Promise<void>;
+
+  /**
+   * Send a secret chat screenshot notification. User-only.
+   *
+   * @method sc
+   * @param id The identifier of the secret chat.
+   * @param messageIds Identifiers of messages.
+   */
+  abstract sendSecretScreenshotNotification(id: number, messageIds: string[]): Promise<void>;
 }

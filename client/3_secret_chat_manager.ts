@@ -620,6 +620,24 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     await this.#postSendMessage(state);
   }
 
+  async sendSecretScreenshotNotification(id: number, messageIds: string[]) {
+    this.#c.storage.assertUser("sendSecretScreenshotNotification");
+    const state = this.#mustGetEncryptedChat(id);
+
+    const random_id = getRandomId();
+    const decryptedMessageService: SecretChats.decryptedMessageService = {
+      _: "decryptedMessageService",
+      action: {
+        _: "decryptedMessageActionScreenshotMessages",
+        random_ids: messageIds.map(BigInt),
+      },
+      random_id,
+    };
+
+    await this.#sendMessage(decryptedMessageService, state.encryptedChat, state.authKey, state.authKeyId_);
+    await this.#postSendMessage(state);
+  }
+
   async sendSecretPhoto(id: number, photo: FileSource, params?: SendSecretPhotoParams) {
     this.#c.storage.assertUser("sendSecretPhoto");
     const state = this.#mustGetEncryptedChat(id);

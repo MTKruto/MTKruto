@@ -5286,4 +5286,15 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   async sendSecretChatAction(id: number, action: SecretChatActionType): Promise<void> {
     return await this.#secretChatManager.sendSecretChatAction(id, action);
   }
+
+  /**
+   * Send a secret chat screenshot notification. User-only.
+   *
+   * @method sc
+   * @param id The identifier of the secret chat.
+   * @param messageIds Identifiers of messages.
+   */
+  async sendSecretScreenshotNotification(id: number, messageIds: string[]): Promise<void> {
+    return await this.#secretChatManager.sendSecretScreenshotNotification(id, messageIds);
+  }
 }
