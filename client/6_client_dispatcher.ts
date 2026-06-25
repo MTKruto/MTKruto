@@ -3943,7 +3943,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   //
 
   /**
-   * Add a sticker set.
+   * Add a sticker set. User-only.
    *
    * @method ss
    * @param slug The slug of the sticker set or its link.
@@ -3964,7 +3964,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Archive a sticker set.
+   * Archive a sticker set. User-only.
    *
    * @method ss
    * @param slug The slug of the sticker set or its link.
@@ -4057,7 +4057,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Remove a sticker set.
+   * Remove a sticker set. User-only.
    *
    * @method ss
    * @param slug The slug of the sticker set or its link.
@@ -4133,7 +4133,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Unarchive a sticker set.
+   * Unarchive a sticker set. User-only.
    *
    * @method ss
    * @param slug The slug of the sticker set or its link.

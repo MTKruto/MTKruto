@@ -3076,7 +3076,7 @@ export abstract class ClientGeneric {
   //
 
   /**
-   * Add a sticker set.
+   * Add a sticker set. User-only.
    *
    * @method ss
    * @param slug The slug of the sticker set or its link.
@@ -3093,7 +3093,7 @@ export abstract class ClientGeneric {
   abstract addStickerToStickerSet(slug: string, sticker: InputSticker, params?: AddStickerToStickerSetParams): Promise<void>;
 
   /**
-   * Archive a sticker set.
+   * Archive a sticker set. User-only.
    *
    * @method ss
    * @param slug The slug of the sticker set or its link.
@@ -3168,7 +3168,7 @@ export abstract class ClientGeneric {
   abstract removeStickerFromStickerSet(fileId: string): Promise<void>;
 
   /**
-   * Remove a sticker set.
+   * Remove a sticker set. User-only.
    *
    * @method ss
    * @param slug The slug of the sticker set or its link.
@@ -3230,7 +3230,7 @@ export abstract class ClientGeneric {
   abstract suggestStickerSetSlug(title: string): Promise<string>;
 
   /**
-   * Unarchive a sticker set.
+   * Unarchive a sticker set. User-only.
    *
    * @method ss
    * @param slug The slug of the sticker set or its link.
