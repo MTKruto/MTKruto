@@ -4996,6 +4996,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   //
 
   /**
+   * Add a sticker set.
+   *
+   * @method ss
+   * @param slug The slug of the sticker set or its link.
+   */
+  async addStickerSet(slug: string): Promise<void> {
+    return await this.#stickerSetManager.addStickerSet(slug);
+  }
+
+  /**
    * Add a sticker to a sticker set.
    *
    * @method ss
@@ -5004,6 +5014,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async addStickerToStickerSet(slug: string, sticker: InputSticker, params?: AddStickerToStickerSetParams): Promise<void> {
     return await this.#stickerSetManager.addStickerToStickerSet(slug, sticker, params);
+  }
+
+  /**
+   * Archive a sticker set.
+   *
+   * @method ss
+   * @param slug The slug of the sticker set or its link.
+   */
+  async archiveStickerSet(slug: string): Promise<void> {
+    return await this.#stickerSetManager.archiveStickerSet(slug);
   }
 
   /**
@@ -5081,6 +5101,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Remove a sticker set.
+   *
+   * @method ss
+   * @param slug The slug of the sticker set or its link.
+   */
+  async removeStickerSet(slug: string): Promise<void> {
+    return await this.#stickerSetManager.removeStickerSet(slug);
+  }
+
+  /**
    * Replace a sticker's emoji.
    *
    * @method ss
@@ -5144,6 +5174,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async suggestStickerSetSlug(title: string): Promise<string> {
     return await this.#stickerSetManager.suggestStickerSetSlug(title);
+  }
+
+  /**
+   * Unarchive a sticker set.
+   *
+   * @method ss
+   * @param slug The slug of the sticker set or its link.
+   */
+  async unarchiveStickerSet(slug: string): Promise<void> {
+    return await this.#stickerSetManager.unarchiveStickerSet(slug);
   }
 
   //

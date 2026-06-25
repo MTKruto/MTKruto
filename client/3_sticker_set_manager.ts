@@ -235,4 +235,34 @@ export class StickerSetManager {
     const result = await this.#c.invoke({ _: "messages.getStickerSet", hash: 0, stickerset: { _: "inputStickerSetDice", emoticon: emoji } });
     return constructStickerSet(result);
   }
+
+  async #installStickerSet(slug: string, archived: boolean) {
+    slug = StickerSetManager.#getSlug(slug);
+    const short_name = slug;
+    const stickerset: Api.inputStickerSetShortName = { _: "inputStickerSetShortName", short_name };
+    await this.#c.invoke({ _: "messages.installStickerSet", stickerset, archived });
+  }
+
+  async addStickerSet(slug: string) {
+    this.#c.storage.assertUser("addStickerSet");
+    await this.#installStickerSet(slug, false);
+  }
+
+  async removeStickerSet(slug: string) {
+    this.#c.storage.assertUser("removeStickerSet");
+    slug = StickerSetManager.#getSlug(slug);
+    const short_name = slug;
+    const stickerset: Api.inputStickerSetShortName = { _: "inputStickerSetShortName", short_name };
+    await this.#c.invoke({ _: "messages.uninstallStickerSet", stickerset });
+  }
+
+  async archiveStickerSet(slug: string) {
+    this.#c.storage.assertUser("archiveStickerSet");
+    await this.#installStickerSet(slug, true);
+  }
+
+  async unarchiveStickerSet(slug: string) {
+    this.#c.storage.assertUser("unarchiveStickerSet");
+    await this.#installStickerSet(slug, true);
+  }
 }
