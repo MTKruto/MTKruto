@@ -19,7 +19,7 @@
  */
 
 import type { Api } from "../2_tl.ts";
-import { type Reaction, reactionToTlObject } from "./0_reaction.ts";
+import { constructReaction, type Reaction, reactionToTlObject } from "./0_reaction.ts";
 
 /**
  * An available reactions value allowing no type of reactions.
@@ -38,7 +38,7 @@ export interface AvailableReactionsSome {
   /** The allowed reactions. */
   reactions: Reaction[];
   /** The maximum number of allowed reactions on a single message. */
-  maxReactionCount: number;
+  maxReactionCount?: number;
 }
 
 /**
@@ -48,11 +48,29 @@ export interface AvailableReactionsSome {
 export interface AvailableReactionsAll {
   type: "all";
   /** The maximum number of allowed reactions on a single message. */
-  maxReactionCount: number;
+  maxReactionCount?: number;
 }
 
 /** A chat's available reactions. */
 export type AvailableReactions = AvailableReactionsNone | AvailableReactionsSome | AvailableReactionsAll;
+
+export function constructAvailableReactions(cr: Api.ChatReactions): AvailableReactions {
+  switch (cr._) {
+    case "chatReactionsNone":
+      return {
+        type: "none",
+      };
+    case "chatReactionsAll":
+      return {
+        type: "all",
+      };
+    case "chatReactionsSome":
+      return {
+        type: "some",
+        reactions: cr.reactions.map(constructReaction),
+      };
+  }
+}
 
 export function availableReactionsToTlObject(chatAvailableReactions: AvailableReactions): Api.ChatReactions {
   switch (chatAvailableReactions.type) {
