@@ -1242,22 +1242,18 @@ export interface GetRecentActionsParams {
   limit?: number;
   /** Offset event ID from a previous result. */
   offsetId?: string;
-  /** Whether to return recent actions related to bans. */
-  isBan?: boolean;
   /** Whether to return recent actions related to chat info. */
   isChatInfo?: boolean;
   /** Whether to return recent actions related to chat settings. */
   isChatSettings?: boolean;
   /** Whether to return recent actions related to message deletion. */
-  isDeletion?: boolean;
-  /** Whether to return recent actions related to demotions. */
-  isDemotion?: boolean;
+  isDelete?: boolean;
   /** Whether to return recent actions related to message edits. */
   isEdit?: boolean;
   /** Whether to return recent actions related to forum changes. */
   isForum?: boolean;
   /** Whether to return recent actions related to invitations. */
-  isInvitation?: boolean;
+  isInvite?: boolean;
   /** Whether to return recent actions related to joins. */
   isJoin?: boolean;
   /** Whether to return recent actions related to leaves. */
@@ -1268,14 +1264,8 @@ export interface GetRecentActionsParams {
   isNewMessage?: boolean;
   /** Whether to return recent actions related to pinned messages. */
   isPin?: boolean;
-  /** Whether to return recent actions related to promotions. */
-  isPromotion?: boolean;
-  /** Whether to return recent actions related to restrictions. */
+  /** Whether to return recent actions related to member rights. */
   isRestrict?: boolean;
-  /** Whether to return recent actions related to unbans. */
-  isUnban?: boolean;
-  /** Whether to return recent actions related to unrestrictions. */
-  isUnrestrict?: boolean;
   /** Whether to return recent actions related to video chats. */
   isVideoChat?: boolean;
 }
