@@ -6,21 +6,20 @@ import { constructRecentAction, type RecentAction } from "./B_recent_action.ts";
 
 export interface RecentActionsEntry {
   id: string;
-  date: number
-userId: number;
-action: RecentAction
+  date: number;
+  userId: number;
+  action: RecentAction;
 }
 
-export async function constructRecentActionsEntry(cale: Api.ChannelAdminLogEvent,getPeer: PeerGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): Promise<RecentActionsEntry> {
-const id = String(cale.id);
-const userId = Number(cale.user_id)
-  const date = cale.date
-  const action =await constructRecentAction(cale.action, getPeer, getMessage, getStickerSetName)
+export async function constructRecentActionsEntry(cale: Api.ChannelAdminLogEvent, getPeer: PeerGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): Promise<RecentActionsEntry> {
+  const id = String(cale.id);
+  const userId = Number(cale.user_id);
+  const date = cale.date;
+  const action = await constructRecentAction(cale.action, getPeer, getMessage, getStickerSetName);
   return {
     id,
     date,
     userId,
     action,
-  }
-  
+  };
 }

@@ -5,7 +5,7 @@ import type { AvailableReactions } from "../3_types.ts";
 import { peerToChatId } from "../tl/2_telegram.ts";
 import { type ChatMemberRights, constructChatMemberRights } from "./0_chat_member_rights.ts";
 import { constructAvailableReactions } from "./1_available_reactions.ts";
-import  {constructChannelLocation,type ChannelLocation } from "./1_channel_location.ts";
+import { type ChannelLocation, constructChannelLocation } from "./1_channel_location.ts";
 import type { PeerGetter } from "./1_chat_p.ts";
 import { constructPhoto, type Photo } from "./1_photo.ts";
 import type { StickerSetNameGetter } from "./1_sticker.ts";

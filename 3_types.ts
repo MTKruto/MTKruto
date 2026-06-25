@@ -202,5 +202,5 @@ export * from "./types/B_recent_action.ts";
 export * from "./types/B_saved_chats.ts";
 export * from "./types/B_topic_list_item.ts";
 export * from "./types/B_update.ts";
-export * from "./types/C_recent_actions_entry.ts"
+export * from "./types/C_recent_actions_entry.ts";
 export * from "./types/C_topic_list.ts";
