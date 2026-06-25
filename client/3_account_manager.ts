@@ -612,4 +612,10 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     this.#c.storage.assertUser("clearRecentEmojiStatuses");
     await this.#c.invoke({ _: "account.clearRecentEmojiStatuses" });
   }
+
+  async getRecentEmojiStatuses() {
+    this.#c.storage.assertUser("getRecentEmojiStatuses");
+    const result = Api.as("account.emojiStatuses", await this.#c.invoke({ _: "account.getRecentEmojiStatuses", hash: 0n }));
+    return result.statuses.map(constructEmojiStatus);
+  }
 }
