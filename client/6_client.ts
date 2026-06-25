@@ -3360,6 +3360,17 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Delete revoked invite links. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat.
+   * @param userId The user identifier of a chat admin.
+   */
+  async deleteRevokedInviteLinks(chatId: ID, userId: ID): Promise<void> {
+    return await this.#chatManager.deleteRevokedInviteLinks(chatId, userId);
+  }
+
+  /**
    * Delete a forum topic.
    *
    * @method ch

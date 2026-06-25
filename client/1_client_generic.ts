@@ -1744,6 +1744,15 @@ export abstract class ClientGeneric {
   abstract deleteChatStickerSet(chatId: ID): Promise<void>;
 
   /**
+   * Delete revoked invite links. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat.
+   * @param userId The user identifier of a chat admin.
+   */
+  abstract deleteRevokedInviteLinks(chatId: ID, userId: ID): Promise<void>;
+
+  /**
    * Delete a forum topic.
    *
    * @method ch
