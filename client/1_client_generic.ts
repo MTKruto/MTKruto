@@ -3076,6 +3076,14 @@ export abstract class ClientGeneric {
   //
 
   /**
+   * Add a sticker set.
+   *
+   * @method ss
+   * @param slug The slug of the sticker set or its link.
+   */
+  abstract addStickerSet(slug: string): Promise<void>;
+
+  /**
    * Add a sticker to a sticker set.
    *
    * @method ss
@@ -3083,6 +3091,14 @@ export abstract class ClientGeneric {
    * @param sticker The sticker to add.
    */
   abstract addStickerToStickerSet(slug: string, sticker: InputSticker, params?: AddStickerToStickerSetParams): Promise<void>;
+
+  /**
+   * Archive a sticker set.
+   *
+   * @method ss
+   * @param slug The slug of the sticker set or its link.
+   */
+  abstract archiveStickerSet(slug: string): Promise<void>;
 
   /**
    * Change the position of a sticker in its set.
@@ -3145,6 +3161,14 @@ export abstract class ClientGeneric {
   abstract removeStickerFromStickerSet(fileId: string): Promise<void>;
 
   /**
+   * Remove a sticker set.
+   *
+   * @method ss
+   * @param slug The slug of the sticker set or its link.
+   */
+  abstract removeStickerSet(slug: string): Promise<void>;
+
+  /**
    * Replace a sticker's emoji.
    *
    * @method ss
@@ -3197,6 +3221,14 @@ export abstract class ClientGeneric {
    * @returns The suggested slug.
    */
   abstract suggestStickerSetSlug(title: string): Promise<string>;
+
+  /**
+   * Unarchive a sticker set.
+   *
+   * @method ss
+   * @param slug The slug of the sticker set or its link.
+   */
+  abstract unarchiveStickerSet(slug: string): Promise<void>;
 
   //
   // ========================= MANAGED BOTS ========================= //
