@@ -947,7 +947,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Delete a scheduled message.
+   * Delete a scheduled message. User-only.
    *
    * @method ms
    * @param chatId The identifier of a chat.
@@ -958,7 +958,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Delete multiple scheduled messages.
+   * Delete multiple scheduled messages. User-only.
    *
    * @method ms
    * @param chatId The identifier of a chat.
@@ -992,7 +992,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Edit an inline message's media.
+   * Edit an inline message's media. User-only.
    *
    * @method ms
    * @param inlineMessageId The identifier of the inline message.
@@ -1293,7 +1293,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Get messages saved from a specific chat.
+   * Get messages saved from a specific chat. User-only.
    *
    * @method ms
    * @param chatId The identifier of a chat.
@@ -1611,7 +1611,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Send a scheduled message before its schedule.
+   * Send a scheduled message before its schedule. User-only.
    *
    * @method ms
    * @param chatId The identifier of a chat.
@@ -1622,7 +1622,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Send multiple scheduled messages before their schedule.
+   * Send multiple scheduled messages before their schedule. User-only.
    *
    * @method ms
    * @param chatId The identifier of a chat.
@@ -3670,7 +3670,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Set a contact note.
+   * Set a contact note. User-only.
    *
    * @method co
    * @param userId The identifier of the user to update the note for.
