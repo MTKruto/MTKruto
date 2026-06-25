@@ -4894,6 +4894,17 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Reorder gift collections. User-only.
+   *
+   * @method gc
+   * @param chatId The identifier of the chat that includes the gift collection.
+   * @param collectionIds The identifiers of the gift collections.
+   */
+  async reorderGiftCollections(chatId: ID, collectionIds: number[]): Promise<void> {
+    return await this.#giftCollectionManager.reorderGiftCollections(chatId, collectionIds);
+  }
+
+  /**
    * Reorder gifts in a gift collection. User-only.
    *
    * @method gc
