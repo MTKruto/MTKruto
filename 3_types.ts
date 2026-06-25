@@ -132,6 +132,7 @@ export * from "./types/2_profile_photo_list.ts";
 export * from "./types/2_reply_markup.ts";
 export * from "./types/2_secret_message.ts";
 export * from "./types/2_star_transaction_peer.ts";
+export * from "./types/2_sticker_set_p.ts";
 export * from "./types/2_sticker_set.ts";
 export * from "./types/2_story_album_icon.ts";
 export * from "./types/2_story_content.ts";
