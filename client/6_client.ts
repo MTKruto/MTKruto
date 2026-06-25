@@ -638,6 +638,20 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     }
   }
 
+
+
+  /**
+   * Get application configuration. User-only.
+   *
+   * @method ac
+   */
+  async getApplicationConfiguration(): Promise<
+    // deno-lint-ignore no-explicit-any
+    any
+  > {
+    return await this.#accountManager.getApplicationConfiguration();
+  }
+
   /**
    * Allow a bot to set custom emoji status. User-only.
    *

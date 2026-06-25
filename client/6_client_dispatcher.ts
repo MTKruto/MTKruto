@@ -909,6 +909,18 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("updateProfileVideo", video, params);
   }
 
+  /**
+   * Get application configuration. User-only.
+   *
+   * @method ac
+   */
+  async getApplicationConfiguration(): Promise<
+    // deno-lint-ignore no-explicit-any
+    any
+  > {
+    return await this.#dispatch("getApplicationConfiguration");
+  }
+
   //
   // ========================= MESSAGES ========================= //
   //

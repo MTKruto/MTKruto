@@ -618,4 +618,28 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     const result = Api.as("account.emojiStatuses", await this.#c.invoke({ _: "account.getRecentEmojiStatuses", hash: 0n }));
     return result.statuses.map(constructEmojiStatus);
   }
+
+  // deno-lint-ignore no-explicit-any
+  static #parseJsonValue(jv: Api.JSONValue): any {
+    switch (jv._) {
+      case "jsonNull":
+        return null;
+      case "jsonBool":
+        return jv.value;
+      case "jsonNumber":
+        return jv.value;
+      case "jsonString":
+        return jv.value;
+      case "jsonArray":
+        return jv.value.map(AccountManager.#parseJsonValue);
+      case "jsonObject":
+        // deno-lint-ignore no-explicit-any
+        return Object.fromEntries(jv.value.map((v): [string, any] => [v.key, AccountManager.#parseJsonValue(v.value)]));
+    }
+  }
+
+  async getApplicationConfiguration() {
+    const result = Api.as("help.appConfig", await this.#c.invoke({ _: "help.getAppConfig", hash: 0 }));
+    return AccountManager.#parseJsonValue(result.config);
+  }
 }

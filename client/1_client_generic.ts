@@ -41,6 +41,16 @@ export abstract class ClientGeneric {
   abstract sendCode(phoneNumber: string): Promise<void>;
 
   /**
+   * Get application configuration. User-only.
+   *
+   * @method ac
+   */
+  abstract getApplicationConfiguration(): Promise<
+    // deno-lint-ignore no-explicit-any
+    any
+  >;
+
+  /**
    * Get recent emoji statuses. User-only.
    *
    * @method ac
