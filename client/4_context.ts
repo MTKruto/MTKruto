@@ -565,9 +565,9 @@ export class Context {
   async blockUser(): Promise<void> {
     return await this.client.blockUser(this.#mustGetUserId());
   }
-  
+
   /** Context-aware alias for {@link Client.boostChat}. */
-  async boostChat( params?: BoostChatParams): Promise<void> {
+  async boostChat(params?: BoostChatParams): Promise<void> {
     const chatId = this.#mustGetChatId();
     return await this.client.boostChat(chatId, params);
   }
