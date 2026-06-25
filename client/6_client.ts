@@ -4996,7 +4996,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   //
 
   /**
-   * Add a sticker set.
+   * Add a sticker set. User-only.
    *
    * @method ss
    * @param slug The slug of the sticker set or its link.
@@ -5017,7 +5017,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Archive a sticker set.
+   * Archive a sticker set. User-only.
    *
    * @method ss
    * @param slug The slug of the sticker set or its link.
@@ -5101,7 +5101,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Remove a sticker set.
+   * Remove a sticker set. User-only.
    *
    * @method ss
    * @param slug The slug of the sticker set or its link.
@@ -5177,7 +5177,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Unarchive a sticker set.
+   * Unarchive a sticker set. User-only.
    *
    * @method ss
    * @param slug The slug of the sticker set or its link.
