@@ -2992,6 +2992,15 @@ export abstract class ClientGeneric {
   abstract removeGiftsFromCollection(chatId: ID, collectionId: number, gifts: InputGift[]): Promise<GiftCollection>;
 
   /**
+   * Reorder gift collections. User-only.
+   *
+   * @method gc
+   * @param chatId The identifier of the chat that includes the gift collection.
+   * @param collectionIds The identifiers of the gift collections.
+   */
+  abstract reorderGiftCollections(chatId: ID, collectionIds: number[]): Promise<void>;
+
+  /**
    * Reorder gifts in a gift collection. User-only.
    *
    * @method gc
