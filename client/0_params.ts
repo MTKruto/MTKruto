@@ -1229,3 +1229,8 @@ export interface GetTopicsParams {
   /** The maximum number of results to return. */
   limit?: number;
 }
+
+export interface GetAdministeredChatsParams {
+  /** Whether to return list of channels suitable for setting as personal channel. */
+  isForPersonalChannel?: boolean;
+}

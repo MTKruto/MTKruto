@@ -23,7 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { type AvailableReactions, availableReactionsToTlObject, chatAdministratorRightsToTlObject, type ChatP, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, constructJoinRequest2, reportReasonToTlObject, type SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
 import { chatMemberRightsToTlObject, type FileSource, type ID, type ReportReason, type Update } from "../3_types.ts";
-import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, EnableSignaturesParams, GetCreatedInviteLinksParams, GetJoinRequestsParams, MarkAllMentionsAsReadParams, PromoteChatMemberParams, ReportChatParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams } from "./0_params.ts";
+import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, EnableSignaturesParams, GetAdministeredChatsParams, GetCreatedInviteLinksParams, GetJoinRequestsParams, MarkAllMentionsAsReadParams, PromoteChatMemberParams, ReportChatParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, canBeInputUser, getLimit, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -591,5 +591,12 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     const peer = await this.#c.getInputPeer(chatId);
     const top_msg_id = params?.topicId;
     await this.#c.invoke({ _: "messages.readMentions", peer, top_msg_id });
+  }
+
+  async getAdministeredChats(params?: GetAdministeredChatsParams) {
+    this.#c.storage.assertUser("getAdministeredChats");
+    const for_personal = params?.isForPersonalChannel || undefined;
+    const result = await this.#c.invoke({ _: "channels.getAdminedPublicChannels", for_personal });
+    return result.chats.map(constructChatP);
   }
 }
