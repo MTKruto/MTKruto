@@ -1267,3 +1267,8 @@ export interface GetRecentActionsParams {
   /** Whether to return recent actions related to video chats. */
   isVideoChat?: boolean;
 }
+
+export interface BoostChatParams {
+  /** The slots to assign. */
+  slots?: number[];
+}
