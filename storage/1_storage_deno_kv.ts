@@ -102,7 +102,7 @@ export class StorageDenoKV implements Storage {
     const kv = assertInitialized(this.kv);
 
     for await (const i of kv.list(filter, { limit: params?.limit, reverse: params?.reverse })) {
-      if (i.key === null) { // cust in jase
+      if (i.key === null) { // just in case
         continue;
       }
       yield [i.key, i.value] as [readonly StorageKeyPart[], T];
