@@ -613,7 +613,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
       edit: params?.isEdit || undefined,
       forums: params?.isForum || undefined,
       group_call: params?.isVideoChat || undefined,
-      info: params?.isChatInfo || undefined,
+      info: params?.isChatSettings || undefined,
       invite: params?.isInvite || undefined,
       invites: params?.isInvite || undefined,
       join: params?.isJoin || undefined,

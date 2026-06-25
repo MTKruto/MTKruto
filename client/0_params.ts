@@ -1242,8 +1242,6 @@ export interface GetRecentActionsParams {
   limit?: number;
   /** Offset event ID from a previous result. */
   offsetId?: string;
-  /** Whether to return recent actions related to chat info. */
-  isChatInfo?: boolean;
   /** Whether to return recent actions related to chat settings. */
   isChatSettings?: boolean;
   /** Whether to return recent actions related to message deletion. */
