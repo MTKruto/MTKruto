@@ -384,6 +384,15 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
+   * Clear recent emoji statuses. User-only.
+   *
+   * @method ac
+   */
+  async clearRecentEmojiStatuses(): Promise<void> {
+    return await this.#dispatch("clearRecentEmojiStatuses");
+  }
+
+  /**
    * Delete the current account. User-only.
    *
    * @method ac

@@ -1407,6 +1407,15 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Clear recent emoji statuses. User-only.
+   *
+   * @method ac
+   */
+  async clearRecentEmojiStatuses(): Promise<void> {
+    return await this.#accountManager.clearRecentEmojiStatuses();
+  }
+
+  /**
    * Delete the current account. User-only.
    *
    * @method ac
