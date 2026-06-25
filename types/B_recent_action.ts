@@ -1,10 +1,9 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import type { AvailableReactions } from "../3_types.ts";
 import { peerToChatId } from "../tl/2_telegram.ts";
 import { type ChatMemberRights, constructChatMemberRights } from "./0_chat_member_rights.ts";
-import { constructAvailableReactions } from "./1_available_reactions.ts";
+import { type AvailableReactions, constructAvailableReactions } from "./1_available_reactions.ts";
 import { type ChannelLocation, constructChannelLocation } from "./1_channel_location.ts";
 import type { PeerGetter } from "./1_chat_p.ts";
 import { constructPhoto, type Photo } from "./1_photo.ts";
