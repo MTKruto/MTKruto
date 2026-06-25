@@ -237,6 +237,26 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
+   * Allow a bot to set custom emoji status. User-only.
+   *
+   * @param botId The user identifier of the bot.
+   * @method ac
+   */
+  async allowBotToSetCustomEmojiStatus(botId: ID): Promise<void> {
+    return await this.#dispatch("allowBotToSetCustomEmojiStatus", botId);
+  }
+
+  /**
+   * Disallow a bot to set custom emoji status. User-only.
+   *
+   * @param botId The user identifier of the bot.
+   * @method ac
+   */
+  async disallowBotToSetCustomEmojiStatus(botId: ID): Promise<void> {
+    return await this.#dispatch("disallowBotToSetCustomEmojiStatus", botId);
+  }
+
+  /**
    * Check if a code entered by the user was the same as the verification code.
    *
    * @param code A code entered by the user.

@@ -41,6 +41,22 @@ export abstract class ClientGeneric {
   abstract sendCode(phoneNumber: string): Promise<void>;
 
   /**
+   * Allow a bot to set custom emoji status. User-only.
+   *
+   * @param botId The user identifier of the bot.
+   * @method ac
+   */
+  abstract allowBotToSetCustomEmojiStatus(botId: ID): Promise<void>;
+
+  /**
+   * Disallow a bot to set custom emoji status. User-only.
+   *
+   * @param botId The user identifier of the bot.
+   * @method ac
+   */
+  abstract disallowBotToSetCustomEmojiStatus(botId: ID): Promise<void>;
+
+  /**
    * Check if a code entered by the user was the same as the verification code.
    *
    * @param code A code entered by the user.

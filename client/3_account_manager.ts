@@ -185,11 +185,20 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     await this.#c.invoke({ _: "bots.updateUserEmojiStatus", user_id, emoji_status: { _: "emojiStatusEmpty" } });
   }
 
-  async setBotCanSetEmojiStatus(botId: ID, canSetEmojiStatus: boolean) {
-    this.#c.storage.assertUser("setBotCanSetEmojiStatus");
+  async #setCanBotSetEmojiStatus(botId: ID, canSetEmojiStatus: boolean) {
     const bot = await this.#c.getInputUser(botId);
     const enabled = canSetEmojiStatus;
     await this.#c.invoke({ _: "bots.toggleUserEmojiStatusPermission", bot, enabled });
+  }
+
+  async allowBotToSetCustomEmojiStatus(botId: ID) {
+    this.#c.storage.assertUser("allowBotToSetCustomEmojiStatus");
+    await this.#setCanBotSetEmojiStatus(botId, true);
+  }
+
+  async disallowBotToSetCustomEmojiStatus(botId: ID) {
+    this.#c.storage.assertUser("disallowBotToSetCustomEmojiStatus");
+    await this.#setCanBotSetEmojiStatus(botId, false);
   }
 
   async #getUserFull(chatId: ID): Promise<Api.userFull> {
