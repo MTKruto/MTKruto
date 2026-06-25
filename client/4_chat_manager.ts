@@ -21,9 +21,9 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { type AvailableReactions, availableReactionsToTlObject, chatAdministratorRightsToTlObject, type ChatP, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, constructJoinRequest2, reportReasonToTlObject, type SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
+import { type AvailableReactions, availableReactionsToTlObject, chatAdministratorRightsToTlObject, type ChatP, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, constructJoinRequest2, constructRecentActionsEntry, reportReasonToTlObject, type SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
 import { chatMemberRightsToTlObject, type FileSource, type ID, type ReportReason, type Update } from "../3_types.ts";
-import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, EnableSignaturesParams, GetAdministeredChatsParams, GetCreatedInviteLinksParams, GetJoinRequestsParams, MarkAllMentionsAsReadParams, PromoteChatMemberParams, ReportChatParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams } from "./0_params.ts";
+import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, CreateInviteLinkParams, DeclineJoinRequestsParams, EnableSignaturesParams, GetAdministeredChatsParams, GetCreatedInviteLinksParams, GetJoinRequestsParams, GetRecentActionsParams, MarkAllMentionsAsReadParams, PromoteChatMemberParams, ReportChatParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, canBeInputUser, getLimit, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -598,5 +598,46 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     const for_personal = params?.isForPersonalChannel || undefined;
     const result = await this.#c.invoke({ _: "channels.getAdminedPublicChannels", for_personal });
     return result.chats.map(constructChatP);
+  }
+
+  async getRecentActions(chatId: ID, params?: GetRecentActionsParams) {
+    this.#c.storage.assertUser("getRecentActions");
+    const channel = await this.#c.getInputChannel(chatId);
+    const limit = getLimit(params?.limit);
+    const events_filter: Api.channelAdminLogEventsFilter = {
+      _: "channelAdminLogEventsFilter",
+      ban: params?.isRestrict || undefined,
+      delete: params?.isDeletion || undefined,
+      demote: params?.isDemotion || undefined,
+      edit_rank: params?.isMemberTag || undefined,
+      edit: params?.isEdit || undefined,
+      forums: params?.isForum || undefined,
+      group_call: params?.isVideoChat || undefined,
+      info: params?.isChatInfo || undefined,
+      invite: params?.isInvitation || undefined,
+      invites: params?.isInvitation || undefined,
+      join: params?.isJoin || undefined,
+      kick: params?.isBan || undefined,
+      leave: params?.isLeave || undefined,
+      pinned: params?.isPin || undefined,
+      promote: params?.isPromotion || undefined,
+      send: params?.isNewMessage || undefined,
+      settings: params?.isChatSettings || undefined,
+      unban: params?.isUnrestrict || undefined,
+      unkick: params?.isUnban || undefined,
+    };
+    const max_id = params?.offsetId ? BigInt(params.offsetId) : 0n;
+    const result = await this.#c.invoke({
+      _: "channels.getAdminLog",
+      channel,
+      limit,
+      max_id,
+      min_id: 0n,
+      q: "",
+      admins: [],
+      events_filter,
+    });
+    const entries = result.events.map((v) => constructRecentActionsEntry(v, this.#c.getPeer, this.#c.messageManager.getMessage.bind(this.#c.messageManager), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager)));
+    return await Promise.all(entries);
   }
 }

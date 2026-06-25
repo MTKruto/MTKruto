@@ -1234,3 +1234,48 @@ export interface GetAdministeredChatsParams {
   /** Whether to return list of channels suitable for setting as personal channel. */
   isForPersonalChannel?: boolean;
 }
+
+export interface GetRecentActionsParams {
+  /** A list of admin user identifiers. If specified, only events triggered by them will be returned. */
+  admins?: ID[];
+  /** The maximum number of results to return. */
+  limit?: number;
+  /** Offset event ID from a previous result. */
+  offsetId?: string;
+  /** Whether to return recent actions related to bans. */
+  isBan?: boolean;
+  /** Whether to return recent actions related to chat info. */
+  isChatInfo?: boolean;
+  /** Whether to return recent actions related to chat settings. */
+  isChatSettings?: boolean;
+  /** Whether to return recent actions related to message deletion. */
+  isDeletion?: boolean;
+  /** Whether to return recent actions related to demotions. */
+  isDemotion?: boolean;
+  /** Whether to return recent actions related to message edits. */
+  isEdit?: boolean;
+  /** Whether to return recent actions related to forum changes. */
+  isForum?: boolean;
+  /** Whether to return recent actions related to invitations. */
+  isInvitation?: boolean;
+  /** Whether to return recent actions related to joins. */
+  isJoin?: boolean;
+  /** Whether to return recent actions related to leaves. */
+  isLeave?: boolean;
+  /** Whether to return recent actions related to member tags. */
+  isMemberTag?: boolean;
+  /** Whether to return recent actions related to new messages. */
+  isNewMessage?: boolean;
+  /** Whether to return recent actions related to pinned messages. */
+  isPin?: boolean;
+  /** Whether to return recent actions related to promotions. */
+  isPromotion?: boolean;
+  /** Whether to return recent actions related to restrictions. */
+  isRestrict?: boolean;
+  /** Whether to return recent actions related to unbans. */
+  isUnban?: boolean;
+  /** Whether to return recent actions related to unrestrictions. */
+  isUnrestrict?: boolean;
+  /** Whether to return recent actions related to video chats. */
+  isVideoChat?: boolean;
+}
