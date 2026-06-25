@@ -21,7 +21,7 @@
 import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { constructStickerSet, deserializeFileId, type FileSource, type InputSticker } from "../3_types.ts";
+import { constructStickerSet, constructStickerSetP, deserializeFileId, type FileSource, type InputSticker } from "../3_types.ts";
 import type { _UploadCommon, AddStickerToStickerSetParams, CreateStickerSetParams, ReplaceStickerInStickerSetParams, SetStickerSetThumbnailParams } from "./0_params.ts";
 import { checkStickerName } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
@@ -264,5 +264,10 @@ export class StickerSetManager {
   async unarchiveStickerSet(slug: string) {
     this.#c.storage.assertUser("unarchiveStickerSet");
     await this.#installStickerSet(slug, true);
+  }
+
+  async getAddedStickerSets() {
+    const result = Api.as("messages.allStickers", await this.#c.invoke({ _: "messages.getAllStickers", hash: 0n }));
+    return result.sets.map(constructStickerSetP);
   }
 }
