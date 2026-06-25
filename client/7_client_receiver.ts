@@ -38,7 +38,7 @@ export class ClientReceiver {
   constructor(postMessage: typeof globalThis.postMessage, id: string, params: ClientDispatcherParams | undefined) {
     let storage: ClientParams["storage"];
 
-    const name = `.mktruto-worker.${id}`;
+    const name = `.mtkruto-worker.${id}`;
     switch (params?.storage) {
       case "denokv":
         storage = new StorageDenoKV(name);

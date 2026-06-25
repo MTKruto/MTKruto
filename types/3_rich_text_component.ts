@@ -39,6 +39,7 @@ export interface RichTextComponentEmpty {
  */
 export interface RichTextComponentPlain {
   type: "plain";
+  /** The plain text. */
   text: string;
 }
 
@@ -48,6 +49,7 @@ export interface RichTextComponentPlain {
  */
 export interface RichTextComponentBold {
   type: "bold";
+  /** The component's inner text. */
   text: RichTextComponent;
 }
 
@@ -57,6 +59,7 @@ export interface RichTextComponentBold {
  */
 export interface RichTextComponentItalic {
   type: "italic";
+  /** The component's inner text. */
   text: RichTextComponent;
 }
 
@@ -66,6 +69,7 @@ export interface RichTextComponentItalic {
  */
 export interface RichTextComponentUnderline {
   type: "underline";
+  /** The component's inner text. */
   text: RichTextComponent;
 }
 
@@ -75,6 +79,7 @@ export interface RichTextComponentUnderline {
  */
 export interface RichTextComponentStrikethrough {
   type: "strikethrough";
+  /** The component's inner text. */
   text: RichTextComponent;
 }
 
@@ -84,6 +89,7 @@ export interface RichTextComponentStrikethrough {
  */
 export interface RichTextComponentFixed {
   type: "fixed";
+  /** The component's inner text. */
   text: RichTextComponent;
 }
 
@@ -95,6 +101,7 @@ export interface RichTextComponentLink {
   type: "link";
   url: string;
   linkPreviewId: string;
+  /** The component's inner text. */
   text: RichTextComponent;
 }
 
@@ -104,6 +111,7 @@ export interface RichTextComponentLink {
  */
 export interface RichTextComponentEmail {
   type: "email";
+  /** The component's inner text. */
   text: RichTextComponent;
 }
 
@@ -122,6 +130,7 @@ export interface RichTextComponentConcatenate {
  */
 export interface RichTextComponentSubscript {
   type: "subscript";
+  /** The component's inner text. */
   text: RichTextComponent;
 }
 
@@ -131,6 +140,7 @@ export interface RichTextComponentSubscript {
  */
 export interface RichTextComponentSuperscript {
   type: "superscript";
+  /** The component's inner text. */
   text: RichTextComponent;
 }
 
@@ -140,6 +150,7 @@ export interface RichTextComponentSuperscript {
  */
 export interface RichTextComponentMarked {
   type: "marked";
+  /** The component's inner text. */
   text: RichTextComponent;
 }
 
@@ -150,6 +161,7 @@ export interface RichTextComponentMarked {
 export interface RichTextComponentPhoneNumberLink {
   type: "phoneNumberLink";
   phoneNumber: string;
+  /** The component's inner text. */
   text: RichTextComponent;
 }
 
@@ -171,6 +183,7 @@ export interface RichTextComponentPhoto {
 export interface RichTextComponentAnchor {
   type: "anchor";
   name: string;
+  /** The component's inner text. */
   text: RichTextComponent;
 }
 
@@ -199,6 +212,7 @@ export interface RichTextComponentCustomEmoji {
  */
 export interface RichTextComponentSpoiler {
   type: "spoiler";
+  /** The component's inner text. */
   text: RichTextComponent;
 }
 
@@ -208,6 +222,7 @@ export interface RichTextComponentSpoiler {
  */
 export interface RichTextComponentMention {
   type: "mention";
+  /** The component's inner text. */
   text: RichTextComponent;
 }
 
@@ -217,6 +232,7 @@ export interface RichTextComponentMention {
  */
 export interface RichTextComponentHashtag {
   type: "hashtag";
+  /** The component's inner text. */
   text: RichTextComponent;
 }
 
@@ -226,6 +242,7 @@ export interface RichTextComponentHashtag {
  */
 export interface RichTextComponentBotCommand {
   type: "botCommand";
+  /** The component's inner text. */
   text: RichTextComponent;
 }
 
@@ -235,6 +252,7 @@ export interface RichTextComponentBotCommand {
  */
 export interface RichTextComponentCashtag {
   type: "cashtag";
+  /** The component's inner text. */
   text: RichTextComponent;
 }
 
@@ -244,6 +262,7 @@ export interface RichTextComponentCashtag {
  */
 export interface RichTextComponentUrl {
   type: "url";
+  /** The component's inner text. */
   text: RichTextComponent;
 }
 
@@ -254,6 +273,7 @@ export interface RichTextComponentUrl {
 export interface RichTextComponentEmailLink {
   type: "emailLink";
   email: string;
+  /** The component's inner text. */
   text: RichTextComponent;
 }
 
@@ -263,6 +283,7 @@ export interface RichTextComponentEmailLink {
  */
 export interface RichTextComponentPhone {
   type: "phoneNumber";
+  /** The component's inner text. */
   text: RichTextComponent;
 }
 
@@ -272,6 +293,7 @@ export interface RichTextComponentPhone {
  */
 export interface RichTextComponentBankCard {
   type: "bankCard";
+  /** The component's inner text. */
   text: RichTextComponent;
 }
 
@@ -282,6 +304,7 @@ export interface RichTextComponentBankCard {
 export interface RichTextComponentTextMention {
   type: "textMention";
   userId: number;
+  /** The component's inner text. */
   text: RichTextComponent;
 }
 
@@ -293,6 +316,7 @@ export interface RichTextComponentDateTime {
   type: "dateTime";
   format?: string;
   date: number;
+  /** The component's inner text. */
   text: RichTextComponent;
 }
 

@@ -1124,11 +1124,15 @@ export interface _SendSecretCaptionCommon {
   caption?: string;
   /** The caption's entities. */
   entities?: SecretMessageEntity[];
+  /** The parse mode to use. If omitted, the default parse mode will be used. */
+  parseMode?: ParseMode;
 }
 
 export interface SendSecretMessageParams extends _SendSecretCommon {
   /** The entities of the message's text. */
   entities?: SecretMessageEntity[];
+  /** The parse mode to use. If omitted, the default parse mode will be used. */
+  parseMode?: ParseMode;
 }
 
 export interface SendSecretLocationParams extends _SendSecretCommon {
@@ -1224,4 +1228,9 @@ export interface GetTopicsParams {
   offsetDate?: number;
   /** The maximum number of results to return. */
   limit?: number;
+}
+
+export interface GetAdministeredChatsParams {
+  /** Whether to return list of channels suitable for setting as personal channel. */
+  isForPersonalChannel?: boolean;
 }

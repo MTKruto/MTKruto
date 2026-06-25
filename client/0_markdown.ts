@@ -21,7 +21,7 @@
 /** Copyright (C) 2023 Dunkan */
 
 import { unreachable } from "../0_deps.ts";
-import { type MessageEntity, sortMessageEntities } from "../3_types.ts";
+import { type MessageEntity, type SecretMessageEntity, sortMessageEntities, sortSecretMessageEntities } from "../3_types.ts";
 import { InputError } from "../0_errors.ts";
 import { decodeText, encodeText } from "../1_utilities.ts";
 
@@ -111,12 +111,13 @@ function getLinkCustomEmojiId(url_: string) {
     return "";
   }
 }
-
-export function parseMarkdown(text_: string): [string, MessageEntity[]] {
+export function parseMarkdown(html_: string): [string, MessageEntity[]];
+export function parseMarkdown(html_: string, isSecret: true): [string, SecretMessageEntity[]];
+export function parseMarkdown(text_: string, isSecret?: boolean): [string, (MessageEntity | SecretMessageEntity)[]] {
   const text = encodeText(text_);
 
   let resultSize = 0;
-  let entities: MessageEntity[] = [];
+  let entities: (MessageEntity | SecretMessageEntity)[] = [];
   let utf16Offset = 0;
 
   interface EntityInfo {
@@ -330,7 +331,9 @@ export function parseMarkdown(text_: string): [string, MessageEntity[]] {
             throw new InputError(`Can't find the end of the custom emoji URL that starts at offset ${urlBeginPos}.`);
           }
           customEmojiId = getLinkCustomEmojiId(decodeText(url));
-          time = getLinkTime(decodeText(url));
+          if (!isSecret) {
+            time = getLinkTime(decodeText(url));
+          }
           break;
         }
         default:
@@ -366,7 +369,7 @@ export function parseMarkdown(text_: string): [string, MessageEntity[]] {
     );
   }
 
-  entities = sortMessageEntities(entities);
+  entities = isSecret ? sortSecretMessageEntities(entities as SecretMessageEntity[]) : sortMessageEntities(entities);
 
   return [decodeText(text.slice(0, resultSize)), entities];
 }

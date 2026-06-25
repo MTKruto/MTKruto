@@ -49,7 +49,7 @@ export class ChecklistManager {
 
   async #updateChecklistInner(chatId: ID, messageId: number, params: UpdateChecklistParams | undefined) {
     if (!params?.itemsToCheck?.length && !params?.itemsToUncheck?.length) {
-      throw new InputError("Both itemsToCheck and itemsToUncheck msut not be empty.");
+      throw new InputError("Both itemsToCheck and itemsToUncheck must not be empty.");
     }
 
     const peer = await this.#c.getInputPeer(chatId);

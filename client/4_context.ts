@@ -247,6 +247,9 @@ export class Context {
   }
 
   #mustGetSecretChatId() {
+    if (this.secretChat !== undefined) {
+      return this.secretChat.id;
+    }
     if (this.secretMessage !== undefined) {
       return this.secretMessage.chatId;
     }
@@ -690,6 +693,12 @@ export class Context {
   async deleteStory(storyId: number): Promise<void> {
     const chatId = this.#mustGetChatId();
     return await this.client.deleteStory(chatId, storyId);
+  }
+
+  /** Context-aware alias for {@link Client.deleteTopic}. */
+  async deleteTopic(topicId: number): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.deleteTopic(chatId, topicId);
   }
 
   /** Context-aware alias for {@link Client.disableAntispam}. */

@@ -22,9 +22,11 @@ import { concat, equals, ige256Decrypt, ige256Encrypt, unreachable, WEEK } from 
 import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, getRandomInt, intFromBytes, intToBytes, type Logger, mod, modExp, sha1, sha256 } from "../1_utilities.ts";
 import { Api, repr, SecretChats, TLReader, TLWriter, X } from "../2_tl.ts";
-import { deserializeFileId, type FileSource, type ID, secretMessageEntityToTlObject, type Sticker, type Update } from "../3_types.ts";
+import { deserializeFileId, type FileSource, type ID, type ParseMode, type SecretMessageEntity, secretMessageEntityToTlObject, type Sticker, type Update } from "../3_types.ts";
 import { constructSecretChat } from "../types/0_secret_chat.ts";
 import { constructSecretMessage } from "../types/2_secret_message.ts";
+import { parseHtml } from "./0_html.ts";
+import { parseMarkdown } from "./0_markdown.ts";
 import type { EndSecretChatParams, SendSecretAnimationParams, SendSecretAudioParams, SendSecretContactParams, SendSecretDocumentParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretPhotoParams, SendSecretStickerParams, SendSecretVenueParams, SendSecretVideoNoteParams, SendSecretVideoParams, SendSecretVoiceParams } from "./0_params.ts";
 import { isGoodModExpFirst, isSafePrime } from "./0_password.ts";
 import { SecretChatState, type SerializedSecretChatState } from "./0_secret_chat_state.ts";
@@ -158,6 +160,50 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     return constructSecretChat(result);
   }
 
+  static parseText(text: string, entities: SecretMessageEntity[], parseMode: ParseMode, isEmptyAllowed = false): [string, SecretMessageEntity[]] {
+    switch (parseMode) {
+      case null:
+        break;
+      case "HTML": {
+        const [newText, entitiesToPush] = parseHtml(text, true);
+        text = newText;
+        for (const entity of entitiesToPush) {
+          entities.push(entity);
+        }
+        break;
+      }
+      case "Markdown": {
+        const [newText, entitiesToPush] = parseMarkdown(text, true);
+        text = newText;
+        for (const entity of entitiesToPush) {
+          entities.push(entity);
+        }
+        break;
+      }
+      default:
+        unreachable();
+    }
+
+    text = text.trimEnd();
+    for (const entity of entities) {
+      while (text[entity.offset + (entity.length - 1)] === undefined) {
+        --entity.length;
+      }
+    }
+
+    if (!isEmptyAllowed && !text.length) {
+      throw new InputError("Text must not be empty.");
+    }
+
+    return [text, entities];
+  }
+
+  parseText(text_: string, params?: { parseMode?: ParseMode; entities?: SecretMessageEntity[] }, isEmptyAllowed?: boolean) {
+    const [text, entities_] = SecretChatManager.parseText(text_, params?.entities ?? [], params?.parseMode === null ? null : params?.parseMode ?? this.#c.parseMode, isEmptyAllowed);
+    const entities = entities_?.length > 0 ? entities_.map(secretMessageEntityToTlObject) : undefined;
+    return [text, entities] as const;
+  }
+
   async acceptSecretChat(id: number) {
     const state = this.#getSecretChatState(id);
     if (!Api.is("encryptedChatRequested", state.encryptedChat)) {
@@ -250,16 +296,17 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
   async sendSecretMessage(id: number, text: string, params?: SendSecretMessageParams) {
     this.#c.storage.assertUser("sendSecretMessage");
     const state = this.#mustGetEncryptedChat(id);
+    const [message, entities] = this.parseText(text, params);
 
     const random_id = getRandomId();
     const decryptedMessage: SecretChats.decryptedMessage = {
       _: "decryptedMessage",
-      message: text,
+      message,
       random_id,
       ttl: params?.ttl ?? 0,
       silent: params?.isSilent || undefined,
       reply_to_random_id: params?.replyToMessageId ? BigInt(params.replyToMessageId) : undefined,
-      entities: params?.entities?.length ? params.entities.map(secretMessageEntityToTlObject) : undefined,
+      entities,
       via_bot_name: params?.viaBot,
     };
 
@@ -336,6 +383,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
   async sendSecretDocument(id: number, document: FileSource, params?: SendSecretDocumentParams) {
     this.#c.storage.assertUser("sendSecretDocument");
     const state = this.#mustGetEncryptedChat(id);
+    const [message, entities] = this.parseText(params?.caption ?? "", params);
 
     const [key, iv] = this.#generateKeyIv();
 
@@ -344,8 +392,8 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     const random_id = getRandomId();
     const decryptedMessage: SecretChats.decryptedMessage = {
       _: "decryptedMessage",
-      message: params?.caption ?? "",
-      entities: params?.entities?.length ? params.entities.map(secretMessageEntityToTlObject) : undefined,
+      message,
+      entities,
       random_id,
       ttl: params?.ttl ?? 0,
       silent: params?.isSilent || undefined,
@@ -372,6 +420,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
   async sendSecretVideo(id: number, video: FileSource, params?: SendSecretVideoParams) {
     this.#c.storage.assertUser("sendSecretVideo");
     const state = this.#mustGetEncryptedChat(id);
+    const [message, entities] = this.parseText(params?.caption ?? "", params);
 
     const [key, iv] = this.#generateKeyIv();
 
@@ -380,8 +429,8 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     const random_id = getRandomId();
     const decryptedMessage: SecretChats.decryptedMessage = {
       _: "decryptedMessage",
-      message: params?.caption ?? "",
-      entities: params?.entities?.length ? params.entities.map(secretMessageEntityToTlObject) : undefined,
+      message,
+      entities,
       random_id,
       ttl: params?.ttl ?? 0,
       silent: params?.isSilent || undefined,
@@ -411,6 +460,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
   async sendSecretVideoNote(id: number, videoNote: FileSource, params?: SendSecretVideoNoteParams) {
     this.#c.storage.assertUser("sendSecretVideoNote");
     const state = this.#mustGetEncryptedChat(id);
+    const [message, entities] = this.parseText(params?.caption ?? "", params);
 
     const [key, iv] = this.#generateKeyIv();
 
@@ -419,8 +469,8 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     const random_id = getRandomId();
     const decryptedMessage: SecretChats.decryptedMessage = {
       _: "decryptedMessage",
-      message: params?.caption ?? "",
-      entities: params?.entities?.length ? params.entities.map(secretMessageEntityToTlObject) : undefined,
+      message,
+      entities,
       random_id,
       ttl: params?.ttl ?? 0,
       silent: params?.isSilent || undefined,
@@ -450,6 +500,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
   async sendSecretAudio(id: number, audio: FileSource, params?: SendSecretAudioParams) {
     this.#c.storage.assertUser("sendSecretAudio");
     const state = this.#mustGetEncryptedChat(id);
+    const [message, entities] = this.parseText(params?.caption ?? "", params);
 
     const [key, iv] = this.#generateKeyIv();
 
@@ -458,8 +509,8 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     const random_id = getRandomId();
     const decryptedMessage: SecretChats.decryptedMessage = {
       _: "decryptedMessage",
-      message: params?.caption ?? "",
-      entities: params?.entities?.length ? params.entities.map(secretMessageEntityToTlObject) : undefined,
+      message,
+      entities,
       random_id,
       ttl: params?.ttl ?? 0,
       silent: params?.isSilent || undefined,
@@ -489,6 +540,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
   async sendSecretVoice(id: number, voice: FileSource, params?: SendSecretVoiceParams) {
     this.#c.storage.assertUser("sendSecretVoice");
     const state = this.#mustGetEncryptedChat(id);
+    const [message, entities] = this.parseText(params?.caption ?? "", params);
 
     const [key, iv] = this.#generateKeyIv();
 
@@ -497,8 +549,8 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     const random_id = getRandomId();
     const decryptedMessage: SecretChats.decryptedMessage = {
       _: "decryptedMessage",
-      message: params?.caption ?? "",
-      entities: params?.entities?.length ? params.entities.map(secretMessageEntityToTlObject) : undefined,
+      message,
+      entities,
       random_id,
       ttl: params?.ttl ?? 0,
       silent: params?.isSilent || undefined,
@@ -528,6 +580,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
   async sendSecretAnimation(id: number, animation: FileSource, params?: SendSecretAnimationParams) {
     this.#c.storage.assertUser("sendSecretAnimation");
     const state = this.#mustGetEncryptedChat(id);
+    const [message, entities] = this.parseText(params?.caption ?? "", params);
 
     const [key, iv] = this.#generateKeyIv();
 
@@ -536,8 +589,8 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     const random_id = getRandomId();
     const decryptedMessage: SecretChats.decryptedMessage = {
       _: "decryptedMessage",
-      message: params?.caption ?? "",
-      entities: params?.entities?.length ? params.entities.map(secretMessageEntityToTlObject) : undefined,
+      message,
+      entities,
       random_id,
       ttl: params?.ttl ?? 0,
       silent: params?.isSilent || undefined,
@@ -586,6 +639,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
   async sendSecretPhoto(id: number, photo: FileSource, params?: SendSecretPhotoParams) {
     this.#c.storage.assertUser("sendSecretPhoto");
     const state = this.#mustGetEncryptedChat(id);
+    const [message, entities] = this.parseText(params?.caption ?? "", params);
 
     const [key, iv] = this.#generateKeyIv();
 
@@ -594,8 +648,8 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     const random_id = getRandomId();
     const decryptedMessage: SecretChats.decryptedMessage = {
       _: "decryptedMessage",
-      message: params?.caption ?? "",
-      entities: params?.entities?.length ? params.entities.map(secretMessageEntityToTlObject) : undefined,
+      message,
+      entities,
       random_id,
       ttl: params?.ttl ?? 0,
       silent: params?.isSilent || undefined,
