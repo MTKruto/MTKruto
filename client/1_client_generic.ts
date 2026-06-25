@@ -41,6 +41,13 @@ export abstract class ClientGeneric {
   abstract sendCode(phoneNumber: string): Promise<void>;
 
   /**
+   * Clear recent emoji statuses. User-only.
+   *
+   * @method ac
+   */
+  abstract clearRecentEmojiStatuses(): Promise<void>;
+
+  /**
    * Allow a bot to set custom emoji status. User-only.
    *
    * @param botId The user identifier of the bot.

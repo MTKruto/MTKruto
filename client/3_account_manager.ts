@@ -607,4 +607,9 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     const result = await this.#c.invoke({ _: "help.getNearestDc" });
     return result.country;
   }
+
+  async clearRecentEmojiStatuses() {
+    this.#c.storage.assertUser("clearRecentEmojiStatuses");
+    await this.#c.invoke({ _: "account.clearRecentEmojiStatuses" });
+  }
 }
