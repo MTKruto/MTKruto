@@ -671,6 +671,12 @@ export class Context {
     return await this.client.deleteMessages(chatId, messageIds, params);
   }
 
+  /** Context-aware alias for {@link Client.deleteRevokedInviteLinks}. */
+  async deleteRevokedInviteLinks(userId: ID): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.deleteRevokedInviteLinks(chatId, userId);
+  }
+
   /** Context-aware alias for {@link Client.deleteScheduledMessage}. */
   async deleteScheduledMessage(messageId: number): Promise<void> {
     const chatId = this.#mustGetChatId();

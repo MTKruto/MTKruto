@@ -640,4 +640,11 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     const entries = result.events.map((v) => constructRecentActionsEntry(v, this.#c.getPeer, this.#c.messageManager.getMessage.bind(this.#c.messageManager), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager)));
     return await Promise.all(entries);
   }
+
+  async deleteRevokedInviteLinks(chatId: ID, userId: ID) {
+    this.#c.storage.assertUser("deleteRevokedInviteLinks");
+    const peer = await this.#c.getInputPeer(chatId);
+    const admin_id = await this.#c.getInputUser(userId);
+    await this.#c.invoke({ _: "messages.deleteRevokedExportedChatInvites", peer, admin_id });
+  }
 }

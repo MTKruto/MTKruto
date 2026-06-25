@@ -450,6 +450,18 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
+   * Get application configuration. User-only.
+   *
+   * @method ac
+   */
+  async getApplicationConfiguration(): Promise<
+    // deno-lint-ignore no-explicit-any
+    any
+  > {
+    return await this.#dispatch("getApplicationConfiguration");
+  }
+
+  /**
    * Get app support. User-only.
    *
    * @method ac
@@ -907,18 +919,6 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async updateProfileVideo(video: FileSource, params?: UpdateProfileVideoParams): Promise<void> {
     return await this.#dispatch("updateProfileVideo", video, params);
-  }
-
-  /**
-   * Get application configuration. User-only.
-   *
-   * @method ac
-   */
-  async getApplicationConfiguration(): Promise<
-    // deno-lint-ignore no-explicit-any
-    any
-  > {
-    return await this.#dispatch("getApplicationConfiguration");
   }
 
   //
@@ -2314,6 +2314,17 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async deleteChatStickerSet(chatId: ID): Promise<void> {
     return await this.#dispatch("deleteChatStickerSet", chatId);
+  }
+
+  /**
+   * Delete revoked invite links. User-only.
+   *
+   * @method ch
+   * @param chatId The identifier of the chat.
+   * @param userId The user identifier of a chat admin.
+   */
+  async deleteRevokedInviteLinks(chatId: ID, userId: ID): Promise<void> {
+    return await this.#dispatch("deleteRevokedInviteLinks", chatId, userId);
   }
 
   /**
