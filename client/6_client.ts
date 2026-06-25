@@ -638,8 +638,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     }
   }
 
-
-
   /**
    * Get application configuration. User-only.
    *
