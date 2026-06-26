@@ -58,7 +58,7 @@ export interface ResolvedInviteLink {
   /** The chat verification bot's identifier. */
   verificationBotId?: number;
   /** The chat verification's custom emoji identifier. */
-  verificationCustomEmojiId?: number;
+  verificationCustomEmojiId?: string;
   /** The chat verification's description. */
   verificationDescription?: string;
 }
@@ -81,7 +81,7 @@ export function constructResolvedInviteLink(il: Api.chatInvite): ResolvedInviteL
     subscriptionPeriod: il.subscription_pricing?.period,
     subscriptionPrice: il.subscription_pricing?.amount ? Number(il.subscription_pricing.amount) : undefined,
     verificationBotId: il.bot_verification?.bot_id ? Number(il.bot_verification.bot_id) : undefined,
-    verificationCustomEmojIid: il.bot_verification?.icon ? String(il.bot_verification.icon) : undefined,
+    verificationCustomEmojiId: il.bot_verification?.icon ? String(il.bot_verification.icon) : undefined,
     verificationDescription: il.bot_verification?.description,
   });
 }
