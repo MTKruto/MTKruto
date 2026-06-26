@@ -22,7 +22,7 @@ import { getLogger, type Logger } from "./1_logger.ts";
 
 export class Queue {
   #logger: Logger;
-  functions: (() => Promise<void>)[] = [];
+  #functions = new Array<() => Promise<void>>();
   #throw: boolean;
 
   constructor(name: string, throw_ = false) {
@@ -31,7 +31,7 @@ export class Queue {
   }
 
   add(fn: () => Promise<void>) {
-    this.functions.push(fn);
+    this.#functions.push(fn);
     this.#check();
   }
 
@@ -42,7 +42,7 @@ export class Queue {
     } else {
       this.#busy = true;
     }
-    const fn = this.functions.shift();
+    const fn = this.#functions.shift();
     if (fn !== undefined) {
       const promise = fn()
         .finally(() => {
