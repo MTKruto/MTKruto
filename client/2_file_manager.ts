@@ -388,12 +388,24 @@ export class FileManager {
   async *downloadInner(location: Api.InputFileLocation, dcId: number, params: DownloadParams | undefined): AsyncGenerator<Uint8Array<ArrayBufferLike>, void, any> {
     const signal = params?.signal;
     signal?.throwIfAborted();
+    if (params?.offset !== undefined) {
+      FileManager.validateOffset(params.offset);
+    }
     const id = "id" in location ? location.id : "photo_id" in location ? location.photo_id : null;
     if (id !== null && this.#c.storage.supportsFiles) {
       const file = await this.#c.storage.getFile(id);
-      const partOffset = file === null ? 0 : params?.offset ? Math.ceil(10 / file[1]) - 1 : 0;
       if (file !== null && file[0] > 0) {
-        yield* this.#c.storage.iterFileParts(id, file[0], partOffset, signal);
+        const offset = params?.offset ?? 0;
+        const partOffset = Math.floor(offset / file[1]);
+        let first = true;
+        for await (const bytes of this.#c.storage.iterFileParts(id, file[0], partOffset, signal)) {
+          if (first) {
+            first = false;
+            yield bytes.subarray(offset % file[1]);
+          } else {
+            yield bytes;
+          }
+        }
         return;
       }
     }
@@ -415,9 +427,6 @@ export class FileManager {
 
     const chunkSize = params?.chunkSize ?? DOWNLOAD_MAX_CHUNK_SIZE;
     FileManager.validateChunkSize(chunkSize, DOWNLOAD_MAX_CHUNK_SIZE);
-    if (params?.offset !== undefined) {
-      FileManager.validateOffset(params.offset);
-    }
 
     const dc = getDc(dcId);
     signal?.throwIfAborted();
