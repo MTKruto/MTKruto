@@ -2464,6 +2464,18 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Report a message reaction. User-only.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat including the messages.
+   * @param messageId The identifiers of the message.
+   * @param reactionActorId The identifier of the chat that made the reaction.
+   */
+  async reportReaction(chatId: ID, messageId: number, reactionActorId: ID): Promise<void> {
+    return await this.#reactionManager.reportReaction(chatId, messageId, reactionActorId);
+  }
+
+  /**
    * Retrieve a message using its link.
    *
    * @method ms
@@ -2956,18 +2968,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async viewMessages(chatId: ID, messageIds: number[]): Promise<void> {
     return await this.#messageManager.viewMessages(chatId, messageIds);
-  }
-
-  /**
-   * Report a message reaction. User-only.
-   *
-   * @method ms
-   * @param chatId The identifier of the chat including the messages.
-   * @param messageId The identifiers of the message.
-   * @param reactionActorId The identifier of the chat that made the reaction.
-   */
-  async reportReaction(chatId: ID, messageId: number, reactionActorId: ID): Promise<void> {
-    return await this.#reactionManager.reportReaction(chatId, messageId, reactionActorId);
   }
 
   //

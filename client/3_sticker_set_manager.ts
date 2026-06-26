@@ -23,7 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { constructStickerSet, constructStickerSetP, deserializeFileId, type FileSource, type InputSticker } from "../3_types.ts";
 import type { _UploadCommon, AddStickerToStickerSetParams, CreateStickerSetParams, ReplaceStickerInStickerSetParams, SetStickerSetThumbnailParams } from "./0_params.ts";
-import { checkStickerName, getLimit } from "./0_utilities.ts";
+import { checkStickerName } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
 import type { FileManager } from "./2_file_manager.ts";
 
