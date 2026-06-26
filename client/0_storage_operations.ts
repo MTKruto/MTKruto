@@ -468,11 +468,7 @@ export class StorageOperations {
   }
 
   async deleteUpdates() {
-    const maybePromises = new Array<MaybePromise<void>>();
-    for await (const [k] of await this.#storage.getMany({ prefix: K.updates.all() })) {
-      maybePromises.push(this.#storage.set(k, null));
-    }
-    await Promise.all(maybePromises.filter((v) => v instanceof Promise));
+    await this.#deleteByPrefix(K.updates.all());
   }
 
   async getFirstUpdate(boxId: bigint): Promise<[readonly StorageKeyPart[], Api.Update] | null> {
@@ -518,60 +514,47 @@ export class StorageOperations {
     }
   }
 
+  async #deleteByPrefix(prefix: StorageKeyPart[]) {
+    for await (const [key] of await this.#storage.getMany({ prefix })) {
+      await this.#storage.set(key, null);
+    }
+  }
+
   async deleteFiles() {
     if (!this.#supportsFiles) {
       return;
     }
 
-    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.fileParts() })) {
-      await this.#storage.set(key, null);
-    }
-
-    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.files() })) {
-      await this.#storage.set(key, null);
-    }
+    await this.#deleteByPrefix(K.cache.fileParts());
+    await this.#deleteByPrefix(K.cache.files());
   }
 
   async deleteCustomEmojiDocuments() {
-    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.customEmojiDocuments() })) {
-      await this.#storage.set(key, null);
-    }
+    await this.#deleteByPrefix(K.cache.customEmojiDocuments());
   }
 
   async deleteBusinessConnections() {
-    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.businessConnections() })) {
-      await this.#storage.set(key, null);
-    }
+    await this.#deleteByPrefix(K.cache.businessConnections());
   }
 
   async deleteInlineQueryAnswers() {
-    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.inlineQueryAnswers() })) {
-      await this.#storage.set(key, null);
-    }
+    await this.#deleteByPrefix(K.cache.inlineQueryAnswers());
   }
 
   async deleteCallbackQueryAnswers() {
-    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.callbackQueryAnswers() })) {
-      await this.#storage.set(key, null);
-    }
+    await this.#deleteByPrefix(K.cache.callbackQueryAnswers());
   }
 
   async deleteFullChats() {
-    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.fullChats() })) {
-      await this.#storage.set(key, null);
-    }
+    await this.#deleteByPrefix(K.cache.fullChats());
   }
 
   async deleteGroupCalls() {
-    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.groupCalls() })) {
-      await this.#storage.set(key, null);
-    }
+    await this.#deleteByPrefix(K.cache.groupCalls());
   }
 
   async deleteStickerSetNames() {
-    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.stickerSetNames() })) {
-      await this.#storage.set(key, null);
-    }
+    await this.#deleteByPrefix(K.cache.stickerSetNames());
   }
 
   async clear() {
@@ -597,9 +580,7 @@ export class StorageOperations {
   }
 
   async reset() {
-    for await (const [key] of await this.#storage.getMany({ prefix: [] })) {
-      await this.#storage.set(key, null);
-    }
+    await this.#deleteByPrefix([]);
   }
 
   async setPollResults(pollId: bigint, pollResults: Api.pollResults) {
@@ -611,11 +592,7 @@ export class StorageOperations {
   }
 
   async deletePollResults() {
-    const maybePromises = new Array<MaybePromise<unknown>>();
-    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.pollResults() })) {
-      maybePromises.push(this.#storage.set(key, null));
-    }
-    await Promise.all(maybePromises);
+    await this.#deleteByPrefix(K.cache.pollResults());
   }
 
   async setPoll(pollId: bigint, poll: Api.poll) {
@@ -627,11 +604,7 @@ export class StorageOperations {
   }
 
   async deletePolls() {
-    const maybePromises = new Array<MaybePromise<unknown>>();
-    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.polls() })) {
-      maybePromises.push(this.#storage.set(key, null));
-    }
-    await Promise.all(maybePromises);
+    await this.#deleteByPrefix(K.cache.polls());
   }
 
   async setVoiceTranscription(voiceTranscription: VoiceTranscription) {
@@ -659,11 +632,7 @@ export class StorageOperations {
   }
 
   async deleteVoiceTranscriptionReferences() {
-    const maybePromises = new Array<MaybePromise<unknown>>();
-    for await (const [key] of await this.#storage.getMany({ prefix: K.cache.voiceTranscriptions() })) {
-      maybePromises.push(this.#storage.set(key, null));
-    }
-    await Promise.all(maybePromises);
+    await this.#deleteByPrefix(K.cache.voiceTranscriptionReferences());
   }
 }
 
