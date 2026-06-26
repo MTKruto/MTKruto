@@ -34,7 +34,15 @@ export function getString(name: string): string | null {
     }
     return null;
   } else if ("Deno" in global_) {
-    return global_.Deno.env.get(name) ?? null;
+    try {
+      return global_.Deno.env.get(name) ?? null;
+    } catch (err) {
+      if (err instanceof Deno.errors.NotCapable) {
+        return null;
+      } else {
+        throw err;
+      }
+    }
   } else if ("process" in global_) {
     return global_.process.env[name] ?? null;
   } else {
