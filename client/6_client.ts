@@ -3946,6 +3946,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Resolve an invite link. User-only.
+   *
+   * @method ch
+   * @param inviteLink The invite link to resolve.
+   */
+  async resolveInviteLink(inviteLink: string): Promise<ChatP | ResolvedInviteLink> {
+    return await this.#chatManager.resolveInviteLink(inviteLink);
+  }
+
+  /**
    * Set a chat's available reactions. User-only.
    *
    * @method ch
