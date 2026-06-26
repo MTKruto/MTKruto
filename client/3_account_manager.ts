@@ -649,7 +649,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     const user_id = await this.#c.getInputUser(userId);
     const parent_peer = params?.parentChatId ? await this.#c.getInputPeer(params.parentChatId) : undefined;
     const refund_charged = !!params?.isRefunded || undefined;
-    this.#c.invoke({ _: "account.toggleNoPaidMessagesException", user_id, parent_peer, refund_charged });
+    await this.#c.invoke({ _: "account.toggleNoPaidMessagesException", user_id, parent_peer, refund_charged });
   }
 
   async disallowUnpaidMessagesFromUser(userId: ID, params?: DisallowUnpaidMessagesFromUserParams) {
@@ -657,7 +657,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     const user_id = await this.#c.getInputUser(userId);
     const parent_peer = params?.parentChatId ? await this.#c.getInputPeer(params.parentChatId) : undefined;
     const require_payment = true;
-    this.#c.invoke({ _: "account.toggleNoPaidMessagesException", user_id, parent_peer, require_payment });
+    await this.#c.invoke({ _: "account.toggleNoPaidMessagesException", user_id, parent_peer, require_payment });
   }
 
   async #getPrivacy(key: Api.InputPrivacyKey["_"]) {
