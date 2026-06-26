@@ -168,7 +168,7 @@ export class TLReader {
     const flagFields: Record<string, number> = {};
     for (const [name, fieldType] of desc[1]) {
       if (isOptionalParam(fieldType)) {
-        const { flagField, bitIndex } = analyzeOptionalParam(fieldType);
+        const { flagField, bitIndex } = analyzeOptionalParam(fieldType, this.#path);
         const bits = flagFields[flagField];
         if ((bits & (1 << bitIndex)) === 0) {
           continue;

@@ -23,6 +23,7 @@ import { factorize, getLogger, getRandomInt, intFromBytes, intToBytes, modExp, r
 import { Mtproto } from "../2_tl.ts";
 import { type DC, getDcId } from "../3_transport.ts";
 import { PUBLIC_KEYS, type PublicKeys, TEMPORARY_AUTH_KEY_TTL } from "../4_constants.ts";
+import { PublicKeyError } from "../4_errors.ts";
 import { type SessionParams, SessionPlain } from "../4_session.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
 
@@ -94,7 +95,7 @@ export class ClientPlain extends ClientAbstract implements ClientAbstract {
     }
 
     if (!publicKeyFingerprint || !publicKey) {
-      throw new Error("No corresponding public key found");
+      throw new PublicKeyError("No corresponding public key found");
     }
 
     const dc = getDcId(this.dc, this.isMedia);

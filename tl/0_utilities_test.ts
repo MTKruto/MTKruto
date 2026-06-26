@@ -28,9 +28,9 @@ Deno.test("isOptionalParam", () => {
 });
 
 Deno.test("analyzeOptionalParam", () => {
-  assertThrows(() => analyzeOptionalParam("long"));
+  assertThrows(() => analyzeOptionalParam("long", []));
 
-  const { flagField, bitIndex } = analyzeOptionalParam("flags.0?long");
+  const { flagField, bitIndex } = analyzeOptionalParam("flags.0?long", []);
 
   assertEquals(flagField, "flags");
   assertEquals(bitIndex, 0);

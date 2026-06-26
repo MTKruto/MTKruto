@@ -20,13 +20,13 @@
 
 import { MINUTE } from "../0_deps.ts";
 import { LruCache, unreachable } from "../0_deps.ts";
-import { InputError } from "../0_errors.ts";
 import { base64DecodeUrlSafe, base64EncodeUrlSafe, getLogger, intFromBytes, type Logger, type MaybePromise, rleDecode, rleEncode, sha1, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { awaitablePooledMap } from "../1_utilities.ts";
 import { fromString, type Storage, type StorageKeyPart, toString } from "../2_storage.ts";
 import { Api, TLReader, TLWriter, X } from "../2_tl.ts";
 import type { DC } from "../3_transport.ts";
 import { type ChatP, constructChatP, type Translation, type VoiceTranscription } from "../3_types.ts";
+import { InputError } from "../4_errors.ts";
 
 export const K = {
   session: {
@@ -162,7 +162,7 @@ export class StorageOperations {
     }
     const auth = this.auth.mustGet();
     if (auth.dc === null || auth.authKey === null || auth.apiId === 0 || auth.userId === 0) {
-      throw new Error("Not authorized");
+      throw new InputError("Not authorized.");
     }
     const writer = new TLWriter();
     writer.writeString(auth.dc);

@@ -19,13 +19,11 @@
  */
 
 import { concat, delay, ige256Encrypt, SECOND } from "../0_deps.ts";
-import { ConnectionError } from "../0_errors.ts";
 import { drop, fromUnixTimestamp, getLogger, getRandomId, intFromBytes, type Logger, type MaybePromise, mod, sha1, toUnixTimestamp } from "../1_utilities.ts";
 import { Api, type message, Mtproto, serializeMessage, TLWriter, X } from "../2_tl.ts";
 import type { DC } from "../3_transport.ts";
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, SYSTEM_LANG_CODE, SYSTEM_VERSION, TEMPORARY_AUTH_KEY_TTL } from "../4_constants.ts";
-import { ConnectionNotInited, InputError, type TransportError } from "../4_errors.ts";
-import { constructTelegramError } from "../4_errors.ts";
+import { ConnectionError, ConnectionNotInited, constructTelegramError, InputError, RetryError, type TransportError } from "../4_errors.ts";
 import { SessionEncrypted, SessionError } from "../4_session.ts";
 import { AbortableLoop } from "./0_abortable_loop.ts";
 import { ClientAbstract } from "./0_client_abstract.ts";
@@ -325,7 +323,7 @@ export class ClientEncrypted extends ClientAbstract {
         }
       }
     }
-    throw new Error(`Failed to invoke function after ${ClientEncrypted.#SEND_MAX_TRIES} tries.`, { cause: lastErr });
+    throw new RetryError(`Failed to invoke function after ${ClientEncrypted.#SEND_MAX_TRIES} tries.`, { cause: lastErr });
   }
 
   async #resend(request: SentRequest) {

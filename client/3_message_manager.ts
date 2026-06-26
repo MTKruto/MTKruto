@@ -932,10 +932,10 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     this.#checkParams(params);
     question = question?.trim();
     if (!question) {
-      throw new Error("Question must not be empty.");
+      throw new InputError("Question must not be empty.");
     }
     if (!Array.isArray(options) || options.length < 1) {
-      throw new Error("There must be at least one option.");
+      throw new InputError("There must be at least one option.");
     }
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
@@ -1064,10 +1064,10 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     this.#checkParams(params);
     title = title?.trim();
     if (!title) {
-      throw new Error("Title must not be empty.");
+      throw new InputError("Title must not be empty.");
     }
     if (!Array.isArray(items) || items.length < 1) {
-      throw new Error("There must be at least one item.");
+      throw new InputError("There must be at least one item.");
     }
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();

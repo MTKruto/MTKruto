@@ -23,7 +23,7 @@ import type { GetManyFilter, Storage, StorageKeyPart } from "./0_storage.ts";
 
 function assertInitialized(kv: Deno.Kv | null | undefined) {
   if (!kv) {
-    throw new Error("Not initialized");
+    throw new TypeError("Not initialized.");
   }
   return kv;
 }

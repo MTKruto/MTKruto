@@ -26,10 +26,10 @@ export class StorageLocalStorage implements Storage {
 
   constructor(prefix: string) {
     if (typeof localStorage === "undefined") {
-      throw new Error("Unavailable in current environment");
+      throw new TypeError("Unavailable in current environment.");
     }
     if (prefix.length <= 0) {
-      throw new Error("Empty prefix");
+      throw new TypeError("Empty prefix.");
     }
     this.#prefix = prefix;
   }

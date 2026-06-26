@@ -250,11 +250,11 @@ export function parseMarkdown(text_: string, isSecret?: boolean): [string, (Mess
             i++;
             type = "customEmoji";
           } else {
-            throw new Error(`Character '${String.fromCharCode(text[i])}' is reserved and must be escaped with the preceding '\\'`);
+            throw new InputError(`Character '${String.fromCharCode(text[i])}' is reserved and must be escaped with the preceding '\\'`);
           }
           break;
         default:
-          throw new Error(`Character '${String.fromCharCode(text[i])}' is reserved and must be escaped with the preceding '\\'`);
+          throw new InputError(`Character '${String.fromCharCode(text[i])}' is reserved and must be escaped with the preceding '\\'`);
       }
 
       nestedEntities.push({ type, argument, entityOffset: utf16Offset, entityByteOffset, entityBeginPos: resultSize });
@@ -296,7 +296,7 @@ export function parseMarkdown(text_: string, isSecret?: boolean): [string, (Mess
             url = Uint8Array.from(url_);
 
             if (text[i] !== CODEPOINTS[")"]) {
-              throw new Error(`Can't find the end of the URL that starts at offset ${urlBeginPos}.`);
+              throw new InputError(`Can't find the end of the URL that starts at offset ${urlBeginPos}.`);
             }
           }
           userId = getLinkUserId(decodeText(url));

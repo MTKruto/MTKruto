@@ -37,7 +37,7 @@ export class StorageIndexedDB implements Storage {
 
   constructor(name: string, params?: StorageIndexedDBParams) {
     if (typeof indexedDB === "undefined") {
-      throw new Error("Unavailable in current environment");
+      throw new TypeError("Unavailable in current environment");
     }
     this.#name = name;
     this.#supportsFiles = params?.storeFiles ?? true;
@@ -91,7 +91,7 @@ export class StorageIndexedDB implements Storage {
   set(k: readonly StorageKeyPart[], v: unknown, tx_?: IDBTransaction): Promise<void> {
     k = this.#fixKey(k);
     if (!this.database) {
-      throw new Error("Not initialized");
+      throw new TypeError("Not initialized.");
     }
 
     const store = (tx_ ?? this.database
@@ -119,7 +119,7 @@ export class StorageIndexedDB implements Storage {
       k = this.#fixKey(k);
     }
     if (!this.database) {
-      throw new Error("Not initialized");
+      throw new TypeError("Not initialized.");
     }
 
     const tx = (tx_ ?? this.database
@@ -145,7 +145,7 @@ export class StorageIndexedDB implements Storage {
       filter.end = this.#fixKey(filter.end);
     }
     if (!this.database) {
-      throw new Error("Not initialized");
+      throw new TypeError("Not initialized.");
     }
     if (params?.limit !== undefined && params.limit <= 0) {
       params.limit = 1;
@@ -183,7 +183,7 @@ export class StorageIndexedDB implements Storage {
 
   async incr(key: readonly StorageKeyPart[], by: number) {
     if (!this.database) {
-      throw new Error("Not initialized");
+      throw new TypeError("Not initialized.");
     }
     const tx = this.database
       .transaction(KV_OBJECT_STORE, "readwrite");

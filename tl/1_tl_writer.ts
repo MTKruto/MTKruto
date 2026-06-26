@@ -138,7 +138,7 @@ export class TLWriter {
 
         for (const [name, type] of parameters_) {
           if (isOptionalParam(type)) {
-            const { flagField, bitIndex } = analyzeOptionalParam(type);
+            const { flagField, bitIndex } = analyzeOptionalParam(type, this.#path);
 
             if (flagField === flagField_) {
               if (type__[name] !== undefined) {

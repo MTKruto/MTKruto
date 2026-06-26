@@ -71,3 +71,17 @@ export class TLError extends MtkrutoError {
     return this.#path;
   }
 }
+
+export class RetryError extends MtkrutoError {
+  constructor(...args: ConstructorParameters<typeof Error>) {
+    super(...args);
+    this.name = "RetryError";
+  }
+}
+
+export class PublicKeyError extends MtkrutoError {
+  constructor(...args: ConstructorParameters<typeof Error>) {
+    super(...args);
+    this.name = "PublicKeyError";
+  }
+}

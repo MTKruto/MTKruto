@@ -19,6 +19,7 @@
  */
 
 import { assert, assertEquals, concat, ige256Encrypt } from "../0_deps.ts";
+import { RetryError } from "../0_errors.ts";
 import { sha256 } from "./0_hash.ts";
 import { intFromBytes, intToBytes, modExp } from "./0_int.ts";
 
@@ -30,7 +31,7 @@ export async function rsaPad(data: Uint8Array, [serverKey, exponent]: [bigint, b
 
   do {
     if (++tries === 10) {
-      throw new Error("Out of tries");
+      throw new RetryError("Out of tries.");
     }
 
     const dataWithPadding = concat([data, new Uint8Array(192 - data.byteLength)]);

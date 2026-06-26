@@ -19,6 +19,7 @@
  */
 
 import { assertEquals, assertFalse, encodeBase64, encodeHex } from "../0_deps.ts";
+import { TLError } from "../0_errors.ts";
 
 export function isOptionalParam(ntype: string): boolean {
   return ntype.includes("?");
@@ -26,9 +27,9 @@ export function isOptionalParam(ntype: string): boolean {
 export function getOptionalParamInnerType(ntype: string): string {
   return ntype.split("?")[1];
 }
-export function analyzeOptionalParam(ntype: string): { flagField: string; bitIndex: number } {
+export function analyzeOptionalParam(ntype: string, path: string[]): { flagField: string; bitIndex: number } {
   if (!isOptionalParam(ntype)) {
-    throw new Error("Parameter not optional");
+    throw new TLError(`Parameter ${ntype} is not optional.`, path);
   }
 
   const flagField = ntype.split(".")[0];

@@ -106,7 +106,7 @@ export async function checkPassword(password_: string, ap: Api.account_Password)
   if (
     !(Api.is("passwordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow", algo))
   ) {
-    throw new Error("Unexpected algorithm");
+    throw new TypeError("Received unexpected algorithm.");
   }
 
   // g := algo.g
@@ -114,17 +114,17 @@ export async function checkPassword(password_: string, ap: Api.account_Password)
   // p := algo.p
   const p = intFromBytes(algo.p, { byteOrder: "big", isSigned: false });
   if (!isSafePrime(algo.p, g)) {
-    throw new Error("Got unsafe prime");
+    throw new TypeError("Received unsafe prime.");
   }
 
   const srpB = ap.srp_B;
   const srpId = ap.srp_id;
   {
     if (!srpB) {
-      throw new Error("srbB is not set");
+      throw new TypeError("srbB is not set.");
     }
     if (!srpId) {
-      throw new Error("srpId is not set");
+      throw new TypeError("srpId is not set.");
     }
   }
 
@@ -156,7 +156,7 @@ export async function checkPassword(password_: string, ap: Api.account_Password)
     }
   }
   if (!a || !u || !gA) {
-    throw new Error();
+    throw new TypeError();
   }
 
   // x := PH2(password, salt1, salt2)
