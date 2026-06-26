@@ -305,12 +305,11 @@ export class UpdateManager {
   #handleUpdateQueues = new Map<bigint, Queue>();
   getHandleUpdateQueue(boxId: bigint) {
     let queue = this.#handleUpdateQueues.get(boxId);
-    if (queue !== undefined) {
-      return queue;
-    } else {
+    if (queue === undefined) {
       queue = new Queue(`handleUpdate-${boxId}`, true);
-      return queue;
+      this.#handleUpdateQueues.set(boxId, queue);
     }
+    return queue;
   }
 
   #nonFirst = new Set<bigint>();
