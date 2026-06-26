@@ -3840,6 +3840,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Join a chat using an invite link. User-only.
+   *
+   * @method ch
+   * @param inviteLink The chat's invite link.
+   */
+  async joinChatByInviteLink(inviteLink: string): Promise<ChatJoinResult> {
+    return await this.#chatManager.joinChatByInviteLink(inviteLink);
+  }
+
+  /**
    * Kick a member from a chat. Same as a banChatMember call followed by unbanChatMember.
    *
    * @method ch

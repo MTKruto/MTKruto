@@ -168,6 +168,13 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     }
   }
 
+  async joinChatByInviteLink(inviteLink: string) {
+    this.#c.storage.assertUser("joinChatByInviteLink");
+    const hash = ChatManager.#getInviteLinkHash(inviteLink);
+    const result = await this.#c.invoke({ _: "messages.importChatInvite", hash });
+    return constructChatJoinResult(result, this.#c.getPeer);
+  }
+
   async leaveChat(chatId: ID) {
     const peer = await this.#c.getInputPeer(chatId);
     if (canBeInputUser(peer)) {
