@@ -655,9 +655,29 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     await this.#c.invoke({ _: "premium.applyBoost", peer, slots });
   }
 
+  static #getInviteLinkHash(inviteLink: string) {
+    try {
+      const result = new URL(inviteLink);
+      const parts = result.pathname.split("/").slice(1);
+      if (parts.length > 1) {
+        return parts[1];
+      } else {
+        const part = parts[0];
+        if (part.startsWith("+")) {
+          return part.slice(1);
+        } else {
+          return part;
+        }
+      }
+    } catch {
+      return inviteLink;
+    }
+  }
+
   async resolveInviteLink(inviteLink: string) {
     this.#c.storage.assertUser("resolveInviteLink");
-    const result = await this.#c.invoke({ _: "messages.checkChatInvite", hash: inviteLink });
+    const hash = ChatManager.#getInviteLinkHash(inviteLink);
+    const result = await this.#c.invoke({ _: "messages.checkChatInvite", hash });
     switch (result._) {
       case "chatInviteAlready":
       case "chatInvitePeek":
