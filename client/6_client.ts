@@ -24,7 +24,7 @@ import { drop, getLogger, type Logger, MAX_MONOFORUM_CHANNEL_ID, type MaybePromi
 import { type Storage, StorageMemory } from "../2_storage.ts";
 import { Api, Mtproto } from "../2_tl.ts";
 import { type DC, getDcId, type TransportProvider } from "../3_transport.ts";
-import { type AlbumStoryList, type Animation, type AppSupport, type AuthorizationSession, type AvailableReactions, type Birthday, type BlockedUserList, type BotAccessSettings, type BotCommand, type BotTokenCheckResult, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatActionType, type ChatJoinResult, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type CodeCheckResult, type ConnectedWebsite, type ConnectionState, constructChatP, constructUser2, type Country, type EmojiStatus, type FailedInvitation, type FileSource, type Gift, type GiftCollection, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputChecklistItem, type InputEmojiStatus, type InputGift, type InputMedia, type InputPollOption, type InputRichText, type InputSticker, type InputStoryContent, type InviteLink, type JoinRequest, type LeftChannelList, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageCounters, type MessageDice, type MessageDocument, type MessageInvoice, type MessageList, type MessageLivePhoto, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageRichText, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageViewer, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type PasswordCheckResult, type Poll, type PollVoterList, type PremiumSubscriptionDuration, type PriceTag, type ProfilePhotoList, type Reaction, type RecentActionsEntry, type ReportReason, type ResolvedInviteLink, type RichText, type SavedChats, type SecretChat, type SlowModeDuration, type StarAmount, type StarTransactionList, type Sticker, type StickerSet, type StickerSetP, type Story, type StoryAlbum, type StoryReportResult, type SummarizedText, type TextToTranslate, type Timezone, type Topic, type TopicList, type TopicListItem, type TranslatedText, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
+import { type AlbumStoryList, type Animation, type AppSupport, type AuthorizationSession, type AvailableReactions, type Birthday, type BlockedUserList, type BotAccessSettings, type BotCommand, type BotTokenCheckResult, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatActionType, type ChatJoinResult, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type CodeCheckResult, type ConnectedWebsite, type ConnectionState, constructChatP, constructUser2, type Country, type EmojiStatus, type FailedInvitation, type FileSource, type Gift, type GiftCollection, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputChecklistItem, type InputEmojiStatus, type InputGift, type InputMedia, type InputPollOption, type InputRichText, type InputSticker, type InputStoryContent, type InviteLink, type JoinRequest, type LeftChannelList, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageCounters, type MessageDice, type MessageDocument, type MessageInvoice, type MessageList, type MessageLivePhoto, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageRichText, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageViewer, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type PasswordCheckResult, type Poll, type PollVoterList, type PremiumSubscriptionDuration, type PriceTag, type PrivacyRule, type ProfilePhotoList, type Reaction, type RecentActionsEntry, type ReportReason, type ResolvedInviteLink, type RichText, type SavedChats, type SecretChat, type SlowModeDuration, type StarAmount, type StarTransactionList, type Sticker, type StickerSet, type StickerSetP, type Story, type StoryAlbum, type StoryReportResult, type SummarizedText, type TextToTranslate, type Timezone, type Topic, type TopicList, type TopicListItem, type TranslatedText, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, PHONE_NUMBER_TTL, type PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, SessionRevoked } from "../4_errors.ts";
 import { AbortableLoop } from "./0_abortable_loop.ts";
@@ -710,6 +710,132 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async allowUnpaidMessagesFromUser(userId: ID, params?: AllowUnpaidMessagesFromUserParams): Promise<void> {
     return await this.#accountManager.allowUnpaidMessagesFromUser(userId, params);
+  }
+
+  /**
+   * Get the current phone number privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getPhoneNumberPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getPhoneNumberPrivacy();
+  }
+
+  /**
+   * Get the current bio privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getBioPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getBioPrivacy();
+  }
+
+  /**
+   * Get the current birthday privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getBirthdayPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getBirthdayPrivacy();
+  }
+
+  /**
+   * Get the current forwards privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getForwardsPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getForwardsPrivacy();
+  }
+
+  /**
+   * Get the current profile photo privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getProfilePhotoPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getProfilePhotoPrivacy();
+  }
+
+  /**
+   * Get the current find by phone number privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getFindByPhoneNumberPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getFindByPhoneNumberPrivacy();
+  }
+
+  /**
+   * Get the current invitation privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getInvitationPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getInvitationPrivacy();
+  }
+
+  /**
+   * Get the current paid message exception privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getPaidMessageExceptionPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getPaidMessageExceptionPrivacy();
+  }
+
+  /**
+   * Get the current voice message privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getVoiceMessagePrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getVoiceMessagePrivacy();
+  }
+
+  /**
+   * Get the current peer-to-peer call privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getPeerToPeerCallPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getPeerToPeerCallPrivacy();
+  }
+
+  /**
+   * Get the current gifts privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getGiftsPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getGiftsPrivacy();
+  }
+
+  /**
+   * Get the current saved music privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getSavedMusicPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getSavedMusicPrivacy();
+  }
+
+  /**
+   * Get the current phone call privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getPhoneCallPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getPhoneCallPrivacy();
+  }
+
+  /**
+   * Get the current last seen privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getLastSeenPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getLastSeenPrivacy();
   }
 
   /**
