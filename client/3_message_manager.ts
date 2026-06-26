@@ -2653,7 +2653,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   }
 
   async saveRichTextDraft(chatId: ID, richText: InputRichText, params?: SaveDraftParams) {
-    this.#c.storage.assertUser("saveDraft");
+    this.#c.storage.assertUser("saveRichTextDraft");
     const peer = await this.#c.getInputPeer(chatId);
     const rich_message = MessageManager.inputRichTextToInputRichMessage(richText);
     const effect = params?.effectId ? BigInt(params.effectId) : undefined;
