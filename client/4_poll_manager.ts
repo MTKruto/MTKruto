@@ -145,7 +145,7 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate, true> {
   async getPollVoters(chatId: ID, messageId: number, params?: GetPollVotersParams): Promise<PollVoterList> {
     this.#c.storage.assertUser("getPollVoters");
     const peer = await this.#c.getInputPeer(chatId);
-    const option = params?.optionIndex ? encodeText(String(params.optionIndex)) : undefined;
+    const option = params?.optionIndex !== undefined ? encodeText(String(params.optionIndex)) : undefined;
     const id = messageId;
     const limit = getLimit(params?.limit);
     const offset = params?.offset;
