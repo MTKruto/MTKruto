@@ -21,7 +21,7 @@
 import { getLogger, type Logger } from "../1_utilities.ts";
 import type { Api, Mtproto } from "../2_tl.ts";
 import type { DC } from "../3_transport.ts";
-import type { AlbumStoryList, Animation, AppSupport, AuthorizationSession, AvailableReactions, Birthday, BlockedUserList, BotAccessSettings, BotCommand, BotTokenCheckResult, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatActionType, ChatJoinResult, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ClaimedGifts, CodeCheckResult, ConnectedWebsite, Country, EmojiStatus, FailedInvitation, FileSource, Gift, GiftCollection, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputChecklistItem, InputEmojiStatus, InputGift, InputMedia, InputPollOption, InputRichText, InputSticker, InputStoryContent, InviteLink, JoinRequest, LeftChannelList, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageCounters, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLivePhoto, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageRichText, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageViewer, MessageVoice, MiniAppInfo, NetworkStatistics, ParseMode, PasswordCheckResult, Poll, PollVoterList, PremiumSubscriptionDuration, PriceTag, ProfilePhotoList, Reaction, RecentActionsEntry, ReportReason, ResolvedInviteLink, RichText, SavedChats, SecretChat, SlowModeDuration, StarAmount, StarTransactionList, Sticker, StickerSet, StickerSetP, Story, StoryAlbum, StoryReportResult, SummarizedText, TextToTranslate, Timezone, Topic, TopicList, TopicListItem, TranslatedText, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
+import type { AlbumStoryList, Animation, AppSupport, AuthorizationSession, AvailableReactions, Birthday, BlockedUserList, BotAccessSettings, BotCommand, BotTokenCheckResult, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatActionType, ChatJoinResult, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ClaimedGifts, CodeCheckResult, ConnectedWebsite, Country, EmojiStatus, FailedInvitation, FileSource, Gift, GiftCollection, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputChecklistItem, InputEmojiStatus, InputGift, InputMedia, InputPollOption, InputRichText, InputSticker, InputStoryContent, InviteLink, JoinRequest, LeftChannelList, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageCounters, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLivePhoto, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageRichText, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageViewer, MessageVoice, MiniAppInfo, NetworkStatistics, ParseMode, PasswordCheckResult, Poll, PollVoterList, PremiumSubscriptionDuration, PriceTag, PrivacyRule, ProfilePhotoList, Reaction, RecentActionsEntry, ReportReason, ResolvedInviteLink, RichText, SavedChats, SecretChat, SlowModeDuration, StarAmount, StarTransactionList, Sticker, StickerSet, StickerSetP, Story, StoryAlbum, StoryReportResult, SummarizedText, TextToTranslate, Timezone, Topic, TopicList, TopicListItem, TranslatedText, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
 import { DOWNLOAD_MAX_CHUNK_SIZE } from "../4_constants.ts";
 import type { AddBotToAttachmentsMenuParams, AddChatMemberParams, AddContactParams, AddReactionParams, AddStickerToStickerSetParams, AllowUnpaidMessagesFromUserParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, BoostChatParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStickerSetParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteAccountParams, DeleteMessageParams, DeleteMessagesParams, DisallowUnpaidMessagesFromUserParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageRichTextParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, EndSecretChatParams, EndTakeoutSessionParams, ForwardMessagesParams, GetAdministeredChatsParams, GetBlockedUsersParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLeftChannelsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetPollVotersParams, GetProfilePhotosParams, GetRecentActionsParams, GetSavedChatsParams, GetSavedMessagesParams, GetStarTransactionsParams, GetTopicsParams, GetTranslationsParams, GiftPremiumSubscriptionParams, InvokeParams, JoinVideoChatParams, MarkAllMentionsAsReadParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, RemoveProfilePhotoParams, ReplaceStickerInStickerSetParams, ReportChatParams, ReportStoryParams, ResolveUsernameParams, SaveDraftParams, SaveRichTextDraftParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLivePhotoParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendRichTextParams, SendSecretAnimationParams, SendSecretAudioParams, SendSecretContactParams, SendSecretDocumentParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretPhotoParams, SendSecretStickerParams, SendSecretVenueParams, SendSecretVideoNoteParams, SendSecretVideoParams, SendSecretVoiceParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetContactNoteParams, SetEmojiStatusParams, SetLocationParams, SetManagedBotAccessSettingsParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetWorkingHoursParams, SignInParams, StartBotParams, StartTakeoutSessionParams, StartVideoChatParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
 import { deserializeWorkerError, type WorkerError } from "./0_worker_error.ts";
@@ -234,6 +234,132 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async sendCode(phoneNumber: string): Promise<void> {
     return await this.#dispatch("sendCode", phoneNumber);
+  }
+
+  /**
+   * Get the current phone number privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getPhoneNumberPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getPhoneNumberPrivacy");
+  }
+
+  /**
+   * Get the current bio privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getBioPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getBioPrivacy");
+  }
+
+  /**
+   * Get the current birthday privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getBirthdayPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getBirthdayPrivacy");
+  }
+
+  /**
+   * Get the current forwards privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getForwardsPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getForwardsPrivacy");
+  }
+
+  /**
+   * Get the current profile photo privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getProfilePhotoPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getProfilePhotoPrivacy");
+  }
+
+  /**
+   * Get the current find by phone number privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getFindByPhoneNumberPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getFindByPhoneNumberPrivacy");
+  }
+
+  /**
+   * Get the current invitation privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getInvitationPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getInvitationPrivacy");
+  }
+
+  /**
+   * Get the current paid message exception privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getPaidMessageExceptionPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getPaidMessageExceptionPrivacy");
+  }
+
+  /**
+   * Get the current voice message privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getVoiceMessagePrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getVoiceMessagePrivacy");
+  }
+
+  /**
+   * Get the current peer-to-peer call privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getPeerToPeerCallPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getPeerToPeerCallPrivacy");
+  }
+
+  /**
+   * Get the current gifts privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getGiftsPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getGiftsPrivacy");
+  }
+
+  /**
+   * Get the current saved music privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getSavedMusicPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getSavedMusicPrivacy");
+  }
+
+  /**
+   * Get the current phone call privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getPhoneCallPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getPhoneCallPrivacy");
+  }
+
+  /**
+   * Get the current last seen privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getLastSeenPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getLastSeenPrivacy");
   }
 
   /**

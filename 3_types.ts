@@ -163,6 +163,7 @@ export * from "./types/3_message_reaction_list.ts";
 export * from "./types/3_message_reactions.ts";
 export * from "./types/3_poll_voter_list.ts";
 export * from "./types/3_pre_checkout_query.ts";
+export * from "./types/3_privacy_rule.ts";
 export * from "./types/3_reply_quote.ts";
 export * from "./types/3_resolved_invite_link.ts";
 export * from "./types/3_rich_text_component.ts";

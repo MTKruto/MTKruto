@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { PasswordHashInvalid, PhoneCodeInvalid, SessionPasswordNeeded } from "../3_errors.ts";
-import { type AppSupport, type AuthorizationSession, type Birthday, birthdayToTlObject, type BotTokenCheckResult, type ChatP, type CodeCheckResult, type ConnectedWebsite, constructAppSupport, constructAuthorizationSession, constructConnectedWebsite, constructCountry, constructEmojiStatus, constructInactiveChat, constructProfilePhotoList, constructTimezone, constructUser, constructUser2, type Country, type EmojiStatus, type FileSource, type ID, type InactiveChat, type InputEmojiStatus, type PasswordCheckResult, type ProfilePhotoList, type Timezone, type Update, type User, workingHoursToTlObject } from "../3_types.ts";
+import { type AppSupport, type AuthorizationSession, type Birthday, birthdayToTlObject, type BotTokenCheckResult, type ChatP, type CodeCheckResult, type ConnectedWebsite, constructAppSupport, constructAuthorizationSession, constructConnectedWebsite, constructCountry, constructEmojiStatus, constructInactiveChat, constructPrivacyRule, constructProfilePhotoList, constructTimezone, constructUser, constructUser2, type Country, type EmojiStatus, type FileSource, type ID, type InactiveChat, type InputEmojiStatus, type PasswordCheckResult, type ProfilePhotoList, type Timezone, type Update, type User, workingHoursToTlObject } from "../3_types.ts";
 import type { AddBotToAttachmentsMenuParams, AllowUnpaidMessagesFromUserParams, CheckUsernameParams, DeleteAccountParams, DisallowUnpaidMessagesFromUserParams, GetProfilePhotosParams, RemoveProfilePhotoParams, ResolveUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
@@ -658,5 +658,66 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     const parent_peer = params?.parentChatId ? await this.#c.getInputPeer(params.parentChatId) : undefined;
     const require_payment = true;
     this.#c.invoke({ _: "account.toggleNoPaidMessagesException", user_id, parent_peer, require_payment });
+  }
+
+  async #getPrivacy(key: Api.InputPrivacyKey["_"]) {
+    const result = await this.#c.invoke({ _: "account.getPrivacy", key: { _: key } });
+    return result.rules.map((v) => constructPrivacyRule(v, this.#c.getPeer));
+  }
+  async getPhoneNumberPrivacy() {
+    this.#c.storage.assertUser("getPhoneNumberPrivacy");
+    return await this.#getPrivacy("inputPrivacyKeyPhoneNumber");
+  }
+  async getBioPrivacy() {
+    this.#c.storage.assertUser("getBioPrivacy");
+    return await this.#getPrivacy("inputPrivacyKeyAbout");
+  }
+  async getBirthdayPrivacy() {
+    this.#c.storage.assertUser("getBirthdayPrivacy");
+    return await this.#getPrivacy("inputPrivacyKeyBirthday");
+  }
+  async getProfilePhotoPrivacy() {
+    this.#c.storage.assertUser("getProfilePhotoPrivacy");
+    return await this.#getPrivacy("inputPrivacyKeyProfilePhoto");
+  }
+  async getForwardsPrivacy() {
+    this.#c.storage.assertUser("getForwardsPrivacy");
+    return await this.#getPrivacy("inputPrivacyKeyForwards");
+  }
+  async getInvitationPrivacy() {
+    this.#c.storage.assertUser("getInvitationPrivacy");
+    return await this.#getPrivacy("inputPrivacyKeyChatInvite");
+  }
+  async getFindByPhoneNumberPrivacy() {
+    this.#c.storage.assertUser("getFindByPhoneNumberPrivacy");
+    return await this.#getPrivacy("inputPrivacyKeyAddedByPhone");
+  }
+  async getVoiceMessagePrivacy() {
+    this.#c.storage.assertUser("getVoiceMessagePrivacy");
+    return await this.#getPrivacy("inputPrivacyKeyVoiceMessages");
+  }
+  async getPaidMessageExceptionPrivacy() {
+    this.#c.storage.assertUser("getPaidMessageExceptionPrivacy");
+    return await this.#getPrivacy("inputPrivacyKeyNoPaidMessages");
+  }
+  async getPeerToPeerCallPrivacy() {
+    this.#c.storage.assertUser("getPeerToPeerCallPrivacy");
+    return await this.#getPrivacy("inputPrivacyKeyPhoneP2P");
+  }
+  async getGiftsPrivacy() {
+    this.#c.storage.assertUser("getGiftsPrivacy");
+    return await this.#getPrivacy("inputPrivacyKeyStarGiftsAutoSave");
+  }
+  async getSavedMusicPrivacy() {
+    this.#c.storage.assertUser("getSavedMusicPrivacy");
+    return await this.#getPrivacy("inputPrivacyKeySavedMusic");
+  }
+  async getPhoneCallPrivacy() {
+    this.#c.storage.assertUser("getPhoneCallPrivacy");
+    return await this.#getPrivacy("inputPrivacyKeyPhoneCall");
+  }
+  async getLastSeenPrivacy() {
+    this.#c.storage.assertUser("getLastSeenPrivacy");
+    return await this.#getPrivacy("inputPrivacyKeyStatusTimestamp");
   }
 }
