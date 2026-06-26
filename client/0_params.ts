@@ -20,7 +20,7 @@
 
 import type { MaybePromise } from "../1_utilities.ts";
 import type { DC } from "../3_transport.ts";
-import type { Birthday, BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, InputLinkPreview, InputPollMedia, LinkPreview, MessageEntity, MessageSearchFilter, MiniAppMode, ParseMode, Reaction, ReplyMarkup, ReplyTo, SecretMessageEntity, SelfDestructOption, StoryInteractiveArea, StoryPrivacy, WorkingHours } from "../3_types.ts";
+import type { Birthday, BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, InputLinkPreview, InputMedia, InputPollMedia, LinkPreview, MessageEntity, MessageSearchFilter, MiniAppMode, ParseMode, Reaction, ReplyMarkup, ReplyTo, SecretMessageEntity, SelfDestructOption, StoryInteractiveArea, StoryPrivacy, WorkingHours } from "../3_types.ts";
 
 export interface InvokeParams {
   dc?: DC;
@@ -1280,4 +1280,33 @@ export interface AllowUnpaidMessagesFromUserParams {
 
 export interface DisallowUnpaidMessagesFromUserParams {
   parentChatId?: ID;
+}
+
+export interface SaveDraftParams {
+  /** Information on what the message is replying to. */
+  replyTo?: ReplyTo;
+  /** The parse mode to use. If omitted, the default parse mode will be used. */
+  parseMode?: ParseMode;
+  /** The message's entities. */
+  entities?: MessageEntity[];
+  /** The identifier of a message effect to be attached to the message. */
+  effectId?: number;
+  /** A media to attach. */
+  media?: InputMedia;
+  /** Whether the position of the media is inverted. */
+  isMediaAboveText?: boolean;
+  /** Whether link preview is disabled. */
+  isLinkPreviewDisabled?: boolean;
+}
+export interface SaveRichTextDraftParams {
+  /** Information on what the message is replying to. */
+  replyTo?: ReplyTo;
+  /** The identifier of a message effect to be attached to the message. */
+  effectId?: number;
+  /** A media to attach. */
+  media?: InputMedia;
+  /** Whether the position of the media is inverted. */
+  isMediaAboveText?: boolean;
+  /** Whether link preview is disabled. */
+  isLinkPreviewDisabled?: boolean;
 }
