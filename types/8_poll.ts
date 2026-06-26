@@ -19,7 +19,7 @@
  */
 
 import { equals } from "../0_deps.ts";
-import { cleanObject } from "../1_utilities.ts";
+import { cleanObject, decodeText } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import type { PeerGetter } from "./1_chat_p.ts";
 import type { StickerSetNameGetter } from "./1_sticker.ts";
@@ -69,7 +69,7 @@ export async function constructPoll(media_: Api.messageMediaPoll, getStickerSetN
   const poll = media_.poll;
 
   const correctOptions = media_.results.results?.filter((v) => v.correct).map((v) => v.option);
-  const correctOptionIndexes = correctOptions !== undefined ? poll.answers.filter((v) => correctOptions.some((v_) => equals(v_, Api.as("pollAnswer", v).option))).map((_, i) => i) : undefined;
+  const correctOptionIndexes = correctOptions !== undefined ? poll.answers.filter((v) => correctOptions.some((v_) => equals(v_, Api.as("pollAnswer", v).option))).map((v) => decodeText(Api.as("pollAnswer", v).option)).map(Number) : undefined;
   return cleanObject({
     id: String(poll.id),
     question: poll.question.text,
