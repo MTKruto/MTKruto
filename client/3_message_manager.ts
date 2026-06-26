@@ -178,7 +178,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       this.#c.storage.assertUser("sendAs");
     }
     if (params && "sendAt" in params && params.sendAt !== undefined) {
-      this.#c.storage.assertUser("businessConsendAtnectionId");
+      this.#c.storage.assertUser("sendAt");
     }
   }
 
