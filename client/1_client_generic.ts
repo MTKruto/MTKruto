@@ -2126,6 +2126,14 @@ export abstract class ClientGeneric {
   abstract joinChat(chatId: ID): Promise<ChatJoinResult>;
 
   /**
+   * Join a chat using an invite link. User-only.
+   *
+   * @method ch
+   * @param inviteLink The chat's invite link.
+   */
+  abstract joinChatByInviteLink(inviteLink: string): Promise<ChatJoinResult>;
+
+  /**
    * Kick a member from a chat. Same as a banChatMember call followed by unbanChatMember.
    *
    * @method ch
