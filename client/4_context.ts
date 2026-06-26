@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { type Api, toJSON } from "../2_tl.ts";
 import type { AlbumStoryList, AvailableReactions, BusinessConnection, CallbackQuery, Chat, ChatActionType, ChatJoinResult, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ChosenInlineResult, ClaimedGifts, FailedInvitation, FileSource, GuestQuery, ID, InlineQuery, InlineQueryResult, InputChecklistItem, InputGift, InputMedia, InputPollOption, InputRichText, InputStoryContent, InviteLink, JoinRequest, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageCounters, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLivePhoto, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageRichText, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageVoice, Poll, PollVoterList, PriceTag, Reaction, RecentActionsEntry, ReplyTo, ReportReason, RichText, SecretChat, SecretMessage, SlowModeDuration, StarAmount, StarTransactionList, Sticker, Story, StoryAlbum, StoryReportResult, Topic, TopicList, TopicListItem, TranslatedText, Update, User, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
-import type { AddChatMemberParams, AddContactParams, AddReactionParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, BoostChatParams, CreateInviteLinkParams, CreateStoryParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageRichTextParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, EndSecretChatParams, ForwardMessagesParams, GetChatMembersParams, GetClaimedGiftsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetPollVotersParams, GetRecentActionsParams, GetSavedMessagesParams, GetStarTransactionsParams, GetTopicsParams, PinMessageParams, PromoteChatMemberParams, ReplyParams, ReportChatParams, ReportStoryParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInvoiceParams, SendLivePhotoParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendSecretAnimationParams, SendSecretContactParams, SendSecretDocumentParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretPhotoParams, SendSecretStickerParams, SendSecretVenueParams, SendSecretVideoParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetReactionsParams, StartVideoChatParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UpdateChecklistParams } from "./0_params.ts";
+import type { AddChatMemberParams, AddContactParams, AddReactionParams, AllowUnpaidMessagesFromUserParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, BoostChatParams, CreateInviteLinkParams, CreateStoryParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteMessagesParams, DisallowUnpaidMessagesFromUserParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageRichTextParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, EndSecretChatParams, ForwardMessagesParams, GetChatMembersParams, GetClaimedGiftsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetPollVotersParams, GetRecentActionsParams, GetSavedMessagesParams, GetStarTransactionsParams, GetTopicsParams, PinMessageParams, PromoteChatMemberParams, ReplyParams, ReportChatParams, ReportStoryParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInvoiceParams, SendLivePhotoParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendSecretAnimationParams, SendSecretContactParams, SendSecretDocumentParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretPhotoParams, SendSecretStickerParams, SendSecretVenueParams, SendSecretVideoParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetReactionsParams, StartVideoChatParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UpdateChecklistParams } from "./0_params.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
 import { type FilterQuery, match, type WithChatType, type WithFilter } from "./3_filters.ts";
 
@@ -493,6 +493,12 @@ export class Context {
     return await this.client.addToChecklist(chatId, messageId, items);
   }
 
+  /** Context-aware alias for {@link Client.allowUnpaidMessagesFromUser}. */
+  async allowUnpaidMessages(params?: AllowUnpaidMessagesFromUserParams): Promise<void> {
+    const userId = this.#mustGetUserId();
+    return await this.client.allowUnpaidMessagesFromUser(userId, params);
+  }
+
   /** Context-aware alias for {@link Client.answerCallbackQuery}. */
   async answerCallbackQuery(params?: AnswerCallbackQueryParams): Promise<void> {
     if (!("callbackQuery" in this.update)) {
@@ -759,6 +765,12 @@ export class Context {
   async disableTopics(): Promise<void> {
     const chatId = this.#mustGetChatId();
     return await this.client.disableTopics(chatId);
+  }
+
+  /** Context-aware alias for {@link Client.disallowUnpaidMessagesFromUser}. */
+  async disallowUnpaidMessages(params?: DisallowUnpaidMessagesFromUserParams): Promise<void> {
+    const userId = this.#mustGetUserId();
+    return await this.client.disallowUnpaidMessagesFromUser(userId, params);
   }
 
   /** Context-aware alias for {@link Client.editInlineMessageCaption}. */
