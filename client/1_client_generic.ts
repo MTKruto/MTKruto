@@ -24,304 +24,83 @@ import type { AddBotToAttachmentsMenuParams, AddChatMemberParams, AddContactPara
 
 /** A generic MTKruto client. */
 export abstract class ClientGeneric {
+  //
+  // ========================= CONNECTION ========================= //
+  //
+
+  /**
+   * Connect the client.
+   *
+   * @method cn
+   */
   abstract connect(): Promise<void>;
 
+  /**
+   * Disconnect the client.
+   *
+   * @method cn
+   */
   abstract disconnect(): Promise<void>;
 
+  /**
+   * Start the client. Same as calling {@link ClientGeneric.connect} followed by {@link ClientGeneric.signIn}.
+   *
+   * @method cn
+   */
   abstract start(params?: SignInParams): Promise<void>;
 
-  abstract invoke<T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams): Promise<R>;
-
-  /**
-   * Send a user verification code.
-   *
-   * @param phoneNumber The phone number to send the code to.
-   * @method ac
-   */
-  abstract sendCode(phoneNumber: string): Promise<void>;
-
-  /**
-   * Get application configuration. User-only.
-   *
-   * @method ac
-   */
-  abstract getApplicationConfiguration(): Promise<
-    // deno-lint-ignore no-explicit-any
-    any
-  >;
-
-  /**
-   * Get recent emoji statuses. User-only.
-   *
-   * @method ac
-   */
-  abstract getRecentEmojiStatuses(): Promise<EmojiStatus[]>;
-
-  /**
-   * Clear recent emoji statuses. User-only.
-   *
-   * @method ac
-   */
-  abstract clearRecentEmojiStatuses(): Promise<void>;
-
-  /**
-   * Allow a bot to set custom emoji status. User-only.
-   *
-   * @param botId The user identifier of the bot.
-   * @method ac
-   */
-  abstract allowBotToSetCustomEmojiStatus(botId: ID): Promise<void>;
-
-  /**
-   * Disallow a bot to set custom emoji status. User-only.
-   *
-   * @param botId The user identifier of the bot.
-   * @method ac
-   */
-  abstract disallowBotToSetCustomEmojiStatus(botId: ID): Promise<void>;
-
-  /**
-   * Check if a code entered by the user was the same as the verification code.
-   *
-   * @param code A code entered by the user.
-   * @method ac
-   */
-  abstract checkCode(code: string): Promise<CodeCheckResult>;
-
-  /**
-   * Get the user account password's hint.
-   *
-   * @method ac
-   */
-  abstract getPasswordHint(): Promise<string | null>;
-
-  /**
-   * Check whether a password entered by the user is the same as the account's one.
-   *
-   * @param password The password to check.
-   * @returns The result of the check.
-   * @method ac
-   */
-  abstract checkPassword(password: string): Promise<PasswordCheckResult>;
+  //
+  // ========================= AUTHORIZATION ========================= //
+  //
 
   /**
    * Check whether a bot token is valid.
    *
    * @param botToken The bot token to check
    * @returns The result of the check.
-   * @method ac
+   * @method au
    */
   abstract checkBotToken(botToken: string): Promise<BotTokenCheckResult>;
 
   /**
-   * Get the current phone number privacy setting. User-only.
+   * Check if a code entered by the user was the same as the verification code.
    *
-   * @method ac
+   * @param code A code entered by the user.
+   * @method au
    */
-  abstract getPhoneNumberPrivacy(): Promise<PrivacyRule[]>;
+  abstract checkCode(code: string): Promise<CodeCheckResult>;
 
   /**
-   * Get the current bio privacy setting. User-only.
+   * Check whether a password entered by the user is the same as the account's one.
    *
-   * @method ac
+   * @param password The password to check.
+   * @returns The result of the check.
+   * @method au
    */
-  abstract getBioPrivacy(): Promise<PrivacyRule[]>;
+  abstract checkPassword(password: string): Promise<PasswordCheckResult>;
 
   /**
-   * Get the current birthday privacy setting. User-only.
+   * Export the auth string for the current authorization session.
    *
-   * @method ac
+   * @method au
    */
-  abstract getBirthdayPrivacy(): Promise<PrivacyRule[]>;
+  abstract exportAuthString(): Promise<string>;
 
   /**
-   * Get the current forwards privacy setting. User-only.
+   * Import an auth string.
    *
-   * @method ac
+   * @param authString The auth string to import.
+   * @method au
    */
-  abstract getForwardsPrivacy(): Promise<PrivacyRule[]>;
+  abstract importAuthString(authString: string): Promise<void>;
 
   /**
-   * Get the current profile photo privacy setting. User-only.
+   * Send a user verification code.
    *
-   * @method ac
+   * @param phoneNumber The phone number to send the code to.
+   * @method au
    */
-  abstract getProfilePhotoPrivacy(): Promise<PrivacyRule[]>;
-
-  /**
-   * Get the current find by phone number privacy setting. User-only.
-   *
-   * @method ac
-   */
-  abstract getFindByPhoneNumberPrivacy(): Promise<PrivacyRule[]>;
-
-  /**
-   * Get the current invitation privacy setting. User-only.
-   *
-   * @method ac
-   */
-  abstract getInvitationPrivacy(): Promise<PrivacyRule[]>;
-
-  /**
-   * Get the current paid message exception privacy setting. User-only.
-   *
-   * @method ac
-   */
-  abstract getPaidMessageExceptionPrivacy(): Promise<PrivacyRule[]>;
-
-  /**
-   * Get the current voice message privacy setting. User-only.
-   *
-   * @method ac
-   */
-  abstract getVoiceMessagePrivacy(): Promise<PrivacyRule[]>;
-
-  /**
-   * Get the current peer-to-peer call privacy setting. User-only.
-   *
-   * @method ac
-   */
-  abstract getPeerToPeerCallPrivacy(): Promise<PrivacyRule[]>;
-
-  /**
-   * Get the current gifts privacy setting. User-only.
-   *
-   * @method ac
-   */
-  abstract getGiftsPrivacy(): Promise<PrivacyRule[]>;
-
-  /**
-   * Get the current saved music privacy setting. User-only.
-   *
-   * @method ac
-   */
-  abstract getSavedMusicPrivacy(): Promise<PrivacyRule[]>;
-
-  /**
-   * Get the current phone call privacy setting. User-only.
-   *
-   * @method ac
-   */
-  abstract getPhoneCallPrivacy(): Promise<PrivacyRule[]>;
-
-  /**
-   * Get the current last seen privacy setting. User-only.
-   *
-   * @method ac
-   */
-  abstract getLastSeenPrivacy(): Promise<PrivacyRule[]>;
-
-  /**
-   * Set phone number privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setPhoneNumberPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
-
-  /**
-   * Set bio privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setBioPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
-
-  /**
-   * Set birthday privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setBirthdayPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
-
-  /**
-   * Set profile photo privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setProfilePhotoPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
-
-  /**
-   * Set forwards privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setForwardsPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
-
-  /**
-   * Set invitation privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setInvitationPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
-
-  /**
-   * Set find by phone number privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setFindByPhoneNumberPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
-
-  /**
-   * Set voice message privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setVoiceMessagePrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
-
-  /**
-   * Set paid message exception privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setPaidMessageExceptionPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
-
-  /**
-   * Set peer-to-peer call privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setPeerToPeerCallPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
-
-  /**
-   * Set gifts privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setGiftsPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
-
-  /**
-   * Set saved music privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setSavedMusicPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
-
-  /**
-   * Set phone call privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setPhoneCallPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
-
-  /**
-   * Set last seen privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setLastSeenPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
+  abstract sendCode(phoneNumber: string): Promise<void>;
 
   /**
    * Signs in using the provided parameters if not already signed in.
@@ -330,35 +109,53 @@ export abstract class ClientGeneric {
    * Notes:
    * 1. Requires the `apiId` and `apiHash` parameters to be passed when constructing the client.
    * 3. Reconnects the client to the appropriate DC in case of MIGRATE_X errors.
+   *
+   * @method au
    */
   abstract signIn(params?: SignInParams): Promise<void>;
 
+  /**
+   * Sign out.
+   *
+   * @method au
+   */
   abstract signOut(): Promise<void>;
 
-  abstract exportAuthString(): Promise<string>;
-
-  abstract importAuthString(authString: string): Promise<void>;
-
-  /**
-   * Get a chat's inputPeer. Useful when calling API functions directly.
-   *
-   * @param id The identifier of a chat.
-   */
-  abstract getInputPeer(id: ID): Promise<Api.InputPeer>;
+  //
+  // ========================= LOW-LEVEL ========================= //
+  //
 
   /**
    * Get a channel or a supergroup's inputChannel. Useful when calling API functions directly.
    *
    * @param id The identifier of the channel or the supergroup.
+   * @method ll
    */
   abstract getInputChannel(id: ID): Promise<Api.inputChannel | Api.inputChannelFromMessage>;
+
+  /**
+   * Get a chat's inputPeer. Useful when calling API functions directly.
+   *
+   * @param id The identifier of a chat.
+   * @method ll
+   */
+  abstract getInputPeer(id: ID): Promise<Api.InputPeer>;
 
   /**
    * Get a user's inputUser. Useful when calling API functions directly.
    *
    * @param id The identifier of the user.
+   * @method ll
    */
   abstract getInputUser(id: ID): Promise<Api.inputUserSelf | Api.inputUser | Api.inputUserFromMessage>;
+
+  /**
+   * Invoke a low-level function.
+   *
+   * @param function_ The function to invoke.
+   * @method ll
+   */
+  abstract invoke<T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams): Promise<R>;
 
   //
   // ========================= ACCOUNT ========================= //
@@ -371,6 +168,14 @@ export abstract class ClientGeneric {
    * @param botId The identifier of the bot to add to the attachments menu.
    */
   abstract addBotToAttachmentsMenu(botId: ID, params?: AddBotToAttachmentsMenuParams): Promise<void>;
+
+  /**
+   * Allow a bot to set custom emoji status. User-only.
+   *
+   * @param botId The user identifier of the bot.
+   * @method ac
+   */
+  abstract allowBotToSetCustomEmojiStatus(botId: ID): Promise<void>;
 
   /**
    * Allow unpaid messages from a user. User-only.
@@ -398,6 +203,13 @@ export abstract class ClientGeneric {
   abstract checkUsername(username: string, params?: CheckUsernameParams): Promise<boolean>;
 
   /**
+   * Clear recent emoji statuses. User-only.
+   *
+   * @method ac
+   */
+  abstract clearRecentEmojiStatuses(): Promise<void>;
+
+  /**
    * Delete the current account. User-only.
    *
    * @method ac
@@ -411,6 +223,14 @@ export abstract class ClientGeneric {
    * @method ac
    */
   abstract disableSponsoredMessages(): Promise<void>;
+
+  /**
+   * Disallow a bot to set custom emoji status. User-only.
+   *
+   * @param botId The user identifier of the bot.
+   * @method ac
+   */
+  abstract disallowBotToSetCustomEmojiStatus(botId: ID): Promise<void>;
 
   /**
    * Disallow unpaid messages from a user. User-only.
@@ -451,6 +271,16 @@ export abstract class ClientGeneric {
   abstract getAccountTtl(): Promise<number>;
 
   /**
+   * Get application configuration. User-only.
+   *
+   * @method ac
+   */
+  abstract getApplicationConfiguration(): Promise<
+    // deno-lint-ignore no-explicit-any
+    any
+  >;
+
+  /**
    * Get app support. User-only.
    *
    * @method ac
@@ -470,6 +300,20 @@ export abstract class ClientGeneric {
    * @method ac
    */
   abstract getAuthorizationSessions(): Promise<AuthorizationSession[]>;
+
+  /**
+   * Get the current bio privacy setting. User-only.
+   *
+   * @method ac
+   */
+  abstract getBioPrivacy(): Promise<PrivacyRule[]>;
+
+  /**
+   * Get the current birthday privacy setting. User-only.
+   *
+   * @method ac
+   */
+  abstract getBirthdayPrivacy(): Promise<PrivacyRule[]>;
 
   /**
    * Get blocked users. User-only.
@@ -509,6 +353,41 @@ export abstract class ClientGeneric {
   abstract getCountryCode(): Promise<string>;
 
   /**
+   * Get the current find by phone number privacy setting. User-only.
+   *
+   * @method ac
+   */
+  abstract getFindByPhoneNumberPrivacy(): Promise<PrivacyRule[]>;
+
+  /**
+   * Get the current forwards privacy setting. User-only.
+   *
+   * @method ac
+   */
+  abstract getForwardsPrivacy(): Promise<PrivacyRule[]>;
+
+  /**
+   * Get the current gifts privacy setting. User-only.
+   *
+   * @method ac
+   */
+  abstract getGiftsPrivacy(): Promise<PrivacyRule[]>;
+
+  /**
+   * Get the current invitation privacy setting. User-only.
+   *
+   * @method ac
+   */
+  abstract getInvitationPrivacy(): Promise<PrivacyRule[]>;
+
+  /**
+   * Get the current last seen privacy setting. User-only.
+   *
+   * @method ac
+   */
+  abstract getLastSeenPrivacy(): Promise<PrivacyRule[]>;
+
+  /**
    * Get information on the currently authorized user.
    *
    * @method ac
@@ -524,6 +403,48 @@ export abstract class ClientGeneric {
   abstract getOwnedBots(): Promise<User[]>;
 
   /**
+   * Get the current paid message exception privacy setting. User-only.
+   *
+   * @method ac
+   */
+  abstract getPaidMessageExceptionPrivacy(): Promise<PrivacyRule[]>;
+
+  /**
+   * Get the user account password's hint.
+   *
+   * @method ac
+   */
+  abstract getPasswordHint(): Promise<string | null>;
+
+  /**
+   * Get the current peer-to-peer call privacy setting. User-only.
+   *
+   * @method ac
+   */
+  abstract getPeerToPeerCallPrivacy(): Promise<PrivacyRule[]>;
+
+  /**
+   * Get the current phone call privacy setting. User-only.
+   *
+   * @method ac
+   */
+  abstract getPhoneCallPrivacy(): Promise<PrivacyRule[]>;
+
+  /**
+   * Get the current phone number privacy setting. User-only.
+   *
+   * @method ac
+   */
+  abstract getPhoneNumberPrivacy(): Promise<PrivacyRule[]>;
+
+  /**
+   * Get the current profile photo privacy setting. User-only.
+   *
+   * @method ac
+   */
+  abstract getProfilePhotoPrivacy(): Promise<PrivacyRule[]>;
+
+  /**
    * Get the profile photos of a user.
    *
    * @method ac
@@ -532,11 +453,32 @@ export abstract class ClientGeneric {
   abstract getProfilePhotos(userId: ID, params?: GetProfilePhotosParams): Promise<ProfilePhotoList>;
 
   /**
+   * Get recent emoji statuses. User-only.
+   *
+   * @method ac
+   */
+  abstract getRecentEmojiStatuses(): Promise<EmojiStatus[]>;
+
+  /**
+   * Get the current saved music privacy setting. User-only.
+   *
+   * @method ac
+   */
+  abstract getSavedMusicPrivacy(): Promise<PrivacyRule[]>;
+
+  /**
    * Get timezones. User-only.
    *
    * @method ac
    */
   abstract getTimezones(): Promise<Timezone[]>;
+
+  /**
+   * Get the current voice message privacy setting. User-only.
+   *
+   * @method ac
+   */
+  abstract getVoiceMessagePrivacy(): Promise<PrivacyRule[]>;
 
   /**
    * Hide a username from the current account, a bot account, a supergroup, or a channel's profile. User-only.
@@ -667,11 +609,27 @@ export abstract class ClientGeneric {
   abstract setAccountTtl(dayCount: number): Promise<void>;
 
   /**
+   * Set bio privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  abstract setBioPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
+
+  /**
    * Set the birthday of the current user. User-only.
    *
    * @method ac
    */
   abstract setBirthday(params?: SetBirthdayParams): Promise<void>;
+
+  /**
+   * Set birthday privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  abstract setBirthdayPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
 
   /**
    * Set the emoji status of a channel. User-only.
@@ -699,12 +657,52 @@ export abstract class ClientGeneric {
   abstract setEmojiStatus(emojiStatus: InputEmojiStatus, params?: SetEmojiStatusParams): Promise<void>;
 
   /**
+   * Set find by phone number privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  abstract setFindByPhoneNumberPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
+
+  /**
+   * Set forwards privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  abstract setForwardsPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
+
+  /**
+   * Set gifts privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  abstract setGiftsPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
+
+  /**
+   * Set invitation privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  abstract setInvitationPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
+
+  /**
    * Set the current account's online status. User-only.
    *
    * @method ac
    * @param isOnline The new online status.
    */
   abstract setIsOnline(isOnline: boolean): Promise<void>;
+
+  /**
+   * Set last seen privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  abstract setLastSeenPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
 
   /**
    * Set the location of the current user. User-only.
@@ -722,11 +720,43 @@ export abstract class ClientGeneric {
   abstract setNameColor(color: number, params?: SetNameColorParams): Promise<void>;
 
   /**
+   * Set paid message exception privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  abstract setPaidMessageExceptionPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
+
+  /**
+   * Set peer-to-peer call privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  abstract setPeerToPeerCallPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
+
+  /**
    * Set the personal channel of the current user. User-only.
    *
    * @method ac
    */
   abstract setPersonalChannel(params?: SetPersonalChannelParams): Promise<void>;
+
+  /**
+   * Set phone call privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  abstract setPhoneCallPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
+
+  /**
+   * Set phone number privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  abstract setPhoneNumberPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
 
   /**
    * Set the profile color of the current user. User-only.
@@ -735,6 +765,22 @@ export abstract class ClientGeneric {
    * @param color The identifier of the color to set.
    */
   abstract setProfileColor(color: number, params?: SetProfileColorParams): Promise<void>;
+
+  /**
+   * Set profile photo privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  abstract setProfilePhotoPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
+
+  /**
+   * Set saved music privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  abstract setSavedMusicPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
 
   /**
    * Set the emoji status of a bot's user. Bot-only.
@@ -752,6 +798,14 @@ export abstract class ClientGeneric {
    * @param username The username to set.
    */
   abstract setUsername(username: string): Promise<void>;
+
+  /**
+   * Set voice message privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  abstract setVoiceMessagePrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
 
   /**
    * Set the working hours of the current user. User-only.

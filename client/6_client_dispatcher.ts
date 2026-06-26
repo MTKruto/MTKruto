@@ -159,19 +159,6 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("initClient", params);
   }
 
-  async connect(): Promise<void> {
-    return await this.#dispatch("connect");
-  }
-
-  async disconnect(): Promise<void> {
-    return await this.#dispatch("disconnect");
-  }
-
-  async start(params?: SignInParams) {
-    await this.connect();
-    await this.signIn(params);
-  }
-
   async #invoke<T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams): Promise<R> {
     let n = 1;
     while (true) {
@@ -200,11 +187,135 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     }, () => Promise.resolve(false));
   }
 
+  //
+  // ========================= CONNECTION ========================= //
+  //
+
   /**
-   * Invokes a function waiting and returning its reply.
-   * Requires the client to be connected.
+   * Connect the client.
+   *
+   * @method cn
+   */
+  async connect(): Promise<void> {
+    return await this.#dispatch("connect");
+  }
+
+  /**
+   * Disconnect the client.
+   *
+   * @method cn
+   */
+  async disconnect(): Promise<void> {
+    return await this.#dispatch("disconnect");
+  }
+
+  /**
+   * Start the client. Same as calling {@link ClientDispatcher.connect} followed by {@link ClientDispatcher.signIn}.
+   *
+   * @method cn
+   */
+  async start(params?: SignInParams) {
+    await this.connect();
+    await this.signIn(params);
+  }
+
+  //
+  // ========================= AUTHORIZATION ========================= //
+  //
+
+  /**
+   * Check whether a bot token is valid.
+   *
+   * @param botToken The bot token to check
+   * @returns The result of the check.
+   * @method au
+   */
+  async checkBotToken(botToken: string): Promise<BotTokenCheckResult> {
+    return await this.#dispatch("checkBotToken", botToken);
+  }
+
+  /**
+   * Check if a code entered by the user was the same as the verification code.
+   *
+   * @param code A code entered by the user.
+   * @method au
+   */
+  async checkCode(code: string): Promise<CodeCheckResult> {
+    return await this.#dispatch("checkCode", code);
+  }
+
+  /**
+   * Check whether a password entered by the user is the same as the account's one.
+   *
+   * @param password The password to check.
+   * @returns The result of the check.
+   * @method au
+   */
+  async checkPassword(password: string): Promise<PasswordCheckResult> {
+    return await this.#dispatch("checkPassword", password);
+  }
+
+  /**
+   * Export the auth string for the current authorization session.
+   *
+   * @method au
+   */
+  async exportAuthString(): Promise<string> {
+    return await this.#dispatch("exportAuthString");
+  }
+
+  /**
+   * Import an auth string.
+   *
+   * @param authString The auth string to import.
+   * @method au
+   */
+  async importAuthString(authString: string): Promise<void> {
+    return await this.#dispatch("importAuthString", authString);
+  }
+
+  /**
+   * Send a user verification code.
+   *
+   * @param phoneNumber The phone number to send the code to.
+   * @method au
+   */
+  async sendCode(phoneNumber: string): Promise<void> {
+    return await this.#dispatch("sendCode", phoneNumber);
+  }
+
+  /**
+   * Signs in using the provided parameters if not already signed in.
+   * If no parameters are provided, the credentials will be prompted in runtime.
+   *
+   * Notes:
+   * 1. Requires the `apiId` and `apiHash` parameters to be passed when constructing the client.
+   * 3. Reconnects the client to the appropriate DC in case of MIGRATE_X errors.
+   *
+   * @method au
+   */
+  async signIn(params?: SignInParams): Promise<void> {
+    await signIn(this, this.#LsignIn, params);
+  }
+
+  /**
+   * Sign out.
+   *
+   * @method au
+   */
+  async signOut(): Promise<void> {
+    return await this.#dispatch("signOut");
+  }
+
+  //
+  // ========================= LOW-LEVEL ========================= //
+  //
+
+  /**
+   * Invoke a low-level function.
    *
    * @param function_ The function to invoke.
+   * @method ll
    */
   invoke: {
     <T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams): Promise<R>;
@@ -227,384 +338,14 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   );
 
   /**
-   * Send a user verification code.
+   * Get a channel or a supergroup's inputChannel. Useful when calling API functions directly.
    *
-   * @param phoneNumber The phone number to send the code to.
-   * @method ac
+   * @param id The identifier of the channel or the supergroup.
+   * @method ll
    */
-  async sendCode(phoneNumber: string): Promise<void> {
-    return await this.#dispatch("sendCode", phoneNumber);
-  }
 
-  /**
-   * Get the current phone number privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getPhoneNumberPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getPhoneNumberPrivacy");
-  }
-
-  /**
-   * Get the current bio privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getBioPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getBioPrivacy");
-  }
-
-  /**
-   * Get the current birthday privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getBirthdayPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getBirthdayPrivacy");
-  }
-
-  /**
-   * Get the current forwards privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getForwardsPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getForwardsPrivacy");
-  }
-
-  /**
-   * Get the current profile photo privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getProfilePhotoPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getProfilePhotoPrivacy");
-  }
-
-  /**
-   * Get the current find by phone number privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getFindByPhoneNumberPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getFindByPhoneNumberPrivacy");
-  }
-
-  /**
-   * Get the current invitation privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getInvitationPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getInvitationPrivacy");
-  }
-
-  /**
-   * Get the current paid message exception privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getPaidMessageExceptionPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getPaidMessageExceptionPrivacy");
-  }
-
-  /**
-   * Get the current voice message privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getVoiceMessagePrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getVoiceMessagePrivacy");
-  }
-
-  /**
-   * Get the current peer-to-peer call privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getPeerToPeerCallPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getPeerToPeerCallPrivacy");
-  }
-
-  /**
-   * Get the current gifts privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getGiftsPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getGiftsPrivacy");
-  }
-
-  /**
-   * Get the current saved music privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getSavedMusicPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getSavedMusicPrivacy");
-  }
-
-  /**
-   * Get the current phone call privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getPhoneCallPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getPhoneCallPrivacy");
-  }
-
-  /**
-   * Get the current last seen privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getLastSeenPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getLastSeenPrivacy");
-  }
-
-  /**
-   * Set phone number privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setPhoneNumberPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setPhoneNumberPrivacy", rules);
-  }
-
-  /**
-   * Set bio privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setBioPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setBioPrivacy", rules);
-  }
-
-  /**
-   * Set birthday privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setBirthdayPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setBirthdayPrivacy", rules);
-  }
-
-  /**
-   * Set profile photo privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setProfilePhotoPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setProfilePhotoPrivacy", rules);
-  }
-
-  /**
-   * Set forwards privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setForwardsPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setForwardsPrivacy", rules);
-  }
-
-  /**
-   * Set invitation privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setInvitationPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setInvitationPrivacy", rules);
-  }
-
-  /**
-   * Set find by phone number privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setFindByPhoneNumberPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setFindByPhoneNumberPrivacy", rules);
-  }
-
-  /**
-   * Set voice message privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setVoiceMessagePrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setVoiceMessagePrivacy", rules);
-  }
-
-  /**
-   * Set paid message exception privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setPaidMessageExceptionPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setPaidMessageExceptionPrivacy", rules);
-  }
-
-  /**
-   * Set peer-to-peer call privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setPeerToPeerCallPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setPeerToPeerCallPrivacy", rules);
-  }
-
-  /**
-   * Set gifts privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setGiftsPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setGiftsPrivacy", rules);
-  }
-
-  /**
-   * Set saved music privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setSavedMusicPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setSavedMusicPrivacy", rules);
-  }
-
-  /**
-   * Set phone call privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setPhoneCallPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setPhoneCallPrivacy", rules);
-  }
-
-  /**
-   * Set last seen privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setLastSeenPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setLastSeenPrivacy", rules);
-  }
-
-  /**
-   * Allow unpaid messages from a user. User-only.
-   *
-   * @method ac
-   * @param userId The identifier of the user.
-   */
-  async allowUnpaidMessagesFromUser(userId: ID, params?: AllowUnpaidMessagesFromUserParams): Promise<void> {
-    return await this.#dispatch("allowUnpaidMessagesFromUser", userId, params);
-  }
-
-  /**
-   * Disallow unpaid messages from a user. User-only.
-   *
-   * @method ac
-   * @param userId The identifier of the user.
-   */
-  async disallowUnpaidMessagesFromUser(userId: ID, params?: DisallowUnpaidMessagesFromUserParams): Promise<void> {
-    return await this.#dispatch("disallowUnpaidMessagesFromUser", userId, params);
-  }
-
-  /**
-   * Allow a bot to set custom emoji status. User-only.
-   *
-   * @param botId The user identifier of the bot.
-   * @method ac
-   */
-  async allowBotToSetCustomEmojiStatus(botId: ID): Promise<void> {
-    return await this.#dispatch("allowBotToSetCustomEmojiStatus", botId);
-  }
-
-  /**
-   * Disallow a bot to set custom emoji status. User-only.
-   *
-   * @param botId The user identifier of the bot.
-   * @method ac
-   */
-  async disallowBotToSetCustomEmojiStatus(botId: ID): Promise<void> {
-    return await this.#dispatch("disallowBotToSetCustomEmojiStatus", botId);
-  }
-
-  /**
-   * Check if a code entered by the user was the same as the verification code.
-   *
-   * @param code A code entered by the user.
-   * @method ac
-   */
-  async checkCode(code: string): Promise<CodeCheckResult> {
-    return await this.#dispatch("checkCode", code);
-  }
-
-  /**
-   * Get the user account password's hint.
-   *
-   * @method ac
-   */
-  async getPasswordHint(): Promise<string | null> {
-    return await this.#dispatch("getPasswordHint");
-  }
-
-  /**
-   * Check whether a password entered by the user is the same as the account's one.
-   *
-   * @param password The password to check.
-   * @returns The result of the check.
-   * @method ac
-   */
-  async checkPassword(password: string): Promise<PasswordCheckResult> {
-    return await this.#dispatch("checkPassword", password);
-  }
-
-  /**
-   * Check whether a bot token is valid.
-   *
-   * @param botToken The bot token to check
-   * @returns The result of the check.
-   * @method ac
-   */
-  async checkBotToken(botToken: string): Promise<BotTokenCheckResult> {
-    return await this.#dispatch("checkBotToken", botToken);
-  }
-
-  /**
-   * Signs in using the provided parameters if not already signed in.
-   * If no parameters are provided, the credentials will be prompted in runtime.
-   *
-   * Notes:
-   * 1. Requires the `apiId` and `apiHash` parameters to be passed when constructing the client.
-   * 3. Reconnects the client to the appropriate DC in case of MIGRATE_X errors.
-   */
-  async signIn(params?: SignInParams): Promise<void> {
-    await signIn(this, this.#LsignIn, params);
-  }
-
-  async signOut(): Promise<void> {
-    return await this.#dispatch("signOut");
-  }
-
-  async exportAuthString(): Promise<string> {
-    return await this.#dispatch("exportAuthString");
-  }
-
-  async importAuthString(authString: string): Promise<void> {
-    return await this.#dispatch("importAuthString", authString);
+  async getInputChannel(id: ID): Promise<Api.inputChannel | Api.inputChannelFromMessage> {
+    return await this.#dispatch("getInputChannel", id);
   }
 
   /**
@@ -617,18 +358,10 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Get a channel or a supergroup's inputChannel. Useful when calling API functions directly.
-   *
-   * @param id The identifier of the channel or the supergroup.
-   */
-  async getInputChannel(id: ID): Promise<Api.inputChannel | Api.inputChannelFromMessage> {
-    return await this.#dispatch("getInputChannel", id);
-  }
-
-  /**
    * Get a user's inputUser. Useful when calling API functions directly.
    *
    * @param id The identifier of the user.
+   * @method ll
    */
   async getInputUser(id: ID): Promise<Api.inputUserSelf | Api.inputUser | Api.inputUserFromMessage> {
     return await this.#dispatch("getInputUser", id);
@@ -646,6 +379,26 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async addBotToAttachmentsMenu(botId: ID, params?: AddBotToAttachmentsMenuParams): Promise<void> {
     return await this.#dispatch("addBotToAttachmentsMenu", botId, params);
+  }
+
+  /**
+   * Allow a bot to set custom emoji status. User-only.
+   *
+   * @param botId The user identifier of the bot.
+   * @method ac
+   */
+  async allowBotToSetCustomEmojiStatus(botId: ID): Promise<void> {
+    return await this.#dispatch("allowBotToSetCustomEmojiStatus", botId);
+  }
+
+  /**
+   * Allow unpaid messages from a user. User-only.
+   *
+   * @method ac
+   * @param userId The identifier of the user.
+   */
+  async allowUnpaidMessagesFromUser(userId: ID, params?: AllowUnpaidMessagesFromUserParams): Promise<void> {
+    return await this.#dispatch("allowUnpaidMessagesFromUser", userId, params);
   }
 
   /**
@@ -695,6 +448,26 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async disableSponsoredMessages(): Promise<void> {
     return await this.#dispatch("disableSponsoredMessages");
+  }
+
+  /**
+   * Disallow a bot to set custom emoji status. User-only.
+   *
+   * @param botId The user identifier of the bot.
+   * @method ac
+   */
+  async disallowBotToSetCustomEmojiStatus(botId: ID): Promise<void> {
+    return await this.#dispatch("disallowBotToSetCustomEmojiStatus", botId);
+  }
+
+  /**
+   * Disallow unpaid messages from a user. User-only.
+   *
+   * @method ac
+   * @param userId The identifier of the user.
+   */
+  async disallowUnpaidMessagesFromUser(userId: ID, params?: DisallowUnpaidMessagesFromUserParams): Promise<void> {
+    return await this.#dispatch("disallowUnpaidMessagesFromUser", userId, params);
   }
 
   /**
@@ -775,6 +548,24 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
+   * Get the current bio privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getBioPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getBioPrivacy");
+  }
+
+  /**
+   * Get the current birthday privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getBirthdayPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getBirthdayPrivacy");
+  }
+
+  /**
    * Get blocked users. User-only.
    *
    * @method ac
@@ -822,6 +613,51 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
+   * Get the current find by phone number privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getFindByPhoneNumberPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getFindByPhoneNumberPrivacy");
+  }
+
+  /**
+   * Get the current forwards privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getForwardsPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getForwardsPrivacy");
+  }
+
+  /**
+   * Get the current gifts privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getGiftsPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getGiftsPrivacy");
+  }
+
+  /**
+   * Get the current invitation privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getInvitationPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getInvitationPrivacy");
+  }
+
+  /**
+   * Get the current last seen privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getLastSeenPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getLastSeenPrivacy");
+  }
+
+  /**
    * Get information on the currently authorized user.
    *
    * @method ac
@@ -838,6 +674,60 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async getOwnedBots(): Promise<User[]> {
     return await this.#dispatch("getOwnedBots");
+  }
+
+  /**
+   * Get the current paid message exception privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getPaidMessageExceptionPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getPaidMessageExceptionPrivacy");
+  }
+
+  /**
+   * Get the user account password's hint.
+   *
+   * @method ac
+   */
+  async getPasswordHint(): Promise<string | null> {
+    return await this.#dispatch("getPasswordHint");
+  }
+
+  /**
+   * Get the current peer-to-peer call privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getPeerToPeerCallPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getPeerToPeerCallPrivacy");
+  }
+
+  /**
+   * Get the current phone call privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getPhoneCallPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getPhoneCallPrivacy");
+  }
+
+  /**
+   * Get the current phone number privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getPhoneNumberPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getPhoneNumberPrivacy");
+  }
+
+  /**
+   * Get the current profile photo privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getProfilePhotoPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getProfilePhotoPrivacy");
   }
 
   /**
@@ -860,12 +750,30 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
+   * Get the current saved music privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getSavedMusicPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getSavedMusicPrivacy");
+  }
+
+  /**
    * Get timezones. User-only.
    *
    * @method ac
    */
   async getTimezones(): Promise<Timezone[]> {
     return await this.#dispatch("getTimezones");
+  }
+
+  /**
+   * Get the current voice message privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getVoiceMessagePrivacy(): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getVoiceMessagePrivacy");
   }
 
   /**
@@ -1029,12 +937,32 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
+   * Set bio privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setBioPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#dispatch("setBioPrivacy", rules);
+  }
+
+  /**
    * Set the birthday of the current user. User-only.
    *
    * @method ac
    */
   async setBirthday(params?: SetBirthdayParams): Promise<void> {
     return await this.#dispatch("setBirthday", params);
+  }
+
+  /**
+   * Set birthday privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setBirthdayPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#dispatch("setBirthdayPrivacy", rules);
   }
 
   /**
@@ -1069,6 +997,46 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
+   * Set find by phone number privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setFindByPhoneNumberPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#dispatch("setFindByPhoneNumberPrivacy", rules);
+  }
+
+  /**
+   * Set forwards privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setForwardsPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#dispatch("setForwardsPrivacy", rules);
+  }
+
+  /**
+   * Set gifts privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setGiftsPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#dispatch("setGiftsPrivacy", rules);
+  }
+
+  /**
+   * Set invitation privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setInvitationPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#dispatch("setInvitationPrivacy", rules);
+  }
+
+  /**
    * Set the current account's online status. User-only.
    *
    * @method ac
@@ -1076,6 +1044,16 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async setIsOnline(isOnline: boolean): Promise<void> {
     return await this.#dispatch("setIsOnline", isOnline);
+  }
+
+  /**
+   * Set last seen privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setLastSeenPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#dispatch("setLastSeenPrivacy", rules);
   }
 
   /**
@@ -1098,12 +1076,52 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
+   * Set paid message exception privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setPaidMessageExceptionPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#dispatch("setPaidMessageExceptionPrivacy", rules);
+  }
+
+  /**
+   * Set peer-to-peer call privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setPeerToPeerCallPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#dispatch("setPeerToPeerCallPrivacy", rules);
+  }
+
+  /**
    * Set the personal channel of the current user. User-only.
    *
    * @method ac
    */
   async setPersonalChannel(params?: SetPersonalChannelParams): Promise<void> {
     return await this.#dispatch("setPersonalChannel", params);
+  }
+
+  /**
+   * Set phone call privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setPhoneCallPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#dispatch("setPhoneCallPrivacy", rules);
+  }
+
+  /**
+   * Set phone number privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setPhoneNumberPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#dispatch("setPhoneNumberPrivacy", rules);
   }
 
   /**
@@ -1114,6 +1132,26 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async setProfileColor(color: number, params?: SetProfileColorParams): Promise<void> {
     return await this.#dispatch("setProfileColor", color, params);
+  }
+
+  /**
+   * Set profile photo privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setProfilePhotoPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#dispatch("setProfilePhotoPrivacy", rules);
+  }
+
+  /**
+   * Set saved music privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setSavedMusicPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#dispatch("setSavedMusicPrivacy", rules);
   }
 
   /**
@@ -1135,6 +1173,16 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async setUsername(username: string): Promise<void> {
     return await this.#dispatch("setUsername", username);
+  }
+
+  /**
+   * Set voice message privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setVoiceMessagePrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#dispatch("setVoiceMessagePrivacy", rules);
   }
 
   /**

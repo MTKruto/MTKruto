@@ -441,6 +441,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     }
   }
 
+  #handleInvokeError = skipInvoke<Client<C>>();
+
   get #client(): ClientEncrypted | undefined {
     return this.#clients[0];
   }
@@ -480,56 +482,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   #connectMutex = new Mutex();
-  /**
-   * Loads the session if `setDc` was not called, initializes and connects
-   * a `ClientPlain` to generate auth key if there was none, and connects the client.
-   * Before establishing the connection, the session is saved.
-   */
-  async connect() {
-    const unlock = await this.#connectMutex.lock();
-    try {
-      if (this.isConnected) {
-        return;
-      }
-      await this.#initStorage();
-      if (this.#authString && !this.#authStringImported) {
-        await this.importAuthString(this.#authString);
-      }
-      const auth = this.storage.auth.mustGet();
-      if (auth.authKey !== null && auth.dc !== null) {
-        if (!this.#client || this.#client.dc !== auth.dc) {
-          this.#client?.disconnect();
-          this.#setMainClient(this.#newClient(auth.dc, true, false));
-        }
-        await this.#client!.setAuthKey(auth.authKey);
-        if (this.#client!.serverSalt === 0n) {
-          this.#client!.serverSalt = await this.storage.getServerSalt() ?? 0n;
-        }
-      } else {
-        const dc = auth.dc ?? this.#initialDc;
-        if (!this.#client || this.#client.dc !== dc) {
-          this.#client?.disconnect();
-          this.#setMainClient(this.#newClient(dc, true, false));
-        }
-      }
-      await this.#client!.connect();
-      await this.storage.auth.update((v) => {
-        v.authKey = this.#client!.authKey;
-        v.dc = this.#client!.dc;
-      });
-      await this.storage.setServerSalt(this.#client!.serverSalt);
-      this.#updateGapRecoveryLoop.start();
-      this.#clientDisconnectionLoop.start();
-      if (!this.#messageStorage_.isMemory) {
-        this.#storageWriteLoop.start();
-      } else {
-        this.#L.debug("not starting storageWriteLoop");
-      }
-      await this.storage.commit(true);
-    } finally {
-      unlock();
-    }
-  }
+  #authStringImported = false;
 
   async [handleMigrationError](err: Migrate) {
     let newDc = String(err.dc);
@@ -543,16 +496,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     });
     await this.connect();
     this.#LhandleMigrationError.debug(`migrated to DC${newDc}`);
-  }
-
-  async disconnect() {
-    this.#disconnectAllClients();
-    this.#clientDisconnectionLoop.abort();
-    this.#updateGapRecoveryLoop.abort();
-    this.#storageWriteLoop.abort();
-    this.#updateManager.closeAllChats();
-    await this.storage.commit(true);
-    await this.messageStorage.commit(true);
   }
 
   #lastPropagatedAuthorizationState: boolean | null = null;
@@ -646,760 +589,12 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     }
   }
 
-  /**
-   * Send a user verification code.
-   *
-   * @param phoneNumber The phone number to send the code to.
-   * @method ac
-   */
-  async sendCode(phoneNumber: string) {
-    const me = await this.#checkAuthorization();
-    if (me) {
-      return;
-    }
-
-    try {
-      await this.#accountManager.sendCode(phoneNumber, this.#apiId, this.#apiHash);
-    } catch (err) {
-      if (err instanceof Migrate) {
-        await this[handleMigrationError](err);
-        await this.#accountManager.sendCode(phoneNumber, this.#apiId, this.#apiHash);
-      } else {
-        throw err;
-      }
-    }
-  }
-
-  /**
-   * Get application configuration. User-only.
-   *
-   * @method ac
-   */
-  async getApplicationConfiguration(): Promise<
-    // deno-lint-ignore no-explicit-any
-    any
-  > {
-    return await this.#accountManager.getApplicationConfiguration();
-  }
-
-  /**
-   * Allow a bot to set custom emoji status. User-only.
-   *
-   * @param botId The user identifier of the bot.
-   * @method ac
-   */
-  async allowBotToSetCustomEmojiStatus(botId: ID): Promise<void> {
-    return await this.#accountManager.allowBotToSetCustomEmojiStatus(botId);
-  }
-
-  /**
-   * Disallow a bot to set custom emoji status. User-only.
-   *
-   * @param botId The user identifier of the bot.
-   * @method ac
-   */
-  async disallowBotToSetCustomEmojiStatus(botId: ID): Promise<void> {
-    return await this.#accountManager.disallowBotToSetCustomEmojiStatus(botId);
-  }
-
-  /**
-   * Allow unpaid messages from a user. User-only.
-   *
-   * @method ac
-   * @param userId The identifier of the user.
-   */
-  async allowUnpaidMessagesFromUser(userId: ID, params?: AllowUnpaidMessagesFromUserParams): Promise<void> {
-    return await this.#accountManager.allowUnpaidMessagesFromUser(userId, params);
-  }
-
-  /**
-   * Get the current phone number privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getPhoneNumberPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#accountManager.getPhoneNumberPrivacy();
-  }
-
-  /**
-   * Get the current bio privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getBioPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#accountManager.getBioPrivacy();
-  }
-
-  /**
-   * Get the current birthday privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getBirthdayPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#accountManager.getBirthdayPrivacy();
-  }
-
-  /**
-   * Get the current forwards privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getForwardsPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#accountManager.getForwardsPrivacy();
-  }
-
-  /**
-   * Get the current profile photo privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getProfilePhotoPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#accountManager.getProfilePhotoPrivacy();
-  }
-
-  /**
-   * Get the current find by phone number privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getFindByPhoneNumberPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#accountManager.getFindByPhoneNumberPrivacy();
-  }
-
-  /**
-   * Get the current invitation privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getInvitationPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#accountManager.getInvitationPrivacy();
-  }
-
-  /**
-   * Get the current paid message exception privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getPaidMessageExceptionPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#accountManager.getPaidMessageExceptionPrivacy();
-  }
-
-  /**
-   * Get the current voice message privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getVoiceMessagePrivacy(): Promise<PrivacyRule[]> {
-    return await this.#accountManager.getVoiceMessagePrivacy();
-  }
-
-  /**
-   * Get the current peer-to-peer call privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getPeerToPeerCallPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#accountManager.getPeerToPeerCallPrivacy();
-  }
-
-  /**
-   * Get the current gifts privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getGiftsPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#accountManager.getGiftsPrivacy();
-  }
-
-  /**
-   * Get the current saved music privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getSavedMusicPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#accountManager.getSavedMusicPrivacy();
-  }
-
-  /**
-   * Get the current phone call privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getPhoneCallPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#accountManager.getPhoneCallPrivacy();
-  }
-
-  /**
-   * Get the current last seen privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getLastSeenPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#accountManager.getLastSeenPrivacy();
-  }
-
-  /**
-   * Set phone number privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setPhoneNumberPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#accountManager.setPhoneNumberPrivacy(rules);
-  }
-
-  /**
-   * Set bio privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setBioPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#accountManager.setBioPrivacy(rules);
-  }
-
-  /**
-   * Set birthday privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setBirthdayPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#accountManager.setBirthdayPrivacy(rules);
-  }
-
-  /**
-   * Set profile photo privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setProfilePhotoPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#accountManager.setProfilePhotoPrivacy(rules);
-  }
-
-  /**
-   * Set forwards privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setForwardsPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#accountManager.setForwardsPrivacy(rules);
-  }
-
-  /**
-   * Set invitation privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setInvitationPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#accountManager.setInvitationPrivacy(rules);
-  }
-
-  /**
-   * Set find by phone number privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setFindByPhoneNumberPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#accountManager.setFindByPhoneNumberPrivacy(rules);
-  }
-
-  /**
-   * Set voice message privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setVoiceMessagePrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#accountManager.setVoiceMessagePrivacy(rules);
-  }
-
-  /**
-   * Set paid message exception privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setPaidMessageExceptionPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#accountManager.setPaidMessageExceptionPrivacy(rules);
-  }
-
-  /**
-   * Set peer-to-peer call privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setPeerToPeerCallPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#accountManager.setPeerToPeerCallPrivacy(rules);
-  }
-
-  /**
-   * Set gifts privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setGiftsPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#accountManager.setGiftsPrivacy(rules);
-  }
-
-  /**
-   * Set saved music privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setSavedMusicPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#accountManager.setSavedMusicPrivacy(rules);
-  }
-
-  /**
-   * Set phone call privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setPhoneCallPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#accountManager.setPhoneCallPrivacy(rules);
-  }
-
-  /**
-   * Set last seen privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setLastSeenPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#accountManager.setLastSeenPrivacy(rules);
-  }
-
-  /**
-   * Disallow unpaid messages from a user. User-only.
-   *
-   * @method ac
-   * @param userId The identifier of the user.
-   */
-  async disallowUnpaidMessagesFromUser(userId: ID, params?: DisallowUnpaidMessagesFromUserParams): Promise<void> {
-    return await this.#accountManager.disallowUnpaidMessagesFromUser(userId, params);
-  }
-
-  /**
-   * Check if a code entered by the user was the same as the verification code.
-   *
-   * @param code A code entered by the user.
-   * @method ac
-   */
-  async checkCode(code: string): Promise<CodeCheckResult> {
-    const result = await this.#accountManager.checkCode(code);
-    if (result.type === "signedIn") {
-      await this.storage.auth.update((v) => {
-        v.userId = result.userId;
-        v.isBot = false;
-      });
-      this.#LsignIn.debug("signed in as user");
-      await this.#propagateAuthorizationState(true);
-      await this.#updateManager.fetchState("checkCode");
-    }
-
-    return result;
-  }
-
-  /**
-   * Get the user account password's hint.
-   *
-   * @method ac
-   */
-  async getPasswordHint(): Promise<string | null> {
-    return await this.#accountManager.getPasswordHint();
-  }
-
-  /**
-   * Check whether a password entered by the user is the same as the account's one.
-   *
-   * @param password The password to check.
-   * @returns The result of the check.
-   * @method ac
-   */
-  async checkPassword(password: string): Promise<PasswordCheckResult> {
-    const result = await this.#accountManager.checkPassword(password);
-    if (result.type === "signedIn") {
-      await this.storage.auth.update((v) => {
-        v.userId = result.userId;
-        v.isBot = false;
-      });
-      await this.storage.commit(true);
-      this.#LsignIn.debug("signed in as user");
-      await this.#propagateAuthorizationState(true);
-      await this.#updateManager.fetchState("checkPassword");
-    }
-
-    return result;
-  }
-
-  /**
-   * Check whether a bot token is valid.
-   *
-   * @param botToken The bot token to check
-   * @returns The result of the check.
-   * @method ac
-   */
-  async checkBotToken(botToken: string): Promise<BotTokenCheckResult> {
-    const me = await this.#checkAuthorization();
-    if (me) {
-      return {
-        type: "signedIn",
-        userId: me.id,
-      };
-    }
-
-    while (true) {
-      try {
-        const result = await this.#accountManager.checkBotToken(botToken, this.#apiId, this.#apiHash);
-        if (result.type === "signedIn") {
-          await this.storage.auth.update((v) => {
-            v.userId = result.userId;
-            v.isBot = true;
-          });
-          await this.storage.commit(true);
-          this.#LsignIn.debug("signed in as bot");
-          await this.#propagateAuthorizationState(true);
-          await this.#updateManager.fetchState("checkBotToken");
-        }
-
-        return result;
-      } catch (err) {
-        if (err instanceof Migrate) {
-          await this[handleMigrationError](err);
-          continue;
-        } else {
-          throw err;
-        }
-      }
-    }
-  }
-
-  /**
-   * Signs in using the provided parameters if not already signed in.
-   * If no parameters are provided, the credentials will be prompted in runtime.
-   *
-   * Notes:
-   * 1. Requires the `apiId` and `apiHash` parameters to be passed when constructing the client.
-   * 3. Reconnects the client to the appropriate DC in case of MIGRATE_X errors.
-   */
-  async signIn(params?: SignInParams) {
-    await signIn(this, this.#LsignIn, params);
-  }
-
-  async signOut() {
-    try {
-      await Promise.all([
-        this.storage.reset(),
-        this.invoke({ _: "auth.logOut" }).then(() => {
-          this.#propagateAuthorizationState(false);
-        }),
-      ]);
-    } finally {
-      this.#lastGetMe = null;
-      this.disconnect();
-      await this.connect();
-    }
-  }
-
-  /** Same as calling `.connect()` followed by `.signIn(params)`. */
-  async start(params?: SignInParams) {
-    await this.connect();
-    await this.signIn(params);
-  }
-
-  async #getClient(params: InvokeParams) {
-    let client: ClientEncrypted;
-    switch (params.type) {
-      case undefined:
-        client = await this.#getMainClient(params.dc);
-        break;
-      case "download":
-        client = await this.#getDownloadClient(params.dc);
-        break;
-      case "upload":
-        client = await this.#getUploadClient();
-        break;
-    }
-    if (client !== this.#client && !this.isDisconnected && client.isDisconnected) {
-      await client.connect();
-    }
-    return client;
-  }
-
-  #getMainClientMutex = new Mutex();
-  async #getMainClient(dc?: DC) {
-    if (dc === undefined || dc === this.#client?.dc) {
-      return this.#client!;
-    }
-    let client = this.#clients.find((v) => v.dc === dc);
-    if (client) {
-      return client;
-    }
-    const unlock = await this.#getMainClientMutex.lock();
-    client = this.#clients.find((v) => v.dc === dc);
-    if (client) {
-      return client;
-    }
-    try {
-      client = this.#newClient(dc, false, false);
-      await this.#setupClient(client);
-      this.#clients.push(client);
-      return client;
-    } finally {
-      unlock();
-    }
-  }
-
-  async #getDownloadClient(dc?: DC) {
-    dc ??= this.#client!.dc;
-    const pool = this.#downloadPools[dc] ??= new ClientEncryptedPool();
-    if (!pool.size) {
-      if (!pool.size) {
-        for (let i = 0; i < DOWNLOAD_POOL_SIZE; ++i) {
-          pool.add(this.#newClient(dc, false, true));
-        }
-      }
-    }
-    const client = pool.nextClient();
-    if (client.authKey.byteLength) {
-      return client;
-    }
-    await this.#setupClient(client);
-    return client;
-  }
-
-  async #getUploadPoolSize() {
-    const dc = this.#client!.dc;
-    return (dc !== "2" && dc !== "4") || await this.#getIsPremium() ? 8 : 4;
-  }
-
-  async #getUploadClient() {
-    const dc = this.#client!.dc;
-    const poolSize = await this.#getUploadPoolSize();
-    const pool = this.#uploadPools[dc] ??= new ClientEncryptedPool();
-    if (!pool.size) {
-      for (let i = 0; i < poolSize; ++i) {
-        pool.add(this.#newClient(dc, false, true));
-      }
-    }
-    const client = pool.nextClient();
-    if (client.authKey.byteLength) {
-      return client;
-    }
-    await this.#setupClient(client);
-    return client;
-  }
-
-  async #setupClient(client: ClientEncrypted) {
-    const storage = client.dc === this.#client!.dc ? this.storage : new StorageOperations(this.storage.provider.branch(client.dc + (client.isMedia ? "_media" : "")));
-    await storage.initialize();
-    const auth = storage.auth.mustGet();
-    const serverSalt = await storage.getServerSalt();
-    if (auth.authKey !== null) {
-      await client.setAuthKey(auth.authKey);
-      if (serverSalt) {
-        client.serverSalt = serverSalt;
-      }
-    }
-    await client.connect();
-    if (auth.authKey === null) {
-      await this.#importAuthorization(client);
-    }
-    await storage.auth.update((v) => v.authKey = client.authKey);
-    if (client.dc !== this.#client!.dc) {
-      await storage.setServerSalt(client.serverSalt);
-      client.handlers.onNewServerSalt = async (serverSalt) => {
-        await storage.setServerSalt(serverSalt);
-      };
-    }
-  }
-
-  async #importAuthorization(client: ClientEncrypted) {
-    if (this.#client!.dc === client.dc && this.#client!.isMedia === client.isMedia) {
-      const auth = this.storage.auth.mustGet();
-      const serverSalt = await this.storage.getServerSalt();
-      if (auth.authKey !== null) {
-        await client.setAuthKey(auth.authKey);
-        if (serverSalt) {
-          client.serverSalt = serverSalt;
-        }
-      }
-      return;
-    }
-    const exportedAuthorization = await this.#client!.invoke({ _: "auth.exportAuthorization", dc_id: getDcId(client.dc, client.isMedia) });
-    await client.invoke({ ...exportedAuthorization, _: "auth.importAuthorization" });
-  }
-
-  async #invoke<T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams): Promise<R> {
-    if (!this.#client) {
-      throw new ConnectionError("The connection is not open.");
-    }
-    let n = 1;
-    let client: ClientEncrypted;
-    while (true) {
-      client = params ? await this.#getClient(params) : this.#client!;
-      const main = client === this.#client;
-      try {
-        const result = await client.invoke(function_);
-        if (main) {
-          try {
-            await this.#updateManager.processResult(result as Api.DeserializedType);
-          } catch (err) {
-            this.#L.error("failed to process result:", err);
-          }
-          if (Api.isOfEnum("Update", result) || Api.isOfEnum("Updates", result)) {
-            return new Promise<R>((resolve) => {
-              this.#updateManager.processUpdates(result, true, Mtproto.is("ping", function_) ? null : function_, () => resolve(result as R));
-            });
-          }
-        }
-        return result as R;
-      } catch (err) {
-        if (err instanceof AuthKeyUnregistered && !main) {
-          await this.#importAuthorization(client);
-          continue;
-        } else if (err instanceof ConnectionError && !main && !this.isDisconnected) {
-          continue;
-        } else if (await this.#handleInvokeError(Object.freeze({ client: this, error: err, function: function_, n: n++ }), () => Promise.resolve(false))) {
-          continue;
-        } else {
-          throw err;
-        }
-      }
-    }
-  }
-
-  #handleInvokeError = skipInvoke<Client<C>>();
-
-  /**
-   * Invokes a function waiting and returning its reply.
-   * Requires the client to be connected.
-   *
-   * @param function_ The function to invoke.
-   */
-  invoke: {
-    <T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams): Promise<R>;
-    use: (handler: InvokeErrorHandler<Client<C>>) => void;
-  } = Object.assign(
-    this.#invoke,
-    {
-      use: (handler: InvokeErrorHandler<Client<C>>) => {
-        const handle = this.#handleInvokeError;
-        this.#handleInvokeError = async (ctx, next) => {
-          let result: boolean | null = null;
-          return await handle(ctx, async () => {
-            if (result !== null) return result;
-            result = await handler(ctx, next);
-            return result;
-          });
-        };
-      },
-    },
-  );
-
-  exportAuthString(): Promise<string> {
-    return this.storage.exportAuthString(this.#apiId);
-  }
-
-  #authStringImported = false;
-  async importAuthString(authString: string) {
-    if (this.isConnected) {
-      throw new InputError("Cannot import an auth string while the client is connected.");
-    }
-    await this.#initStorage();
-    await this.storage.importAuthString(authString);
-    this.#authStringImported = true;
-    if (!this.#apiId) {
-      this.#apiId = this.storage.auth.mustGet().apiId;
-    }
-  }
-
-  async #getUserAccessHash(userId: bigint) {
-    const users = await this.invoke({ _: "users.getUsers", id: [{ _: "inputUser", user_id: userId, access_hash: 0n }] });
-    const user = Api.is("user", users[0]) ? users[0] : undefined;
-    return user?.access_hash ?? 0n;
-  }
-
-  async #getChannelAccessHash(channelId: bigint) {
-    const channels = await this.invoke({ _: "channels.getChannels", id: [{ _: "inputChannel", channel_id: channelId, access_hash: 0n }] });
-    const channel = Api.is("channel", channels.chats[0]) ? channels.chats[0] : undefined;
-    return channel?.access_hash ?? 0n;
-  }
-
-  /**
-   * Get a chat's inputPeer. Useful when calling API functions directly.
-   *
-   * @param id The identifier of a chat.
-   */
-  async getInputPeer(id: ID): Promise<Api.InputPeer> {
-    if (id === "me" || id === await this.#getSelfId()) {
-      return { _: "inputPeerSelf" };
-    }
-    const inputPeer = await this.#getInputPeerInner(id);
-    if (((Api.is("inputPeerUser", inputPeer) || Api.is("inputPeerChannel", inputPeer)) && inputPeer.access_hash === 0n) && this.storage.isBot) {
-      if ("channel_id" in inputPeer) {
-        inputPeer.access_hash = await this.#getChannelAccessHash(inputPeer.channel_id);
-      } else {
-        inputPeer.access_hash = await this.#getUserAccessHash(inputPeer.user_id);
-      }
-    }
-    if ((Api.is("inputPeerUser", inputPeer) || Api.is("inputPeerChannel", inputPeer)) && inputPeer.access_hash === 0n) {
-      throw new AccessError(`The chat ${id} cannot be accessed.`);
-    }
-    return inputPeer;
-  }
-
   async #inputPeerToPeer(inputPeer: Api.InputPeer): Promise<Api.Peer> {
     if (Api.is("inputPeerSelf", inputPeer)) {
       return { _: "peerUser", user_id: BigInt(await this.#getSelfId()) };
     } else {
       return Api.inputPeerToPeer(inputPeer);
     }
-  }
-
-  async #getInputPeerChatId(inputPeer: Api.InputPeer | Api.InputUser | Api.InputChannel) {
-    if (Api.isOneOf(["inputPeerSelf", "inputUserSelf"], inputPeer)) {
-      return await this.#getSelfId();
-    } else if (Api.isOneOf(["inputPeerEmpty", "inputUserEmpty", "inputChannelEmpty"], inputPeer)) {
-      unreachable();
-    } else {
-      return Api.peerToChatId(inputPeer);
-    }
-  }
-
-  /**
-   * Get a channel or a supergroup's inputChannel. Useful when calling API functions directly.
-   *
-   * @param id The identifier of the channel or the supergroup.
-   */
-  async getInputChannel(id: ID): Promise<Api.inputChannel | Api.inputChannelFromMessage> {
-    const inputPeer = await this.getInputPeer(id);
-    if (!canBeInputChannel(inputPeer)) {
-      throw new TypeError(`The chat ${id} is neither a channel nor a supergroup.`);
-    }
-    return toInputChannel(inputPeer);
-  }
-
-  /**
-   * Get a user's inputUser. Useful when calling API functions directly.
-   *
-   * @param id The identifier of the user.
-   */
-  async getInputUser(id: ID): Promise<Api.inputUserSelf | Api.inputUser | Api.inputUserFromMessage> {
-    const inputPeer = await this.getInputPeer(id);
-    if (!canBeInputUser(inputPeer)) {
-      throw new TypeError(`The chat ${id} is not a private chat.`);
-    }
-    return toInputUser(inputPeer);
   }
 
   async #getInputPeerInner(id: ID) {
@@ -1700,6 +895,527 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     }
   }
 
+  async #getChannelAccessHash(channelId: bigint) {
+    const channels = await this.invoke({ _: "channels.getChannels", id: [{ _: "inputChannel", channel_id: channelId, access_hash: 0n }] });
+    const channel = Api.is("channel", channels.chats[0]) ? channels.chats[0] : undefined;
+    return channel?.access_hash ?? 0n;
+  }
+
+  async #getClient(params: InvokeParams) {
+    let client: ClientEncrypted;
+    switch (params.type) {
+      case undefined:
+        client = await this.#getMainClient(params.dc);
+        break;
+      case "download":
+        client = await this.#getDownloadClient(params.dc);
+        break;
+      case "upload":
+        client = await this.#getUploadClient();
+        break;
+    }
+    if (client !== this.#client && !this.isDisconnected && client.isDisconnected) {
+      await client.connect();
+    }
+    return client;
+  }
+
+  async #getDownloadClient(dc?: DC) {
+    dc ??= this.#client!.dc;
+    const pool = this.#downloadPools[dc] ??= new ClientEncryptedPool();
+    if (!pool.size) {
+      if (!pool.size) {
+        for (let i = 0; i < DOWNLOAD_POOL_SIZE; ++i) {
+          pool.add(this.#newClient(dc, false, true));
+        }
+      }
+    }
+    const client = pool.nextClient();
+    if (client.authKey.byteLength) {
+      return client;
+    }
+    await this.#setupClient(client);
+    return client;
+  }
+
+  async #getInputPeerChatId(inputPeer: Api.InputPeer | Api.InputUser | Api.InputChannel) {
+    if (Api.isOneOf(["inputPeerSelf", "inputUserSelf"], inputPeer)) {
+      return await this.#getSelfId();
+    } else if (Api.isOneOf(["inputPeerEmpty", "inputUserEmpty", "inputChannelEmpty"], inputPeer)) {
+      unreachable();
+    } else {
+      return Api.peerToChatId(inputPeer);
+    }
+  }
+
+  #getMainClientMutex = new Mutex();
+  async #getMainClient(dc?: DC) {
+    if (dc === undefined || dc === this.#client?.dc) {
+      return this.#client!;
+    }
+    let client = this.#clients.find((v) => v.dc === dc);
+    if (client) {
+      return client;
+    }
+    const unlock = await this.#getMainClientMutex.lock();
+    client = this.#clients.find((v) => v.dc === dc);
+    if (client) {
+      return client;
+    }
+    try {
+      client = this.#newClient(dc, false, false);
+      await this.#setupClient(client);
+      this.#clients.push(client);
+      return client;
+    } finally {
+      unlock();
+    }
+  }
+
+  async #getUploadClient() {
+    const dc = this.#client!.dc;
+    const poolSize = await this.#getUploadPoolSize();
+    const pool = this.#uploadPools[dc] ??= new ClientEncryptedPool();
+    if (!pool.size) {
+      for (let i = 0; i < poolSize; ++i) {
+        pool.add(this.#newClient(dc, false, true));
+      }
+    }
+    const client = pool.nextClient();
+    if (client.authKey.byteLength) {
+      return client;
+    }
+    await this.#setupClient(client);
+    return client;
+  }
+
+  async #getUploadPoolSize() {
+    const dc = this.#client!.dc;
+    return (dc !== "2" && dc !== "4") || await this.#getIsPremium() ? 8 : 4;
+  }
+
+  async #getUserAccessHash(userId: bigint) {
+    const users = await this.invoke({ _: "users.getUsers", id: [{ _: "inputUser", user_id: userId, access_hash: 0n }] });
+    const user = Api.is("user", users[0]) ? users[0] : undefined;
+    return user?.access_hash ?? 0n;
+  }
+
+  async #importAuthorization(client: ClientEncrypted) {
+    if (this.#client!.dc === client.dc && this.#client!.isMedia === client.isMedia) {
+      const auth = this.storage.auth.mustGet();
+      const serverSalt = await this.storage.getServerSalt();
+      if (auth.authKey !== null) {
+        await client.setAuthKey(auth.authKey);
+        if (serverSalt) {
+          client.serverSalt = serverSalt;
+        }
+      }
+      return;
+    }
+    const exportedAuthorization = await this.#client!.invoke({ _: "auth.exportAuthorization", dc_id: getDcId(client.dc, client.isMedia) });
+    await client.invoke({ ...exportedAuthorization, _: "auth.importAuthorization" });
+  }
+
+  async #invoke<T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams): Promise<R> {
+    if (!this.#client) {
+      throw new ConnectionError("The connection is not open.");
+    }
+    let n = 1;
+    let client: ClientEncrypted;
+    while (true) {
+      client = params ? await this.#getClient(params) : this.#client!;
+      const main = client === this.#client;
+      try {
+        const result = await client.invoke(function_);
+        if (main) {
+          try {
+            await this.#updateManager.processResult(result as Api.DeserializedType);
+          } catch (err) {
+            this.#L.error("failed to process result:", err);
+          }
+          if (Api.isOfEnum("Update", result) || Api.isOfEnum("Updates", result)) {
+            return new Promise<R>((resolve) => {
+              this.#updateManager.processUpdates(result, true, Mtproto.is("ping", function_) ? null : function_, () => resolve(result as R));
+            });
+          }
+        }
+        return result as R;
+      } catch (err) {
+        if (err instanceof AuthKeyUnregistered && !main) {
+          await this.#importAuthorization(client);
+          continue;
+        } else if (err instanceof ConnectionError && !main && !this.isDisconnected) {
+          continue;
+        } else if (await this.#handleInvokeError(Object.freeze({ client: this, error: err, function: function_, n: n++ }), () => Promise.resolve(false))) {
+          continue;
+        } else {
+          throw err;
+        }
+      }
+    }
+  }
+
+  async #setupClient(client: ClientEncrypted) {
+    const storage = client.dc === this.#client!.dc ? this.storage : new StorageOperations(this.storage.provider.branch(client.dc + (client.isMedia ? "_media" : "")));
+    await storage.initialize();
+    const auth = storage.auth.mustGet();
+    const serverSalt = await storage.getServerSalt();
+    if (auth.authKey !== null) {
+      await client.setAuthKey(auth.authKey);
+      if (serverSalt) {
+        client.serverSalt = serverSalt;
+      }
+    }
+    await client.connect();
+    if (auth.authKey === null) {
+      await this.#importAuthorization(client);
+    }
+    await storage.auth.update((v) => v.authKey = client.authKey);
+    if (client.dc !== this.#client!.dc) {
+      await storage.setServerSalt(client.serverSalt);
+      client.handlers.onNewServerSalt = async (serverSalt) => {
+        await storage.setServerSalt(serverSalt);
+      };
+    }
+  }
+  //
+  // ========================= CONNECTION ========================= //
+  //
+
+  /**
+   * Connect the client.
+   *
+   * @method cn
+   */
+  async connect() {
+    const unlock = await this.#connectMutex.lock();
+    try {
+      if (this.isConnected) {
+        return;
+      }
+      await this.#initStorage();
+      if (this.#authString && !this.#authStringImported) {
+        await this.importAuthString(this.#authString);
+      }
+      const auth = this.storage.auth.mustGet();
+      if (auth.authKey !== null && auth.dc !== null) {
+        if (!this.#client || this.#client.dc !== auth.dc) {
+          this.#client?.disconnect();
+          this.#setMainClient(this.#newClient(auth.dc, true, false));
+        }
+        await this.#client!.setAuthKey(auth.authKey);
+        if (this.#client!.serverSalt === 0n) {
+          this.#client!.serverSalt = await this.storage.getServerSalt() ?? 0n;
+        }
+      } else {
+        const dc = auth.dc ?? this.#initialDc;
+        if (!this.#client || this.#client.dc !== dc) {
+          this.#client?.disconnect();
+          this.#setMainClient(this.#newClient(dc, true, false));
+        }
+      }
+      await this.#client!.connect();
+      await this.storage.auth.update((v) => {
+        v.authKey = this.#client!.authKey;
+        v.dc = this.#client!.dc;
+      });
+      await this.storage.setServerSalt(this.#client!.serverSalt);
+      this.#updateGapRecoveryLoop.start();
+      this.#clientDisconnectionLoop.start();
+      if (!this.#messageStorage_.isMemory) {
+        this.#storageWriteLoop.start();
+      } else {
+        this.#L.debug("not starting storageWriteLoop");
+      }
+      await this.storage.commit(true);
+    } finally {
+      unlock();
+    }
+  }
+
+  /**
+   * Disconnect the client.
+   *
+   * @method cn
+   */
+  async disconnect() {
+    this.#disconnectAllClients();
+    this.#clientDisconnectionLoop.abort();
+    this.#updateGapRecoveryLoop.abort();
+    this.#storageWriteLoop.abort();
+    this.#updateManager.closeAllChats();
+    await this.storage.commit(true);
+    await this.messageStorage.commit(true);
+  }
+
+  /**
+   * Start the client. Same as calling {@link Client.connect} followed by {@link Client.signIn}.
+   *
+   * @method cn
+   */
+  async start(params?: SignInParams) {
+    await this.connect();
+    await this.signIn(params);
+  }
+
+  //
+  // ========================= AUTHORIZATION ========================= //
+  //
+
+  /**
+   * Check whether a bot token is valid.
+   *
+   * @param botToken The bot token to check
+   * @returns The result of the check.
+   * @method au
+   */
+  async checkBotToken(botToken: string): Promise<BotTokenCheckResult> {
+    const me = await this.#checkAuthorization();
+    if (me) {
+      return {
+        type: "signedIn",
+        userId: me.id,
+      };
+    }
+
+    while (true) {
+      try {
+        const result = await this.#accountManager.checkBotToken(botToken, this.#apiId, this.#apiHash);
+        if (result.type === "signedIn") {
+          await this.storage.auth.update((v) => {
+            v.userId = result.userId;
+            v.isBot = true;
+          });
+          await this.storage.commit(true);
+          this.#LsignIn.debug("signed in as bot");
+          await this.#propagateAuthorizationState(true);
+          await this.#updateManager.fetchState("checkBotToken");
+        }
+
+        return result;
+      } catch (err) {
+        if (err instanceof Migrate) {
+          await this[handleMigrationError](err);
+          continue;
+        } else {
+          throw err;
+        }
+      }
+    }
+  }
+
+  /**
+   * Check if a code entered by the user was the same as the verification code.
+   *
+   * @param code A code entered by the user.
+   * @method au
+   */
+  async checkCode(code: string): Promise<CodeCheckResult> {
+    const result = await this.#accountManager.checkCode(code);
+    if (result.type === "signedIn") {
+      await this.storage.auth.update((v) => {
+        v.userId = result.userId;
+        v.isBot = false;
+      });
+      this.#LsignIn.debug("signed in as user");
+      await this.#propagateAuthorizationState(true);
+      await this.#updateManager.fetchState("checkCode");
+    }
+
+    return result;
+  }
+
+  /**
+   * Check whether a password entered by the user is the same as the account's one.
+   *
+   * @param password The password to check.
+   * @returns The result of the check.
+   * @method au
+   */
+  async checkPassword(password: string): Promise<PasswordCheckResult> {
+    const result = await this.#accountManager.checkPassword(password);
+    if (result.type === "signedIn") {
+      await this.storage.auth.update((v) => {
+        v.userId = result.userId;
+        v.isBot = false;
+      });
+      await this.storage.commit(true);
+      this.#LsignIn.debug("signed in as user");
+      await this.#propagateAuthorizationState(true);
+      await this.#updateManager.fetchState("checkPassword");
+    }
+
+    return result;
+  }
+
+  /**
+   * Export the auth string for the current authorization session.
+   *
+   * @method au
+   */
+  exportAuthString(): Promise<string> {
+    return this.storage.exportAuthString(this.#apiId);
+  }
+
+  /**
+   * Import an auth string.
+   *
+   * @param authString The auth string to import.
+   * @method au
+   */
+  async importAuthString(authString: string) {
+    if (this.isConnected) {
+      throw new InputError("Cannot import an auth string while the client is connected.");
+    }
+    await this.#initStorage();
+    await this.storage.importAuthString(authString);
+    this.#authStringImported = true;
+    if (!this.#apiId) {
+      this.#apiId = this.storage.auth.mustGet().apiId;
+    }
+  }
+
+  /**
+   * Send a user verification code.
+   *
+   * @param phoneNumber The phone number to send the code to.
+   * @method ac
+   */
+  async sendCode(phoneNumber: string) {
+    const me = await this.#checkAuthorization();
+    if (me) {
+      return;
+    }
+
+    try {
+      await this.#accountManager.sendCode(phoneNumber, this.#apiId, this.#apiHash);
+    } catch (err) {
+      if (err instanceof Migrate) {
+        await this[handleMigrationError](err);
+        await this.#accountManager.sendCode(phoneNumber, this.#apiId, this.#apiHash);
+      } else {
+        throw err;
+      }
+    }
+  }
+
+  /**
+   * Signs in using the provided parameters if not already signed in.
+   * If no parameters are provided, the credentials will be prompted in runtime.
+   *
+   * Notes:
+   * 1. Requires the `apiId` and `apiHash` parameters to be passed when constructing the client.
+   * 3. Reconnects the client to the appropriate DC in case of MIGRATE_X errors.
+   *
+   * @method au
+   */
+  async signIn(params?: SignInParams) {
+    await signIn(this, this.#LsignIn, params);
+  }
+
+  /**
+   * Sign out.
+   *
+   * @method au
+   */
+  async signOut() {
+    try {
+      await Promise.all([
+        this.storage.reset(),
+        this.invoke({ _: "auth.logOut" }).then(() => {
+          this.#propagateAuthorizationState(false);
+        }),
+      ]);
+    } finally {
+      this.#lastGetMe = null;
+      this.disconnect();
+      await this.connect();
+    }
+  }
+
+  //
+  // ========================= LOW-LEVEL ========================= //
+  //
+
+  /**
+   * Invoke a low-level function.
+   *
+   * @param function_ The function to invoke.
+   * @method ll
+   */
+  invoke: {
+    <T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams): Promise<R>;
+    use: (handler: InvokeErrorHandler<Client<C>>) => void;
+  } = Object.assign(
+    this.#invoke,
+    {
+      use: (handler: InvokeErrorHandler<Client<C>>) => {
+        const handle = this.#handleInvokeError;
+        this.#handleInvokeError = async (ctx, next) => {
+          let result: boolean | null = null;
+          return await handle(ctx, async () => {
+            if (result !== null) return result;
+            result = await handler(ctx, next);
+            return result;
+          });
+        };
+      },
+    },
+  );
+
+  /**
+   * Get a channel or a supergroup's inputChannel. Useful when calling API functions directly.
+   *
+   * @param id The identifier of the channel or the supergroup.
+   * @method ll
+   */
+
+  async getInputChannel(id: ID): Promise<Api.inputChannel | Api.inputChannelFromMessage> {
+    const inputPeer = await this.getInputPeer(id);
+    if (!canBeInputChannel(inputPeer)) {
+      throw new TypeError(`The chat ${id} is neither a channel nor a supergroup.`);
+    }
+    return toInputChannel(inputPeer);
+  }
+
+  /**
+   * Get a chat's inputPeer. Useful when calling API functions directly.
+   *
+   * @param id The identifier of a chat.
+   * @method ll
+   */
+  async getInputPeer(id: ID): Promise<Api.InputPeer> {
+    if (id === "me" || id === await this.#getSelfId()) {
+      return { _: "inputPeerSelf" };
+    }
+    const inputPeer = await this.#getInputPeerInner(id);
+    if (((Api.is("inputPeerUser", inputPeer) || Api.is("inputPeerChannel", inputPeer)) && inputPeer.access_hash === 0n) && this.storage.isBot) {
+      if ("channel_id" in inputPeer) {
+        inputPeer.access_hash = await this.#getChannelAccessHash(inputPeer.channel_id);
+      } else {
+        inputPeer.access_hash = await this.#getUserAccessHash(inputPeer.user_id);
+      }
+    }
+    if ((Api.is("inputPeerUser", inputPeer) || Api.is("inputPeerChannel", inputPeer)) && inputPeer.access_hash === 0n) {
+      throw new AccessError(`The chat ${id} cannot be accessed.`);
+    }
+    return inputPeer;
+  }
+
+  /**
+   * Get a user's inputUser. Useful when calling API functions directly.
+   *
+   * @param id The identifier of the user.
+   * @method ll
+   */
+  async getInputUser(id: ID): Promise<Api.inputUserSelf | Api.inputUser | Api.inputUserFromMessage> {
+    const inputPeer = await this.getInputPeer(id);
+    if (!canBeInputUser(inputPeer)) {
+      throw new TypeError(`The chat ${id} is not a private chat.`);
+    }
+    return toInputUser(inputPeer);
+  }
+
   //
   // ========================= ACCOUNT ========================= //
   //
@@ -1712,6 +1428,26 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async addBotToAttachmentsMenu(botId: ID, params?: AddBotToAttachmentsMenuParams): Promise<void> {
     return await this.#accountManager.addBotToAttachmentsMenu(botId, params);
+  }
+
+  /**
+   * Allow a bot to set custom emoji status. User-only.
+   *
+   * @param botId The user identifier of the bot.
+   * @method ac
+   */
+  async allowBotToSetCustomEmojiStatus(botId: ID): Promise<void> {
+    return await this.#accountManager.allowBotToSetCustomEmojiStatus(botId);
+  }
+
+  /**
+   * Allow unpaid messages from a user. User-only.
+   *
+   * @method ac
+   * @param userId The identifier of the user.
+   */
+  async allowUnpaidMessagesFromUser(userId: ID, params?: AllowUnpaidMessagesFromUserParams): Promise<void> {
+    return await this.#accountManager.allowUnpaidMessagesFromUser(userId, params);
   }
 
   /**
@@ -1764,6 +1500,26 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Disallow a bot to set custom emoji status. User-only.
+   *
+   * @param botId The user identifier of the bot.
+   * @method ac
+   */
+  async disallowBotToSetCustomEmojiStatus(botId: ID): Promise<void> {
+    return await this.#accountManager.disallowBotToSetCustomEmojiStatus(botId);
+  }
+
+  /**
+   * Disallow unpaid messages from a user. User-only.
+   *
+   * @method ac
+   * @param userId The identifier of the user.
+   */
+  async disallowUnpaidMessagesFromUser(userId: ID, params?: DisallowUnpaidMessagesFromUserParams): Promise<void> {
+    return await this.#accountManager.disallowUnpaidMessagesFromUser(userId, params);
+  }
+
+  /**
    * Disconnect a connected website. User-only.
    *
    * @method ac
@@ -1802,6 +1558,18 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Get application configuration. User-only.
+   *
+   * @method ac
+   */
+  async getApplicationConfiguration(): Promise<
+    // deno-lint-ignore no-explicit-any
+    any
+  > {
+    return await this.#accountManager.getApplicationConfiguration();
+  }
+
+  /**
    * Get app support. User-only.
    *
    * @method ac
@@ -1826,6 +1594,24 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async getAuthorizationSessions(): Promise<AuthorizationSession[]> {
     return await this.#accountManager.getAuthorizationSessions();
+  }
+
+  /**
+   * Get the current bio privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getBioPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getBioPrivacy();
+  }
+
+  /**
+   * Get the current birthday privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getBirthdayPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getBirthdayPrivacy();
   }
 
   /**
@@ -1876,6 +1662,51 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Get the current find by phone number privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getFindByPhoneNumberPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getFindByPhoneNumberPrivacy();
+  }
+
+  /**
+   * Get the current forwards privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getForwardsPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getForwardsPrivacy();
+  }
+
+  /**
+   * Get the current gifts privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getGiftsPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getGiftsPrivacy();
+  }
+
+  /**
+   * Get the current invitation privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getInvitationPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getInvitationPrivacy();
+  }
+
+  /**
+   * Get the current last seen privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getLastSeenPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getLastSeenPrivacy();
+  }
+
+  /**
    * Get information on the currently authorized user.
    *
    * @method ac
@@ -1904,6 +1735,60 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Get the current paid message exception privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getPaidMessageExceptionPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getPaidMessageExceptionPrivacy();
+  }
+
+  /**
+   * Get the user account password's hint.
+   *
+   * @method ac
+   */
+  async getPasswordHint(): Promise<string | null> {
+    return await this.#accountManager.getPasswordHint();
+  }
+
+  /**
+   * Get the current peer-to-peer call privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getPeerToPeerCallPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getPeerToPeerCallPrivacy();
+  }
+
+  /**
+   * Get the current phone call privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getPhoneCallPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getPhoneCallPrivacy();
+  }
+
+  /**
+   * Get the current phone number privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getPhoneNumberPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getPhoneNumberPrivacy();
+  }
+
+  /**
+   * Get the current profile photo privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getProfilePhotoPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getProfilePhotoPrivacy();
+  }
+
+  /**
    * Get the profile photos of a user.
    *
    * @method ac
@@ -1923,12 +1808,30 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Get the current saved music privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getSavedMusicPrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getSavedMusicPrivacy();
+  }
+
+  /**
    * Get timezones. User-only.
    *
    * @method ac
    */
   async getTimezones(): Promise<Timezone[]> {
     return await this.#accountManager.getTimezones();
+  }
+
+  /**
+   * Get the current voice message privacy setting. User-only.
+   *
+   * @method ac
+   */
+  async getVoiceMessagePrivacy(): Promise<PrivacyRule[]> {
+    return await this.#accountManager.getVoiceMessagePrivacy();
   }
 
   /**
@@ -2092,12 +1995,32 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Set bio privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setBioPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#accountManager.setBioPrivacy(rules);
+  }
+
+  /**
    * Set the birthday of the current user. User-only.
    *
    * @method ac
    */
   async setBirthday(params?: SetBirthdayParams): Promise<void> {
     await this.#accountManager.setBirthday(params);
+  }
+
+  /**
+   * Set birthday privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setBirthdayPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#accountManager.setBirthdayPrivacy(rules);
   }
 
   /**
@@ -2132,6 +2055,46 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Set find by phone number privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setFindByPhoneNumberPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#accountManager.setFindByPhoneNumberPrivacy(rules);
+  }
+
+  /**
+   * Set forwards privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setForwardsPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#accountManager.setForwardsPrivacy(rules);
+  }
+
+  /**
+   * Set gifts privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setGiftsPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#accountManager.setGiftsPrivacy(rules);
+  }
+
+  /**
+   * Set invitation privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setInvitationPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#accountManager.setInvitationPrivacy(rules);
+  }
+
+  /**
    * Set the current account's online status. User-only.
    *
    * @method ac
@@ -2139,6 +2102,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async setIsOnline(isOnline: boolean): Promise<void> {
     await this.#accountManager.setIsOnline(isOnline);
+  }
+
+  /**
+   * Set last seen privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setLastSeenPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#accountManager.setLastSeenPrivacy(rules);
   }
 
   /**
@@ -2161,12 +2134,52 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Set paid message exception privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setPaidMessageExceptionPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#accountManager.setPaidMessageExceptionPrivacy(rules);
+  }
+
+  /**
+   * Set peer-to-peer call privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setPeerToPeerCallPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#accountManager.setPeerToPeerCallPrivacy(rules);
+  }
+
+  /**
    * Set the personal channel of the current user. User-only.
    *
    * @method ac
    */
   async setPersonalChannel(params?: SetPersonalChannelParams): Promise<void> {
     await this.#accountManager.setPersonalChannel(params);
+  }
+
+  /**
+   * Set phone call privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setPhoneCallPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#accountManager.setPhoneCallPrivacy(rules);
+  }
+
+  /**
+   * Set phone number privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setPhoneNumberPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#accountManager.setPhoneNumberPrivacy(rules);
   }
 
   /**
@@ -2177,6 +2190,26 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async setProfileColor(color: number, params?: SetProfileColorParams): Promise<void> {
     await this.#accountManager.setProfileColor(color, params);
+  }
+
+  /**
+   * Set profile photo privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setProfilePhotoPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#accountManager.setProfilePhotoPrivacy(rules);
+  }
+
+  /**
+   * Set saved music privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setSavedMusicPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#accountManager.setSavedMusicPrivacy(rules);
   }
 
   /**
@@ -2198,6 +2231,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async setUsername(username: string): Promise<void> {
     await this.#accountManager.setUsername(username);
+  }
+
+  /**
+   * Set voice message privacy setting. User-only.
+   *
+   * @param rules The rules to set.
+   * @method ac
+   */
+  async setVoiceMessagePrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#accountManager.setVoiceMessagePrivacy(rules);
   }
 
   /**
