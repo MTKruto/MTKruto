@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { PasswordHashInvalid, PhoneCodeInvalid, SessionPasswordNeeded } from "../3_errors.ts";
-import { type AppSupport, type AuthorizationSession, type Birthday, birthdayToTlObject, type BotTokenCheckResult, type ChatP, type CodeCheckResult, type ConnectedWebsite, constructAppSupport, constructAuthorizationSession, constructConnectedWebsite, constructCountry, constructEmojiStatus, constructInactiveChat, constructPrivacyRule, constructProfilePhotoList, constructTimezone, constructUser, constructUser2, type Country, type EmojiStatus, type FileSource, type ID, type InactiveChat, type InputEmojiStatus, type PasswordCheckResult, type ProfilePhotoList, type Timezone, type Update, type User, workingHoursToTlObject } from "../3_types.ts";
+import { type AppSupport, type AuthorizationSession, type Birthday, birthdayToTlObject, type BotTokenCheckResult, type ChatP, type CodeCheckResult, type ConnectedWebsite, constructAppSupport, constructAuthorizationSession, constructConnectedWebsite, constructCountry, constructEmojiStatus, constructInactiveChat, constructPrivacyRule, constructProfilePhotoList, constructTimezone, constructUser, constructUser2, type Country, type EmojiStatus, type FileSource, type ID, type InactiveChat, type InputEmojiStatus, type PasswordCheckResult, type PrivacyRule, type ProfilePhotoList, type Timezone, type Update, type User, workingHoursToTlObject } from "../3_types.ts";
 import type { AddBotToAttachmentsMenuParams, AllowUnpaidMessagesFromUserParams, CheckUsernameParams, DeleteAccountParams, DisallowUnpaidMessagesFromUserParams, GetProfilePhotosParams, RemoveProfilePhotoParams, ResolveUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
@@ -664,59 +664,59 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     const result = await this.#c.invoke({ _: "account.getPrivacy", key: { _: key } });
     return result.rules.map((v) => constructPrivacyRule(v, this.#c.getPeer));
   }
-  async getPhoneNumberPrivacy() {
+  async getPhoneNumberPrivacy(): Promise<PrivacyRule[]> {
     this.#c.storage.assertUser("getPhoneNumberPrivacy");
     return await this.#getPrivacy("inputPrivacyKeyPhoneNumber");
   }
-  async getBioPrivacy() {
+  async getBioPrivacy(): Promise<PrivacyRule[]> {
     this.#c.storage.assertUser("getBioPrivacy");
     return await this.#getPrivacy("inputPrivacyKeyAbout");
   }
-  async getBirthdayPrivacy() {
+  async getBirthdayPrivacy(): Promise<PrivacyRule[]> {
     this.#c.storage.assertUser("getBirthdayPrivacy");
     return await this.#getPrivacy("inputPrivacyKeyBirthday");
   }
-  async getProfilePhotoPrivacy() {
+  async getProfilePhotoPrivacy(): Promise<PrivacyRule[]> {
     this.#c.storage.assertUser("getProfilePhotoPrivacy");
     return await this.#getPrivacy("inputPrivacyKeyProfilePhoto");
   }
-  async getForwardsPrivacy() {
+  async getForwardsPrivacy(): Promise<PrivacyRule[]> {
     this.#c.storage.assertUser("getForwardsPrivacy");
     return await this.#getPrivacy("inputPrivacyKeyForwards");
   }
-  async getInvitationPrivacy() {
+  async getInvitationPrivacy(): Promise<PrivacyRule[]> {
     this.#c.storage.assertUser("getInvitationPrivacy");
     return await this.#getPrivacy("inputPrivacyKeyChatInvite");
   }
-  async getFindByPhoneNumberPrivacy() {
+  async getFindByPhoneNumberPrivacy(): Promise<PrivacyRule[]> {
     this.#c.storage.assertUser("getFindByPhoneNumberPrivacy");
     return await this.#getPrivacy("inputPrivacyKeyAddedByPhone");
   }
-  async getVoiceMessagePrivacy() {
+  async getVoiceMessagePrivacy(): Promise<PrivacyRule[]> {
     this.#c.storage.assertUser("getVoiceMessagePrivacy");
     return await this.#getPrivacy("inputPrivacyKeyVoiceMessages");
   }
-  async getPaidMessageExceptionPrivacy() {
+  async getPaidMessageExceptionPrivacy(): Promise<PrivacyRule[]> {
     this.#c.storage.assertUser("getPaidMessageExceptionPrivacy");
     return await this.#getPrivacy("inputPrivacyKeyNoPaidMessages");
   }
-  async getPeerToPeerCallPrivacy() {
+  async getPeerToPeerCallPrivacy(): Promise<PrivacyRule[]> {
     this.#c.storage.assertUser("getPeerToPeerCallPrivacy");
     return await this.#getPrivacy("inputPrivacyKeyPhoneP2P");
   }
-  async getGiftsPrivacy() {
+  async getGiftsPrivacy(): Promise<PrivacyRule[]> {
     this.#c.storage.assertUser("getGiftsPrivacy");
     return await this.#getPrivacy("inputPrivacyKeyStarGiftsAutoSave");
   }
-  async getSavedMusicPrivacy() {
+  async getSavedMusicPrivacy(): Promise<PrivacyRule[]> {
     this.#c.storage.assertUser("getSavedMusicPrivacy");
     return await this.#getPrivacy("inputPrivacyKeySavedMusic");
   }
-  async getPhoneCallPrivacy() {
+  async getPhoneCallPrivacy(): Promise<PrivacyRule[]> {
     this.#c.storage.assertUser("getPhoneCallPrivacy");
     return await this.#getPrivacy("inputPrivacyKeyPhoneCall");
   }
-  async getLastSeenPrivacy() {
+  async getLastSeenPrivacy(): Promise<PrivacyRule[]> {
     this.#c.storage.assertUser("getLastSeenPrivacy");
     return await this.#getPrivacy("inputPrivacyKeyStatusTimestamp");
   }
