@@ -25,7 +25,7 @@ import { type Storage, StorageMemory } from "../2_storage.ts";
 import { Api, Mtproto } from "../2_tl.ts";
 import { type DC, getDcId, type TransportProvider } from "../3_transport.ts";
 import { type AlbumStoryList, type Animation, type AppSupport, type AuthorizationSession, type AvailableReactions, type Birthday, type BlockedUserList, type BotAccessSettings, type BotCommand, type BotTokenCheckResult, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatActionType, type ChatJoinResult, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type CodeCheckResult, type ConnectedWebsite, type ConnectionState, constructChatP, constructUser2, type Country, type EmojiStatus, type FailedInvitation, type FileSource, type Gift, type GiftCollection, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputChecklistItem, type InputEmojiStatus, type InputGift, type InputMedia, type InputPollOption, type InputPrivacyRule, type InputRichText, type InputSticker, type InputStoryContent, type InviteLink, type JoinRequest, type LeftChannelList, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageCounters, type MessageDice, type MessageDocument, type MessageInvoice, type MessageList, type MessageLivePhoto, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageRichText, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageViewer, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type ParseMode, type PasswordCheckResult, type Poll, type PollVoterList, type PremiumSubscriptionDuration, type PriceTag, type PrivacyRule, type PrivacySettingKey, type ProfilePhotoList, type Reaction, type RecentActionsEntry, type ReportReason, type ResolvedInviteLink, type RichText, type SavedChats, type SecretChat, type SlowModeDuration, type StarAmount, type StarTransactionList, type Sticker, type StickerSet, type StickerSetP, type Story, type StoryAlbum, type StoryReportResult, type SummarizedText, type TextToTranslate, type Timezone, type Topic, type TopicList, type TopicListItem, type TranslatedText, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
-import { APP_VERSION, DEVICE_MODEL, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, PHONE_NUMBER_TTL, type PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
+import { APP_VERSION, DEVICE_MODEL, DOWNLOAD_MAX_CHUNK_SIZE, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, PHONE_NUMBER_TTL, type PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, SessionRevoked } from "../4_errors.ts";
 import { AbortableLoop } from "./0_abortable_loop.ts";
 import type { AddBotToAttachmentsMenuParams, AddChatMemberParams, AddContactParams, AddReactionParams, AddStickerToStickerSetParams, AllowUnpaidMessagesFromUserParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, BoostChatParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStickerSetParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteAccountParams, DeleteMessageParams, DeleteMessagesParams, DisallowUnpaidMessagesFromUserParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageRichTextParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, EndSecretChatParams, EndTakeoutSessionParams, ForwardMessagesParams, GetAdministeredChatsParams, GetBlockedUsersParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLeftChannelsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetPollVotersParams, GetProfilePhotosParams, GetRecentActionsParams, GetSavedChatsParams, GetSavedMessagesParams, GetStarTransactionsParams, GetTopicsParams, GetTranslationsParams, GiftPremiumSubscriptionParams, InvokeParams, JoinVideoChatParams, MarkAllMentionsAsReadParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, RemoveProfilePhotoParams, ReplaceStickerInStickerSetParams, ReportChatParams, ReportStoryParams, ResolveUsernameParams, SaveDraftParams, SaveRichTextDraftParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLivePhotoParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendRichTextParams, SendSecretAnimationParams, SendSecretAudioParams, SendSecretContactParams, SendSecretDocumentParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretPhotoParams, SendSecretStickerParams, SendSecretVenueParams, SendSecretVideoNoteParams, SendSecretVideoParams, SendSecretVoiceParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetContactNoteParams, SetEmojiStatusParams, SetLocationParams, SetManagedBotAccessSettingsParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetWorkingHoursParams, SignInParams, StartBotParams, StartTakeoutSessionParams, StartVideoChatParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
@@ -3279,10 +3279,43 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @cache file
    */
   async downloadChunk(fileId: string, params?: DownloadParams): Promise<Uint8Array> {
+    const chunkSize = params?.chunkSize ?? DOWNLOAD_MAX_CHUNK_SIZE;
+    params?.signal?.throwIfAborted();
     const controller = new AbortController();
-    for await (const chunk of this.#fileManager.download(fileId, { ...params, signal: controller.signal })) {
+    const onAbort = () => controller.abort();
+    params?.signal?.addEventListener("abort", onAbort);
+    const chunks = new Array<Uint8Array>();
+    let length = 0;
+    try {
+      for await (const chunk of this.#fileManager.download(fileId, { ...params, signal: controller.signal })) {
+        chunks.push(chunk);
+        length += chunk.byteLength;
+        if (length < chunkSize) {
+          continue;
+        }
+        break;
+      }
+    } finally {
       controller.abort();
-      return chunk;
+      params?.signal?.removeEventListener("abort", onAbort);
+    }
+
+    if (chunks.length) {
+      const size = Math.min(length, chunkSize);
+      if (chunks.length === 1 && chunks[0].byteLength === size) {
+        return chunks[0];
+      }
+      const result = new Uint8Array(size);
+      let offset = 0;
+      for (const chunk of chunks) {
+        const bytes = chunk.subarray(0, size - offset);
+        result.set(bytes, offset);
+        offset += bytes.byteLength;
+        if (offset >= size) {
+          break;
+        }
+      }
+      return result;
     }
 
     unreachable();
