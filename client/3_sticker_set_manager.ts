@@ -21,7 +21,7 @@
 import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { constructStickerSet, constructStickerSetP, deserializeFileId, type FileSource, type InputSticker } from "../3_types.ts";
+import { constructStickerSet, constructStickerSetP, deserializeFileId, type FileSource, type InputSticker, type StickerSet, type StickerSetP } from "../3_types.ts";
 import type { _UploadCommon, AddStickerToStickerSetParams, CreateStickerSetParams, ReplaceStickerInStickerSetParams, SetStickerSetThumbnailParams } from "./0_params.ts";
 import { checkStickerName } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
@@ -93,7 +93,7 @@ export class StickerSetManager {
     };
   }
 
-  async createStickerSet(name: string, slug: string, stickers: InputSticker[], params?: CreateStickerSetParams) {
+  async createStickerSet(name: string, slug: string, stickers: InputSticker[], params?: CreateStickerSetParams): Promise<StickerSet> {
     slug = StickerSetManager.#getSlug(slug);
     if (this.#c.storage.isBot && !params?.userId) {
       throw new InputError("The parameter userId is required.");
@@ -128,12 +128,12 @@ export class StickerSetManager {
     return constructStickerSet(result);
   }
 
-  async checkStickerSetSlug(slug: string) {
+  async checkStickerSetSlug(slug: string): Promise<boolean> {
     slug = StickerSetManager.#getSlug(slug);
     return await this.#c.invoke({ _: "stickers.checkShortName", short_name: slug });
   }
 
-  async suggestStickerSetSlug(name: string) {
+  async suggestStickerSetSlug(name: string): Promise<string> {
     const result = await this.#c.invoke({ _: "stickers.suggestShortName", title: name });
     return result.short_name;
   }
@@ -225,13 +225,13 @@ export class StickerSetManager {
     await this.#c.invoke({ _: "stickers.setStickerSetThumb", stickerset: { _: "inputStickerSetShortName", short_name: slug }, thumb_document_id: BigInt(customEmojiId) });
   }
 
-  async getStickerSet(slug: string) {
+  async getStickerSet(slug: string): Promise<StickerSet> {
     slug = StickerSetManager.#getSlug(slug);
     const result = await this.#c.invoke({ _: "messages.getStickerSet", hash: 0, stickerset: { _: "inputStickerSetShortName", short_name: slug } });
     return constructStickerSet(result);
   }
 
-  async getDiceStickerSet(emoji: string) {
+  async getDiceStickerSet(emoji: string): Promise<StickerSet> {
     const result = await this.#c.invoke({ _: "messages.getStickerSet", hash: 0, stickerset: { _: "inputStickerSetDice", emoticon: emoji } });
     return constructStickerSet(result);
   }
@@ -266,7 +266,7 @@ export class StickerSetManager {
     await this.#installStickerSet(slug, true);
   }
 
-  async getAddedStickerSets() {
+  async getAddedStickerSets(): Promise<StickerSetP[]> {
     const result = Api.as("messages.allStickers", await this.#c.invoke({ _: "messages.getAllStickers", hash: 0n }));
     return result.sets.map(constructStickerSetP);
   }

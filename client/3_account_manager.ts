@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { PasswordHashInvalid, PhoneCodeInvalid, SessionPasswordNeeded } from "../3_errors.ts";
-import { type Birthday, birthdayToTlObject, type BotTokenCheckResult, type CodeCheckResult, constructAppSupport, constructAuthorizationSession, constructConnectedWebsite, constructCountry, constructEmojiStatus, constructInactiveChat, constructProfilePhotoList, constructTimezone, constructUser, constructUser2, type FileSource, type ID, type InputEmojiStatus, type PasswordCheckResult, type Update, workingHoursToTlObject } from "../3_types.ts";
+import { type AppSupport, type AuthorizationSession, type Birthday, birthdayToTlObject, type BotTokenCheckResult, type ChatP, type CodeCheckResult, type ConnectedWebsite, constructAppSupport, constructAuthorizationSession, constructConnectedWebsite, constructCountry, constructEmojiStatus, constructInactiveChat, constructProfilePhotoList, constructTimezone, constructUser, constructUser2, type Country, type EmojiStatus, type FileSource, type ID, type InactiveChat, type InputEmojiStatus, type PasswordCheckResult, type ProfilePhotoList, type Timezone, type Update, type User, workingHoursToTlObject } from "../3_types.ts";
 import type { AddBotToAttachmentsMenuParams, AllowUnpaidMessagesFromUserParams, CheckUsernameParams, DeleteAccountParams, DisallowUnpaidMessagesFromUserParams, GetProfilePhotosParams, RemoveProfilePhotoParams, ResolveUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
@@ -72,7 +72,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     await this.#toggleUsername(id, username, false);
   }
 
-  async checkUsername(username: string, params?: CheckUsernameParams) {
+  async checkUsername(username: string, params?: CheckUsernameParams): Promise<boolean> {
     this.#c.storage.assertUser("checkUsername");
     const channel = params?.chatId ? await this.#c.getInputChannel(params.chatId) : undefined;
     if (channel) {
@@ -92,7 +92,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     await this.#c.invoke({ _: "account.updateUsername", username: "" });
   }
 
-  async reorderUsernames(id: ID, order: string[]) {
+  async reorderUsernames(id: ID, order: string[]): Promise<boolean> {
     this.#c.storage.assertUser("reorderUsernames");
     const peer = await this.#c.getInputPeer(id);
     if (Api.is("inputPeerSelf", peer)) {
@@ -106,7 +106,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     }
   }
 
-  async hideUsernames(id: ID) {
+  async hideUsernames(id: ID): Promise<boolean> {
     this.#c.storage.assertUser("hideUsernames");
     const peer = await this.#c.getInputPeer(id);
     if (canBeInputChannel(peer)) {
@@ -116,7 +116,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     }
   }
 
-  async getInactiveChats() {
+  async getInactiveChats(): Promise<InactiveChat[]> {
     this.#c.storage.assertUser("getInactiveChats");
     const { chats, dates } = await this.#c.invoke({ _: "channels.getInactiveChannels" });
     return chats.map((v, i) => constructInactiveChat(v, dates[i]));
@@ -428,7 +428,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     }
   }
 
-  async resolveUsername(username: string, params?: ResolveUsernameParams) {
+  async resolveUsername(username: string, params?: ResolveUsernameParams): Promise<ChatP> {
     const result = await this.#c.invoke({ _: "contacts.resolveUsername", username, referer: params?.referrer });
     const chatP = this.#c.getPeer(result.peer)?.[0];
     if (!chatP) {
@@ -438,7 +438,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     return chatP;
   }
 
-  async resolvePhoneNumber(phoneNumber: string) {
+  async resolvePhoneNumber(phoneNumber: string): Promise<User> {
     this.#c.storage.assertUser("resolvePhoneNumber");
     const result = await this.#c.invoke({ _: "contacts.resolvePhone", phone: phoneNumber });
     const chatP = this.#c.getPeer(result.peer)?.[0];
@@ -478,31 +478,31 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     await this.#toggleBotAddedToAttachmentsMenu(botId, false, false);
   }
 
-  async getAppSupport() {
+  async getAppSupport(): Promise<AppSupport> {
     this.#c.storage.assertUser("getAppSupport");
     const result = await this.#c.invoke({ _: "help.getSupport" });
     return constructAppSupport(result);
   }
 
-  async getAppSupportName() {
+  async getAppSupportName(): Promise<string> {
     this.#c.storage.assertUser("getAppSupportName");
     const result = await this.#c.invoke({ _: "help.getSupportName" });
     return result.name;
   }
 
-  async getOwnedBots() {
+  async getOwnedBots(): Promise<User[]> {
     this.#c.storage.assertUser("getOwnedBots");
     const result = await this.#c.invoke({ _: "bots.getAdminedBots" });
     return result.map((v) => Api.as("user", v)).map(constructUser);
   }
 
-  async getTimezones() {
+  async getTimezones(): Promise<Timezone[]> {
     this.#c.storage.assertUser("getTimezones");
     const result = Api.as("help.timezonesList", await this.#c.invoke({ _: "help.getTimezonesList", hash: 0 }));
     return result.timezones.map(constructTimezone);
   }
 
-  async getCountries(languageCode: string) {
+  async getCountries(languageCode: string): Promise<Country[]> {
     this.#c.storage.assertUser("getCountries");
     const result = Api.as("help.countriesList", await this.#c.invoke({ _: "help.getCountriesList", hash: 0, lang_code: languageCode }));
     return result.countries.map(constructCountry);
@@ -537,7 +537,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     await this.#c.invoke({ _: "photos.updateProfilePhoto", id: { _: "inputPhotoEmpty" }, bot });
   }
 
-  async getProfilePhotos(userId: ID, params?: GetProfilePhotosParams) {
+  async getProfilePhotos(userId: ID, params?: GetProfilePhotosParams): Promise<ProfilePhotoList> {
     const user_id = await this.#c.getInputUser(userId);
     const offset = params?.offset ?? 0;
     const limit = getLimit(params?.limit);
@@ -557,7 +557,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     await this.#c.invoke({ _: "account.deleteAccount", reason, password });
   }
 
-  async getAuthorizationSessions() {
+  async getAuthorizationSessions(): Promise<AuthorizationSession[]> {
     this.#c.storage.assertUser("getAuthorizationSessions");
     const result = await this.#c.invoke({ _: "account.getAuthorizations" });
     return result.authorizations.map(constructAuthorizationSession);
@@ -573,7 +573,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     await this.#c.invoke({ _: "auth.resetAuthorizations" });
   }
 
-  async getAccountTtl() {
+  async getAccountTtl(): Promise<number> {
     this.#c.storage.assertUser("getAccountTtl");
     const result = await this.#c.invoke({ _: "account.getAccountTTL" });
     return result.days;
@@ -585,7 +585,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     await this.#c.invoke({ _: "account.setAccountTTL", ttl: { _: "accountDaysTTL", days } });
   }
 
-  async getConnectedWebsites() {
+  async getConnectedWebsites(): Promise<ConnectedWebsite[]> {
     this.#c.storage.assertUser("getConnectedWebsites");
     const result = await this.#c.invoke({ _: "account.getWebAuthorizations" });
     return result.authorizations.map((v) => constructConnectedWebsite(v, this.#c.getPeer));
@@ -602,7 +602,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     await this.#c.invoke({ _: "account.resetWebAuthorizations" });
   }
 
-  async getCountryCode() {
+  async getCountryCode(): Promise<string> {
     this.#c.storage.assertUser("getCountryCode");
     const result = await this.#c.invoke({ _: "help.getNearestDc" });
     return result.country;
@@ -613,7 +613,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     await this.#c.invoke({ _: "account.clearRecentEmojiStatuses" });
   }
 
-  async getRecentEmojiStatuses() {
+  async getRecentEmojiStatuses(): Promise<EmojiStatus[]> {
     this.#c.storage.assertUser("getRecentEmojiStatuses");
     const result = Api.as("account.emojiStatuses", await this.#c.invoke({ _: "account.getRecentEmojiStatuses", hash: 0n }));
     return result.statuses.map(constructEmojiStatus);
@@ -638,7 +638,8 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     }
   }
 
-  async getApplicationConfiguration() {
+  // deno-lint-ignore no-explicit-any
+  async getApplicationConfiguration(): Promise<any> {
     const result = Api.as("help.appConfig", await this.#c.invoke({ _: "help.getAppConfig", hash: 0 }));
     return AccountManager.#parseJsonValue(result.config);
   }

@@ -19,7 +19,7 @@
  */
 
 import { Api } from "../2_tl.ts";
-import { constructLinkPreview, type Update } from "../3_types.ts";
+import { constructLinkPreview, type LinkPreview, type Update } from "../3_types.ts";
 import type { GetLinkPreviewParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import type { C as C_ } from "./1_types.ts";
@@ -40,7 +40,7 @@ export class LinkPreviewManager implements UpdateProcessor<LinkPreviewManagerUpd
     this.#c = c;
   }
 
-  async getLinkPreview(text: string, params?: GetLinkPreviewParams) {
+  async getLinkPreview(text: string, params?: GetLinkPreviewParams): Promise<LinkPreview | null> {
     const [text_, entities_] = await this.#c.messageManager.parseText(text, params);
 
     const result = await this.#c.invoke({

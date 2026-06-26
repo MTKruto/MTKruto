@@ -19,7 +19,7 @@
  */
 
 import { Api } from "../2_tl.ts";
-import { constructAlbumStoryList, constructStoryAlbum, type ID } from "../3_types.ts";
+import { type AlbumStoryList, constructAlbumStoryList, constructStoryAlbum, type ID, type StoryAlbum } from "../3_types.ts";
 import type { GetStoriesInAlbumParams } from "./0_params.ts";
 import { getLimit } from "./0_utilities.ts";
 import type { C } from "./1_types.ts";
@@ -31,7 +31,7 @@ export class StoryAlbumManager {
     this.#c = c;
   }
 
-  async createStoryAlbum(chatId: ID, name: string, storyIds: number[]) {
+  async createStoryAlbum(chatId: ID, name: string, storyIds: number[]): Promise<StoryAlbum> {
     this.#c.storage.assertUser("createStoryAlbum");
     const peer = await this.#c.getInputPeer(chatId);
     const title = name;
@@ -40,7 +40,7 @@ export class StoryAlbumManager {
     return constructStoryAlbum(result);
   }
 
-  async setStoryAlbumName(chatId: ID, albumId: number, name: string) {
+  async setStoryAlbumName(chatId: ID, albumId: number, name: string): Promise<StoryAlbum> {
     this.#c.storage.assertUser("setStoryAlbumName");
     const peer = await this.#c.getInputPeer(chatId);
     const album_id = albumId;
@@ -57,12 +57,12 @@ export class StoryAlbumManager {
     return constructStoryAlbum(result);
   }
 
-  async addStoriesToAlbum(chatId: ID, albumId: number, storyIds: number[]) {
+  async addStoriesToAlbum(chatId: ID, albumId: number, storyIds: number[]): Promise<StoryAlbum> {
     this.#c.storage.assertUser("addStoriesToAlbum");
     return await this.#addStoriesToAlbum(chatId, albumId, storyIds);
   }
 
-  async addStoryToAlbum(chatId: ID, albumId: number, storyId: number) {
+  async addStoryToAlbum(chatId: ID, albumId: number, storyId: number): Promise<StoryAlbum> {
     this.#c.storage.assertUser("addStoryToAlbum");
     return await this.#addStoriesToAlbum(chatId, albumId, [storyId]);
   }
@@ -75,17 +75,17 @@ export class StoryAlbumManager {
     return constructStoryAlbum(result);
   }
 
-  async removeStoriesFromAlbum(chatId: ID, albumId: number, storyIds: number[]) {
+  async removeStoriesFromAlbum(chatId: ID, albumId: number, storyIds: number[]): Promise<StoryAlbum> {
     this.#c.storage.assertUser("removeStoriesFromAlbum");
     return await this.#removeStoriesFromAlbum(chatId, albumId, storyIds);
   }
 
-  async removeStoryFromAlbum(chatId: ID, albumId: number, storyId: number) {
+  async removeStoryFromAlbum(chatId: ID, albumId: number, storyId: number): Promise<StoryAlbum> {
     this.#c.storage.assertUser("removeStoryFromAlbum");
     return await this.#removeStoriesFromAlbum(chatId, albumId, [storyId]);
   }
 
-  async reorderStoriesInAlbum(chatId: ID, albumId: number, storyIds: number[]) {
+  async reorderStoriesInAlbum(chatId: ID, albumId: number, storyIds: number[]): Promise<StoryAlbum> {
     this.#c.storage.assertUser("reorderStoriesInAlbum");
     const peer = await this.#c.getInputPeer(chatId);
     const album_id = albumId;
@@ -94,7 +94,7 @@ export class StoryAlbumManager {
     return constructStoryAlbum(result);
   }
 
-  async getStoryAlbums(chatId: ID) {
+  async getStoryAlbums(chatId: ID): Promise<StoryAlbum[]> {
     this.#c.storage.assertUser("getStoryAlbums");
     const peer = await this.#c.getInputPeer(chatId);
     const hash = 0n;
@@ -102,7 +102,7 @@ export class StoryAlbumManager {
     return result.albums.map(constructStoryAlbum);
   }
 
-  async getStoriesInAlbum(chatId: ID, albumId: number, params?: GetStoriesInAlbumParams) {
+  async getStoriesInAlbum(chatId: ID, albumId: number, params?: GetStoriesInAlbumParams): Promise<AlbumStoryList> {
     this.#c.storage.assertUser("getStoriesInAlbum");
     const peer = await this.#c.getInputPeer(chatId);
     const album_id = albumId;

@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPSupergroup, constructChat, constructChatListItem, constructChatMember, constructChatP, constructChatSettings, type ID } from "../3_types.ts";
+import { type Chat, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPSupergroup, type ChatSettings, constructChat, constructChatListItem, constructChatMember, constructChatP, constructChatSettings, type ID } from "../3_types.ts";
 import type { CreateChannelParams, CreateGroupParams, CreateSupergroupParams, GetChatMembersParams, GetCommonChatsParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, canBeInputUser, getChatListId, getLimit, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -99,7 +99,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
     return Api.isOneOf(chatListManagerUpdates, update);
   }
 
-  async handleUpdate(update: ChatListManagerUpdate) {
+  async handleUpdate(update: ChatListManagerUpdate): Promise<null> {
     if (Api.is("updateChannel", update)) {
       await this.#handleUpdateChannel(update);
     } else if (Api.is("updateChat", update)) {
@@ -133,7 +133,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
     return fullChat;
   }
 
-  async getChat(chatId: ID) {
+  async getChat(chatId: ID): Promise<Chat> {
     const fullChat = await this.#getFullChat(chatId);
     if (fullChat === null) {
       throw new InputError("Chat not found.");
@@ -141,7 +141,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
     return constructChat(fullChat, this.#c.getPeer);
   }
 
-  async getChatAdministrators(chatId: ID) {
+  async getChatAdministrators(chatId: ID): Promise<ChatMember[]> {
     const peer = await this.#c.getInputPeer(chatId);
     if (canBeInputChannel(peer)) {
       const channel: Api.inputChannel | Api.inputChannelFromMessage = toInputChannel(peer);
@@ -177,7 +177,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
     }
   }
 
-  async getChatMember(chatId: ID, userId: ID) {
+  async getChatMember(chatId: ID, userId: ID): Promise<ChatMember> {
     const peer = await this.#c.getInputPeer(chatId);
 
     if (canBeInputChannel(peer)) {
@@ -202,7 +202,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
     }
   }
 
-  async getChatMembers(chatId: ID, params?: GetChatMembersParams) {
+  async getChatMembers(chatId: ID, params?: GetChatMembersParams): Promise<ChatMember[]> {
     const peer = await this.#c.getInputPeer(chatId);
     if (canBeInputChannel(peer)) {
       const channel: Api.inputChannel | Api.inputChannelFromMessage = toInputChannel(peer);
@@ -246,7 +246,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
     return title;
   }
 
-  async createGroup(title: string, params?: CreateGroupParams) {
+  async createGroup(title: string, params?: CreateGroupParams): Promise<ChatPGroup> {
     this.#c.storage.assertUser("createGroup");
     title = this.#checkChatTitle(title);
     const { updates } = await this.#c.invoke({
@@ -286,12 +286,12 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
     return constructChatP(chat);
   }
 
-  async createSupergroup(title: string, params?: CreateSupergroupParams) {
+  async createSupergroup(title: string, params?: CreateSupergroupParams): Promise<ChatPSupergroup> {
     this.#c.storage.assertUser("createSupergroup");
     return (await this.#createChannel("supergroup", title, params)) as ChatPSupergroup;
   }
 
-  async createChannel(title: string, params?: CreateChannelParams) {
+  async createChannel(title: string, params?: CreateChannelParams): Promise<ChatPChannel> {
     this.#c.storage.assertUser("createChannel");
     return (await this.#createChannel("channel", title, params)) as ChatPChannel;
   }
@@ -329,7 +329,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
     await this.unarchiveChats([chatId]);
   }
 
-  async getCommonChats(userId: ID, params?: GetCommonChatsParams) {
+  async getCommonChats(userId: ID, params?: GetCommonChatsParams): Promise<ChatP[]> {
     this.#c.storage.assertUser("getCommonChats");
     const max_id = params?.fromChatId ? await this.#c.getInputPeerChatId(await this.#c.getInputPeer(params.fromChatId)) : 0;
     if (max_id < 0) {
@@ -347,7 +347,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
     return chats;
   }
 
-  async getChatSettings(chatId: ID) {
+  async getChatSettings(chatId: ID): Promise<ChatSettings> {
     this.#c.storage.assertUser("getChatSettings");
     const peer = await this.#c.getInputPeer(chatId);
     const settings = await this.#c.invoke({ _: "messages.getPeerSettings", peer });

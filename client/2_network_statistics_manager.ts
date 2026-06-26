@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import type { NetworkStatistics } from "../3_types.ts";
 import { drop } from "../utilities/0_misc.ts";
 import { getLogger, type Logger } from "../utilities/1_logger.ts";
 import type { C } from "./1_types.ts";
@@ -31,7 +32,7 @@ export class NetworkStatisticsManager {
     this.#L = getLogger("NetworkStatisticsManager");
   }
 
-  async getNetworkStatistics() {
+  async getNetworkStatistics(): Promise<NetworkStatistics> {
     const [messagesRead, messagesWrite, mediaRead, mediaWrite] = await Promise.all([
       this.#c.storage.get<number>(["netstat_messages_read"]),
       this.#c.storage.get<number>(["netstat_messages_write"]),
@@ -50,7 +51,7 @@ export class NetworkStatisticsManager {
   }
 
   #pendingWrites: Record<string, number> = {};
-  getTransportReadWriteCallback(isMedia: boolean) {
+  getTransportReadWriteCallback(isMedia: boolean): { read: (count: number) => void; write: (count: number) => void } {
     return {
       read: (count: number) => {
         const key = isMedia ? "netstat_media_read" : "netstat_messages_read";

@@ -22,7 +22,7 @@ import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { base64DecodeUrlSafe, getRandomId } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { constructStory, constructStoryReportResult, FileType, type ID, type InputStoryContent, type Story, storyInteractiveAreaToTlObject, storyPrivacyToTlObject, type Update } from "../3_types.ts";
+import { constructStory, constructStoryReportResult, FileType, type ID, type InputStoryContent, type Story, storyInteractiveAreaToTlObject, storyPrivacyToTlObject, type StoryReportResult, type Update } from "../3_types.ts";
 import type { CreateStoryParams, ReportStoryParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { checkArray, checkStoryId, isHttpUrl } from "./0_utilities.ts";
@@ -55,7 +55,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
     unreachable();
   }
 
-  async createStory(chatId: ID, content: InputStoryContent, params?: CreateStoryParams) {
+  async createStory(chatId: ID, content: InputStoryContent, params?: CreateStoryParams): Promise<Story> {
     this.#c.storage.assertUser("createStory");
     let media: Api.InputMedia | null = null;
     const source = content.type === "video" ? content.video : content.type === "photo" ? content.photo : unreachable();
@@ -104,7 +104,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
     return this.#updatesToStory(updates);
   }
 
-  async getStories(chatId: ID, storyIds: number[]) {
+  async getStories(chatId: ID, storyIds: number[]): Promise<Story[]> {
     this.#c.storage.assertUser("getStories");
     checkArray(storyIds, checkStoryId);
     const peer = await this.#c.getInputPeer(chatId);
@@ -116,7 +116,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
     return stories;
   }
 
-  async getStory(chatId: ID, storyId: number) {
+  async getStory(chatId: ID, storyId: number): Promise<Story> {
     this.#c.storage.assertUser("getStory");
     return (await this.getStories(chatId, [storyId]))[0] ?? null;
   }
@@ -182,12 +182,12 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
     return constructStoryReportResult(result);
   }
 
-  async reportStory(chatId: ID, storyId: number, params?: ReportStoryParams) {
+  async reportStory(chatId: ID, storyId: number, params?: ReportStoryParams): Promise<StoryReportResult> {
     this.#c.storage.assertUser("reportStory");
     return await this.#reportStories(chatId, [storyId], params);
   }
 
-  async reportStories(chatId: ID, storyIds: number[], params?: ReportStoryParams) {
+  async reportStories(chatId: ID, storyIds: number[], params?: ReportStoryParams): Promise<StoryReportResult> {
     this.#c.storage.assertUser("reportStories");
     return await this.#reportStories(chatId, storyIds, params);
   }

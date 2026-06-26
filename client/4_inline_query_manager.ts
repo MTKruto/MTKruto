@@ -20,7 +20,7 @@
 
 import { SECOND, unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
-import { constructChosenInlineResult, constructInlineQuery, constructInlineQueryAnswer, type ID, type InlineQueryResult, inlineQueryResultToTlObject, type Update } from "../3_types.ts";
+import { constructChosenInlineResult, constructInlineQuery, constructInlineQueryAnswer, type ID, type InlineQueryAnswer, type InlineQueryResult, inlineQueryResultToTlObject, type Update } from "../3_types.ts";
 import type { AnswerInlineQueryParams, SendInlineQueryParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { checkInlineQueryId } from "./0_utilities.ts";
@@ -63,7 +63,7 @@ export class InlineQueryManager implements UpdateProcessor<InlineQueryManagerUpd
     }
   }
 
-  async sendInlineQuery(botId_: ID, chatId: ID, params?: SendInlineQueryParams) {
+  async sendInlineQuery(botId_: ID, chatId: ID, params?: SendInlineQueryParams): Promise<InlineQueryAnswer> {
     this.#c.storage.assertUser("sendInlineQuery");
     const bot = await this.#c.getInputUser(botId_),
       peer = await this.#c.getInputPeer(chatId),

@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { constructClaimedGifts, constructGift, type ID, type InputGift, inputGiftToTlObject, type PremiumSubscriptionDuration } from "../3_types.ts";
+import { type ClaimedGifts, constructClaimedGifts, constructGift, type Gift, type ID, type InputGift, inputGiftToTlObject, type PremiumSubscriptionDuration } from "../3_types.ts";
 import type { GetClaimedGiftsParams, GiftPremiumSubscriptionParams, SendGiftParams } from "./0_params.ts";
 import { getLimit } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
@@ -38,7 +38,7 @@ export class GiftManager {
     this.#c = c;
   }
 
-  async getGifts() {
+  async getGifts(): Promise<Gift[]> {
     const gifts = await this.#c.invoke({ _: "payments.getStarGifts", hash: 0 });
     if (!(Api.is("payments.starGifts", gifts))) {
       unreachable();
@@ -46,7 +46,7 @@ export class GiftManager {
     return await Promise.all(gifts.gifts.map((v) => constructGift(v, this.#c.getPeer)));
   }
 
-  async getClaimedGifts(chatId: ID, params?: GetClaimedGiftsParams) {
+  async getClaimedGifts(chatId: ID, params?: GetClaimedGiftsParams): Promise<ClaimedGifts> {
     this.#c.storage.assertUser("getClaimedGifts");
     const offset = params?.offset ?? "";
     const limit = getLimit(params?.limit);
@@ -95,7 +95,7 @@ export class GiftManager {
     await this.#c.invoke({ _: "payments.craftStarGift", stargift });
   }
 
-  async getGift(slug: string) {
+  async getGift(slug: string): Promise<Gift> {
     if (slug.length > 100) {
       throw new InputError("Slug too long.");
     }

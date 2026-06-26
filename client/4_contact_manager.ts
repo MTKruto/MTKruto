@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
-import { constructUser, type ID } from "../3_types.ts";
+import { constructUser, type ID, type User } from "../3_types.ts";
 import type { AddContactParams, SetContactNoteParams } from "./0_params.ts";
 import type { C as C_ } from "./1_types.ts";
 import type { MessageManager } from "./3_message_manager.ts";
@@ -57,7 +57,7 @@ export class ContactManager {
     await this.#deleteContacts([userId]);
   }
 
-  async getContacts() {
+  async getContacts(): Promise<User[]> {
     this.#c.storage.assertUser("getContacts");
     const result = await this.#c.invoke({ _: "contacts.getContacts", hash: 0n });
     if (!Api.is("contacts.contacts", result)) {

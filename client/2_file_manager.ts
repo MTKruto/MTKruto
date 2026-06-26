@@ -50,7 +50,7 @@ export class FileManager {
   }
 
   #progressIds = new Set<bigint>();
-  getProgressId() {
+  getProgressId(): Promise<string> {
     let id: bigint;
     do {
       id = getRandomId();
@@ -384,7 +384,8 @@ export class FileManager {
     return { size: params?.fileSize ? params.fileSize : size, name, contents };
   }
 
-  async *downloadInner(location: Api.InputFileLocation, dcId: number, params: DownloadParams | undefined) {
+  // deno-lint-ignore no-explicit-any
+  async *downloadInner(location: Api.InputFileLocation, dcId: number, params: DownloadParams | undefined): AsyncGenerator<Uint8Array<ArrayBufferLike>, void, any> {
     const signal = params?.signal;
     signal?.throwIfAborted();
     const id = "id" in location ? location.id : "photo_id" in location ? location.photo_id : null;
@@ -528,7 +529,8 @@ export class FileManager {
     }
   }
 
-  async *download(fileId: string, params?: DownloadParams) {
+  // deno-lint-ignore no-explicit-any
+  async *download(fileId: string, params?: DownloadParams): AsyncGenerator<Uint8Array<ArrayBufferLike>, void, any> {
     const fileId_ = deserializeFileId(fileId);
     if (fileId_.location.type === "photo") {
       switch (fileId_.type) {
@@ -598,7 +600,7 @@ export class FileManager {
     }
   }
 
-  async getStickerSetName(inputStickerSet: Api.inputStickerSetID, hash = 0) {
+  async getStickerSetName(inputStickerSet: Api.inputStickerSetID, hash = 0): Promise<string | undefined> {
     const maybeStickerSetName = await this.#c.messageStorage.getStickerSetName(inputStickerSet.id, inputStickerSet.access_hash);
     if (maybeStickerSetName !== null && Date.now() - maybeStickerSetName[1].getTime() < STICKER_SET_NAME_TTL) {
       return maybeStickerSetName[0];
@@ -619,7 +621,7 @@ export class FileManager {
   }
 
   static #CUSTOM_EMOJI_TTL = 30 * MINUTE;
-  async getCustomEmojiStickers(id: string | string[]) {
+  async getCustomEmojiStickers(id: string | string[]): Promise<Sticker[]> {
     id = Array.isArray(id) ? id : [id];
     if (!id.length) {
       return [];

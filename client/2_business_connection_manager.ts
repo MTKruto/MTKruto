@@ -19,7 +19,7 @@
  */
 
 import { Api } from "../2_tl.ts";
-import { constructBusinessConnection, type Update } from "../3_types.ts";
+import { type BusinessConnection, constructBusinessConnection, type Update } from "../3_types.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import type { C } from "./1_types.ts";
 
@@ -36,7 +36,7 @@ export class BusinessConnectionManager implements UpdateProcessor<BusinessConnec
     this.#c = c;
   }
 
-  async getBusinessConnection(id: string) {
+  async getBusinessConnection(id: string): Promise<BusinessConnection> {
     const connection_ = await this.#c.messageStorage.getBusinessConnection(id);
     if (!connection_) {
       const connection_ = await this.#c.invoke({ _: "account.getBotBusinessConnection", connection_id: id })

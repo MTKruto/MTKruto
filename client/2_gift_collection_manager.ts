@@ -19,7 +19,7 @@
  */
 
 import { Api } from "../2_tl.ts";
-import { constructGiftCollection, type ID, type InputGift, inputGiftToTlObject } from "../3_types.ts";
+import { constructGiftCollection, type GiftCollection, type ID, type InputGift, inputGiftToTlObject } from "../3_types.ts";
 import type { C } from "./1_types.ts";
 
 export class GiftCollectionManager {
@@ -29,14 +29,14 @@ export class GiftCollectionManager {
     this.#c = c;
   }
 
-  async getGiftCollections(chatId: ID) {
+  async getGiftCollections(chatId: ID): Promise<GiftCollection[]> {
     this.#c.storage.assertUser("getGiftCollections");
     const peer = await this.#c.getInputPeer(chatId);
     const result = Api.as("payments.starGiftCollections", await this.#c.invoke({ _: "payments.getStarGiftCollections", peer, hash: 0n }));
     return result.collections.map((v) => constructGiftCollection(v));
   }
 
-  async createGiftCollection(chatId: ID, name: string, gifts: InputGift[]) {
+  async createGiftCollection(chatId: ID, name: string, gifts: InputGift[]): Promise<GiftCollection> {
     this.#c.storage.assertUser("createGiftCollection");
     const peer = await this.#c.getInputPeer(chatId);
     const title = name;
@@ -45,7 +45,7 @@ export class GiftCollectionManager {
     return constructGiftCollection(result);
   }
 
-  async setGiftCollectionName(chatId: ID, collectionId: number, name: string) {
+  async setGiftCollectionName(chatId: ID, collectionId: number, name: string): Promise<GiftCollection> {
     this.#c.storage.assertUser("setGiftCollectionTitle");
     const peer = await this.#c.getInputPeer(chatId);
     const collection_id = collectionId;
@@ -54,7 +54,7 @@ export class GiftCollectionManager {
     return constructGiftCollection(result);
   }
 
-  async addGiftsToCollection(chatId: ID, collectionId: number, gifts: InputGift[]) {
+  async addGiftsToCollection(chatId: ID, collectionId: number, gifts: InputGift[]): Promise<GiftCollection> {
     this.#c.storage.assertUser("addGiftsToCollection");
     const peer = await this.#c.getInputPeer(chatId);
     const collection_id = collectionId;
@@ -63,7 +63,7 @@ export class GiftCollectionManager {
     return constructGiftCollection(result);
   }
 
-  async removeGiftsFromCollection(chatId: ID, collectionId: number, gifts: InputGift[]) {
+  async removeGiftsFromCollection(chatId: ID, collectionId: number, gifts: InputGift[]): Promise<GiftCollection> {
     this.#c.storage.assertUser("removeGiftsFromCollection");
     const peer = await this.#c.getInputPeer(chatId);
     const collection_id = collectionId;
@@ -72,7 +72,7 @@ export class GiftCollectionManager {
     return constructGiftCollection(result);
   }
 
-  async reorderGiftsInCollection(chatId: ID, collectionId: number, gifts: InputGift[]) {
+  async reorderGiftsInCollection(chatId: ID, collectionId: number, gifts: InputGift[]): Promise<GiftCollection> {
     this.#c.storage.assertUser("reorderGiftsInCollection");
     const peer = await this.#c.getInputPeer(chatId);
     const collection_id = collectionId;

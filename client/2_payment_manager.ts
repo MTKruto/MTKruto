@@ -20,7 +20,7 @@
 
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { constructPreCheckoutQuery, constructStarAmount, constructStarTransactionList, type ID, type Update } from "../3_types.ts";
+import { constructPreCheckoutQuery, constructStarAmount, constructStarTransactionList, type ID, type StarAmount, type StarTransactionList, type Update } from "../3_types.ts";
 import type { AnswerPreCheckoutQueryParams, GetStarTransactionsParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { getLimit } from "./0_utilities.ts";
@@ -69,7 +69,7 @@ export class PaymentManager implements UpdateProcessor<PaymentManagerUpdate> {
     await this.#c.invoke({ _: "payments.refundStarsCharge", user_id: await this.#c.getInputUser(userId), charge_id: telegramPaymentChargeId });
   }
 
-  async getStarBalance(chatId: ID) {
+  async getStarBalance(chatId: ID): Promise<StarAmount> {
     if (this.#c.storage.isBot) {
       const peer = await this.#c.getInputPeer(chatId);
       const result = await this.#c.invoke({ _: "payments.getStarsTransactions", peer, offset: "", limit: 1 });
@@ -81,7 +81,7 @@ export class PaymentManager implements UpdateProcessor<PaymentManagerUpdate> {
     }
   }
 
-  async getTonBalance(chatId: ID) {
+  async getTonBalance(chatId: ID): Promise<number> {
     if (this.#c.storage.isBot) {
       const peer = await this.#c.getInputPeer(chatId);
       const result = await this.#c.invoke({ _: "payments.getStarsTransactions", peer, ton: true, offset: "", limit: 1 });
@@ -93,7 +93,7 @@ export class PaymentManager implements UpdateProcessor<PaymentManagerUpdate> {
     }
   }
 
-  async getStarTransactions(chatId: ID, params?: GetStarTransactionsParams) {
+  async getStarTransactions(chatId: ID, params?: GetStarTransactionsParams): Promise<StarTransactionList> {
     const peer = await this.#c.getInputPeer(chatId);
     const offset = params?.offset ?? "";
     const limit = getLimit(params?.limit);

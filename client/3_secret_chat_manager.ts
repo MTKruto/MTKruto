@@ -22,7 +22,7 @@ import { concat, equals, ige256Decrypt, ige256Encrypt, unreachable, WEEK } from 
 import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, getRandomInt, intFromBytes, intToBytes, type Logger, mod, modExp, sha1, sha256 } from "../1_utilities.ts";
 import { Api, repr, SecretChats, TLReader, TLWriter, X } from "../2_tl.ts";
-import { deserializeFileId, type FileSource, type ID, type ParseMode, type SecretMessageEntity, secretMessageEntityToTlObject, type Sticker, type Update } from "../3_types.ts";
+import { deserializeFileId, type FileSource, type ID, type ParseMode, type SecretChat, type SecretMessageEntity, secretMessageEntityToTlObject, type Sticker, type Update } from "../3_types.ts";
 import { constructSecretChat } from "../types/0_secret_chat.ts";
 import { constructSecretMessage } from "../types/2_secret_message.ts";
 import { parseHtml } from "./0_html.ts";
@@ -133,7 +133,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     return state;
   }
 
-  async requestSecretChat(chatId: ID) {
+  async requestSecretChat(chatId: ID): Promise<SecretChat> {
     const user_id = await this.#c.getInputUser(chatId);
     if (Api.is("inputUserSelf", user_id)) {
       throw new InputError("Received invalid chat identifier.");
@@ -198,13 +198,13 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     return [text, entities];
   }
 
-  parseText(text_: string, params?: { parseMode?: ParseMode; entities?: SecretMessageEntity[] }, isEmptyAllowed?: boolean) {
+  parseText(text_: string, params?: { parseMode?: ParseMode; entities?: SecretMessageEntity[] }, isEmptyAllowed?: boolean): [string, SecretChats.MessageEntity[] | undefined] {
     const [text, entities_] = SecretChatManager.parseText(text_, params?.entities ?? [], params?.parseMode === null ? null : params?.parseMode ?? this.#c.parseMode, isEmptyAllowed);
     const entities = entities_?.length > 0 ? entities_.map(secretMessageEntityToTlObject) : undefined;
-    return [text, entities] as const;
+    return [text, entities];
   }
 
-  async acceptSecretChat(id: number) {
+  async acceptSecretChat(id: number): Promise<SecretChat> {
     const state = this.#getSecretChatState(id);
     if (!Api.is("encryptedChatRequested", state.encryptedChat)) {
       throw new InputError("Invalid secret chat identifier received.");
@@ -252,7 +252,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     return constructSecretChat(result);
   }
 
-  async endSecretChat(id: number, params?: EndSecretChatParams) {
+  async endSecretChat(id: number, params?: EndSecretChatParams): Promise<SecretChat> {
     this.#c.storage.assertUser("endSecretChat");
     const state = this.#getSecretChatState(id);
     switch (state.encryptedChat._) {

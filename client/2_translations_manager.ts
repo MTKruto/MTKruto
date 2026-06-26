@@ -45,7 +45,7 @@ export class TranslationsManager implements UpdateProcessor<TranslationsManagerU
     return Api.isOneOf(translationsManagerUpdates, update);
   }
 
-  async getTranslations(params?: GetTranslationsParams) {
+  async getTranslations(params?: GetTranslationsParams): Promise<Translation[]> {
     this.#c.storage.assertUser("getTranslations");
     const platform = params?.platform ?? this.#c.langPack;
     if (!platform) {

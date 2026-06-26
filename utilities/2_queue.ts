@@ -22,7 +22,7 @@ import { getLogger, type Logger } from "./1_logger.ts";
 
 export class Queue {
   #logger: Logger;
-  functions = new Array<() => Promise<void>>();
+  functions: (() => Promise<void>)[] = [];
   #throw: boolean;
 
   constructor(name: string, throw_ = false) {

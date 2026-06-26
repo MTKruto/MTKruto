@@ -21,7 +21,7 @@
 import { InputError } from "../0_errors.ts";
 import { getRandomId } from "../1_utilities.ts";
 import type { Api } from "../2_tl.ts";
-import { assertMessageType, constructTopic, constructTopicList, type ID } from "../3_types.ts";
+import { assertMessageType, constructTopic, constructTopicList, type ID, type Topic, type TopicList, type TopicListItem } from "../3_types.ts";
 import type { CreateTopicParams, EditTopicParams, GetTopicsParams } from "./0_params.ts";
 import { getLimit } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
@@ -46,7 +46,7 @@ export class ForumManager {
     return title;
   }
 
-  async createTopic(chatId: ID, title: string, params?: CreateTopicParams) {
+  async createTopic(chatId: ID, title: string, params?: CreateTopicParams): Promise<Topic> {
     title = ForumManager.#validateTopicTitle(title);
     let send_as: Api.InputPeer | undefined;
     if (params?.sendAs) {
@@ -85,7 +85,7 @@ export class ForumManager {
     }
   }
 
-  async editTopic(chatId: ID, topicId: number, title: string, params?: EditTopicParams) {
+  async editTopic(chatId: ID, topicId: number, title: string, params?: EditTopicParams): Promise<Topic> {
     ForumManager.#assertNongenralTopicIdValid(topicId);
     title = ForumManager.#validateTopicTitle(title);
     const peer = await this.#c.getInputPeer(chatId);
@@ -156,7 +156,7 @@ export class ForumManager {
     await this.#setTopicPinned(chatId, topicId, false);
   }
 
-  async getTopics(chatId: ID, params?: GetTopicsParams) {
+  async getTopics(chatId: ID, params?: GetTopicsParams): Promise<TopicList> {
     this.#c.storage.assertUser("getTopics");
     const peer = await this.#c.getInputPeer(chatId);
     const offset_id = params?.offsetId ?? 0;
@@ -175,7 +175,7 @@ export class ForumManager {
     return constructTopicList(result, messages, this.#c.getPeer);
   }
 
-  async getTopicsById(chatId: ID, topicIds: number[]) {
+  async getTopicsById(chatId: ID, topicIds: number[]): Promise<TopicList> {
     this.#c.storage.assertUser("getTopicsById");
     const peer = await this.#c.getInputPeer(chatId);
     const topics = topicIds;
@@ -184,7 +184,7 @@ export class ForumManager {
     return constructTopicList(result, messages, this.#c.getPeer);
   }
 
-  async getTopic(chatId: ID, topicId: number) {
+  async getTopic(chatId: ID, topicId: number): Promise<TopicListItem | null> {
     this.#c.storage.assertUser("getTopic");
     const result = await this.getTopicsById(chatId, [topicId]);
     return result.items[0] ?? null;

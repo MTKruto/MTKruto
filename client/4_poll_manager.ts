@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { encodeText } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { constructPoll, constructPollAnswer, constructPollVoterList, type ID, type InputPollOption, type Update } from "../3_types.ts";
+import { constructPoll, constructPollAnswer, constructPollVoterList, type ID, type InputPollOption, type PollVoterList, type Update } from "../3_types.ts";
 import type { GetPollVotersParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { getLimit } from "./0_utilities.ts";
@@ -61,6 +61,9 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate, true> {
 
   async #voteInner(chatId: ID, messageId: number, optionIndexes: number[]) {
     const message = await this.#c.messageManager.getMessage(chatId, messageId);
+    if (message === null) {
+      throw new InputError("Message not found.");
+    }
     if (!("poll" in message)) {
       throw new InputError("The message is not a poll.");
     }
@@ -139,7 +142,7 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate, true> {
     }
   }
 
-  async getPollVoters(chatId: ID, messageId: number, params?: GetPollVotersParams) {
+  async getPollVoters(chatId: ID, messageId: number, params?: GetPollVotersParams): Promise<PollVoterList> {
     this.#c.storage.assertUser("getPollVoters");
     const peer = await this.#c.getInputPeer(chatId);
     const option = params?.optionIndex ? encodeText(String(params.optionIndex)) : undefined;

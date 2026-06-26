@@ -23,8 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { base64EncodeUrlSafe, encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
-import { collectMediaFileIds, constructAnimation, constructBlockedUserList, constructChatAction, constructMessageDraft, constructMessageEntity, constructMessageReactionList, constructMessageViewer, constructMiniAppInfo, constructSavedChats, constructSticker, constructSummarizedText, constructVoiceTranscription, deserializeFileId, type FileId, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, type InputPollMedia, type InputPollMediaAnimation, type InputPollMediaSticker, type InputPollOption, type InputRichText, type MessageCounters, type MessageGetter, type MessageList, type MessageLivePhoto, type MessagePhoto, messageSearchFilterToTlObject, pageBlockToTlObject, type PriceTag, type SelfDestructOption, selfDestructOptionToInt, serializeFileId, type TextToTranslate, toUniqueFileId, type TranslatedText, type VoiceTranscription } from "../3_types.ts";
-import { assertMessageType, type ChatActionType, constructMessage as constructMessage_, deserializeInlineMessageId, type FileSource, FileType, type ID, type Message, type MessageEntity, messageEntityToTlObject, type ParseMode, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type Update, type UsernameResolver } from "../3_types.ts";
+import { type Animation, assertMessageType, type BlockedUserList, type ChatActionType, collectMediaFileIds, constructAnimation, constructBlockedUserList, constructChatAction, constructMessage as constructMessage_, constructMessageDraft, constructMessageEntity, constructMessageReactionList, constructMessageViewer, constructMiniAppInfo, constructSavedChats, constructSticker, constructSummarizedText, constructVoiceTranscription, deserializeFileId, deserializeInlineMessageId, type FileId, type FileSource, FileType, type ID, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, type InputPollMedia, type InputPollMediaAnimation, type InputPollMediaSticker, type InputPollOption, type InputRichText, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageCounters, type MessageDice, type MessageDocument, type MessageEntity, messageEntityToTlObject, type MessageGetter, type MessageInvoice, type MessageList, type MessageLivePhoto, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageRichText, messageSearchFilterToTlObject, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageViewer, type MessageVoice, type MiniAppInfo, pageBlockToTlObject, type ParseMode, type Poll, type PriceTag, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type RichText, type SavedChats, type SelfDestructOption, selfDestructOptionToInt, serializeFileId, type Sticker, type SummarizedText, type TextToTranslate, toUniqueFileId, type TranslatedText, type Update, type UsernameResolver, type VoiceTranscription } from "../3_types.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
 import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, _UploadCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetBlockedUsersParams, GetHistoryParams, GetMessageReactionsParams, GetSavedChatsParams, GetSavedMessagesParams, OpenMiniAppParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams as SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendRichTextParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, StartBotParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams } from "./0_params.ts";
@@ -77,7 +76,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     this.#LresolveFileId = L.branch("resolveFileId");
   }
 
-  async getMessages(chatId: ID, messageIds: number[]) {
+  async getMessages(chatId: ID, messageIds: number[]): Promise<Message[]> {
     checkArray(messageIds, checkMessageId);
     const peer = await this.#c.getInputPeer(chatId);
     let messages_ = new Array<Api.Message>();
@@ -116,7 +115,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return messages;
   }
 
-  async getMessageWithReply(chatId: ID, messageId: number) {
+  async getMessageWithReply(chatId: ID, messageId: number): Promise<Message | null> {
     const message = await this.getMessage(chatId, messageId);
     if (message !== null && message.replyToMessageId) {
       message.replyToMessage = await this.getMessage(chatId, message.replyToMessageId) ?? undefined;
@@ -124,7 +123,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return message;
   }
 
-  async getMessage(chatId: ID, messageId: number) {
+  async getMessage(chatId: ID, messageId: number): Promise<Message | null> {
     const messages = await this.getMessages(chatId, [messageId]);
     return messages[0] ?? null;
   }
@@ -182,13 +181,13 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     }
   }
 
-  parseText(text_: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }, isEmptyAllowed?: boolean) {
+  parseText(text_: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }, isEmptyAllowed?: boolean): [string, Api.MessageEntity[] | undefined] {
     const [text, entities_] = MessageManager.parseText(text_, params?.entities ?? [], params?.parseMode === null ? null : params?.parseMode ?? this.#c.parseMode, isEmptyAllowed);
     const entities = entities_?.length > 0 ? entities_.map((v) => messageEntityToTlObject(v, this.#c.getPeer)) : undefined;
     return [text, entities] as const;
   }
 
-  async updatesToMessages(chatId: ID, updates: Api.Updates, businessConnectionId?: string) {
+  async updatesToMessages(chatId: ID, updates: Api.Updates, businessConnectionId?: string): Promise<Message[]> {
     const messages = new Array<Message>();
 
     if (Api.is("updates", updates)) {
@@ -220,7 +219,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return messages;
   }
 
-  async constructMessage(message_: Api.Message, r?: boolean, business?: { connectionId: string; replyToMessage?: Api.Message }, messageGetter?: MessageGetter) {
+  async constructMessage(message_: Api.Message, r?: boolean, business?: { connectionId: string; replyToMessage?: Api.Message }, messageGetter?: MessageGetter): Promise<Message> {
     const mediaPoll = "media" in message_ && Api.is("messageMediaPoll", message_.media) ? message_.media : null;
     const pollId = mediaPoll?.poll.id;
     let poll: Api.poll | null = null;
@@ -238,14 +237,14 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return message;
   }
 
-  async forwardMessages(from: ID, to: ID, messageIds: number[], params?: ForwardMessagesParams) {
+  async forwardMessages(from: ID, to: ID, messageIds: number[], params?: ForwardMessagesParams): Promise<Message[]> {
     checkArray(messageIds, checkMessageId);
     const result = await this.#c.invoke({ _: "messages.forwardMessages", from_peer: await this.#c.getInputPeer(from), to_peer: await this.#c.getInputPeer(to), id: messageIds, random_id: messageIds.map(() => getRandomId()), silent: params?.isSilent || undefined, top_msg_id: params?.messageThreadId, noforwards: params?.isContentProtected || undefined, send_as: params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined, drop_author: params?.isSenderNameDropped || undefined, drop_media_captions: params?.isCaptionDropped || undefined });
 
     return await this.updatesToMessages(to, result);
   }
 
-  async getHistory(chatId: ID, params?: GetHistoryParams) {
+  async getHistory(chatId: ID, params?: GetHistoryParams): Promise<Message[]> {
     this.#c.storage.assertUser("getHistory");
     const limit = getLimit(params?.limit);
     let offsetId = params?.offsetId ?? 0;
@@ -331,7 +330,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     chatId: ID,
     text: string,
     params?: SendMessageParams,
-  ) {
+  ): Promise<MessageText> {
     this.#checkParams(params);
     const [message, entities] = this.parseText(text, params);
 
@@ -404,7 +403,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     chatId: ID,
     richText: InputRichText,
     params?: SendRichTextParams,
-  ) {
+  ): Promise<MessageRichText> {
     this.#checkParams(params);
 
     const replyMarkup = await this.#constructReplyMarkup(params);
@@ -443,7 +442,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return assertMessageType(message_, "richText");
   }
 
-  static inputRichTextToInputRichMessage(richText: InputRichText) {
+  static inputRichTextToInputRichMessage(richText: InputRichText): Api.InputRichMessage {
     let rich_message: Api.InputRichMessage;
     switch (richText.type) {
       case "blocks": {
@@ -514,7 +513,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     }
   }
 
-  async sendVenue(chatId: ID, latitude: number, longitude: number, title: string, address: string, params?: SendVenueParams) {
+  async sendVenue(chatId: ID, latitude: number, longitude: number, title: string, address: string, params?: SendVenueParams): Promise<MessageVenue> {
     this.#checkParams(params);
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
@@ -555,7 +554,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return assertMessageType(message, "venue");
   }
 
-  async sendContact(chatId: ID, firstName: string, number: string, params?: SendContactParams) {
+  async sendContact(chatId: ID, firstName: string, number: string, params?: SendContactParams): Promise<MessageContact> {
     this.#checkParams(params);
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
@@ -593,7 +592,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return assertMessageType(message, "contact");
   }
 
-  async sendDice(chatId: ID, params?: SendDiceParams) {
+  async sendDice(chatId: ID, params?: SendDiceParams): Promise<MessageDice> {
     this.#checkParams(params);
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
@@ -625,7 +624,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return assertMessageType(message, "dice");
   }
 
-  async sendLocation(chatId: ID, latitude: number, longitude: number, params?: SendLocationParams) {
+  async sendLocation(chatId: ID, latitude: number, longitude: number, params?: SendLocationParams): Promise<MessageLocation> {
     this.#checkParams(params);
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
@@ -678,7 +677,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return assertMessageType(message, "location");
   }
 
-  async sendVideoNote(chatId: ID, audio: FileSource, params?: SendVideoNoteParams) {
+  async sendVideoNote(chatId: ID, audio: FileSource, params?: SendVideoNoteParams): Promise<MessageVideoNote> {
     this.#checkParams(params);
     const message = await this.#sendDocumentInner(
       chatId,
@@ -695,7 +694,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return assertMessageType(message, "videoNote");
   }
 
-  async sendAudio(chatId: ID, audio: FileSource, params?: SendAudioParams) {
+  async sendAudio(chatId: ID, audio: FileSource, params?: SendAudioParams): Promise<MessageAudio> {
     this.#checkParams(params);
     const message = await this.#sendDocumentInner(
       chatId,
@@ -722,7 +721,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return firstPart.byteLength >= 10 && startsWith(firstPart.subarray(4), new Uint8Array([0x66, 0x74, 0x79, 0x70, 0x4D, 0x34]));
   }
 
-  async sendVoice(chatId: ID, voice: FileSource, params?: SendVoiceParams) {
+  async sendVoice(chatId: ID, voice: FileSource, params?: SendVoiceParams): Promise<MessageVoice> {
     this.#checkParams(params);
     const message = await this.#sendDocumentInner(
       chatId,
@@ -747,7 +746,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return assertMessageType(message, "voice");
   }
 
-  async sendAnimation(chatId: ID, animation: FileSource, params?: SendAnimationParams) {
+  async sendAnimation(chatId: ID, animation: FileSource, params?: SendAnimationParams): Promise<MessageAnimation> {
     this.#checkParams(params);
     const message = await this.#sendDocumentInner(
       chatId,
@@ -771,7 +770,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return assertMessageType(message, "animation");
   }
 
-  async sendVideo(chatId: ID, video: FileSource, params?: SendVideoParams) {
+  async sendVideo(chatId: ID, video: FileSource, params?: SendVideoParams): Promise<MessageVideo> {
     this.#checkParams(params);
     const message = await this.#sendDocumentInner(
       chatId,
@@ -837,23 +836,23 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return message;
   }
 
-  async sendDocument(chatId: ID, document: FileSource, params?: SendDocumentParams) {
+  async sendDocument(chatId: ID, document: FileSource, params?: SendDocumentParams): Promise<MessageDocument> {
     this.#checkParams(params);
     const message = await this.#sendDocumentInner(chatId, document, params, FileType.Document, []);
     return assertMessageType(message, "document");
   }
 
-  async sendSticker(chatId: ID, sticker: FileSource, params?: SendStickerParams) {
+  async sendSticker(chatId: ID, sticker: FileSource, params?: SendStickerParams): Promise<MessageSticker> {
     this.#checkParams(params);
     const message = await this.#sendDocumentInner(chatId, sticker, params, FileType.Sticker, [{ _: "documentAttributeSticker", alt: params?.emoji || "", stickerset: { _: "inputStickerSetEmpty" } }], undefined, STICKER_MIME_TYPES, checkStickerName);
     return assertMessageType(message, "sticker");
   }
 
-  async sendPhoto(chatId: ID, photo: FileSource, params?: SendPhotoParams) {
+  async sendPhoto(chatId: ID, photo: FileSource, params?: SendPhotoParams): Promise<MessagePhoto> {
     return (await this.#sendPhotoInner(chatId, photo, params)) as MessagePhoto;
   }
 
-  async sendLivePhoto(chatId: ID, photo: FileSource, video: FileSource, params?: SendPhotoParams) {
+  async sendLivePhoto(chatId: ID, photo: FileSource, video: FileSource, params?: SendPhotoParams): Promise<MessageLivePhoto> {
     return (await this.#sendPhotoInner(chatId, photo, { ...params, video })) as MessageLivePhoto;
   }
 
@@ -907,7 +906,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
   }
 
-  resolveFileId(maybeFileId: string, expectedFileType: FileType | FileType[]) {
+  resolveFileId(maybeFileId: string, expectedFileType: FileType | FileType[]): { id: bigint; access_hash: bigint; file_reference: Uint8Array<ArrayBuffer> } | null {
     expectedFileType = Array.isArray(expectedFileType) ? expectedFileType : [expectedFileType];
     let fileId: FileId | null = null;
     try {
@@ -928,7 +927,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return null;
   }
 
-  async sendPoll(chatId: ID, question: string, options: InputPollOption[], params?: SendPollParams) {
+  async sendPoll(chatId: ID, question: string, options: InputPollOption[], params?: SendPollParams): Promise<MessagePoll> {
     this.#checkParams(params);
     question = question?.trim();
     if (!question) {
@@ -1060,7 +1059,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     unreachable();
   }
 
-  async sendChecklist(chatId: ID, title: string, items: InputChecklistItem[], params?: SendChecklistParams) {
+  async sendChecklist(chatId: ID, title: string, items: InputChecklistItem[], params?: SendChecklistParams): Promise<MessageChecklist> {
     this.#checkParams(params);
     title = title?.trim();
     if (!title) {
@@ -1119,7 +1118,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     chatId: ID,
     messageId: number,
     params?: EditMessageReplyMarkupParams,
-  ) {
+  ): Promise<Message> {
     this.#checkParams(params);
     const result = await this.#c.invoke({
       _: "messages.editMessage",
@@ -1150,7 +1149,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     messageId: number,
     text: string,
     params?: EditMessageTextParams,
-  ) {
+  ): Promise<MessageText> {
     this.#checkParams(params);
     {
       const message = await this.getMessage(chatId, messageId);
@@ -1197,7 +1196,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     messageId: number,
     richText: InputRichText,
     params?: EditMessageTextParams,
-  ) {
+  ): Promise<MessageRichText> {
     this.#checkParams(params);
     {
       const message = await this.getMessage(chatId, messageId);
@@ -1223,7 +1222,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   }
 
   static #CAPTIONABLE_MESSAGE_TYPES = ["photo", "document", "video", "animation", "voice", "audio", "video"] as const;
-  async editMessageCaption(chatId: ID, messageId: number, params?: EditMessageCaptionParams) {
+  async editMessageCaption(chatId: ID, messageId: number, params?: EditMessageCaptionParams): Promise<Message> {
     let canHaveCaption = false;
     const message_ = await this.getMessage(chatId, messageId);
     if (!message_) {
@@ -1534,7 +1533,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     messageId: number,
     media: InputMedia,
     params?: EditMessageMediaParams,
-  ) {
+  ): Promise<Message> {
     this.#checkParams(params);
     const message = await this.getMessage(chatId, messageId);
     if (!message) {
@@ -1601,10 +1600,10 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async deleteScheduledMessage(chatId: ID, messageId: number) {
     this.#c.storage.assertUser("deleteScheduledMessage");
-    return await this.deleteScheduledMessages(chatId, [messageId]);
+    await this.deleteScheduledMessages(chatId, [messageId]);
   }
 
-  async sendScheduledMessages(chatId: ID, messageIds: number[]) {
+  async sendScheduledMessages(chatId: ID, messageIds: number[]): Promise<Message[]> {
     this.#c.storage.assertUser("sendScheduledMessages");
     checkArray(messageIds, checkMessageId);
     const peer = await this.#c.getInputPeer(chatId);
@@ -1612,7 +1611,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return await this.updatesToMessages(chatId, result);
   }
 
-  async sendScheduledMessage(chatId: ID, messageId: number) {
+  async sendScheduledMessage(chatId: ID, messageId: number): Promise<Message> {
     this.#c.storage.assertUser("sendScheduledMessage");
     return (await this.sendScheduledMessages(chatId, [messageId]))[0];
   }
@@ -1906,7 +1905,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     await this.#c.invoke({ _: "contacts.unblock", id });
   }
 
-  async getBlockedUsers(params?: GetBlockedUsersParams) {
+  async getBlockedUsers(params?: GetBlockedUsersParams): Promise<BlockedUserList> {
     this.#c.storage.assertUser("getBlockedUsers");
     const my_stories_from = params?.isBlockedFromViewingStories || undefined;
     const offset = params?.offset ?? 0;
@@ -1925,7 +1924,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     await this.#c.invoke({ _: "channels.setStickers", channel, stickerset: { _: "inputStickerSetEmpty" } });
   }
 
-  async stopPoll(chatId: ID, messageId: number, params?: StopPollParams) {
+  async stopPoll(chatId: ID, messageId: number, params?: StopPollParams): Promise<Poll> {
     this.#checkParams(params);
     const message = await this.getMessage(chatId, messageId);
     if (!message) {
@@ -1950,7 +1949,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return assertMessageType(message_, "poll").poll;
   }
 
-  async editMessageLiveLocation(chatId: ID, messageId: number, latitude: number, longitude: number, params?: EditMessageLiveLocationParams) {
+  async editMessageLiveLocation(chatId: ID, messageId: number, latitude: number, longitude: number, params?: EditMessageLiveLocationParams): Promise<MessageLocation> {
     this.#checkParams(params);
     const message = await this.getMessage(chatId, messageId);
     if (message && "location" in message && message.location.livePeriod) {
@@ -1980,7 +1979,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     }, { dc: getDc(id.dc_id) });
   }
 
-  async sendInvoice(chatId: ID, title: string, description: string, payload: string, currency: string, prices: PriceTag[], params?: SendInvoiceParams) {
+  async sendInvoice(chatId: ID, title: string, description: string, payload: string, currency: string, prices: PriceTag[], params?: SendInvoiceParams): Promise<MessageInvoice> {
     this.#c.storage.assertBot("sendInvoice");
     this.#checkParams(params);
     if (title.length < 1) {
@@ -2040,7 +2039,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return assertMessageType(message, "invoice");
   }
 
-  async sendMediaGroup(chatId: ID, media: InputMedia[], params?: SendMediaGroupParams) {
+  async sendMediaGroup(chatId: ID, media: InputMedia[], params?: SendMediaGroupParams): Promise<Message[]> {
     this.#checkParams(params);
     {
       if (!Array.isArray(media) || !media.length) {
@@ -2107,7 +2106,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     await this.#c.invoke({ _: "messages.readHistory", peer, max_id });
   }
 
-  async startBot(botId: ID, params?: StartBotParams) {
+  async startBot(botId: ID, params?: StartBotParams): Promise<Message> {
     this.#c.storage.assertUser("startBot");
     const start_param = params?.deeplink?.trim() || "";
     if (params?.chatId !== undefined && !start_param) {
@@ -2122,7 +2121,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return (await this.updatesToMessages(botId, result))[0];
   }
 
-  async transcribeVoice(chatId: ID, messageId: number) {
+  async transcribeVoice(chatId: ID, messageId: number): Promise<VoiceTranscription> {
     this.#c.storage.assertUser("transcribeVoice");
     const message = await this.getMessage(chatId, messageId);
     if (message === null) {
@@ -2158,7 +2157,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return voiceTranscription;
   }
 
-  async resolveMessageLink(link: string) {
+  async resolveMessageLink(link: string): Promise<Message | null> {
     const parseResult = MessageManager.parseMessageLink(link);
     if (parseResult === null) {
       throw new InputError("Invalid message link.");
@@ -2240,7 +2239,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return [peer, id];
   }
 
-  async openMiniApp(botId: ID, chatId: ID, params?: OpenMiniAppParams) {
+  async openMiniApp(botId: ID, chatId: ID, params?: OpenMiniAppParams): Promise<MiniAppInfo> {
     this.#c.storage.assertUser("openMiniApp");
     const from_bot_menu = params?.isFromMenu || undefined;
     const silent = params?.isSilent || undefined;
@@ -2272,7 +2271,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return constructMiniAppInfo(result);
   }
 
-  async getSavedMessages(chatId: ID, params?: GetSavedMessagesParams) {
+  async getSavedMessages(chatId: ID, params?: GetSavedMessagesParams): Promise<Message[]> {
     this.#c.storage.assertUser("getSavedMessages");
     const peer = await this.#c.getInputPeer(chatId);
     const limit = getLimit(params?.limit);
@@ -2307,7 +2306,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return messages;
   }
 
-  async getSavedChats(params?: GetSavedChatsParams) {
+  async getSavedChats(params?: GetSavedChatsParams): Promise<SavedChats> {
     const limit = getLimit(params?.limit);
     let offsetId = params?.offsetId ?? 0;
     if (offsetId < 0) {
@@ -2333,7 +2332,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return constructSavedChats(result, this.#c.getPeer, this.getMessage.bind(this), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager));
   }
 
-  async getMessageReactions(chatId: ID, messageId: number, params?: GetMessageReactionsParams) {
+  async getMessageReactions(chatId: ID, messageId: number, params?: GetMessageReactionsParams): Promise<MessageReactionList> {
     this.#c.storage.assertUser("getMessageReactions");
     const peer = await this.#c.getInputPeer(chatId);
     const id = messageId;
@@ -2361,14 +2360,14 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     await this.#c.invoke({ _: "messages.clearAllDrafts" });
   }
 
-  async summarizeText(chatId: ID, messageId: number, params?: SummarizeTextParams) {
+  async summarizeText(chatId: ID, messageId: number, params?: SummarizeTextParams): Promise<SummarizedText> {
     this.#c.storage.assertUser("summarizeText");
     const peer = await this.#c.getInputPeer(chatId);
     const result = await this.#c.invoke({ _: "messages.summarizeText", peer, id: messageId, to_lang: params?.languageCode });
     return constructSummarizedText(result);
   }
 
-  async answerGuestQuery(id: string, result_: InlineQueryResult) {
+  async answerGuestQuery(id: string, result_: InlineQueryResult): Promise<string> {
     const result = await inlineQueryResultToTlObject(result_, this.parseText.bind(this), this.usernameResolver.bind(this), MessageManager.inputRichTextToInputRichMessage);
     const result__ = await this.#c.invoke({ _: "messages.setBotGuestChatResult", query_id: BigInt(id), result });
     return base64EncodeUrlSafe(Api.serializeObject(result__));
@@ -2397,12 +2396,12 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return result.views.map((v): MessageCounters => ({ views: v.views ?? 0, replies: v.replies?.replies ?? 0, forwards: v.forwards ?? 0 }));
   }
 
-  async getMessagesCounters(chatId: ID, messageIds: number[]) {
+  async getMessagesCounters(chatId: ID, messageIds: number[]): Promise<MessageCounters[]> {
     this.#c.storage.assertUser("getMessagesCounters");
     return await this.#getMessagesCounters(chatId, messageIds);
   }
 
-  async getMessageCounters(chatId: ID, messageId: number) {
+  async getMessageCounters(chatId: ID, messageId: number): Promise<MessageCounters> {
     this.#c.storage.assertUser("getMessageCounters");
     return (await this.#getMessagesCounters(chatId, [messageId]))[0];
   }
@@ -2422,7 +2421,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return await this.#translateTexts(toLanguage, texts, params);
   }
 
-  async translateText(toLanguage: string, text: TextToTranslate, params?: TranslateTextParams) {
+  async translateText(toLanguage: string, text: TextToTranslate, params?: TranslateTextParams): Promise<TranslatedText> {
     this.#c.storage.assertUser("translateText");
     return (await this.#translateTexts(toLanguage, [text], params))[0];
   }
@@ -2444,12 +2443,12 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return await this.#translateMessages(toLanguage, chatId, messageIds, params);
   }
 
-  async translateMessage(toLanguage: string, chatId: ID, messageId: number, params?: TranslateTextParams) {
+  async translateMessage(toLanguage: string, chatId: ID, messageId: number, params?: TranslateTextParams): Promise<TranslatedText> {
     this.#c.storage.assertUser("translateMessage");
     return (await this.#translateMessages(toLanguage, chatId, [messageId], params))[0];
   }
 
-  async getRichText(chatId: ID, messageId: number) {
+  async getRichText(chatId: ID, messageId: number): Promise<RichText | null> {
     this.#c.storage.assertUser("getRichText");
     const peer = await this.#c.getInputPeer(chatId);
     const id = messageId;
@@ -2467,14 +2466,14 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return message.richText;
   }
 
-  async getScheduledMessages(chatId: ID) {
+  async getScheduledMessages(chatId: ID): Promise<Message[]> {
     this.#c.storage.assertUser("getScheduledMessages");
     const peer = await this.#c.getInputPeer(chatId);
     const result = Api.as("messages.messages", await this.#c.invoke({ _: "messages.getScheduledHistory", peer, hash: 0n }));
     return await Promise.all(result.messages.map((v) => this.constructMessage(v, false)));
   }
 
-  async getFavoriteStickers() {
+  async getFavoriteStickers(): Promise<Sticker[]> {
     this.#c.storage.assertUser("getFavoriteStickers");
     const result = Api.as("messages.favedStickers", await this.#c.invoke({ _: "messages.getFavedStickers", hash: 0n }));
     const stickers = await Promise.all(
@@ -2544,7 +2543,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     await this.#c.invoke({ _: "messages.clearRecentStickers" });
   }
 
-  async getRecentStickers() {
+  async getRecentStickers(): Promise<Sticker[]> {
     this.#c.storage.assertUser("getRecentStickers");
     const result = Api.as("messages.recentStickers", await this.#c.invoke({ _: "messages.getRecentStickers", hash: 0n }));
     const stickers = await Promise.all(
@@ -2565,7 +2564,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return stickers;
   }
 
-  async getSavedAnimations() {
+  async getSavedAnimations(): Promise<Animation[]> {
     this.#c.storage.assertUser("getSavedAnimations");
     const result = Api.as("messages.savedGifs", await this.#c.invoke({ _: "messages.getSavedGifs", hash: 0n }));
     const animations = await Promise.all(
@@ -2608,14 +2607,14 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     await this.#setIsAnimationSaved(fileId, false);
   }
 
-  async getMessageReadDate(chatId: ID, messageId: number) {
+  async getMessageReadDate(chatId: ID, messageId: number): Promise<number> {
     const peer = await this.#c.getInputPeer(chatId);
     const msg_id = messageId;
     const result = await this.#c.invoke({ _: "messages.getOutboxReadDate", peer, msg_id });
     return result.date;
   }
 
-  async getMessageViewers(chatId: ID, messageId: number) {
+  async getMessageViewers(chatId: ID, messageId: number): Promise<MessageViewer[]> {
     this.#c.storage.assertUser("getMessageViewers");
     const peer = await this.#c.getInputPeer(chatId);
     const msg_id = messageId;

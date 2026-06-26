@@ -130,6 +130,40 @@ export interface ClientParams extends ClientPlainParams {
   isPerfectForwardSecrecyEnabled?: boolean;
 }
 
+export interface ClientManagers {
+  // 2_
+  botInfoManager: BotInfoManager;
+  businessConnectionManager: BusinessConnectionManager;
+  fileManager: FileManager;
+  giftCollectionManager: GiftCollectionManager;
+  managedBotManager: ManagedBotManager;
+  networkStatisticsManager: NetworkStatisticsManager;
+  paymentManager: PaymentManager;
+  reactionManager: ReactionManager;
+  storyAlbumManager: StoryAlbumManager;
+  takeoutManager: TakeoutManager;
+  translationsManager: TranslationsManager;
+  updateManager: UpdateManager;
+  // 3_
+  accountManager: AccountManager;
+  messageManager: MessageManager;
+  secretChatManager: SecretChatManager;
+  stickerSetManager: StickerSetManager;
+  videoChatManager: VideoChatManager;
+  // 4_
+  callbackQueryManager: CallbackQueryManager;
+  chatListManager: ChatListManager;
+  chatManager: ChatManager;
+  checklistManager: ChecklistManager;
+  contactManager: ContactManager;
+  forumManager: ForumManager;
+  giftManager: GiftManager;
+  inlineQueryManager: InlineQueryManager;
+  linkPreviewManager: LinkPreviewManager;
+  pollManager: PollManager;
+  storyManager: StoryManager;
+}
+
 /** An MTKruto client. */
 export class Client<C extends Context = Context> extends Composer<C> implements ClientGeneric {
   #clients = new Array<ClientEncrypted>();
@@ -168,10 +202,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   #pollManager: PollManager;
   #storyManager: StoryManager;
 
-  // deno-lint-ignore no-explicit-any
-  #managers?: Record<string, any>;
-  // deno-lint-ignore no-explicit-any
-  get managers(): Record<string, any> {
+  #managers?: ClientManagers;
+  get managers(): ClientManagers {
     return this.#managers ?? (this.#managers ??= {
       // 2_
       botInfoManager: this.#botInfoManager,

@@ -21,7 +21,7 @@
 import { SECOND } from "../0_deps.ts";
 import { encodeText } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { type CallbackQueryQuestion, constructCallbackQuery, constructCallbackQueryAnswer, type ID, type Update, validateCallbackQueryQuestion } from "../3_types.ts";
+import { type CallbackQueryAnswer, type CallbackQueryQuestion, constructCallbackQuery, constructCallbackQueryAnswer, type ID, type Update, validateCallbackQueryQuestion } from "../3_types.ts";
 import type { AnswerCallbackQueryParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
@@ -51,7 +51,7 @@ export class CallbackQueryManager implements UpdateProcessor<CallbackQueryManage
     await this.#c.invoke({ _: "messages.setBotCallbackAnswer", query_id: BigInt(id), cache_time: params?.cacheTime ?? 0, message: params?.text, alert: params?.isAlert || undefined });
   }
 
-  async sendCallbackQuery(botId: ID, messageId: number, question: CallbackQueryQuestion) {
+  async sendCallbackQuery(botId: ID, messageId: number, question: CallbackQueryQuestion): Promise<CallbackQueryAnswer> {
     this.#c.storage.assertUser("sendCallbackQuery");
     checkMessageId(messageId);
     validateCallbackQueryQuestion(question);

@@ -23,7 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { getRandomId } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
-import { constructLiveStreamChannel, constructVideoChat, type ID, type Update, type VideoChatActive, type VideoChatScheduled } from "../3_types.ts";
+import { constructLiveStreamChannel, constructVideoChat, type ID, type LiveStreamChannel, type Update, type VideoChat, type VideoChatActive, type VideoChatScheduled } from "../3_types.ts";
 import type { DownloadLiveStreamSegmentParams, JoinVideoChatParams, StartVideoChatParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputUser } from "./0_utilities.ts";
@@ -61,12 +61,12 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate,
     return constructVideoChat(updateGroupCall.call);
   }
 
-  async startVideoChat(chatId: ID, params?: StartVideoChatParams) {
+  async startVideoChat(chatId: ID, params?: StartVideoChatParams): Promise<VideoChatActive> {
     this.#c.storage.assertUser("startVideoChat");
     return await this.#createGroupCall(chatId, params?.title, params?.isLiveStream || undefined) as VideoChatActive;
   }
 
-  async scheduleVideoChat(chatId: ID, startAt: number, params?: StartVideoChatParams) {
+  async scheduleVideoChat(chatId: ID, startAt: number, params?: StartVideoChatParams): Promise<VideoChatScheduled> {
     this.#c.storage.assertUser("scheduleVideoChat");
     return await this.#createGroupCall(chatId, params?.title, params?.isLiveStream || undefined, startAt) as VideoChatScheduled;
   }
@@ -80,7 +80,7 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate,
     return { _: "inputGroupCall", id, access_hash: accessHash };
   }
 
-  async joinVideoChat(id: string, params: string, params_?: JoinVideoChatParams) {
+  async joinVideoChat(id: string, params: string, params_?: JoinVideoChatParams): Promise<string> {
     this.#c.storage.assertUser("joinVideoChat");
     const call = await this.#getInputGroupCall(id);
     const { updates } = await this.#c.invoke({ _: "phone.joinGroupCall", call, join_as: params_?.joinAs ? await this.#c.getInputPeer(params_.joinAs) : { _: "inputPeerSelf" }, params: { _: "dataJSON", data: params }, invite_hash: params_?.inviteHash, muted: !params_?.isAudioEnabled || undefined, video_stopped: !params_?.isVideoEnabled || undefined }).then((v) => Api.as("updates", v));
@@ -126,7 +126,7 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate,
     }
     return groupCall!;
   }
-  async getVideoChat(id: string) {
+  async getVideoChat(id: string): Promise<VideoChat> {
     this.#c.storage.assertUser("getVideoChat");
     return constructVideoChat(await this.#getCall(id));
   }
@@ -165,7 +165,7 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate,
     return { type: "videoChat", videoChat: constructVideoChat(update.call) };
   }
 
-  async getLiveStreamChannels(id: string) {
+  async getLiveStreamChannels(id: string): Promise<LiveStreamChannel[]> {
     this.#c.storage.assertUser("getLiveStreamChannels");
     const call = await this.#getCall(id);
     if (!(Api.is("groupCall", call)) || !call.rtmp_stream) {
@@ -176,7 +176,7 @@ export class VideoChatManager implements UpdateProcessor<VideoChatManagerUpdate,
     return streams.channels.map(constructLiveStreamChannel);
   }
 
-  async downloadLiveStreamSegment(id: string, channel: number, scale: number, timestamp: number, params?: DownloadLiveStreamSegmentParams) {
+  async downloadLiveStreamSegment(id: string, channel: number, scale: number, timestamp: number, params?: DownloadLiveStreamSegmentParams): Promise<Uint8Array<ArrayBuffer>> {
     this.#c.storage.assertUser("downloadLiveStreamSegment");
     const call = await this.#getCall(id);
     if (!(Api.is("groupCall", call)) || !call.rtmp_stream) {

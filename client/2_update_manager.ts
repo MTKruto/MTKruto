@@ -306,7 +306,7 @@ export class UpdateManager {
   }
 
   #handleUpdateQueues = new Map<bigint, Queue>();
-  getHandleUpdateQueue(boxId: bigint) {
+  getHandleUpdateQueue(boxId: bigint): Queue {
     let queue = this.#handleUpdateQueues.get(boxId);
     if (queue === undefined) {
       queue = new Queue(`handleUpdate-${boxId}`, true);

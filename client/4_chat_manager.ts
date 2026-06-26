@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { type AvailableReactions, availableReactionsToTlObject, chatAdministratorRightsToTlObject, type ChatJoinResult, type ChatP, constructChatJoinResult, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, constructJoinRequest2, constructRecentActionsEntry, constructResolvedInviteLink, reportReasonToTlObject, type SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
+import { type AvailableReactions, availableReactionsToTlObject, chatAdministratorRightsToTlObject, type ChatJoinResult, type ChatP, type ChatPChannel, type ChatPPrivate, constructChatJoinResult, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, constructJoinRequest2, constructRecentActionsEntry, constructResolvedInviteLink, type FailedInvitation, type InviteLink, type JoinRequest, type RecentActionsEntry, reportReasonToTlObject, type ResolvedInviteLink, type SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
 import { chatMemberRightsToTlObject, type FileSource, type ID, type ReportReason, type Update } from "../3_types.ts";
 import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, BoostChatParams, CreateInviteLinkParams, DeclineJoinRequestsParams, EnableSignaturesParams, GetAdministeredChatsParams, GetCreatedInviteLinksParams, GetJoinRequestsParams, GetRecentActionsParams, MarkAllMentionsAsReadParams, PromoteChatMemberParams, ReportChatParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
@@ -115,7 +115,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     });
   }
 
-  async getJoinRequests(chatId: ID, params?: GetJoinRequestsParams) {
+  async getJoinRequests(chatId: ID, params?: GetJoinRequestsParams): Promise<JoinRequest[]> {
     this.#c.storage.assertUser("getJoinRequests");
     if (typeof params?.inviteLink === "string" && typeof params?.search === "string") {
       throw new InputError("inviteLink and search cannot be specified together.");
@@ -137,7 +137,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
   }
 
   // INVITE LINKS //
-  async createInviteLink(chatId: ID, params?: CreateInviteLinkParams) {
+  async createInviteLink(chatId: ID, params?: CreateInviteLinkParams): Promise<InviteLink> {
     if (params?.isApprovalRequired && params?.limit) {
       throw new InputError("isApprovalRequired cannot be true while limit is specified.");
     }
@@ -145,7 +145,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     return constructInviteLink(Api.as("chatInviteExported", result), this.#c.getPeer);
   }
 
-  async getCreatedInviteLinks(chatId: ID, params?: GetCreatedInviteLinksParams) {
+  async getCreatedInviteLinks(chatId: ID, params?: GetCreatedInviteLinksParams): Promise<InviteLink[]> {
     this.#c.storage.assertUser("getCreatedInviteLinks");
     const { invites } = await this.#c.invoke({ _: "messages.getExportedChatInvites", peer: await this.#c.getInputPeer(chatId), revoked: params?.isRevoked || undefined, admin_id: params?.by ? await this.#c.getInputUser(params.by) : { _: "inputUserEmpty" }, limit: getLimit(params?.limit), offset_date: params?.afterDate, offset_link: params?.afterInviteLink });
     return await Promise.all(invites.map((v) => Api.as("chatInviteExported", v)).map((v) => constructInviteLink(v, this.#c.getPeer)));
@@ -168,7 +168,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     }
   }
 
-  async joinChatByInviteLink(inviteLink: string) {
+  async joinChatByInviteLink(inviteLink: string): Promise<ChatJoinResult> {
     this.#c.storage.assertUser("joinChatByInviteLink");
     const hash = ChatManager.#getInviteLinkHash(inviteLink);
     const result = await this.#c.invoke({ _: "messages.importChatInvite", hash });
@@ -408,7 +408,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     }
   }
 
-  async getDiscussionChatSuggestions() {
+  async getDiscussionChatSuggestions(): Promise<ChatP[]> {
     this.#c.storage.assertUser("getDiscussionChatSuggestions");
     const { chats } = await this.#c.invoke({ _: "channels.getGroupsForDiscussion" });
     return chats
@@ -487,7 +487,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
   }
 
   // INVITING MEMBERS //
-  async addChatMember(chatId: ID, userId: ID, params?: AddChatMemberParams) {
+  async addChatMember(chatId: ID, userId: ID, params?: AddChatMemberParams): Promise<FailedInvitation[]> {
     this.#c.storage.assertUser("addChatMember");
     const chat = await this.#c.getInputPeer(chatId);
     if (Api.isOneOf(["inputPeerEmpty", "inputPeerSelf", "inputPeerUser", "inputPeerUserFromMessage"], chat)) {
@@ -523,27 +523,27 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     unreachable();
   }
 
-  async getRecommendedChannels() {
+  async getRecommendedChannels(): Promise<ChatPChannel[]> {
     this.#c.storage.assertUser("getRecommendedChannels");
     const result = await this.#c.invoke({ _: "channels.getChannelRecommendations" });
     return result.chats.map((v) => constructChatP(v)).filter((v) => v.type === "channel");
   }
 
-  async getSimilarChannels(chatId: ID) {
+  async getSimilarChannels(chatId: ID): Promise<ChatPChannel[]> {
     this.#c.storage.assertUser("getSimilarChannels");
     const channel = await this.#c.getInputChannel(chatId);
     const result = await this.#c.invoke({ _: "channels.getChannelRecommendations", channel });
     return result.chats.map((v) => constructChatP(v)).filter((v) => v.type === "channel");
   }
 
-  async getSimilarBots(chatId: ID) {
+  async getSimilarBots(chatId: ID): Promise<ChatPPrivate[]> {
     this.#c.storage.assertUser("getSimilarBots");
     const bot = await this.#c.getInputUser(chatId);
     const result = await this.#c.invoke({ _: "bots.getBotRecommendations", bot });
     return result.users.map((v) => constructChatP(v)).filter((v) => v.type === "private");
   }
 
-  async getOnlineCount(chatId: ID) {
+  async getOnlineCount(chatId: ID): Promise<number> {
     this.#c.storage.assertUser("getOnlineCount");
     const peer = await this.#c.getInputPeer(chatId);
     const result = await this.#c.invoke({ _: "messages.getOnlines", peer });
@@ -602,14 +602,14 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     await this.#c.invoke({ _: "messages.readMentions", peer, top_msg_id });
   }
 
-  async getAdministeredChats(params?: GetAdministeredChatsParams) {
+  async getAdministeredChats(params?: GetAdministeredChatsParams): Promise<ChatP[]> {
     this.#c.storage.assertUser("getAdministeredChats");
     const for_personal = params?.isForPersonalChannel || undefined;
     const result = await this.#c.invoke({ _: "channels.getAdminedPublicChannels", for_personal });
     return result.chats.map(constructChatP);
   }
 
-  async getRecentActions(chatId: ID, params?: GetRecentActionsParams) {
+  async getRecentActions(chatId: ID, params?: GetRecentActionsParams): Promise<RecentActionsEntry[]> {
     this.#c.storage.assertUser("getRecentActions");
     const channel = await this.#c.getInputChannel(chatId);
     const limit = getLimit(params?.limit);
@@ -683,7 +683,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     }
   }
 
-  async resolveInviteLink(inviteLink: string) {
+  async resolveInviteLink(inviteLink: string): Promise<ChatP | ResolvedInviteLink> {
     this.#c.storage.assertUser("resolveInviteLink");
     const hash = ChatManager.#getInviteLinkHash(inviteLink);
     const result = await this.#c.invoke({ _: "messages.checkChatInvite", hash });
