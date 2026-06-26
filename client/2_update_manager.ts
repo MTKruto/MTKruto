@@ -357,7 +357,10 @@ export class UpdateManager {
     const channelId = Api.is("updateNewChannelMessage", update) || Api.is("updateEditChannelMessage", update) ? Api.as("peerChannel", (update.message as Api.message | Api.messageService).peer_id).channel_id : update.channel_id;
     if (Api.is("updateChannelTooLong", update)) {
       if (update.pts !== undefined) {
-        this.#c.storage.channelPts.set([channelId], update.pts);
+        const localPts = await this.#c.storage.channelPts.get([channelId]);
+        if (localPts === null) {
+          this.#c.storage.channelPts.set([channelId], update.pts);
+        }
       }
       await this.#recoverChannelUpdateGap(channelId, "updateChannelTooLong");
       return;
@@ -481,7 +484,6 @@ export class UpdateManager {
       const seqStart = "seq_start" in updates_ ? updates_.seq_start : updates_.seq;
       if (checkGap) {
         if (seqStart === 0) {
-          checkGap = false;
           this.#L$processUpdates.debug("seqStart=0");
         } else {
           const localState = await this.#getLocalState();
@@ -698,6 +700,8 @@ export class UpdateManager {
         if (Api.is("updates.difference", difference) || Api.is("updates.differenceSlice", difference)) {
           this.processChats(difference.chats, difference);
           await this.processUsers(difference.users, difference);
+          this.#LrecoverUpdateGap.debug("processing", difference.new_messages.length, "new message(s)");
+          this.#LrecoverUpdateGap.debug("processing", difference.other_updates.length, "other update(s)");
           for (const message of difference.new_messages) {
             await this.#processUpdates({ _: "updateNewMessage", message, pts: 0, pts_count: 0 }, false);
           }
@@ -738,10 +742,10 @@ export class UpdateManager {
   async #recoverChannelUpdateGap(channelId: bigint, source: string) {
     let lastTimeout = 10;
     this.#LrecoverChannelUpdateGap.debug(`recovering channel update gap [${channelId}, ${source}]`);
-    const pts_ = await this.#c.storage.channelPts.get([channelId]);
-    let pts = pts_ === null ? 1 : pts_;
     let retryIn = 5;
     while (true) {
+      const pts_ = await this.#c.storage.channelPts.get([channelId]);
+      const pts = pts_ === null ? 1 : pts_;
       const { access_hash } = await this.#c.getInputPeer(ZERO_CHANNEL_ID + -Number(channelId)).then((v) => Api.as("inputPeerChannel", v));
       let difference: Api.updates_ChannelDifference;
       try {
@@ -776,7 +780,11 @@ export class UpdateManager {
         }
         this.#c.storage.channelPts.set([channelId], difference.pts);
         this.#LrecoverChannelUpdateGap.debug(`recovered from update gap [${channelId}, ${source}]`, channelId, source);
-        break;
+        if (!difference.final) {
+          continue;
+        } else {
+          break;
+        }
       } else if (Api.is("updates.channelDifferenceTooLong", difference)) {
         // TODO: invalidate messages
         this.#LrecoverChannelUpdateGap.debug("received channelDifferenceTooLong");
@@ -787,12 +795,13 @@ export class UpdateManager {
         }
         const pts_ = Api.as("dialog", difference.dialog).pts;
         if (pts_ !== undefined) {
-          pts = pts_;
+          this.#c.storage.channelPts.set([channelId], pts_);
         } else {
           unreachable();
         }
-        this.#LrecoverChannelUpdateGap.debug("processed channelDifferenceTooLong");
+        this.#LrecoverChannelUpdateGap.debug("processed channelDifferenceTooLong", channelId);
       } else if (Api.is("updates.channelDifferenceEmpty", difference)) {
+        this.#c.storage.channelPts.set([channelId], difference.pts);
         this.#LrecoverChannelUpdateGap.debug("there was no update gap");
         break;
       }
