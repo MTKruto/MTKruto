@@ -73,7 +73,7 @@ jobs:
         with:
           cache: true
 
-      - run: deno test --allow-env
+      - run: deno test
 
   transform:
     runs-on: ubuntu-latest
