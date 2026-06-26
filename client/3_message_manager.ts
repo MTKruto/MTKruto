@@ -952,7 +952,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
     for (const [i, option] of options.entries()) {
       if (option.media) {
-        mediaMap.set(i, await this.#resolvePollMedia(peer, option.media));
+        mediaMap.set(i, await this.resolvePollMedia(peer, option.media));
       }
     }
 
@@ -990,8 +990,8 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       correct_answers: params?.correctOptionIndexes,
       solution,
       solution_entities: solutionEntities,
-      solution_media: params?.explanationMedia ? await this.#resolvePollMedia(peer, params.explanationMedia) : undefined,
-      attached_media: params?.media ? await this.#resolvePollMedia(peer, params.media) : undefined,
+      solution_media: params?.explanationMedia ? await this.resolvePollMedia(peer, params.explanationMedia) : undefined,
+      attached_media: params?.media ? await this.resolvePollMedia(peer, params.media) : undefined,
     };
 
     const description = params?.description;
@@ -1023,7 +1023,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return assertMessageType(message, "poll");
   }
 
-  async #resolvePollMedia(peer: Api.InputPeer, media: InputPollMedia): Promise<Api.InputMedia> {
+  async resolvePollMedia(peer: Api.InputPeer, media: InputPollMedia): Promise<Api.InputMedia> {
     switch (media.type) {
       case "photo":
         return await this.#getInputMediaPhoto(peer, media.photo, media);

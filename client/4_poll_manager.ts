@@ -104,7 +104,12 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate, true> {
     const text = option.text;
     const entities = option.entities;
     const parseResult = this.#c.messageManager.parseText(text, { parseMode: option.parseMode, entities });
-    const answer: Api.pollAnswer = { _: "pollAnswer", option: encodeText("0"), text: { _: "textWithEntities", text: parseResult[0], entities: parseResult[1] ?? [] } };
+    const media = option.media ? await this.#c.messageManager.resolvePollMedia(peer, option.media) : undefined;
+    const answer: Api.inputPollAnswer = {
+      _: "inputPollAnswer",
+      text: { _: "textWithEntities", text: parseResult[0], entities: parseResult[1] ?? [] },
+      media,
+    };
     await this.#c.invoke({ _: "messages.addPollAnswer", peer, msg_id, answer });
   }
 
