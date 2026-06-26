@@ -67,18 +67,20 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate, true> {
     if (!("poll" in message)) {
       throw new InputError("The message is not a poll.");
     }
-    if (message.poll.options.filter((v) => v.isChosen).length === 0 && optionIndexes.length === 0) {
+    const chosenOptionIndexes = message.poll.options.flatMap((v, i) => v.isChosen ? [i] : []);
+    optionIndexes = Array.from(new Set(optionIndexes));
+    if (chosenOptionIndexes.length === 0 && optionIndexes.length === 0) {
       throw new InputError("No vote has been cast.");
     }
     if (!message.poll.allowMultipleAnswers && optionIndexes.length > 1) {
       throw new InputError("Cannot cast a vote for multiple options.");
     }
     for (const optionIndex of optionIndexes) {
-      if (optionIndex + 1 > message.poll.options.length) {
+      if (optionIndex < 0 || optionIndex >= message.poll.options.length) {
         throw new InputError("Got invalid option index.");
       }
     }
-    if (optionIndexes.length > 0 && message.poll.options.map((v, i): [number, boolean] => [i, v.isChosen]).filter((v) => v[1]).every(([v]) => optionIndexes.includes(v))) {
+    if (optionIndexes.length > 0 && chosenOptionIndexes.length === optionIndexes.length && chosenOptionIndexes.every((v) => optionIndexes.includes(v))) {
       throw new InputError("The same options are already cast.");
     }
     const peer = await this.#c.getInputPeer(chatId);
@@ -92,7 +94,6 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate, true> {
       unreachable();
     }
     const poll = media.poll;
-    optionIndexes = Array.from(new Set(optionIndexes));
     const options = optionIndexes.map((i) => Api.as("pollAnswer", poll.answers[i]).option);
     await this.#c.invoke({ _: "messages.sendVote", peer, msg_id: messageId, options });
   }
