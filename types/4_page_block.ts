@@ -432,9 +432,9 @@ export function constructPageBlockOrderedListItem(ploi: Api.PageListOrderedItem,
 export function pageBlockOrderedListItemToTlObject(pboli: PageBlockOrderedListItem): Api.PageListOrderedItem {
   switch (pboli.type) {
     case "text":
-      return { _: "pageListOrderedItemText", checkbox: pboli.isCheckbox || undefined, checked: pboli.isCheckbox || undefined, text: richTextComponentToTlObject(pboli.text), num: pboli.number, type: pboli.itemType, value: pboli.value };
+      return { _: "pageListOrderedItemText", checkbox: pboli.isCheckbox || undefined, checked: pboli.isChecked || undefined, text: richTextComponentToTlObject(pboli.text), num: pboli.number, type: pboli.itemType, value: pboli.value };
     case "blockList":
-      return { _: "pageListOrderedItemBlocks", checkbox: pboli.isCheckbox || undefined, checked: pboli.isCheckbox || undefined, blocks: pboli.blocks.map(pageBlockToTlObject), num: pboli.number, type: pboli.itemType, value: pboli.value };
+      return { _: "pageListOrderedItemBlocks", checkbox: pboli.isCheckbox || undefined, checked: pboli.isChecked || undefined, blocks: pboli.blocks.map(pageBlockToTlObject), num: pboli.number, type: pboli.itemType, value: pboli.value };
   }
 }
 /**
