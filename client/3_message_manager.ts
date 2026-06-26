@@ -26,7 +26,7 @@ import { getDc } from "../3_transport.ts";
 import { type Animation, assertMessageType, type BlockedUserList, type ChatActionType, collectMediaFileIds, constructAnimation, constructBlockedUserList, constructChatAction, constructMessage as constructMessage_, constructMessageDraft, constructMessageEntity, constructMessageReactionList, constructMessageViewer, constructMiniAppInfo, constructSavedChats, constructSticker, constructSummarizedText, constructVoiceTranscription, deserializeFileId, deserializeInlineMessageId, type FileId, type FileSource, FileType, type ID, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, type InputPollMedia, type InputPollMediaAnimation, type InputPollMediaSticker, type InputPollOption, type InputRichText, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageCounters, type MessageDice, type MessageDocument, type MessageEntity, messageEntityToTlObject, type MessageGetter, type MessageInvoice, type MessageList, type MessageLivePhoto, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageRichText, messageSearchFilterToTlObject, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageViewer, type MessageVoice, type MiniAppInfo, pageBlockToTlObject, type ParseMode, type Poll, type PriceTag, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type RichText, type SavedChats, type SelfDestructOption, selfDestructOptionToInt, serializeFileId, type Sticker, type SummarizedText, type TextToTranslate, toUniqueFileId, type TranslatedText, type Update, type UsernameResolver, type VoiceTranscription } from "../3_types.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, _UploadCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetBlockedUsersParams, GetHistoryParams, GetMessageReactionsParams, GetSavedChatsParams, GetSavedMessagesParams, OpenMiniAppParams, PinMessageParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams as SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendRichTextParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, StartBotParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams } from "./0_params.ts";
+import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, _UploadCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetBlockedUsersParams, GetHistoryParams, GetMessageReactionsParams, GetSavedChatsParams, GetSavedMessagesParams, OpenMiniAppParams, PinMessageParams, SaveDraftParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams as SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendRichTextParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, StartBotParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, checkArray, checkMessageId, checkPhotoName, checkStickerName, getLimit, getUsername, isHttpUrl, toInputChannel } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
@@ -2628,5 +2628,49 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const random_id = getRandomId();
     const reply_to: Api.inputReplyToMessage = { _: "inputReplyToMessage", reply_to_msg_id: replyToMessageId };
     await this.#c.invoke({ _: "messages.sendScreenshotNotification", peer, random_id, reply_to });
+  }
+
+  async saveDraft(chatId: ID, text: string, params?: SaveDraftParams) {
+    this.#c.storage.assertUser("saveDraft");
+    const peer = await this.#c.getInputPeer(chatId);
+    const [message, entities] = this.parseText(text, params);
+    const effect = params?.effectId ? BigInt(params.effectId) : undefined;
+    const media = params?.media ? await this.#resolveInputMedia(params.media) : undefined;
+    const invert_media = params?.isMediaAboveText || undefined;
+    const no_webpage = params?.isLinkPreviewDisabled || undefined;
+    const reply_to = await this.#constructReplyTo(params);
+    await this.#c.invoke({
+      _: "messages.saveDraft",
+      peer,
+      message,
+      effect,
+      entities,
+      media,
+      invert_media,
+      no_webpage,
+      reply_to,
+    });
+  }
+
+  async saveRichTextDraft(chatId: ID, richText: InputRichText, params?: SaveDraftParams) {
+    this.#c.storage.assertUser("saveRichTextDraft");
+    const peer = await this.#c.getInputPeer(chatId);
+    const rich_message = MessageManager.inputRichTextToInputRichMessage(richText);
+    const effect = params?.effectId ? BigInt(params.effectId) : undefined;
+    const media = params?.media ? await this.#resolveInputMedia(params.media) : undefined;
+    const invert_media = params?.isMediaAboveText || undefined;
+    const no_webpage = params?.isLinkPreviewDisabled || undefined;
+    const reply_to = await this.#constructReplyTo(params);
+    await this.#c.invoke({
+      _: "messages.saveDraft",
+      peer,
+      message: "",
+      rich_message,
+      effect,
+      media,
+      invert_media,
+      no_webpage,
+      reply_to,
+    });
   }
 }
