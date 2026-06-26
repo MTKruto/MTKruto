@@ -1532,6 +1532,12 @@ export class Context {
     return await this.client.reportChat(chatId, reason, params);
   }
 
+  /** Context-aware alias for {@link Client.reportReaction}. */
+  async reportReaction(messageId: number, reactionActorId: ID): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.reportReaction(chatId, messageId, reactionActorId);
+  }
+
   /** Context-aware alias for {@link Client.reportStories}. */
   async reportStories(storyIds: number[], params?: ReportStoryParams): Promise<StoryReportResult> {
     const chatId = this.#mustGetChatId();
