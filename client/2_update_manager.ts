@@ -253,7 +253,7 @@ export class UpdateManager {
           }
         }
         if (valid) {
-          this.processUsers(result.users as Api.User[], result);
+          await this.processUsers(result.users as Api.User[], result);
         }
       }
 
@@ -275,7 +275,10 @@ export class UpdateManager {
     }
   }
 
-  processUsers(users: Api.User[], _context: Api.DeserializedType) {
+  async processUsers(users: Api.User[], context: Api.DeserializedType) {
+    for (const { chatId, senderId, messageId } of this.#extractMinPeerReferences(context)) {
+      await this.#c.messageStorage.addMinPeerReference(chatId, senderId, messageId);
+    }
     for (const user of users) {
       this.processUser(user);
     }
@@ -286,7 +289,7 @@ export class UpdateManager {
       return;
     }
     if (user.min) {
-      return; // TODO
+      return;
     }
 
     this.#c.messageStorage.setPeer(user);
@@ -586,7 +589,7 @@ export class UpdateManager {
     /// We process the updates when we are sure there is no gap.
     if (Api.is("updates", updates_) || Api.is("updatesCombined", updates_)) {
       this.processChats(updates_.chats, updates_);
-      this.processUsers(updates_.users, updates_);
+      await this.processUsers(updates_.users, updates_);
       await this.#setUpdateStateDate(updates_.date);
     } else if (
       Api.isOneOf([
@@ -694,7 +697,7 @@ export class UpdateManager {
         }
         if (Api.is("updates.difference", difference) || Api.is("updates.differenceSlice", difference)) {
           this.processChats(difference.chats, difference);
-          this.processUsers(difference.users, difference);
+          await this.processUsers(difference.users, difference);
           for (const message of difference.new_messages) {
             await this.#processUpdates({ _: "updateNewMessage", message, pts: 0, pts_count: 0 }, false);
           }
@@ -764,7 +767,7 @@ export class UpdateManager {
       }
       if (Api.is("updates.channelDifference", difference)) {
         this.processChats(difference.chats, difference);
-        this.processUsers(difference.users, difference);
+        await this.processUsers(difference.users, difference);
         for (const message of difference.new_messages) {
           await this.#processUpdates({ _: "updateNewChannelMessage", message, pts: 0, pts_count: 0 }, false);
         }
@@ -778,7 +781,7 @@ export class UpdateManager {
         // TODO: invalidate messages
         this.#LrecoverChannelUpdateGap.debug("received channelDifferenceTooLong");
         this.processChats(difference.chats, difference);
-        this.processUsers(difference.users, difference);
+        await this.processUsers(difference.users, difference);
         for (const message of difference.messages) {
           await this.#processUpdates({ _: "updateNewChannelMessage", message, pts: 0, pts_count: 0 }, false);
         }

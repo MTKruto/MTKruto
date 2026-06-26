@@ -1118,7 +1118,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
           } else {
             const resolved = await this.invoke({ _: "contacts.resolvePhone", phone: id });
             this.#updateManager.processChats(resolved.chats, resolved);
-            this.#updateManager.processUsers(resolved.users, resolved);
+            await this.#updateManager.processUsers(resolved.users, resolved);
             resolvedId = Api.peerToChatId(resolved.peer);
             this.messageStorage.phoneNumbers.set([id], [resolvedId, new Date()]);
           }
@@ -1132,7 +1132,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
         } else {
           const resolved = await this.invoke({ _: "contacts.resolveUsername", username: id });
           this.#updateManager.processChats(resolved.chats, resolved);
-          this.#updateManager.processUsers(resolved.users, resolved);
+          await this.#updateManager.processUsers(resolved.users, resolved);
           if (Api.is("peerUser", resolved.peer)) {
             resolvedId = Api.peerToChatId(resolved.peer);
           } else if (Api.is("peerChannel", resolved.peer)) {
@@ -1169,16 +1169,15 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     }
 
     if (!Api.is("inputPeerChat", peer) && !peer.access_hash) {
-      // TODO
-      // const chatId = Api.peerToChatId(peer);
-      // const minPeerReference = await this.messageStorage.getLastMinPeerReference(chatId);
-      // if (minPeerReference) {
-      //   const minInputPeer = await this.#getMinInputPeer(canBeInputChannel(peer) ? "channel" : "user", { ...minPeerReference, senderId: chatId });
-      //   if (minInputPeer) {
-      //     this.#Lmin.debug("resolved input min peer", minInputPeer);
-      //     peer = minInputPeer;
-      //   }
-      // }
+      const chatId = Api.peerToChatId(peer);
+      const minPeerReference = await this.messageStorage.getLastMinPeerReference(chatId);
+      if (minPeerReference) {
+        const minInputPeer = await this.#getMinInputPeer(canBeInputChannel(peer) ? "channel" : "user", { ...minPeerReference, senderId: chatId });
+        if (minInputPeer) {
+          this.#Lmin.debug("resolved input min peer", minInputPeer);
+          peer = minInputPeer;
+        }
+      }
     }
 
     return peer;
@@ -1187,7 +1186,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   async #getMinInputPeer(type: "user" | "channel", reference: { chatId: number; senderId: number; messageId: number }): Promise<Api.inputPeerUserFromMessage | Api.inputPeerChannelFromMessage | null> {
     const peer_ = await this.messageStorage.peers.get([reference.chatId]);
     if (peer_ !== null && (peer_[0].type === "channel" || peer_[0].type === "supergroup")) {
-      const peer: Api.inputPeerChannel = { _: "inputPeerChannel", channel_id: BigInt(peer_[0].id), access_hash: peer_[1] };
+      const peer: Api.inputPeerChannel = { _: "inputPeerChannel", channel_id: Api.chatIdToPeerId(peer_[0].id), access_hash: peer_[1] };
       if (type === "user") {
         return { _: "inputPeerUserFromMessage", peer, msg_id: reference.messageId, user_id: Api.chatIdToPeerId(reference.senderId) };
       } else {
@@ -3648,7 +3647,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   async getChatP(chatId: ID): Promise<ChatP> {
     const inputPeer = await this.getInputPeer(chatId);
     const peer = await this.#inputPeerToPeer(inputPeer);
-    const chatP = await this[getPeer](peer);
+    let chatP = await this[getPeer](peer);
+    if (chatP === null) {
+      if (Api.is("inputPeerChannelFromMessage", inputPeer)) {
+        await this.#invoke({ _: "channels.getChannels", id: [toInputChannel(inputPeer)] });
+      } else if (Api.is("inputPeerUserFromMessage", inputPeer)) {
+        await this.#invoke({ _: "users.getUsers", id: [toInputUser(inputPeer)] });
+      }
+      chatP = await this[getPeer](peer);
+    }
+
     if (chatP === null) {
       throw new InputError("Chat not found.");
     }

@@ -74,6 +74,9 @@ export const K = {
     voiceTranscription: (transcriptionId: bigint) => [...K.cache.voiceTranscriptions(), transcriptionId],
     voiceTranscriptionReferences: () => [K.cache.P("voiceTranscriptionReferences")],
     voiceTranscriptionReference: (chatId: number, messageId: number, messageEditDate: number) => [...K.cache.voiceTranscriptionReferences(), chatId, messageId, messageEditDate],
+    minPeerReferences: (): StorageKeyPart[] => [K.cache.P("minPeerReferences")],
+    minPeerReference: (senderId: number, chatId: number) => [...K.cache.minPeerReferences(), senderId, chatId],
+    minPeerReferenceSender: (senderId: number) => [...K.cache.minPeerReferences(), senderId],
   },
   messages: {
     P: (string: string): string => `messages.${string}`,
@@ -557,6 +560,10 @@ export class StorageOperations {
     await this.#deleteByPrefix(K.cache.stickerSetNames());
   }
 
+  async deleteMinPeerReferences() {
+    await this.#deleteByPrefix(K.cache.minPeerReferences());
+  }
+
   async clear() {
     await Promise.all([
       this.deleteMessages(),
@@ -576,6 +583,7 @@ export class StorageOperations {
       this.deletePolls(),
       this.deleteVoiceTranscriptions(),
       this.deleteVoiceTranscriptionReferences(),
+      this.deleteMinPeerReferences(),
     ]);
   }
 
@@ -633,6 +641,21 @@ export class StorageOperations {
 
   async deleteVoiceTranscriptionReferences() {
     await this.#deleteByPrefix(K.cache.voiceTranscriptionReferences());
+  }
+
+  async addMinPeerReference(chatId: number, senderId: number, messageId: number) {
+    await this.#storage.set(K.cache.minPeerReference(senderId, chatId), [{ chatId, messageId }, new Date()]);
+  }
+
+  async getLastMinPeerReference(senderId: number): Promise<{ chatId: number; messageId: number } | null> {
+    const references = new Array<[{ chatId: number; messageId: number }, Date]>();
+    for await (const [, reference] of await this.#storage.getMany<[{ chatId: number; messageId: number }, Date]>({ prefix: K.cache.minPeerReferenceSender(senderId) })) {
+      references.push(reference);
+      if (references.length > 99) {
+        break;
+      }
+    }
+    return references.sort((a, b) => b[1].getTime() - a[1].getTime())[0]?.[0] ?? null;
   }
 }
 
