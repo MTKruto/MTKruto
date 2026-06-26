@@ -1911,6 +1911,18 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("viewMessages", chatId, messageIds);
   }
 
+  /**
+   * Report a message reaction. User-only.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat including the messages.
+   * @param messageId The identifiers of the message.
+   * @param reactionActorId The identifier of the chat that made the reaction.
+   */
+  async reportReaction(chatId: ID, messageId: number, reactionActorId: ID): Promise<void> {
+    return await this.#dispatch("reportReaction", chatId, messageId, reactionActorId);
+  }
+
   //
   // ========================= POLLS ========================= //
   //

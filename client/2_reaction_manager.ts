@@ -20,7 +20,7 @@
 
 import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
-import { constructMessageReaction, constructMessageReactionCount, constructMessageReactions, type Update } from "../3_types.ts";
+import { constructMessageReaction, constructMessageReactionCount, constructMessageReactions, type ID, type Update } from "../3_types.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import type { C } from "./1_types.ts";
 
@@ -95,5 +95,13 @@ export class ReactionManager implements UpdateProcessor<ReactionManagerUpdate, t
     } else {
       unreachable();
     }
+  }
+
+  async reportReaction(chatId: ID, messageId: number, reactionActorId: ID) {
+    this.#c.storage.assertUser("reportReaction");
+    const peer = await this.#c.getInputPeer(chatId);
+    const id = messageId;
+    const reaction_peer = await this.#c.getInputPeer(reactionActorId);
+    await this.#c.invoke({ _: "messages.reportReaction", peer, reaction_peer, id });
   }
 }
