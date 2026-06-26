@@ -19,7 +19,7 @@
  */
 
 import type { Api, Mtproto } from "../2_tl.ts";
-import type { AlbumStoryList, Animation, AppSupport, AuthorizationSession, AvailableReactions, Birthday, BlockedUserList, BotAccessSettings, BotCommand, BotTokenCheckResult, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatActionType, ChatJoinResult, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ClaimedGifts, CodeCheckResult, ConnectedWebsite, Country, EmojiStatus, FailedInvitation, FileSource, Gift, GiftCollection, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputChecklistItem, InputEmojiStatus, InputGift, InputMedia, InputPollOption, InputPrivacyRule, InputRichText, InputSticker, InputStoryContent, InviteLink, JoinRequest, LeftChannelList, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageCounters, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLivePhoto, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageRichText, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageViewer, MessageVoice, MiniAppInfo, NetworkStatistics, PasswordCheckResult, Poll, PollVoterList, PremiumSubscriptionDuration, PriceTag, PrivacyRule, ProfilePhotoList, Reaction, RecentActionsEntry, ReportReason, ResolvedInviteLink, RichText, SavedChats, SecretChat, SlowModeDuration, StarAmount, StarTransactionList, Sticker, StickerSet, StickerSetP, Story, StoryAlbum, StoryReportResult, SummarizedText, TextToTranslate, Timezone, Topic, TopicList, TopicListItem, TranslatedText, Translation, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
+import type { AlbumStoryList, Animation, AppSupport, AuthorizationSession, AvailableReactions, Birthday, BlockedUserList, BotAccessSettings, BotCommand, BotTokenCheckResult, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatActionType, ChatJoinResult, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ClaimedGifts, CodeCheckResult, ConnectedWebsite, Country, EmojiStatus, FailedInvitation, FileSource, Gift, GiftCollection, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputChecklistItem, InputEmojiStatus, InputGift, InputMedia, InputPollOption, InputPrivacyRule, InputRichText, InputSticker, InputStoryContent, InviteLink, JoinRequest, LeftChannelList, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageCounters, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLivePhoto, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageRichText, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageViewer, MessageVoice, MiniAppInfo, NetworkStatistics, PasswordCheckResult, Poll, PollVoterList, PremiumSubscriptionDuration, PriceTag, PrivacyRule, PrivacySettingKey, ProfilePhotoList, Reaction, RecentActionsEntry, ReportReason, ResolvedInviteLink, RichText, SavedChats, SecretChat, SlowModeDuration, StarAmount, StarTransactionList, Sticker, StickerSet, StickerSetP, Story, StoryAlbum, StoryReportResult, SummarizedText, TextToTranslate, Timezone, Topic, TopicList, TopicListItem, TranslatedText, Translation, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
 import type { AddBotToAttachmentsMenuParams, AddChatMemberParams, AddContactParams, AddReactionParams, AddStickerToStickerSetParams, AllowUnpaidMessagesFromUserParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, BoostChatParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStickerSetParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteAccountParams, DeleteMessageParams, DeleteMessagesParams, DisallowUnpaidMessagesFromUserParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageRichTextParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, EndSecretChatParams, EndTakeoutSessionParams, ForwardMessagesParams, GetAdministeredChatsParams, GetBlockedUsersParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLeftChannelsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetPollVotersParams, GetProfilePhotosParams, GetRecentActionsParams, GetSavedChatsParams, GetSavedMessagesParams, GetStarTransactionsParams, GetTopicsParams, GetTranslationsParams, GiftPremiumSubscriptionParams, InvokeParams, JoinVideoChatParams, MarkAllMentionsAsReadParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, RemoveProfilePhotoParams, ReplaceStickerInStickerSetParams, ReportChatParams, ReportStoryParams, ResolveUsernameParams, SaveDraftParams, SaveRichTextDraftParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLivePhotoParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendRichTextParams, SendSecretAnimationParams, SendSecretAudioParams, SendSecretContactParams, SendSecretDocumentParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretPhotoParams, SendSecretStickerParams, SendSecretVenueParams, SendSecretVideoNoteParams, SendSecretVideoParams, SendSecretVoiceParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetContactNoteParams, SetEmojiStatusParams, SetLocationParams, SetManagedBotAccessSettingsParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetWorkingHoursParams, SignInParams, StartBotParams, StartTakeoutSessionParams, StartVideoChatParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
 
 /** A generic MTKruto client. */
@@ -302,20 +302,6 @@ export abstract class ClientGeneric {
   abstract getAuthorizationSessions(): Promise<AuthorizationSession[]>;
 
   /**
-   * Get the current bio privacy setting. User-only.
-   *
-   * @method ac
-   */
-  abstract getBioPrivacy(): Promise<PrivacyRule[]>;
-
-  /**
-   * Get the current birthday privacy setting. User-only.
-   *
-   * @method ac
-   */
-  abstract getBirthdayPrivacy(): Promise<PrivacyRule[]>;
-
-  /**
    * Get blocked users. User-only.
    *
    * @method ac
@@ -353,41 +339,6 @@ export abstract class ClientGeneric {
   abstract getCountryCode(): Promise<string>;
 
   /**
-   * Get the current find by phone number privacy setting. User-only.
-   *
-   * @method ac
-   */
-  abstract getFindByPhoneNumberPrivacy(): Promise<PrivacyRule[]>;
-
-  /**
-   * Get the current forwards privacy setting. User-only.
-   *
-   * @method ac
-   */
-  abstract getForwardsPrivacy(): Promise<PrivacyRule[]>;
-
-  /**
-   * Get the current gifts privacy setting. User-only.
-   *
-   * @method ac
-   */
-  abstract getGiftsPrivacy(): Promise<PrivacyRule[]>;
-
-  /**
-   * Get the current invitation privacy setting. User-only.
-   *
-   * @method ac
-   */
-  abstract getInvitationPrivacy(): Promise<PrivacyRule[]>;
-
-  /**
-   * Get the current last seen privacy setting. User-only.
-   *
-   * @method ac
-   */
-  abstract getLastSeenPrivacy(): Promise<PrivacyRule[]>;
-
-  /**
    * Get information on the currently authorized user.
    *
    * @method ac
@@ -403,13 +354,6 @@ export abstract class ClientGeneric {
   abstract getOwnedBots(): Promise<User[]>;
 
   /**
-   * Get the current paid message exception privacy setting. User-only.
-   *
-   * @method ac
-   */
-  abstract getPaidMessageExceptionPrivacy(): Promise<PrivacyRule[]>;
-
-  /**
    * Get the user account password's hint.
    *
    * @method ac
@@ -417,32 +361,12 @@ export abstract class ClientGeneric {
   abstract getPasswordHint(): Promise<string | null>;
 
   /**
-   * Get the current peer-to-peer call privacy setting. User-only.
+   * Get a privacy setting. User-only.
    *
+   * @param key The key of the privacy setting.
    * @method ac
    */
-  abstract getPeerToPeerCallPrivacy(): Promise<PrivacyRule[]>;
-
-  /**
-   * Get the current phone call privacy setting. User-only.
-   *
-   * @method ac
-   */
-  abstract getPhoneCallPrivacy(): Promise<PrivacyRule[]>;
-
-  /**
-   * Get the current phone number privacy setting. User-only.
-   *
-   * @method ac
-   */
-  abstract getPhoneNumberPrivacy(): Promise<PrivacyRule[]>;
-
-  /**
-   * Get the current profile photo privacy setting. User-only.
-   *
-   * @method ac
-   */
-  abstract getProfilePhotoPrivacy(): Promise<PrivacyRule[]>;
+  abstract getPrivacySetting(key: PrivacySettingKey): Promise<PrivacyRule[]>;
 
   /**
    * Get the profile photos of a user.
@@ -460,25 +384,11 @@ export abstract class ClientGeneric {
   abstract getRecentEmojiStatuses(): Promise<EmojiStatus[]>;
 
   /**
-   * Get the current saved music privacy setting. User-only.
-   *
-   * @method ac
-   */
-  abstract getSavedMusicPrivacy(): Promise<PrivacyRule[]>;
-
-  /**
    * Get timezones. User-only.
    *
    * @method ac
    */
   abstract getTimezones(): Promise<Timezone[]>;
-
-  /**
-   * Get the current voice message privacy setting. User-only.
-   *
-   * @method ac
-   */
-  abstract getVoiceMessagePrivacy(): Promise<PrivacyRule[]>;
 
   /**
    * Hide a username from the current account, a bot account, a supergroup, or a channel's profile. User-only.
@@ -609,27 +519,11 @@ export abstract class ClientGeneric {
   abstract setAccountTtl(dayCount: number): Promise<void>;
 
   /**
-   * Set bio privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setBioPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
-
-  /**
    * Set the birthday of the current user. User-only.
    *
    * @method ac
    */
   abstract setBirthday(params?: SetBirthdayParams): Promise<void>;
-
-  /**
-   * Set birthday privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setBirthdayPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
 
   /**
    * Set the emoji status of a channel. User-only.
@@ -657,52 +551,12 @@ export abstract class ClientGeneric {
   abstract setEmojiStatus(emojiStatus: InputEmojiStatus, params?: SetEmojiStatusParams): Promise<void>;
 
   /**
-   * Set find by phone number privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setFindByPhoneNumberPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
-
-  /**
-   * Set forwards privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setForwardsPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
-
-  /**
-   * Set gifts privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setGiftsPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
-
-  /**
-   * Set invitation privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setInvitationPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
-
-  /**
    * Set the current account's online status. User-only.
    *
    * @method ac
    * @param isOnline The new online status.
    */
   abstract setIsOnline(isOnline: boolean): Promise<void>;
-
-  /**
-   * Set last seen privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setLastSeenPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
 
   /**
    * Set the location of the current user. User-only.
@@ -720,22 +574,6 @@ export abstract class ClientGeneric {
   abstract setNameColor(color: number, params?: SetNameColorParams): Promise<void>;
 
   /**
-   * Set paid message exception privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setPaidMessageExceptionPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
-
-  /**
-   * Set peer-to-peer call privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setPeerToPeerCallPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
-
-  /**
    * Set the personal channel of the current user. User-only.
    *
    * @method ac
@@ -743,20 +581,13 @@ export abstract class ClientGeneric {
   abstract setPersonalChannel(params?: SetPersonalChannelParams): Promise<void>;
 
   /**
-   * Set phone call privacy setting. User-only.
+   * Set a privacy setting. User-only.
    *
+   * @param key The key of the privacy setting.
    * @param rules The rules to set.
    * @method ac
    */
-  abstract setPhoneCallPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
-
-  /**
-   * Set phone number privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setPhoneNumberPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
+  abstract setPrivacySetting(key: PrivacySettingKey, rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
 
   /**
    * Set the profile color of the current user. User-only.
@@ -765,22 +596,6 @@ export abstract class ClientGeneric {
    * @param color The identifier of the color to set.
    */
   abstract setProfileColor(color: number, params?: SetProfileColorParams): Promise<void>;
-
-  /**
-   * Set profile photo privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setProfilePhotoPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
-
-  /**
-   * Set saved music privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setSavedMusicPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
 
   /**
    * Set the emoji status of a bot's user. Bot-only.
@@ -798,14 +613,6 @@ export abstract class ClientGeneric {
    * @param username The username to set.
    */
   abstract setUsername(username: string): Promise<void>;
-
-  /**
-   * Set voice message privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  abstract setVoiceMessagePrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]>;
 
   /**
    * Set the working hours of the current user. User-only.

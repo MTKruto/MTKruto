@@ -64,6 +64,7 @@ export * from "./types/0_parse_mode.ts";
 export * from "./types/0_password_check_result.ts";
 export * from "./types/0_premium_subscription_duration.ts";
 export * from "./types/0_price_tag.ts";
+export * from "./types/0_privacy_setting_key.ts";
 export * from "./types/0_reaction.ts";
 export * from "./types/0_refunded_payment.ts";
 export * from "./types/0_report_reason.ts";

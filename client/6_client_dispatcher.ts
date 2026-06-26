@@ -21,7 +21,7 @@
 import { getLogger, type Logger } from "../1_utilities.ts";
 import type { Api, Mtproto } from "../2_tl.ts";
 import type { DC } from "../3_transport.ts";
-import type { AlbumStoryList, Animation, AppSupport, AuthorizationSession, AvailableReactions, Birthday, BlockedUserList, BotAccessSettings, BotCommand, BotTokenCheckResult, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatActionType, ChatJoinResult, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ClaimedGifts, CodeCheckResult, ConnectedWebsite, Country, EmojiStatus, FailedInvitation, FileSource, Gift, GiftCollection, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputChecklistItem, InputEmojiStatus, InputGift, InputMedia, InputPollOption, InputPrivacyRule, InputRichText, InputSticker, InputStoryContent, InviteLink, JoinRequest, LeftChannelList, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageCounters, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLivePhoto, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageRichText, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageViewer, MessageVoice, MiniAppInfo, NetworkStatistics, ParseMode, PasswordCheckResult, Poll, PollVoterList, PremiumSubscriptionDuration, PriceTag, PrivacyRule, ProfilePhotoList, Reaction, RecentActionsEntry, ReportReason, ResolvedInviteLink, RichText, SavedChats, SecretChat, SlowModeDuration, StarAmount, StarTransactionList, Sticker, StickerSet, StickerSetP, Story, StoryAlbum, StoryReportResult, SummarizedText, TextToTranslate, Timezone, Topic, TopicList, TopicListItem, TranslatedText, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
+import type { AlbumStoryList, Animation, AppSupport, AuthorizationSession, AvailableReactions, Birthday, BlockedUserList, BotAccessSettings, BotCommand, BotTokenCheckResult, BusinessConnection, CallbackQueryAnswer, CallbackQueryQuestion, Chat, ChatActionType, ChatJoinResult, ChatListItem, ChatMember, ChatP, ChatPChannel, ChatPGroup, ChatPPrivate, ChatPSupergroup, ChatSettings, ClaimedGifts, CodeCheckResult, ConnectedWebsite, Country, EmojiStatus, FailedInvitation, FileSource, Gift, GiftCollection, ID, InactiveChat, InlineQueryAnswer, InlineQueryResult, InputChecklistItem, InputEmojiStatus, InputGift, InputMedia, InputPollOption, InputPrivacyRule, InputRichText, InputSticker, InputStoryContent, InviteLink, JoinRequest, LeftChannelList, LinkPreview, LiveStreamChannel, Message, MessageAnimation, MessageAudio, MessageChecklist, MessageContact, MessageCounters, MessageDice, MessageDocument, MessageInvoice, MessageList, MessageLivePhoto, MessageLocation, MessagePhoto, MessagePoll, MessageReactionList, MessageRichText, MessageSticker, MessageText, MessageVenue, MessageVideo, MessageVideoNote, MessageViewer, MessageVoice, MiniAppInfo, NetworkStatistics, ParseMode, PasswordCheckResult, Poll, PollVoterList, PremiumSubscriptionDuration, PriceTag, PrivacyRule, PrivacySettingKey, ProfilePhotoList, Reaction, RecentActionsEntry, ReportReason, ResolvedInviteLink, RichText, SavedChats, SecretChat, SlowModeDuration, StarAmount, StarTransactionList, Sticker, StickerSet, StickerSetP, Story, StoryAlbum, StoryReportResult, SummarizedText, TextToTranslate, Timezone, Topic, TopicList, TopicListItem, TranslatedText, Translation, Update, User, VideoChat, VideoChatActive, VideoChatScheduled, VoiceTranscription } from "../3_types.ts";
 import { DOWNLOAD_MAX_CHUNK_SIZE } from "../4_constants.ts";
 import type { AddBotToAttachmentsMenuParams, AddChatMemberParams, AddContactParams, AddReactionParams, AddStickerToStickerSetParams, AllowUnpaidMessagesFromUserParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, BoostChatParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStickerSetParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteAccountParams, DeleteMessageParams, DeleteMessagesParams, DisallowUnpaidMessagesFromUserParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageRichTextParams, EditMessageTextParams, EditTopicParams, EnableSignaturesParams, EndSecretChatParams, EndTakeoutSessionParams, ForwardMessagesParams, GetAdministeredChatsParams, GetBlockedUsersParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLeftChannelsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetPollVotersParams, GetProfilePhotosParams, GetRecentActionsParams, GetSavedChatsParams, GetSavedMessagesParams, GetStarTransactionsParams, GetTopicsParams, GetTranslationsParams, GiftPremiumSubscriptionParams, InvokeParams, JoinVideoChatParams, MarkAllMentionsAsReadParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, RemoveProfilePhotoParams, ReplaceStickerInStickerSetParams, ReportChatParams, ReportStoryParams, ResolveUsernameParams, SaveDraftParams, SaveRichTextDraftParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLivePhotoParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendRichTextParams, SendSecretAnimationParams, SendSecretAudioParams, SendSecretContactParams, SendSecretDocumentParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretPhotoParams, SendSecretStickerParams, SendSecretVenueParams, SendSecretVideoNoteParams, SendSecretVideoParams, SendSecretVoiceParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetContactNoteParams, SetEmojiStatusParams, SetLocationParams, SetManagedBotAccessSettingsParams, SetMyCommandsParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetWorkingHoursParams, SignInParams, StartBotParams, StartTakeoutSessionParams, StartVideoChatParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
 import { deserializeWorkerError, type WorkerError } from "./0_worker_error.ts";
@@ -548,24 +548,6 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Get the current bio privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getBioPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getBioPrivacy");
-  }
-
-  /**
-   * Get the current birthday privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getBirthdayPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getBirthdayPrivacy");
-  }
-
-  /**
    * Get blocked users. User-only.
    *
    * @method ac
@@ -613,51 +595,6 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Get the current find by phone number privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getFindByPhoneNumberPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getFindByPhoneNumberPrivacy");
-  }
-
-  /**
-   * Get the current forwards privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getForwardsPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getForwardsPrivacy");
-  }
-
-  /**
-   * Get the current gifts privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getGiftsPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getGiftsPrivacy");
-  }
-
-  /**
-   * Get the current invitation privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getInvitationPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getInvitationPrivacy");
-  }
-
-  /**
-   * Get the current last seen privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getLastSeenPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getLastSeenPrivacy");
-  }
-
-  /**
    * Get information on the currently authorized user.
    *
    * @method ac
@@ -677,15 +614,6 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Get the current paid message exception privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getPaidMessageExceptionPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getPaidMessageExceptionPrivacy");
-  }
-
-  /**
    * Get the user account password's hint.
    *
    * @method ac
@@ -695,39 +623,13 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Get the current peer-to-peer call privacy setting. User-only.
+   * Get a privacy setting. User-only.
    *
+   * @param key The key of the privacy setting.
    * @method ac
    */
-  async getPeerToPeerCallPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getPeerToPeerCallPrivacy");
-  }
-
-  /**
-   * Get the current phone call privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getPhoneCallPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getPhoneCallPrivacy");
-  }
-
-  /**
-   * Get the current phone number privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getPhoneNumberPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getPhoneNumberPrivacy");
-  }
-
-  /**
-   * Get the current profile photo privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getProfilePhotoPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getProfilePhotoPrivacy");
+  async getPrivacySetting(key: PrivacySettingKey): Promise<PrivacyRule[]> {
+    return await this.#dispatch("getPrivacySetting", key);
   }
 
   /**
@@ -750,30 +652,12 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Get the current saved music privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getSavedMusicPrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getSavedMusicPrivacy");
-  }
-
-  /**
    * Get timezones. User-only.
    *
    * @method ac
    */
   async getTimezones(): Promise<Timezone[]> {
     return await this.#dispatch("getTimezones");
-  }
-
-  /**
-   * Get the current voice message privacy setting. User-only.
-   *
-   * @method ac
-   */
-  async getVoiceMessagePrivacy(): Promise<PrivacyRule[]> {
-    return await this.#dispatch("getVoiceMessagePrivacy");
   }
 
   /**
@@ -937,32 +821,12 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Set bio privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setBioPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setBioPrivacy", rules);
-  }
-
-  /**
    * Set the birthday of the current user. User-only.
    *
    * @method ac
    */
   async setBirthday(params?: SetBirthdayParams): Promise<void> {
     return await this.#dispatch("setBirthday", params);
-  }
-
-  /**
-   * Set birthday privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setBirthdayPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setBirthdayPrivacy", rules);
   }
 
   /**
@@ -997,46 +861,6 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Set find by phone number privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setFindByPhoneNumberPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setFindByPhoneNumberPrivacy", rules);
-  }
-
-  /**
-   * Set forwards privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setForwardsPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setForwardsPrivacy", rules);
-  }
-
-  /**
-   * Set gifts privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setGiftsPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setGiftsPrivacy", rules);
-  }
-
-  /**
-   * Set invitation privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setInvitationPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setInvitationPrivacy", rules);
-  }
-
-  /**
    * Set the current account's online status. User-only.
    *
    * @method ac
@@ -1044,16 +868,6 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async setIsOnline(isOnline: boolean): Promise<void> {
     return await this.#dispatch("setIsOnline", isOnline);
-  }
-
-  /**
-   * Set last seen privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setLastSeenPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setLastSeenPrivacy", rules);
   }
 
   /**
@@ -1076,26 +890,6 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Set paid message exception privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setPaidMessageExceptionPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setPaidMessageExceptionPrivacy", rules);
-  }
-
-  /**
-   * Set peer-to-peer call privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setPeerToPeerCallPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setPeerToPeerCallPrivacy", rules);
-  }
-
-  /**
    * Set the personal channel of the current user. User-only.
    *
    * @method ac
@@ -1105,23 +899,14 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Set phone call privacy setting. User-only.
+   * Set a privacy setting. User-only.
    *
+   * @param key The key of the privacy setting.
    * @param rules The rules to set.
    * @method ac
    */
-  async setPhoneCallPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setPhoneCallPrivacy", rules);
-  }
-
-  /**
-   * Set phone number privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setPhoneNumberPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setPhoneNumberPrivacy", rules);
+  async setPrivacySetting(key: PrivacySettingKey, rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    return await this.#dispatch("setPrivacySetting", key, rules);
   }
 
   /**
@@ -1132,26 +917,6 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async setProfileColor(color: number, params?: SetProfileColorParams): Promise<void> {
     return await this.#dispatch("setProfileColor", color, params);
-  }
-
-  /**
-   * Set profile photo privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setProfilePhotoPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setProfilePhotoPrivacy", rules);
-  }
-
-  /**
-   * Set saved music privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setSavedMusicPrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setSavedMusicPrivacy", rules);
   }
 
   /**
@@ -1173,16 +938,6 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async setUsername(username: string): Promise<void> {
     return await this.#dispatch("setUsername", username);
-  }
-
-  /**
-   * Set voice message privacy setting. User-only.
-   *
-   * @param rules The rules to set.
-   * @method ac
-   */
-  async setVoiceMessagePrivacy(rules: InputPrivacyRule[]): Promise<PrivacyRule[]> {
-    return await this.#dispatch("setVoiceMessagePrivacy", rules);
   }
 
   /**
