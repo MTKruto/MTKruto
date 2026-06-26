@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { type AvailableReactions, availableReactionsToTlObject, chatAdministratorRightsToTlObject, type ChatP, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, constructJoinRequest2, constructRecentActionsEntry, constructResolvedInviteLink, reportReasonToTlObject, type SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
+import { type AvailableReactions, availableReactionsToTlObject, chatAdministratorRightsToTlObject, type ChatJoinResult, type ChatP, constructChatJoinResult, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, constructJoinRequest2, constructRecentActionsEntry, constructResolvedInviteLink, reportReasonToTlObject, type SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
 import { chatMemberRightsToTlObject, type FileSource, type ID, type ReportReason, type Update } from "../3_types.ts";
 import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, BoostChatParams, CreateInviteLinkParams, DeclineJoinRequestsParams, EnableSignaturesParams, GetAdministeredChatsParams, GetCreatedInviteLinksParams, GetJoinRequestsParams, GetRecentActionsParams, MarkAllMentionsAsReadParams, PromoteChatMemberParams, ReportChatParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
@@ -152,15 +152,17 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
   }
 
   // JOINING AND LEAVING CHATS //
-  async joinChat(chatId: ID) {
+  async joinChat(chatId: ID): Promise<ChatJoinResult> {
     this.#c.storage.assertUser("joinChat");
     const peer = await this.#c.getInputPeer(chatId);
     if (canBeInputUser(peer)) {
       throw new InputError("Cannot join private chats.");
     } else if (canBeInputChannel(peer)) {
-      await this.#c.invoke({ _: "channels.joinChannel", channel: toInputChannel(peer) });
+      const result = await this.#c.invoke({ _: "channels.joinChannel", channel: toInputChannel(peer) });
+      return constructChatJoinResult(result, this.#c.getPeer);
     } else if (Api.is("inputPeerChat", peer)) {
       await this.#c.invoke({ _: "messages.addChatUser", chat_id: peer.chat_id, user_id: { _: "inputUserSelf" }, fwd_limit: 0 }); // TODO: use potential high-level method for adding participants to chats
+      return { type: "joined" };
     } else {
       unreachable();
     }

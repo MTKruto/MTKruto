@@ -145,6 +145,7 @@ export * from "./types/3_app_support.ts";
 export * from "./types/3_blocked_user.ts";
 export * from "./types/3_bot_access_settings.ts";
 export * from "./types/3_business_connection.ts";
+export * from "./types/3_chat_join_result.ts";
 export * from "./types/3_chat_settings.ts";
 export * from "./types/3_checklist_item.ts";
 export * from "./types/3_chosen_inline_result.ts";
