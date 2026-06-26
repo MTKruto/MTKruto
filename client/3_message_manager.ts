@@ -790,7 +790,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   async #sendDocumentInner(chatId: ID, document: FileSource, params: SendDocumentParams & _SpoilCommon | undefined, fileType: FileType, otherAttribs: Api.DocumentAttribute[], urlSupported = true, expectedMimeTypes?: string[], createName?: (firstPart: Uint8Array) => string) {
     let media: Api.InputMedia | null = null;
     const spoiler = params?.isSpoiler || undefined;
-    const ttl_seconds = params && "selfDestruct" in params && typeof params.selfDestruct !== undefined ? selfDestructOptionToInt(params.selfDestruct as SelfDestructOption) : undefined;
+    const ttl_seconds = params && "selfDestruct" in params && params.selfDestruct !== undefined ? selfDestructOptionToInt(params.selfDestruct as SelfDestructOption) : undefined;
 
     if (typeof document === "string") {
       const fileId = this.resolveFileId(document, fileType);
