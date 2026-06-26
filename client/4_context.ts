@@ -893,7 +893,7 @@ export class Context {
     return await this.client.enableTopics(chatId, isShownAsTabs);
   }
 
-  /** Context-aware alias for {@link Client.acceptSecretChat}. */
+  /** Context-aware alias for {@link Client.endSecretChat}. */
   async endSecretChat(params?: EndSecretChatParams): Promise<SecretChat> {
     const id = this.#mustGetSecretChatId();
     return await this.client.endSecretChat(id, params);
@@ -962,7 +962,7 @@ export class Context {
     return await this.client.getClaimedGifts(chatId, params);
   }
 
-  /** Context-aware alias for {@link Client.getChatSettings}. */
+  /** Context-aware alias for {@link Client.getCommonChats}. */
   async getCommonChats(): Promise<ChatP[]> {
     const chatId = this.#mustGetChatId();
     return await this.client.getCommonChats(chatId);
@@ -1112,7 +1112,7 @@ export class Context {
     return await this.client.getTonBalance(chatId);
   }
 
-  /** Context-aware alias for {@link Client.topicId}. */
+  /** Context-aware alias for {@link Client.getTopic}. */
   async getTopic(topicId: number): Promise<TopicListItem | null> {
     const chatId = this.#mustGetChatId();
     return await this.client.getTopic(chatId, topicId);
@@ -1430,7 +1430,7 @@ export class Context {
   async replySecretAnimation(animation: FileSource, params?: Omit<SendSecretAnimationParams, "replyToMessageId"> & ReplyParams): Promise<void> {
     const { chatId, messageId } = this.#mustGetSecretMsg();
     const replyToMessageId = params?.isQuoted ? messageId : undefined;
-    return await this.client.sendSecretVideoNote(chatId, animation, { ...params, replyToMessageId });
+    return await this.client.sendSecretAnimation(chatId, animation, { ...params, replyToMessageId });
   }
 
   /** Context-aware alias for {@link Client.sendSecretAudio}. */

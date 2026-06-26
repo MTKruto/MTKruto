@@ -46,7 +46,7 @@ export class GiftCollectionManager {
   }
 
   async setGiftCollectionName(chatId: ID, collectionId: number, name: string): Promise<GiftCollection> {
-    this.#c.storage.assertUser("setGiftCollectionTitle");
+    this.#c.storage.assertUser("setGiftCollectionName");
     const peer = await this.#c.getInputPeer(chatId);
     const collection_id = collectionId;
     const title = name;

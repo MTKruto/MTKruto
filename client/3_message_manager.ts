@@ -1592,7 +1592,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   }
 
   async deleteScheduledMessages(chatId: ID, messageIds: number[]) {
-    this.#c.storage.assertUser("sendScheduledMessage");
+    this.#c.storage.assertUser("deleteScheduledMessages");
     checkArray(messageIds, checkMessageId);
     const peer = await this.#c.getInputPeer(chatId);
     await this.#c.invoke({ _: "messages.deleteScheduledMessages", peer, id: messageIds });

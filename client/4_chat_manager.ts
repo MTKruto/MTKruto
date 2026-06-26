@@ -263,7 +263,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
 
   // CHAT SETTINGS //
   async setAvailableReactions(chatId: ID, availableReactions: AvailableReactions) {
-    this.#c.storage.assertUser("setSendAs");
+    this.#c.storage.assertUser("setAvailableReactions");
     const peer = await this.#c.getInputPeer(chatId);
     await this.#c.invoke({ _: "messages.setChatAvailableReactions", peer, available_reactions: availableReactionsToTlObject(availableReactions), paid_enabled: availableReactions.type === "all" ? true : availableReactions.type === "some" ? availableReactions.reactions.some((v) => v.type === "paid") : undefined, reactions_limit: "maxReactionCount" in availableReactions ? availableReactions.maxReactionCount : undefined });
   }
@@ -429,7 +429,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
   }
 
   async transferChatOwnership(chatId: ID, userId: ID, password: string) {
-    this.#c.storage.assertUser("transferChat");
+    this.#c.storage.assertUser("transferChatOwnership");
     const user_id = await this.#c.getInputUser(userId);
     const isSelf = Api.is("inputUserSelf", user_id);
     if (isSelf || Api.peerToChatId(user_id) === await this.#c.getSelfId()) {
@@ -566,7 +566,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
   }
 
   async setDefaultSendAs(chatId: ID, sendAs: ID) {
-    this.#c.storage.assertUser("setSendAs");
+    this.#c.storage.assertUser("setDefaultSendAs");
     const peer = await this.#c.getInputPeer(chatId);
     const send_as = await this.#c.getInputPeer(sendAs);
     await this.#c.invoke({ _: "messages.saveDefaultSendAs", peer, send_as });

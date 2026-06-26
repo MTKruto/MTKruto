@@ -123,7 +123,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
   }
 
   async setIsOnline(isOnline: boolean) {
-    this.#c.storage.assertUser("setOnline");
+    this.#c.storage.assertUser("setIsOnline");
     await this.#c.invoke({ _: "account.updateStatus", offline: !isOnline });
   }
 
@@ -474,7 +474,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
   }
 
   async removeBotFromAttachmentsMenu(botId: ID) {
-    this.#c.storage.assertUser("addBotToAttachmentsMenu");
+    this.#c.storage.assertUser("removeBotFromAttachmentsMenu");
     await this.#toggleBotAddedToAttachmentsMenu(botId, false, false);
   }
 
@@ -592,13 +592,13 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
   }
 
   async disconnectConnectedWebsite(id: string) {
-    this.#c.storage.assertUser("disconnectWebsite");
+    this.#c.storage.assertUser("disconnectConnectedWebsite");
     const hash = BigInt(id);
     await this.#c.invoke({ _: "account.resetWebAuthorization", hash });
   }
 
   async disconnectConnectedWebsites() {
-    this.#c.storage.assertUser("disconnectWebsites");
+    this.#c.storage.assertUser("disconnectConnectedWebsites");
     await this.#c.invoke({ _: "account.resetWebAuthorizations" });
   }
 
