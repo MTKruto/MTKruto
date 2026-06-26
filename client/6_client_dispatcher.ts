@@ -58,7 +58,7 @@ export interface ClientDispatcherParams {
   defaultHandlers?: boolean;
   /** Whether outgoing messages should be sent as high-level updates. Outgoing bot business messages will never be sent. Defaults to `false`. */
   outgoingMessages?: boolean;
-  /** Whether to guarantee that order-sensitive updates are delivered at least once before delivering next ones. Useful mainly for clients providing a user interface à la Telegram Desktop. Defaults to `false`. */
+  /** Whether to guarantee that order-sensitive updates are delivered at least once before delivering the next ones. Useful mainly for clients providing a user interface à la Telegram Desktop. Defaults to `false`. */
   guaranteeUpdateDelivery?: boolean;
   /** Whether to ignore updates received while the client was not running. Defaults to `true` for bots and `false` for users. */
   dropPendingUpdates?: boolean;
@@ -4167,7 +4167,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * Suggest a sticker set slug from its title.
    *
    * @method ss
-   * @param title A title of a sticker set.
+   * @param title A sticker set title.
    * @returns The suggested slug.
    */
   async suggestStickerSetSlug(title: string): Promise<string> {

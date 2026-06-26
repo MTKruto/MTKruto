@@ -5220,7 +5220,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * Suggest a sticker set slug from its title.
    *
    * @method ss
-   * @param title A title of a sticker set.
+   * @param title A sticker set title.
    * @returns The suggested slug.
    */
   async suggestStickerSetSlug(title: string): Promise<string> {
