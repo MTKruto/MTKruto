@@ -23,7 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { PasswordHashInvalid, PhoneCodeInvalid, SessionPasswordNeeded } from "../3_errors.ts";
 import { type Birthday, birthdayToTlObject, type BotTokenCheckResult, type CodeCheckResult, constructAppSupport, constructAuthorizationSession, constructConnectedWebsite, constructCountry, constructEmojiStatus, constructInactiveChat, constructProfilePhotoList, constructTimezone, constructUser, constructUser2, type FileSource, type ID, type InputEmojiStatus, type PasswordCheckResult, type Update, workingHoursToTlObject } from "../3_types.ts";
-import type { AddBotToAttachmentsMenuParams, CheckUsernameParams, DeleteAccountParams, GetProfilePhotosParams, RemoveProfilePhotoParams, ResolveUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
+import type { AddBotToAttachmentsMenuParams, AllowUnpaidMessagesFromUserParams, CheckUsernameParams, DeleteAccountParams, DisallowUnpaidMessagesFromUserParams, GetProfilePhotosParams, RemoveProfilePhotoParams, ResolveUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, canBeInputUser, checkPhotoName, getLimit, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -641,5 +641,21 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
   async getApplicationConfiguration() {
     const result = Api.as("help.appConfig", await this.#c.invoke({ _: "help.getAppConfig", hash: 0 }));
     return AccountManager.#parseJsonValue(result.config);
+  }
+
+  async allowUnpaidMessagesFromUser(userId: ID, params?: AllowUnpaidMessagesFromUserParams) {
+    this.#c.storage.assertUser("allowUnpaidMessagesFromUser");
+    const user_id = await this.#c.getInputUser(userId);
+    const parent_peer = params?.parentChatId ? await this.#c.getInputPeer(params.parentChatId) : undefined;
+    const refund_charged = !!params?.isRefunded || undefined;
+    this.#c.invoke({ _: "account.toggleNoPaidMessagesException", user_id, parent_peer, refund_charged });
+  }
+
+  async disallowUnpaidMessagesFromUser(userId: ID, params?: DisallowUnpaidMessagesFromUserParams) {
+    this.#c.storage.assertUser("disallowUnpaidMessagesFromUser");
+    const user_id = await this.#c.getInputUser(userId);
+    const parent_peer = params?.parentChatId ? await this.#c.getInputPeer(params.parentChatId) : undefined;
+    const require_payment = true;
+    this.#c.invoke({ _: "account.toggleNoPaidMessagesException", user_id, parent_peer, require_payment });
   }
 }

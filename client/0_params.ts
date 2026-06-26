@@ -1272,3 +1272,12 @@ export interface BoostChatParams {
   /** The slots to assign. */
   slots?: number[];
 }
+
+export interface AllowUnpaidMessagesFromUserParams {
+  parentChatId?: ID;
+  isRefunded?: boolean;
+}
+
+export interface DisallowUnpaidMessagesFromUserParams {
+  parentChatId?: ID;
+}
