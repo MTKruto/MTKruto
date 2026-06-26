@@ -1583,7 +1583,7 @@ export class Context {
   /** Context-aware alias for {@link Client.addContact}. */
   async saveDraft(text: string, params?: SaveDraftParams): Promise<void> {
     const chatId = this.#mustGetChatId();
-    return await this.client.saveRichTextDraft(chatId, text, params);
+    return await this.client.saveDraft(chatId, text, params);
   }
 
   /** Context-aware alias for {@link Client.saveRichTextDraft}. */
