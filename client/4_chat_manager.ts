@@ -568,7 +568,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     const peer = await this.#c.getInputPeer(chatId);
     const reason = reportReasonToTlObject(reason_);
     const message = params?.text ?? "";
-    this.#c.invoke({ _: "account.reportPeer", peer, reason, message });
+    await this.#c.invoke({ _: "account.reportPeer", peer, reason, message });
   }
 
   async #setIsChatUnread(chatId: ID, isUnread: boolean) {
