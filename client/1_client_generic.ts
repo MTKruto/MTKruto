@@ -3078,7 +3078,7 @@ export abstract class ClientGeneric {
    * Reorder gift collections. User-only.
    *
    * @method gc
-   * @param chatId The identifier of the chat that includes the gift collection.
+   * @param chatId The identifier of the chat that includes the gift collections.
    * @param collectionIds The identifiers of the gift collections.
    */
   abstract reorderGiftCollections(chatId: ID, collectionIds: number[]): Promise<void>;
