@@ -172,7 +172,7 @@ export function constructChatP(chat: Api.User | Api.Chat): ChatP {
       isRestricted: chat.restricted || false,
       restrictionReason: chat.restriction_reason?.map((v) => constructRestrictionReason(v)),
       isAddedToAttachmentsMenu: chat.bot ? chat.attach_menu_enabled || false : undefined,
-      hasMainMiniApp: chat.bot ? chat.attach_menu_enabled || false : undefined,
+      hasMainMiniApp: chat.bot ? chat.bot_has_main_app || false : undefined,
       isGuestQuerySupported: chat.bot ? chat.bot_guestchat || false : undefined,
     };
     if (Api.is("userProfilePhoto", chat.photo)) {
