@@ -1030,7 +1030,6 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     return await this.#dispatch("updateProfileVideo", video, params);
   }
 
-
   /**
    * Set whether new chats from unknown users should be archived and muted. User-only.
    *
@@ -1038,8 +1037,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param value Whether new chats from unknown users should be archived and muted.
    */
   async setArchiveAndMuteNewChatsFromUnknownUsers(value: boolean): Promise<void> {
-        return await this.#dispatch("setArchiveAndMuteNewChatsFromUnknownUsers", value);
-
+    return await this.#dispatch("setArchiveAndMuteNewChatsFromUnknownUsers", value);
   }
 
   /**
@@ -1049,8 +1047,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @returns Whether new chats from unknown users are archived and muted.
    */
   async getArchiveAndMuteNewChatsFromUnknownUsers(): Promise<boolean> {
-        return await this.#dispatch("getArchiveAndMuteNewChatsFromUnknownUsers");
-
+    return await this.#dispatch("getArchiveAndMuteNewChatsFromUnknownUsers");
   }
 
   //

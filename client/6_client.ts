@@ -2088,7 +2088,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     return await this.#accountManager.updateProfileVideo(video, params);
   }
 
-
   /**
    * Set whether new chats from unknown users should be archived and muted. User-only.
    *
@@ -2096,8 +2095,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param value Whether new chats from unknown users should be archived and muted.
    */
   async setArchiveAndMuteNewChatsFromUnknownUsers(value: boolean): Promise<void> {
-        return await this.#accountManager.setArchiveAndMuteNewChatsFromUnknownUsers( value);
-
+    return await this.#accountManager.setArchiveAndMuteNewChatsFromUnknownUsers(value);
   }
 
   /**
@@ -2107,8 +2105,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns Whether new chats from unknown users are archived and muted.
    */
   async getArchiveAndMuteNewChatsFromUnknownUsers(): Promise<boolean> {
-        return await this.#accountManager.getArchiveAndMuteNewChatsFromUnknownUsers();
-
+    return await this.#accountManager.getArchiveAndMuteNewChatsFromUnknownUsers();
   }
 
   //
