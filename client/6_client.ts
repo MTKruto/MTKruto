@@ -24,7 +24,7 @@ import { drop, getLogger, type Logger, MAX_MONOFORUM_CHANNEL_ID, type MaybePromi
 import { type Storage, StorageMemory } from "../2_storage.ts";
 import { Api, Mtproto } from "../2_tl.ts";
 import { type DC, getDcId, type TransportProvider } from "../3_transport.ts";
-import { type AlbumStoryList, type Animation, type AppSupport, type AuthorizationSession, type AvailableReactions, type Birthday, type BlockedUserList, type BotAccessSettings, type BotCommand, type BotTokenCheckResult, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatActionType, type ChatJoinResult, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type CodeCheckResult, type ConnectedWebsite, type ConnectionState, constructChatP, constructUser2, type Country, type EmojiStatus, type FailedInvitation, type FileSource, type Gift, type GiftCollection, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputChecklistItem, type InputEmojiStatus, type InputGift, type InputMedia, type InputPollOption, type InputPrivacyRule, type InputRichText, type InputSticker, type InputStoryContent, type InviteLink, type JoinRequest, type LeftChannelList, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageCounters, type MessageDice, type MessageDocument, type MessageInvoice, type MessageList, type MessageLivePhoto, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageRichText, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageViewer, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type NewChatPrivacy, type ParseMode, type PasswordCheckResult, type Poll, type PollVoterList, type PremiumSubscriptionDuration, type PriceTag, type PrivacyRule, type PrivacySettingKey, type ProfilePhotoList, type Reaction, type RecentActionsEntry, type ReportReason, type ResolvedInviteLink, type RichText, type SavedChats, type SecretChat, type SlowModeDuration, type StarAmount, type StarTransactionList, type Sticker, type StickerSet, type StickerSetP, type Story, type StoryAlbum, type StoryReportResult, type SummarizedText, type TextToTranslate, type Timezone, type Topic, type TopicList, type TopicListItem, type TranslatedText, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
+import { type AlbumStoryList, type Animation, type AppSupport, type AuthorizationSession, type AvailableReactions, type Birthday, type BlockedUserList, type BotAccessSettings, type BotCommand, type BotTokenCheckResult, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatActionType, type ChatJoinResult, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type CodeCheckResult, type ConnectedWebsite, type ConnectionState, constructChatP, constructUser2, type Country, type EmojiStatus, type FailedInvitation, type FileSource, type Gift, type GiftCollection, type GiftPrivacy, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputChecklistItem, type InputEmojiStatus, type InputGift, type InputMedia, type InputPollOption, type InputPrivacyRule, type InputRichText, type InputSticker, type InputStoryContent, type InviteLink, type JoinRequest, type LeftChannelList, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageCounters, type MessageDice, type MessageDocument, type MessageInvoice, type MessageList, type MessageLivePhoto, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageRichText, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageViewer, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type NewChatPrivacy, type ParseMode, type PasswordCheckResult, type Poll, type PollVoterList, type PremiumSubscriptionDuration, type PriceTag, type PrivacyRule, type PrivacySettingKey, type ProfilePhotoList, type Reaction, type RecentActionsEntry, type ReportReason, type ResolvedInviteLink, type RichText, type SavedChats, type SecretChat, type SlowModeDuration, type StarAmount, type StarTransactionList, type Sticker, type StickerSet, type StickerSetP, type Story, type StoryAlbum, type StoryReportResult, type SummarizedText, type TextToTranslate, type Timezone, type Topic, type TopicList, type TopicListItem, type TranslatedText, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, DOWNLOAD_MAX_CHUNK_SIZE, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, PHONE_NUMBER_TTL, type PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, SessionRevoked } from "../4_errors.ts";
 import { AbortableLoop } from "./0_abortable_loop.ts";
@@ -1694,6 +1694,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Get gift privacy setting. User-only.
+   *
+   * @method ac
+   * @returns The current gift privacy setting.
+   */
+  async getGiftPrivacy(): Promise<GiftPrivacy> {
+    return await this.#accountManager.getGiftPrivacy();
+  }
+
+  /**
    * Get information on the currently authorized user.
    *
    * @method ac
@@ -1976,6 +1986,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async setEmojiStatus(emojiStatus: InputEmojiStatus, params?: SetEmojiStatusParams) {
     await this.#accountManager.setEmojiStatus(emojiStatus, params);
+  }
+
+  /**
+   * Set gift privacy setting. User-only.
+   *
+   * @method ac
+   * @param value The gift privacy setting to set.
+   */
+  async setGiftPrivacy(value: GiftPrivacy): Promise<void> {
+    return await this.#accountManager.setGiftPrivacy(value);
   }
 
   /**
