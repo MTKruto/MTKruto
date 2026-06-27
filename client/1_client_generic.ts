@@ -377,6 +377,14 @@ export abstract class ClientGeneric {
   abstract getProfilePhotos(userId: ID, params?: GetProfilePhotosParams): Promise<ProfilePhotoList>;
 
   /**
+   * Get read date privacy. User-only.
+   *
+   * @method ac
+   * @returns Whether read dates are visible.
+   */
+  abstract getReadDatePrivacy(): Promise<boolean>;
+
+  /**
    * Get recent emoji statuses. User-only.
    *
    * @method ac
@@ -596,6 +604,14 @@ export abstract class ClientGeneric {
    * @param color The identifier of the color to set.
    */
   abstract setProfileColor(color: number, params?: SetProfileColorParams): Promise<void>;
+
+  /**
+   * Set read date privacy. User-only.
+   *
+   * @method ac
+   * @param value Whether read dates should be visible.
+   */
+  abstract setReadDatePrivacy(value: boolean): Promise<void>;
 
   /**
    * Set the emoji status of a bot's user. Bot-only.
