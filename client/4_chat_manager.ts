@@ -21,9 +21,9 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { type AvailableReactions, availableReactionsToTlObject, chatAdministratorRightsToTlObject, type ChatJoinResult, type ChatP, type ChatPChannel, type ChatPPrivate, constructChatJoinResult, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, constructJoinRequest2, constructRecentActionsEntry, constructResolvedInviteLink, type FailedInvitation, type InviteLink, type JoinRequest, type RecentActionsEntry, reportReasonToTlObject, type ResolvedInviteLink, type SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
+import { type AvailableReactions, availableReactionsToTlObject, chatAdministratorRightsToTlObject, type ChatJoinResult, type ChatP, type ChatPChannel, type ChatPPrivate, constructChatJoinResult, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, constructJoinRequest2, constructRecentActionsEntry, constructResolvedInviteLink, type FailedInvitation, type InviteLink, type JoinRequest, notificationSoundToTlObject, type RecentActionsEntry, reportReasonToTlObject, type ResolvedInviteLink, type SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
 import { chatMemberRightsToTlObject, type FileSource, type ID, type ReportReason, type Update } from "../3_types.ts";
-import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, BoostChatParams, CreateInviteLinkParams, DeclineJoinRequestsParams, EnableSignaturesParams, GetAdministeredChatsParams, GetCreatedInviteLinksParams, GetJoinRequestsParams, GetRecentActionsParams, MarkAllMentionsAsReadParams, PromoteChatMemberParams, ReportChatParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams } from "./0_params.ts";
+import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, BoostChatParams, CreateInviteLinkParams, DeclineJoinRequestsParams, EnableSignaturesParams, GetAdministeredChatsParams, GetCreatedInviteLinksParams, GetJoinRequestsParams, GetRecentActionsParams, MarkAllMentionsAsReadParams, PromoteChatMemberParams, ReportChatParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetNotificationSettingsParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, canBeInputUser, getLimit, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -694,5 +694,24 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
       case "chatInvite":
         return constructResolvedInviteLink(result);
     }
+  }
+
+  async setNotificationSettings(chatId: ID, params?: SetNotificationSettingsParams) {
+    this.#c.storage.assertUser("setNotificationSettings");
+    const peer = await this.#c.getInputPeer(chatId);
+    await this.#c.invoke({
+      _: "account.updateNotifySettings",
+      peer: { _: "inputNotifyPeer", peer },
+      settings: {
+        _: "inputPeerNotifySettings",
+        mute_until: params?.settings?.muteUntil,
+        show_previews: params?.settings?.showsPreviews,
+        silent: params?.settings?.isSilent,
+        sound: params?.settings?.sound ? notificationSoundToTlObject(params.settings.sound) : undefined,
+        stories_hide_sender: params?.settings?.hidesStories,
+        stories_muted: params?.settings?.mutesStories,
+        stories_sound: params?.settings?.storySound ? notificationSoundToTlObject(params.settings.storySound) : undefined,
+      },
+    });
   }
 }
