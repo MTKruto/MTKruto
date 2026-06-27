@@ -695,4 +695,17 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     const result = await this.#getGlobalPrivacySettings();
     return !result.hide_read_marks;
   }
+
+  async setArchiveAndMuteNewChatsFromUnknownUsers(value: boolean) {
+    this.#c.storage.assertUser("setArchiveAndMuteNewChatsFromUnknownUsers");
+    const result = await this.#getGlobalPrivacySettings();
+    result.archive_and_mute_new_noncontact_peers = value || undefined
+        await this.#setGlobalPrivacySettings(result);
+  }
+
+  async getArchiveAndMuteNewChatsFromUnknownUsers():Promise<boolean> {
+    this.#c.storage.assertUser("getArchiveAndMuteNewChatsFromUnknownUsers");
+    const result = await this.#getGlobalPrivacySettings();
+    return !!result.archive_and_mute_new_noncontact_peers;
+  }
 }
