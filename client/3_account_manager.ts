@@ -23,6 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { PasswordHashInvalid, PhoneCodeInvalid, SessionPasswordNeeded } from "../3_errors.ts";
 import { type AppSupport, type AuthorizationSession, type Birthday, birthdayToTlObject, type BotTokenCheckResult, type ChatP, type CodeCheckResult, type ConnectedWebsite, constructAppSupport, constructAuthorizationSession, constructConnectedWebsite, constructCountry, constructEmojiStatus, constructInactiveChat, constructPrivacyRule, constructProfilePhotoList, constructTimezone, constructUser, constructUser2, type Country, type EmojiStatus, type FileSource, type ID, type InactiveChat, type InputEmojiStatus, type InputPrivacyRule, inputPrivacyRuleToTlObject, type NewChatPrivacy, type PasswordCheckResult, type PrivacyRule, type PrivacySettingKey, privacySettingKeyToTlObject, type ProfilePhotoList, type Timezone, type Update, type User, workingHoursToTlObject } from "../3_types.ts";
+import type { GiftPrivacy } from "../types/0_gift_privacy.ts";
 import type { AddBotToAttachmentsMenuParams, AllowUnpaidMessagesFromUserParams, CheckUsernameParams, DeleteAccountParams, DisallowUnpaidMessagesFromUserParams, GetProfilePhotosParams, RemoveProfilePhotoParams, ResolveUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
@@ -730,6 +731,34 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     return {
       isNewChatFromNonPremiumUsersAllowed: !result.new_noncontact_peers_require_premium,
       messagePrice: Number(result.noncontact_peers_paid_stars || 0n),
+    };
+  }
+
+  async setGiftPrivacy(value: GiftPrivacy) {
+    this.#c.storage.assertUser("setGiftPrivacy");
+    const result = await this.#getGlobalPrivacySettings();
+    result.display_gifts_button = value.isGiftButtonDisplayed || undefined;
+    result.disallowed_gifts = {
+      _: "disallowedGiftsSettings",
+      disallow_unlimited_stargifts: (value.isRegularGiftAccepted === false) || undefined,
+      disallow_limited_stargifts: (value.isLimitedGiftAccepted === false) || undefined,
+      disallow_unique_stargifts: (value.isUpgradedGiftAccepted === false) || undefined,
+      disallow_stargifts_from_channels: (value.isGiftFromChannelAccepted === false) || undefined,
+      disallow_premium_gifts: (value.isPremiumGiftAccepted === false) || undefined,
+    };
+    await this.#setGlobalPrivacySettings(result);
+  }
+
+  async getGiftPrivacy(): Promise<GiftPrivacy> {
+    this.#c.storage.assertUser("getGiftPrivacy");
+    const result = await this.#getGlobalPrivacySettings();
+    return {
+      isGiftButtonDisplayed: !!result.display_gifts_button,
+      isRegularGiftAccepted: !result.disallowed_gifts?.disallow_unlimited_stargifts,
+      isLimitedGiftAccepted: !result.disallowed_gifts?.disallow_limited_stargifts,
+      isUpgradedGiftAccepted: !result.disallowed_gifts?.disallow_unique_stargifts,
+      isGiftFromChannelAccepted: !result.disallowed_gifts?.disallow_stargifts_from_channels,
+      isPremiumGiftAccepted: !result.disallowed_gifts?.disallow_premium_gifts,
     };
   }
 }

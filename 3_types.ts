@@ -43,6 +43,7 @@ export * from "./types/0_emoji_status.ts";
 export * from "./types/0_failed_invitation.ts";
 export * from "./types/0_file_source.ts";
 export * from "./types/0_gift_component_rarity.ts";
+export * from "./types/0_gift_privacy.ts";
 export * from "./types/0_gift_value.ts";
 export * from "./types/0_giveaway_parameters.ts";
 export * from "./types/0_id.ts";
