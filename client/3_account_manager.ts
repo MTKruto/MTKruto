@@ -661,12 +661,14 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
   }
 
   async getPrivacySetting(key_: PrivacySettingKey): Promise<PrivacyRule[]> {
+    this.#c.storage.assertUser("getPrivacySetting");
     const key = privacySettingKeyToTlObject(key_);
     const result = await this.#c.invoke({ _: "account.getPrivacy", key });
     return result.rules.map((v) => constructPrivacyRule(v, this.#c.getPeer));
   }
 
   async setPrivacySetting(key_: PrivacySettingKey, rules_: InputPrivacyRule[]): Promise<PrivacyRule[]> {
+    this.#c.storage.assertUser("setPrivacySetting");
     const key = privacySettingKeyToTlObject(key_);
     const rules = await Promise.all(rules_.map((v) => inputPrivacyRuleToTlObject(v, this.#c.getInputUser, this.#c.getInputPeer)));
     const result = await this.#c.invoke({ _: "account.setPrivacy", key, rules });
