@@ -761,4 +761,12 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
       isPremiumGiftAccepted: !result.disallowed_gifts?.disallow_premium_gifts,
     };
   }
+
+  async sendCustomRequest(method: string, params_: string) {
+    this.#c.storage.assertBot("sendCustomRequest");
+    const custom_method = method;
+    const params: Api.DataJSON = { _: "dataJSON", data: params_ };
+    const result = await this.#c.invoke({ _: "bots.sendCustomRequest", custom_method, params });
+    return result.data;
+  }
 }

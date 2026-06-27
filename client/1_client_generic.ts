@@ -170,6 +170,15 @@ export abstract class ClientGeneric {
   abstract addBotToAttachmentsMenu(botId: ID, params?: AddBotToAttachmentsMenuParams): Promise<void>;
 
   /**
+   * Send a custom request. Bot-only.
+   *
+   * @method ac
+   * @param method The name of the method.
+   * @param params The parameters of the method.
+   */
+  abstract sendCustomRequest(method: string, params: string): Promise<string>;
+
+  /**
    * Allow a bot to set custom emoji status. User-only.
    *
    * @param botId The user identifier of the bot.
