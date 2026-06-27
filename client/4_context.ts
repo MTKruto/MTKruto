@@ -435,7 +435,7 @@ export class Context {
 
   /** Context-aware alias for {@link Client.addContact}. */
   async addAsContact(firstName: string, params?: AddContactParams): Promise<void> {
-    const chatId = this.#mustGetChatId();
+    const chatId = this.#mustGetUserId();
     return await this.client.addContact(chatId, firstName, params);
   }
 
@@ -1243,7 +1243,7 @@ export class Context {
 
   /** Context-aware alias for {@link Client.deleteContact}. */
   async removeAsContact(): Promise<void> {
-    const chatId = this.#mustGetChatId();
+    const chatId = this.#mustGetUserId();
     return await this.client.deleteContact(chatId);
   }
 
