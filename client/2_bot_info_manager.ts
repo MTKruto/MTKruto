@@ -71,7 +71,7 @@ export class BotInfoManager implements UpdateProcessor<BotInfoManagerUpdate, fal
 
   async getMyName(params?: { languageCode?: string }): Promise<string> {
     this.#c.storage.assertBot("getMyName");
-    return (await this.#getMyInfo(params?.languageCode)).description;
+    return (await this.#getMyInfo(params?.languageCode)).name;
   }
 
   async getMyShortDescription(params?: { languageCode?: string }): Promise<string> {
