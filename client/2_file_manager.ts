@@ -200,6 +200,7 @@ export class FileManager {
           const start = part * chunkSize;
           const end = start + chunkSize;
           let bytes = buffer.subarray(start, end);
+          const partSize = bytes.byteLength;
           if (!bytes.byteLength) {
             break main;
           }
@@ -227,7 +228,7 @@ export class FileManager {
           promises.push(
             this.#uploadPart(fileId, partCount, isBig, part++, bytes, signal).then(() => {
               if (mustTrackProgress) {
-                uploaded += bytes.byteLength;
+                uploaded += partSize;
                 this.#c.handleUpdate({
                   type: "uploadProgress",
                   uploadProgress: {
@@ -255,7 +256,7 @@ export class FileManager {
       uploadProgress: {
         id: String(fileId),
         uploaded,
-        total: 0,
+        total: buffer.byteLength,
         isUploaded: true,
       },
     });
