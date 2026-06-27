@@ -105,7 +105,8 @@ export class StorageDenoKV implements Storage {
       if (i.key === null) { // just in case
         continue;
       }
-      yield [i.key, i.value] as [readonly StorageKeyPart[], T];
+      const key = this.#id !== null ? i.key.slice(1) : i.key;
+      yield [key, i.value] as [readonly StorageKeyPart[], T];
     }
   }
 

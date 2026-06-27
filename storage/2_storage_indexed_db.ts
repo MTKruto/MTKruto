@@ -177,7 +177,8 @@ export class StorageIndexedDB implements Storage {
       };
     });
     for (const key of keys) {
-      yield [key, await this.get(key, null, false)] as [readonly StorageKeyPart[], T];
+      const keyWithoutPrefix = this.#id !== null ? key.slice(1) : key;
+      yield [keyWithoutPrefix, await this.get(key, null, false)] as [readonly StorageKeyPart[], T];
     }
   }
 

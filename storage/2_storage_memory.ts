@@ -67,9 +67,6 @@ export class StorageMemory implements Storage {
   #getEntries() {
     const entries = new Array<[string, unknown]>();
     for (const entry of this.map.entries()) {
-      if (this.#id !== null && !entry[0].startsWith("__S" + this.#id)) {
-        continue;
-      }
       entries.push(entry);
     }
     return entries;
@@ -83,8 +80,14 @@ export class StorageMemory implements Storage {
     const limit = params?.limit !== undefined ? (params.limit <= 0 ? 1 : params.limit) : undefined;
     let yielded = 0;
     entries: for (const [key, value] of entries) {
-      const parts = fromString(key);
+      let parts = fromString<StorageKeyPart[]>(key);
       if (Array.isArray(parts)) {
+        if (this.#id !== null) {
+          if (parts[0] !== "__S" + this.#id) {
+            continue;
+          }
+          parts = parts.slice(1);
+        }
         if ("prefix" in filter) {
           for (const [i, p] of filter.prefix.entries()) {
             if (toString(p) !== toString(parts[i])) {
