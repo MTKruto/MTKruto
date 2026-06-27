@@ -674,4 +674,25 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     const result = await this.#c.invoke({ _: "account.setPrivacy", key, rules });
     return result.rules.map((v) => constructPrivacyRule(v, this.#c.getPeer));
   }
+
+  async #getGlobalPrivacySettings() {
+    return await this.#c.invoke({ _: "account.getGlobalPrivacySettings" });
+  }
+
+  async #setGlobalPrivacySettings(settings: Api.globalPrivacySettings) {
+    await this.#c.invoke({ _: "account.setGlobalPrivacySettings", settings });
+  }
+
+  async setReadDatePrivacy(value: boolean) {
+    this.#c.storage.assertUser("setReadDatePrivacy");
+    const result = await this.#getGlobalPrivacySettings();
+    result.hide_read_marks = !value || undefined;
+    await this.#setGlobalPrivacySettings(result);
+  }
+
+  async getReadDatePrivacy(): Promise<boolean> {
+    this.#c.storage.assertUser("getReadDatePrivacy");
+    const result = await this.#getGlobalPrivacySettings();
+    return !result.hide_read_marks;
+  }
 }

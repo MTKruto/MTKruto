@@ -1258,6 +1258,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Get read date privacy. User-only.
+   *
+   * @method ac
+   * @returns Whether read dates are visible.
+   */
+  async getReadDatePrivacy(): Promise<boolean> {
+    return await this.#accountManager.getReadDatePrivacy();
+  }
+
+  /**
    * Import an auth string.
    *
    * @param authString The auth string to import.
@@ -1297,6 +1307,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
         throw err;
       }
     }
+  }
+
+  /**
+   * Set read date privacy. User-only.
+   *
+   * @method ac
+   * @param value Whether read dates should be visible.
+   */
+  async setReadDatePrivacy(value: boolean): Promise<void> {
+    return await this.#accountManager.setReadDatePrivacy(value);
   }
 
   /**

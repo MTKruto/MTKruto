@@ -643,6 +643,16 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
+   * Get read date privacy. User-only.
+   *
+   * @method ac
+   * @returns Whether read dates are visible.
+   */
+  async getReadDatePrivacy(): Promise<boolean> {
+    return await this.#dispatch("getReadDatePrivacy");
+  }
+
+  /**
    * Get recent emoji statuses. User-only.
    *
    * @method ac
@@ -917,6 +927,16 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async setProfileColor(color: number, params?: SetProfileColorParams): Promise<void> {
     return await this.#dispatch("setProfileColor", color, params);
+  }
+
+  /**
+   * Set read date privacy. User-only.
+   *
+   * @method ac
+   * @param value Whether read dates should be visible.
+   */
+  async setReadDatePrivacy(value: boolean): Promise<void> {
+    return await this.#dispatch("setReadDatePrivacy", value);
   }
 
   /**
