@@ -100,7 +100,7 @@ export class BotInfoManager implements UpdateProcessor<BotInfoManagerUpdate, fal
   }
 
   async deleteMyCommands(params?: DeleteMyCommandsParams) {
-    this.#c.storage.assertBot("setMyCommands");
+    this.#c.storage.assertBot("deleteMyCommands");
     const scope = await botCommandScopeToTlObject(params?.scope ?? { type: "default" }, this.#c.getInputPeer);
     const lang_code = params?.languageCode ?? "";
     await this.#c.invoke({ _: "bots.resetBotCommands", scope, lang_code });
