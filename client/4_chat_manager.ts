@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { type AvailableReactions, availableReactionsToTlObject, chatAdministratorRightsToTlObject, type ChatJoinResult, type ChatP, type ChatPChannel, type ChatPPrivate, constructChatJoinResult, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, constructJoinRequest2, constructNotificationSettings, constructRecentActionsEntry, constructResolvedInviteLink, type FailedInvitation, type InviteLink, type JoinRequest, notificationSoundToTlObject, type RecentActionsEntry, reportReasonToTlObject, type ResolvedInviteLink, type SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
+import { type AvailableReactions, availableReactionsToTlObject, chatAdministratorRightsToTlObject, type ChatJoinResult, type ChatP, type ChatPChannel, type ChatPPrivate, constructChatJoinResult, constructChatMemberUpdated, constructChatP, constructFailedInvitation, constructInviteLink, constructJoinRequest, constructJoinRequest2, constructNotificationSettings, constructRecentActionsEntry, constructResolvedInviteLink, type FailedInvitation, type InviteLink, type JoinRequest, type NotificationSettings, notificationSoundToTlObject, type RecentActionsEntry, reportReasonToTlObject, type ResolvedInviteLink, type SlowModeDuration, slowModeDurationToSeconds } from "../3_types.ts";
 import { chatMemberRightsToTlObject, type FileSource, type ID, type ReportReason, type Update } from "../3_types.ts";
 import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, AddChatMemberParams, ApproveJoinRequestsParams, BanChatMemberParams, BoostChatParams, CreateInviteLinkParams, DeclineJoinRequestsParams, EnableSignaturesParams, GetAdministeredChatsParams, GetCreatedInviteLinksParams, GetJoinRequestsParams, GetRecentActionsParams, MarkAllMentionsAsReadParams, PromoteChatMemberParams, ReportChatParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetNotificationSettingsParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
@@ -715,7 +715,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     });
   }
 
-  async getNotificationSettings(chatId: ID) {
+  async getNotificationSettings(chatId: ID): Promise<NotificationSettings> {
     this.#c.storage.assertUser("getNotificationSettings");
     const peer = await this.#c.getInputPeer(chatId);
     const result = await this.#c.invoke({ _: "account.getNotifySettings", peer: { _: "inputNotifyPeer", peer } });
