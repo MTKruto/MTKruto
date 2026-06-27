@@ -44,7 +44,23 @@ export interface NotificationSoundRingtone {
   id: string;
 }
 
+/** Any type of notification sound. */
 export type NotificationSound = NotificationSoundDefault | NotificationSoundNone | NotificationSoundLocal | NotificationSoundRingtone;
+
+export function constructNotificationSound(ns: Api.NotificationSound): NotificationSound {
+  switch (ns._) {
+    case "notificationSoundDefault":
+      return { type: "default" };
+    case "notificationSoundNone":
+      return { type: "none" };
+    case "notificationSoundLocal":
+      return { type: "local", title: ns.title, data: ns.data };
+    case "notificationSoundRingtone":
+      return { type: "ringtone", id: String(ns.id) };
+  }
+
+  unreachable();
+}
 
 export function notificationSoundToTlObject(ns: NotificationSound): Api.NotificationSound {
   switch (ns.type) {
