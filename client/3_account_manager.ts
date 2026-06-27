@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { PasswordHashInvalid, PhoneCodeInvalid, SessionPasswordNeeded } from "../3_errors.ts";
-import { type AppSupport, type AuthorizationSession, type Birthday, birthdayToTlObject, type BotTokenCheckResult, type ChatP, type CodeCheckResult, type ConnectedWebsite, constructAppSupport, constructAuthorizationSession, constructConnectedWebsite, constructCountry, constructEmojiStatus, constructInactiveChat, constructPrivacyRule, constructProfilePhotoList, constructTimezone, constructUser, constructUser2, type Country, type EmojiStatus, type FileSource, type ID, type InactiveChat, type InputEmojiStatus, type InputPrivacyRule, inputPrivacyRuleToTlObject, type PasswordCheckResult, type PrivacyRule, type PrivacySettingKey, privacySettingKeyToTlObject, type ProfilePhotoList, type Timezone, type Update, type User, workingHoursToTlObject } from "../3_types.ts";
+import { type AppSupport, type AuthorizationSession, type Birthday, birthdayToTlObject, type BotTokenCheckResult, type ChatP, type CodeCheckResult, type ConnectedWebsite, constructAppSupport, constructAuthorizationSession, constructConnectedWebsite, constructCountry, constructEmojiStatus, constructInactiveChat, constructPrivacyRule, constructProfilePhotoList, constructTimezone, constructUser, constructUser2, type Country, type EmojiStatus, type FileSource, type ID, type InactiveChat, type InputEmojiStatus, type InputPrivacyRule, inputPrivacyRuleToTlObject, type NewChatPrivacy, type PasswordCheckResult, type PrivacyRule, type PrivacySettingKey, privacySettingKeyToTlObject, type ProfilePhotoList, type Timezone, type Update, type User, workingHoursToTlObject } from "../3_types.ts";
 import type { AddBotToAttachmentsMenuParams, AllowUnpaidMessagesFromUserParams, CheckUsernameParams, DeleteAccountParams, DisallowUnpaidMessagesFromUserParams, GetProfilePhotosParams, RemoveProfilePhotoParams, ResolveUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
@@ -707,5 +707,29 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     this.#c.storage.assertUser("getArchiveAndMuteNewChatsFromUnknownUsers");
     const result = await this.#getGlobalPrivacySettings();
     return !!result.archive_and_mute_new_noncontact_peers;
+  }
+
+  static #PAID_MESSAGE_PRICE_LIMIT = 1000000;
+  async setNewChatPrivacy(value: NewChatPrivacy) {
+    this.#c.storage.assertUser("setNewChatPrivacy");
+    const result = await this.#getGlobalPrivacySettings();
+    result.new_noncontact_peers_require_premium = !value.isNewChatFromNonPremiumUsersAllowed || undefined;
+    if (value.messagePrice > AccountManager.#PAID_MESSAGE_PRICE_LIMIT) {
+      value.messagePrice = AccountManager.#PAID_MESSAGE_PRICE_LIMIT;
+    }
+    if (value.messagePrice < 0) {
+      value.messagePrice = 0;
+    }
+    result.noncontact_peers_paid_stars = BigInt(value.messagePrice) || undefined;
+    await this.#setGlobalPrivacySettings(result);
+  }
+
+  async getNewChatPrivacy(): Promise<NewChatPrivacy> {
+    this.#c.storage.assertUser("getNewChatPrivacy");
+    const result = await this.#getGlobalPrivacySettings();
+    return {
+      isNewChatFromNonPremiumUsersAllowed: !result.new_noncontact_peers_require_premium,
+      messagePrice: Number(result.noncontact_peers_paid_stars || 0n),
+    };
   }
 }
