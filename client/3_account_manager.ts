@@ -690,7 +690,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     await this.#setGlobalPrivacySettings(result);
   }
 
-  async getReadDatePrivacy() {
+  async getReadDatePrivacy(): Promise<boolean> {
     this.#c.storage.assertUser("getReadDatePrivacy");
     const result = await this.#getGlobalPrivacySettings();
     return !result.hide_read_marks;
