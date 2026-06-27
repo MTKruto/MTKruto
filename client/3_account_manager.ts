@@ -715,13 +715,16 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     this.#c.storage.assertUser("setNewChatPrivacy");
     const result = await this.#getGlobalPrivacySettings();
     result.new_noncontact_peers_require_premium = !value.isNewChatFromNonPremiumUsersAllowed || undefined;
-    if (value.messagePrice > AccountManager.#PAID_MESSAGE_PRICE_LIMIT) {
-      value.messagePrice = AccountManager.#PAID_MESSAGE_PRICE_LIMIT;
+
+    let messagePrice = value.messagePrice;
+    if (messagePrice > AccountManager.#PAID_MESSAGE_PRICE_LIMIT) {
+      messagePrice = AccountManager.#PAID_MESSAGE_PRICE_LIMIT;
     }
-    if (value.messagePrice < 0) {
-      value.messagePrice = 0;
+    if (messagePrice < 0) {
+      messagePrice = 0;
     }
-    result.noncontact_peers_paid_stars = BigInt(value.messagePrice) || undefined;
+    result.noncontact_peers_paid_stars = BigInt(messagePrice) || undefined;
+
     await this.#setGlobalPrivacySettings(result);
   }
 
