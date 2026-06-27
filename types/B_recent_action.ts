@@ -33,254 +33,301 @@ import { constructInviteLink, type InviteLink } from "./3_invite_link.ts";
 import { constructMessage, type Message, type MessageGetter } from "./9_message.ts";
 import { constructTopic2, type Topic } from "./A_topic.ts";
 
+/** @unlisted */
 export interface RecentActionChangeTitle {
   type: "changeTitle";
   previous: string;
   new: string;
 }
 
+/** @unlisted */
 export interface RecentActionChangeDescription {
   type: "changeDescription";
   previous: string;
   new: string;
 }
 
+/** @unlisted */
 export interface RecentActionChangeUsername {
   type: "changeUsername";
   previous: string;
   new: string;
 }
 
+/** @unlisted */
 export interface RecentActionChangePhoto {
   type: "changePhoto";
   previous: Photo;
   new: Photo;
 }
 
+/** @unlisted */
 export interface RecentActionToggleInvites {
   type: "toggleInvites";
   isEnabled: boolean;
 }
 
+/** @unlisted */
 export interface RecentActionToggleSignatures {
   type: "toggleSignatures";
   isEnabled: boolean;
 }
 
+/** @unlisted */
 export interface RecentActionPinMessage {
   type: "pinMessage";
   message: Message;
 }
 
+/** @unlisted */
 export interface RecentActionEditMessage {
   type: "editMessage";
   previous: Message;
   new: Message;
 }
 
+/** @unlisted */
 export interface RecentActionDeleteMessage {
   type: "deleteMessage";
   message: Message;
 }
 
+/** @unlisted */
 export interface RecentActionJoin {
   type: "join";
 }
 
+/** @unlisted */
 export interface RecentActionLeave {
   type: "leave";
 }
 
+/** @unlisted */
 export interface RecentActionInvite {
   type: "invite";
   chatMember: ChatMember;
 }
 
+/** @unlisted */
 export interface RecentActionToggleRestriction {
   type: "toggleRestriction";
   previous: ChatMember;
   new: ChatMember;
 }
 
+/** @unlisted */
 export interface RecentActionTogglePromotion {
   type: "togglePromotion";
   previous: ChatMember;
   new: ChatMember;
 }
 
+/** @unlisted */
 export interface RecentActionChangeStickerSet {
   type: "changeStickerSet";
   previous?: string;
   new?: string;
 }
 
+/** @unlisted */
 export interface RecentActionToggleChatHistoryForNewMembers {
   type: "toggleChatHistoryForNewMembers";
   isEnabled: boolean;
 }
 
+/** @unlisted */
 export interface RecentActionSetDefaultPermissions {
   type: "setDefaultPermissions";
   previous: ChatMemberRights;
   new: ChatMemberRights;
 }
 
+/** @unlisted */
 export interface RecentActionStopPoll {
   type: "stopPoll";
   message: Message;
 }
 
+/** @unlisted */
 export interface RecentActionChangeDiscussionChat {
   type: "changeDiscussionChat";
   previous: number;
   new: number;
 }
 
+/** @unlisted */
 export interface RecentActionChangeLocation {
   type: "changeLocation";
   previous?: ChannelLocation;
   new?: ChannelLocation;
 }
 
+/** @unlisted */
 export interface RecentActionChangeSetSlowMode {
   type: "setSlowMode";
   previous: number;
   new: number;
 }
 
+/** @unlisted */
 export interface RecentActionStartVideoChat {
   type: "startVideoChat";
 }
 
+/** @unlisted */
 export interface RecentActionEndVideoChat {
   type: "endVideoChat";
 }
 
+/** @unlisted */
 export interface RecentActionMuteVideoChatParticipant {
   type: "muteVideoChatParticipant";
   participant: number;
 }
 
+/** @unlisted */
 export interface RecentActionUnmuteVideoChatParticipant {
   type: "unmuteVideoChatParticipant";
   participant: number;
 }
 
+/** @unlisted */
 export interface RecentActionToggleVideoChatDefaultMuted {
   type: "toggleVideoChatDefaultMuted";
   defaultMuted: boolean;
 }
 
+/** @unlisted */
 export interface RecentActionJoinByInvite {
   type: "joinByInvite";
   inviteLink?: InviteLink;
   isViaList: boolean;
 }
 
+/** @unlisted */
 export interface RecentActionDeleteInviteLink {
   type: "deleteInviteLink";
   inviteLink?: InviteLink;
 }
 
+/** @unlisted */
 export interface RecentActionRevokeInviteLink {
   type: "revokeInviteLink";
   inviteLink?: InviteLink;
 }
 
+/** @unlisted */
 export interface RecentActionEditInviteLink {
   type: "editInviteLink";
   previous?: InviteLink;
   new?: InviteLink;
 }
 
+/** @unlisted */
 export interface RecentActionSetVideoChatParticipantVolume {
   type: "setVideoChatParticipantVolume";
   participant: number;
 }
 
+/** @unlisted */
 export interface RecentActionSetHistoryTtl {
   type: "setHistoryTtl";
   previous: number;
   new: number;
 }
 
+/** @unlisted */
 export interface RecentActionJoinByRequest {
   type: "joinByRequest";
   inviteLink?: InviteLink;
   approvedBy: number;
 }
 
+/** @unlisted */
 export interface RecentActionToggleContentProtection {
   type: "toggleContentProtection";
   isEnabled: boolean;
 }
 
+/** @unlisted */
 export interface RecentActionSendMessage {
   type: "sendMessage";
   message: Message;
 }
 
+/** @unlisted */
 export interface RecentActionSetAvailableReactions {
   type: "setAvailableReactions";
   previous: AvailableReactions;
   new: AvailableReactions;
 }
 
+/** @unlisted */
 export interface RecentActionSetUsernames {
   type: "setUsernames";
   previous: string[];
   new: string[];
 }
 
+/** @unlisted */
 export interface RecentActionToggleTopics {
   type: "toggleTopics";
   isEnabled: boolean;
 }
 
+/** @unlisted */
 export interface RecentActionCreateTopic {
   type: "createTopic";
   topic: Topic;
 }
 
+/** @unlisted */
 export interface RecentActionEditTopic {
   type: "editTopic";
   previous: Topic;
   new: Topic;
 }
 
+/** @unlisted */
 export interface RecentActionDeleteTopic {
   type: "deleteTopic";
   topic: Topic;
 }
 
+/** @unlisted */
 export interface RecentActionPinTopic {
   type: "pinTopic";
   previous?: Topic;
   new?: Topic;
 }
 
+/** @unlisted */
 export interface RecentActionToggleAntispam {
   type: "toggleAntispam";
   isEnabled: boolean;
 }
 
+/** @unlisted */
 export interface RecentActionSetEmojiStickerSet {
   type: "setEmojiStickerSet";
   previous?: string;
   new?: string;
 }
 
+/** @unlisted */
 export interface RecentActionParticipantSubExtend {
   type: "participantSubExtend";
   previousParticipant: string;
   newParticipant: string;
 }
 
+/** @unlisted */
 export interface RecentActionToggleAutomaticTranslation {
   type: "toggleAutomaticTranslation";
   isEnabled: boolean;
 }
 
+/** @unlisted */
 export interface RecentActionEditChatMemberTag {
   type: "editChatMemberTag";
   userId: number;
@@ -288,10 +335,12 @@ export interface RecentActionEditChatMemberTag {
   new?: string;
 }
 
+/** @unlisted */
 export interface RecentActionUnsupported {
   type: "unsupported";
 }
 
+/** Any type of recent action. */
 export type RecentAction =
   | RecentActionChangeTitle
   | RecentActionChangeDescription
