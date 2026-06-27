@@ -382,17 +382,6 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Send a custom request. Bot-only.
-   *
-   * @method ac
-   * @param method The name of the method.
-   * @param params The parameters of the method.
-   */
-  async sendCustomRequest(method: string, params: string): Promise<string> {
-    return await this.#dispatch("sendCustomRequest", method, params);
-  }
-
-  /**
    * Allow a bot to set custom emoji status. User-only.
    *
    * @param botId The user identifier of the bot.
@@ -859,6 +848,17 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async resumeBusinessBotConnection(chatId: ID): Promise<void> {
     return await this.#dispatch("resumeBusinessBotConnection", chatId);
+  }
+
+  /**
+   * Send a custom request. Bot-only.
+   *
+   * @method ac
+   * @param method The name of the method.
+   * @param params The parameters of the method.
+   */
+  async sendCustomRequest(method: string, params: string): Promise<string> {
+    return await this.#dispatch("sendCustomRequest", method, params);
   }
 
   /**
