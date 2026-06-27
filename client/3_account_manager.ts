@@ -289,7 +289,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
       }
     }
     let geo_point: Api.inputGeoPoint | undefined;
-    if (params?.latitude && params.longitude) {
+    if (params?.latitude !== undefined && params.longitude !== undefined) {
       geo_point = { _: "inputGeoPoint", lat: params.latitude, long: params.longitude };
     }
     await this.#c.invoke({ _: "account.updateBusinessLocation", address, geo_point });
