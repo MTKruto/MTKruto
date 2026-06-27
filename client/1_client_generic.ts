@@ -358,7 +358,7 @@ export abstract class ClientGeneric {
    * Get new chat privacy setting. User-only.
    *
    * @method ac
-   * @returns The current new chat privacy setting to set.
+   * @returns The current new chat privacy setting.
    */
   abstract getNewChatPrivacy(): Promise<NewChatPrivacy>;
 

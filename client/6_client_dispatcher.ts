@@ -618,7 +618,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * Get new chat privacy setting. User-only.
    *
    * @method ac
-   * @returns The current new chat privacy setting to set.
+   * @returns The current new chat privacy setting.
    */
   async getNewChatPrivacy(): Promise<NewChatPrivacy> {
     return await this.#dispatch("getNewChatPrivacy");
