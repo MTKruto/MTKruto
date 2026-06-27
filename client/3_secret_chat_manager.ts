@@ -22,9 +22,7 @@ import { concat, equals, ige256Decrypt, ige256Encrypt, unreachable, WEEK } from 
 import { InputError } from "../0_errors.ts";
 import { getLogger, getRandomId, getRandomInt, intFromBytes, intToBytes, type Logger, mod, modExp, sha1, sha256 } from "../1_utilities.ts";
 import { Api, repr, SecretChats, TLReader, TLWriter, X } from "../2_tl.ts";
-import { deserializeFileId, type FileSource, type ID, type ParseMode, type SecretChat, type SecretMessageEntity, secretMessageEntityToTlObject, type Sticker, type Update } from "../3_types.ts";
-import { constructSecretChat } from "../types/0_secret_chat.ts";
-import { constructSecretMessage } from "../types/2_secret_message.ts";
+import { constructSecretChat, constructSecretMessage, deserializeFileId, type FileSource, type ID, type ParseMode, type SecretChat, type SecretMessageEntity, secretMessageEntityToTlObject, type Sticker, type Update } from "../3_types.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
 import type { EndSecretChatParams, SendSecretAnimationParams, SendSecretAudioParams, SendSecretContactParams, SendSecretDocumentParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretPhotoParams, SendSecretStickerParams, SendSecretVenueParams, SendSecretVideoNoteParams, SendSecretVideoParams, SendSecretVoiceParams } from "./0_params.ts";
