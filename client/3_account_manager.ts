@@ -762,7 +762,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     };
   }
 
-  async sendCustomRequest(method: string, params_: string) {
+  async sendCustomRequest(method: string, params_: string): Promise<string> {
     this.#c.storage.assertBot("sendCustomRequest");
     const custom_method = method;
     const params: Api.DataJSON = { _: "dataJSON", data: params_ };
