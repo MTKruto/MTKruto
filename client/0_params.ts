@@ -20,7 +20,7 @@
 
 import type { MaybePromise } from "../1_utilities.ts";
 import type { DC } from "../3_transport.ts";
-import type { Birthday, BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, InputLinkPreview, InputMedia, InputPollMedia, LinkPreview, MessageEntity, MessageSearchFilter, MiniAppMode, ParseMode, Reaction, ReplyMarkup, ReplyTo, SecretMessageEntity, SelfDestructOption, StoryInteractiveArea, StoryPrivacy, WorkingHours } from "../3_types.ts";
+import type { Birthday, BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, InputLinkPreview, InputMedia, InputPollMedia, LinkPreview, MessageEntity, MessageSearchFilter, MiniAppMode, NotificationSettings, ParseMode, Reaction, ReplyMarkup, ReplyTo, SecretMessageEntity, SelfDestructOption, StoryInteractiveArea, StoryPrivacy, WorkingHours } from "../3_types.ts";
 
 export interface InvokeParams {
   dc?: DC;
@@ -1314,4 +1314,8 @@ export interface SaveRichTextDraftParams {
 export interface DeleteMyCommandsParams {
   scope?: BotCommandScope;
   languageCode?: string;
+}
+
+export interface SetNotificationSettingsParams {
+  settings?: NotificationSettings;
 }
