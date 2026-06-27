@@ -142,7 +142,7 @@ export interface MessageEntityDateTime extends _MessageEntityBase {
   dateTime: number;
 }
 
-/** A single entity of a message's text or caption. */
+/** Any type of a single entity of a message's text or caption. */
 export type MessageEntity =
   | MessageEntityMention
   | MessageEntityHashtag

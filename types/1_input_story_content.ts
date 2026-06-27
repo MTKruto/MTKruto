@@ -36,5 +36,5 @@ export interface InputStoryContentVideo {
   isAnimation?: boolean;
 }
 
-/** A story content when provided as an input. */
+/** Any type of story content when provided as an input. */
 export type InputStoryContent = InputStoryContentPhoto | InputStoryContentVideo;

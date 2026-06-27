@@ -97,7 +97,7 @@ export interface GiftUpgraded {
   value?: GiftValue;
 }
 
-/** A gift. */
+/** Any type of gift. */
 export type Gift = GiftNonUpgraded | GiftUpgraded;
 
 export function constructGift(gift: Api.StarGift, getPeer: PeerGetter): Gift {

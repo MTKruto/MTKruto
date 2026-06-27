@@ -24,10 +24,15 @@ import type { StickerSetNameGetter } from "./1_sticker.ts";
 import type { MessageGetter } from "./9_message.ts";
 import { constructRecentAction, type RecentAction } from "./B_recent_action.ts";
 
+/** A recent actions entry. */
 export interface RecentActionsEntry {
+  /** The identifier of the entry. */
   id: string;
+  /** The point in time when the action was made. */
   date: number;
+  /** The identifier of the user who made the action. */
   userId: number;
+  /** The action that was made. */
   action: RecentAction;
 }
 

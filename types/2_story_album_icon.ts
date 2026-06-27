@@ -33,5 +33,5 @@ export interface StoryAlbumIconVideo {
   video: Document;
 }
 
-/** A story album's icon. */
+/** Any type of a story album's icon. */
 export type StoryAlbumIcon = StoryAlbumIconPhoto | StoryAlbumIconVideo;

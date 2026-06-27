@@ -93,6 +93,7 @@ export interface PrivacyRuleChatMembers {
   isAllowed: boolean;
 }
 
+/** Any type of privacy rule. */
 export type PrivacyRule = PrivacyRuleContacts | PrivacyRuleEverybody | PrivacyRuleUsers | PrivacyRuleCloseFriends | PrivacyRulePremium | PrivacyRuleBots | PrivacyRuleChatMembers;
 
 export function constructPrivacyRule(pr: Api.PrivacyRule, getPeer: PeerGetter): PrivacyRule {

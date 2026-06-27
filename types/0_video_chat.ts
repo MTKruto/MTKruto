@@ -66,7 +66,7 @@ export interface VideoChatEnded extends _VideoChatCommon {
   duration: number;
 }
 
-/** A video chat. */
+/** Any type of video chat. */
 export type VideoChat = VideoChatActive | VideoChatScheduled | VideoChatEnded;
 
 export function constructVideoChat(call: Api.GroupCall): VideoChat {

@@ -32,5 +32,5 @@ export interface InputEmojiStatusGift {
   giftId: number;
 }
 
-/** An emoji status to be passed as an input. */
+/** Any type of emoji status to be passed as an input. */
 export type InputEmojiStatus = InputEmojiStatusCustomEmoji | InputEmojiStatusGift;

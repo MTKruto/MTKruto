@@ -47,7 +47,7 @@ export interface ReactionPaid {
   type: "paid";
 }
 
-/** A reaction type. */
+/** Any type of reaction. */
 export type Reaction = ReactionEmoji | ReactionCustom | ReactionPaid;
 
 export function constructReaction(reaction: Api.Reaction): Reaction {

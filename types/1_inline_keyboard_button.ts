@@ -132,7 +132,7 @@ export interface InlineKeyboardButtonCopy extends _InlineKeyboardButtonBase {
   textToCopy: string;
 }
 
-/** A button of an inline keyboard. */
+/** Any type of an inline keyboard's button. */
 export type InlineKeyboardButton =
   | InlineKeyboardButtonURL
   | InlineKeyboardButtonCallback

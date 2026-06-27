@@ -46,5 +46,5 @@ export interface ReplyToStory {
   storyId: number;
 }
 
-/** Information on what a message is replying to. */
+/** Any type of information on what a message is replying to. */
 export type ReplyTo = ReplyToMessage | ReplyToStory;

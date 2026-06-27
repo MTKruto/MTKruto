@@ -92,7 +92,7 @@ export interface GiftUpgradedComponentOriginalDetails {
 }
 
 /**
- * A component of an upgraded gift.
+ * Any type of an upgraded gift's component.
  *
  * @unlisted
  */

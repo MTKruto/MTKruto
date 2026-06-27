@@ -134,7 +134,7 @@ export interface ChatPSupergroup extends ChatPChannelBase {
   isDirectMessagesChat: boolean;
 }
 
-/** A partial chat. */
+/** Any type of a partial chat. */
 export type ChatP = ChatPPrivate | ChatPGroup | ChatPSupergroup | ChatPChannel;
 
 export function constructChatP(chat: Api.user): ChatPPrivate;

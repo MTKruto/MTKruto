@@ -50,7 +50,7 @@ export interface CallbackQueryQuestionButton {
   data: string;
 }
 
-/** A reference to a button that is to be clicked by a user. */
+/** Any type referencing a button that is to be clicked by a user. */
 export type CallbackQueryQuestion = CallbackQueryQuestionGame | CallbackQueryQuestionPassword | CallbackQueryQuestionButton;
 
 export function validateCallbackQueryQuestion(q: CallbackQueryQuestion) {

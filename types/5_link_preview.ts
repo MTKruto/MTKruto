@@ -199,7 +199,7 @@ export type LinkPreviewLoaded =
   | LinkPreviewAudio
   | LinkPreviewGift;
 
-/** A link preview. */
+/** Any type of link preview. */
 export type LinkPreview = InputLinkPreview | LinkPreviewLoading | LinkPreviewNotLoaded | LinkPreviewLoaded;
 
 export function constructLinkPreview(media: Api.messageMediaWebPage, invert: boolean | undefined, getPeer: PeerGetter): LinkPreview {

@@ -129,5 +129,5 @@ export interface MessageContentInvoice {
   isFlexible?: boolean;
 }
 
-/** The content of a message in an inline query result. */
+/** Any type of an inline message's content. */
 export type MessageContent = MessageContentText | MessageContentRichText | MessageContentLocation | MessageContentVenue | MessageContentContact | MessageContentInvoice;

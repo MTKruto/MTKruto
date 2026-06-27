@@ -134,5 +134,5 @@ export interface InputPollMediaLocation {
   horizontalAccuracy?: number;
 }
 
-/** A poll option input media. */
+/** Any type of poll input media. */
 export type InputPollMedia = InputPollMediaAnimation | InputPollMediaPhoto | InputPollMediaVideo | InputPollMediaSticker | InputPollMediaLivePhoto | InputPollMediaLocation | InputPollMediaVenue | InputPollMediaLink;

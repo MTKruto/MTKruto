@@ -110,7 +110,7 @@ export interface ChatMemberBanned extends _ChatMemberBase {
   until?: number;
 }
 
-/** A chat member. */
+/** Any type of a chat's member. */
 export type ChatMember = ChatMemberCreator | ChatMemberAdministrator | ChatMemberMember | ChatMemberRestricted | ChatMemberLeft | ChatMemberBanned;
 
 export function constructChatMember(member: ChatP, participant: Api.ChannelParticipant | Api.ChatParticipant | (Omit<Api.ChannelParticipant, "peer"> & { peer: ReturnType<typeof getPeer> }), getPeer: PeerGetter): ChatMember {

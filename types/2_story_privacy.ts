@@ -45,7 +45,7 @@ export interface StoryPrivacyOnly {
   only: number[];
 }
 
-/** A story's privacy choice. */
+/** Any type of a story's privacy choice. */
 export type StoryPrivacy =
   | StoryPrivacyEveryone
   | StoryPrivacyContacts

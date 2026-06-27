@@ -82,7 +82,7 @@ export interface KeyboardButtonMiniApp extends _KeyboardButtonBase {
   url: string;
 }
 
-/** A button of a custom keyboard. */
+/** Any type of a custom keyboard's button. */
 export type KeyboardButton =
   | KeyboardButtonText
   | KeyboardButtonRequestUser

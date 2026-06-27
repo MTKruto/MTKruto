@@ -235,7 +235,7 @@ export interface InlineQueryResultVoice extends _InlineQueryResultBase, _InlineQ
   voiceDuration?: number;
 }
 
-/** A single inline query result. */
+/** Any type of a single inline query result. */
 export type InlineQueryResult =
   | InlineQueryResultCachedAudio
   | InlineQueryResultCachedDocument

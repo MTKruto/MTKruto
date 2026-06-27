@@ -51,7 +51,7 @@ export interface InputGiftUser {
   messageId: number;
 }
 
-/** Reference to a gift. */
+/** Any type of a gift reference. */
 export type InputGift = InputGiftSlug | InputGiftChat | InputGiftUser;
 
 export async function inputGiftToTlObject(inputGift: InputGift, getInputPeer: InputPeerGetter): Promise<Api.InputSavedStarGift> {

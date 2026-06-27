@@ -90,7 +90,7 @@ export interface ChatActionTypeCancel {
   type: "cancel";
 }
 
-/** A type of a chat action. */
+/** Any type of a chat action type. */
 export type ChatActionType =
   | ChatActionTypeTyping
   | ChatActionTypeUploadingPhoto

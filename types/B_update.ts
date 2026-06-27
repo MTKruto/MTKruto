@@ -626,7 +626,7 @@ export interface UpdateSecretTyping {
   chatId: number;
 }
 
-/** An incoming update. */
+/** Any type of update. */
 export type Update =
   | UpdateConnectionState
   | UpdateAuthorizationState

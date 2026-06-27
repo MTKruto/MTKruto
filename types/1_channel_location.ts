@@ -22,8 +22,11 @@ import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { constructLocation, type Location } from "./0_location.ts";
 
+/** A channel's location. */
 export interface ChannelLocation {
+  /** The location. */
   location?: Location;
+  /** The written address of the location. */
   address: string;
 }
 

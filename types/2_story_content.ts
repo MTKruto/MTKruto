@@ -41,7 +41,7 @@ export interface StoryContentUnsupported {
   type: "unsupported";
 }
 
-/** A story content. */
+/** Any type of story content. */
 export type StoryContent = StoryContentPhoto | StoryContentVideo | StoryContentUnsupported;
 
 export function constructStoryContent(media: Api.MessageMedia): StoryContent {

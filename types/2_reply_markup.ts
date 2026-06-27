@@ -152,7 +152,7 @@ function forceReplyToTlObject(replyMarkup: ReplyMarkupForceReply): Api.replyKeyb
 
 //
 
-/** A message's reply markup. */
+/** Any type of a message's reply markup. */
 export type ReplyMarkup = ReplyMarkupInlineKeyboard | ReplyMarkupKeyboard | ReplyMarkupRemoveKeyboard | ReplyMarkupForceReply;
 
 export function constructReplyMarkup(replyMarkup: Api.ReplyMarkup): ReplyMarkup {

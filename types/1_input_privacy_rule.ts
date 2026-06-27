@@ -93,6 +93,7 @@ export interface InputPrivacyRuleChatMembers {
   isAllowed: boolean;
 }
 
+/** Any type of input privacy rule. */
 export type InputPrivacyRule = InputPrivacyRuleContacts | InputPrivacyRuleEverybody | InputPrivacyRuleUsers | InputPrivacyRuleCloseFriends | InputPrivacyRulePremium | InputPrivacyRuleBots | InputPrivacyRuleChatMembers;
 
 export async function inputPrivacyRuleToTlObject(ipr: InputPrivacyRule, getInputUser: (id: ID) => Promise<Api.InputUser>, getInputPeer: (id: ID) => Promise<Api.InputPeer>): Promise<Api.InputPrivacyRule> {
