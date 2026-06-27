@@ -1608,6 +1608,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Get whether new chats from unknown users are archived and muted. User-only.
+   *
+   * @method ac
+   * @returns Whether new chats from unknown users are archived and muted.
+   */
+  async getArchiveAndMuteNewChatsFromUnknownUsers(): Promise<boolean> {
+    return await this.#accountManager.getArchiveAndMuteNewChatsFromUnknownUsers();
+  }
+
+  /**
    * Get the authorization sessions. User-only.
    *
    * @method ac
@@ -1899,6 +1909,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Set whether new chats from unknown users should be archived and muted. User-only.
+   *
+   * @method ac
+   * @param value Whether new chats from unknown users should be archived and muted.
+   */
+  async setArchiveAndMuteNewChatsFromUnknownUsers(value: boolean): Promise<void> {
+    return await this.#accountManager.setArchiveAndMuteNewChatsFromUnknownUsers(value);
+  }
+
+  /**
    * Set the birthday of the current user. User-only.
    *
    * @method ac
@@ -2086,26 +2106,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async updateProfileVideo(video: FileSource, params?: UpdateProfileVideoParams): Promise<void> {
     return await this.#accountManager.updateProfileVideo(video, params);
-  }
-
-  /**
-   * Set whether new chats from unknown users should be archived and muted. User-only.
-   *
-   * @method ac
-   * @param value Whether new chats from unknown users should be archived and muted.
-   */
-  async setArchiveAndMuteNewChatsFromUnknownUsers(value: boolean): Promise<void> {
-    return await this.#accountManager.setArchiveAndMuteNewChatsFromUnknownUsers(value);
-  }
-
-  /**
-   * Get whether new chats from unknown users are archived and muted. User-only.
-   *
-   * @method ac
-   * @returns Whether new chats from unknown users are archived and muted.
-   */
-  async getArchiveAndMuteNewChatsFromUnknownUsers(): Promise<boolean> {
-    return await this.#accountManager.getArchiveAndMuteNewChatsFromUnknownUsers();
   }
 
   //

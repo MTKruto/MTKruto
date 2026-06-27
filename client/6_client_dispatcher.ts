@@ -539,6 +539,16 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
+   * Get whether new chats from unknown users are archived and muted. User-only.
+   *
+   * @method ac
+   * @returns Whether new chats from unknown users are archived and muted.
+   */
+  async getArchiveAndMuteNewChatsFromUnknownUsers(): Promise<boolean> {
+    return await this.#dispatch("getArchiveAndMuteNewChatsFromUnknownUsers");
+  }
+
+  /**
    * Get the authorization sessions. User-only.
    *
    * @method ac
@@ -831,6 +841,16 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
+   * Set whether new chats from unknown users should be archived and muted. User-only.
+   *
+   * @method ac
+   * @param value Whether new chats from unknown users should be archived and muted.
+   */
+  async setArchiveAndMuteNewChatsFromUnknownUsers(value: boolean): Promise<void> {
+    return await this.#dispatch("setArchiveAndMuteNewChatsFromUnknownUsers", value);
+  }
+
+  /**
    * Set the birthday of the current user. User-only.
    *
    * @method ac
@@ -1028,26 +1048,6 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async updateProfileVideo(video: FileSource, params?: UpdateProfileVideoParams): Promise<void> {
     return await this.#dispatch("updateProfileVideo", video, params);
-  }
-
-  /**
-   * Set whether new chats from unknown users should be archived and muted. User-only.
-   *
-   * @method ac
-   * @param value Whether new chats from unknown users should be archived and muted.
-   */
-  async setArchiveAndMuteNewChatsFromUnknownUsers(value: boolean): Promise<void> {
-    return await this.#dispatch("setArchiveAndMuteNewChatsFromUnknownUsers", value);
-  }
-
-  /**
-   * Get whether new chats from unknown users are archived and muted. User-only.
-   *
-   * @method ac
-   * @returns Whether new chats from unknown users are archived and muted.
-   */
-  async getArchiveAndMuteNewChatsFromUnknownUsers(): Promise<boolean> {
-    return await this.#dispatch("getArchiveAndMuteNewChatsFromUnknownUsers");
   }
 
   //

@@ -170,22 +170,6 @@ export abstract class ClientGeneric {
   abstract addBotToAttachmentsMenu(botId: ID, params?: AddBotToAttachmentsMenuParams): Promise<void>;
 
   /**
-   * Set whether new chats from unknown users should be archived and muted. User-only.
-   *
-   * @method ac
-   * @param value Whether new chats from unknown users should be archived and muted.
-   */
-  abstract setArchiveAndMuteNewChatsFromUnknownUsers(value: boolean): Promise<void>;
-
-  /**
-   * Get whether new chats from unknown users are archived and muted. User-only.
-   *
-   * @method ac
-   * @returns Whether new chats from unknown users are archived and muted.
-   */
-  abstract getArchiveAndMuteNewChatsFromUnknownUsers(): Promise<boolean>;
-
-  /**
    * Allow a bot to set custom emoji status. User-only.
    *
    * @param botId The user identifier of the bot.
@@ -309,6 +293,14 @@ export abstract class ClientGeneric {
    * @method ac
    */
   abstract getAppSupportName(): Promise<string>;
+
+  /**
+   * Get whether new chats from unknown users are archived and muted. User-only.
+   *
+   * @method ac
+   * @returns Whether new chats from unknown users are archived and muted.
+   */
+  abstract getArchiveAndMuteNewChatsFromUnknownUsers(): Promise<boolean>;
 
   /**
    * Get the authorization sessions. User-only.
@@ -541,6 +533,14 @@ export abstract class ClientGeneric {
    * @param dayCount The current account's TTL in days.
    */
   abstract setAccountTtl(dayCount: number): Promise<void>;
+
+  /**
+   * Set whether new chats from unknown users should be archived and muted. User-only.
+   *
+   * @method ac
+   * @param value Whether new chats from unknown users should be archived and muted.
+   */
+  abstract setArchiveAndMuteNewChatsFromUnknownUsers(value: boolean): Promise<void>;
 
   /**
    * Set the birthday of the current user. User-only.
