@@ -1310,3 +1310,8 @@ export interface SaveRichTextDraftParams {
   /** Whether link preview is disabled. */
   isLinkPreviewDisabled?: boolean;
 }
+
+export interface DeleteMyCommandsParams {
+  scope?: BotCommandScope;
+  languageCode?: string;
+}

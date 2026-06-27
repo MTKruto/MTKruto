@@ -20,7 +20,7 @@
 
 import { Api } from "../2_tl.ts";
 import { type BotCommand, botCommandScopeToTlObject, type Update } from "../3_types.ts";
-import type { GetMyCommandsParams, SetMyCommandsParams } from "./0_params.ts";
+import type { DeleteMyCommandsParams, GetMyCommandsParams, SetMyCommandsParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import type { C } from "./1_types.ts";
 
@@ -97,6 +97,13 @@ export class BotInfoManager implements UpdateProcessor<BotInfoManagerUpdate, fal
       lang_code: params?.languageCode ?? "",
       scope: await botCommandScopeToTlObject(params?.scope ?? { type: "default" }, this.#c.getInputPeer),
     });
+  }
+
+  async deleteMyCommands(params?: DeleteMyCommandsParams) {
+    this.#c.storage.assertBot("setMyCommands");
+    const scope = await botCommandScopeToTlObject(params?.scope ?? { type: "default" }, this.#c.getInputPeer);
+    const lang_code = params?.languageCode ?? "";
+    await this.#c.invoke({ _: "bots.resetBotCommands", scope, lang_code });
   }
 
   handleUpdate(update: BotInfoManagerUpdate): Update {
