@@ -851,6 +851,17 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
+   * Send a custom request. Bot-only.
+   *
+   * @method ac
+   * @param method The name of the method.
+   * @param params The parameters of the method.
+   */
+  async sendCustomRequest(method: string, params: string): Promise<string> {
+    return await this.#dispatch("sendCustomRequest", method, params);
+  }
+
+  /**
    * Set the current account's TTL. User-only.
    *
    * @method ac

@@ -1320,6 +1320,17 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Send a custom request. Bot-only.
+   *
+   * @method ac
+   * @param method The name of the method.
+   * @param params The parameters of the method.
+   */
+  async sendCustomRequest(method: string, params: string): Promise<string> {
+    return await this.#accountManager.sendCustomRequest(method, params);
+  }
+
+  /**
    * Set new chat privacy setting. User-only.
    *
    * @method ac

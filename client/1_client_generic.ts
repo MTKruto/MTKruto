@@ -543,6 +543,15 @@ export abstract class ClientGeneric {
   abstract resumeBusinessBotConnection(chatId: ID): Promise<void>;
 
   /**
+   * Send a custom request. Bot-only.
+   *
+   * @method ac
+   * @param method The name of the method.
+   * @param params The parameters of the method.
+   */
+  abstract sendCustomRequest(method: string, params: string): Promise<string>;
+
+  /**
    * Set the current account's TTL. User-only.
    *
    * @method ac
