@@ -18,15 +18,37 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { NotificationSound } from "./0_notification_sound.ts";
+import { cleanObject } from "../1_utilities.ts";
+import type { Api } from "../2_tl.ts";
+import { constructNotificationSound, type NotificationSound } from "./0_notification_sound.ts";
 
-/** A chat's notification settings */
+/** A chat's notification settings. */
 export interface NotificationSettings {
   showsPreviews?: boolean;
   isSilent?: boolean;
   muteUntil?: number;
-  sound?: NotificationSound;
+  iosSound?: NotificationSound;
+  androidSound?: NotificationSound;
+  otherPlatformsSound?: NotificationSound;
   mutesStories?: boolean;
   hidesStories?: boolean;
-  storySound?: NotificationSound;
+  iosStorySound?: NotificationSound;
+  androidStorySound?: NotificationSound;
+  otherPlatformsStorySound?: NotificationSound;
+}
+
+export function constructNotificationSettings(pns: Api.PeerNotifySettings): NotificationSettings {
+  return cleanObject({
+    showsPreviews: pns.show_previews,
+    silent: pns.silent,
+    muteUntil: pns.mute_until,
+    iosSound: pns.ios_sound ? constructNotificationSound(pns.ios_sound) : undefined,
+    androidSound: pns.android_sound ? constructNotificationSound(pns.android_sound) : undefined,
+    otherPlatformsSound: pns.other_sound ? constructNotificationSound(pns.other_sound) : undefined,
+    mutesStories: pns.stories_muted,
+    hidesStories: pns.stories_hide_sender,
+    iosStorySound: pns.stories_ios_sound ? constructNotificationSound(pns.stories_ios_sound) : undefined,
+    androidStorySound: pns.stories_android_sound ? constructNotificationSound(pns.stories_android_sound) : undefined,
+    otherPlatformsStorySound: pns.stories_other_sound ? constructNotificationSound(pns.stories_other_sound) : undefined,
+  });
 }
