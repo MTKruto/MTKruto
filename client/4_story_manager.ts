@@ -100,6 +100,9 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
     const fwd_from_id = params?.forwardedFromChatId ? await this.#c.getInputPeer(params.forwardedFromChatId) : undefined;
     const fwd_from_story = params?.forwardedFromStoryId;
     const fwd_modified = params?.isRepostedStoryModified || undefined;
+    if ((fwd_from_id && !fwd_from_story) || (fwd_from_story && !fwd_from_id)) {
+      throw new InputError("Neither or both of the parameters forwardedFromChatId and forwardedFromStoryId must be specified.");
+    }
 
     if (params?.interactiveAreas?.length) {
       for (const area of params.interactiveAreas) {

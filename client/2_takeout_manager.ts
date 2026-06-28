@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { InputError } from "../0_errors.ts";
 import { constructLeftChannelList, type LeftChannelList } from "../3_types.ts";
 import type { EndTakeoutSessionParams, GetLeftChannelsParams, StartTakeoutSessionParams } from "./0_params.ts";
 import type { C } from "./1_types.ts";
@@ -31,7 +32,22 @@ export class TakeoutManager {
 
   async startTakeoutSession(params?: StartTakeoutSessionParams): Promise<string> {
     this.#c.storage.assertUser("startTakeoutSession");
-    const result = await this.#c.invoke({ _: "account.initTakeoutSession", contacts: params?.isExportingContacts || undefined, message_users: params?.isExportingPrivateChats || undefined, message_chats: params?.isExportingGroupChats || undefined, message_megagroups: params?.isExportingSupergroupChats || undefined, message_channels: params?.isExportingChannelChats || undefined, files: params?.isExportingFiles || undefined, file_max_size: params?.maxFileSize ? BigInt(params.maxFileSize) : undefined });
+    if (params?.isExportingFiles === true && params.maxFileSize === undefined) {
+      throw new InputEvent("maxFileSize must be specified when isExportingFiles is true.");
+    }
+    if (params?.maxFileSize !== undefined && !params.isExportingFiles) {
+      throw new InputError("isSupportingFiles must be true when maxFileSize is specified.");
+    }
+    const result = await this.#c.invoke({
+      _: "account.initTakeoutSession",
+      contacts: params?.isExportingContacts || undefined,
+      message_users: params?.isExportingPrivateChats || undefined,
+      message_chats: params?.isExportingGroupChats || undefined,
+      message_megagroups: params?.isExportingSupergroupChats || undefined,
+      message_channels: params?.isExportingChannelChats || undefined,
+      files: params?.isExportingFiles || undefined,
+      file_max_size: params?.maxFileSize !== undefined ? BigInt(params.maxFileSize) : undefined,
+    });
     return String(result.id);
   }
 
