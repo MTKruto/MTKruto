@@ -1296,6 +1296,15 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Reset notification settings. User-only.
+   *
+   * @method ac
+   */
+  async resetNotificationSettings(): Promise<void> {
+    return await this.#accountManager.resetNotificationSettings();
+  }
+
+  /**
    * Send a user verification code.
    *
    * @param phoneNumber The phone number to send the code to.

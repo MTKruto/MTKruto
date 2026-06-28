@@ -821,6 +821,15 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
+   * Reset notification settings. User-only.
+   *
+   * @method ac
+   */
+  async resetNotificationSettings(): Promise<void> {
+    return await this.#dispatch("resetNotificationSettings");
+  }
+
+  /**
    * Resolve a phone number. User-only.
    *
    * @method ac
