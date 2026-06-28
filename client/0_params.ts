@@ -537,6 +537,14 @@ export interface CreateStoryParams extends _CaptionCommon, _UploadCommon {
   highlight?: boolean;
   /** Whether to protect the contents of the story from copying and forwarding. */
   isContentProtected?: boolean;
+  /** Identifiers of albums to add the story to. */
+  albumIds?: number[];
+  /** Identifier of the chat including the reposted story. */
+  forwardedFromChatId?: ID;
+  /** Identifier of the reposted story. */
+  forwardedFromStoryId?: number;
+  /** Whether the reposted story is modified. */
+  isRepostedStoryModified?: boolean;
 }
 
 export interface SearchMessagesParams {

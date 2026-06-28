@@ -90,17 +90,40 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
     const caption = parseResult === undefined ? undefined : parseResult[0];
     const entities = parseResult === undefined ? undefined : parseResult[1];
     const peer = await this.#c.getInputPeer(chatId);
-    const randomId = getRandomId();
-    const privacyRules = storyPrivacyToTlObject(params?.privacy ?? { type: "everyone", except: [] }, this.#c.getPeer);
-    const mediaAreas = new Array<Api.MediaArea>();
+    const random_id = getRandomId();
+    const privacy_rules = storyPrivacyToTlObject(params?.privacy ?? { type: "everyone", except: [] }, this.#c.getPeer);
+    const media_areas = new Array<Api.MediaArea>();
+    const noforwards = params?.isContentProtected || undefined;
+    const period = params?.activeFor;
+    const pinned = params?.highlight || undefined;
+    const albums = params?.albumIds;
+    const fwd_from_id = params?.forwardedFromChatId ? await this.#c.getInputPeer(params.forwardedFromChatId) : undefined;
+    const fwd_from_story = params?.forwardedFromStoryId;
+    const fwd_modified = params?.isRepostedStoryModified || undefined;
 
     if (params?.interactiveAreas?.length) {
       for (const area of params.interactiveAreas) {
-        mediaAreas.push(storyInteractiveAreaToTlObject(area, this.#c.getPeer));
+        media_areas.push(storyInteractiveAreaToTlObject(area, this.#c.getPeer));
       }
     }
 
-    const updates = await this.#c.invoke({ _: "stories.sendStory", peer, random_id: randomId, media, privacy_rules: privacyRules, caption, entities, noforwards: params?.isContentProtected || undefined, period: params?.activeFor, pinned: params?.highlight || undefined, media_areas: mediaAreas });
+    const updates = await this.#c.invoke({
+      _: "stories.sendStory",
+      peer,
+      random_id,
+      media,
+      privacy_rules,
+      caption,
+      entities,
+      noforwards,
+      period,
+      pinned,
+      media_areas,
+      albums,
+      fwd_from_id,
+      fwd_from_story,
+      fwd_modified,
+    });
     return this.#updatesToStory(updates);
   }
 
