@@ -1237,7 +1237,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       throw new InputError("The referenced message cannot have a caption.");
     }
 
-    const [message, entities] = this.parseText(params?.caption ?? "", params);
+    const [message, entities] = this.parseText(params?.caption ?? "", params, true);
 
     const result = await this.#c.invoke({
       _: "messages.editMessage",
@@ -1251,9 +1251,9 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return (await this.updatesToMessages(chatId, result))[0];
   }
 
-  async #editInlineMessageTextInner(inlineMessageId: string, text: string, params?: EditMessageTextParams, allowEmpty = true) {
+  async #editInlineMessageTextInner(inlineMessageId: string, text: string, allowEmpty: boolean, params?: EditMessageTextParams) {
     this.#checkParams(params);
-    const [message, entities] = this.parseText(text, params);
+    const [message, entities] = this.parseText(text, params, allowEmpty);
     if (!allowEmpty && !message) {
       throw new InputError("Message text cannot be empty.");
     }
@@ -1283,11 +1283,11 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   }
 
   async editInlineMessageText(inlineMessageId: string, text: string, params?: EditInlineMessageTextParams) {
-    await this.#editInlineMessageTextInner(inlineMessageId, text, params, false);
+    await this.#editInlineMessageTextInner(inlineMessageId, text, false, params);
   }
 
   async editInlineMessageCaption(inlineMessageId: string, params?: EditInlineMessageCaptionParams) {
-    await this.#editInlineMessageTextInner(inlineMessageId, params?.caption ?? "", params);
+    await this.#editInlineMessageTextInner(inlineMessageId, params?.caption ?? "", true, params);
   }
 
   async #resolveInputMediaInner(document: FileSource, media: InputMedia, fileType: FileType, otherAttribs: Api.DocumentAttribute[]) {
