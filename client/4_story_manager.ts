@@ -23,7 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { base64DecodeUrlSafe, getRandomId } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { constructStory, constructStoryReportResult, FileType, type ID, type InputStoryContent, type Story, storyInteractiveAreaToTlObject, storyPrivacyToTlObject, type StoryReportResult, type Update } from "../3_types.ts";
-import type { CreateStoryParams, ReportStoryParams } from "./0_params.ts";
+import type { CreateStoryParams, EditStoryParams, ReportStoryParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { checkArray, checkStoryId, isHttpUrl } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
@@ -71,12 +71,12 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
       if (typeof source === "string" && isHttpUrl(source)) {
         throw new InputError("URL not supported.");
       } else {
-        const file = await this.#c.fileManager.upload(source, params, null, "video" in content);
+        const file = await this.#c.fileManager.upload(source, params, null, content.type === "video");
         if (Api.is("inputFileStoryDocument", file)) {
           unreachable();
         }
         const mimeType = contentType(file.name.split(".").slice(-1)[0]) ?? "application/octet-stream";
-        if ("video" in content) {
+        if (content.type === "video") {
           media = { _: "inputMediaUploadedDocument", file, attributes: [{ _: "documentAttributeFilename", file_name: file.name }, { _: "documentAttributeVideo", w: 720, h: 1280, duration: content.duration }], mime_type: mimeType };
         } else {
           media = { _: "inputMediaUploadedPhoto", file };
@@ -123,6 +123,67 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
       fwd_from_id,
       fwd_from_story,
       fwd_modified,
+    });
+    return this.#updatesToStory(updates);
+  }
+
+  async editStory(chatId: ID, storyId: number, params?: EditStoryParams): Promise<Story> {
+    this.#c.storage.assertUser("editStory");
+    let media: Api.InputMedia | undefined;
+
+    if (params?.content) {
+      const source = params.content.type === "video" ? params.content.video : params.content.type === "photo" ? params.content.photo : unreachable();
+
+      if (typeof source === "string") {
+        const fileId = this.#c.messageManager.resolveFileId(source, FileType.Photo);
+        if (fileId !== null) {
+          media = { _: "inputMediaPhoto", id: { ...fileId, _: "inputPhoto" } };
+        }
+      }
+
+      if (media === undefined) {
+        if (typeof source === "string" && isHttpUrl(source)) {
+          throw new InputError("URL not supported.");
+        } else {
+          const file = await this.#c.fileManager.upload(source, params, null, params.content.type === "video");
+          if (Api.is("inputFileStoryDocument", file)) {
+            unreachable();
+          }
+          const mimeType = contentType(file.name.split(".").slice(-1)[0]) ?? "application/octet-stream";
+          if (params.content.type === "video") {
+            media = { _: "inputMediaUploadedDocument", file, attributes: [{ _: "documentAttributeFilename", file_name: file.name }, { _: "documentAttributeVideo", w: 720, h: 1280, duration: params.content.duration }], mime_type: mimeType };
+          } else {
+            media = { _: "inputMediaUploadedPhoto", file };
+          }
+        }
+      }
+    }
+
+    const caption_ = params?.caption;
+    const parseResult = caption_ !== undefined ? this.#c.messageManager.parseText(caption_, { parseMode: params?.parseMode, entities: params?.captionEntities }) : undefined;
+
+    const id = storyId;
+    const caption = parseResult === undefined ? undefined : parseResult[0];
+    const entities = parseResult === undefined ? [] : parseResult[1];
+    const peer = await this.#c.getInputPeer(chatId);
+    const privacy_rules = storyPrivacyToTlObject(params?.privacy ?? { type: "everyone", except: [] }, this.#c.getPeer);
+    const media_areas = new Array<Api.MediaArea>();
+
+    if (params?.interactiveAreas?.length) {
+      for (const area of params.interactiveAreas) {
+        media_areas.push(storyInteractiveAreaToTlObject(area, this.#c.getPeer));
+      }
+    }
+
+    const updates = await this.#c.invoke({
+      _: "stories.editStory",
+      peer,
+      id,
+      media,
+      privacy_rules,
+      caption,
+      entities,
+      media_areas,
     });
     return this.#updatesToStory(updates);
   }
