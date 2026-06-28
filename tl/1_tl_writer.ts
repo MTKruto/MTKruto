@@ -127,7 +127,8 @@ export class TLWriter {
     this.writeInt32(id, false);
 
     let isFirstPathElementExisting = false;
-    for (let [name, type] of parameters_.values()) {
+    const flagFields: Record<string, number> = {};
+    for (let [name, type] of parameters_) {
       if (isOptionalParam(type) && type__[name] === undefined) {
         continue;
       }
@@ -147,6 +148,7 @@ export class TLWriter {
             }
           }
         }
+        flagFields[flagField_] = flags;
         this.writeInt32(flags);
         continue;
       }
@@ -169,7 +171,21 @@ export class TLWriter {
       this.#serialize(type, type__[name], schema);
     }
 
-    return;
+    for (const [name, type] of parameters_.values()) {
+      if (type === "#" || !isOptionalParam(type) || type__[name] !== undefined) {
+        continue;
+      }
+
+      const pathElement = `[${value._}.]${name}`;
+      if (isFirstPathElementExisting) {
+        this.#path[this.#path.length - 1] = pathElement;
+      }
+
+      const { flagField, bitIndex } = analyzeOptionalParam(type, this.#path);
+      if ((flagFields[flagField] & (1 << bitIndex)) !== 0) {
+        throw new TLError("Missing required field", this.#path);
+      }
+    }
   }
 
   #serializeVector(type: string, value: any, schema: Schema) {

@@ -20,7 +20,7 @@
 
 import { assertEquals, unreachable } from "../0_deps.ts";
 import { TLError } from "../0_errors.ts";
-import { assertInstanceOf } from "../0_test_deps.ts";
+import { assertInstanceOf, assertThrows } from "../0_test_deps.ts";
 import type { Schema } from "./0_types.ts";
 import { TLWriter } from "./1_tl_writer.ts";
 
@@ -491,4 +491,38 @@ Deno.test("errors", () => {
     assertEquals(err.path, path);
     assertEquals(err.message, `Expected an integer value but received a floating point at ${path.join(" ")}`);
   }
+});
+
+Deno.test("errors on unspecified required flag", () => {
+  const schema: Schema = {
+    definitions: {
+      object: [
+        0xDE33B094,
+        [
+          ["flags", "#"],
+          ["required_double", "flags.0?double"],
+          ["required_double2", "flags.0?double"],
+        ],
+        "Object",
+      ],
+    },
+    identifierToName: {
+      [0xDE33B094]: "object",
+    },
+  };
+
+  new TLWriter()
+    .writeObject({
+      _: "object",
+      required_double: 2.305921,
+      required_double2: 3.14,
+    }, schema);
+
+  assertThrows(() => {
+    new TLWriter()
+      .writeObject({
+        _: "object",
+        required_double: 2.305921,
+      }, schema);
+  });
 });
