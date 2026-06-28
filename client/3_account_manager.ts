@@ -771,4 +771,9 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     const result = await this.#c.invoke({ _: "bots.sendCustomRequest", custom_method, params });
     return result.data;
   }
+
+  async resetNotificationSettings() {
+    this.#c.storage.assertUser("resetNotificationSettings");
+    await this.#c.invoke({ _: "account.resetNotifySettings" });
+  }
 }

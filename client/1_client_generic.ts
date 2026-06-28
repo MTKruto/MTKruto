@@ -519,6 +519,13 @@ export abstract class ClientGeneric {
   abstract reorderUsernames(id: ID, order: string[]): Promise<boolean>;
 
   /**
+   * Reset notification settings. User-only.
+   *
+   * @method ac
+   */
+  abstract resetNotificationSettings(): Promise<void>;
+
+  /**
    * Resolve a phone number. User-only.
    *
    * @method ac
