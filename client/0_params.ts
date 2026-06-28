@@ -20,7 +20,7 @@
 
 import type { MaybePromise } from "../1_utilities.ts";
 import type { DC } from "../3_transport.ts";
-import type { Birthday, BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, InputLinkPreview, InputMedia, InputNotificationSettings, InputPollMedia, LinkPreview, MessageEntity, MessageSearchFilter, MiniAppMode, ParseMode, Reaction, ReplyMarkup, ReplyTo, SecretMessageEntity, SelfDestructOption, StoryInteractiveArea, StoryPrivacy, WorkingHours } from "../3_types.ts";
+import type { Birthday, BotCommandScope, ChatListItem, ChatMemberRights, FileSource, ID, InlineQueryResultButton, InputLinkPreview, InputMedia, InputNotificationSettings, InputPollMedia, InputStoryContent, LinkPreview, MessageEntity, MessageSearchFilter, MiniAppMode, ParseMode, Reaction, ReplyMarkup, ReplyTo, SecretMessageEntity, SelfDestructOption, StoryInteractiveArea, StoryPrivacy, WorkingHours } from "../3_types.ts";
 
 export interface InvokeParams {
   dc?: DC;
@@ -545,6 +545,15 @@ export interface CreateStoryParams extends _CaptionCommon, _UploadCommon {
   forwardedFromStoryId?: number;
   /** Whether the reposted story is modified. */
   isRepostedStoryModified?: boolean;
+}
+
+export interface EditStoryParams extends _CaptionCommon, _UploadCommon {
+  /** The story's new content. */
+  content?: InputStoryContent;
+  /** The story's new interactive areas. */
+  interactiveAreas?: StoryInteractiveArea[];
+  /** The story's new privacy settings. */
+  privacy?: StoryPrivacy;
 }
 
 export interface SearchMessagesParams {
