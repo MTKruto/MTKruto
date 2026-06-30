@@ -148,7 +148,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
   async getCreatedInviteLinks(chatId: ID, params?: GetCreatedInviteLinksParams): Promise<InviteLink[]> {
     this.#c.storage.assertUser("getCreatedInviteLinks");
     if ((params?.afterDate !== undefined && !params.afterInviteLink) || (params?.afterDate === undefined && params?.afterInviteLink)) {
-      throw new InputError("Neither or both of the parameters afterDate and afterInviteLink must be specified.");
+      throw new InputError("Both or neither of the parameters afterDate and afterInviteLink must be specified.");
     }
     const { invites } = await this.#c.invoke({ _: "messages.getExportedChatInvites", peer: await this.#c.getInputPeer(chatId), revoked: params?.isRevoked || undefined, admin_id: params?.by ? await this.#c.getInputUser(params.by) : { _: "inputUserEmpty" }, limit: getLimit(params?.limit), offset_date: params?.afterDate, offset_link: params?.afterInviteLink });
     return await Promise.all(invites.map((v) => Api.as("chatInviteExported", v)).map((v) => constructInviteLink(v, this.#c.getPeer)));

@@ -51,7 +51,7 @@ export interface TopicActive {
 }
 
 /**
- * An active forum topic.
+ * A deleted forum topic.
  * @unlisted
  */
 export interface TopicDeleted {

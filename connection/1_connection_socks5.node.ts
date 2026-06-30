@@ -37,7 +37,7 @@ const ADDRESS_TYPE_4 = 1;
 const ADDRESS_TYPE_DOMAIN_NAME = 3;
 const ADDRESS_TYPE_6 = 4;
 
-const L = getLogger("ConnectionTCP");
+const L = getLogger("ConnectionSocks5");
 const errConnectionNotOpen = new ConnectionError("The connection is not open.");
 
 export interface ConnectionSocks5Params {

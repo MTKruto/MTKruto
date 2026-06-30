@@ -121,7 +121,7 @@ export async function checkPassword(password_: string, ap: Api.account_Password)
   const srpId = ap.srp_id;
   {
     if (!srpB) {
-      throw new TypeError("srbB is not set.");
+      throw new TypeError("srpB is not set.");
     }
     if (!srpId) {
       throw new TypeError("srpId is not set.");

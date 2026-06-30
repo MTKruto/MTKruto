@@ -108,7 +108,7 @@ export abstract class ClientGeneric {
    *
    * Notes:
    * 1. Requires the `apiId` and `apiHash` parameters to be passed when constructing the client.
-   * 3. Reconnects the client to the appropriate DC in case of MIGRATE_X errors.
+   * 2. Reconnects the client to the appropriate DC in case of MIGRATE_X errors.
    *
    * @method au
    */
@@ -3521,7 +3521,7 @@ export abstract class ClientGeneric {
   //
 
   /**
-   * Set the access settings of a managed bot. Bot-only.
+   * Get the access settings of a managed bot. Bot-only.
    *
    * @method mb
    * @param userId The identifier of the bot user.

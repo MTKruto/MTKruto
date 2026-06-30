@@ -31,7 +31,7 @@ let id = 0;
 const defaultTransportProvider = typeof Deno === "undefined" ? transportProviderWebSocket : transportProviderTcp;
 
 export interface SessionParams {
-  /** The transport provider to use. Defaults to `transportProviderWebsocket` in browsers and `transportProviderTcp` in other runtimes. */
+  /** The transport provider to use. Defaults to `transportProviderWebSocket` in browsers and `transportProviderTcp` in other runtimes. */
   transportProvider?: TransportProvider;
   /** Whether the connection is with a media server. Defaults to false. */
   isMedia?: boolean;

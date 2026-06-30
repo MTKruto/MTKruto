@@ -38,9 +38,9 @@ type SentRequest = { call: Api.AnyFunction | Mtproto.ping; promiseWithResolvers:
 export interface ClientEncryptedParams extends ClientPlainParams {
   /** The app_version parameter to be passed to initConnection. It is recommended that this parameter is changed if users are authorized. Defaults to _MTKruto_. */
   appVersion?: string;
-  /** The device_version parameter to be passed to initConnection. The default varies by the current runtime. */
+  /** The device_model parameter to be passed to initConnection. The default varies by the current runtime. */
   deviceModel?: string;
-  /** The lang_pack parameter to be passed to initConnection. Defaults to the runtime's language or `"en"`. */
+  /** The lang_code parameter to be passed to initConnection. Defaults to the runtime's language or `"en"`. */
   langCode?: string;
   /** The lang_pack parameter to be passed to initConnection. Defaults to an empty string. */
   langPack?: string;

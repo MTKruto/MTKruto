@@ -35,7 +35,7 @@ export interface ResolvedInviteLink {
   isVerified: boolean;
   /** Whether the chat has been identified as a scam. */
   isScam: boolean;
-  /** Whether the chat has been identifier as a fake. */
+  /** Whether the chat has been identified as a fake. */
   isFake: boolean;
   /** Whether no repayment is required to join the chat. */
   isAlreadySubscribed: boolean;

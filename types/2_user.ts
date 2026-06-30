@@ -30,7 +30,7 @@ import type { ChatPPrivate } from "./1_chat_p.ts";
 export interface User {
   /** The identifier of the user. */
   id: number;
-  /** Identifier of color that can be displayed instead of the user's photo. */
+  /** Identifier of a color that can be displayed instead of the user's photo. */
   color: number;
   /** Whether the user is a bot. */
   isBot: boolean;

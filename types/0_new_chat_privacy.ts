@@ -20,7 +20,7 @@
 
 /** A new chat privacy setting. */
 export interface NewChatPrivacy {
-  /** Whether new chats from non-premium users is allowed. */
+  /** Whether new chats from non-premium users are allowed. */
   isNewChatFromNonPremiumUsersAllowed: boolean;
   /** The price of messages. */
   messagePrice: number;

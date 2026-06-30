@@ -90,7 +90,7 @@ export interface ClientParams extends ClientPlainParams {
   parseMode?: ParseMode;
   /** The app_version parameter to be passed to initConnection. It is recommended that this parameter is changed if users are authorized. Defaults to _MTKruto_. */
   appVersion?: string;
-  /** The device_version parameter to be passed to initConnection. The default varies by the current runtime. */
+  /** The device_model parameter to be passed to initConnection. The default varies by the current runtime. */
   deviceModel?: string;
   /** The client's language to be used for fetching translations. Defaults to the runtime's language or `"en"`. */
   language?: string;
@@ -104,7 +104,7 @@ export interface ClientParams extends ClientPlainParams {
   defaultHandlers?: boolean;
   /** Whether outgoing messages should be sent as high-level updates. Outgoing bot business messages will never be sent. Defaults to `false`. */
   outgoingMessages?: boolean;
-  /** Whether to guarantee that order-sensitive updates are delivered at least once before delivering next ones. Useful mainly for clients providing a user interface à la Telegram Desktop. Defaults to `false`. */
+  /** Whether to guarantee that order-sensitive updates are delivered at least once before delivering the next ones. Useful mainly for clients providing a user interface à la Telegram Desktop. Defaults to `false`. */
   guaranteeUpdateDelivery?: boolean;
   /** Whether to ignore updates received while the client was not running. Defaults to `true` for bots and `false` for users. */
   dropPendingUpdates?: boolean;
@@ -1365,7 +1365,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    *
    * Notes:
    * 1. Requires the `apiId` and `apiHash` parameters to be passed when constructing the client.
-   * 3. Reconnects the client to the appropriate DC in case of MIGRATE_X errors.
+   * 2. Reconnects the client to the appropriate DC in case of MIGRATE_X errors.
    *
    * @method au
    */
@@ -5594,7 +5594,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   //
 
   /**
-   * Set the access settings of a managed bot. Bot-only.
+   * Get the access settings of a managed bot. Bot-only.
    *
    * @method mb
    * @param userId The identifier of the bot user.

@@ -202,7 +202,7 @@ export interface SendPollParams extends _SendCommon, _ReplyMarkupCommon {
   descriptionEntities?: MessageEntity[];
   /** Duration of the poll in seconds. Must be in the range of 5-600. Cannot be used simultaneously with `closeDate`. */
   openPeriod?: number;
-  /** The time when the poll will be closed. Must be at least 5 seconds in the future, and no more than 600. Cannot be used simultaneously with `openPeriod`. */
+  /** The time when the poll will be closed. Must be at least 5 seconds in the future, and no more than 600 seconds in the future. Cannot be used simultaneously with `openPeriod`. */
   closeDate?: number;
   /** Whether the poll should be closed as soon as it is sent, allowing no answers. */
   isClosed?: boolean;

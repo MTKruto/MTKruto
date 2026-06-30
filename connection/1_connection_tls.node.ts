@@ -28,7 +28,7 @@ import { getTlsHeader } from "./0_get_tls_header.ts";
 const HEADER_LENGTH = 5;
 const MAX_PACKET_LENGTH = 2878;
 
-const L = getLogger("ConnectionTCP");
+const L = getLogger("ConnectionTLS");
 const errConnectionNotOpen = new ConnectionError("The connection is not open.");
 
 export class ConnectionTLS implements Connection {
