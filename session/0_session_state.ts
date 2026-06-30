@@ -33,7 +33,7 @@ export class SessionState {
   previewNextMessageId(): bigint {
     const now = toUnixTimestamp(new Date()) + this.timeDifference;
     const nanoseconds = Math.floor((now - Math.floor(now)) * 1e9);
-    const newMessageId = (BigInt(Math.floor(now)) << 32n) || (BigInt(nanoseconds) << 2n);
+    const newMessageId = (BigInt(Math.floor(now)) << 32n) | (BigInt(nanoseconds) << 2n);
     let messageId = this.#messageId;
     if (messageId >= newMessageId) {
       messageId += 4n;
