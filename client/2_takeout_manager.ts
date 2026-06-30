@@ -33,10 +33,10 @@ export class TakeoutManager {
   async startTakeoutSession(params?: StartTakeoutSessionParams): Promise<string> {
     this.#c.storage.assertUser("startTakeoutSession");
     if (params?.isExportingFiles === true && params.maxFileSize === undefined) {
-      throw new InputEvent("maxFileSize must be specified when isExportingFiles is true.");
+      throw new InputError("maxFileSize must be specified when isExportingFiles is true.");
     }
     if (params?.maxFileSize !== undefined && !params.isExportingFiles) {
-      throw new InputError("isSupportingFiles must be true when maxFileSize is specified.");
+      throw new InputError("isExportingFiles must be true when maxFileSize is specified.");
     }
     const result = await this.#c.invoke({
       _: "account.initTakeoutSession",

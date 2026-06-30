@@ -41,7 +41,7 @@ export class ForumManager {
   static #validateTopicTitle(title: string) {
     title = title.trim();
     if (!title) {
-      throw new InputEvent("Invalid topic title.");
+      throw new InputError("Invalid topic title.");
     }
     return title;
   }
@@ -73,7 +73,7 @@ export class ForumManager {
     await this.#c.invoke({ _: "messages.deleteTopicHistory", peer, top_msg_id });
   }
 
-  static #assertNongenralTopicIdValid(topicId: number) {
+  static #assertNongeneralTopicIdValid(topicId: number) {
     if (!topicId || topicId < 2) {
       throw new InputError("Invalid topic ID.");
     }
@@ -86,7 +86,7 @@ export class ForumManager {
   }
 
   async editTopic(chatId: ID, topicId: number, title: string, params?: EditTopicParams): Promise<Topic> {
-    ForumManager.#assertNongenralTopicIdValid(topicId);
+    ForumManager.#assertNongeneralTopicIdValid(topicId);
     title = ForumManager.#validateTopicTitle(title);
     const peer = await this.#c.getInputPeer(chatId);
     const updates = await this.#c.invoke({
@@ -119,7 +119,7 @@ export class ForumManager {
   }
 
   async #toggleNongeneralTopicClosed(chatId: ID, topicId: number, closed: boolean) {
-    ForumManager.#assertNongenralTopicIdValid(topicId);
+    ForumManager.#assertNongeneralTopicIdValid(topicId);
     const peer = await this.#c.getInputPeer(chatId);
     await this.#c.invoke({
       _: "messages.editForumTopic",

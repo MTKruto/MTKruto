@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { InputError } from "./0_errors.ts";
 import { getLogger } from "./1_utilities.ts";
 import type { ClientDispatcherParams, WorkerRequest, WorkerResponse } from "./mod.ts";
 import { ClientReceiver } from "./client/7_client_receiver.ts";
@@ -135,7 +136,7 @@ export function initClient(request: WorkerRequest): WorkerResponse {
         clientId: request.clientId,
         id: request.id,
         isError: true,
-        data: serializeWorkerError(new InputEvent("Could not initialize client.")),
+        data: serializeWorkerError(new InputError("Could not initialize client.")),
       };
     }
   }
