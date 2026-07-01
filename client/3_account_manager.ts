@@ -795,4 +795,10 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     this.#c.storage.assertUser("resetNotificationSettings");
     await this.#c.invoke({ _: "account.resetNotifySettings" });
   }
+
+  async setDefaultMessageTtl(ttl: number) {
+    this.#c.storage.assertBot("setDefaultMessageTtl");
+    const period = ttl;
+    await this.#c.invoke({ _: "messages.setDefaultHistoryTTL", period });
+  }
 }
