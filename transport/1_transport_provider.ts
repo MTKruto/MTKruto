@@ -82,7 +82,7 @@ export interface TransportProviderParams {
 export type TransportProvider = (params: TransportProviderParams) => { connection: Connection; transport: Transport; dcId: number };
 
 export function getDcId(dc: DC, isMedia: boolean): number {
-  return Number(dc[0]) + (dc.endsWith("-test") ? 10_000 : 0) * (isMedia ? -1 : 1);
+  return (Number(dc[0]) + (dc.endsWith("-test") ? 10_000 : 0)) * (isMedia ? -1 : 1);
 }
 
 export function getDc(dcId: number): DC {
