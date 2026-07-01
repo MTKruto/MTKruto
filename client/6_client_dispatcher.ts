@@ -382,16 +382,6 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Set the default message TTL. User-only.
-   *
-   * @method ac
-   * @param ttl The default message TTL in seconds.
-   */
-  async setDefaultMessageTtl(ttl: number): Promise<void> {
-    return await this.#dispatch("setDefaultMessageTtl", ttl);
-  }
-
-  /**
    * Allow a bot to set custom emoji status. User-only.
    *
    * @param botId The user identifier of the bot.
@@ -762,15 +752,6 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Remove the current user's business away message. User-only.
-   *
-   * @method ac
-   */
-  async removeBusinessAwayMessage(): Promise<void> {
-    return await this.#dispatch("removeBusinessAwayMessage");
-  }
-
-  /**
    * Remove a bot from the attachments menu. User-only.
    *
    * @method ac
@@ -778,6 +759,15 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async removeBotFromAttachmentsMenu(botId: ID): Promise<void> {
     return await this.#dispatch("removeBotFromAttachmentsMenu", botId);
+  }
+
+  /**
+   * Remove the current user's business away message. User-only.
+   *
+   * @method ac
+   */
+  async removeBusinessAwayMessage(): Promise<void> {
+    return await this.#dispatch("removeBusinessAwayMessage");
   }
 
   /**
@@ -949,6 +939,16 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async setCloseFriends(userIds: ID[]): Promise<void> {
     return await this.#dispatch("setCloseFriends", userIds);
+  }
+
+  /**
+   * Set the default message TTL. User-only.
+   *
+   * @method ac
+   * @param ttl The default message TTL in seconds.
+   */
+  async setDefaultMessageTtl(ttl: number): Promise<void> {
+    return await this.#dispatch("setDefaultMessageTtl", ttl);
   }
 
   /**

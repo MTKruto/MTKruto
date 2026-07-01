@@ -1268,16 +1268,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Set the default message TTL. User-only.
-   *
-   * @method ac
-   * @param ttl The default message TTL in seconds.
-   */
-  async setDefaultMessageTtl(ttl: number): Promise<void> {
-    return await this.#accountManager.setDefaultMessageTtl(ttl);
-  }
-
-  /**
    * Get read date privacy. User-only.
    *
    * @method ac
@@ -1347,6 +1337,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async sendCustomRequest(method: string, params: string): Promise<string> {
     return await this.#accountManager.sendCustomRequest(method, params);
+  }
+
+  /**
+   * Set the default message TTL. User-only.
+   *
+   * @method ac
+   * @param ttl The default message TTL in seconds.
+   */
+  async setDefaultMessageTtl(ttl: number): Promise<void> {
+    return await this.#accountManager.setDefaultMessageTtl(ttl);
   }
 
   /**
@@ -1860,15 +1860,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Remove the current user's business away message. User-only.
-   *
-   * @method ac
-   */
-  async removeBusinessAwayMessage(): Promise<void> {
-    await this.#accountManager.removeBusinessAwayMessage();
-  }
-
-  /**
    * Remove a bot from the attachments menu. User-only.
    *
    * @method ac
@@ -1876,6 +1867,15 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async removeBotFromAttachmentsMenu(botId: ID): Promise<void> {
     return await this.#accountManager.removeBotFromAttachmentsMenu(botId);
+  }
+
+  /**
+   * Remove the current user's business away message. User-only.
+   *
+   * @method ac
+   */
+  async removeBusinessAwayMessage(): Promise<void> {
+    await this.#accountManager.removeBusinessAwayMessage();
   }
 
   /**
