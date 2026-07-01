@@ -61,7 +61,7 @@ export class StorageDenoKV implements Storage {
 
   branch(id: string): Storage {
     const storage = new StorageDenoKV(this.path);
-    storage.#id = id;
+    storage.#id = this.#id !== null ? `${this.#id}S__${id}` : id;
     return storage;
   }
 

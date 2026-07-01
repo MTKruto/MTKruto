@@ -49,7 +49,7 @@ export class StorageIndexedDB implements Storage {
 
   branch(id: string): StorageIndexedDB {
     const storage = new StorageIndexedDB(this.name, { storeFiles: this.#supportsFiles });
-    storage.#id = id;
+    storage.#id = this.#id !== null ? `${this.#id}S__${id}` : id;
     return storage;
   }
 
