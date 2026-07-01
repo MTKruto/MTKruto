@@ -433,7 +433,9 @@ export class FileManager {
     signal?.throwIfAborted();
 
     const limit = chunkSize;
-    let offset = params?.offset ? BigInt(params.offset) : 0n;
+    const requestedOffset = params?.offset ?? 0;
+    let offset = decryptionInformation ? 0n : BigInt(requestedOffset);
+    let bytesToSkip = decryptionInformation ? requestedOffset : 0;
     let part = 0;
 
     let totalSize = 0;
@@ -461,9 +463,17 @@ export class FileManager {
 
             decryptionInformation.iv = concat([left, right]);
           }
-          yield result.bytes;
+          const bytesToCache = result.bytes;
+          if (bytesToSkip > 0) {
+            const skipped = Math.min(bytesToSkip, result.bytes.byteLength);
+            bytesToSkip -= skipped;
+            result.bytes = result.bytes.subarray(skipped);
+          }
+          if (result.bytes.byteLength) {
+            yield result.bytes;
+          }
           if (id !== null) {
-            await this.#c.storage.saveFilePart(id, part, result.bytes);
+            await this.#c.storage.saveFilePart(id, part, bytesToCache);
             signal?.throwIfAborted();
           }
           ++part;
