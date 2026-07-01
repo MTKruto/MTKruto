@@ -469,7 +469,7 @@ export class FileManager {
           ++part;
           if (finished) {
             if (id !== null) {
-              await this.#c.storage.setFilePartCount(id, part + 1, chunkSize);
+              await this.#c.storage.setFilePartCount(id, part, chunkSize);
               signal?.throwIfAborted();
             }
             break;
