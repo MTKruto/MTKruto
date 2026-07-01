@@ -119,6 +119,11 @@ export interface SendChatActionParams extends _BusinessConnectionIdCommon {
   messageThreadId?: number;
 }
 
+export interface SetBusinessAwayMessageParams {
+  /** Whether the away message should be sent only when the account is offline. */
+  isOfflineOnly?: boolean;
+}
+
 export interface _EditMessageTextCommon extends _ReplyMarkupCommon {
   /** The parse mode to use. If omitted, the default parse mode will be used. */
   parseMode?: ParseMode;
