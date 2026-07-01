@@ -35,7 +35,7 @@ const GZIP_PACKED = 0x3072CFA1;
 const RPC_RESULT = 0xF35C6D01;
 const RPC_ERROR = Mtproto.schema.definitions["rpc_error"][0];
 
-type PendingMessage = { body: Uint8Array<ArrayBuffer>; promiseWithResolvers: PromiseWithResolvers<bigint> };
+type PendingMessage = { body: Uint8Array<ArrayBuffer>; onMessageId: (messageId: bigint) => () => void; promiseWithResolvers: PromiseWithResolvers<void> };
 
 type PendingPing = { call: Mtproto.ping_delay_disconnect; promiseWithResolvers: PromiseWithResolvers<Mtproto.pong> };
 
@@ -190,15 +190,15 @@ export class SessionEncrypted extends Session implements Session {
     drop(this.handlers.onNewServerSalt?.(newServerSalt));
   }
 
-  async send(body: Uint8Array<ArrayBuffer>): Promise<bigint> {
+  async send(body: Uint8Array<ArrayBuffer>, onMessageId: (messageId: bigint) => () => void) {
     if (!this.isDisconnected && !this.isConnected) {
       await super.waitUntilConnected();
     }
     this.#assertNotDisconnected();
-    const pendingMessage: PendingMessage = { body, promiseWithResolvers: Promise.withResolvers() };
+    const pendingMessage: PendingMessage = { body, onMessageId, promiseWithResolvers: Promise.withResolvers() };
     this.#pendingMessages.push(pendingMessage);
     this.#awakeSendLoop?.();
-    return await pendingMessage.promiseWithResolvers.promise;
+    await pendingMessage.promiseWithResolvers.promise;
   }
 
   async #receive() {
@@ -334,12 +334,13 @@ export class SessionEncrypted extends Session implements Session {
       this.#LsendLoop.debug("container msg_id =", message.msg_id, "seqno =", message.seqno);
     }
 
+    const unregister = pendingMessage.onMessageId(msg_id);
     try {
       const payload = await this.#encryptMessage(message);
       await this.transport.transport.send(payload);
-      pendingMessage.promiseWithResolvers.resolve(msg_id);
     } catch (err) {
       pendingMessage.promiseWithResolvers.reject(err);
+      unregister();
       return;
     }
 
@@ -352,6 +353,7 @@ export class SessionEncrypted extends Session implements Session {
     } else {
       this.#LsendLoop.debug("sent message", message.msg_id);
     }
+    pendingMessage.promiseWithResolvers.resolve();
   }
 
   //// RECEIVE LOOP ////
@@ -555,16 +557,20 @@ export class SessionEncrypted extends Session implements Session {
   async #sendPingDelayDisconnect(disconnect_delay: number) {
     const ping_id = getRandomId();
     const call: Mtproto.ping_delay_disconnect = { _: "ping_delay_disconnect", ping_id, disconnect_delay };
-    const messageId = await this.send(Mtproto.serializeObject(call));
     const promiseWithResolvers = Promise.withResolvers<Mtproto.pong>();
-    this.#pendingPings.set(messageId, { call, promiseWithResolvers });
+    await this.send(Mtproto.serializeObject(call), (messageId) => {
+      this.#pendingPings.set(messageId, { call, promiseWithResolvers });
+      return () => this.#pendingPings.delete(messageId);
+    });
     await promiseWithResolvers.promise;
   }
 
   async #resendPendingPing(pendingPing: PendingPing) {
     try {
-      const messageId = await this.send(Mtproto.serializeObject(pendingPing.call));
-      this.#pendingPings.set(messageId, pendingPing);
+      await this.send(Mtproto.serializeObject(pendingPing.call), (messageId) => {
+        this.#pendingPings.set(messageId, pendingPing);
+        return () => this.#pendingPings.delete(messageId);
+      });
       this.#LreceiveLoop.debug("ping resent");
     } catch (err) {
       this.#LreceiveLoop.debug("rejecting ping because of failed resend:", err);

@@ -273,7 +273,7 @@ export class ClientEncrypted extends ClientAbstract {
 
   #isConnectionInitialized = false;
   lastRequest?: Date;
-  async #send(function_: Api.AnyFunction | Mtproto.ping) {
+  async #send(function_: Api.AnyFunction | Mtproto.ping, onMessageId: (messageId: bigint) => () => void) {
     this.lastRequest = new Date();
     let body: Uint8Array<ArrayBuffer>;
     if (Mtproto.is("ping", function_)) {
@@ -308,7 +308,7 @@ export class ClientEncrypted extends ClientAbstract {
     for (let i = 0; i < ClientEncrypted.#SEND_MAX_TRIES; ++i) {
       let errored = false;
       try {
-        return await this.session.send(body);
+        return await this.session.send(body, onMessageId);
       } catch (err) {
         errored = true;
         lastErr = err;
@@ -328,8 +328,10 @@ export class ClientEncrypted extends ClientAbstract {
 
   async #resend(request: SentRequest) {
     try {
-      const messageId = await this.#send(request.call);
-      this.#sentRequests.set(messageId, request);
+      await this.#send(request.call, (messageId) => {
+        this.#sentRequests.set(messageId, request);
+        return () => this.#sentRequests.delete(messageId);
+      });
     } catch (err) {
       this.#L.error("rejecting message because of resend error:", err);
       request.promiseWithResolvers.reject(err);
@@ -337,10 +339,12 @@ export class ClientEncrypted extends ClientAbstract {
   }
 
   async invoke<T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T): Promise<R> {
-    const messageId = await this.#send(function_);
-    this.#L.debug("sent", function_._, "with msg_id", messageId);
     const sentRequest: SentRequest = { call: function_, promiseWithResolvers: Promise.withResolvers() };
-    this.#sentRequests.set(messageId, sentRequest);
+    await this.#send(function_, (messageId) => {
+      this.#L.debug("sending", function_._, "with msg_id", messageId);
+      this.#sentRequests.set(messageId, sentRequest);
+      return () => this.#sentRequests.delete(messageId);
+    });
     return await sentRequest.promiseWithResolvers.promise as R;
   }
 

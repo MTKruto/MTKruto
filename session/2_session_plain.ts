@@ -25,7 +25,7 @@ import { TLWriter } from "../tl/1_tl_writer.ts";
 import { Session } from "./1_session.ts";
 
 export class SessionPlain extends Session implements Session {
-  async send(data: Uint8Array): Promise<bigint> {
+  async send(data: Uint8Array, onMessageId: (messageId: bigint) => () => void) {
     if (!this.isConnected) {
       throw new ConnectionError("The connection is not open.");
     }
@@ -38,8 +38,14 @@ export class SessionPlain extends Session implements Session {
     writer.write(data);
 
     const payload = writer.buffer;
-    await this.transport.transport.send(payload);
-    return messageId;
+
+    const unregister = onMessageId(messageId);
+    try {
+      await this.transport.transport.send(payload);
+    } catch (err) {
+      unregister();
+      throw err;
+    }
   }
 
   async receive(): Promise<Uint8Array> {
