@@ -1268,6 +1268,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Set the default message TTL. User-only.
+   *
+   * @method ac
+   * @param ttl The default message TTL in seconds.
+   */
+  async setDefaultMessageTtl(ttl: number): Promise<void> {
+    return await this.#accountManager.setDefaultMessageTtl(ttl);
+  }
+
+  /**
    * Get read date privacy. User-only.
    *
    * @method ac
