@@ -22,8 +22,8 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { PasswordHashInvalid, PhoneCodeInvalid, SessionPasswordNeeded } from "../3_errors.ts";
-import { type AppSupport, type AuthorizationSession, type Birthday, birthdayToTlObject, type BotTokenCheckResult, type ChatP, type CodeCheckResult, type ConnectedWebsite, constructAppSupport, constructAuthorizationSession, constructConnectedWebsite, constructCountry, constructEmojiStatus, constructInactiveChat, constructPrivacyRule, constructProfilePhotoList, constructTimezone, constructUser, constructUser2, type Country, type EmojiStatus, type FileSource, type GiftPrivacy, type ID, type InactiveChat, type InputEmojiStatus, type InputPrivacyRule, inputPrivacyRuleToTlObject, type NewChatPrivacy, type PasswordCheckResult, type PrivacyRule, type PrivacySettingKey, privacySettingKeyToTlObject, type ProfilePhotoList, type Timezone, type Update, type User, workingHoursToTlObject } from "../3_types.ts";
-import type { AddBotToAttachmentsMenuParams, AllowUnpaidMessagesFromUserParams, CheckUsernameParams, DeleteAccountParams, DisallowUnpaidMessagesFromUserParams, GetProfilePhotosParams, RemoveProfilePhotoParams, ResolveUsernameParams, SetBirthdayParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
+import { type AppSupport, type AuthorizationSession, type Birthday, birthdayToTlObject, type BotTokenCheckResult, type BusinessAwayMessageSchedule, businessAwayMessageScheduleToTlObject, type ChatP, type CodeCheckResult, type ConnectedWebsite, constructAppSupport, constructAuthorizationSession, constructConnectedWebsite, constructCountry, constructEmojiStatus, constructInactiveChat, constructPrivacyRule, constructProfilePhotoList, constructTimezone, constructUser, constructUser2, type Country, type EmojiStatus, type FileSource, type GiftPrivacy, type ID, type InactiveChat, type InputBusinessRecipients, inputBusinessRecipientsToTlObject, type InputEmojiStatus, type InputPrivacyRule, inputPrivacyRuleToTlObject, type NewChatPrivacy, type PasswordCheckResult, type PrivacyRule, type PrivacySettingKey, privacySettingKeyToTlObject, type ProfilePhotoList, type Timezone, type Update, type User, workingHoursToTlObject } from "../3_types.ts";
+import type { AddBotToAttachmentsMenuParams, AllowUnpaidMessagesFromUserParams, CheckUsernameParams, DeleteAccountParams, DisallowUnpaidMessagesFromUserParams, GetProfilePhotosParams, RemoveProfilePhotoParams, ResolveUsernameParams, SetBirthdayParams, SetBusinessAwayMessageParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, canBeInputUser, checkPhotoName, getLimit, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -301,6 +301,25 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
       business_work_hours = workingHoursToTlObject(params.workingHours);
     }
     await this.#c.invoke({ _: "account.updateBusinessWorkHours", business_work_hours });
+  }
+
+  async setBusinessAwayMessage(shortcutId: number, schedule: BusinessAwayMessageSchedule, recipients: InputBusinessRecipients, params?: SetBusinessAwayMessageParams) {
+    this.#c.storage.assertUser("setBusinessAwayMessage");
+    await this.#c.invoke({
+      _: "account.updateBusinessAwayMessage",
+      message: {
+        _: "inputBusinessAwayMessage",
+        shortcut_id: shortcutId,
+        schedule: businessAwayMessageScheduleToTlObject(schedule),
+        recipients: await inputBusinessRecipientsToTlObject(recipients, this.#c.getInputUser),
+        offline_only: params?.isOfflineOnly ? true : undefined,
+      },
+    });
+  }
+
+  async removeBusinessAwayMessage() {
+    this.#c.storage.assertUser("removeBusinessAwayMessage");
+    await this.#c.invoke({ _: "account.updateBusinessAwayMessage" });
   }
 
   #phoneNumber?: string;
