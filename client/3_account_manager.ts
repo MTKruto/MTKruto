@@ -232,17 +232,17 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     } else {
       params.firstName = peer[0].firstName;
     }
-    if (params?.lastName) {
+    if (params?.lastName !== undefined) {
       params.lastName = params.lastName.trim();
     } else {
       params.lastName = peer[0].lastName;
     }
-    if (params?.bio) {
+    if (params?.bio !== undefined) {
       params.bio = params.bio.trim();
     } else {
       params.bio = userFull.about;
     }
-    if (!params?.firstName && !params?.lastName && !params?.bio) {
+    if (params?.firstName === undefined && params?.lastName === undefined && params?.bio === undefined) {
       throw new InputError("At least one parameter must be specified.");
     }
     await this.#c.invoke({ _: "account.updateProfile", first_name: params.firstName, last_name: params.lastName, about: params.bio });
