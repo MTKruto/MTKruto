@@ -335,7 +335,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     }).then((v) => Api.as("auth.sentCode", v));
   }
 
-  async signUp(firstName: string, params?: SignUpParams) {
+  async signUp(firstName: string, params?: SignUpParams): Promise<number> {
     if (!this.#phoneNumber || !this.#sentCode) {
       throw new InputError("Invalid sent code identifier.");
     }
