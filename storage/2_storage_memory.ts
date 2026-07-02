@@ -123,7 +123,7 @@ export class StorageMemory implements Storage {
     }
   }
 
-  incr(key: readonly StorageKeyPart[], by: number) {
+  incr(key: readonly StorageKeyPart[], by: number): MaybePromise<void> {
     return this.set(key, (this.get<number>(key) || 0) + by);
   }
 }
