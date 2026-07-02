@@ -143,7 +143,7 @@ export abstract class Session {
   disconnect() {
     this.#isDisconnected = true;
     if (this.transport.connection.isConnected) {
-      this.transport.connection.close();
+      drop(this.transport.connection.close());
     }
   }
 

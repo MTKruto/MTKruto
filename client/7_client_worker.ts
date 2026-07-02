@@ -19,6 +19,7 @@
  */
 
 import { InputError } from "../0_errors.ts";
+import { drop } from "../utilities/0_misc.ts";
 import { getLogger } from "../utilities/1_logger.ts";
 import type { WorkerRequest } from "./0_worker_request.ts";
 import type { WorkerResponse } from "./1_worker_response.ts";
@@ -31,28 +32,30 @@ export class ClientWorker {
 
   constructor(worker: Worker | MessagePort) {
     this.#worker = worker;
-    this.#worker.addEventListener("message", async (e) => {
-      const message = (e as unknown as { data: WorkerRequest | WorkerResponse }).data;
-      this.#L.debug("received message from worker", message);
+    this.#worker.addEventListener("message", (e) => {
+      drop((async () => {
+        const message = (e as unknown as { data: WorkerRequest | WorkerResponse }).data;
+        this.#L.debug("received message from worker", message);
 
-      if (message.type === "response") {
-        this.#clients.get(message.clientId)?.handleResponse(message);
-      } else if (message.type === "request") {
-        if (message.method === "handleInvokeError") {
-          const client = this.#clients.get(message.clientId);
-          if (client) {
-            const result = await client.handleInvokeError(message);
-            const response: WorkerResponse = {
-              type: "response",
-              clientId: message.clientId,
-              id: message.id,
-              isError: false,
-              data: result,
-            };
-            this.#worker.postMessage(response);
+        if (message.type === "response") {
+          await this.#clients.get(message.clientId)?.handleResponse(message);
+        } else if (message.type === "request") {
+          if (message.method === "handleInvokeError") {
+            const client = this.#clients.get(message.clientId);
+            if (client) {
+              const result = await client.handleInvokeError(message);
+              const response: WorkerResponse = {
+                type: "response",
+                clientId: message.clientId,
+                id: message.id,
+                isError: false,
+                data: result,
+              };
+              this.#worker.postMessage(response);
+            }
           }
         }
-      }
+      })());
     });
   }
 

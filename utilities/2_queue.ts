@@ -49,11 +49,13 @@ export class Queue {
           this.#busy = false;
           this.#check();
         });
-      if (!this.#throw) {
-        promise.catch((err) => {
+      void promise.catch((err) => {
+        if (this.#throw) {
+          throw err;
+        } else {
           this.#logger.error((typeof err === "object" && err !== null && "stack" in err) ? err.stack : err);
-        });
-      }
+        }
+      });
     } else {
       this.#busy = false;
     }

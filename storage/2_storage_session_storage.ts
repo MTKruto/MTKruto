@@ -116,6 +116,6 @@ export class StorageSessionStorage implements Storage {
   }
 
   incr(key: readonly StorageKeyPart[], by: number) {
-    this.set(key, (this.get<number>(key) || 0) + by);
+    return this.set(key, (this.get<number>(key) || 0) + by);
   }
 }

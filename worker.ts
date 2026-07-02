@@ -19,7 +19,7 @@
  */
 
 import { InputError } from "./0_errors.ts";
-import { getLogger } from "./1_utilities.ts";
+import { drop, getLogger } from "./1_utilities.ts";
 import type { ClientDispatcherParams, WorkerRequest, WorkerResponse } from "./mod.ts";
 import { ClientReceiver } from "./client/7_client_receiver.ts";
 import { serializeWorkerError } from "./client/0_worker_error.ts";
@@ -28,18 +28,18 @@ const clientReceivers = new Map<string, ClientReceiver>();
 const logger = getLogger("MTKrutoWorker");
 const ports = new Array<MessagePort>();
 
-addEventListener("message", async (e) => {
+addEventListener("message", (e) => {
   const message = (e as unknown as { data: WorkerRequest | WorkerResponse }).data;
-  await handleMessage(message);
+  drop(handleMessage(message));
 });
 
 addEventListener("connect", (e) => {
   const connectedPorts = (e as unknown as { ports: MessagePort[] }).ports;
   for (const port of connectedPorts) {
     ports.push(port);
-    port.addEventListener("message", async (e) => {
+    port.addEventListener("message", (e) => {
       const message = (e as unknown as { data: WorkerRequest | WorkerResponse }).data;
-      await handleMessage(message);
+      drop(handleMessage(message));
     });
     port.start();
   }

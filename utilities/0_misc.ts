@@ -22,7 +22,7 @@ import { pooledMap, SECOND, unreachable } from "../0_deps.ts";
 
 export function drop(maybePromise: unknown) {
   if (maybePromise !== undefined && maybePromise !== null && typeof maybePromise === "object" && maybePromise instanceof Promise) {
-    maybePromise.catch(() => {});
+    void maybePromise.catch(() => {});
   }
 }
 

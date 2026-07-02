@@ -490,7 +490,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     if (Math.abs(getDcId(this.#client!.dc, this.#client!.isMedia)) >= 10_000) {
       newDc += "-test";
     }
-    this.disconnect();
+    await this.disconnect();
     await this.storage.auth.update((v) => {
       v.authKey = null;
       v.dc = newDc as DC;
@@ -1406,13 +1406,11 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     try {
       await Promise.all([
         this.storage.reset(),
-        this.invoke({ _: "auth.logOut" }).then(() => {
-          this.#propagateAuthorizationState(false);
-        }),
+        this.invoke({ _: "auth.logOut" }).then(() => this.#propagateAuthorizationState(false)),
       ]);
     } finally {
       this.#lastGetMe = null;
-      this.disconnect();
+      await this.disconnect();
       await this.connect();
     }
   }
