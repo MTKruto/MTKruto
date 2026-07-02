@@ -43,7 +43,13 @@ export async function signIn(client: ClientGeneric, logger: Logger, params: Sign
     if (loginType === "b") {
       params = { botToken: mustPrompt("Bot token:") };
     } else {
-      params = { phone: () => mustPrompt("Phone number:"), code: () => mustPrompt("Verification code:"), password: () => mustPrompt("Password:") };
+      params = {
+        phone: () => mustPrompt("Phone number:"),
+        code: () => mustPrompt("Verification code:"),
+        password: () => mustPrompt("Password:"),
+        firstName: () => mustPrompt("First name:"),
+        lastName: () => mustPrompt("Last name:"),
+      };
     }
   }
 
@@ -85,6 +91,17 @@ export async function signIn(client: ClientGeneric, logger: Logger, params: Sign
           continue code;
         } else if (codeCheckResult.type === "passwordRequired") {
           break code;
+        } else if (codeCheckResult.type === "signUpRequired") {
+          if (!params.firstName) {
+            throw new InputError("Cannot sign up.");
+          }
+
+          const firstName = typeof params.firstName === "string" ? params.firstName : await params.firstName();
+          let lastName = params.lastName ? typeof params.lastName === "string" ? params.lastName : await params.lastName() : undefined;
+          lastName ||= undefined;
+
+          await client.signUp(firstName, { lastName });
+          return;
         } else {
           unreachable();
         }

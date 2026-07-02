@@ -35,6 +35,14 @@ export interface CodeCheckResultInvalidCode {
 }
 
 /**
+ * The code was correct. The user must be signed up.
+ * @unlisted
+ */
+export interface CodeCheckResultSignUpRequired {
+  type: "signUpRequired";
+}
+
+/**
  * The code was correct. The user was signed in.
  * @unlisted
  */
@@ -44,4 +52,4 @@ export interface CodeCheckResultSignedIn {
 }
 
 /** The result after checking a sent code. */
-export type CodeCheckResult = CodeCheckResultPasswordRequired | CodeCheckResultInvalidCode | CodeCheckResultSignedIn;
+export type CodeCheckResult = CodeCheckResultPasswordRequired | CodeCheckResultInvalidCode | CodeCheckResultSignUpRequired | CodeCheckResultSignedIn;
