@@ -1272,26 +1272,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Get new chat privacy setting. User-only.
-   *
-   * @method ac
-   * @returns The current new chat privacy setting.
-   */
-  async getNewChatPrivacy(): Promise<NewChatPrivacy> {
-    return await this.#accountManager.getNewChatPrivacy();
-  }
-
-  /**
-   * Get read date privacy. User-only.
-   *
-   * @method ac
-   * @returns Whether read dates are visible.
-   */
-  async getReadDatePrivacy(): Promise<boolean> {
-    return await this.#accountManager.getReadDatePrivacy();
-  }
-
-  /**
    * Import an auth string.
    *
    * @param authString The auth string to import.
@@ -1307,24 +1287,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     if (!this.#apiId) {
       this.#apiId = this.storage.auth.mustGet().apiId;
     }
-  }
-
-  /**
-   * Remove the business intro. User-only.
-   *
-   * @method ac
-   */
-  async removeBusinessIntro(): Promise<void> {
-    return await this.#accountManager.removeBusinessIntro();
-  }
-
-  /**
-   * Reset notification settings. User-only.
-   *
-   * @method ac
-   */
-  async resetNotificationSettings(): Promise<void> {
-    return await this.#accountManager.resetNotificationSettings();
   }
 
   /**
@@ -1349,58 +1311,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
         throw err;
       }
     }
-  }
-
-  /**
-   * Send a custom request. Bot-only.
-   *
-   * @method ac
-   * @param method The name of the method.
-   * @param params The parameters of the method.
-   */
-  async sendCustomRequest(method: string, params: string): Promise<string> {
-    return await this.#accountManager.sendCustomRequest(method, params);
-  }
-
-  /**
-   * Set the business intro. User-only.
-   *
-   * @method ac
-   * @param title The title of the intro.
-   * @param description The description of the intro.
-   */
-  async setBusinessIntro(title: string, description: string, params?: SetBusinessIntroParams): Promise<void> {
-    return await this.#accountManager.setBusinessIntro(title, description, params);
-  }
-
-  /**
-   * Set the default message TTL. User-only.
-   *
-   * @method ac
-   * @param ttl The default message TTL in seconds.
-   */
-  async setDefaultMessageTtl(ttl: number): Promise<void> {
-    return await this.#accountManager.setDefaultMessageTtl(ttl);
-  }
-
-  /**
-   * Set new chat privacy setting. User-only.
-   *
-   * @method ac
-   * @param value The new chat privacy setting to set.
-   */
-  async setNewChatPrivacy(value: NewChatPrivacy): Promise<void> {
-    return await this.#accountManager.setNewChatPrivacy(value);
-  }
-
-  /**
-   * Set read date privacy. User-only.
-   *
-   * @method ac
-   * @param value Whether read dates should be visible.
-   */
-  async setReadDatePrivacy(value: boolean): Promise<void> {
-    return await this.#accountManager.setReadDatePrivacy(value);
   }
 
   /**
@@ -1785,6 +1695,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Get new chat privacy setting. User-only.
+   *
+   * @method ac
+   * @returns The current new chat privacy setting.
+   */
+  async getNewChatPrivacy(): Promise<NewChatPrivacy> {
+    return await this.#accountManager.getNewChatPrivacy();
+  }
+
+  /**
    * Get owned bots. User-only.
    *
    * @method ac
@@ -1820,6 +1740,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async getProfilePhotos(userId: ID, params?: GetProfilePhotosParams): Promise<ProfilePhotoList> {
     return await this.#accountManager.getProfilePhotos(userId, params);
+  }
+
+  /**
+   * Get read date privacy. User-only.
+   *
+   * @method ac
+   * @returns Whether read dates are visible.
+   */
+  async getReadDatePrivacy(): Promise<boolean> {
+    return await this.#accountManager.getReadDatePrivacy();
   }
 
   /**
@@ -1911,6 +1841,15 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Remove the business intro. User-only.
+   *
+   * @method ac
+   */
+  async removeBusinessIntro(): Promise<void> {
+    return await this.#accountManager.removeBusinessIntro();
+  }
+
+  /**
    * Remove the emoji status of a channel. User-only.
    *
    * @method ac
@@ -1970,6 +1909,15 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Reset notification settings. User-only.
+   *
+   * @method ac
+   */
+  async resetNotificationSettings(): Promise<void> {
+    return await this.#accountManager.resetNotificationSettings();
+  }
+
+  /**
    * Resolve a phone number. User-only.
    *
    * @method ac
@@ -1997,6 +1945,17 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async resumeBusinessBotConnection(chatId: ID): Promise<void> {
     await this.#accountManager.resumeBusinessBotConnection(chatId);
+  }
+
+  /**
+   * Send a custom request. Bot-only.
+   *
+   * @method ac
+   * @param method The name of the method.
+   * @param params The parameters of the method.
+   */
+  async sendCustomRequest(method: string, params: string): Promise<string> {
+    return await this.#accountManager.sendCustomRequest(method, params);
   }
 
   /**
@@ -2041,6 +2000,17 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Set the business intro. User-only.
+   *
+   * @method ac
+   * @param title The title of the intro.
+   * @param description The description of the intro.
+   */
+  async setBusinessIntro(title: string, description: string, params?: SetBusinessIntroParams): Promise<void> {
+    return await this.#accountManager.setBusinessIntro(title, description, params);
+  }
+
+  /**
    * Set the emoji status of a channel. User-only.
    *
    * @method ac
@@ -2059,6 +2029,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async setCloseFriends(userIds: ID[]): Promise<void> {
     await this.#accountManager.setCloseFriends(userIds);
+  }
+
+  /**
+   * Set the default message TTL. User-only.
+   *
+   * @method ac
+   * @param ttl The default message TTL in seconds.
+   */
+  async setDefaultMessageTtl(ttl: number): Promise<void> {
+    return await this.#accountManager.setDefaultMessageTtl(ttl);
   }
 
   /**
@@ -2111,6 +2091,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Set new chat privacy setting. User-only.
+   *
+   * @method ac
+   * @param value The new chat privacy setting to set.
+   */
+  async setNewChatPrivacy(value: NewChatPrivacy): Promise<void> {
+    return await this.#accountManager.setNewChatPrivacy(value);
+  }
+
+  /**
    * Set the personal channel of the current user. User-only.
    *
    * @method ac
@@ -2138,6 +2128,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async setProfileColor(color: number, params?: SetProfileColorParams): Promise<void> {
     await this.#accountManager.setProfileColor(color, params);
+  }
+
+  /**
+   * Set read date privacy. User-only.
+   *
+   * @method ac
+   * @param value Whether read dates should be visible.
+   */
+  async setReadDatePrivacy(value: boolean): Promise<void> {
+    return await this.#accountManager.setReadDatePrivacy(value);
   }
 
   /**
