@@ -26,6 +26,7 @@ export type GetManyFilter = { prefix: readonly StorageKeyPart[] } | { start: rea
 
 export interface Storage {
   initialize(): MaybePromise<void>;
+  close(): MaybePromise<void>;
   set(key: readonly StorageKeyPart[], value: unknown): MaybePromise<void>;
   incr(key: readonly StorageKeyPart[], by: number): MaybePromise<void>;
   get<T>(key: readonly StorageKeyPart[]): MaybePromise<T | null>;

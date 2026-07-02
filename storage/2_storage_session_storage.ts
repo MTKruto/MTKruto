@@ -50,6 +50,9 @@ export class StorageSessionStorage implements Storage {
   initialize() {
   }
 
+  close() {
+  }
+
   get supportsFiles(): boolean {
     return false;
   }

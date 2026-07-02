@@ -147,6 +147,10 @@ export class StorageOperations {
     await this.auth.get();
   }
 
+  async close() {
+    await this.#storage.close();
+  }
+
   set(...args: Parameters<Storage["set"]>): ReturnType<Storage["set"]> {
     return this.#storage.set(...args);
   }

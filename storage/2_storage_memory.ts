@@ -36,6 +36,9 @@ export class StorageMemory implements Storage {
   initialize() {
   }
 
+  close() {
+  }
+
   #fixKey(key: readonly StorageKeyPart[]) {
     if (this.#id !== null) {
       return ["__S" + this.#id, ...key];

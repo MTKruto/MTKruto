@@ -243,6 +243,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   #messageStorage_: Storage;
   public readonly storage: StorageOperations;
   public readonly messageStorage: StorageOperations;
+  #branchStorages = new Set<StorageOperations>();
   #parseMode: ParseMode;
 
   #apiId: number;
@@ -1057,6 +1058,9 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
 
   async #setupClient(client: ClientEncrypted) {
     const storage = client.dc === this.#client!.dc ? this.storage : new StorageOperations(this.storage.provider.branch(client.dc + (client.isMedia ? "_media" : "")));
+    if (storage !== this.storage) {
+      this.#branchStorages.add(storage);
+    }
     await storage.initialize();
     const auth = storage.auth.mustGet();
     const serverSalt = await storage.getServerSalt();
@@ -1146,6 +1150,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     this.#updateManager.closeAllChats();
     await this.storage.commit(true);
     await this.messageStorage.commit(true);
+    await Promise.all([...this.#branchStorages].map(async (storage) => {
+      await storage.commit(true);
+      await storage.close();
+    }));
+    this.#branchStorages.clear();
+    await this.storage.close();
+    if (this.messageStorage.provider !== this.storage.provider) {
+      await this.messageStorage.close();
+    }
+    this.#storageInited = false;
   }
 
   /**

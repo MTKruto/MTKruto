@@ -54,6 +54,9 @@ export class StorageIndexedDB implements Storage {
   }
 
   initialize(): Promise<void> {
+    if (this.database !== null) {
+      return Promise.resolve();
+    }
     const db = indexedDB.open(this.name, VERSION);
     return new Promise<void>((res, rej) => {
       db.onblocked = rej;
@@ -66,6 +69,11 @@ export class StorageIndexedDB implements Storage {
         res();
       };
     });
+  }
+
+  close() {
+    this.database?.close();
+    this.database = null;
   }
 
   get supportsFiles(): boolean {

@@ -45,6 +45,9 @@ export class StorageLocalStorage implements Storage {
   initialize() {
   }
 
+  close() {
+  }
+
   get supportsFiles(): boolean {
     return false;
   }

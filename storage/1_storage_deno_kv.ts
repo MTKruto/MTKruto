@@ -74,7 +74,15 @@ export class StorageDenoKV implements Storage {
   }
 
   async initialize() {
+    if (this.kv !== null) {
+      return;
+    }
     this.kv = await Deno.openKv(this.path);
+  }
+
+  close() {
+    this.kv?.close();
+    this.kv = null;
   }
 
   async get<T>(key: readonly StorageKeyPart[]): Promise<T | null> {
