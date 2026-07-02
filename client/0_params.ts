@@ -1341,3 +1341,8 @@ export interface DeleteMyCommandsParams {
 export interface SetNotificationSettingsParams {
   settings?: InputNotificationSettings;
 }
+
+export interface SetBusinessIntroParams {
+  /** File identifier of a sticker to include in the intro. */
+  sticker?: string;
+}
