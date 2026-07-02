@@ -1331,7 +1331,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * Send a user verification code.
    *
    * @param phoneNumber The phone number to send the code to.
-   * @method ac
+   * @method au
    */
   async sendCode(phoneNumber: string) {
     const me = await this.#checkAuthorization();
