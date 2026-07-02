@@ -23,7 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { PasswordHashInvalid, PhoneCodeInvalid, SessionPasswordNeeded } from "../3_errors.ts";
 import { type AppSupport, type AuthorizationSession, type Birthday, birthdayToTlObject, type BotTokenCheckResult, type BusinessAwayMessageSchedule, businessAwayMessageScheduleToTlObject, type ChatP, type CodeCheckResult, type ConnectedWebsite, constructAppSupport, constructAuthorizationSession, constructConnectedWebsite, constructCountry, constructEmojiStatus, constructInactiveChat, constructPrivacyRule, constructProfilePhotoList, constructTimezone, constructUser, constructUser2, type Country, deserializeFileId, type EmojiStatus, type FileSource, type GiftPrivacy, type ID, type InactiveChat, type InputBusinessRecipients, inputBusinessRecipientsToTlObject, type InputEmojiStatus, type InputPrivacyRule, inputPrivacyRuleToTlObject, type NewChatPrivacy, type PasswordCheckResult, type PrivacyRule, type PrivacySettingKey, privacySettingKeyToTlObject, type ProfilePhotoList, type Timezone, type Update, type User, workingHoursToTlObject } from "../3_types.ts";
-import type { AddBotToAttachmentsMenuParams, AllowUnpaidMessagesFromUserParams, CheckUsernameParams, DeleteAccountParams, DisallowUnpaidMessagesFromUserParams, GetProfilePhotosParams, RemoveProfilePhotoParams, ResolveUsernameParams, SetBirthdayParams, SetBusinessAwayMessageParams, SetBusinessIntroParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
+import type { AddBotToAttachmentsMenuParams, AllowUnpaidMessagesFromUserParams, CheckUsernameParams, DeleteAccountParams, DisallowUnpaidMessagesFromUserParams, GetProfilePhotosParams, RemoveProfilePhotoParams, ResolveUsernameParams, SetBirthdayParams, SetBusinessAwayMessageParams, SetBusinessIntroParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, SignUpParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, canBeInputUser, checkPhotoName, getLimit, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -335,6 +335,27 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     }).then((v) => Api.as("auth.sentCode", v));
   }
 
+  async signUp(firstName: string, params?: SignUpParams): Promise<number> {
+    if (!this.#phoneNumber || !this.#sentCode) {
+      throw new InputError("Invalid sent code identifier.");
+    }
+
+    firstName = firstName.trim();
+    if (!firstName) {
+      throw new InputError("firstName cannot be empty.");
+    }
+
+    if (params?.lastName !== undefined) {
+      params.lastName = params.lastName.trim();
+      if (!params.lastName) {
+        throw new InputError("lastName cannot be empty.");
+      }
+    }
+
+    const result = await this.#c.invoke({ _: "auth.signUp", phone_number: this.#phoneNumber, phone_code_hash: this.#sentCode.phone_code_hash, first_name: firstName, last_name: params?.lastName ?? "" });
+    return Number(Api.as("auth.authorization", result).user.id);
+  }
+
   async checkCode(code: string): Promise<CodeCheckResult> {
     if (!this.#phoneNumber || !this.#sentCode) {
       throw new InputError("Invalid sent code identifier.");
@@ -348,10 +369,19 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
         phone_code_hash: this.#sentCode.phone_code_hash,
       });
 
-      return {
-        type: "signedIn",
-        userId: Number(Api.as("auth.authorization", auth).user.id),
-      };
+      switch (auth._) {
+        case "auth.authorization":
+          return {
+            type: "signedIn",
+            userId: Number(Api.as("auth.authorization", auth).user.id),
+          };
+        case "auth.authorizationSignUpRequired":
+          return {
+            type: "signUpRequired",
+          };
+      }
+
+      unreachable();
     } catch (err) {
       if (err instanceof PhoneCodeInvalid) {
         return {

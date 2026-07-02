@@ -45,6 +45,8 @@ export interface SignInParamsUser<S = string> {
   code: S | (() => MaybePromise<S>);
   /** An account password or a function that returns it. */
   password: S | ((hint: string | null) => MaybePromise<S>);
+  firstName?: S | (() => MaybePromise<S>);
+  lastName?: S | null | (() => MaybePromise<S | null>);
 }
 
 export interface SignInParamsBot {
@@ -1345,4 +1347,9 @@ export interface SetNotificationSettingsParams {
 export interface SetBusinessIntroParams {
   /** File identifier of a sticker to include in the intro. */
   sticker?: string;
+}
+
+export interface SignUpParams {
+  /** An optional last name to use for the account that is to be created. */
+  lastName?: string;
 }
