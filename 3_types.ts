@@ -73,6 +73,7 @@ export * from "./types/0_reaction.ts";
 export * from "./types/0_refunded_payment.ts";
 export * from "./types/0_report_reason.ts";
 export * from "./types/0_restriction_reason.ts";
+export * from "./types/0_saved_notification_sound.ts";
 export * from "./types/0_secret_chat_action_type.ts";
 export * from "./types/0_secret_chat.ts";
 export * from "./types/0_secret_message_entity.ts";

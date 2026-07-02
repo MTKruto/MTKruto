@@ -18,12 +18,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { unreachable } from "../0_deps.ts";
+import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { PasswordHashInvalid, PhoneCodeInvalid, SessionPasswordNeeded } from "../3_errors.ts";
-import { type AppSupport, type AuthorizationSession, type Birthday, birthdayToTlObject, type BotTokenCheckResult, type BusinessAwayMessageSchedule, businessAwayMessageScheduleToTlObject, type ChatP, type CodeCheckResult, type ConnectedWebsite, constructAppSupport, constructAuthorizationSession, constructConnectedWebsite, constructCountry, constructEmojiStatus, constructInactiveChat, constructPrivacyRule, constructProfilePhotoList, constructTimezone, constructUser, constructUser2, type Country, deserializeFileId, type EmojiStatus, type FileSource, type GiftPrivacy, type ID, type InactiveChat, type InputBusinessRecipients, inputBusinessRecipientsToTlObject, type InputEmojiStatus, type InputPrivacyRule, inputPrivacyRuleToTlObject, type NewChatPrivacy, type PasswordCheckResult, type PrivacyRule, type PrivacySettingKey, privacySettingKeyToTlObject, type ProfilePhotoList, type Timezone, type Update, type User, workingHoursToTlObject } from "../3_types.ts";
-import type { AddBotToAttachmentsMenuParams, AllowUnpaidMessagesFromUserParams, CheckUsernameParams, DeleteAccountParams, DisallowUnpaidMessagesFromUserParams, GetProfilePhotosParams, RemoveProfilePhotoParams, ResolveUsernameParams, SetBirthdayParams, SetBusinessAwayMessageParams, SetBusinessIntroParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, SignUpParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
+import { type AppSupport, type AuthorizationSession, type Birthday, birthdayToTlObject, type BotTokenCheckResult, type BusinessAwayMessageSchedule, businessAwayMessageScheduleToTlObject, type ChatP, type CodeCheckResult, type ConnectedWebsite, constructAppSupport, constructAuthorizationSession, constructConnectedWebsite, constructCountry, constructEmojiStatus, constructInactiveChat, constructPrivacyRule, constructProfilePhotoList, constructSavedNotificationSound, constructTimezone, constructUser, constructUser2, type Country, deserializeFileId, type EmojiStatus, type FileSource, FileType, type GiftPrivacy, type ID, type InactiveChat, type InputBusinessRecipients, inputBusinessRecipientsToTlObject, type InputEmojiStatus, type InputPrivacyRule, inputPrivacyRuleToTlObject, type NewChatPrivacy, type PasswordCheckResult, type PrivacyRule, type PrivacySettingKey, privacySettingKeyToTlObject, type ProfilePhotoList, type SavedNotificationSound, type Timezone, type Update, type User, workingHoursToTlObject } from "../3_types.ts";
+import type { AddBotToAttachmentsMenuParams, AddSavedNotificationSoundParams, AllowUnpaidMessagesFromUserParams, CheckUsernameParams, DeleteAccountParams, DisallowUnpaidMessagesFromUserParams, GetProfilePhotosParams, RemoveProfilePhotoParams, ResolveUsernameParams, SetBirthdayParams, SetBusinessAwayMessageParams, SetBusinessIntroParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, SignUpParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, canBeInputUser, checkPhotoName, getLimit, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -849,5 +849,57 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
   async removeBusinessIntro() {
     this.#c.storage.assertUser("removeBusinessIntro");
     await this.#c.invoke({ _: "account.updateBusinessIntro" });
+  }
+
+  async addSavedNotificationSound(sound: FileSource, params?: AddSavedNotificationSoundParams) {
+    this.#c.storage.assertUser("addSavedNotificationSound");
+    if (typeof sound === "string") {
+      try {
+        const fileId = deserializeFileId(sound);
+        if (fileId.type !== FileType.Ringtone || fileId.location.type !== "common" || !fileId.fileReference) {
+          throw new InputError("Invalid file ID.");
+        }
+        const id: Api.inputDocument = { _: "inputDocument", id: fileId.location.id, access_hash: fileId.location.accessHash, file_reference: fileId.fileReference };
+        await this.#c.invoke({ _: "account.saveRingtone", id, unsave: false });
+        return;
+      } catch {
+        //
+      }
+    }
+
+    const file = await this.#c.fileManager.upload(sound, params);
+    const file_name = params?.fileName ?? "sound.mp3";
+    const mime_type = contentType(file_name.split(".").slice(-1)[0]) ?? "audio/mpeg";
+    const document = await this.#c.invoke({ _: "account.uploadRingtone", file, file_name, mime_type });
+    if (Api.is("documentEmpty", document)) {
+      unreachable();
+    }
+
+    await this.#c.invoke({
+      _: "account.saveRingtone",
+      id: {
+        _: "inputDocument",
+        id: document.id,
+        access_hash: document.access_hash,
+        file_reference: document.file_reference,
+      },
+      unsave: false,
+    });
+  }
+
+  async getSavedNotificationSounds(): Promise<SavedNotificationSound[]> {
+    this.#c.storage.assertUser("getSavedNotificationSounds");
+    const result = Api.as("account.savedRingtones", await this.#c.invoke({ _: "account.getSavedRingtones", hash: 0n }));
+    return result.ringtones.map(constructSavedNotificationSound);
+  }
+
+  async removeSavedNotificationSound(fileId_: string) {
+    this.#c.storage.assertUser("removeSavedNotificationSound");
+    const fileId = deserializeFileId(fileId_);
+    if (fileId.type !== FileType.Ringtone || fileId.location.type !== "common" || !fileId.fileReference) {
+      throw new InputError("Invalid file ID.");
+    }
+    const id: Api.inputDocument = { _: "inputDocument", id: fileId.location.id, access_hash: fileId.location.accessHash, file_reference: fileId.fileReference };
+    await this.#c.invoke({ _: "account.saveRingtone", id, unsave: true });
   }
 }
