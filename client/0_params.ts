@@ -1356,3 +1356,15 @@ export interface SignUpParams {
 
 export interface AddSavedNotificationSoundParams extends _UploadCommon {
 }
+
+export interface AddMusicToProfileParams {
+  /** File identifier of a music to add the music after. */
+  afterFileId?: string;
+}
+
+export interface GetProfileMusicParams {
+  /** The number of results to skip. */
+  offset?: number;
+  /** The maximum number of results to return. */
+  limit?: number;
+}
