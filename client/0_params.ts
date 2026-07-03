@@ -1353,3 +1353,6 @@ export interface SignUpParams {
   /** An optional last name to use for the account that is to be created. */
   lastName?: string;
 }
+
+export interface AddSavedNotificationSoundParams extends _UploadCommon {
+}
