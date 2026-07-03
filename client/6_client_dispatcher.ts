@@ -363,6 +363,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * Get a chat's inputPeer. Useful when calling API functions directly.
    *
    * @param id The identifier of a chat.
+   * @method ll
    */
   async getInputPeer(id: ID): Promise<Api.InputPeer> {
     return await this.#dispatch("getInputPeer", id);
