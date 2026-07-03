@@ -22,8 +22,8 @@ import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { PasswordHashInvalid, PhoneCodeInvalid, SessionPasswordNeeded } from "../3_errors.ts";
-import { type AppSupport, type AuthorizationSession, type Birthday, birthdayToTlObject, type BotTokenCheckResult, type BusinessAwayMessageSchedule, businessAwayMessageScheduleToTlObject, type ChatP, type CodeCheckResult, type ConnectedWebsite, constructAppSupport, constructAuthorizationSession, constructConnectedWebsite, constructCountry, constructEmojiStatus, constructInactiveChat, constructPrivacyRule, constructProfilePhotoList, constructSavedNotificationSound, constructTimezone, constructUser, constructUser2, type Country, deserializeFileId, type EmojiStatus, type FileSource, FileType, type GiftPrivacy, type ID, type InactiveChat, type InputBusinessRecipients, inputBusinessRecipientsToTlObject, type InputEmojiStatus, type InputPrivacyRule, inputPrivacyRuleToTlObject, type NewChatPrivacy, type PasswordCheckResult, type PrivacyRule, type PrivacySettingKey, privacySettingKeyToTlObject, type ProfilePhotoList, type SavedNotificationSound, type Timezone, type Update, type User, workingHoursToTlObject } from "../3_types.ts";
-import type { AddBotToAttachmentsMenuParams, AddSavedNotificationSoundParams, AllowUnpaidMessagesFromUserParams, CheckUsernameParams, DeleteAccountParams, DisallowUnpaidMessagesFromUserParams, GetProfilePhotosParams, RemoveProfilePhotoParams, ResolveUsernameParams, SetBirthdayParams, SetBusinessAwayMessageParams, SetBusinessIntroParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, SignUpParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
+import { type AppSupport, type Audio, type AuthorizationSession, type Birthday, birthdayToTlObject, type BotTokenCheckResult, type BusinessAwayMessageSchedule, businessAwayMessageScheduleToTlObject, type ChatP, type CodeCheckResult, type ConnectedWebsite, constructAppSupport, constructAudio, constructAuthorizationSession, constructConnectedWebsite, constructCountry, constructEmojiStatus, constructInactiveChat, constructPrivacyRule, constructProfilePhotoList, constructSavedNotificationSound, constructTimezone, constructUser, constructUser2, type Country, deserializeFileId, type EmojiStatus, type FileId, type FileSource, FileType, type GiftPrivacy, type ID, type InactiveChat, type InputBusinessRecipients, inputBusinessRecipientsToTlObject, type InputEmojiStatus, type InputPrivacyRule, inputPrivacyRuleToTlObject, type NewChatPrivacy, type PasswordCheckResult, type PrivacyRule, type PrivacySettingKey, privacySettingKeyToTlObject, type ProfilePhotoList, type SavedNotificationSound, serializeFileId, type Timezone, toUniqueFileId, type Update, type User, workingHoursToTlObject } from "../3_types.ts";
+import type { AddBotToAttachmentsMenuParams, AddMusicToProfileParams, AddSavedNotificationSoundParams, AllowUnpaidMessagesFromUserParams, CheckUsernameParams, DeleteAccountParams, DisallowUnpaidMessagesFromUserParams, GetProfileMusicParams, GetProfilePhotosParams, RemoveProfilePhotoParams, ResolveUsernameParams, SetBirthdayParams, SetBusinessAwayMessageParams, SetBusinessIntroParams, SetEmojiStatusParams, SetLocationParams, SetNameColorParams, SetPersonalChannelParams, SetProfileColorParams, SetWorkingHoursParams, SignUpParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
 import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, canBeInputUser, checkPhotoName, getLimit, toInputChannel, toInputUser } from "./0_utilities.ts";
@@ -919,5 +919,71 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
   async removeBusinessGreetingMessage() {
     this.#c.storage.assertUser("removeBusinessGreetingMessage");
     await this.#c.invoke({ _: "account.updateBusinessGreetingMessage" });
+  }
+
+  async addMusicToProfile(fileId_: string, params?: AddMusicToProfileParams) {
+    this.#c.storage.assertUser("addMusicToProfile");
+    const fileId = deserializeFileId(fileId_);
+    if (fileId.type !== FileType.Audio || fileId.location.type !== "common" || !fileId.fileReference) {
+      throw new InputError("Invalid file ID.");
+    }
+    const id: Api.inputDocument = {
+      _: "inputDocument",
+      id: fileId.location.id,
+      access_hash: fileId.location.accessHash,
+      file_reference: fileId.fileReference,
+    };
+    let after_id: Api.InputDocument | undefined;
+    if (params?.afterFileId !== undefined) {
+      const fileId = deserializeFileId(fileId_);
+      if (fileId.type !== FileType.Audio || fileId.location.type !== "common" || !fileId.fileReference) {
+        throw new InputError("Invalid file ID.");
+      }
+      after_id = {
+        _: "inputDocument",
+        id: fileId.location.id,
+        access_hash: fileId.location.accessHash,
+        file_reference: fileId.fileReference,
+      };
+    }
+    await this.#c.invoke({ _: "account.saveMusic", id, after_id });
+  }
+
+  async removeMusicFromProfile(fileId_: string) {
+    this.#c.storage.assertUser("removeMusicFromProfile");
+    const fileId = deserializeFileId(fileId_);
+    if (fileId.type !== FileType.Audio || fileId.location.type !== "common" || !fileId.fileReference) {
+      throw new InputError("Invalid file ID.");
+    }
+    const id: Api.inputDocument = {
+      _: "inputDocument",
+      id: fileId.location.id,
+      access_hash: fileId.location.accessHash,
+      file_reference: fileId.fileReference,
+    };
+    await this.#c.invoke({ _: "account.saveMusic", id, unsave: true });
+  }
+
+  async getProfileMusic(userId: ID, params?: GetProfileMusicParams): Promise<Audio[]> {
+    this.#c.storage.assertUser("getProfileMusic");
+    const id = await this.#c.getInputUser(userId);
+    const offset = params?.offset ?? 0;
+    const limit = getLimit(params?.limit);
+    const result = Api.as("users.savedMusic", await this.#c.invoke({ _: "users.getSavedMusic", id, hash: 0n, offset, limit }));
+    const audio = result.documents.map((v) => {
+      v = Api.as("document", v);
+      const fileId: FileId = {
+        type: FileType.Audio,
+        dcId: v.dc_id,
+        location: {
+          type: "common",
+          id: v.id,
+          accessHash: v.access_hash,
+        },
+        fileReference: v.file_reference,
+      };
+      return constructAudio(v, v.attributes.find((v) => Api.is("documentAttributeAudio", v)), serializeFileId(fileId), toUniqueFileId(fileId));
+    });
+    return audio;
   }
 }
