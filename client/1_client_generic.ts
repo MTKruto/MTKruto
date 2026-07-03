@@ -503,6 +503,13 @@ export abstract class ClientGeneric {
   abstract removeBusinessAwayMessage(): Promise<void>;
 
   /**
+   * Remove the business greeting message. User-only.
+   *
+   * @method ac
+   */
+  abstract removeBusinessGreetingMessage(): Promise<void>;
+
+  /**
    * Remove the business intro. User-only.
    *
    * @method ac
@@ -636,6 +643,16 @@ export abstract class ClientGeneric {
    * @param recipients The recipients to send the away message to.
    */
   abstract setBusinessAwayMessage(shortcutId: number, schedule: BusinessAwayMessageSchedule, recipients: InputBusinessRecipients, params?: SetBusinessAwayMessageParams): Promise<void>;
+
+  /**
+   * Set the business greeting message. User-only.
+   *
+   * @method ac
+   * @param shortcutId The identifier of the quick reply shortcut to send.
+   * @param recipients The recipients to send the greeting message to.
+   * @param inactivityDayCount Inactivity day count.
+   */
+  abstract setBusinessGreetingMessage(shortcutId: number, recipients: InputBusinessRecipients, inactivityDayCount: number): Promise<void>;
 
   /**
    * Set the business intro. User-only.

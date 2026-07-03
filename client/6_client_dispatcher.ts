@@ -801,6 +801,15 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
+   * Remove the business greeting message. User-only.
+   *
+   * @method ac
+   */
+  async removeBusinessGreetingMessage(): Promise<void> {
+    return await this.#dispatch("removeBusinessGreetingMessage");
+  }
+
+  /**
    * Remove the business intro. User-only.
    *
    * @method ac
@@ -967,6 +976,18 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async setBusinessAwayMessage(shortcutId: number, schedule: BusinessAwayMessageSchedule, recipients: InputBusinessRecipients, params?: SetBusinessAwayMessageParams): Promise<void> {
     return await this.#dispatch("setBusinessAwayMessage", shortcutId, schedule, recipients, params);
+  }
+
+  /**
+   * Set the business greeting message. User-only.
+   *
+   * @method ac
+   * @param shortcutId The identifier of the quick reply shortcut to send.
+   * @param recipients The recipients to send the greeting message to.
+   * @param inactivityDayCount Inactivity day count.
+   */
+  async setBusinessGreetingMessage(shortcutId: number, recipients: InputBusinessRecipients, inactivityDayCount: number): Promise<void> {
+    return await this.#dispatch("setBusinessGreetingMessage", shortcutId, recipients, inactivityDayCount);
   }
 
   /**
