@@ -902,4 +902,22 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     const id: Api.inputDocument = { _: "inputDocument", id: fileId.location.id, access_hash: fileId.location.accessHash, file_reference: fileId.fileReference };
     await this.#c.invoke({ _: "account.saveRingtone", id, unsave: true });
   }
+
+  async setBusinessGreetingMessage(shortcutId: number, recipients: InputBusinessRecipients, inactivityDayCount: number) {
+    this.#c.storage.assertUser("setBusinessGreetingMessage");
+    await this.#c.invoke({
+      _: "account.updateBusinessGreetingMessage",
+      message: {
+        _: "inputBusinessGreetingMessage",
+        shortcut_id: shortcutId,
+        recipients: await inputBusinessRecipientsToTlObject(recipients, this.#c.getInputUser),
+        no_activity_days: inactivityDayCount,
+      },
+    });
+  }
+
+  async removeBusinessGreetingMessage() {
+    this.#c.storage.assertUser("removeBusinessGreetingMessage");
+    await this.#c.invoke({ _: "account.updateBusinessGreetingMessage" });
+  }
 }
