@@ -785,20 +785,26 @@ function getSender(message_: Api.message | Api.messageService, getPeer: PeerGett
 }
 
 async function getReply(message_: Api.message | Api.messageService, chat: ChatP, getMessage: Message_MessageGetter) {
-  if (getMessage && Api.is("messageReplyHeader", message_.reply_to) && message_.reply_to.reply_to_msg_id) {
-    let isTopicMessage = false;
+  let threadId: number | undefined;
+  let isTopicMessage = false;
+  let replyToMessage: Message | null = null;
+
+  if (Api.is("messageReplyHeader", message_.reply_to)) {
     if (message_.reply_to.forum_topic) {
       isTopicMessage = true;
     }
-    const replyToMessage = await getMessage(chat.id, message_.reply_to.reply_to_msg_id);
-    if (replyToMessage) {
-      return { replyToMessage, threadId: message_.reply_to.reply_to_top_id, isTopicMessage };
-    } else {
-      L.warning("couldn't get replied message");
+
+    threadId = message_.reply_to.reply_to_top_id;
+
+    if (getMessage && message_.reply_to.reply_to_msg_id) {
+      replyToMessage = await getMessage(chat.id, message_.reply_to.reply_to_msg_id);
+      if (!replyToMessage) {
+        L.warning("couldn't get replied message");
+      }
     }
   }
 
-  return { replyToMessage: undefined, threadId: undefined, isTopicMessage: false };
+  return { replyToMessage, threadId, isTopicMessage };
 }
 
 async function constructServiceMessage(message_: Api.messageService, chat: ChatP, getPeer: PeerGetter, getMessage: Message_MessageGetter, getStickerSetName: StickerSetNameGetter, getReply_: boolean): Promise<Message> {
@@ -812,7 +818,7 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
   };
 
   if (Api.is("messageReplyHeader", message_.reply_to) && message_.reply_to.reply_to_msg_id) {
-    message.replyToMessageId = message_.reply_to.reply_to_top_id;
+    message.threadId = message_.reply_to.reply_to_top_id;
     message.replyToMessageId = message_.reply_to.reply_to_msg_id;
   }
   if (getReply_) {
