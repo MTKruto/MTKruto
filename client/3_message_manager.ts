@@ -2094,7 +2094,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       send_as: sendAs,
       reply_to: await this.#constructReplyTo(params),
       allow_paid_floodskip: params?.isPaidBroadcast || undefined,
-    });
+    }, { businessConnectionId: params?.businessConnectionId });
 
     return await this.updatesToMessages(chatId, result);
   }
