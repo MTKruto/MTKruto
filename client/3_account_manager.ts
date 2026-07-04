@@ -935,7 +935,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     };
     let after_id: Api.InputDocument | undefined;
     if (params?.afterFileId !== undefined) {
-      const fileId = deserializeFileId(fileId_);
+      const fileId = deserializeFileId(params.afterFileId);
       if (fileId.type !== FileType.Audio || fileId.location.type !== "common" || !fileId.fileReference) {
         throw new InputError("Invalid file ID.");
       }
