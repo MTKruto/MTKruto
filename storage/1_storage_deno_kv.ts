@@ -98,6 +98,7 @@ export class StorageDenoKV implements Storage {
   }
 
   async *getMany<T>(filter: GetManyFilter, params?: { limit?: number; reverse?: boolean }): AsyncGenerator<[readonly StorageKeyPart[], T], void, unknown> {
+    filter = { ...filter };
     if ("prefix" in filter && this.#id !== null) {
       filter.prefix = this.#fixKey(filter.prefix);
     }

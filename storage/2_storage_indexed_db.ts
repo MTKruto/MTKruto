@@ -143,6 +143,7 @@ export class StorageIndexedDB implements Storage {
   }
 
   async *getMany<T>(filter: GetManyFilter, params?: { limit?: number; reverse?: boolean }, tx_?: IDBTransaction): AsyncGenerator<[readonly StorageKeyPart[], T]> {
+    filter = { ...filter };
     if ("prefix" in filter && this.#id !== null) {
       filter.prefix = this.#fixKey(filter.prefix);
     }
