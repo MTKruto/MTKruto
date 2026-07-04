@@ -28,7 +28,8 @@ export const resolve = () => Promise.resolve();
 
 export function isHttpUrl(string: string) {
   try {
-    return new URL(string).protocol.startsWith("http");
+    const protocol = new URL(string).protocol;
+    return protocol === "http:" || protocol === "https:";
   } catch {
     return false;
   }
