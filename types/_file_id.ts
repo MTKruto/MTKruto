@@ -385,7 +385,7 @@ export function toUniqueFileId(fileId: FileId): string {
   return base64EncodeUrlSafe(rleEncode(writer.buffer));
 }
 
-export function getPhotoFileId(photo: Api.photo): { fileId: string; fileUniqueId: string } {
+export function getPhotoFileId(photo: Api.photo, isStory: boolean): { fileId: string; fileUniqueId: string } {
   const sizes = photo.sizes
     .map((v) => {
       if (Api.is("photoSizeProgressive", v)) {
@@ -399,7 +399,7 @@ export function getPhotoFileId(photo: Api.photo): { fileId: string; fileUniqueId
   const largest = sizes.slice(-1)[0];
   const { dc_id: dcId, id, access_hash: accessHash, file_reference: fileReference } = photo;
   const fileId: FileId = {
-    type: FileType.Photo,
+    type: isStory ? FileType.PhotoStory : FileType.Photo,
     dcId,
     fileReference,
     location: {

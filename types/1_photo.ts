@@ -38,10 +38,10 @@ export interface Photo {
   thumbnails: Thumbnail[];
 }
 
-export function constructPhoto(photo: Api.photo): Photo {
+export function constructPhoto(photo: Api.photo, isStory = false): Photo {
   const { sizes, largest } = getPhotoSizes(photo);
   return {
-    ...getPhotoFileId(photo),
+    ...getPhotoFileId(photo, isStory),
     width: largest.w,
     height: largest.h,
     fileSize: largest.size,

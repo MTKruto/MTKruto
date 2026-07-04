@@ -49,7 +49,7 @@ export function constructStoryContent(media: Api.MessageMedia): StoryContent {
     if (!media.photo) {
       unreachable();
     }
-    const photo = constructPhoto(Api.as("photo", media.photo));
+    const photo = constructPhoto(Api.as("photo", media.photo), true);
     return { type: "photo", photo };
   } else if (Api.is("messageMediaDocument", media)) {
     const document = media.document;
@@ -61,7 +61,7 @@ export function constructStoryContent(media: Api.MessageMedia): StoryContent {
     if (!video) {
       unreachable();
     }
-    const fileId_: FileId = { type: FileType.Video, dcId: document.dc_id, fileReference: document.file_reference, location: { type: "common", id: document.id, accessHash: document.access_hash } };
+    const fileId_: FileId = { type: FileType.VideoStory, dcId: document.dc_id, fileReference: document.file_reference, location: { type: "common", id: document.id, accessHash: document.access_hash } };
     const fileUniqueId = toUniqueFileId(fileId_);
     const fileId = serializeFileId(fileId_);
 
