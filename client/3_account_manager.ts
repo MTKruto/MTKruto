@@ -827,7 +827,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
   }
 
   async setDefaultMessageTtl(ttl: number) {
-    this.#c.storage.assertBot("setDefaultMessageTtl");
+    this.#c.storage.assertUser("setDefaultMessageTtl");
     const period = ttl;
     await this.#c.invoke({ _: "messages.setDefaultHistoryTTL", period });
   }
