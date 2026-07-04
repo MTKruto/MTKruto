@@ -361,14 +361,14 @@ export class FileManager {
       if (name === "file") {
         const contentType = response.headers.get("content-type")?.split(";")[0].trim();
         if (contentType) {
-          name += extension(contentType);
+          name += `.${extension(contentType)}`;
         } else {
           const maybeFileName = new URL(response.url).pathname.split("/")
             .filter((v) => v)
             .slice(-1)[0]
             .trim();
           if (maybeFileName) {
-            name += extension(extname(maybeFileName));
+            name += extname(maybeFileName);
           }
         }
       }
