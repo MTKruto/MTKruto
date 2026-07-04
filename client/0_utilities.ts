@@ -206,7 +206,7 @@ export function getLimit(limit: number | undefined) {
     return 100;
   } else if (limit < 1) {
     return 1;
-  } else if (limit > 100) {
+  } else if (limit > 100 || isNaN(limit)) {
     return 100;
   } else {
     return limit;
