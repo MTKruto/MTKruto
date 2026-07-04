@@ -154,10 +154,11 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
     text = text.trimEnd();
     for (const entity of entities) {
-      while (text[entity.offset + (entity.length - 1)] === undefined) {
+      while (entity.length > 0 && text[entity.offset + (entity.length - 1)] === undefined) {
         --entity.length;
       }
     }
+    entities = entities.filter((v) => v.length > 0);
 
     if (!isEmptyAllowed && !text.length) {
       throw new InputError("Text must not be empty.");
