@@ -308,7 +308,7 @@ export function constructInlineQueryResult(result: Api.botInlineResult | Api.bot
     if (Api.is("botInlineMediaResult", result)) {
       if (result.photo) {
         photo = Api.as("photo", result.photo);
-        ref = { type: "fileId", fileId: getPhotoFileId(photo).fileId };
+        ref = { type: "fileId", fileId: getPhotoFileId(photo, false).fileId };
         const { largest } = photoSizes = getPhotoSizes(photo);
         attributes = [{ _: "documentAttributeImageSize", w: largest.w, h: largest.h }];
       } else if (result.document) {
