@@ -968,7 +968,7 @@ export abstract class ClientGeneric {
   ): Promise<void>;
 
   /**
-   * Edit an inline message's media. User-only.
+   * Edit an inline message's media. Bot-only.
    *
    * @method ms
    * @param inlineMessageId The identifier of the inline message.
