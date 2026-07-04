@@ -167,7 +167,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
 
     const id = storyId;
     const caption = parseResult === undefined ? undefined : parseResult[0];
-    const entities = parseResult === undefined ? undefined : caption !== undefined ? [] : parseResult[1];
+    const entities = parseResult === undefined ? undefined : caption === undefined ? [] : parseResult[1];
     const peer = await this.#c.getInputPeer(chatId);
     const privacy_rules = storyPrivacyToTlObject(params?.privacy ?? { type: "everyone", except: [] }, this.#c.getPeer);
     const media_areas = new Array<Api.MediaArea>();
