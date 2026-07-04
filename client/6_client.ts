@@ -1231,6 +1231,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
         v.userId = result.userId;
         v.isBot = false;
       });
+      await this.storage.commit(true);
       this.#LsignIn.debug("signed in as user");
       await this.#propagateAuthorizationState(true);
       await this.#updateManager.fetchState("checkCode");
