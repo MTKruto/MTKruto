@@ -1246,7 +1246,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       throw new InputError("Message not found.");
     }
     for (const type of MessageManager.#CAPTIONABLE_MESSAGE_TYPES) {
-      if (message_.type !== type) {
+      if (message_.type === type) {
         canHaveCaption = true;
       }
     }
