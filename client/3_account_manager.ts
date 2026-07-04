@@ -220,6 +220,9 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
   }
   async updateProfile(params?: UpdateProfileParams) {
     this.#c.storage.assertUser("updateProfile");
+    if (params?.firstName === undefined && params?.lastName === undefined && params?.bio === undefined) {
+      throw new InputError("At least one parameter must be specified.");
+    }
     const selfId = await this.#c.getSelfId();
     const userFull = await this.#getUserFull(selfId);
     const peer = this.#c.getPeer(Api.chatIdToPeer(selfId));
@@ -241,9 +244,6 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
       params.bio = params.bio.trim();
     } else {
       params.bio = userFull.about;
-    }
-    if (params?.firstName === undefined && params?.lastName === undefined && params?.bio === undefined) {
-      throw new InputError("At least one parameter must be specified.");
     }
     await this.#c.invoke({ _: "account.updateProfile", first_name: params.firstName, last_name: params.lastName, about: params.bio });
   }
@@ -837,8 +837,8 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     let sticker: Api.inputDocument | undefined;
     if (params?.sticker !== undefined) {
       const fileId = deserializeFileId(params.sticker);
-      if (fileId.location.type !== "common" || fileId.fileReference === undefined) {
-        unreachable();
+      if (fileId.type !== FileType.Sticker || fileId.location.type !== "common" || fileId.fileReference === undefined) {
+        throw new InputError("Invalid sticker file ID.");
       }
       sticker = { _: "inputDocument", id: fileId.location.id, access_hash: fileId.location.accessHash, file_reference: fileId.fileReference };
     }
