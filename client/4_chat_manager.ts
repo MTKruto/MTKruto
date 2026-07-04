@@ -310,7 +310,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
   async setSlowMode(chatId: ID, duration: SlowModeDuration) {
     this.#c.storage.assertUser("setSlowMode");
     const seconds = slowModeDurationToSeconds(duration);
-    if (seconds > 1) {
+    if (seconds < 1) {
       throw new InputError("Invalid slow mode duration.");
     }
 
