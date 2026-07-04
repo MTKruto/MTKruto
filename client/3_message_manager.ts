@@ -2070,11 +2070,11 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const peer = await this.#c.getInputPeer(chatId);
     for (const [i, media_] of multiMedia.entries()) {
       if (Api.is("inputMediaUploadedPhoto", media_.media)) {
-        const result = Api.as("messageMediaPhoto", await this.#c.invoke({ _: "messages.uploadMedia", media: media_.media, peer }));
+        const result = Api.as("messageMediaPhoto", await this.#c.invoke({ _: "messages.uploadMedia", media: media_.media, peer, business_connection_id: params?.businessConnectionId }));
         const photo = Api.as("photo", result.photo);
         multiMedia[i] = { ...media_, media: { _: "inputMediaPhoto", id: { ...photo, _: "inputPhoto" } } };
       } else if (Api.is("inputMediaUploadedDocument", media_.media)) {
-        const result = Api.as("messageMediaDocument", await this.#c.invoke({ _: "messages.uploadMedia", media: media_.media, peer }));
+        const result = Api.as("messageMediaDocument", await this.#c.invoke({ _: "messages.uploadMedia", media: media_.media, peer, business_connection_id: params?.businessConnectionId }));
         const document = Api.as("document", result.document);
         multiMedia[i] = { ...media_, media: { _: "inputMediaDocument", id: { ...document, _: "inputDocument" } } };
       }
@@ -2093,10 +2093,11 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       silent,
       send_as: sendAs,
       reply_to: await this.#constructReplyTo(params),
+      schedule_date: params?.sendAt,
       allow_paid_floodskip: params?.isPaidBroadcast || undefined,
     }, { businessConnectionId: params?.businessConnectionId });
 
-    return await this.updatesToMessages(chatId, result);
+    return await this.updatesToMessages(chatId, result, params?.businessConnectionId);
   }
 
   async readMessages(chatId: ID, untilMessageId: number) {
