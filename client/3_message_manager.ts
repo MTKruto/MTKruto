@@ -916,7 +916,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     }
     if (fileId !== null) {
       if (!expectedFileType.includes(fileId.type)) {
-        unreachable();
+        throw new InputError("Invalid file ID.");
       }
       return {
         id: "id" in fileId.location ? fileId.location.id : unreachable(),
