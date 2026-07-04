@@ -179,17 +179,18 @@ function successor(key: any) {
   throw new TypeError();
 }
 
-export function isInRange(key: StorageKeyPart[], start: readonly StorageKeyPart[], end: readonly StorageKeyPart[]): boolean {
-  for (const [i, part] of key.entries()) {
-    const left = start[i];
-    const right = end[i];
-    if (left === undefined || right === undefined) {
-      continue;
+function compareKeys(left: readonly StorageKeyPart[], right: readonly StorageKeyPart[]) {
+  const length = Math.min(left.length, right.length);
+  for (let i = 0; i < length; ++i) {
+    if (left[i] < right[i]) {
+      return -1;
+    } else if (left[i] > right[i]) {
+      return 1;
     }
-    if (part >= left && part <= right) {
-      continue;
-    }
-    return false;
   }
-  return true;
+  return left.length === right.length ? 0 : left.length < right.length ? -1 : 1;
+}
+
+export function isInRange(key: StorageKeyPart[], start: readonly StorageKeyPart[], end: readonly StorageKeyPart[]): boolean {
+  return compareKeys(key, start) >= 0 && compareKeys(key, end) <= 0;
 }

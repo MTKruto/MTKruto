@@ -87,4 +87,7 @@ Deno.test("isInRange", () => {
   assert(!isInRange(["items", 9], ["items", 0], ["items", 0]));
   assert(isInRange(["items", ""], ["items", ""], ["items", ""]));
   assert(!isInRange(["items", "z"], ["items", ""], ["items", ""]));
+  assert(!isInRange(["items"], ["items", 1], ["items", 3]));
+  assert(isInRange(["items", 2, 100], ["items", 1, 50], ["items", 3, 10]));
+  assert(isInRange(["items", 1, 100], ["items", 1, 50], ["items", 3, 10]));
 });
