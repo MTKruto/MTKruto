@@ -364,6 +364,7 @@ export class ClientEncrypted extends ClientAbstract {
     let type: Api.DeserializedType;
     try {
       type = await Api.deserializeType(X, body);
+      this.#L.debug("received update", repr(type));
     } catch (err) {
       this.#L.error("failed to deserialize update:", err);
       await this.handlers.onDeserializationError?.();
