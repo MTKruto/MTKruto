@@ -1354,7 +1354,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns The user identifier of the new account.
    */
   async signUp(firstName: string, params?: SignUpParams): Promise<number> {
-    return await this.#accountManager.signUp(firstName, params);
+    const userId = await this.#accountManager.signUp(firstName, params);
+    await this.storage.auth.update((v) => {
+      v.userId = userId;
+      v.isBot = false;
+    });
+    await this.storage.commit(true);
+    this.#LsignIn.debug("signed in as user");
+    await this.#propagateAuthorizationState(true);
+    await this.#updateManager.fetchState("signUp");
+    return userId;
   }
 
   //

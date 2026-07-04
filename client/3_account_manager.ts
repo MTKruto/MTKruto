@@ -353,14 +353,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     }
 
     const result = await this.#c.invoke({ _: "auth.signUp", phone_number: this.#phoneNumber, phone_code_hash: this.#sentCode.phone_code_hash, first_name: firstName, last_name: params?.lastName ?? "" });
-    const userId = Number(Api.as("auth.authorization", result).user.id);
-
-    await this.#c.storage.auth.update((v) => {
-      v.userId = userId;
-      v.isBot = false;
-    });
-    await this.#c.storage.commit(true);
-    return userId;
+    return Number(Api.as("auth.authorization", result).user.id);
   }
 
   async checkCode(code: string): Promise<CodeCheckResult> {
