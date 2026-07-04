@@ -1151,6 +1151,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     inlineMessageId: string,
     params?: EditMessageReplyMarkupParams,
   ) {
+    this.#c.storage.assertBot("editInlineMessageReplyMarkup");
     const id = await deserializeInlineMessageId(inlineMessageId);
 
     await this.#c.invoke({
@@ -1299,10 +1300,12 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   }
 
   async editInlineMessageText(inlineMessageId: string, text: string, params?: EditInlineMessageTextParams) {
+    this.#c.storage.assertBot("editInlineMessageText");
     await this.#editInlineMessageTextInner(inlineMessageId, text, false, params);
   }
 
   async editInlineMessageCaption(inlineMessageId: string, params?: EditInlineMessageCaptionParams) {
+    this.#c.storage.assertBot("editInlineMessageCaption");
     await this.#editInlineMessageTextInner(inlineMessageId, params?.caption ?? "", true, params);
   }
 
