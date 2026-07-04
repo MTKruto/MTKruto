@@ -61,9 +61,19 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
     const source = content.type === "video" ? content.video : content.type === "photo" ? content.photo : unreachable();
 
     if (typeof source === "string") {
-      const fileId = this.#c.messageManager.resolveFileId(source, FileType.Photo);
+      const fileId = this.#c.messageManager.resolveFileId(source, content.type === "video" ? [FileType.Video, FileType.VideoStory] : [FileType.Photo, FileType.PhotoStory]);
       if (fileId !== null) {
-        media = { _: "inputMediaPhoto", id: { ...fileId, _: "inputPhoto" } };
+        if (content.type === "video") {
+          media = {
+            _: "inputMediaUploadedDocument",
+            nosound_video: true,
+            file: { _: "inputFileStoryDocument", id: { ...fileId, _: "inputDocument" } },
+            attributes: [{ _: "documentAttributeFilename", file_name: "video.mp4" }, { _: "documentAttributeVideo", w: 720, h: 1280, duration: content.duration, nosound: content.isAnimation || undefined }],
+            mime_type: "video/mp4",
+          };
+        } else {
+          media = { _: "inputMediaPhoto", id: { ...fileId, _: "inputPhoto" } };
+        }
       }
     }
 
@@ -77,7 +87,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
         }
         const mimeType = contentType(file.name.split(".").slice(-1)[0]) ?? "application/octet-stream";
         if (content.type === "video") {
-          media = { _: "inputMediaUploadedDocument", file, attributes: [{ _: "documentAttributeFilename", file_name: file.name }, { _: "documentAttributeVideo", w: 720, h: 1280, duration: content.duration }], mime_type: mimeType };
+          media = { _: "inputMediaUploadedDocument", nosound_video: true, file, attributes: [{ _: "documentAttributeFilename", file_name: file.name }, { _: "documentAttributeVideo", w: 720, h: 1280, duration: content.duration, nosound: content.isAnimation || undefined }], mime_type: mimeType };
         } else {
           media = { _: "inputMediaUploadedPhoto", file };
         }
@@ -139,9 +149,19 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
       const source = params.content.type === "video" ? params.content.video : params.content.type === "photo" ? params.content.photo : unreachable();
 
       if (typeof source === "string") {
-        const fileId = this.#c.messageManager.resolveFileId(source, FileType.Photo);
+        const fileId = this.#c.messageManager.resolveFileId(source, params.content.type === "video" ? [FileType.Video, FileType.VideoStory] : [FileType.Photo, FileType.PhotoStory]);
         if (fileId !== null) {
-          media = { _: "inputMediaPhoto", id: { ...fileId, _: "inputPhoto" } };
+          if (params.content.type === "video") {
+            media = {
+              _: "inputMediaUploadedDocument",
+              nosound_video: true,
+              file: { _: "inputFileStoryDocument", id: { ...fileId, _: "inputDocument" } },
+              attributes: [{ _: "documentAttributeFilename", file_name: "video.mp4" }, { _: "documentAttributeVideo", w: 720, h: 1280, duration: params.content.duration, nosound: params.content.isAnimation || undefined }],
+              mime_type: "video/mp4",
+            };
+          } else {
+            media = { _: "inputMediaPhoto", id: { ...fileId, _: "inputPhoto" } };
+          }
         }
       }
 
@@ -155,7 +175,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
           }
           const mimeType = contentType(file.name.split(".").slice(-1)[0]) ?? "application/octet-stream";
           if (params.content.type === "video") {
-            media = { _: "inputMediaUploadedDocument", file, attributes: [{ _: "documentAttributeFilename", file_name: file.name }, { _: "documentAttributeVideo", w: 720, h: 1280, duration: params.content.duration }], mime_type: mimeType };
+            media = { _: "inputMediaUploadedDocument", nosound_video: true, file, attributes: [{ _: "documentAttributeFilename", file_name: file.name }, { _: "documentAttributeVideo", w: 720, h: 1280, duration: params.content.duration, nosound: params.content.isAnimation || undefined }], mime_type: mimeType };
           } else {
             media = { _: "inputMediaUploadedPhoto", file };
           }
