@@ -132,6 +132,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
 
   async editStory(chatId: ID, storyId: number, params?: EditStoryParams): Promise<Story> {
     this.#c.storage.assertUser("editStory");
+    checkStoryId(storyId);
     let media: Api.InputMedia | undefined;
 
     if (params?.content) {
@@ -210,6 +211,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
 
   async deleteStories(chatId: ID, storyIds: number[]) {
     this.#c.storage.assertUser("deleteStories");
+    checkArray(storyIds, checkStoryId);
     const peer = await this.#c.getInputPeer(chatId);
     await this.#c.invoke({ _: "stories.deleteStories", peer, id: storyIds });
   }
@@ -264,6 +266,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
 
   async #reportStories(chatId: ID, storyIds: number[], params: ReportStoryParams | undefined) {
     const peer = await this.#c.getInputPeer(chatId);
+    checkArray(storyIds, checkStoryId);
     const id = storyIds;
     const result = await this.#c.invoke({ _: "stories.report", peer, id, message: params?.text ?? "", option: params?.option ? base64DecodeUrlSafe(params.option) : new Uint8Array() });
     return constructStoryReportResult(result);
