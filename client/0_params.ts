@@ -85,7 +85,7 @@ export interface _SendCommon extends _BusinessConnectionIdCommon, _PaidBroadcast
   /** The identifier of a chat to send the message on behalf of. User-only. */
   sendAs?: ID;
   /** The identifier of a message effect to be attached to the message. */
-  effectId?: number;
+  effectId?: string;
   /** If specified, the message will be scheduled to be sent at that date. User-only. */
   sendAt?: number;
 }
@@ -1314,7 +1314,7 @@ export interface SaveDraftParams {
   /** The message's entities. */
   entities?: MessageEntity[];
   /** The identifier of a message effect to be attached to the message. */
-  effectId?: number;
+  effectId?: string;
   /** A media to attach. */
   media?: InputMedia;
   /** Whether the position of the media is inverted. */
@@ -1326,7 +1326,7 @@ export interface SaveRichTextDraftParams {
   /** Information on what the message is replying to. */
   replyTo?: ReplyTo;
   /** The identifier of a message effect to be attached to the message. */
-  effectId?: number;
+  effectId?: string;
   /** A media to attach. */
   media?: InputMedia;
   /** Whether the position of the media is inverted. */
