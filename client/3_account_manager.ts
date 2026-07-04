@@ -854,16 +854,19 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
   async addSavedNotificationSound(sound: FileSource, params?: AddSavedNotificationSoundParams) {
     this.#c.storage.assertUser("addSavedNotificationSound");
     if (typeof sound === "string") {
+      let id: Api.inputDocument | undefined;
       try {
         const fileId = deserializeFileId(sound);
         if (fileId.type !== FileType.Ringtone || fileId.location.type !== "common" || !fileId.fileReference) {
           throw new InputError("Invalid file ID.");
         }
-        const id: Api.inputDocument = { _: "inputDocument", id: fileId.location.id, access_hash: fileId.location.accessHash, file_reference: fileId.fileReference };
-        await this.#c.invoke({ _: "account.saveRingtone", id, unsave: false });
-        return;
+        id = { _: "inputDocument", id: fileId.location.id, access_hash: fileId.location.accessHash, file_reference: fileId.fileReference };
       } catch {
         //
+      }
+      if (id !== undefined) {
+        await this.#c.invoke({ _: "account.saveRingtone", id, unsave: false });
+        return;
       }
     }
 
