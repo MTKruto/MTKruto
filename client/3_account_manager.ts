@@ -558,6 +558,9 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     if (params?.botId && this.#c.storage.isBot) {
       throw new InputError("The parameter botId is user-only.");
     }
+    if (params?.isPublic !== undefined && this.#c.storage.isBot) {
+      throw new InputError("The parameter isPublic is user-only.")
+    }
 
     const bot = params?.botId ? await this.#c.getInputUser(params.botId) : undefined;
     const video = await this.#c.fileManager.upload(photo, params, () => "video.mp4");
