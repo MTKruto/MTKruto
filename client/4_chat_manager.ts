@@ -426,15 +426,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
   async getDiscussionChatSuggestions(): Promise<ChatP[]> {
     this.#c.storage.assertUser("getDiscussionChatSuggestions");
     const { chats } = await this.#c.invoke({ _: "channels.getGroupsForDiscussion" });
-    return chats
-      .map((v) => {
-        if (!Api.isOneOf(["chat", "channel"], v)) {
-          return v;
-        } else {
-          return constructChatP(v);
-        }
-      })
-      .filter((v): v is ChatP => v !== null);
+    return chats.map(constructChatP);
   }
 
   async setDiscussionChat(chatId: ID, discussionChatId: ID) {
