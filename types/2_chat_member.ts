@@ -114,7 +114,7 @@ export interface ChatMemberBanned extends _ChatMemberBase {
 export type ChatMember = ChatMemberCreator | ChatMemberAdministrator | ChatMemberMember | ChatMemberRestricted | ChatMemberLeft | ChatMemberBanned;
 
 export function constructChatMember(member: ChatP, participant: Api.ChannelParticipant | Api.ChatParticipant | (Omit<Api.ChannelParticipant, "peer"> & { peer: ReturnType<typeof getPeer> }), getPeer: PeerGetter): ChatMember {
-  const peer = "user_id" in participant ? getPeer({ ...participant, _: "peerUser" }) : "peer" in participant ? Array.isArray(participant.peer) ? participant.peer : Api.is("peerUser", participant.peer) ? getPeer(participant.peer) : unreachable() : unreachable(); // TODO: support other peer types
+  const peer = "user_id" in participant ? getPeer({ ...participant, _: "peerUser" }) : "peer" in participant ? Array.isArray(participant.peer) ? participant.peer : participant.peer !== null ? getPeer(participant.peer) : unreachable() : unreachable();
   if (!peer || peer[0].type !== "private") unreachable();
   if (Api.is("channelParticipant", participant) || Api.is("chatParticipant", participant)) {
     return {
