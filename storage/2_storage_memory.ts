@@ -22,6 +22,18 @@ import type { MaybePromise } from "../1_utilities.ts";
 import type { GetManyFilter, Storage, StorageKeyPart } from "./0_storage.ts";
 import { fromString, isInRange, toString } from "./1_utilities.ts";
 
+function compareKeys(left: readonly StorageKeyPart[], right: readonly StorageKeyPart[]) {
+  const length = Math.min(left.length, right.length);
+  for (let i = 0; i < length; ++i) {
+    if (left[i] < right[i]) {
+      return -1;
+    } else if (left[i] > right[i]) {
+      return 1;
+    }
+  }
+  return left.length === right.length ? 0 : left.length < right.length ? -1 : 1;
+}
+
 export class StorageMemory implements Storage {
   protected map: Map<string, unknown> = new Map<string, unknown>();
   #id: string | null = null;
@@ -68,10 +80,14 @@ export class StorageMemory implements Storage {
   }
 
   #getEntries() {
-    const entries = new Array<[string, unknown]>();
-    for (const entry of this.map.entries()) {
-      entries.push(entry);
+    const entries = new Array<[StorageKeyPart[], unknown]>();
+    for (const [key, value] of this.map.entries()) {
+      const parts = fromString<StorageKeyPart[]>(key);
+      if (Array.isArray(parts)) {
+        entries.push([parts, value]);
+      }
     }
+    entries.sort(([left], [right]) => compareKeys(left, right));
     return entries;
   }
 
@@ -82,32 +98,29 @@ export class StorageMemory implements Storage {
     }
     const limit = params?.limit !== undefined ? (params.limit <= 0 ? 1 : params.limit) : undefined;
     let yielded = 0;
-    entries: for (const [key, value] of entries) {
-      let parts = fromString<StorageKeyPart[]>(key);
-      if (Array.isArray(parts)) {
-        if (this.#id !== null) {
-          if (parts[0] !== "__S" + this.#id) {
-            continue;
-          }
-          parts = parts.slice(1);
+    entries: for (let [parts, value] of entries) {
+      if (this.#id !== null) {
+        if (parts[0] !== "__S" + this.#id) {
+          continue;
         }
-        if ("prefix" in filter) {
-          for (const [i, p] of filter.prefix.entries()) {
-            if (toString(p) !== toString(parts[i])) {
-              continue entries;
-            }
-          }
-        } else {
-          if (!isInRange(parts, filter.start, filter.end)) {
-            continue;
+        parts = parts.slice(1);
+      }
+      if ("prefix" in filter) {
+        for (const [i, p] of filter.prefix.entries()) {
+          if (toString(p) !== toString(parts[i])) {
+            continue entries;
           }
         }
+      } else {
+        if (!isInRange(parts, filter.start, filter.end)) {
+          continue;
+        }
+      }
 
-        yield [parts, value] as [readonly StorageKeyPart[], T];
-        ++yielded;
-        if (limit !== undefined && yielded >= limit) {
-          return;
-        }
+      yield [parts, value] as [readonly StorageKeyPart[], T];
+      ++yielded;
+      if (limit !== undefined && yielded >= limit) {
+        return;
       }
     }
   }
