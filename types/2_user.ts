@@ -151,6 +151,7 @@ export function constructUser2(chatP: ChatPPrivate): User {
     restrictionReason: chatP.restrictionReason,
     isAddedToAttachmentsMenu: chatP.isAddedToAttachmentsMenu,
     hasMainMiniApp: chatP.hasMainMiniApp,
+    isGuestQuerySupported: chatP.isGuestQuerySupported,
   };
   return cleanObject(user);
 }
