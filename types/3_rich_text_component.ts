@@ -385,7 +385,7 @@ export function constructRichTextComponent(rt: Api.RichText, photos: Api.Photo[]
     case "textMentionName":
       return { type: "textMention", userId: Number(rt.user_id), text: constructRichTextComponent(rt.text, photos) };
     case "textDate":
-      return cleanObject({ type: "dateTime", isRelative: !!rt.relative, format: constructDateTimeFormat(rt) || undefined, date: rt.date, text: constructRichTextComponent(rt.text, photos) });
+      return cleanObject({ type: "dateTime", format: constructDateTimeFormat(rt) || undefined, date: rt.date, text: constructRichTextComponent(rt.text, photos) });
   }
 
   unreachable();
