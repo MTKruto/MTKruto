@@ -20,7 +20,7 @@
 
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { constructPreCheckoutQuery, constructStarAmount, constructStarTransactionList, getTonAmount, constructTonTransactionList, type ID, type StarAmount, type StarTransactionList, type TonTransactionList, type Update } from "../3_types.ts";
+import { constructPreCheckoutQuery, constructStarAmount, constructStarTransactionList, constructTonTransactionList, getTonAmount, type ID, type StarAmount, type StarTransactionList, type TonTransactionList, type Update } from "../3_types.ts";
 import type { AnswerPreCheckoutQueryParams, GetStarTransactionsParams, GetTonTransactionsParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { getLimit } from "./0_utilities.ts";

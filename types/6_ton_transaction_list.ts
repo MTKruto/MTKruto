@@ -21,7 +21,7 @@
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import type { PeerGetter } from "./1_chat_p.ts";
-import { getTonAmount, constructTonTransaction, type TonTransaction } from "./5_ton_transaction.ts";
+import { constructTonTransaction, getTonAmount, type TonTransaction } from "./5_ton_transaction.ts";
 
 /** A list of TON transactions. */
 export interface TonTransactionList {
