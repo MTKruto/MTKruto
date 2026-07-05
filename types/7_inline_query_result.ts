@@ -671,7 +671,7 @@ export async function inlineQueryResultToTlObject(
   } else if (result_.type === "location") {
     return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb ?? undefined, send_message: { _: "inputBotInlineMessageMediaGeo", geo_point: { _: "inputGeoPoint", lat: result_.latitude, long: result_.longitude, accuracy_radius: result_.horizontalAccuracy }, heading: result_.heading, period: result_.livePeriod, proximity_notification_radius: result_.proximityAlertRadius, reply_markup: replyMarkup } };
   } else if (result_.type === "game") {
-    return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb ?? undefined, send_message: { _: "inputBotInlineMessageGame", reply_markup: replyMarkup } };
+    return { _: "inputBotInlineResultGame", id, short_name: result_.gameShortName, send_message: { _: "inputBotInlineMessageGame", reply_markup: replyMarkup } };
   } else if (result_.type === "article") {
     let sendMessage: Api.InputBotInlineMessage;
 
