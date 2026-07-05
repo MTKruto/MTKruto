@@ -23,7 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { base64EncodeUrlSafe, encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
-import { type Animation, assertMessageType, type BlockedUserList, type ChatActionType, collectMediaFileIds, constructAnimation, constructBlockedUserList, constructChatAction, constructMessage as constructMessage_, constructMessageDraft, constructMessageEntity, constructMessageReactionList, constructMessageViewer, constructMiniAppInfo, constructSavedChats, constructSticker, constructSummarizedText, constructVoiceTranscription, deserializeFileId, deserializeInlineMessageId, type FileId, type FileSource, FileType, type ID, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, type InputPollMedia, type InputPollMediaAnimation, type InputPollMediaSticker, type InputPollOption, type InputRichText, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageCounters, type MessageDice, type MessageDocument, type MessageEntity, messageEntityToTlObject, type MessageGetter, type MessageInvoice, type MessageList, type MessageLivePhoto, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageRichText, messageSearchFilterToTlObject, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageViewer, type MessageVoice, type MiniAppInfo, pageBlockToTlObject, type ParseMode, type Poll, type PriceTag, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type RichText, type SavedChats, type SelfDestructOption, selfDestructOptionToInt, serializeFileId, type Sticker, type SummarizedText, type TextToTranslate, toUniqueFileId, type TranslatedText, type Update, type UsernameResolver, type VoiceTranscription } from "../3_types.ts";
+import { type Animation, assertMessageType, type BlockedUserList, type ChatActionType, collectMediaFileIds, constructAnimation, constructBlockedUserList, constructChatAction, constructMessage as constructMessage_, constructMessageDraft, constructMessageEntity, constructMessageReactionList, constructMessageViewer, constructMiniAppInfo, constructSavedChats, constructSticker, constructSummarizedText, constructVoiceTranscription, deserializeFileId, deserializeInlineMessageId, type FileId, type FileSource, FileType, type ID, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, type InputPollMedia, type InputPollMediaAnimation, type InputPollMediaSticker, type InputPollMediaVideo, type InputPollOption, type InputRichText, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageCounters, type MessageDice, type MessageDocument, type MessageEntity, messageEntityToTlObject, type MessageGetter, type MessageInvoice, type MessageList, type MessageLivePhoto, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageRichText, messageSearchFilterToTlObject, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageViewer, type MessageVoice, type MiniAppInfo, pageBlockToTlObject, type ParseMode, type Poll, type PriceTag, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type RichText, type SavedChats, type SelfDestructOption, selfDestructOptionToInt, serializeFileId, type Sticker, type SummarizedText, type TextToTranslate, toUniqueFileId, type TranslatedText, type Update, type UsernameResolver, type VoiceTranscription } from "../3_types.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
 import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, _UploadCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetBlockedUsersParams, GetHistoryParams, GetMessageReactionsParams, GetSavedChatsParams, GetSavedMessagesParams, OpenMiniAppParams, PinMessageParams, SaveDraftParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams as SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendRichTextParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, StartBotParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams } from "./0_params.ts";
@@ -1482,13 +1482,14 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return media;
   }
 
-  async #uploadDocument(document: FileSource, attributes: Api.DocumentAttribute[], mimeType: string, params?: _UploadCommon & { isSpoiler?: boolean }, checkName?: null | ((name: string, firstPart?: Uint8Array) => string), allowStream?: boolean): Promise<Api.messageMediaDocument> {
+  async #uploadDocument(document: FileSource, attributes: Api.DocumentAttribute[], mimeType: string, params?: _UploadCommon & { isSpoiler?: boolean; thumbnail?: FileSource }, checkName?: null | ((name: string, firstPart?: Uint8Array) => string), allowStream?: boolean): Promise<Api.messageMediaDocument> {
     const result = await this.#c.fileManager.upload(document, params, checkName, allowStream);
+    const thumb = params?.thumbnail ? await this.#c.fileManager.upload(params.thumbnail, { chunkSize: params.chunkSize, signal: params.signal }) : undefined;
 
     const uploadedMedia = await this.#c.invoke({
       _: "messages.uploadMedia",
       peer: { _: "inputPeerSelf" },
-      media: { _: "inputMediaUploadedDocument", file: result, attributes, mime_type: mimeType, spoiler: params?.isSpoiler || undefined },
+      media: { _: "inputMediaUploadedDocument", file: result, thumb, attributes, mime_type: mimeType, spoiler: params?.isSpoiler || undefined },
     });
 
     return Api.as("messageMediaDocument", uploadedMedia);
@@ -1540,7 +1541,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     };
   }
 
-  async #uploadVideo(video: FileSource, params?: _UploadCommon): Promise<Api.inputDocument> {
+  async #uploadVideo(video: FileSource, params?: _UploadCommon & Partial<Pick<InputPollMediaVideo, "duration" | "width" | "height" | "thumbnail" | "isSpoiler">>): Promise<Api.inputDocument> {
     if (typeof video === "string") {
       const fileId = this.resolveFileId(video, [FileType.Video]);
       if (fileId !== null) {
@@ -1548,7 +1549,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       }
     }
 
-    const messageMediaDocument = await this.#uploadDocument(video, [{ _: "documentAttributeVideo", duration: 0, w: 0, h: 0 }], "video/mp4", params);
+    const messageMediaDocument = await this.#uploadDocument(video, [{ _: "documentAttributeVideo", duration: params?.duration ?? 0, w: params?.width ?? 0, h: params?.height ?? 0 }], "video/mp4", params);
     const document = Api.as("document", Api.as("messageMediaDocument", messageMediaDocument).document);
     return {
       _: "inputDocument",
