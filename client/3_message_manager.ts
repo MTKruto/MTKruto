@@ -263,6 +263,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       allow_paid_floodskip: params?.isPaidBroadcast || undefined,
       effect: params?.effectId ? BigInt(params.effectId) : undefined,
       reply_to: await this.#constructReplyTo(params),
+      schedule_date: params?.sendAt,
     });
 
     return await this.updatesToMessages(to, result);
