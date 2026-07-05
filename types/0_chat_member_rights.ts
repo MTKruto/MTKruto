@@ -49,6 +49,10 @@ export interface ChatMemberRights {
   canSendInlineBotResults?: boolean;
   /** Whether it is allowed to add web page previews. */
   canAddWebPagePreviews?: boolean;
+  /** Whether reactions are allowed to be sent. */
+  canMakeReactions?: boolean;
+  /** Whether the member can change their own tag. */
+  canEditMemberTag?: boolean;
   /** Whether it is allowed to change the chat info. Ignored for supergroups. */
   canChangeInfo?: boolean;
   /** Whether it is allowed to invite users. */
@@ -60,20 +64,24 @@ export interface ChatMemberRights {
 }
 
 export function constructChatMemberRights(rights: Api.chatBannedRights): ChatMemberRights {
+  const canSendMedia = !rights.send_media;
+
   return cleanObject({
-    canSendMessages: !rights.send_messages,
-    canSendAudio: !rights.send_audios,
-    canSendDocuments: !rights.send_docs,
-    canSendPhotos: !rights.send_photos,
-    canSendVideos: !rights.send_videos,
-    canSendVideoNotes: !rights.send_roundvideos,
-    canSendVoice: !rights.send_voices,
+    canSendMessages: !(rights.send_plain || rights.send_messages),
+    canSendAudio: canSendMedia && !rights.send_audios,
+    canSendDocuments: canSendMedia && !rights.send_docs,
+    canSendPhotos: canSendMedia && !rights.send_photos,
+    canSendVideos: canSendMedia && !rights.send_videos,
+    canSendVideoNotes: canSendMedia && !rights.send_roundvideos,
+    canSendVoice: canSendMedia && !rights.send_voices,
     canSendPolls: !rights.send_polls,
     canSendStickers: !rights.send_stickers,
     canSendAnimations: !rights.send_gifs || undefined,
     canSendGames: !rights.send_games || undefined,
     canSendInlineBotResults: !rights.send_inline || undefined,
     canAddWebPagePreviews: !rights.embed_links || undefined,
+    canSendReactions: !rights.send_reactions || undefined,
+    canEditTag: !rights.edit_rank || undefined,
     canChangeInfo: !rights.change_info || undefined,
     canInviteUsers: !rights.invite_users || undefined,
     canPinMessages: !rights.pin_messages || undefined,
@@ -85,7 +93,7 @@ export function chatMemberRightsToTlObject(rights?: ChatMemberRights, until?: nu
   return {
     _: "chatBannedRights",
     until_date: until ?? 0,
-    send_messages: rights?.canSendMessages === false || undefined,
+    send_plain: rights?.canSendMessages === false || undefined,
     send_audios: rights?.canSendAudio === false || undefined,
     send_docs: rights?.canSendDocuments === false || undefined,
     send_photos: rights?.canSendPhotos === false || undefined,
@@ -98,6 +106,8 @@ export function chatMemberRightsToTlObject(rights?: ChatMemberRights, until?: nu
     send_games: rights?.canSendGames === false || undefined,
     send_inline: rights?.canSendInlineBotResults === false || undefined,
     embed_links: rights?.canAddWebPagePreviews === false || undefined,
+    send_reactions: rights?.canMakeReactions === false || undefined,
+    edit_rank: rights?.canEditMemberTag === false || undefined,
     change_info: rights?.canChangeInfo === false || undefined,
     invite_users: rights?.canInviteUsers === false || undefined,
     pin_messages: rights?.canPinMessages === false || undefined,
