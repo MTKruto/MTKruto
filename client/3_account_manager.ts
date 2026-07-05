@@ -223,27 +223,14 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     if (params?.firstName === undefined && params?.lastName === undefined && params?.bio === undefined) {
       throw new InputError("At least one parameter must be specified.");
     }
-    const selfId = await this.#c.getSelfId();
-    const userFull = await this.#getUserFull(selfId);
-    const peer = this.#c.getPeer(Api.chatIdToPeer(selfId));
-    if (!peer || peer[0].type !== "private") {
-      unreachable();
-    }
-    params ??= {};
     if (params?.firstName) {
       params.firstName = params.firstName.trim();
-    } else {
-      params.firstName = peer[0].firstName;
     }
     if (params?.lastName !== undefined) {
       params.lastName = params.lastName.trim();
-    } else {
-      params.lastName = peer[0].lastName;
     }
     if (params?.bio !== undefined) {
       params.bio = params.bio.trim();
-    } else {
-      params.bio = userFull.about;
     }
     await this.#c.invoke({ _: "account.updateProfile", first_name: params.firstName, last_name: params.lastName, about: params.bio });
   }
