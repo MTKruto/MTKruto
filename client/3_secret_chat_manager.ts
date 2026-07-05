@@ -156,6 +156,8 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     state.prime = prime;
     state.a = a;
     state.pendingExponent = a;
+    state.encryptedChat = result;
+    await state.commit(this.#c.messageStorage.storage);
     return constructSecretChat(result);
   }
 
@@ -250,6 +252,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
       key_fingerprint,
     });
     state.encryptedChat = result;
+    await state.commit(this.#c.messageStorage.storage);
     return constructSecretChat(result);
   }
 
@@ -1266,6 +1269,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
       }
 
       state.encryptedChat = update.chat;
+      await state.commit(this.#c.messageStorage.storage);
     }
 
     const secretChat = constructSecretChat(update.chat);
