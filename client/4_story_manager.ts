@@ -46,11 +46,18 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
   }
 
   #updatesToStory(updates: Api.Updates) {
-    if (Api.is("updates", updates)) {
-      const updateStory = updates.updates.find((v): v is Api.updateStory => Api.is("updateStory", v));
-      if (updateStory && Api.is("storyItem", updateStory.story)) {
-        return constructStory(updateStory.story, updateStory.peer, this.#c.getPeer);
+    let updateStory: Api.updateStory | undefined;
+    switch (updates._) {
+      case "updateShort":
+        updateStory = Api.as("updateStory", updates.update);
+        break;
+      case "updatesCombined":
+      case "updates": {
+        updateStory = updates.updates.find((v): v is Api.updateStory => Api.is("updateStory", v));
       }
+    }
+    if (updateStory && Api.is("storyItem", updateStory.story)) {
+      return constructStory(updateStory.story, updateStory.peer, this.#c.getPeer);
     }
     unreachable();
   }
