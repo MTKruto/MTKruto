@@ -5875,7 +5875,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param id The identifier of the secret chat.
    */
   async sendSecretCancelTypingAction(id: number): Promise<void> {
-    return await this.#secretChatManager.sendSecretTypingAction(id);
+    return await this.#secretChatManager.sendSecretCancelTypingAction(id);
   }
 
   /**
