@@ -2106,11 +2106,11 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       if (Api.is("inputMediaUploadedPhoto", media_.media)) {
         const result = Api.as("messageMediaPhoto", await this.#c.invoke({ _: "messages.uploadMedia", media: media_.media, peer, business_connection_id: params?.businessConnectionId }));
         const photo = Api.as("photo", result.photo);
-        multiMedia[i] = { ...media_, media: { _: "inputMediaPhoto", id: { ...photo, _: "inputPhoto" } } };
+        multiMedia[i] = { ...media_, media: { _: "inputMediaPhoto", id: { ...photo, _: "inputPhoto" }, spoiler: media_.media.spoiler, ttl_seconds: media_.media.ttl_seconds } };
       } else if (Api.is("inputMediaUploadedDocument", media_.media)) {
         const result = Api.as("messageMediaDocument", await this.#c.invoke({ _: "messages.uploadMedia", media: media_.media, peer, business_connection_id: params?.businessConnectionId }));
         const document = Api.as("document", result.document);
-        multiMedia[i] = { ...media_, media: { _: "inputMediaDocument", id: { ...document, _: "inputDocument" } } };
+        multiMedia[i] = { ...media_, media: { _: "inputMediaDocument", id: { ...document, _: "inputDocument" }, spoiler: media_.media.spoiler, ttl_seconds: media_.media.ttl_seconds } };
       }
     }
 
