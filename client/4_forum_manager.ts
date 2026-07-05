@@ -143,7 +143,7 @@ export class ForumManager {
     await this.#c.invoke({
       _: "messages.updatePinnedForumTopic",
       peer,
-      topic_id: 1,
+      topic_id: topicId,
       pinned,
     });
   }
