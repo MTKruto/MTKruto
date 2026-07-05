@@ -488,7 +488,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
   async setCloseFriends(userIds: ID[]) {
     this.#c.storage.assertUser("setCloseFriends");
     const inputUsers = await Promise.all(userIds.map((v) => this.#c.getInputUser(v)));
-    const id = inputUsers.map((v) => Api.as("inputUser", v).user_id);
+    const id = inputUsers.map((v) => Api.isOneOf(["inputUser", "inputUserFromMessage"], v) ? v.user_id : null).filter((v) => v !== null);
     await this.#c.invoke({ _: "contacts.editCloseFriends", id });
   }
 
