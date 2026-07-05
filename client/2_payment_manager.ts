@@ -20,8 +20,8 @@
 
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { constructPreCheckoutQuery, constructStarAmount, constructStarTransactionList, type ID, type StarAmount, type StarTransactionList, type Update } from "../3_types.ts";
-import type { AnswerPreCheckoutQueryParams, GetStarTransactionsParams } from "./0_params.ts";
+import { constructPreCheckoutQuery, constructStarAmount, constructStarTransactionList, constructTonTransactionList, getTonAmount, type ID, type StarAmount, type StarTransactionList, type TonTransactionList, type Update } from "../3_types.ts";
+import type { AnswerPreCheckoutQueryParams, GetStarTransactionsParams, GetTonTransactionsParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { getLimit } from "./0_utilities.ts";
 import type { C } from "./1_types.ts";
@@ -85,11 +85,11 @@ export class PaymentManager implements UpdateProcessor<PaymentManagerUpdate> {
     if (this.#c.storage.isBot) {
       const peer = await this.#c.getInputPeer(chatId);
       const result = await this.#c.invoke({ _: "payments.getStarsTransactions", peer, ton: true, offset: "", limit: 1 });
-      return Number(Api.as("starsTonAmount", result.balance).amount / 10000000n) / 100;
+      return getTonAmount(Api.as("starsTonAmount", result.balance));
     } else {
       const peer = await this.#c.getInputPeer(chatId);
       const result = await this.#c.invoke({ _: "payments.getStarsStatus", peer, ton: true });
-      return Number(Api.as("starsTonAmount", result.balance).amount / 10000000n) / 100;
+      return getTonAmount(Api.as("starsTonAmount", result.balance));
     }
   }
 
@@ -97,7 +97,15 @@ export class PaymentManager implements UpdateProcessor<PaymentManagerUpdate> {
     const peer = await this.#c.getInputPeer(chatId);
     const offset = params?.offset ?? "";
     const limit = getLimit(params?.limit);
-    const result = await this.#c.invoke({ _: "payments.getStarsTransactions", peer, ton: params?.isTon || undefined, offset, limit, inbound: params?.isInbound || undefined, outbound: params?.isOutbound || undefined, ascending: params?.isAscending || undefined, subscription_id: params?.subscriptionId });
+    const result = await this.#c.invoke({ _: "payments.getStarsTransactions", peer, offset, limit, inbound: params?.isInbound || undefined, outbound: params?.isOutbound || undefined, ascending: params?.isAscending || undefined, subscription_id: params?.subscriptionId });
     return constructStarTransactionList(result, this.#c.getPeer);
+  }
+
+  async getTonTransactions(chatId: ID, params?: GetTonTransactionsParams): Promise<TonTransactionList> {
+    const peer = await this.#c.getInputPeer(chatId);
+    const offset = params?.offset ?? "";
+    const limit = getLimit(params?.limit);
+    const result = await this.#c.invoke({ _: "payments.getStarsTransactions", peer, ton: true, offset, limit, inbound: params?.isInbound || undefined, outbound: params?.isOutbound || undefined, ascending: params?.isAscending || undefined });
+    return constructTonTransactionList(result, this.#c.getPeer);
   }
 }
