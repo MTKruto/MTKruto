@@ -132,6 +132,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
   }
 
   async requestSecretChat(chatId: ID): Promise<SecretChat> {
+    this.#c.storage.assertUser("requestSecretChat");
     const user_id = await this.#c.getInputUser(chatId);
     if (Api.is("inputUserSelf", user_id)) {
       throw new InputError("Received invalid chat identifier.");
@@ -204,6 +205,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
   }
 
   async acceptSecretChat(id: number): Promise<SecretChat> {
+    this.#c.storage.assertUser("acceptSecretChat");
     const state = this.#getSecretChatState(id);
     if (!Api.is("encryptedChatRequested", state.encryptedChat)) {
       throw new InputError("Invalid secret chat identifier received.");
