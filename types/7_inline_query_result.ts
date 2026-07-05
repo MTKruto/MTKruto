@@ -587,7 +587,6 @@ export async function inlineQueryResultToTlObject(
       break;
     case "photo":
       document = { _: "inputWebDocument", url: result_.url, size: 0, mime_type: "image/jpeg", attributes: [{ _: "documentAttributeImageSize", w: result_.width ?? 0, h: result_.height ?? 0 }] };
-
       break;
     case "sticker":
       fileId_ = result_.fileId;
@@ -730,6 +729,8 @@ export async function inlineQueryResultToTlObject(
     return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb ?? undefined, send_message: sendMessage };
   } else if (result_.type === "venue") {
     return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb ?? undefined, send_message: { _: "inputBotInlineMessageMediaVenue", geo_point: { _: "inputGeoPoint", long: result_.longitude, lat: result_.latitude }, address: result_.address, provider: "foursquare", title: result_.title, venue_id: result_.foursquareId ?? "", venue_type: result_.foursquareType ?? "", reply_markup: replyMarkup } };
+  } else if (result_.type === "contact") {
+    return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb ?? undefined, send_message: { _: "inputBotInlineMessageMediaContact", first_name: result_.firstName, last_name: result_.lastName ?? "", phone_number: result_.phoneNumber, vcard: result_.vcard ?? "", reply_markup: replyMarkup } };
   } else {
     unreachable();
   }
