@@ -198,7 +198,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
       throw new InputError("Expected a channel, supergroup, or group ID.");
     }
     const member = await this.#c.getInputPeer(memberId);
-    if (Api.is("inputPeerChannel", chat)) {
+    if (Api.isOneOf(["inputPeerChannel", "inputPeerChannelFromMessage"], chat)) {
       if (params?.deleteMessages) {
         try {
           await this.#c.messageManager.deleteChatMemberMessages(chatId, memberId);
@@ -208,7 +208,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
       }
       await this.#c.invoke({
         _: "channels.editBanned",
-        channel: { ...chat, _: "inputChannel" },
+        channel: toInputChannel(chat),
         participant: member,
         banned_rights: {
           _: "chatBannedRights",
