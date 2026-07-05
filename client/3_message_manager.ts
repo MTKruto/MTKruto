@@ -1561,15 +1561,15 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     if (!("animation" in message) && !("audio" in message) && !("document" in message) && !("photo" in message) && !("video" in message)) {
       throw new InputError("Unexpected message type.");
     }
-    const [text, entities] = media.caption !== undefined ? this.parseText(media.caption, { entities: media.captionEntities, parseMode: media.parseMode }) : ["", []];
+    const maybeParseResult = media.caption !== undefined ? this.parseText(media.caption, { entities: media.captionEntities, parseMode: media.parseMode }, true) : undefined;
     const result = await this.#c.invoke({
       _: "messages.editMessage",
       peer: await this.#c.getInputPeer(chatId),
       id: messageId,
       media: await this.#resolveInputMedia(media),
       reply_markup: await this.#constructReplyMarkup(params),
-      message: text,
-      entities,
+      message: maybeParseResult?.[0],
+      entities: maybeParseResult?.[1],
     }, { businessConnectionId: params?.businessConnectionId });
 
     const message_ = (await this.updatesToMessages(chatId, result))[0];
