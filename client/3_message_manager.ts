@@ -1796,10 +1796,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       const chatId = Api.getChannelChatId(update.channel_id);
       const deletedMessages = new Array<{ chatId: number; messageId: number }>();
       for (const messageId of update.messages) {
-        const message = await this.#c.messageStorage.getMessage(chatId, messageId);
-        if (message !== null) {
-          deletedMessages.push({ chatId, messageId });
-        }
+        deletedMessages.push({ chatId, messageId });
       }
       return { type: "deletedMessages", deletedMessages };
     } else if (Api.is("updateDeleteScheduledMessages", update)) {
