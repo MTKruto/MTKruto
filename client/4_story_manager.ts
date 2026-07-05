@@ -200,7 +200,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
     const privacy_rules = params?.privacy ? storyPrivacyToTlObject(params.privacy, this.#c.getPeer) : undefined;
     let media_areas: Api.MediaArea[] | undefined;
 
-    if (params?.interactiveAreas?.length) {
+    if (params?.interactiveAreas) {
       media_areas = [];
       for (const area of params.interactiveAreas) {
         media_areas.push(storyInteractiveAreaToTlObject(area, this.#c.getPeer));
