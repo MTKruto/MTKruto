@@ -47,7 +47,7 @@ export interface GiftNonUpgraded {
   /** The total supply of the gift if limited. */
   total?: number;
   /** Whether the gift is sold out if limited. */
-  soldOut?: boolean;
+  isSoldOut?: boolean;
   /** Whether the gift is dedicated to birthdays. */
   isBirthday: boolean;
   /** The amount of Telegram Stars that the gift can be swapped with. */
@@ -130,7 +130,7 @@ export function constructGiftUpgraded(gift: Api.starGiftUnique, getPeer: PeerGet
   const address = gift.gift_address;
   const price = starsAmount_ ? Number(starsAmount_.amount) : undefined;
   const priceTon = starsTonAmount_ ? Number(starsTonAmount_.amount / 10000000n) / 100 : undefined;
-  const tonOnly = (price || priceTon) ? !!gift.resale_ton_only : undefined;
+  const isTonOnly = (price || priceTon) ? !!gift.resale_ton_only : undefined;
   const value = gift.value_amount ? { amount: Number(gift.value_amount), currency: gift.value_currency ?? "" } : undefined;
   return cleanObject({
     type: "upgraded",
@@ -146,7 +146,7 @@ export function constructGiftUpgraded(gift: Api.starGiftUnique, getPeer: PeerGet
     address,
     price,
     priceTon,
-    tonOnly,
+    isTonOnly,
     value,
   });
 }
@@ -164,7 +164,7 @@ export function constructGiftNonUpgraded(gift: Api.starGift): GiftNonUpgraded {
   const sticker = constructSticker2(gift.sticker, serializeFileId(fileId), toUniqueFileId(fileId), undefined, "");
   const price = Number(gift.stars);
   const isLimited = !!gift.limited;
-  const isRemaining = isLimited ? gift.availability_remains ?? 0 : undefined;
+  const remaining = isLimited ? gift.availability_remains ?? 0 : undefined;
   const total = isLimited ? gift.availability_total ?? 0 : undefined;
   const isSoldOut = isLimited ? !!gift.sold_out : undefined;
   const isBirthday = !!gift.birthday;
@@ -178,7 +178,7 @@ export function constructGiftNonUpgraded(gift: Api.starGift): GiftNonUpgraded {
     sticker,
     price,
     isLimited,
-    isRemaining,
+    remaining,
     total,
     isSoldOut,
     isBirthday,
