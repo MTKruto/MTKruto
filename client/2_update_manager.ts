@@ -660,20 +660,20 @@ export class UpdateManager {
     return localState;
   }
 
-  #recoveringUpdateGap = false;
+  #updateGapRecoveryCount = 0;
   #recoverUpdateGapMutex = new Mutex();
   async recoverUpdateGap(source: string) {
-    const wasRecoveringUpdateGap = this.#recoveringUpdateGap;
+    const updateGapRecoveryCount = this.#updateGapRecoveryCount;
     const unlock = await this.#recoverUpdateGapMutex.lock();
-    if (wasRecoveringUpdateGap) {
+    if (updateGapRecoveryCount !== this.#updateGapRecoveryCount) {
       this.#LrecoverUpdateGap.debug(`update gap was just recovered [${source}]`);
       unlock();
       return;
     }
-    this.#recoveringUpdateGap = true;
     this.#LrecoverUpdateGap.debug(`recovering from update gap [${source}]`);
 
     this.#c.setConnectionState("updating");
+    let wasRecovered = false;
     try {
       let retryIn = 5;
       let state = await this.#getLocalState();
@@ -711,6 +711,7 @@ export class UpdateManager {
           if (Api.is("updates.difference", difference)) {
             await this.#setState(difference.state);
             this.#LrecoverUpdateGap.debug("recovered from update gap");
+            wasRecovered = true;
             break;
           } else if (Api.is("updates.differenceSlice", difference)) {
             state = difference.intermediate_state;
@@ -725,6 +726,7 @@ export class UpdateManager {
         } else if (Api.is("updates.differenceEmpty", difference)) {
           await this.#setUpdateStateDate(difference.date);
           this.#LrecoverUpdateGap.debug("there was no update gap");
+          wasRecovered = true;
           break;
         } else {
           unreachable();
@@ -733,9 +735,11 @@ export class UpdateManager {
     } catch (err) {
       this.#LrecoverUpdateGap.error(err);
     } finally {
+      if (wasRecovered) {
+        ++this.#updateGapRecoveryCount;
+      }
       unlock();
       this.#c.resetConnectionState();
-      this.#recoveringUpdateGap = false;
     }
   }
 
