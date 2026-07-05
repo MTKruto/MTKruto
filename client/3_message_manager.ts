@@ -2374,14 +2374,14 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     this.#c.storage.assertUser("getMessageReactions");
     const peer = await this.#c.getInputPeer(chatId);
     const id = messageId;
-    const reactions = params?.reaction ? reactionToTlObject(params.reaction) : undefined;
+    const reaction = params?.reaction ? reactionToTlObject(params.reaction) : undefined;
     const offset = params?.offset;
     const limit = getLimit(params?.limit);
     const messageReactionsList = await this.#c.invoke({
       _: "messages.getMessageReactionsList",
       peer,
       id,
-      reactions,
+      reaction,
       offset,
       limit,
     });
