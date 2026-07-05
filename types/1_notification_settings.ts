@@ -40,7 +40,7 @@ export interface NotificationSettings {
 export function constructNotificationSettings(pns: Api.PeerNotifySettings): NotificationSettings {
   return cleanObject({
     showsPreviews: pns.show_previews,
-    silent: pns.silent,
+    isSilent: pns.silent,
     muteUntil: pns.mute_until,
     iosSound: pns.ios_sound ? constructNotificationSound(pns.ios_sound) : undefined,
     androidSound: pns.android_sound ? constructNotificationSound(pns.android_sound) : undefined,
