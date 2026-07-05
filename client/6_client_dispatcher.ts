@@ -4814,7 +4814,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @param id The identifier of the secret chat.
    * @param sticker The sticker to send.
    */
-  async sendSecretSticker(id: number, sticker: FileSource | Sticker, params?: SendSecretStickerParams): Promise<void> {
+  async sendSecretSticker(id: number, sticker: Sticker, params?: SendSecretStickerParams): Promise<void> {
     return await this.#dispatch("sendSecretSticker", id, sticker, params);
   }
 

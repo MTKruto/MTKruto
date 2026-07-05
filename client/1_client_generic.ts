@@ -3799,7 +3799,7 @@ export abstract class ClientGeneric {
    * @param id The identifier of the secret chat.
    * @param sticker The sticker to send.
    */
-  abstract sendSecretSticker(id: number, sticker: FileSource | Sticker, params?: SendSecretStickerParams): Promise<void>;
+  abstract sendSecretSticker(id: number, sticker: Sticker, params?: SendSecretStickerParams): Promise<void>;
 
   /**
    * Send a typing action to a secret chat. User-only.
