@@ -639,6 +639,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
       unkick: params?.isRestrict || undefined,
     };
     const max_id = params?.offsetId ? BigInt(params.offsetId) : 0n;
+    const admins = params?.admins ? await Promise.all(params.admins.map(this.#c.getInputUser)) : undefined;
     const result = await this.#c.invoke({
       _: "channels.getAdminLog",
       channel,
@@ -646,7 +647,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
       max_id,
       min_id: 0n,
       q: "",
-      admins: [],
+      admins,
       events_filter,
     });
     const entries = result.events.map((v) => constructRecentActionsEntry(v, this.#c.getPeer, this.#c.messageManager.getMessage.bind(this.#c.messageManager), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager)));
