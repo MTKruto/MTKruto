@@ -506,7 +506,7 @@ export interface GetChatsParams {
 
 export interface PinMessageParams extends _BusinessConnectionIdCommon {
   /** Whether to pin the message for both sides. For private chats only. */
-  bothSides?: boolean;
+  isForBothSides?: boolean;
   /** Whether to silently pin the message. */
   isSilent?: boolean;
 }
