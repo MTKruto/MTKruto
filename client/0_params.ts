@@ -353,15 +353,15 @@ export interface _ThumbnailCommon {
   /** A thumbnail to assign. Cannot be a URL. */
   thumbnail?: FileSource;
 }
-export interface SendDocumentParams extends _CaptionCommon, _ThumbnailCommon, _UploadCommon, _SendCommon {
+export interface SendDocumentParams extends _CaptionCommon, _ThumbnailCommon, _UploadCommon, _SendCommon, _ReplyMarkupCommon {
 }
 
-export interface SendStickerParams extends _UploadCommon, _SendCommon {
+export interface SendStickerParams extends _UploadCommon, _SendCommon, _ReplyMarkupCommon {
   /** Emoji to bind to the sticker. */
   emoji?: string;
 }
 
-export interface SendVideoParams extends _CaptionCommon, _ThumbnailCommon, _SpoilCommon, _UploadCommon, _SendCommon, _StarCount {
+export interface SendVideoParams extends _CaptionCommon, _ThumbnailCommon, _SpoilCommon, _UploadCommon, _SendCommon, _StarCount, _ReplyMarkupCommon {
   /** The duration of the video in seconds. */
   duration?: number;
   /** The width of the video in pixels. */
@@ -374,7 +374,7 @@ export interface SendVideoParams extends _CaptionCommon, _ThumbnailCommon, _Spoi
   selfDestruct?: SelfDestructOption;
 }
 
-export interface SendAnimationParams extends _CaptionCommon, _ThumbnailCommon, _SpoilCommon, _UploadCommon, _SendCommon {
+export interface SendAnimationParams extends _CaptionCommon, _ThumbnailCommon, _SpoilCommon, _UploadCommon, _SendCommon, _ReplyMarkupCommon {
   /** The duration of the animation in seconds. */
   duration?: number;
   /** The width of the animation file. */
@@ -383,12 +383,12 @@ export interface SendAnimationParams extends _CaptionCommon, _ThumbnailCommon, _
   height?: number;
 }
 
-export interface SendVoiceParams extends _CaptionCommon, _ThumbnailCommon, _UploadCommon, _SendCommon {
+export interface SendVoiceParams extends _CaptionCommon, _ThumbnailCommon, _UploadCommon, _SendCommon, _ReplyMarkupCommon {
   /** The duration of the voice message in seconds. */
   duration?: number;
 }
 
-export interface SendAudioParams extends _CaptionCommon, _ThumbnailCommon, _UploadCommon, _SendCommon {
+export interface SendAudioParams extends _CaptionCommon, _ThumbnailCommon, _UploadCommon, _SendCommon, _ReplyMarkupCommon {
   /** The duration of the audio file in seconds. */
   duration?: number;
   /** Names of the entities that are being featured in the audio. */
@@ -397,7 +397,7 @@ export interface SendAudioParams extends _CaptionCommon, _ThumbnailCommon, _Uplo
   title?: string;
 }
 
-export interface SendVideoNoteParams extends _CaptionCommon, _ThumbnailCommon, _UploadCommon, _SendCommon {
+export interface SendVideoNoteParams extends _CaptionCommon, _ThumbnailCommon, _UploadCommon, _SendCommon, _ReplyMarkupCommon {
   /** The duration of the video note in seconds. */
   duration?: number;
   /** The video's width and height (diameter). */
