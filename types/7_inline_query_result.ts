@@ -522,8 +522,17 @@ export function constructInlineQueryResult(result: Api.botInlineResult | Api.bot
   unreachable();
 }
 
-// deno-lint-ignore no-explicit-any
-export async function inlineQueryResultToTlObject(result_: InlineQueryResult, parseText: (text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) => readonly [string, any[] | undefined], usernameResolver: UsernameResolver, inputRichTextToInputRichMessage: (irt: InputRichText, params?: { is }) => Api.InputRichMessage): Promise<Api.InputBotInlineResult> {
+export async function inlineQueryResultToTlObject(
+  result_: InlineQueryResult,
+  parseText: (text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) => readonly [
+    string,
+    // deno-lint-ignore no-explicit-any
+    | any[]
+    | undefined,
+  ],
+  usernameResolver: UsernameResolver,
+  inputRichTextToInputRichMessage: (irt: InputRichText) => Api.InputRichMessage,
+): Promise<Api.InputBotInlineResult> {
   let document: Api.InputWebDocument | null = null;
   let thumb: Api.inputWebDocument | null = null;
   let fileId_: string | null = null;
