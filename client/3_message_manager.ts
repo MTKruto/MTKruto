@@ -2147,9 +2147,10 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       return await this.sendMessage(botId, "/start");
     }
     const bot = await this.#c.getInputUser(botId);
-    const peer = await this.#c.getInputPeer(params?.chatId || botId);
+    const targetChatId = params?.chatId || botId;
+    const peer = await this.#c.getInputPeer(targetChatId);
     const result = await this.#c.invoke({ _: "messages.startBot", bot, peer, random_id: getRandomId(), start_param });
-    return (await this.updatesToMessages(botId, result))[0];
+    return (await this.updatesToMessages(targetChatId, result))[0];
   }
 
   async transcribeVoice(chatId: ID, messageId: number): Promise<VoiceTranscription> {
