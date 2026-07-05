@@ -1242,7 +1242,7 @@ export interface SendSecretAnimationParams extends _SendSecretCommon, _UploadCom
 }
 
 export interface MarkAllMentionsAsReadParams {
-  /** If specified, only mentions that topic will be marked as read. */
+  /** If specified, only mentions in that topic will be marked as read. */
   topicId?: number;
 }
 
@@ -1267,7 +1267,7 @@ export interface GetTopicsParams {
 }
 
 export interface GetAdministeredChatsParams {
-  /** Whether to return list of channels suitable for setting as personal channel. */
+  /** Whether to return a list of channels suitable for setting as personal channel. */
   isForPersonalChannel?: boolean;
 }
 

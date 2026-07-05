@@ -71,7 +71,7 @@ export abstract class ClientGeneric {
   abstract checkCode(code: string): Promise<CodeCheckResult>;
 
   /**
-   * Check whether a password entered by the user is the same as the account's one.
+   * Check whether a password entered by the user is the same as the account's password.
    *
    * @param password The password to check.
    * @returns The result of the check.
@@ -179,7 +179,7 @@ export abstract class ClientGeneric {
   abstract addBotToAttachmentsMenu(botId: ID, params?: AddBotToAttachmentsMenuParams): Promise<void>;
 
   /**
-   * Add a music to profile. User-only.
+   * Add music to profile. User-only.
    *
    * @method ac
    * @param fileId The identifier of the audio file to add to profile.
@@ -238,7 +238,7 @@ export abstract class ClientGeneric {
    * Delete the current account. User-only.
    *
    * @method ac
-   * @param reason The reason of the deletion.
+   * @param reason The reason for the deletion.
    */
   abstract deleteAccount(reason: string, params?: DeleteAccountParams): Promise<void>;
 
@@ -548,7 +548,7 @@ export abstract class ClientGeneric {
   abstract removeEmojiStatus(): Promise<void>;
 
   /**
-   * Remove a music from profile. User-only.
+   * Remove music from profile. User-only.
    *
    * @method ac
    * @param fileId The identifier of the audio file to remove from profile.
@@ -1291,7 +1291,7 @@ export abstract class ClientGeneric {
    *
    * @method ms
    * @param chatId The identifier of the chat including the messages.
-   * @param messageId The identifiers of the message.
+   * @param messageId The identifier of the message.
    * @param reactionActorId The identifier of the chat that made the reaction.
    */
   abstract reportReaction(chatId: ID, messageId: number, reactionActorId: ID): Promise<void>;
@@ -2521,7 +2521,7 @@ export abstract class ClientGeneric {
    *
    * @method ch
    * @param chatId The identifier of a chat to report.
-   * @param reason The reason of the report.
+   * @param reason The reason for the report.
    */
   abstract reportChat(chatId: ID, reason: ReportReason, params?: ReportChatParams): Promise<void>;
 
