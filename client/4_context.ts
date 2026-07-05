@@ -1249,7 +1249,7 @@ export class Context {
 
   /** Context-aware alias for {@link Client.refundStarPayment}. */
   async refundStarPayment(telegramPaymentChargeId: string): Promise<void> {
-    const chatId = this.#mustGetChatId();
+    const chatId = this.#mustGetUserId();
     return await this.client.refundStarPayment(chatId, telegramPaymentChargeId);
   }
 
