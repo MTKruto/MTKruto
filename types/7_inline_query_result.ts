@@ -721,10 +721,7 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
 
     return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb ?? undefined, send_message: sendMessage };
   } else if (result_.type === "venue") {
-    if (!result_.foursquareId || !result_.foursquareType) {
-      unreachable();
-    }
-    return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb ?? undefined, send_message: { _: "inputBotInlineMessageMediaVenue", geo_point: { _: "inputGeoPoint", long: result_.longitude, lat: result_.latitude }, address: result_.address, provider: "foursquare", title: result_.title, venue_id: result_.foursquareId, venue_type: result_.foursquareType, reply_markup: replyMarkup } };
+    return { _: "inputBotInlineResult", id, type, title, description, thumb: thumb ?? undefined, send_message: { _: "inputBotInlineMessageMediaVenue", geo_point: { _: "inputGeoPoint", long: result_.longitude, lat: result_.latitude }, address: result_.address, provider: "foursquare", title: result_.title, venue_id: result_.foursquareId ?? "", venue_type: result_.foursquareType ?? "", reply_markup: replyMarkup } };
   } else {
     unreachable();
   }
