@@ -224,7 +224,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
     return stories;
   }
 
-  async getStory(chatId: ID, storyId: number): Promise<Story> {
+  async getStory(chatId: ID, storyId: number): Promise<Story | null> {
     this.#c.storage.assertUser("getStory");
     return (await this.getStories(chatId, [storyId]))[0] ?? null;
   }
