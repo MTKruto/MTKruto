@@ -98,6 +98,9 @@ export class StickerSetManager {
     if (this.#c.storage.isBot && !params?.userId) {
       throw new InputError("The parameter userId is required.");
     }
+    if (!this.#c.storage.isBot && params?.userId !== undefined) {
+      throw new InputError("The parameter userId is bot-only.");
+    }
 
     const user_id: Api.InputUser = this.#c.storage.isBot ? await this.#c.getInputUser(params!.userId!) : { _: "inputUserSelf" };
 
@@ -143,6 +146,9 @@ export class StickerSetManager {
     if (this.#c.storage.isBot && !params?.userId) {
       throw new InputError("The parameter userId is required.");
     }
+    if (!this.#c.storage.isBot && params?.userId !== undefined) {
+      throw new InputError("The parameter userId is bot-only.");
+    }
 
     const user_id: Api.InputUser = this.#c.storage.isBot ? await this.#c.getInputUser(params!.userId!) : { _: "inputUserSelf" };
 
@@ -187,6 +193,9 @@ export class StickerSetManager {
     if (this.#c.storage.isBot && !params?.userId) {
       throw new InputError("The parameter userId is required.");
     }
+    if (!this.#c.storage.isBot && params?.userId !== undefined) {
+      throw new InputError("The parameter userId is bot-only.");
+    }
 
     const user_id: Api.InputUser = this.#c.storage.isBot ? await this.#c.getInputUser(params!.userId!) : { _: "inputUserSelf" };
     const inputDocument = await this.#uploadSticker(newSticker.sticker, newSticker.emoji, newSticker, user_id);
@@ -213,6 +222,9 @@ export class StickerSetManager {
     slug = StickerSetManager.#getSlug(slug);
     if (this.#c.storage.isBot && !params?.userId) {
       throw new InputError("The parameter userId is required.");
+    }
+    if (!this.#c.storage.isBot && params?.userId !== undefined) {
+      throw new InputError("The parameter userId is bot-only.");
     }
 
     const user_id: Api.InputUser = this.#c.storage.isBot ? await this.#c.getInputUser(params!.userId!) : { _: "inputUserSelf" };
@@ -267,6 +279,7 @@ export class StickerSetManager {
   }
 
   async getAddedStickerSets(): Promise<StickerSetP[]> {
+    this.#c.storage.assertUser("getAddedStickerSets");
     const result = Api.as("messages.allStickers", await this.#c.invoke({ _: "messages.getAllStickers", hash: 0n }));
     return result.sets.map(constructStickerSetP);
   }

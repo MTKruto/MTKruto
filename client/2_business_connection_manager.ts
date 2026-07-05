@@ -37,6 +37,7 @@ export class BusinessConnectionManager implements UpdateProcessor<BusinessConnec
   }
 
   async getBusinessConnection(id: string): Promise<BusinessConnection> {
+    this.#c.storage.assertBot("getBusinessConnection");
     const connection_ = await this.#c.messageStorage.getBusinessConnection(id);
     if (!connection_) {
       const connection_ = await this.#c.invoke({ _: "account.getBotBusinessConnection", connection_id: id })

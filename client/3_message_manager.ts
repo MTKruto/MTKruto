@@ -180,6 +180,9 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     if (params && "sendAt" in params && params.sendAt !== undefined) {
       this.#c.storage.assertUser("sendAt");
     }
+    if (params && "isPaidBroadcast" in params && params.isPaidBroadcast !== undefined) {
+      this.#c.storage.assertBot("isPaidBroadcast");
+    }
   }
 
   parseText(text_: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }, isEmptyAllowed?: boolean): [string, Api.MessageEntity[] | undefined] {
@@ -1252,6 +1255,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   static #CAPTIONABLE_MESSAGE_TYPES = ["photo", "document", "video", "animation", "voice", "audio", "video"] as const;
   async editMessageCaption(chatId: ID, messageId: number, params?: EditMessageCaptionParams): Promise<Message> {
     let canHaveCaption = false;
+    this.#checkParams(params);
     const message_ = await this.getMessage(chatId, messageId);
     if (!message_) {
       throw new InputError("Message not found.");
@@ -2410,6 +2414,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   }
 
   async answerGuestQuery(id: string, result_: InlineQueryResult): Promise<string> {
+    this.#c.storage.assertBot("answerGuestQuery");
     const result = await inlineQueryResultToTlObject(result_, this.parseText.bind(this), this.usernameResolver.bind(this), MessageManager.inputRichTextToInputRichMessage);
     const result__ = await this.#c.invoke({ _: "messages.setBotGuestChatResult", query_id: BigInt(id), result });
     return base64EncodeUrlSafe(Api.serializeObject(result__));
@@ -2650,6 +2655,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   }
 
   async getMessageReadDate(chatId: ID, messageId: number): Promise<number> {
+    this.#c.storage.assertUser("getMessageReadDate");
     const peer = await this.#c.getInputPeer(chatId);
     const msg_id = messageId;
     const result = await this.#c.invoke({ _: "messages.getOutboxReadDate", peer, msg_id });

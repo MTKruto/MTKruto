@@ -41,7 +41,8 @@ export class LinkPreviewManager implements UpdateProcessor<LinkPreviewManagerUpd
   }
 
   async getLinkPreview(text: string, params?: GetLinkPreviewParams): Promise<LinkPreview | null> {
-    const [text_, entities_] = await this.#c.messageManager.parseText(text, params);
+    this.#c.storage.assertUser("getLinkPreview");
+    const [text_, entities_] = this.#c.messageManager.parseText(text, params);
 
     const result = await this.#c.invoke({
       _: "messages.getWebPagePreview",
