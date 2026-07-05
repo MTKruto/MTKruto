@@ -523,7 +523,7 @@ export function constructInlineQueryResult(result: Api.botInlineResult | Api.bot
 }
 
 // deno-lint-ignore no-explicit-any
-export async function inlineQueryResultToTlObject(result_: InlineQueryResult, parseText: (text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) => readonly [string, any[] | undefined], usernameResolver: UsernameResolver, inputRichTextToInputRichMessage: (irt: InputRichText) => Api.InputRichMessage): Promise<Api.InputBotInlineResult> {
+export async function inlineQueryResultToTlObject(result_: InlineQueryResult, parseText: (text: string, params?: { parseMode?: ParseMode; entities?: MessageEntity[] }) => readonly [string, any[] | undefined], usernameResolver: UsernameResolver, inputRichTextToInputRichMessage: (irt: InputRichText, params?: { is }) => Api.InputRichMessage): Promise<Api.InputBotInlineResult> {
   let document: Api.InputWebDocument | null = null;
   let thumb: Api.inputWebDocument | null = null;
   let fileId_: string | null = null;
@@ -553,7 +553,6 @@ export async function inlineQueryResultToTlObject(result_: InlineQueryResult, pa
       break;
     case "document":
       document = { _: "inputWebDocument", url: result_.url, mime_type: "application/octet-stream", attributes: [], size: 0 };
-
       break;
     case "gif":
       document = {

@@ -21,19 +21,25 @@
 import type { PageBlock } from "./4_page_block.ts";
 
 /** @unlisted */
-export interface InputRichTextBlocks {
+export interface _InputRichTextCommon {
+  isRtl?: boolean;
+  isAutomaticLinkDetectionDisabled?: boolean;
+}
+
+/** @unlisted */
+export interface InputRichTextBlocks extends _InputRichTextCommon {
   type: "blocks";
   blocks: PageBlock[];
 }
 
 /** @unlisted */
-export interface InputRichTextMarkdown {
+export interface InputRichTextMarkdown extends _InputRichTextCommon {
   type: "markdown";
   markdown: string;
 }
 
 /** @unlisted */
-export interface InputRichTextHtml {
+export interface InputRichTextHtml extends _InputRichTextCommon {
   type: "html";
   html: string;
 }

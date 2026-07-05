@@ -99,8 +99,6 @@ export interface SendMessageParams extends _SendCommon, _ReplyMarkupCommon {
 }
 
 export interface SendRichTextParams extends _SendCommon, _ReplyMarkupCommon {
-  isRtl?: boolean;
-  isAutomaticLinkDetectionDisabled?: boolean;
 }
 
 export interface SendMessageDraftParams {
@@ -138,13 +136,16 @@ export interface _EditMessageTextCommon extends _ReplyMarkupCommon {
 export interface EditMessageTextParams extends _BusinessConnectionIdCommon, _EditMessageTextCommon {
 }
 
+export interface EditMessageRichTextParams extends _BusinessConnectionIdCommon {
+}
+
 export interface EditMessageRichTextParams extends _BusinessConnectionIdCommon, _ReplyMarkupCommon {
 }
 
 export interface EditInlineMessageTextParams extends _EditMessageTextCommon {
 }
 
-export interface EditInlineMessageRichTextParams extends _ReplyMarkupCommon {
+export interface EditInlineMessageRichTextParams extends _BusinessConnectionIdCommon, _ReplyMarkupCommon {
 }
 
 export interface _EditMessageCaptionCommon extends _ReplyMarkupCommon {

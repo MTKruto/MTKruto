@@ -468,6 +468,8 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   static inputRichTextToInputRichMessage(richText: InputRichText): Api.InputRichMessage {
     let rich_message: Api.InputRichMessage;
+    const rtl = richText?.isRtl || undefined;
+    const noautolink = richText?.isAutomaticLinkDetectionDisabled || undefined;
     switch (richText.type) {
       case "blocks": {
         const photos = new Array<Api.InputPhoto>();
@@ -493,14 +495,14 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
             });
           }
         }
-        rich_message = { _: "inputRichMessage", blocks: richText.blocks.map(pageBlockToTlObject), photos, documents };
+        rich_message = { _: "inputRichMessage", blocks: richText.blocks.map(pageBlockToTlObject), photos, documents, rtl, noautolink };
         break;
       }
       case "markdown":
-        rich_message = { _: "inputRichMessageMarkdown", markdown: richText.markdown };
+        rich_message = { _: "inputRichMessageMarkdown", markdown: richText.markdown, rtl, noautolink };
         break;
       case "html":
-        rich_message = { _: "inputRichMessageHTML", html: richText.html };
+        rich_message = { _: "inputRichMessageHTML", html: richText.html, rtl, noautolink };
         break;
       default:
         unreachable();
@@ -1220,7 +1222,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     chatId: ID,
     messageId: number,
     richText: InputRichText,
-    params?: EditMessageTextParams,
+    params?: EditInlineMessageRichTextParams,
   ): Promise<MessageRichText> {
     this.#checkParams(params);
     {
