@@ -315,13 +315,6 @@ export interface RecentActionSetEmojiStickerSet {
 }
 
 /** @unlisted */
-export interface RecentActionParticipantSubExtend {
-  type: "participantSubExtend";
-  previousParticipant: string;
-  newParticipant: string;
-}
-
-/** @unlisted */
 export interface RecentActionToggleAutomaticTranslation {
   type: "toggleAutomaticTranslation";
   isEnabled: boolean;
