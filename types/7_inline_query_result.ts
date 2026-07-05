@@ -272,6 +272,7 @@ export function constructInlineQueryResult(result: Api.botInlineResult | Api.bot
       livePeriod: result.send_message.period,
       heading: result.send_message.heading,
       proximityAlertRadius: result.send_message.proximity_notification_radius,
+      replyMarkup: result.send_message.reply_markup ? constructReplyMarkup(result.send_message.reply_markup) as ReplyMarkupInlineKeyboard : undefined,
     });
   } else if (Api.is("botInlineMessageMediaVenue", result.send_message)) {
     const geoPoint = result.send_message.geo as Api.geoPoint;
@@ -284,6 +285,7 @@ export function constructInlineQueryResult(result: Api.botInlineResult | Api.bot
       address: result.send_message.address,
       foursquareId: result.send_message.venue_id,
       foursquareType: result.send_message.venue_type,
+      replyMarkup: result.send_message.reply_markup ? constructReplyMarkup(result.send_message.reply_markup) as ReplyMarkupInlineKeyboard : undefined,
     });
   } else if (Api.is("botInlineMessageMediaWebPage", result.send_message) || Api.is("botInlineMessageText", result.send_message)) {
     return cleanObject({
