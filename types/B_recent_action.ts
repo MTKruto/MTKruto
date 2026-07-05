@@ -617,7 +617,7 @@ export async function constructRecentAction(a: Api.ChannelAdminLogEventAction, g
       };
     case "channelAdminLogEventActionToggleForum":
       return {
-        type: "toggleAntispam",
+        type: "toggleTopics",
         isEnabled: a.new_value,
       };
     case "channelAdminLogEventActionCreateTopic":
