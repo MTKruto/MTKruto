@@ -805,10 +805,6 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       maybePromises.push(() => this.#businessConnectionManager.handleUpdate(update));
     }
 
-    if (this.#storyManager.canHandleUpdate(update)) {
-      maybePromises.push(() => this.#storyManager.handleUpdate(update));
-    }
-
     if (this.#paymentManager.canHandleUpdate(update)) {
       maybePromises.push(() => this.#paymentManager.handleUpdate(update));
     }
