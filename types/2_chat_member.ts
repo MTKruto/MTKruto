@@ -137,7 +137,7 @@ export function constructChatMember(member: ChatP, participant: Api.ChannelParti
     });
   } else if (Api.is("channelParticipantBanned", participant)) {
     const until = participant.banned_rights.until_date;
-    if (!participant.banned_rights.view_messages) {
+    if (participant.banned_rights.view_messages) {
       participant.peer;
       return cleanObject({
         status: "banned",
@@ -145,7 +145,7 @@ export function constructChatMember(member: ChatP, participant: Api.ChannelParti
         until,
       });
     }
-    const isMember = !!participant.left;
+    const isMember = !participant.left;
     const rights = constructChatMemberRights(participant.banned_rights);
     const tag = participant.rank;
     return cleanObject({
