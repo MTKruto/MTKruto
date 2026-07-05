@@ -888,6 +888,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
         this.#previouslyConnected = true;
       }
       const connectionState = isConnected ? "ready" : "notConnected";
+      this.#lastConnectionState = isConnected;
       this.#queueHandleCtxUpdate({ type: "connectionState", connectionState });
     }
   }
