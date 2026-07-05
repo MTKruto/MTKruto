@@ -101,7 +101,7 @@ export class ConnectionSocks5 implements Connection {
 
     if (negotiation[1] === AUTH_METHOD_USERNAME_PASSWORD && !this.#credentials) {
       throw new ConnectionError("Username and password are required for connecting to SOCKS5 server.");
-    } else if (this.#credentials) {
+    } else if (negotiation[1] === AUTH_METHOD_USERNAME_PASSWORD && this.#credentials) {
       await this.write(concat([new Uint8Array([VERSION_USERNAME_PASSWORD_AUTH, this.#credentials.username.length]), encodeText(this.#credentials.username), new Uint8Array([this.#credentials.password.length]), encodeText(this.#credentials.password)]));
 
       const status = new Uint8Array(2);
