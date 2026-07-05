@@ -153,4 +153,24 @@ Deno.test("parseMessageLink()", async (t) => {
     assertEquals(pml("http://t.me/c/1/2"), [Api.getChannelChatId(1n), 2]);
     assertEquals(pml("http://t.me/c/1/2/3"), [Api.getChannelChatId(1n), 3]);
   });
+
+  await t.step("negative chat ID", () => {
+    assertEquals(pml("http://t.me/c/-1/2"), null);
+  });
+
+  await t.step("non-whole chat ID", () => {
+    assertEquals(pml("http://t.me/c/1.2/2"), null);
+  });
+
+  await t.step("negative message ID", () => {
+    assertEquals(pml("http://t.me/username/-2"), null);
+    assertEquals(pml("http://t.me/c/1/-2"), null);
+  });
+
+  await t.step("non-whole message ID", () => {
+    assertEquals(pml("http://t.me/username/1.2"), null);
+    assertEquals(pml("http://t.me/c/1/1.2"), null);
+    assertEquals(pml("http://t.me/username/-1.2"), null);
+    assertEquals(pml("http://t.me/c/1/-1.2"), null);
+  });
 });

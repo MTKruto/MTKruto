@@ -2240,6 +2240,9 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         return null;
       }
       [peer, id] = [Number(parts[1]), Number(parts[parts.length - 1])];
+      if (peer < 1 || id < 1 || peer % 1 !== 0 || id % 1 !== 0) {
+        return null;
+      }
       if (isNaN(peer)) {
         return null;
       }
@@ -2252,6 +2255,9 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         return null;
       }
       [peer, id] = [parts[0], Number(parts[parts.length - 1])];
+      if (id < 1 || id % 1 !== 0) {
+        return null;
+      }
       if (isNaN(Number(parts[1]))) {
         return null;
       }
