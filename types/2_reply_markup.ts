@@ -114,7 +114,7 @@ export interface ReplyMarkupRemoveKeyboard {
 }
 
 function constructReplyKeyboardRemove(replyMarkup_: Api.replyKeyboardHide): ReplyMarkupRemoveKeyboard {
-  return cleanObject({ type: "removeKeyboard", selective: replyMarkup_.selective });
+  return cleanObject({ type: "removeKeyboard", isSelective: replyMarkup_.selective });
 }
 
 function replyKeyboardRemoveToTlObject(replyMarkup: ReplyMarkupRemoveKeyboard): Api.replyKeyboardHide {

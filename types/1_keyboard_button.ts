@@ -104,8 +104,8 @@ export function constructKeyboardButton(button_: Api.KeyboardButton): KeyboardBu
         text,
         style,
         requestId: button_.button_id,
-        userIsBot: button_.peer_type.bot || false,
-        userIsPremium: button_.peer_type.premium || false,
+        isBot: button_.peer_type.bot || false,
+        isPremium: button_.peer_type.premium || false,
       });
     } else if (Api.is("requestPeerTypeChat", button_.peer_type)) {
       const button: KeyboardButtonRequestChat = {
