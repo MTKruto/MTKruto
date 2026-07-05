@@ -42,7 +42,7 @@ export function constructClaimedGifts(savedStarGifts: Api.payments_SavedStarGift
       if (Api.is("peerUser", fromId)) {
         return [v, savedStarGifts.users.find((u) => Api.is("user", u) && u.id === fromId.user_id)];
       } else if (Api.is("peerChat", fromId)) {
-        return [v, savedStarGifts.chats.find((u) => Api.is("chat", u) && u.id === fromId.chat_id)];
+        return [v, savedStarGifts.chats.find((u) => Api.isOneOf(["chat", "chatForbidden"], u) && u.id === fromId.chat_id)];
       } else if (fromId) {
         return [v, savedStarGifts.chats.find((u) => Api.isOneOf(["channel", "channelForbidden"], u) && u.id === fromId.channel_id)];
       } else {

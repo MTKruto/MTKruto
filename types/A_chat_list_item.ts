@@ -50,7 +50,7 @@ export async function constructChatListItem(dialog: Api.Dialog, dialogs: Api.mes
   const userId = "user_id" in dialog.peer ? dialog.peer.user_id : null;
   const chatId = "chat_id" in dialog.peer ? dialog.peer.chat_id : null;
   const channelId = "channel_id" in dialog.peer ? dialog.peer.channel_id : null;
-  const chat__ = chatId !== null ? dialogs.chats.find((v) => Api.is("chat", v) && v.id === chatId) : channelId !== null ? dialogs.chats.find((v) => Api.isOneOf(["channel", "channelForbidden"], v) && v.id === channelId) : userId !== null ? dialogs.users.find((v) => Api.is("user", v) && v.id === userId) : unreachable();
+  const chat__ = chatId !== null ? dialogs.chats.find((v) => Api.isOneOf(["chat", "chatForbidden"], v) && v.id === chatId) : channelId !== null ? dialogs.chats.find((v) => Api.isOneOf(["channel", "channelForbidden"], v) && v.id === channelId) : userId !== null ? dialogs.users.find((v) => Api.is("user", v) && v.id === userId) : unreachable();
   if (!chat__) {
     unreachable();
   }
