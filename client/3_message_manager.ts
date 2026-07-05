@@ -191,8 +191,21 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   async updatesToMessages(chatId: ID, updates: Api.Updates, businessConnectionId?: string): Promise<Message[]> {
     const messages = new Array<Message>();
 
-    if (Api.is("updates", updates)) {
-      for (const update of updates.updates) {
+    if (Api.isOneOf(["updateShortSentMessage", "updateShortChatMessage"], updates)) {
+      const message = await this.getMessage(chatId, updates.id);
+      if (message !== null) {
+        messages.push(message);
+      }
+    } else {
+      let updates_ = new Array<Api.Update>();
+
+      if (Api.isOneOf(["updates", "updatesCombined"], updates)) {
+        updates_ = updates.updates;
+      } else if (Api.is("updateShort", updates)) {
+        updates_.push(updates.update);
+      }
+
+      for (const update of updates_) {
         if ("message" in update && Api.is("messageEmpty", update.message)) {
           continue;
         }
@@ -209,11 +222,6 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         } else if (Api.is("updateBotEditBusinessMessage", update)) {
           messages.push(await this.constructMessage(update.message, false, { connectionId: businessConnectionId ?? update.connection_id, replyToMessage: update.reply_to_message }));
         }
-      }
-    } else if (Api.is("updateShortSentMessage", updates)) {
-      const message = await this.getMessage(chatId, updates.id);
-      if (message !== null) {
-        messages.push(message);
       }
     }
 
