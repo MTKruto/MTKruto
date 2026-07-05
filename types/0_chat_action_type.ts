@@ -113,7 +113,7 @@ export function constructChatActionType(action: Api.SendMessageAction): ChatActi
     case "sendMessageCancelAction":
       return { type: "cancel" };
     case "sendMessageRecordVideoAction":
-      return { type: "recordingVideoNote" };
+      return { type: "recordingVideo" };
     case "sendMessageUploadVideoAction":
       return { type: "uploadingVideo", progress: action.progress };
     case "sendMessageRecordAudioAction":
@@ -127,6 +127,7 @@ export function constructChatActionType(action: Api.SendMessageAction): ChatActi
     case "sendMessageGeoLocationAction":
       return { type: "choosingLocation" };
     case "sendMessageChooseContactAction":
+      break;
     case "sendMessageGamePlayAction":
       return { type: "playingGame" };
     case "sendMessageRecordRoundAction":
