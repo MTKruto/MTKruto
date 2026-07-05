@@ -268,10 +268,12 @@ export class Context {
   #mustGetUserId() {
     if (this.msg?.from) {
       return this.msg.from.id;
-    } else if ("callbackQuery" in this.update) {
+    } else if (this.update.type === "callbackQuery") {
       return this.update.callbackQuery.from.id;
-    } else if ("chosenInlineResult" in this.update) {
+    } else if (this.update.type === "chosenInlineResult") {
       return this.update.chosenInlineResult.from.id;
+    } else if (this.update.type === "joinRequest") {
+      return this.update.joinRequest.from.id;
     } else {
       unreachable();
     }
@@ -533,10 +535,8 @@ export class Context {
 
   /** Context-aware alias for {@link Client.approveJoinRequest}. */
   async approveJoinRequest(): Promise<void> {
-    const { chatId, userId } = this.#mustGetMsg();
-    if (!userId) {
-      unreachable();
-    }
+    const chatId = this.#mustGetChatId();
+    const userId = this.#mustGetUserId();
     return await this.client.approveJoinRequest(chatId, userId);
   }
 
@@ -628,10 +628,8 @@ export class Context {
 
   /** Context-aware alias for {@link Client.declineJoinRequest}. */
   async declineJoinRequest(): Promise<void> {
-    const { chatId, userId } = this.#mustGetMsg();
-    if (!userId) {
-      unreachable();
-    }
+    const chatId = this.#mustGetChatId();
+    const userId = this.#mustGetUserId();
     return await this.client.declineJoinRequest(chatId, userId);
   }
 
