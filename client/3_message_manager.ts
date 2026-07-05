@@ -2600,7 +2600,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const animations = await Promise.all(
       result.gifs.map((v): Api.document => Api.as("document", v)).map((v) => {
         const fileId: FileId = {
-          type: FileType.Sticker,
+          type: FileType.Animation,
           dcId: v.dc_id,
           location: {
             type: "common",
