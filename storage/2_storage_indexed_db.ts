@@ -163,7 +163,7 @@ export class StorageIndexedDB implements Storage {
     if ("prefix" in filter) {
       keyRange = getPrefixKeyRange(fixKey(filter.prefix));
     } else {
-      keyRange = IDBKeyRange.bound(fixKey(filter.start), fixKey(filter.end), true, true);
+      keyRange = IDBKeyRange.bound(fixKey(filter.start), fixKey(filter.end), false, false);
     }
     const keys = await new Promise<(readonly StorageKeyPart[])[]>((res, rej) => {
       const items = new Array<readonly StorageKeyPart[]>();
