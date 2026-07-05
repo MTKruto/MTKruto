@@ -271,6 +271,12 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     return constructSecretChat(state.encryptedChat);
   }
 
+  async #discardSecretChat(state: SecretChatState, chatId: number) {
+    await this.#c.invoke({ _: "messages.discardEncryption", chat_id: chatId });
+    state.encryptedChat = { _: "encryptedChatDiscarded", id: chatId };
+    await state.commit(this.#c.messageStorage.storage);
+  }
+
   #getNextOutSeqNo(id: number, isCreator: boolean) {
     const state = this.#getSecretChatState(id);
     const rawOutSeqNo = state.outSeqNo;
@@ -883,14 +889,14 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     const inX = isCreator ? 1 : 0;
     if (message.out_seq_no < 0 || message.out_seq_no % 2 !== x) {
       this.#L.debug("discarding secret chat", chatId, "because an invalid out_seq_no was received");
-      await this.#c.invoke({ _: "messages.discardEncryption", chat_id: chatId });
+      await this.#discardSecretChat(state, chatId);
       throw new TypeError("Received invalid secret chat out_seq_no.");
     }
     const outSeqNo = (message.out_seq_no - x) / 2;
     const inSeqNo = (message.in_seq_no - inX) / 2;
     if (inSeqNo % 1 !== 0 || inSeqNo < 0 || inSeqNo > state.outSeqNo) {
       this.#L.debug("discarding secret chat", chatId, "because an invalid in_seq_no was received");
-      await this.#c.invoke({ _: "messages.discardEncryption", chat_id: chatId });
+      await this.#discardSecretChat(state, chatId);
       throw new TypeError("Received invalid secret chat in_seq_no.");
     }
     if (outSeqNo < state.inSeqNo) { // old
@@ -931,7 +937,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
       const isJustLoaded = state.isJustLoaded;
       if (inSeqNo < state.remoteInSeqNo && !isJustLoaded) {
         this.#L.debug("discarding secret chat", chatId, "because of decreasing in_seq_no");
-        await this.#c.invoke({ _: "messages.discardEncryption", chat_id: chatId });
+        await this.#discardSecretChat(state, chatId);
         throw new TypeError("Received decreasing secret chat in_seq_no.");
       }
       state.isJustLoaded = false;
@@ -967,7 +973,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     const end = (action.end_seq_no - x) / 2;
     if (start % 1 !== 0 || end % 1 !== 0 || start < 0 || end < start || end >= state.outSeqNo) {
       this.#L.debug("discarding secret chat", state.encryptedChat.id, "because an invalid resend range was received");
-      await this.#c.invoke({ _: "messages.discardEncryption", chat_id: state.encryptedChat.id });
+      await this.#discardSecretChat(state, state.encryptedChat.id);
       throw new TypeError("Received invalid secret chat resend range.");
     }
     const peer: Api.inputEncryptedChat = { _: "inputEncryptedChat", chat_id: state.encryptedChat.id, access_hash: state.encryptedChat.access_hash };
@@ -975,7 +981,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
       const message = state.outgoingMessages.get(seqNo);
       if (!message) {
         this.#L.debug("discarding secret chat", state.encryptedChat.id, "because the message could not be resent");
-        await this.#c.invoke({ _: "messages.discardEncryption", chat_id: state.encryptedChat.id });
+        await this.#discardSecretChat(state, state.encryptedChat.id);
         throw new TypeError("Unable to resend secret chat message.");
       }
       await this.#c.invoke({ _: "messages.sendEncrypted", peer, random_id: getRandomId(), data: message });
@@ -1122,7 +1128,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     }
     if (state.toCommitAuthKeyId !== action.key_fingerprint || !Api.is("encryptedChat", state.encryptedChat)) {
       this.#L.debug(`discarding secret chat ${chatId}: re-key fingerprint mismatch`);
-      await this.#c.invoke({ _: "messages.discardEncryption", chat_id: chatId });
+      await this.#discardSecretChat(state, chatId);
       throw new TypeError("Secret chat re-key fingerprint mismatch.");
     }
     this.#installNewKey(state, state.toCommitAuthKey, state.toCommitAuthKeyId, state.toCommitAuthKeyId_, false);
@@ -1254,8 +1260,8 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
           const gB = intFromBytes(update.chat.g_a_or_b, { byteOrder: "big", isSigned: false });
           if (!isGoodModExpFirst(gB, state.prime)) {
             this.#L.debug("discarding secret chat", update.chat.id, "because an invalid g_b was received");
-            await this.#c.invoke({ _: "messages.discardEncryption", chat_id: update.chat.id });
             state.pendingExponent = 0n;
+            await this.#discardSecretChat(state, update.chat.id);
             throw new TypeError("Received invalid g_b.");
           }
 
@@ -1264,8 +1270,8 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
           const authKeyId = intFromBytes(authKeyId_);
           if (authKeyId !== update.chat.key_fingerprint) {
             this.#L.debug("discarding secret chat", update.chat.id, "because of key fingerprint mismatch");
-            await this.#c.invoke({ _: "messages.discardEncryption", chat_id: update.chat.id });
             state.pendingExponent = 0n;
+            await this.#discardSecretChat(state, update.chat.id);
             throw new TypeError("Secret chat key fingerprint mismatch.");
           }
 
