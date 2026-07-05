@@ -619,7 +619,7 @@ export function constructPageBlock(pb: Api.PageBlock, photos: Api.Photo[], docum
     case "pageBlockBlockquote":
       return { type: "blockQuote", text: constructRichTextComponent(pb.text, photos), caption: constructRichTextComponent(pb.caption, photos) };
     case "pageBlockPullquote":
-      return { type: "blockQuote", text: constructRichTextComponent(pb.text, photos), caption: constructRichTextComponent(pb.caption, photos) };
+      return { type: "pullQuote", text: constructRichTextComponent(pb.text, photos), caption: constructRichTextComponent(pb.caption, photos) };
     case "pageBlockPhoto": {
       const fileId = constructPhoto(Api.as("photo", photos.find((v) => v.id === pb.photo_id))).fileId;
       return cleanObject({ type: "photo", fileId, caption: constructPageBlockCaption(pb.caption, photos), isSpoiler: !!pb.spoiler, linkPreviewId: pb.webpage_id ? String(pb.webpage_id) : undefined, url: pb.url });
