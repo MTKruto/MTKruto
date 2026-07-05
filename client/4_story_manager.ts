@@ -190,10 +190,11 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
     const caption = parseResult === undefined ? undefined : parseResult[0];
     const entities = parseResult === undefined ? undefined : caption === undefined ? [] : parseResult[1];
     const peer = await this.#c.getInputPeer(chatId);
-    const privacy_rules = storyPrivacyToTlObject(params?.privacy ?? { type: "everyone", except: [] }, this.#c.getPeer);
-    const media_areas = new Array<Api.MediaArea>();
+    const privacy_rules = params?.privacy ? storyPrivacyToTlObject(params.privacy, this.#c.getPeer) : undefined;
+    let media_areas: Api.MediaArea[] | undefined;
 
     if (params?.interactiveAreas?.length) {
+      media_areas = [];
       for (const area of params.interactiveAreas) {
         media_areas.push(storyInteractiveAreaToTlObject(area, this.#c.getPeer));
       }
