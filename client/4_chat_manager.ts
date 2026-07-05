@@ -280,7 +280,8 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
   async setAvailableReactions(chatId: ID, availableReactions: AvailableReactions) {
     this.#c.storage.assertUser("setAvailableReactions");
     const peer = await this.#c.getInputPeer(chatId);
-    await this.#c.invoke({ _: "messages.setChatAvailableReactions", peer, available_reactions: availableReactionsToTlObject(availableReactions), paid_enabled: availableReactions.type === "all" ? true : availableReactions.type === "some" ? availableReactions.reactions.some((v) => v.type === "paid") : undefined, reactions_limit: "maxReactionCount" in availableReactions ? availableReactions.maxReactionCount : undefined });
+    const paid_enabled = availableReactions.type === "all" ? true : availableReactions.type === "some" ? availableReactions.reactions.some((v) => v.type === "paid") : false;
+    await this.#c.invoke({ _: "messages.setChatAvailableReactions", peer, available_reactions: availableReactionsToTlObject(availableReactions), paid_enabled, reactions_limit: "maxReactionCount" in availableReactions ? availableReactions.maxReactionCount : undefined });
   }
 
   async setBoostsRequiredToCircumventRestrictions(chatId: ID, boosts: number) {
