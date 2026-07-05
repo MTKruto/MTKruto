@@ -41,6 +41,8 @@ export function constructMessageReaction(reaction_: Api.reactionCount, recentRea
         return Api.is("reactionEmoji", v.reaction) && v.reaction.emoticon === reaction_.reaction.emoticon;
       } else if (Api.is("reactionCustomEmoji", reaction_.reaction)) {
         return Api.is("reactionCustomEmoji", v.reaction) && v.reaction.document_id === reaction_.reaction.document_id;
+      } else if (Api.is("reactionPaid", reaction_.reaction)) {
+        return Api.is("reactionPaid", v.reaction);
       } else {
         unreachable();
       }
