@@ -928,11 +928,13 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
 
     const handle = async (message: SecretChats.decryptedMessageLayer, encryptedMessage: Api.EncryptedMessage) => {
       const inSeqNo = (message.in_seq_no - inX) / 2;
-      if (inSeqNo < state.remoteInSeqNo && !state.isJustLoaded) {
+      const isJustLoaded = state.isJustLoaded;
+      if (inSeqNo < state.remoteInSeqNo && !isJustLoaded) {
         this.#L.debug("discarding secret chat", chatId, "because of decreasing in_seq_no");
         await this.#c.invoke({ _: "messages.discardEncryption", chat_id: chatId });
         throw new TypeError("Received decreasing secret chat in_seq_no.");
       }
+      state.isJustLoaded = false;
       state.remoteInSeqNo = Math.max(state.remoteInSeqNo, inSeqNo);
       ++state.inSeqNo;
       await this.#handleDecryptedMessageLayer(chatId, message, encryptedMessage);
