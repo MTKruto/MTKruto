@@ -392,7 +392,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
       this.#ap = await this.#getAccountPassword();
     }
 
-    return this.#ap.hint ?? "";
+    return this.#ap.hint ?? null;
   }
 
   async checkPassword(password: string): Promise<PasswordCheckResult> {
@@ -559,7 +559,7 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
       throw new InputError("The parameter botId is user-only.");
     }
     if (params?.isPublic !== undefined && this.#c.storage.isBot) {
-      throw new InputError("The parameter isPublic is user-only.")
+      throw new InputError("The parameter isPublic is user-only.");
     }
 
     const bot = params?.botId ? await this.#c.getInputUser(params.botId) : undefined;
