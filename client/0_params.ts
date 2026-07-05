@@ -1044,8 +1044,6 @@ export interface RemoveProfilePhotoParams {
 }
 
 export interface GetStarTransactionsParams {
-  /** Whether TON transactions should be returned. */
-  isTon?: boolean;
   /** Whether only inbound transactions should be returned. */
   isInbound?: boolean;
   /** Whether only outbound transactions should be returned. */
@@ -1054,6 +1052,19 @@ export interface GetStarTransactionsParams {
   isAscending?: boolean;
   /** Whether only transactions related to a specific subscription should be returned. */
   subscriptionId?: string;
+  /** An offset key returned by a previous result. */
+  offset?: string;
+  /** The maximum number of results to return. */
+  limit?: number;
+}
+
+export interface GetTonTransactionsParams {
+  /** Whether only inbound transactions should be returned. */
+  isInbound?: boolean;
+  /** Whether only outbound transactions should be returned. */
+  isOutbound?: boolean;
+  /** Whether results should be sorted in ascending order. */
+  isAscending?: boolean;
   /** An offset key returned by a previous result. */
   offset?: string;
   /** The maximum number of results to return. */
