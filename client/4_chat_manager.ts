@@ -500,8 +500,8 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     if (Api.is("inputPeerChat", chat)) {
       const result = await this.#c.invoke({ _: "messages.addChatUser", chat_id: chat.chat_id, user_id: user, fwd_limit: params?.historyLimit ?? 0 });
       return result.missing_invitees.map(constructFailedInvitation);
-    } else if (Api.is("inputPeerChannel", chat)) {
-      const result = await this.#c.invoke({ _: "channels.inviteToChannel", channel: { ...chat, _: "inputChannel" }, users: [user] });
+    } else if (Api.isOneOf(["inputPeerChannel", "inputPeerChannelFromMessage"], chat)) {
+      const result = await this.#c.invoke({ _: "channels.inviteToChannel", channel: toInputChannel(chat), users: [user] });
       return result.missing_invitees.map(constructFailedInvitation);
     }
     unreachable();
