@@ -68,6 +68,7 @@ export class ForumManager {
   }
 
   async deleteTopic(chatId: ID, topicId: number) {
+    ForumManager.#assertNongeneralTopicIdValid(topicId);
     const peer = await this.#c.getInputPeer(chatId);
     const top_msg_id = topicId;
     await this.#c.invoke({ _: "messages.deleteTopicHistory", peer, top_msg_id });
@@ -177,6 +178,7 @@ export class ForumManager {
 
   async getTopicsById(chatId: ID, topicIds: number[]): Promise<TopicList> {
     this.#c.storage.assertUser("getTopicsById");
+    topicIds.forEach(ForumManager.#assertAnyTopicIdValid);
     const peer = await this.#c.getInputPeer(chatId);
     const topics = topicIds;
     const result = await this.#c.invoke({ _: "messages.getForumTopicsByID", peer, topics });
@@ -186,6 +188,7 @@ export class ForumManager {
 
   async getTopic(chatId: ID, topicId: number): Promise<TopicListItem | null> {
     this.#c.storage.assertUser("getTopic");
+    ForumManager.#assertAnyTopicIdValid(topicId);
     const result = await this.getTopicsById(chatId, [topicId]);
     return result.items[0] ?? null;
   }
