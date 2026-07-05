@@ -427,7 +427,7 @@ export class UpdateManager {
     if (update.pts !== 0) {
       await this.#setUpdatePts(update.pts);
     }
-    this.#queueUpdate(update, 1n, false);
+    this.#queueUpdate(update, UpdateManager.MAIN_BOX_ID, true);
   }
 
   #ptsUpdateQueue = new Queue("ptsUpdate");
