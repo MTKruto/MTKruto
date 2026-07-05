@@ -194,7 +194,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
   // CHAT MEMBERS //
   async banChatMember(chatId: ID, memberId: ID, params?: BanChatMemberParams) {
     const chat = await this.#c.getInputPeer(chatId);
-    if (!(Api.is("inputPeerChannel", chat)) && !(Api.is("inputPeerChat", chat))) {
+    if (!Api.isOneOf(["inputPeerChannel", "inputPeerChat", "inputPeerChannelFromMessage"], chat)) {
       throw new InputError("Expected a channel, supergroup, or group ID.");
     }
     const member = await this.#c.getInputPeer(memberId);
