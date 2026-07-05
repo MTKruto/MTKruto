@@ -1655,7 +1655,13 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async pinMessage(chatId: ID, messageId: number, params?: PinMessageParams) {
     this.#checkParams(params);
-    await this.#c.invoke({ _: "messages.updatePinnedMessage", peer: await this.#c.getInputPeer(chatId), id: checkMessageId(messageId), silent: params?.isSilent || undefined, pm_oneside: params?.isForBothSides === false || undefined });
+    await this.#c.invoke({
+      _: "messages.updatePinnedMessage",
+      peer: await this.#c.getInputPeer(chatId),
+      id: checkMessageId(messageId),
+      silent: params?.isSilent || undefined,
+      pm_oneside: params?.isForBothSides === false || undefined,
+    }, { businessConnectionId: params?.businessConnectionId });
   }
 
   async unpinMessage(chatId: ID, messageId: number, params?: UnpinMessageParams) {
