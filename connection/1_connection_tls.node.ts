@@ -172,7 +172,7 @@ export class ConnectionTLS implements Connection {
     this.#packetBuffer = concat([this.#packetBuffer, packet]);
   }
 
-  #isFirstWrite = false;
+  #isFirstWrite = true;
   async #writePacket(packet: Uint8Array) {
     const header = new Uint8Array([0x17, 0x03, 0x03, 0x00, 0x00]);
     new DataView(header.buffer).setUint16(3, packet.byteLength);
