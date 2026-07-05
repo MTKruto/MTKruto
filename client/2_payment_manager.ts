@@ -88,7 +88,7 @@ export class PaymentManager implements UpdateProcessor<PaymentManagerUpdate> {
       return Number(Api.as("starsTonAmount", result.balance).amount / 10000000n) / 100;
     } else {
       const peer = await this.#c.getInputPeer(chatId);
-      const result = await this.#c.invoke({ _: "payments.getStarsStatus", peer });
+      const result = await this.#c.invoke({ _: "payments.getStarsStatus", peer, ton: true });
       return Number(Api.as("starsTonAmount", result.balance).amount / 10000000n) / 100;
     }
   }
