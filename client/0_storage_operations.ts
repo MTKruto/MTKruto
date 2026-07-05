@@ -713,8 +713,18 @@ class StorageMap<K extends StorageKeyPart[], V> {
     if (this.#storage.isMemory) {
       return;
     }
-    await awaitablePooledMap(2, this.#pendingUpdates, async ([key, value]) => await this.#storage.set([this.#path, ...fromString(key) as StorageKeyPart[]], value));
-    this.#pendingUpdates.clear();
+    const pendingUpdates = this.#pendingUpdates;
+    this.#pendingUpdates = new Map();
+    try {
+      await awaitablePooledMap(2, pendingUpdates, async ([key, value]) => await this.#storage.set([this.#path, ...fromString(key) as StorageKeyPart[]], value));
+    } catch (err) {
+      for (const [key, value] of pendingUpdates) {
+        if (!this.#pendingUpdates.has(key)) {
+          this.#pendingUpdates.set(key, value);
+        }
+      }
+      throw err;
+    }
   }
 }
 
@@ -755,8 +765,11 @@ class StorageValue<T> {
     if (this.#storage.isMemory || this.#value === undefined) {
       return;
     }
-    await this.#storage.set(this.#key, this.#value);
-    this.#updatePending = false;
+    const value = this.#value;
+    await this.#storage.set(this.#key, value);
+    if (this.#value === value) {
+      this.#updatePending = false;
+    }
   }
 }
 
