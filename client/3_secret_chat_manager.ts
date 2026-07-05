@@ -1101,7 +1101,16 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     state.toCommitAuthKey = authKey;
     state.toCommitAuthKeyId = authKeyId;
     state.toCommitAuthKeyId_ = authKeyId_;
-    await this.#sendMessage({ _: "decryptedMessageService", random_id, action }, state.encryptedChat, state.authKey, state.authKeyId_);
+    try {
+      await this.#sendMessage({ _: "decryptedMessageService", random_id, action }, state.encryptedChat, state.authKey, state.authKeyId_);
+    } catch (err) {
+      state.toCommitId = 0n;
+      state.toCommitAuthKey = new Uint8Array();
+      state.toCommitAuthKeyId = 0n;
+      state.toCommitAuthKeyId_ = new Uint8Array();
+      await state.commit(this.#c.messageStorage.storage);
+      throw err;
+    }
   }
 
   async #processDecryptedMessageActionCommitKey(chatId: number, action: SecretChats.decryptedMessageActionCommitKey) {
