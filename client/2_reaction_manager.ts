@@ -88,6 +88,7 @@ export class ReactionManager implements UpdateProcessor<ReactionManagerUpdate, t
         const forwards = message.forwards ?? 0;
         const recentReactions = message.reactions?.recent_reactions ?? [];
         const reactions = message.reactions?.results.map((v) => constructMessageReaction(v, recentReactions)) ?? [];
+        await this.#c.messageStorage.setMessage(chatId, message.id, message);
         return { type: "messageInteractions", messageInteractions: { chatId, messageId: update.id, reactions, views, forwards } };
       } else {
         return null;
