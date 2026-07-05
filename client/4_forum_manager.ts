@@ -74,13 +74,13 @@ export class ForumManager {
   }
 
   static #assertNongeneralTopicIdValid(topicId: number) {
-    if (!topicId || topicId < 2) {
+    if (!topicId || topicId < 2 || topicId % 1 !== 0) {
       throw new InputError("Invalid topic ID.");
     }
   }
 
   static #assertAnyTopicIdValid(topicId: number) {
-    if (!topicId || topicId < 1) {
+    if (!topicId || topicId < 1 || topicId % 1 !== 0) {
       throw new InputError("Invalid topic ID.");
     }
   }
@@ -118,23 +118,23 @@ export class ForumManager {
     await this.#toggleGeneralTopicHidden(chatId, false);
   }
 
-  async #toggleNongeneralTopicClosed(chatId: ID, topicId: number, closed: boolean) {
-    ForumManager.#assertNongeneralTopicIdValid(topicId);
+  async #toggleTopicClosed(chatId: ID, topicId: number, closed: boolean) {
+    ForumManager.#assertAnyTopicIdValid(topicId);
     const peer = await this.#c.getInputPeer(chatId);
     await this.#c.invoke({
       _: "messages.editForumTopic",
       peer,
-      topic_id: 1,
+      topic_id: topicId,
       closed,
     });
   }
 
   async closeTopic(chatId: ID, topicId: number) {
-    await this.#toggleNongeneralTopicClosed(chatId, topicId, true);
+    await this.#toggleTopicClosed(chatId, topicId, true);
   }
 
   async reopenTopic(chatId: ID, topicId: number) {
-    await this.#toggleNongeneralTopicClosed(chatId, topicId, false);
+    await this.#toggleTopicClosed(chatId, topicId, false);
   }
 
   async #setTopicPinned(chatId: ID, topicId: number, pinned: boolean) {
