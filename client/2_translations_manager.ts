@@ -152,14 +152,15 @@ export class TranslationsManager implements UpdateProcessor<TranslationsManagerU
       const translations = await this.#getTranslationsInner(this.#c.langPack, update.lang_code, true);
       return { type: "translations", platform: this.#c.langPack, language: update.lang_code, translations };
     } else if (Api.is("updateLangPack", update)) {
-      if (!this.#c.langCode) {
+      const language = update.difference.lang_code;
+      if (!this.#c.langCode || language !== this.#c.langCode) {
         return null;
       }
-      const translations = await this.#applyLangPackDifferenceAndSave(this.#c.langPack, this.#c.langCode, update.difference.version, update.difference.from_version, update.difference.strings);
+      const translations = await this.#applyLangPackDifferenceAndSave(this.#c.langPack, language, update.difference.version, update.difference.from_version, update.difference.strings);
       if (!translations) {
         return null;
       } else {
-        return { type: "translations", platform: this.#c.langPack, language: this.#c.langCode, translations };
+        return { type: "translations", platform: this.#c.langPack, language, translations };
       }
     }
     return null;
