@@ -69,6 +69,8 @@ export interface GiftUpgraded {
   type: "upgraded";
   /** The identifier of the gift. */
   id: string;
+  /** The slug of the gift. */
+  slug: string;
   /** The title of the gift. */
   title: string;
   /** The unique index of the gift among others of the same type. */
@@ -109,6 +111,7 @@ export function constructGift(gift: Api.StarGift, getPeer: PeerGetter): Gift {
 }
 export function constructGiftUpgraded(gift: Api.starGiftUnique, getPeer: PeerGetter): GiftUpgraded {
   const id = String(gift.id);
+  const slug = gift.slug;
   const title = gift.title;
   const index = gift.num;
   let owner: ChatP | undefined;
@@ -135,6 +138,7 @@ export function constructGiftUpgraded(gift: Api.starGiftUnique, getPeer: PeerGet
   return cleanObject({
     type: "upgraded",
     id,
+    slug,
     title,
     index,
     ownerName,
