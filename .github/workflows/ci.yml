@@ -42,7 +42,7 @@ jobs:
         with:
           cache: true
 
-      - run: deno check mod.ts
+      - run: deno check mod.ts worker.ts storage/1_storage_deno_kv.ts
 
       - uses: actions/setup-node@v3
         with:
