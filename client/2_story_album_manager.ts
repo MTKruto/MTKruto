@@ -21,7 +21,7 @@
 import { Api } from "../2_tl.ts";
 import { type AlbumStoryList, constructAlbumStoryList, constructStoryAlbum, type ID, type StoryAlbum } from "../3_types.ts";
 import type { GetStoriesInAlbumParams } from "./0_params.ts";
-import { getLimit } from "./0_utilities.ts";
+import { checkArray, checkStoryId, getLimit } from "./0_utilities.ts";
 import type { C } from "./1_types.ts";
 
 export class StoryAlbumManager {
@@ -33,6 +33,7 @@ export class StoryAlbumManager {
 
   async createStoryAlbum(chatId: ID, name: string, storyIds: number[]): Promise<StoryAlbum> {
     this.#c.storage.assertUser("createStoryAlbum");
+    checkArray(storyIds, checkStoryId);
     const peer = await this.#c.getInputPeer(chatId);
     const title = name;
     const stories = storyIds;
@@ -51,6 +52,7 @@ export class StoryAlbumManager {
 
   async #addStoriesToAlbum(chatId: ID, albumId: number, storyIds: number[]) {
     const peer = await this.#c.getInputPeer(chatId);
+    checkArray(storyIds, checkStoryId);
     const album_id = albumId;
     const add_stories = storyIds;
     const result = await this.#c.invoke({ _: "stories.updateAlbum", peer, album_id, add_stories });
@@ -59,15 +61,18 @@ export class StoryAlbumManager {
 
   async addStoriesToAlbum(chatId: ID, albumId: number, storyIds: number[]): Promise<StoryAlbum> {
     this.#c.storage.assertUser("addStoriesToAlbum");
+    checkArray(storyIds, checkStoryId);
     return await this.#addStoriesToAlbum(chatId, albumId, storyIds);
   }
 
   async addStoryToAlbum(chatId: ID, albumId: number, storyId: number): Promise<StoryAlbum> {
     this.#c.storage.assertUser("addStoryToAlbum");
+    checkStoryId(storyId);
     return await this.#addStoriesToAlbum(chatId, albumId, [storyId]);
   }
 
   async #removeStoriesFromAlbum(chatId: ID, albumId: number, storyIds: number[]) {
+    checkArray(storyIds, checkStoryId);
     const peer = await this.#c.getInputPeer(chatId);
     const album_id = albumId;
     const delete_stories = storyIds;
@@ -87,6 +92,7 @@ export class StoryAlbumManager {
 
   async reorderStoriesInAlbum(chatId: ID, albumId: number, storyIds: number[]): Promise<StoryAlbum> {
     this.#c.storage.assertUser("reorderStoriesInAlbum");
+    checkArray(storyIds, checkStoryId);
     const peer = await this.#c.getInputPeer(chatId);
     const album_id = albumId;
     const order = storyIds;
