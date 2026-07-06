@@ -776,7 +776,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
 
     const data = await this.#encryptMessage(isCreator, authKeyId, authKey, decryptedMessageLayer);
 
-    this.#getSecretChatState(encryptedChat.id).outgoingMessages.set((out_seq_no - (isCreator ? 1 : 0)) / 2, data);
+    this.#getSecretChatState(encryptedChat.id).outgoingMessages.set((out_seq_no - (isCreator ? 1 : 0)) / 2, { data, file });
     if (file) {
       const result = await this.#c.invoke({
         _: "messages.sendEncryptedFile",
@@ -984,7 +984,11 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
         await this.#discardSecretChat(state, state.encryptedChat.id);
         throw new TypeError("Unable to resend secret chat message.");
       }
-      await this.#c.invoke({ _: "messages.sendEncrypted", peer, random_id: getRandomId(), data: message });
+      if (message.file) {
+        await this.#c.invoke({ _: "messages.sendEncryptedFile", peer, random_id: getRandomId(), data: message.data, file: message.file });
+      } else {
+        await this.#c.invoke({ _: "messages.sendEncrypted", peer, random_id: getRandomId(), data: message.data });
+      }
     }
   }
 

@@ -57,7 +57,12 @@ export interface SerializedSecretChatState {
   isGapRequested: boolean;
   gapEndSeqNo: number;
   pendingMessages: [SecretChats.decryptedMessageLayer, Api.EncryptedMessage][];
-  outgoingMessages: [number, Uint8Array<ArrayBuffer>][];
+  outgoingMessages: [number, OutgoingMessage][];
+}
+
+export interface OutgoingMessage {
+  data: Uint8Array<ArrayBuffer>;
+  file?: Api.InputEncryptedFile;
 }
 
 export class SecretChatState {
@@ -96,7 +101,7 @@ export class SecretChatState {
   isGapRequested = false;
   gapEndSeqNo = -1;
   pendingMessages = new Array<[SecretChats.decryptedMessageLayer, Api.EncryptedMessage]>();
-  outgoingMessages = new LruCache<number, Uint8Array<ArrayBuffer>>(1_000);
+  outgoingMessages = new LruCache<number, OutgoingMessage>(1_000);
 
   async commit(storage: Storage) {
     const key = ["secretChats", this.encryptedChat.id];
@@ -105,7 +110,7 @@ export class SecretChatState {
       return;
     }
 
-    const outgoingMessages = new Array<[number, Uint8Array<ArrayBuffer>]>();
+    const outgoingMessages = new Array<[number, OutgoingMessage]>();
     for (const outgoingMessage of this.outgoingMessages.entries()) {
       outgoingMessages.push(outgoingMessage);
     }
