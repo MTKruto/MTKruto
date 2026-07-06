@@ -20,7 +20,7 @@
 
 import { Api } from "../2_tl.ts";
 import { type BotCommand, botCommandScopeToTlObject, constructBotCommand, type Update } from "../3_types.ts";
-import type { DeleteMyCommandsParams, GetMyCommandsParams, SetMyCommandsParams } from "./0_params.ts";
+import type { DeleteMyCommandsParams, GetMyCommandsParams, GetMyDescriptionParams, GetMyNameParams, GetMyShortDescriptionParams, SetMyCommandsParams, SetMyDescriptionParams, SetMyNameParams, SetMyShortDescriptionParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import type { C } from "./1_types.ts";
 
@@ -45,17 +45,17 @@ export class BotInfoManager implements UpdateProcessor<BotInfoManagerUpdate, fal
     await this.#c.invoke({ _: "bots.setBotInfo", ...info });
   }
 
-  async setMyDescription(params?: { description?: string; languageCode?: string }) {
+  async setMyDescription(params?: SetMyDescriptionParams) {
     this.#c.storage.assertBot("setMyDescription");
     await this.#setMyInfo({ description: params?.description, lang_code: params?.languageCode ?? "" });
   }
 
-  async setMyName(params?: { name?: string; languageCode?: string }) {
+  async setMyName(params?: SetMyNameParams) {
     this.#c.storage.assertBot("setMyName");
     await this.#setMyInfo({ name: params?.name, lang_code: params?.languageCode ?? "" });
   }
 
-  async setMyShortDescription(params?: { shortDescription?: string; languageCode?: string }) {
+  async setMyShortDescription(params?: SetMyShortDescriptionParams) {
     this.#c.storage.assertBot("setMyShortDescription");
     await this.#setMyInfo({ about: params?.shortDescription, lang_code: params?.languageCode ?? "" });
   }
@@ -64,17 +64,17 @@ export class BotInfoManager implements UpdateProcessor<BotInfoManagerUpdate, fal
     return this.#c.invoke({ _: "bots.getBotInfo", lang_code: languageCode ?? "" });
   }
 
-  async getMyDescription(params?: { languageCode?: string }): Promise<string> {
+  async getMyDescription(params?: GetMyDescriptionParams): Promise<string> {
     this.#c.storage.assertBot("getMyDescription");
     return (await this.#getMyInfo(params?.languageCode)).description;
   }
 
-  async getMyName(params?: { languageCode?: string }): Promise<string> {
+  async getMyName(params?: GetMyNameParams): Promise<string> {
     this.#c.storage.assertBot("getMyName");
     return (await this.#getMyInfo(params?.languageCode)).name;
   }
 
-  async getMyShortDescription(params?: { languageCode?: string }): Promise<string> {
+  async getMyShortDescription(params?: GetMyShortDescriptionParams): Promise<string> {
     this.#c.storage.assertBot("getMyShortDescription");
     return (await this.#getMyInfo(params?.languageCode)).about;
   }

@@ -1380,3 +1380,30 @@ export interface GetProfileMusicParams {
   /** The maximum number of results to return. */
   limit?: number;
 }
+
+export interface SetMyDescriptionParams {
+  description?: string;
+  languageCode?: string;
+}
+
+export interface SetMyNameParams {
+  name?: string;
+  languageCode?: string;
+}
+
+export interface SetMyShortDescriptionParams {
+  shortDescription?: string;
+  languageCode?: string;
+}
+
+export interface GetMyDescriptionParams {
+  languageCode?: string;
+}
+
+export interface GetMyNameParams {
+  languageCode?: string;
+}
+
+export interface GetMyShortDescriptionParams {
+  languageCode?: string;
+}
