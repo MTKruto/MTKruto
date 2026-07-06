@@ -37,10 +37,10 @@ export interface StoryAlbum {
 
 export function constructStoryAlbum(album: Api.StoryAlbum): StoryAlbum {
   let icon: StoryAlbumIcon | undefined;
-  if (album.icon_photo) {
+  if (Api.is("photo", album.icon_photo)) {
     icon = {
       type: "photo",
-      photo: constructPhoto(Api.as("photo", album.icon_photo)),
+      photo: constructPhoto(album.icon_photo),
     };
   } else if (Api.is("document", album.icon_video)) {
     const fileId: FileId = {
