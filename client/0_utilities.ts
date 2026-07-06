@@ -117,7 +117,7 @@ export function checkMessageId(messageId: number) {
 }
 
 export function checkStoryId(storyId: number) {
-  if (typeof storyId !== "number" || isNaN(storyId) || !storyId || storyId < 1) {
+  if (typeof storyId !== "number" || isNaN(storyId) || !storyId || storyId < 1 || storyId % 1 !== 0) {
     throw new InputError("Invalid story ID.");
   }
   return storyId;
