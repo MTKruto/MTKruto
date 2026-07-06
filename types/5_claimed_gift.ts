@@ -40,6 +40,10 @@ export interface ClaimedGift {
   entities?: MessageEntity[];
   /** The identifier of the service message announcing the receipt of the gift. */
   messageId?: number;
+  /** The identifier that can be used to reference the gift in a chat. */
+  inputId?: string;
+  /** The identifiers of the collections that include the gift. */
+  collectionIds?: number[];
   /** The amount of stars the gift would be worth. */
   conversionStars?: number;
 }
@@ -52,6 +56,8 @@ export function constructClaimedGift(savedStarGift: Api.SavedStarGift, fromPeer:
   const message = savedStarGift.message?.text;
   const entities = savedStarGift.message ? savedStarGift.message.entities.map(constructMessageEntity).filter((v): v is MessageEntity => !!v) : undefined;
   const messageId = savedStarGift.msg_id;
+  const inputId = savedStarGift.saved_id === undefined ? undefined : String(savedStarGift.saved_id);
+  const collectionIds = savedStarGift.collection_id;
   const conversionStars = savedStarGift.convert_stars ? Number(savedStarGift.convert_stars) : undefined;
   return cleanObject({
     date,
@@ -61,6 +67,8 @@ export function constructClaimedGift(savedStarGift: Api.SavedStarGift, fromPeer:
     message,
     entities,
     messageId,
+    inputId,
+    collectionIds,
     conversionStars,
   });
 }
