@@ -3087,6 +3087,15 @@ export abstract class ClientGeneric {
   abstract reorderStoriesInAlbum(chatId: ID, albumId: number, storyIds: number[]): Promise<StoryAlbum>;
 
   /**
+   * Reorder story albums. User-only.
+   *
+   * @method sa
+   * @param chatId The identifier of the chat including the albums.
+   * @param albumIds The new order of the albums.
+   */
+  abstract reorderStoryAlbums(chatId: ID, albumIds: number[]): Promise<void>;
+
+  /**
    * Set the name of a story album. User-only.
    *
    * @method sa
