@@ -3893,6 +3893,17 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
+   * Delete a story album. User-only.
+   *
+   * @method sa
+   * @param chatId The identifier of the chat including the album.
+   * @param albumId The identifier of the album to delete.
+   */
+  async deleteStoryAlbum(chatId: ID, albumId: number): Promise<void> {
+    return await this.#dispatch("deleteStoryAlbum", chatId, albumId);
+  }
+
+  /**
    * Get stories inside an album. User-only.
    *
    * @method sa
