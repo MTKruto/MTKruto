@@ -18,6 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
 import { type BusinessConnection, constructBusinessConnection, type Update } from "../3_types.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
@@ -40,14 +41,24 @@ export class BusinessConnectionManager implements UpdateProcessor<BusinessConnec
     this.#c.storage.assertBot("getBusinessConnection");
     const connection_ = await this.#c.messageStorage.getBusinessConnection(id);
     if (!connection_) {
-      const connection_ = await this.#c.invoke({ _: "account.getBotBusinessConnection", connection_id: id })
-        .then((v) => Api.as("updates", v))
-        .then((v) => Api.as("updateBotBusinessConnect", v.updates[0]).connection);
+      const connection_ = BusinessConnectionManager.#businessConnectionFromUpdates(await this.#c.invoke({ _: "account.getBotBusinessConnection", connection_id: id })).connection;
       await this.#c.messageStorage.setBusinessConnection(id, connection_);
       return constructBusinessConnection(connection_, this.#c.getPeer);
     } else {
       return constructBusinessConnection(connection_, this.#c.getPeer);
     }
+  }
+
+  static #businessConnectionFromUpdates(updates: Api.Updates) {
+    switch (updates._) {
+      case "updateShort":
+        return Api.as("updateBotBusinessConnect", updates.update);
+      case "updatesCombined":
+      case "updates":
+        return Api.as("updateBotBusinessConnect", updates.updates.find((v) => Api.is("updateBotBusinessConnect", v)));
+    }
+
+    unreachable();
   }
 
   canHandleUpdate(update: Api.Update): update is BusinessConnectionManagerUpdate {
