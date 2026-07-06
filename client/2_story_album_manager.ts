@@ -117,4 +117,11 @@ export class StoryAlbumManager {
     const result = await this.#c.invoke({ _: "stories.getAlbumStories", peer, album_id, offset, limit });
     return constructAlbumStoryList(result, await this.#c.inputPeerToPeer(peer), this.#c.getPeer);
   }
+
+  async reorderStoryAlbums(chatId: ID, albumIds: number[]) {
+    this.#c.storage.assertUser("reorderStoryAlbums");
+    const peer = await this.#c.getInputPeer(chatId);
+    const order = albumIds;
+    await this.#c.invoke({ _: "stories.reorderAlbums", peer, order });
+  }
 }

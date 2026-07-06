@@ -3950,6 +3950,17 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
+   * Reorder story albums. User-only.
+   *
+   * @method sa
+   * @param chatId The identifier of the chat including the albums.
+   * @param albumIds The new order of the albums.
+   */
+  async reorderStoryAlbums(chatId: ID, albumIds: number[]): Promise<void> {
+    return await this.#dispatch("reorderStoryAlbums", chatId, albumIds);
+  }
+
+  /**
    * Set the name of a story album. User-only.
    *
    * @method sa

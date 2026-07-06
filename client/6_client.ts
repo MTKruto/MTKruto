@@ -5089,6 +5089,17 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Reorder story albums. User-only.
+   *
+   * @method sa
+   * @param chatId The identifier of the chat including the albums.
+   * @param albumIds The new order of the albums.
+   */
+  async reorderStoryAlbums(chatId: ID, albumIds: number[]): Promise<void> {
+    return await this.#storyAlbumManager.reorderStoryAlbums(chatId, albumIds);
+  }
+
+  /**
    * Set the name of a story album. User-only.
    *
    * @method sa

@@ -1323,6 +1323,12 @@ export class Context {
     return await this.client.reorderStoriesInAlbum(chatId, albumId, storyIds);
   }
 
+  /** Context-aware alias for {@link Client.reorderStoryAlbums}. */
+  async reorderStoryAlbums(albumIds: number[]): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.reorderStoryAlbums(chatId, albumIds);
+  }
+
   /** Context-aware alias for {@link Client.sendMessage}. */
   async reply(text: string, params?: Omit<SendMessageParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageText> {
     const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
