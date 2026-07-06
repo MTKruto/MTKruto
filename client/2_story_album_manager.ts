@@ -18,7 +18,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { type AlbumStoryList, constructAlbumStoryList, constructStoryAlbum, type ID, type StoryAlbum } from "../3_types.ts";
 import type { GetStoriesInAlbumParams } from "./0_params.ts";
