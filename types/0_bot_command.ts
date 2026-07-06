@@ -18,10 +18,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import type { Api } from "../2_tl.ts";
+
 /** A bot command. */
 export interface BotCommand {
   /** The command's name. */
   command: string;
   /** The command's description. */
   description: string;
+}
+
+export function constructBotCommand(bc: Api.botCommand): BotCommand {
+  return {
+    command: bc.command,
+    description: bc.description,
+  };
 }

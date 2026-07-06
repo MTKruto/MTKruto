@@ -19,7 +19,7 @@
  */
 
 import { Api } from "../2_tl.ts";
-import { type BotCommand, botCommandScopeToTlObject, type Update } from "../3_types.ts";
+import { type BotCommand, botCommandScopeToTlObject, constructBotCommand, type Update } from "../3_types.ts";
 import type { DeleteMyCommandsParams, GetMyCommandsParams, SetMyCommandsParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import type { C } from "./1_types.ts";
@@ -109,7 +109,8 @@ export class BotInfoManager implements UpdateProcessor<BotInfoManagerUpdate, fal
   handleUpdate(update: BotInfoManagerUpdate): Update {
     const botId = Number(update.bot_id);
     const chatId = Api.peerToChatId(update.peer);
-    const commands = update.commands;
+    const commands = update.commands.map(constructBotCommand);
+
     return { type: "botCommands", botCommands: { botId, chatId, commands } };
   }
 }
