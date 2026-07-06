@@ -5032,6 +5032,17 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Delete a story album. User-only.
+   *
+   * @method sa
+   * @param chatId The identifier of the chat including the album.
+   * @param albumId The identifier of the album to delete.
+   */
+  async deleteStoryAlbum(chatId: ID, albumId: number): Promise<void> {
+    return await this.#storyAlbumManager.deleteStoryAlbum(chatId, albumId);
+  }
+
+  /**
    * Get stories inside an album. User-only.
    *
    * @method sa

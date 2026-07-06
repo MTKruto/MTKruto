@@ -124,4 +124,11 @@ export class StoryAlbumManager {
     const order = albumIds;
     await this.#c.invoke({ _: "stories.reorderAlbums", peer, order });
   }
+
+  async deleteStoryAlbum(chatId: ID, albumId: number) {
+    this.#c.storage.assertUser("deleteStoryAlbum");
+    const peer = await this.#c.getInputPeer(chatId);
+    const album_id = albumId;
+    await this.#c.invoke({ _: "stories.deleteAlbum", peer, album_id });
+  }
 }

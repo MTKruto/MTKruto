@@ -3040,6 +3040,15 @@ export abstract class ClientGeneric {
   abstract createStoryAlbum(chatId: ID, name: string, storyIds: number[]): Promise<StoryAlbum>;
 
   /**
+   * Delete a story album. User-only.
+   *
+   * @method sa
+   * @param chatId The identifier of the chat including the album.
+   * @param albumId The identifier of the album to delete.
+   */
+  abstract deleteStoryAlbum(chatId: ID, albumId: number): Promise<void>;
+
+  /**
    * Get stories inside an album. User-only.
    *
    * @method sa
