@@ -51,7 +51,7 @@ export interface ClaimedGift {
 export function constructClaimedGift(savedStarGift: Api.SavedStarGift, fromPeer: Api.User | Api.Chat | undefined, getPeer: PeerGetter): ClaimedGift {
   const gift = constructGift(savedStarGift.gift, getPeer);
   const date = savedStarGift.date;
-  const isPublic = !!savedStarGift.unsaved;
+  const isPublic = !savedStarGift.unsaved;
   const sender = fromPeer ? constructChatP(fromPeer) : undefined;
   const message = savedStarGift.message?.text;
   const entities = savedStarGift.message ? savedStarGift.message.entities.map(constructMessageEntity).filter((v): v is MessageEntity => !!v) : undefined;
