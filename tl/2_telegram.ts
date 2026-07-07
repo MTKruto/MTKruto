@@ -71,6 +71,10 @@ const GENERIC_FUNCTIONS = [
   "invokeWithoutUpdates",
   "invokeWithMessagesRange",
   "invokeWithTakeout",
+  "invokeWithBusinessConnection",
+  "invokeWithGooglePlayIntegrity",
+  "invokeWithApnsSecret",
+  "invokeWithReCaptcha",
 ] as const;
 export function isGenericFunction(value: unknown): value is Api.AnyGenericFunction<Api.AnyFunction> {
   return isOneOf(GENERIC_FUNCTIONS, value);
