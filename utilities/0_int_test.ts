@@ -19,6 +19,7 @@
  */
 
 import { assert, assertEquals } from "../0_deps.ts";
+import { assertThrows } from "../0_test_deps.ts";
 import { getRandomId, getRandomInt, intFromBytes, intToBytes, mod, modExp } from "./0_int.ts";
 
 Deno.test("modExp", () => {
@@ -139,4 +140,15 @@ Deno.test("getRandomId", () => {
 
 Deno.test("intToBytes", () => {
   assertEquals(intToBytes(-6203395183255650816n, 64 / 8), new Uint8Array([0, 126, 173, 164, 242, 28, 233, 169]));
+
+  assertThrows(() => {
+    intToBytes(-1, 2, { isSigned: false });
+  });
+  assertThrows(() => {
+    intToBytes(-1, 4, { isSigned: false });
+  });
+
+  assertThrows(() => {
+    intToBytes(-1, 8, { isSigned: false });
+  });
 });

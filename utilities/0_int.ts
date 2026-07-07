@@ -161,6 +161,9 @@ export function intToBytes(int: bigint | number, byteCount: number, {
   if (byteCount < actualByteCount) {
     throw new TLError(`The provided integer is too big for int${byteCount * 8}`, path);
   }
+  if (!isSigned && int < 0n) {
+    throw new TLError("Received a signed integer while an unsigned one was expected", path);
+  }
 
   if (byteCount === 4 || byteCount === 2) { // fast path
     const buffer = new Uint8Array(byteCount);
@@ -175,9 +178,6 @@ export function intToBytes(int: bigint | number, byteCount: number, {
     const dataView = new DataView(buffer.buffer);
     (isSigned ? dataView.setBigInt64 : dataView.setBigUint64).call(dataView, 0, int, byteOrder === "little");
     return buffer;
-  }
-  if (!isSigned && int < 0n) {
-    throw new TLError("Received a signed integer while an unsigned one was expected", path);
   }
 
   if (isSigned && int < 0n) {
