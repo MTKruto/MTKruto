@@ -61,6 +61,7 @@ export class SessionEncrypted extends Session implements Session {
 
   #authKey = new Uint8Array();
   #authKeyId = 0n;
+  #isInvalidating = false;
 
   #sentMessages = new Set<bigint>();
   #pendingMessages = new Array<PendingMessage>();
@@ -97,7 +98,7 @@ export class SessionEncrypted extends Session implements Session {
   }
 
   override async connect(): Promise<void> {
-    if (!this.isConnected) {
+    if (!this.isConnected && !this.#isInvalidating) {
       this.#rejectAllPending(new ConnectionError("The connection was closed."));
     }
     await super.connect();
@@ -119,7 +120,9 @@ export class SessionEncrypted extends Session implements Session {
     this.#sendLoop.abort();
     this.#pingLoop.abort();
     this.#awakeSendLoop?.();
-    this.#rejectAllPending(new ConnectionError("The connection was disconnected."));
+    if (!this.#isInvalidating) {
+      this.#rejectAllPending(new ConnectionError("The connection was disconnected."));
+    }
   }
 
   #assertNotDisconnected() {
@@ -132,8 +135,16 @@ export class SessionEncrypted extends Session implements Session {
     this.#L.debug("invalidating session because of", reason);
     this.#id = getRandomId();
     this.state.reset();
-    this.disconnect();
-    await this.connect();
+    this.#isInvalidating = true;
+    try {
+      this.disconnect();
+      await this.connect();
+    } catch (err) {
+      this.#rejectAllPending(err);
+      throw err;
+    } finally {
+      this.#isInvalidating = false;
+    }
     this.#rejectAllPending(new SessionError("The session was invalidated."));
   }
 
