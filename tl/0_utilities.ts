@@ -101,7 +101,7 @@ export function toJSON(object: unknown): any {
 }
 
 export function getVectorItemType(type: string): string | null {
-  if (!type.startsWith(VECTOR_PREFIX) || !type.endsWith(VECTOR_SUFFIX)) {
+  if (!(type.startsWith(VECTOR_PREFIX) || type.startsWith(VECTOR_PREFIX.toLowerCase())) || !type.endsWith(VECTOR_SUFFIX)) {
     return null;
   }
   return type.slice(VECTOR_PREFIX.length).slice(0, -1 * VECTOR_SUFFIX.length);
