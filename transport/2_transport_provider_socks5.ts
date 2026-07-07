@@ -37,14 +37,18 @@ export function transportProviderSocks5(urlOrHostname: string, port?: number, pa
     const url = new URL(urlOrHostname);
     const hostname_ = url.hostname;
     const port_ = url.port || "1080";
-    const username = url.username;
-    const password = url.password;
+    const username = decodeURIComponent(url.username);
+    const password = decodeURIComponent(url.password);
     if (!hostname_ || !port_) {
       throw new TypeError("Invalid SOCKS5 URL.");
     }
     hostname = hostname_;
     port = parseInt(port_);
     params = { ...(params ?? {}), username, password };
+  }
+
+  if (hostname.startsWith("[") && hostname.endsWith("]")) {
+    hostname = hostname.slice(1, -1);
   }
 
   return ({ dc, isMedia }) => {
