@@ -86,7 +86,7 @@ const staticHas: StaticHas = {
       for (const command of commands_) {
         if (typeof command === "string" && (command.toLowerCase() === command_)) {
           return true;
-        } else if (command instanceof RegExp && command.test(command_)) {
+        } else if (command instanceof RegExp && command_.match(command) !== null) {
           return true;
         }
       }
@@ -104,7 +104,7 @@ const staticHas: StaticHas = {
       for (const data of data_) {
         if (typeof data === "string" && data === ctx.update.callbackQuery.data) {
           return true;
-        } else if (data instanceof RegExp && data.test(ctx.update.callbackQuery.data)) {
+        } else if (data instanceof RegExp && ctx.update.callbackQuery.data.match(data) !== null) {
           return true;
         }
       }
@@ -122,7 +122,7 @@ const staticHas: StaticHas = {
       for (const query of queries_) {
         if (typeof query === "string" && query === ctx.update.inlineQuery.query) {
           return true;
-        } else if (query instanceof RegExp && query.test(ctx.update.inlineQuery.query)) {
+        } else if (query instanceof RegExp && ctx.update.inlineQuery.query.match(query) !== null) {
           return true;
         }
       }
@@ -140,7 +140,7 @@ const staticHas: StaticHas = {
       for (const query of queries_) {
         if (typeof query === "string" && query === ctx.update.chosenInlineResult.query) {
           return true;
-        } else if (query instanceof RegExp && query.test(ctx.update.chosenInlineResult.query)) {
+        } else if (query instanceof RegExp && ctx.update.chosenInlineResult.query.match(query) !== null) {
           return true;
         }
       }
