@@ -4248,7 +4248,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Get a gift using its slug.
+   * Get a gift using its slug. User-only.
    *
    * @method gf
    * @param slug The slug of a gift.

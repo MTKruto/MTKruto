@@ -3333,7 +3333,7 @@ export abstract class ClientGeneric {
   abstract getClaimedGifts(chatId: ID, params?: GetClaimedGiftsParams): Promise<ClaimedGifts>;
 
   /**
-   * Get a gift using its slug.
+   * Get a gift using its slug. User-only.
    *
    * @method gf
    * @param slug The slug of a gift.

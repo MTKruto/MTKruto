@@ -95,6 +95,7 @@ export class GiftManager {
   }
 
   async getGift(slug: string): Promise<Gift> {
+    this.#c.storage.assertUser("getGift");
     if (slug.length > 100) {
       throw new InputError("Slug too long.");
     }

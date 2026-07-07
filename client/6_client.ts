@@ -5387,7 +5387,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Get a gift using its slug.
+   * Get a gift using its slug. User-only.
    *
    * @method gf
    * @param slug The slug of a gift.
