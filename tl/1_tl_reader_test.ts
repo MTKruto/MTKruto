@@ -690,8 +690,8 @@ Deno.test("errors", async () => {
   try {
     const writer = new TLWriter()
       .writeInt32(0x10101010) // testObject2
-      .writeInt32(BOOL_FALSE)
-      .writeInt32(BOOL_FALSE);
+      .writeInt32(BOOL_FALSE, false)
+      .writeInt32(BOOL_FALSE, false);
 
     await new TLReader(writer.buffer).readType("testObject2", schema);
     unreachable();

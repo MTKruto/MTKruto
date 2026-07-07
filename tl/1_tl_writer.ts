@@ -239,9 +239,9 @@ export class TLWriter {
       case "Bool":
         if (typeof value === "boolean") {
           if (value) {
-            this.writeInt32(BOOL_TRUE);
+            this.writeInt32(BOOL_TRUE, false);
           } else {
-            this.writeInt32(BOOL_FALSE);
+            this.writeInt32(BOOL_FALSE, false);
           }
         } else {
           throw new TLError(`Expected boolean but received ${valueRepr}`, this.#path);
