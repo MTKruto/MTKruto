@@ -446,6 +446,7 @@ export class SessionEncrypted extends Session implements Session {
     this.#toAcknowledge.push(msgId);
     let reader = new TLReader(body);
     const reqMsgId = reader.readInt64();
+    this.#sentMessages.delete(reqMsgId);
     let id = reader.readInt32(false);
     if (id === GZIP_PACKED) {
       logger.debug("unpacking compressed rpc_result");
@@ -509,6 +510,7 @@ export class SessionEncrypted extends Session implements Session {
 
   #onPong(msgId: bigint, pong: Mtproto.pong) {
     this.#toAcknowledge.push(msgId);
+    this.#sentMessages.delete(pong.msg_id);
     const pendingPing = this.#pendingPings.get(pong.msg_id);
     if (pendingPing) {
       pendingPing.promiseWithResolvers.resolve(pong);
