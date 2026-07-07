@@ -83,7 +83,7 @@ export class TLWriter {
     let padding: number;
     if (bytes.byteLength > 253) {
       this.write(new Uint8Array([254]));
-      this.writeInt24(bytes.byteLength);
+      this.writeInt24(bytes.byteLength, false);
       padding = bytes.byteLength % 4;
     } else {
       this.write(new Uint8Array([bytes.byteLength]));

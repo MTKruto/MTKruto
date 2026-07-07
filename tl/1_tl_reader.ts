@@ -93,7 +93,7 @@ export class TLReader {
     let L = this.read(1)[0];
     let padding: number;
     if (L > 253) {
-      L = this.readInt24();
+      L = this.readInt24(false);
       padding = L % 4;
     } else {
       padding = (L + 1) % 4;
