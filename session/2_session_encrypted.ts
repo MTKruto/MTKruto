@@ -411,6 +411,7 @@ export class SessionEncrypted extends Session implements Session {
     }
     if (!Mtproto.schema.identifierToName[id]) {
       logger.debug("identified body as a non-MTProto constructor");
+      this.#toAcknowledge.push(msgId);
       reader.unreadInt32();
       await this.handlers.onUpdate?.(reader.buffer);
       return;
