@@ -62,10 +62,24 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
     unreachable();
   }
 
+  #getAttachedStickers(content: InputStoryContent): Api.inputDocument[] | undefined {
+    if (!content.attachedStickerFileIds?.length) {
+      return undefined;
+    }
+    return content.attachedStickerFileIds.map((fileId) => {
+      const document = this.#c.messageManager.resolveFileId(fileId, FileType.Sticker);
+      if (document === null) {
+        throw new InputError("Invalid sticker file ID.");
+      }
+      return { ...document, _: "inputDocument" };
+    });
+  }
+
   async createStory(chatId: ID, content: InputStoryContent, params?: CreateStoryParams): Promise<Story> {
     this.#c.storage.assertUser("createStory");
     let media: Api.InputMedia | null = null;
     const source = content.type === "video" ? content.video : content.type === "photo" ? content.photo : unreachable();
+    const stickers = this.#getAttachedStickers(content);
 
     if (typeof source === "string") {
       const fileId = this.#c.messageManager.resolveFileId(source, content.type === "video" ? [FileType.Video, FileType.VideoStory] : [FileType.Photo, FileType.PhotoStory]);
@@ -77,6 +91,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
             file: { _: "inputFileStoryDocument", id: { ...fileId, _: "inputDocument" } },
             attributes: [{ _: "documentAttributeFilename", file_name: "video.mp4" }, { _: "documentAttributeVideo", w: 720, h: 1280, duration: content.duration, nosound: content.isAnimation || undefined }],
             mime_type: "video/mp4",
+            stickers,
           };
         } else {
           media = { _: "inputMediaPhoto", id: { ...fileId, _: "inputPhoto" } };
@@ -94,9 +109,9 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
         }
         const mimeType = contentType(file.name.split(".").slice(-1)[0]) ?? "application/octet-stream";
         if (content.type === "video") {
-          media = { _: "inputMediaUploadedDocument", nosound_video: true, file, attributes: [{ _: "documentAttributeFilename", file_name: file.name }, { _: "documentAttributeVideo", w: 720, h: 1280, duration: content.duration, nosound: content.isAnimation || undefined }], mime_type: mimeType };
+          media = { _: "inputMediaUploadedDocument", nosound_video: true, file, attributes: [{ _: "documentAttributeFilename", file_name: file.name }, { _: "documentAttributeVideo", w: 720, h: 1280, duration: content.duration, nosound: content.isAnimation || undefined }], mime_type: mimeType, stickers };
         } else {
-          media = { _: "inputMediaUploadedPhoto", file };
+          media = { _: "inputMediaUploadedPhoto", file, stickers };
         }
       }
     }
@@ -154,6 +169,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
 
     if (params?.content) {
       const source = params.content.type === "video" ? params.content.video : params.content.type === "photo" ? params.content.photo : unreachable();
+      const stickers = this.#getAttachedStickers(params.content);
 
       if (typeof source === "string") {
         const fileId = this.#c.messageManager.resolveFileId(source, params.content.type === "video" ? [FileType.Video, FileType.VideoStory] : [FileType.Photo, FileType.PhotoStory]);
@@ -165,6 +181,7 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
               file: { _: "inputFileStoryDocument", id: { ...fileId, _: "inputDocument" } },
               attributes: [{ _: "documentAttributeFilename", file_name: "video.mp4" }, { _: "documentAttributeVideo", w: 720, h: 1280, duration: params.content.duration, nosound: params.content.isAnimation || undefined }],
               mime_type: "video/mp4",
+              stickers,
             };
           } else {
             media = { _: "inputMediaPhoto", id: { ...fileId, _: "inputPhoto" } };
@@ -182,9 +199,9 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
           }
           const mimeType = contentType(file.name.split(".").slice(-1)[0]) ?? "application/octet-stream";
           if (params.content.type === "video") {
-            media = { _: "inputMediaUploadedDocument", nosound_video: true, file, attributes: [{ _: "documentAttributeFilename", file_name: file.name }, { _: "documentAttributeVideo", w: 720, h: 1280, duration: params.content.duration, nosound: params.content.isAnimation || undefined }], mime_type: mimeType };
+            media = { _: "inputMediaUploadedDocument", nosound_video: true, file, attributes: [{ _: "documentAttributeFilename", file_name: file.name }, { _: "documentAttributeVideo", w: 720, h: 1280, duration: params.content.duration, nosound: params.content.isAnimation || undefined }], mime_type: mimeType, stickers };
           } else {
-            media = { _: "inputMediaUploadedPhoto", file };
+            media = { _: "inputMediaUploadedPhoto", file, stickers };
           }
         }
       }
