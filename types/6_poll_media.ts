@@ -142,12 +142,12 @@ export async function constructPollMedia(media: Api.MessageMedia, getStickerSetN
       if (isAnimation) {
         fileId.type = FileType.Animation;
         return { type: "animation", animation: constructAnimation(document, videoAttribute, fileNameAttribute, serializeFileId(fileId), toUniqueFileId(fileId)) };
-      } else if (videoAttribute) {
-        fileId.type = FileType.Video;
-        return { type: "video", video: constructVideo(document, videoAttribute, fileNameAttribute?.file_name, serializeFileId(fileId), toUniqueFileId(fileId)) };
       } else if (stickerAttribute) {
         fileId.type = FileType.Sticker;
         return { type: "sticker", sticker: await constructSticker(document, serializeFileId(fileId), toUniqueFileId(fileId), getStickerSetName) };
+      } else if (videoAttribute) {
+        fileId.type = FileType.Video;
+        return { type: "video", video: constructVideo(document, videoAttribute, fileNameAttribute?.file_name, serializeFileId(fileId), toUniqueFileId(fileId)) };
       } else {
         unreachable();
       }
