@@ -138,6 +138,10 @@ export class SessionEncrypted extends Session implements Session {
   }
 
   #rejectAllPending(reason: unknown) {
+    const pendingMessages = this.#pendingMessages.splice(0);
+    for (const pendingMessage of pendingMessages) {
+      pendingMessage.promiseWithResolvers.reject(reason);
+    }
     for (const id of this.#sentMessages) {
       this.#onMessageFailed(id, reason);
     }
@@ -195,6 +199,9 @@ export class SessionEncrypted extends Session implements Session {
       await super.waitUntilConnected();
     }
     this.#assertNotDisconnected();
+    if (!this.isConnected) {
+      throw new ConnectionError("The connection is not open.");
+    }
     const pendingMessage: PendingMessage = { body, onMessageId, promiseWithResolvers: Promise.withResolvers() };
     this.#pendingMessages.push(pendingMessage);
     this.#awakeSendLoop?.();
