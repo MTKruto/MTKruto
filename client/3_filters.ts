@@ -95,6 +95,7 @@ interface Shortcuts<T extends Update> {
   callbackQuery: T extends { type: "callbackQuery" } ? T["callbackQuery"] : undefined;
   inlineQuery: T extends { type: "inlineQuery" } ? T["inlineQuery"] : undefined;
   chosenInlineResult: T extends { type: "chosenInlineResult" } ? T["chosenInlineResult"] : undefined;
+  secretChat: T extends { type: "secretChat" } ? T["secretChat"] : undefined;
 }
 type GetShortcuts<T extends Update> = T["type"] extends "update" ? Record<string, never> : Shortcuts<T>;
 
