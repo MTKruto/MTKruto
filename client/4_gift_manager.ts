@@ -47,7 +47,6 @@ export class GiftManager {
   }
 
   async getClaimedGifts(chatId: ID, params?: GetClaimedGiftsParams): Promise<ClaimedGifts> {
-    this.#c.storage.assertUser("getClaimedGifts");
     const offset = params?.offset ?? "";
     const limit = getLimit(params?.limit);
     const peer = await this.#c.getInputPeer(chatId);

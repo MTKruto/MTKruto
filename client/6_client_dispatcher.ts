@@ -4238,7 +4238,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Get gifts claimed by a user or a channel. User-only.
+   * Get gifts claimed by a user or a channel.
    *
    * @method gf
    * @param chatId The identifier of a user or a channel to get gifts for.
