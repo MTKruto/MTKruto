@@ -38,12 +38,12 @@ export async function getObfuscationParameters(protocol: number, connection: Con
     }
 
     const dataView = new DataView(init.buffer, init.byteOffset, init.byteLength);
-    const firstInt = dataView.getInt32(0);
+    const firstInt = dataView.getUint32(0, true);
     if ([0x44414548, 0x54534F50, 0x20544547, 0x4954504F, 0x02010316, 0xDDDDDDDD, 0xEEEEEEEE].includes(firstInt)) {
       continue;
     }
 
-    const secondInt = dataView.getInt32(4);
+    const secondInt = dataView.getUint32(4, true);
     if (secondInt === 0x00000000) {
       continue;
     }
