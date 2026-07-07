@@ -46,7 +46,7 @@ type GetLevel2Type<L1 extends string, L2 extends string> = L2 extends Message["t
       | { type: "editedMessage"; editedMessage: Extract<Message, { type: L2 }> }
       | { type: "scheduledMessage"; scheduledMessage: Extract<Message, { type: L2 }> }
     )
-  : L1 extends "message" | "editedMessage" ? { type: L1 } & { [P in L1]: Extract<Message, { type: L2 }> }
+  : L1 extends "message" | "editedMessage" | "scheduledMessage" ? { type: L1 } & { [P in L1]: Extract<Message, { type: L2 }> }
   : L1 extends "secretMessage" ? { type: L1 } & { [P in L1]: Extract<SecretMessage, { type: L2 }> }
   : never
   : L1 extends keyof Level2TypeMap ? L2 extends Level2Map[L1] ? { type: L1 } & { [P in L1]: Level2TypeMap[P] & { [P in L2]-?: P extends keyof Level2TypeMap[L1] ? NonNullable<Level2TypeMap[L1][P]> : never } } : never

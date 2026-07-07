@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { Animation, Message, SecretChat, SecretMessage } from "../3_types.ts";
+import type { Animation, Message, MessageText, SecretChat, SecretMessage } from "../3_types.ts";
 import { Composer } from "./5_composer.ts";
 
 Deno.test("types", () => {
@@ -47,5 +47,9 @@ Deno.test("types", () => {
 
   composer.on("secretMessage", (ctx) => {
     const _secretChat: SecretMessage = ctx.secretMessage;
+  });
+
+  composer.on("scheduledMessage:text", (ctx) => {
+    const _msg: MessageText = ctx.update.scheduledMessage;
   });
 });
