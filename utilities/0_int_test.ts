@@ -140,6 +140,7 @@ Deno.test("getRandomId", () => {
 
 Deno.test("intToBytes", () => {
   assertEquals(intToBytes(-6203395183255650816n, 64 / 8), new Uint8Array([0, 126, 173, 164, 242, 28, 233, 169]));
+  assertEquals(intToBytes(-32768, 2), new Uint8Array([0, 128]));
 
   assertThrows(() => {
     intToBytes(-1, 2, { isSigned: false });
@@ -147,8 +148,10 @@ Deno.test("intToBytes", () => {
   assertThrows(() => {
     intToBytes(-1, 4, { isSigned: false });
   });
-
   assertThrows(() => {
     intToBytes(-1, 8, { isSigned: false });
+  });
+  assertThrows(() => {
+    intToBytes(32768, 2);
   });
 });

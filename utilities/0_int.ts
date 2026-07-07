@@ -157,12 +157,13 @@ export function intToBytes(int: bigint | number, byteCount: number, {
   isSigned = true,
   path = [],
 }: BufferFromBigintParams = {}): Uint8Array<ArrayBuffer> {
-  const actualByteCount = Math.ceil(int.toString(2).length / 8);
-  if (byteCount < actualByteCount) {
-    throw new TLError(`The provided integer is too big for int${byteCount * 8}`, path);
-  }
   if (!isSigned && int < 0n) {
-    throw new TLError("Received a signed integer while an unsigned one was expected", path);
+    throw new TLError("Received a signed integer while an unsigned one was expected.", path);
+  }
+
+  const limit = 2n ** BigInt(byteCount * 8 - (isSigned ? 1 : 0));
+  if (int < (isSigned ? -limit : 0n) || int >= limit) {
+    throw new TLError(`The provided integer is too big for int${byteCount * 8}.`, path);
   }
 
   if (byteCount === 4 || byteCount === 2) { // fast path
