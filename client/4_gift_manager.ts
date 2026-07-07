@@ -110,8 +110,18 @@ export class GiftManager {
   async transferGift(chatId: ID, gift: InputGift) {
     this.#c.storage.assertUser("transferGift");
     const stargift = await inputGiftToTlObject(gift, this.#c.getInputPeer);
+    const gifts = await this.#c.invoke({ _: "payments.getSavedStarGift", stargift: [stargift] });
+    if (gifts.gifts.length < 1) {
+      throw new InputError("Gift not found.");
+    }
     const to_id = await this.#c.getInputPeer(chatId);
-    await this.#c.invoke({ _: "payments.transferStarGift", stargift, to_id });
+    if (gifts.gifts[0].transfer_stars === undefined) {
+      await this.#c.invoke({ _: "payments.transferStarGift", stargift, to_id });
+    } else {
+      const invoice: Api.inputInvoiceStarGiftTransfer = { _: "inputInvoiceStarGiftTransfer", stargift, to_id };
+      const { form_id } = await this.#c.invoke({ _: "payments.getPaymentForm", invoice });
+      await this.#c.invoke({ _: "payments.sendStarsForm", form_id, invoice });
+    }
   }
 
   async giftPremiumSubscription(userId: ID, duration: PremiumSubscriptionDuration, params?: GiftPremiumSubscriptionParams) {
