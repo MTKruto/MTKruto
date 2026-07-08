@@ -56,12 +56,27 @@ export class ConnectionTCP implements Connection {
       return;
     }
 
-    this.#socket = new Socket();
-    this.#socket.on("close", () => {
+    const socket = this.#socket = new Socket();
+    socket.on("error", () => {
+      if (this.#socket !== socket) {
+        return;
+      }
       this.#rejectRead();
+      socket.destroy();
+    });
+    socket.on("close", () => {
+      if (this.#socket !== socket) {
+        return;
+      }
+      this.#rejectRead();
+      this.#socket = undefined;
+      this.#buffer = [];
       this.stateChangeHandler?.(false);
     });
-    this.#socket.on("data", (data) => {
+    socket.on("data", (data) => {
+      if (this.#socket !== socket) {
+        return;
+      }
       if (typeof data === "string") {
         return;
       }
@@ -79,12 +94,12 @@ export class ConnectionTCP implements Connection {
       }
     });
     return new Promise<void>((resolve, reject) => {
-      this.#socket!.connect(this.#port, this.#hostname);
-      this.#socket!.once("error", reject);
-      this.#socket!.once(
+      socket.connect(this.#port, this.#hostname);
+      socket.once("error", reject);
+      socket.once(
         "connect",
         () => {
-          this.#socket!.off("error", reject);
+          socket.off("error", reject);
           resolve();
           this.stateChangeHandler?.(true);
           L.debug("connected to", this.#hostname, "port", this.#port);
@@ -146,6 +161,5 @@ export class ConnectionTCP implements Connection {
   close() {
     this.#assertConnected();
     this.#socket!.destroy();
-    this.#socket = undefined;
   }
 }

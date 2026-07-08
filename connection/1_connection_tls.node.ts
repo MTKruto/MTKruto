@@ -78,6 +78,16 @@ export class ConnectionTLS implements Connection {
 
     this.#isReady = false;
     const socket = this.#socket = new Socket();
+    socket.on("error", () => {
+      if (this.#socket !== socket) {
+        return;
+      }
+      const wasReady = this.#isReady;
+      this.#cleanupSocket(socket);
+      if (wasReady) {
+        this.stateChangeHandler?.(false);
+      }
+    });
     socket.on("close", () => {
       if (this.#socket !== socket) {
         return;
