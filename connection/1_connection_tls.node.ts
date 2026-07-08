@@ -162,7 +162,9 @@ export class ConnectionTLS implements Connection {
             }
           }
 
-          await new Promise<void>((resolve, reject) => this.#nextResolve = [0, { resolve, reject }]);
+          if (this.#buffer.length === 0) {
+            await new Promise<void>((resolve, reject) => this.#nextResolve = [1, { resolve, reject }]);
+          }
           read = concat([read, new Uint8Array(this.#buffer.splice(0, this.#buffer.length))]);
         }
       }
