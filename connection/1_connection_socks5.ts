@@ -48,7 +48,7 @@ export class ConnectionSocks5 implements Connection {
   #port: number;
   #socks5Hostname: string;
   #socks5Port: number;
-  #credentials?: ConnectionSocks5Params;
+  #credentials?: { username: Uint8Array<ArrayBuffer>; password: Uint8Array<ArrayBuffer> };
 
   #connection?: Deno.Conn;
   #rMutex = new Mutex();
@@ -63,7 +63,7 @@ export class ConnectionSocks5 implements Connection {
     this.#port = port;
     this.#socks5Hostname = socks5Hostname;
     this.#socks5Port = socks5Port;
-    this.#credentials = params?.username && params.password ? { username: params.username.slice(0, 255), password: params.password.slice(0, 255) } : undefined;
+    this.#credentials = params?.username && params.password ? { username: encodeText(params.username).slice(0, 255), password: encodeText(params.password).slice(0, 255) } : undefined;
   }
 
   get isConnected(): boolean {
@@ -131,7 +131,7 @@ export class ConnectionSocks5 implements Connection {
       if (negotiation[1] === AUTH_METHOD_USERNAME_PASSWORD && !this.#credentials) {
         throw new ConnectionError("Username and password are required for connecting to SOCKS5 server.");
       } else if (negotiation[1] === AUTH_METHOD_USERNAME_PASSWORD && this.#credentials) {
-        await this.#writeToConnection(connection, concat([new Uint8Array([VERSION_USERNAME_PASSWORD_AUTH, this.#credentials.username.length]), encodeText(this.#credentials.username), new Uint8Array([this.#credentials.password.length]), encodeText(this.#credentials.password)]));
+        await this.#writeToConnection(connection, concat([new Uint8Array([VERSION_USERNAME_PASSWORD_AUTH, this.#credentials.username.byteLength]), this.#credentials.username, new Uint8Array([this.#credentials.password.byteLength]), this.#credentials.password]));
 
         const status = new Uint8Array(2);
         await this.#readFromConnection(connection, status);
