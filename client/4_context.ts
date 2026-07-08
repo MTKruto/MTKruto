@@ -58,7 +58,7 @@ const staticHas: StaticHas = {
           continue;
         }
         if (left.startsWith(right) || right.startsWith(left)) {
-          throw new InputError("Intersecting prefixes");
+          throw new InputError("Intersecting prefixes.");
         }
       }
     }

@@ -44,7 +44,7 @@ export interface CallbackQuery {
   gameShortName?: string;
 }
 
-const ERR_INVALID_INLINE_MESSAGE_ID = new InputError("Invalid inline message ID");
+const ERR_INVALID_INLINE_MESSAGE_ID = new InputError("Invalid inline message ID.");
 export async function deserializeInlineMessageId(inlineMessageId: string): Promise<Api.InputBotInlineMessageID> {
   try {
     const buffer = base64DecodeUrlSafe(inlineMessageId);

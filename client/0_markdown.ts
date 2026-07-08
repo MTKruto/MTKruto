@@ -250,11 +250,11 @@ export function parseMarkdown(text_: string, isSecret?: boolean): [string, (Mess
             i++;
             type = "customEmoji";
           } else {
-            throw new InputError(`Character '${String.fromCharCode(text[i])}' is reserved and must be escaped with the preceding '\\'`);
+            throw new InputError(`Character '${String.fromCharCode(text[i])}' is reserved and must be escaped with a preceding '\\'.`);
           }
           break;
         default:
-          throw new InputError(`Character '${String.fromCharCode(text[i])}' is reserved and must be escaped with the preceding '\\'`);
+          throw new InputError(`Character '${String.fromCharCode(text[i])}' is reserved and must be escaped with a preceding '\\'.`);
       }
 
       nestedEntities.push({ type, argument, entityOffset: utf16Offset, entityByteOffset, entityBeginPos: resultSize });

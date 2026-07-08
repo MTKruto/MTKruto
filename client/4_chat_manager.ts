@@ -499,7 +499,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     this.#c.storage.assertUser("addChatMember");
     const chat = await this.#c.getInputPeer(chatId);
     if (Api.isOneOf(["inputPeerEmpty", "inputPeerSelf", "inputPeerUser", "inputPeerUserFromMessage"], chat)) {
-      throw new InputError("Cannot add members to private chats");
+      throw new InputError("Cannot add members to private chats.");
     }
     const user = await this.#c.getInputUser(userId);
     if (Api.is("inputPeerChat", chat)) {
@@ -516,14 +516,14 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
     this.#c.storage.assertUser("addChatMembers");
     const chat = await this.#c.getInputPeer(chatId);
     if (Api.isOneOf(["inputPeerEmpty", "inputPeerSelf", "inputPeerUser", "inputPeerUserFromMessage"], chat)) {
-      throw new InputError("Cannot add members to private chats");
+      throw new InputError("Cannot add members to private chats.");
     }
     const users = new Array<Api.inputUserSelf | Api.inputUser | Api.inputUserFromMessage>();
     for (const userId of userIds) {
       users.push(await this.#c.getInputUser(userId));
     }
     if (Api.is("inputPeerChat", chat)) {
-      throw new InputError("addChatMembers cannot be used with basic groups");
+      throw new InputError("addChatMembers cannot be used with basic groups.");
     } else if (canBeInputChannel(chat)) {
       const result = await this.#c.invoke({ _: "channels.inviteToChannel", channel: toInputChannel(chat), users });
       return result.missing_invitees.map(constructFailedInvitation);

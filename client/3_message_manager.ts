@@ -896,7 +896,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   async #sendMedia(chatId: ID, media: Api.InputMedia, params: SendPhotoParams | undefined) {
     if (params?.starCount !== undefined) {
       if (params.starCount <= 0) {
-        throw new InputError("starCount cannot be zero or negative");
+        throw new InputError("starCount cannot be zero or negative.");
       }
       media = { _: "inputMediaPaidMedia", stars_amount: BigInt(params.starCount), extended_media: [media] };
     }

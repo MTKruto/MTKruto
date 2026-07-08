@@ -1071,7 +1071,7 @@ export class UpdateManager {
       this.#openChats.delete(channel_id);
       openChat.controller.abort();
     } else {
-      throw new InputError("Chat not open");
+      throw new InputError("Chat not open.");
     }
   }
 

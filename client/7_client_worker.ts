@@ -61,7 +61,7 @@ export class ClientWorker {
 
   async createClient(id: string, params?: ClientDispatcherParams): Promise<ClientDispatcher> {
     if (this.#clients.has(id)) {
-      throw new InputError("Client already created");
+      throw new InputError("Client already created.");
     }
 
     const client = new ClientDispatcher(this.#worker, id);

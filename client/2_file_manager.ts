@@ -360,7 +360,7 @@ export class FileManager {
       }
       const response = await fetch(url);
       if (response.body === null) {
-        throw new InputError("Invalid response");
+        throw new InputError("Invalid response.");
       }
       if (name === "file") {
         const contentType = response.headers.get("content-type")?.split(";")[0].trim();

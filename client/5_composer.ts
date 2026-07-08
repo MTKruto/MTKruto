@@ -69,7 +69,7 @@ export class Composer<C extends Context> implements MiddlewareObj<C> {
 
   set prefixes(value: string | string[]) {
     if (this.#prefixes !== undefined) {
-      throw new InputError("Prefixes already set");
+      throw new InputError("Prefixes already set.");
     }
     this.#prefixes = value;
   }

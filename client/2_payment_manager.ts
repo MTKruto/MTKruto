@@ -55,11 +55,11 @@ export class PaymentManager implements UpdateProcessor<PaymentManagerUpdate> {
   async answerPreCheckoutQuery(preCheckoutQueryId: string, ok: boolean, params?: AnswerPreCheckoutQueryParams) {
     this.#c.storage.assertBot("answerPreCheckoutQuery");
     if (!ok && !params?.error) {
-      throw new InputError("error is required when ok is false");
+      throw new InputError("error is required when ok is false.");
     }
     const queryId = BigInt(preCheckoutQueryId);
     if (!queryId) {
-      throw new InputError("Invalid pre-checkout query ID");
+      throw new InputError("Invalid pre-checkout query ID.");
     }
     await this.#c.invoke({ _: "messages.setBotPrecheckoutResults", query_id: queryId, error: params?.error, success: ok || undefined });
   }

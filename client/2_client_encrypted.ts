@@ -284,7 +284,7 @@ export class ClientEncrypted extends ClientAbstract {
       }
       if (this.#isAuthKeyBound && !this.#isConnectionInitialized) {
         if (!this.#apiId) {
-          throw new InputError("apiId not set");
+          throw new InputError("apiId not set.");
         }
         function_ = {
           _: "initConnection",
