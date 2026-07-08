@@ -223,7 +223,7 @@ export function parseMarkdown(text_: string, isSecret?: boolean): [string, (Mess
             i += 3;
             type = "code";
             let languageEnd = i;
-            while (text[languageEnd] !== null && !isWhitespace(text[languageEnd]) && text[languageEnd] !== CODEPOINTS["`"]) {
+            while (text[languageEnd] !== undefined && !isWhitespace(text[languageEnd]) && text[languageEnd] !== CODEPOINTS["`"]) {
               languageEnd++;
             }
             if (i !== languageEnd && languageEnd < text.byteLength && text[languageEnd] !== CODEPOINTS["`"]) {

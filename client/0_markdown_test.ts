@@ -19,6 +19,7 @@
  */
 
 import { assertEquals } from "../0_deps.ts";
+import { assertThrows } from "../0_test_deps.ts";
 import type { MessageEntity } from "../3_types.ts";
 import { parseMarkdown } from "./0_markdown.ts";
 
@@ -100,6 +101,10 @@ ${code}\`\`\``;
     ] as MessageEntity[],
   ];
   assertEquals(parseMarkdown(text), expected);
+});
+
+Deno.test("malformed pre throws", () => {
+  assertThrows(() => parseMarkdown("```typescript"));
 });
 
 Deno.test("customEmojiId", () => {
