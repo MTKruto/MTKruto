@@ -646,7 +646,7 @@ export class FileManager {
     if (!id.length) {
       return [];
     }
-    const stickers = new Array<Sticker>();
+    let stickers = new Array<Sticker>();
     let shouldFetch = false;
     for (const id_ of id) {
       const maybeDocument = await this.#c.messageStorage.getCustomEmojiDocument(BigInt(id_));
@@ -670,6 +670,7 @@ export class FileManager {
     if (!shouldFetch) {
       return stickers;
     }
+    stickers = [];
     const documents_ = (await this.#c.invoke({ _: "messages.getCustomEmojiDocuments", document_id: id.map(BigInt) })).map((v) => Api.as("document", v));
     for (const [i, document_] of documents_.entries()) {
       await this.#c.messageStorage.setCustomEmojiDocument(document_.id, document_);
