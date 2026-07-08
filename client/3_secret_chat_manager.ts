@@ -777,7 +777,9 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     const data = await this.#encryptMessage(isCreator, authKeyId, authKey, decryptedMessageLayer);
 
     const isSilent = !!(SecretChats.is("decryptedMessage", message) && message.silent);
-    this.#getSecretChatState(encryptedChat.id).outgoingMessages.set((out_seq_no - (isCreator ? 1 : 0)) / 2, { data, file, isService, isSilent });
+    const key = (out_seq_no - (isCreator ? 1 : 0)) / 2;
+    const state = this.#getSecretChatState(encryptedChat.id);
+    state.outgoingMessages.set(key, { data, file, isService, isSilent });
     if (file) {
       const result = await this.#c.invoke({
         _: "messages.sendEncryptedFile",
@@ -789,6 +791,10 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
       });
       if (!Api.is("messages.sentEncryptedFile", result) || !Api.is("encryptedFile", result.file) || result.file.size <= 0n) {
         throw new InputError("Telegram did not attach the encrypted file to the secret message.");
+      }
+      const outgoingMessage = state.outgoingMessages.get(key);
+      if (outgoingMessage) {
+        outgoingMessage.file = { _: "inputEncryptedFile", id: result.file.id, access_hash: result.file.access_hash };
       }
     } else if (isService) {
       await this.#c.invoke({
@@ -806,7 +812,6 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
         data,
       });
     }
-    const state = this.#getSecretChatState(encryptedChat.id);
     if (equals(state.authKeyId_, authKeyId)) {
       ++state.authKeyUseCount;
       state.isAuthKeyUsed = true;
