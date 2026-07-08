@@ -63,6 +63,8 @@ export interface SerializedSecretChatState {
 export interface OutgoingMessage {
   data: Uint8Array<ArrayBuffer>;
   file?: Api.InputEncryptedFile;
+  isService: boolean;
+  isSilent: boolean;
 }
 
 export class SecretChatState {

@@ -743,22 +743,22 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
   }
 
   #sendTails = new Map<number, Promise<void>>();
-  async #sendMessage(message: SecretChats.DecryptedMessage, encryptedChat: Api.encryptedChat, authKey: Uint8Array<ArrayBuffer>, authKeyId: Uint8Array<ArrayBuffer>, file?: Api.InputEncryptedFile) {
+  async #sendMessage(message: SecretChats.DecryptedMessage, encryptedChat: Api.encryptedChat, authKey: Uint8Array<ArrayBuffer>, authKeyId: Uint8Array<ArrayBuffer>, file?: Api.InputEncryptedFile, isService = false) {
     try {
-      await this.#sendMessageInner(message, encryptedChat, authKey, authKeyId, file);
+      await this.#sendMessageInner(message, encryptedChat, authKey, authKeyId, file, isService);
     } finally {
       await this.#getSecretChatState(encryptedChat.id).commit(this.#c.messageStorage.storage);
     }
   }
 
-  async #sendMessageInner(message: SecretChats.DecryptedMessage, encryptedChat: Api.encryptedChat, authKey: Uint8Array<ArrayBuffer>, authKeyId: Uint8Array<ArrayBuffer>, file: Api.InputEncryptedFile | undefined) {
+  async #sendMessageInner(message: SecretChats.DecryptedMessage, encryptedChat: Api.encryptedChat, authKey: Uint8Array<ArrayBuffer>, authKeyId: Uint8Array<ArrayBuffer>, file: Api.InputEncryptedFile | undefined, isService: boolean) {
     const previous = this.#sendTails.get(encryptedChat.id) ?? Promise.resolve();
     const { promise, resolve } = Promise.withResolvers<void>();
     const tail = previous.then(() => promise);
     this.#sendTails.set(encryptedChat.id, tail);
     await previous;
     try {
-      await this.#sendMessageUnlocked(message, encryptedChat, authKey, authKeyId, file);
+      await this.#sendMessageUnlocked(message, encryptedChat, authKey, authKeyId, file, isService);
     } finally {
       resolve();
       if (this.#sendTails.get(encryptedChat.id) === tail) {
@@ -767,7 +767,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     }
   }
 
-  async #sendMessageUnlocked(message: SecretChats.DecryptedMessage, encryptedChat: Api.encryptedChat, authKey: Uint8Array<ArrayBuffer>, authKeyId: Uint8Array<ArrayBuffer>, file: Api.InputEncryptedFile | undefined) {
+  async #sendMessageUnlocked(message: SecretChats.DecryptedMessage, encryptedChat: Api.encryptedChat, authKey: Uint8Array<ArrayBuffer>, authKeyId: Uint8Array<ArrayBuffer>, file: Api.InputEncryptedFile | undefined, isService: boolean) {
     const isCreator = Number(encryptedChat.admin_id) === await this.#c.getSelfId();
     const out_seq_no = this.#getNextOutSeqNo(encryptedChat.id, isCreator);
     const in_seq_no = this.#getInSeqNo(encryptedChat.id, isCreator);
@@ -776,11 +776,12 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
 
     const data = await this.#encryptMessage(isCreator, authKeyId, authKey, decryptedMessageLayer);
 
-    this.#getSecretChatState(encryptedChat.id).outgoingMessages.set((out_seq_no - (isCreator ? 1 : 0)) / 2, { data, file });
+    const isSilent = !!(SecretChats.is("decryptedMessage", message) && message.silent);
+    this.#getSecretChatState(encryptedChat.id).outgoingMessages.set((out_seq_no - (isCreator ? 1 : 0)) / 2, { data, file, isService, isSilent });
     if (file) {
       const result = await this.#c.invoke({
         _: "messages.sendEncryptedFile",
-        silent: SecretChats.is("decryptedMessage", message) && message.silent ? true : undefined,
+        silent: isSilent ? true : undefined,
         peer: { _: "inputEncryptedChat", chat_id: encryptedChat.id, access_hash: encryptedChat.access_hash },
         random_id: message.random_id,
         data,
@@ -789,10 +790,17 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
       if (!Api.is("messages.sentEncryptedFile", result) || !Api.is("encryptedFile", result.file) || result.file.size <= 0n) {
         throw new InputError("Telegram did not attach the encrypted file to the secret message.");
       }
+    } else if (isService) {
+      await this.#c.invoke({
+        _: "messages.sendEncryptedService",
+        peer: { _: "inputEncryptedChat", chat_id: encryptedChat.id, access_hash: encryptedChat.access_hash },
+        random_id: message.random_id,
+        data,
+      });
     } else {
       await this.#c.invoke({
         _: "messages.sendEncrypted",
-        silent: SecretChats.is("decryptedMessage", message) && message.silent ? true : undefined,
+        silent: isSilent ? true : undefined,
         peer: { _: "inputEncryptedChat", chat_id: encryptedChat.id, access_hash: encryptedChat.access_hash },
         random_id: message.random_id,
         data,
@@ -926,6 +934,8 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
         state.encryptedChat,
         state.authKey,
         state.authKeyId_,
+        undefined,
+        true,
       );
       state.isGapRequested = true;
       state.gapEndSeqNo = outSeqNo - 1;
@@ -985,9 +995,29 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
         throw new TypeError("Unable to resend secret chat message.");
       }
       if (message.file) {
-        await this.#c.invoke({ _: "messages.sendEncryptedFile", peer, random_id: getRandomId(), data: message.data, file: message.file });
+        await this.#c.invoke({
+          _: "messages.sendEncryptedFile",
+          peer,
+          random_id: getRandomId(),
+          data: message.data,
+          file: message.file,
+          silent: message.isSilent ? true : undefined,
+        });
+      } else if (message.isService) {
+        await this.#c.invoke({
+          _: "messages.sendEncryptedService",
+          peer,
+          random_id: getRandomId(),
+          data: message.data,
+        });
       } else {
-        await this.#c.invoke({ _: "messages.sendEncrypted", peer, random_id: getRandomId(), data: message.data });
+        await this.#c.invoke({
+          _: "messages.sendEncrypted",
+          peer,
+          random_id: getRandomId(),
+          data: message.data,
+          silent: message.isSilent ? true : undefined,
+        });
       }
     }
   }
@@ -1018,7 +1048,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
       return;
     }
     const action: SecretChats.decryptedMessageActionAbortKey = { _: "decryptedMessageActionAbortKey", exchange_id: exchangeId };
-    await this.#sendMessage({ _: "decryptedMessageService", random_id: getRandomId(), action }, state.encryptedChat, state.authKey, state.authKeyId_);
+    await this.#sendMessage({ _: "decryptedMessageService", random_id: getRandomId(), action }, state.encryptedChat, state.authKey, state.authKeyId_, undefined, true);
   }
 
   #clearInitiatedRekey(state: SecretChatState) {
@@ -1053,7 +1083,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
       exchange_id: state.rekeyId,
       key_fingerprint: authKeyId,
     };
-    await this.#sendMessage({ _: "decryptedMessageService", random_id, action }, state.encryptedChat, state.authKey, state.authKeyId_);
+    await this.#sendMessage({ _: "decryptedMessageService", random_id, action }, state.encryptedChat, state.authKey, state.authKeyId_, undefined, true);
     this.#installNewKey(state, authKey, authKeyId, authKeyId_, true);
     this.#clearInitiatedRekey(state);
   }
@@ -1114,7 +1144,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     state.toCommitAuthKeyId = authKeyId;
     state.toCommitAuthKeyId_ = authKeyId_;
     try {
-      await this.#sendMessage({ _: "decryptedMessageService", random_id, action }, state.encryptedChat, state.authKey, state.authKeyId_);
+      await this.#sendMessage({ _: "decryptedMessageService", random_id, action }, state.encryptedChat, state.authKey, state.authKeyId_, undefined, true);
     } catch (err) {
       state.toCommitId = 0n;
       state.toCommitAuthKey = new Uint8Array();
@@ -1141,7 +1171,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     state.toCommitAuthKeyId = 0n;
     state.toCommitAuthKeyId_ = new Uint8Array();
     const noop: SecretChats.decryptedMessageActionNoop = { _: "decryptedMessageActionNoop" };
-    await this.#sendMessage({ _: "decryptedMessageService", random_id: getRandomId(), action: noop }, state.encryptedChat, state.authKey, state.authKeyId_);
+    await this.#sendMessage({ _: "decryptedMessageService", random_id: getRandomId(), action: noop }, state.encryptedChat, state.authKey, state.authKeyId_, undefined, true);
     this.#clearPreviousKey(state);
   }
 
@@ -1225,7 +1255,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
       await this.#checkGap(state.encryptedChat.id, decryptedMessage, update.message);
       if (pendingKey && Api.is("encryptedChat", state.encryptedChat)) {
         const noop: SecretChats.decryptedMessageActionNoop = { _: "decryptedMessageActionNoop" };
-        await this.#sendMessage({ _: "decryptedMessageService", random_id: getRandomId(), action: noop }, state.encryptedChat, state.authKey, state.authKeyId_);
+        await this.#sendMessage({ _: "decryptedMessageService", random_id: getRandomId(), action: noop }, state.encryptedChat, state.authKey, state.authKeyId_, undefined, true);
       }
       if (state.previousAuthKeyDiscardAfterSeqNo >= 0 && state.inSeqNo > state.previousAuthKeyDiscardAfterSeqNo) {
         this.#clearPreviousKey(state);
@@ -1333,6 +1363,8 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
         encryptedChat,
         authKey,
         authKeyId,
+        undefined,
+        true,
       );
     } catch (err) {
       this.#clearInitiatedRekey(state);
