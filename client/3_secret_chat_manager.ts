@@ -141,15 +141,21 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     const dhConfig = await this.#getDhConfig();
     const prime = intFromBytes(dhConfig.p, { byteOrder: "big", isSigned: false });
 
-    const a = getRandomInt(256, false);
+    let a: bigint;
+    let gA: bigint;
+    do {
+      a = getRandomInt(256, false);
+      gA = modExp(BigInt(dhConfig.g), a, prime);
+    } while (!isGoodModExpFirst(gA, prime));
 
-    const g_a = intToBytes(modExp(BigInt(dhConfig.g), a, prime), 256, { byteOrder: "big", isSigned: false });
+    const random_id = getRandomId(true);
+    const g_a = intToBytes(gA, 256, { byteOrder: "big", isSigned: false });
 
     const result = await this.#c.invoke({
       _: "messages.requestEncryption",
       user_id,
       g_a,
-      random_id: getRandomId(true),
+      random_id,
     });
     const state = this.#getSecretChatState(result.id);
     state.g = dhConfig.g;
@@ -1338,19 +1344,19 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
       return;
     }
 
-    let g_a_: bigint;
+    let gA: bigint;
     let a: bigint;
 
     do {
       a = getRandomInt(256, false);
-      g_a_ = modExp(BigInt(state.g), a, state.prime);
-    } while (!isGoodModExpFirst(g_a_, state.prime));
+      gA = modExp(BigInt(state.g), a, state.prime);
+    } while (!isGoodModExpFirst(gA, state.prime));
 
     const exchange_id = getRandomId();
     state.rekeyId = exchange_id;
     state.rekeyA = a;
 
-    const g_a = intToBytes(g_a_, 256, { byteOrder: "big", isSigned: false });
+    const g_a = intToBytes(gA, 256, { byteOrder: "big", isSigned: false });
 
     const random_id = getRandomId();
     const action: SecretChats.decryptedMessageActionRequestKey = {
