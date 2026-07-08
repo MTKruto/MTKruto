@@ -92,67 +92,80 @@ export class ConnectionTLS implements Connection {
       hostname: this.#hostname,
       port: this.#port,
     });
-    connection.setNoDelay(true);
-    connection.setKeepAlive(true);
-    this.#canRead = this.#canWrite = this.#isFirstWrite = true;
-    this.stateChangeHandler?.(true);
-    L.debug("connected to", this.#hostname, "port", this.#port);
-    this.#connection = connection;
+    try {
+      connection.setNoDelay(true);
+      connection.setKeepAlive(true);
+      L.debug("connected to", this.#hostname, "port", this.#port);
 
-    const header = await getTlsHeader(this.#secret);
-    const helloRand = header.subarray(11, 43);
-    await writeAll(this.#connection!, header);
+      const header = await getTlsHeader(this.#secret);
+      const helloRand = header.subarray(11, 43);
+      await writeAll(connection, header);
+      this.callback?.write(header.byteLength);
 
-    let offset = 0;
-    let read = new Uint8Array();
-    for (
-      const prefix of [
-        new Uint8Array([0x16, 0x03, 0x03]),
-        new Uint8Array([0x14, 0x03, 0x03, 0x00, 0x01, 0x01, 0x17, 0x03, 0x03]),
-      ]
-    ) {
-      while (true) {
-        if ((read.byteLength - offset) >= (prefix.byteLength + 2)) {
-          if (!startsWith(read.subarray(offset), prefix)) {
-            throw new TypeError("Received an invalid prefix.");
+      let offset = 0;
+      let read = new Uint8Array();
+      for (
+        const prefix of [
+          new Uint8Array([0x16, 0x03, 0x03]),
+          new Uint8Array([0x14, 0x03, 0x03, 0x00, 0x01, 0x01, 0x17, 0x03, 0x03]),
+        ]
+      ) {
+        while (true) {
+          if ((read.byteLength - offset) >= (prefix.byteLength + 2)) {
+            if (!startsWith(read.subarray(offset), prefix)) {
+              throw new TypeError("Received an invalid prefix.");
+            }
+
+            const dataView = new DataView(read.buffer, read.byteOffset, read.byteLength);
+            const size = dataView.getUint16(offset + prefix.byteLength, false);
+            const total = prefix.byteLength + 2 + size;
+
+            if ((read.byteLength - offset) >= total) {
+              offset += total;
+              break;
+            }
           }
 
-          const dataView = new DataView(read.buffer, read.byteOffset, read.byteLength);
-          const size = dataView.getUint16(offset + prefix.byteLength, false);
-          const total = prefix.byteLength + 2 + size;
-
-          if ((read.byteLength - offset) >= total) {
-            offset += total;
-            break;
+          const buffer = new Uint8Array(4096);
+          const n = await connection.read(buffer);
+          if (n === null) {
+            throw new TypeError("Failed to initialize TLS connection.");
           }
+          if (n <= 0) {
+            continue;
+          }
+          this.callback?.read(n);
+          read = concat([read, buffer.subarray(0, n)]);
         }
-
-        const buffer = new Uint8Array(4096);
-        const n = await connection.read(buffer);
-        if (n === null) {
-          throw new TypeError("Failed to initialize TLS connection.");
-        }
-        if (n <= 0) {
-          continue;
-        }
-        this.callback?.read(n);
-        read = concat([read, buffer.subarray(0, n)]);
       }
+
+      const response = read.subarray(0, offset);
+      const actual = response.slice(11, 43);
+
+      const zeroed = response.slice();
+      zeroed.fill(0, 11, 43);
+
+      const expected = await hmacSha256(concat([helloRand, zeroed]), this.#secret.slice(0, 16));
+
+      if (!equals(actual, expected)) {
+        throw new TypeError("Failed to initialize TLS connection.");
+      }
+
+      this.#connection = connection;
+      this.#canRead = this.#canWrite = this.#isFirstWrite = true;
+      this.stateChangeHandler?.(true);
+      L.debug(`initialized TLS connection with ${this.#hostname}`);
+    } catch (err) {
+      this.#canRead = this.#canWrite = false;
+      this.#isFirstWrite = true;
+      this.#connection = undefined;
+      try {
+        connection.close();
+      } catch {
+        // ignore close errors while unwinding a failed handshake
+      }
+      throw err;
     }
-
-    const response = read.subarray(0, offset);
-    const actual = response.slice(11, 43);
-
-    const zeroed = response.slice();
-    zeroed.fill(0, 11, 43);
-
-    const expected = await hmacSha256(concat([helloRand, zeroed]), this.#secret.slice(0, 16));
-
-    if (!equals(actual, expected)) {
-      throw new TypeError("Failed to initialize TLS connection.");
-    }
-
-    L.debug(`initialized TLS connection with ${this.#hostname}`);
   }
 
   async #readPacket() {
