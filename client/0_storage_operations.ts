@@ -582,6 +582,7 @@ export class StorageOperations {
       this.deleteStickerSetNames(),
       this.peers.clear(),
       this.usernames.clear(),
+      this.phoneNumbers.clear(),
       this.translations.clear(),
       this.deletePollResults(),
       this.deletePolls(),
