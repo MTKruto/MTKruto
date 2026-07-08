@@ -76,6 +76,36 @@ export class ConnectionSocks5 implements Connection {
     }
   }
 
+  async #readFromConnection(connection: Deno.Conn, p: Uint8Array) {
+    let offset = 0;
+
+    try {
+      do {
+        const read = await connection.read(p.subarray(offset));
+        if (read === null) {
+          throw new ConnectionError("The connection was closed.");
+        }
+
+        offset += read;
+      } while (offset < p.byteLength);
+    } catch {
+      throw new ConnectionError("The connection was closed.");
+    }
+  }
+
+  async #writeToConnection(connection: Deno.Conn, p: Uint8Array) {
+    let written = 0;
+    while (written < p.byteLength) {
+      try {
+        const wrote = await connection.write(p.subarray(written));
+        this.callback?.write(wrote);
+        written += wrote;
+      } catch {
+        throw new ConnectionError("The connection was closed.");
+      }
+    }
+  }
+
   async open() {
     if (this.isConnected) {
       return;
@@ -87,98 +117,98 @@ export class ConnectionSocks5 implements Connection {
     });
     connection.setNoDelay(true);
     connection.setKeepAlive(true);
-    this.#canRead = this.#canWrite = true;
-    this.#connection = connection;
+    try {
+      const header = new Uint8Array([VERSION_SOCKS, 2, AUTH_METHOD_NONE, AUTH_METHOD_USERNAME_PASSWORD]);
+      await this.#writeToConnection(connection, header);
 
-    const header = new Uint8Array([VERSION_SOCKS, 2, AUTH_METHOD_NONE, AUTH_METHOD_USERNAME_PASSWORD]);
-    await this.write(header);
-
-    const negotiation = new Uint8Array(2);
-    await this.read(negotiation);
-    if (negotiation[0] !== VERSION_SOCKS || (negotiation[1] !== AUTH_METHOD_NONE && negotiation[1] !== AUTH_METHOD_USERNAME_PASSWORD)) {
-      throw new ConnectionError("Negotiation with SOCKS5 server failed.");
-    }
-
-    if (negotiation[1] === AUTH_METHOD_USERNAME_PASSWORD && !this.#credentials) {
-      throw new ConnectionError("Username and password are required for connecting to SOCKS5 server.");
-    } else if (negotiation[1] === AUTH_METHOD_USERNAME_PASSWORD && this.#credentials) {
-      await this.write(concat([new Uint8Array([VERSION_USERNAME_PASSWORD_AUTH, this.#credentials.username.length]), encodeText(this.#credentials.username), new Uint8Array([this.#credentials.password.length]), encodeText(this.#credentials.password)]));
-
-      const status = new Uint8Array(2);
-      await this.read(status);
-      if (status[0] !== VERSION_USERNAME_PASSWORD_AUTH || status[1] !== RESULT_SUCCESS) {
-        throw new ConnectionError("SOCKS5 username and password authentication failed.");
+      const negotiation = new Uint8Array(2);
+      await this.#readFromConnection(connection, negotiation);
+      if (negotiation[0] !== VERSION_SOCKS || (negotiation[1] !== AUTH_METHOD_NONE && negotiation[1] !== AUTH_METHOD_USERNAME_PASSWORD)) {
+        throw new ConnectionError("Negotiation with SOCKS5 server failed.");
       }
-    }
 
-    let hostnameType: number;
-    let hostname: Uint8Array;
-    if (isIPv4(this.#hostname)) {
-      hostnameType = ADDRESS_TYPE_4;
-      hostname = new Uint8Array(ipv4ToBytes(this.#hostname));
-    } else if (isIPv6(this.#hostname)) {
-      hostnameType = ADDRESS_TYPE_6;
-      hostname = new Uint8Array(ipv6ToBytes(this.#hostname));
-    } else {
-      hostnameType = ADDRESS_TYPE_DOMAIN_NAME;
-      hostname = concat([new Uint8Array([this.#hostname.length]), encodeText(this.#hostname)]);
-    }
-    const address = concat([new Uint8Array([hostnameType]), hostname, new Uint8Array(2)]);
-    new DataView(address.buffer).setUint16(hostname.byteLength + 1, this.#port);
+      if (negotiation[1] === AUTH_METHOD_USERNAME_PASSWORD && !this.#credentials) {
+        throw new ConnectionError("Username and password are required for connecting to SOCKS5 server.");
+      } else if (negotiation[1] === AUTH_METHOD_USERNAME_PASSWORD && this.#credentials) {
+        await this.#writeToConnection(connection, concat([new Uint8Array([VERSION_USERNAME_PASSWORD_AUTH, this.#credentials.username.length]), encodeText(this.#credentials.username), new Uint8Array([this.#credentials.password.length]), encodeText(this.#credentials.password)]));
 
-    await this.write(concat([new Uint8Array([VERSION_SOCKS, COMMAND_CONNECT, 0]), address]));
-
-    const status = new Uint8Array(3);
-    await this.read(status);
-    if (status[0] !== VERSION_SOCKS || status[1] !== RESULT_SUCCESS) {
-      throw new ConnectionError("Connection with SOCKS5 server failed.");
-    }
-
-    const addressType = new Uint8Array(1);
-    await this.read(addressType);
-    switch (addressType[0]) {
-      case ADDRESS_TYPE_4: {
-        const ipv4 = new Uint8Array(4);
-        await this.read(ipv4);
-        break;
+        const status = new Uint8Array(2);
+        await this.#readFromConnection(connection, status);
+        if (status[0] !== VERSION_USERNAME_PASSWORD_AUTH || status[1] !== RESULT_SUCCESS) {
+          throw new ConnectionError("SOCKS5 username and password authentication failed.");
+        }
       }
-      case ADDRESS_TYPE_6: {
-        const ipv4 = new Uint8Array(16);
-        await this.read(ipv4);
-        break;
+
+      let hostnameType: number;
+      let hostname: Uint8Array;
+      if (isIPv4(this.#hostname)) {
+        hostnameType = ADDRESS_TYPE_4;
+        hostname = new Uint8Array(ipv4ToBytes(this.#hostname));
+      } else if (isIPv6(this.#hostname)) {
+        hostnameType = ADDRESS_TYPE_6;
+        hostname = new Uint8Array(ipv6ToBytes(this.#hostname));
+      } else {
+        hostnameType = ADDRESS_TYPE_DOMAIN_NAME;
+        hostname = concat([new Uint8Array([this.#hostname.length]), encodeText(this.#hostname)]);
       }
-      case ADDRESS_TYPE_DOMAIN_NAME: {
-        const length = new Uint8Array(1);
-        await this.read(length);
-        const domainName = new Uint8Array(length[0]);
-        await this.read(domainName);
-        break;
+      const address = concat([new Uint8Array([hostnameType]), hostname, new Uint8Array(2)]);
+      new DataView(address.buffer).setUint16(hostname.byteLength + 1, this.#port);
+
+      await this.#writeToConnection(connection, concat([new Uint8Array([VERSION_SOCKS, COMMAND_CONNECT, 0]), address]));
+
+      const status = new Uint8Array(3);
+      await this.#readFromConnection(connection, status);
+      if (status[0] !== VERSION_SOCKS || status[1] !== RESULT_SUCCESS) {
+        throw new ConnectionError("Connection with SOCKS5 server failed.");
       }
+
+      const addressType = new Uint8Array(1);
+      await this.#readFromConnection(connection, addressType);
+      switch (addressType[0]) {
+        case ADDRESS_TYPE_4: {
+          const ipv4 = new Uint8Array(4);
+          await this.#readFromConnection(connection, ipv4);
+          break;
+        }
+        case ADDRESS_TYPE_6: {
+          const ipv4 = new Uint8Array(16);
+          await this.#readFromConnection(connection, ipv4);
+          break;
+        }
+        case ADDRESS_TYPE_DOMAIN_NAME: {
+          const length = new Uint8Array(1);
+          await this.#readFromConnection(connection, length);
+          const domainName = new Uint8Array(length[0]);
+          await this.#readFromConnection(connection, domainName);
+          break;
+        }
+      }
+
+      const port = new Uint8Array(2);
+      await this.#readFromConnection(connection, port);
+
+      this.#connection = connection;
+      this.#canRead = this.#canWrite = true;
+      this.stateChangeHandler?.(true);
+      L.debug("connected to", this.#hostname, "port", this.#port, "through socks5 server", this.#socks5Hostname, "port", this.#socks5Port);
+    } catch (err) {
+      this.#canRead = this.#canWrite = false;
+      this.#connection = undefined;
+      try {
+        connection.close();
+      } catch {
+        //
+      }
+      throw err;
     }
-
-    const port = new Uint8Array(2);
-    await this.read(port);
-
-    this.stateChangeHandler?.(true);
-    L.debug("connected to", this.#hostname, "port", this.#port, "through socks5 server", this.#socks5Hostname, "port", this.#socks5Port);
   }
 
   async read(p: Uint8Array) {
     this.#assertConnected();
     const unlock = await this.#rMutex.lock();
-    let offset = 0;
 
     try {
-      do {
-        const read = await this.#connection!.read(p.subarray(offset));
-        if (read === null) {
-          this.#canRead = false;
-          this.stateChangeHandler?.(false);
-          throw new ConnectionError("The connection was closed.");
-        }
-
-        offset += read;
-      } while (offset < p.byteLength);
+      await this.#readFromConnection(this.#connection!, p);
     } catch {
       this.#canRead = false;
       this.stateChangeHandler?.(false);
@@ -193,18 +223,11 @@ export class ConnectionSocks5 implements Connection {
     const unlock = await this.#wMutex.lock();
     try {
       this.#assertConnected();
-      let written = 0;
-      while (written < p.byteLength) {
-        try {
-          const wrote = await this.#connection!.write(p.subarray(written));
-          this.callback?.write(wrote);
-          written += wrote;
-        } catch {
-          this.#canWrite = false;
-          this.stateChangeHandler?.(false);
-          throw new ConnectionError("The connection was closed.");
-        }
-      }
+      await this.#writeToConnection(this.#connection!, p);
+    } catch {
+      this.#canWrite = false;
+      this.stateChangeHandler?.(false);
+      throw new ConnectionError("The connection was closed.");
     } finally {
       unlock();
     }
