@@ -82,6 +82,7 @@ export class ConnectionTCP implements Connection {
           throw new ConnectionError("The connection was closed.");
         }
 
+        this.callback?.read(read);
         offset += read;
       } while (offset < p.byteLength);
     } catch {
