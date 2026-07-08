@@ -280,6 +280,7 @@ export class StorageOperations {
       maybePromises.push(Promise.all([this.#storage.set(k, null), o === null ? Promise.resolve() : this.#storage.set(K.messages.message(o as number, k[1] as number), null)]));
     }
     await Promise.all(maybePromises.filter((v) => v instanceof Promise));
+    await this.#deleteByPrefix([K.messages.P("messages")]);
   }
 
   getMessageChat(messageId: number): MaybePromise<number | null> {
