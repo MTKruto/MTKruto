@@ -2243,28 +2243,25 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       if (parts.length < 3 || parts.length > 4) {
         return null;
       }
+      for (const part of parts.slice(1)) {
+        const number = Number(part);
+        if (number < 1 || number % 1 !== 0) {
+          return null;
+        }
+      }
       [peer, id] = [Number(parts[1]), Number(parts[parts.length - 1])];
-      if (peer < 1 || id < 1 || peer % 1 !== 0 || id % 1 !== 0) {
-        return null;
-      }
-      if (isNaN(peer)) {
-        return null;
-      }
-      if (isNaN(Number(parts[2]))) {
-        return null;
-      }
       peer = Api.getChannelChatId(BigInt(peer));
     } else {
       if (parts.length > 3) {
         return null;
       }
+      for (const part of parts.slice(1)) {
+        const number = Number(part);
+        if (number < 1 || number % 1 !== 0) {
+          return null;
+        }
+      }
       [peer, id] = [parts[0], Number(parts[parts.length - 1])];
-      if (id < 1 || id % 1 !== 0) {
-        return null;
-      }
-      if (isNaN(Number(parts[1]))) {
-        return null;
-      }
     }
     if (isNaN(id)) {
       return null;

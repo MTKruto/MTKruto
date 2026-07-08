@@ -165,6 +165,13 @@ Deno.test("parseMessageLink()", async (t) => {
   await t.step("negative message ID", () => {
     assertEquals(pml("http://t.me/username/-2"), null);
     assertEquals(pml("http://t.me/c/1/-2"), null);
+    assertEquals(pml("http://t.me/username/-1/2"), null);
+    assertEquals(pml("http://t.me/c/1/-1/2"), null);
+  });
+
+  await t.step("zero topic ID", () => {
+    assertEquals(pml("http://t.me/username/0/2"), null);
+    assertEquals(pml("http://t.me/c/1/0/2"), null);
   });
 
   await t.step("non-whole message ID", () => {
@@ -172,5 +179,7 @@ Deno.test("parseMessageLink()", async (t) => {
     assertEquals(pml("http://t.me/c/1/1.2"), null);
     assertEquals(pml("http://t.me/username/-1.2"), null);
     assertEquals(pml("http://t.me/c/1/-1.2"), null);
+    assertEquals(pml("http://t.me/username/1.2/2"), null);
+    assertEquals(pml("http://t.me/c/1/1.2/2"), null);
   });
 });
