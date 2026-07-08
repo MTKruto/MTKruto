@@ -20,15 +20,15 @@
 
 import { toArrayBuffer } from "../0_deps.ts";
 
-export function gunzip(buffer: Uint8Array): Promise<Uint8Array> {
+export function gunzip(buffer: Uint8Array): Promise<Uint8Array<ArrayBuffer>> {
   return inner(buffer, new DecompressionStream("gzip"));
 }
 
-export function gzip(buffer: Uint8Array): Promise<Uint8Array> {
+export function gzip(buffer: Uint8Array): Promise<Uint8Array<ArrayBuffer>> {
   return inner(buffer, new CompressionStream("gzip"));
 }
 
-async function inner(buffer: Uint8Array, transformStream: GenericTransformStream): Promise<Uint8Array> {
+async function inner(buffer: Uint8Array, transformStream: GenericTransformStream): Promise<Uint8Array<ArrayBuffer>> {
   let readable: ReadableStream;
   if (ReadableStream.from) {
     readable = ReadableStream.from([buffer]);

@@ -20,7 +20,7 @@
 
 import { assertEquals, concat, delay, ige256Decrypt, ige256Encrypt, initTgCrypto, LruCache, SECOND } from "../0_deps.ts";
 import { ConnectionError, TransportError } from "../0_errors.ts";
-import { drop, getLogger, getRandomId, gunzip, intFromBytes, intToBytes, type Logger, type MaybePromise, mod, sha1, sha256, toUnixTimestamp } from "../1_utilities.ts";
+import { drop, getLogger, getRandomId, gunzip, gzip, intFromBytes, intToBytes, type Logger, type MaybePromise, mod, sha1, sha256, toUnixTimestamp } from "../1_utilities.ts";
 import { deserializeMessage, type message, type msg_container, Mtproto, repr, serializeMessage, TLReader, X } from "../2_tl.ts";
 import type { DC } from "../3_transport.ts";
 import { AbortableLoop } from "../client/0_abortable_loop.ts";
@@ -34,6 +34,8 @@ let id = 0;
 const GZIP_PACKED = 0x3072CFA1;
 const RPC_RESULT = 0xF35C6D01;
 const RPC_ERROR = Mtproto.schema.definitions["rpc_error"][0];
+const COMPRESSION_THRESHOLD = 0.9;
+const LARGE_PACKET_SIZE = 16384;
 
 type PendingMessage = { body: Uint8Array<ArrayBuffer>; onMessageId: (messageId: bigint) => () => void; promiseWithResolvers: PromiseWithResolvers<void> };
 
@@ -319,46 +321,79 @@ export class SessionEncrypted extends Session implements Session {
         };
       });
     }
-    const msg_id = this.state.nextMessageId();
-    const seqno = this.state.nextSeqNo(true);
-    let message: message = {
-      _: "message",
-      msg_id,
-      seqno,
-      body: pendingMessage.body,
-    };
-    this.#LsendLoop.debug("msg_id =", msg_id, "seqno =", seqno);
 
-    if (this.#toAcknowledge.length) {
-      const msg_ids = this.#toAcknowledge.splice(0, 8192);
-      this.#LsendLoop.debug("acknowledging", msg_ids.length, "message(s) while sending this one");
-      const ack: message = {
-        _: "message",
-        msg_id: this.state.nextMessageId(),
-        seqno: this.state.nextSeqNo(false),
-        body: Mtproto.serializeObject({ _: "msgs_ack", msg_ids }),
-      };
-      this.#LsendLoop.debug("msgs_ack msg_id =", ack.msg_id, "seqno =", seqno);
-      this.#pendingAcks.set(ack.msg_id, msg_ids);
+    let msg_id: bigint;
+    let message: message;
+    let unregister: (() => void) | undefined;
+
+    try {
+      msg_id = this.state.nextMessageId();
+      unregister = pendingMessage.onMessageId(msg_id);
+
+      let shouldGzip = false;
+      let body = pendingMessage.body;
+      if (body.byteLength > 1024) {
+        this.#L.debug("gzipping message", msg_id);
+        shouldGzip = true;
+      }
+      if (body.byteLength >= LARGE_PACKET_SIZE) {
+        const size = 1024;
+        const start = Math.floor((body.byteLength - size) / 2);
+        const end = start + size;
+        const middle = body.subarray(start, end);
+        const result = await gzip(middle);
+        if (result.byteLength > Math.floor(COMPRESSION_THRESHOLD * middle.byteLength)) {
+          shouldGzip = false;
+          this.#L.debug("not gzipping message", msg_id, "because middle threshold check failed");
+        }
+      }
+      if (shouldGzip) {
+        const result = await gzip(body);
+        if (result.byteLength > Math.floor(COMPRESSION_THRESHOLD * body.byteLength)) {
+          this.#L.debug("not gzipping message", msg_id, "threshold check failed");
+          shouldGzip = false;
+        } else {
+          body = Mtproto.serializeObject({ _: "gzip_packed", packed_data: result });
+        }
+      }
+
+      const seqno = this.state.nextSeqNo(true);
       message = {
         _: "message",
-        msg_id: this.state.nextMessageId(),
-        seqno: this.state.nextSeqNo(false),
-        body: {
-          _: "msg_container",
-          messages: [message, ack],
-        },
+        msg_id,
+        seqno,
+        body,
       };
-      this.#LsendLoop.debug("container msg_id =", message.msg_id, "seqno =", message.seqno);
-    }
+      this.#LsendLoop.debug("msg_id =", msg_id, "seqno =", seqno);
 
-    const unregister = pendingMessage.onMessageId(msg_id);
-    try {
+      if (this.#toAcknowledge.length) {
+        const msg_ids = this.#toAcknowledge.splice(0, 8192);
+        this.#LsendLoop.debug("acknowledging", msg_ids.length, "message(s) while sending this one");
+        const ack: message = {
+          _: "message",
+          msg_id: this.state.nextMessageId(),
+          seqno: this.state.nextSeqNo(false),
+          body: Mtproto.serializeObject({ _: "msgs_ack", msg_ids }),
+        };
+        this.#LsendLoop.debug("msgs_ack msg_id =", ack.msg_id, "seqno =", seqno);
+        this.#pendingAcks.set(ack.msg_id, msg_ids);
+        message = {
+          _: "message",
+          msg_id: this.state.nextMessageId(),
+          seqno: this.state.nextSeqNo(false),
+          body: {
+            _: "msg_container",
+            messages: [message, ack],
+          },
+        };
+        this.#LsendLoop.debug("container msg_id =", message.msg_id, "seqno =", message.seqno);
+      }
+
       const payload = await this.#encryptMessage(message);
       await this.transport.transport.send(payload);
     } catch (err) {
       pendingMessage.promiseWithResolvers.reject(err);
-      unregister();
+      unregister?.();
       return;
     }
 
