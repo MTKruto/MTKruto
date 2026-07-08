@@ -75,6 +75,8 @@ export function reactionEqual(left: Reaction, right: Reaction): boolean {
     if (right.type === "custom" && left.id === right.id) {
       return true;
     }
+  } else if (left.type === "paid" && right.type === "paid") {
+    return true;
   }
   return false;
 }
