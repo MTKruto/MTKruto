@@ -43,6 +43,7 @@ export class ConnectionTLS implements Connection {
     number,
     { resolve: () => void; reject: (err: unknown) => void },
   ] | null = null;
+  #isReady = false;
   stateChangeHandler?: Connection["stateChangeHandler"];
 
   constructor(hostname: string, port: number, secret: Uint8Array<ArrayBuffer>) {
@@ -58,17 +59,41 @@ export class ConnectionTLS implements Connection {
     }
   }
 
+  #cleanupSocket(socket = this.#socket) {
+    this.#isReady = false;
+    this.#rejectRead();
+    this.#buffer = [];
+    this.#packetBuffer = new Uint8Array();
+    this.#isFirstWrite = true;
+    if (this.#socket === socket) {
+      this.#socket = undefined;
+    }
+    socket?.destroy();
+  }
+
   async open() {
     if (this.isConnected) {
       return;
     }
 
-    this.#socket = new Socket();
-    this.#socket.on("close", () => {
+    this.#isReady = false;
+    const socket = this.#socket = new Socket();
+    socket.on("close", () => {
+      if (this.#socket !== socket) {
+        return;
+      }
       this.#rejectRead();
-      this.stateChangeHandler?.(false);
+      const wasReady = this.#isReady;
+      this.#isReady = false;
+      this.#socket = undefined;
+      if (wasReady) {
+        this.stateChangeHandler?.(false);
+      }
     });
-    this.#socket.on("data", (data) => {
+    socket.on("data", (data) => {
+      if (this.#socket !== socket) {
+        return;
+      }
       if (typeof data === "string") {
         return;
       }
@@ -85,70 +110,76 @@ export class ConnectionTLS implements Connection {
         resolve();
       }
     });
-    await new Promise<void>((resolve, reject) => {
-      this.#socket!.connect(this.#port, this.#hostname);
-      this.#socket!.once("error", reject);
-      this.#socket!.once(
-        "connect",
-        () => {
-          this.#socket!.off("error", reject);
-          resolve();
-          this.stateChangeHandler?.(true);
-          L.debug("connected to", this.#hostname, "port", this.#port);
-        },
-      );
-    });
+    try {
+      await new Promise<void>((resolve, reject) => {
+        socket.connect(this.#port, this.#hostname);
+        socket.once("error", reject);
+        socket.once(
+          "connect",
+          () => {
+            socket.off("error", reject);
+            resolve();
+            L.debug("connected to", this.#hostname, "port", this.#port);
+          },
+        );
+      });
 
-    const header = await getTlsHeader(this.#secret);
-    const helloRand = header.subarray(11, 43);
-    await this.#write(header);
+      const header = await getTlsHeader(this.#secret);
+      const helloRand = header.subarray(11, 43);
+      await this.#write(header);
 
-    let offset = 0;
-    let read = new Uint8Array();
-    for (
-      const prefix of [
-        new Uint8Array([0x16, 0x03, 0x03]),
-        new Uint8Array([0x14, 0x03, 0x03, 0x00, 0x01, 0x01, 0x17, 0x03, 0x03]),
-      ]
-    ) {
-      while (true) {
-        if ((read.byteLength - offset) >= (prefix.byteLength + 2)) {
-          if (!startsWith(read.subarray(offset), prefix)) {
-            throw new TypeError("Received an invalid prefix.");
+      let offset = 0;
+      let read = new Uint8Array();
+      for (
+        const prefix of [
+          new Uint8Array([0x16, 0x03, 0x03]),
+          new Uint8Array([0x14, 0x03, 0x03, 0x00, 0x01, 0x01, 0x17, 0x03, 0x03]),
+        ]
+      ) {
+        while (true) {
+          if ((read.byteLength - offset) >= (prefix.byteLength + 2)) {
+            if (!startsWith(read.subarray(offset), prefix)) {
+              throw new TypeError("Received an invalid prefix.");
+            }
+
+            const dataView = new DataView(read.buffer, read.byteOffset, read.byteLength);
+            const size = dataView.getUint16(offset + prefix.byteLength, false);
+            const total = prefix.byteLength + 2 + size;
+
+            if ((read.byteLength - offset) >= total) {
+              offset += total;
+              break;
+            }
           }
 
-          const dataView = new DataView(read.buffer, read.byteOffset, read.byteLength);
-          const size = dataView.getUint16(offset + prefix.byteLength, false);
-          const total = prefix.byteLength + 2 + size;
-
-          if ((read.byteLength - offset) >= total) {
-            offset += total;
-            break;
-          }
+          await new Promise<void>((resolve, reject) => this.#nextResolve = [0, { resolve, reject }]);
+          read = concat([read, new Uint8Array(this.#buffer.splice(0, this.#buffer.length))]);
         }
-
-        await new Promise<void>((resolve, reject) => this.#nextResolve = [0, { resolve, reject }]);
-        read = concat([read, new Uint8Array(this.#buffer.splice(0, this.#buffer.length))]);
       }
+
+      const response = read.subarray(0, offset);
+      const actual = response.slice(11, 43);
+
+      const zeroed = response.slice();
+      zeroed.fill(0, 11, 43);
+
+      const expected = await hmacSha256(concat([helloRand, zeroed]), this.#secret.slice(0, 16));
+
+      if (!equals(actual, expected)) {
+        throw new TypeError("Failed to initialize TLS connection.");
+      }
+
+      this.#isReady = true;
+      this.stateChangeHandler?.(true);
+      L.debug(`initialized TLS connection with ${this.#hostname}`);
+    } catch (err) {
+      this.#cleanupSocket(socket);
+      throw err;
     }
-
-    const response = read.subarray(0, offset);
-    const actual = response.slice(11, 43);
-
-    const zeroed = response.slice();
-    zeroed.fill(0, 11, 43);
-
-    const expected = await hmacSha256(concat([helloRand, zeroed]), this.#secret.slice(0, 16));
-
-    if (!equals(actual, expected)) {
-      throw new TypeError("Failed to initialize TLS connection.");
-    }
-
-    L.debug(`initialized TLS connection with ${this.#hostname}`);
   }
 
   get isConnected() {
-    return this.#socket?.readyState === "open";
+    return this.#isReady && this.#socket?.readyState === "open";
   }
 
   #assertConnected() {
@@ -239,6 +270,5 @@ export class ConnectionTLS implements Connection {
   close() {
     this.#assertConnected();
     this.#socket!.destroy();
-    this.#socket = undefined;
   }
 }
