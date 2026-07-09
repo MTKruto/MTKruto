@@ -307,7 +307,11 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
 
   async #postSendMessage(state: SecretChatState) {
     state.isJustLoaded = false;
-    await this.#maybeStartRekey(state);
+    try {
+      await this.#maybeStartRekey(state);
+    } catch (err) {
+      this.#L.error("failed to start secret chat re-key:", err);
+    }
   }
 
   async sendSecretMessage(id: number, text: string, params?: SendSecretMessageParams) {
