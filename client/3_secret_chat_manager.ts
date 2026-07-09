@@ -229,6 +229,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     // key = (pow(g_a, b) mod dh_prime)
     const gA = intFromBytes(state.encryptedChat.g_a, { byteOrder: "big", isSigned: false });
     if (!isGoodModExpFirst(gA, prime)) {
+      await this.#discardSecretChat(state, id);
       throw new TypeError("Received invalid g_a.");
     }
 
