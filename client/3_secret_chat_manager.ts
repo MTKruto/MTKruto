@@ -164,7 +164,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     state.pendingExponent = a;
     state.encryptedChat = result;
     await state.commit(this.#c.messageStorage.storage);
-    return constructSecretChat(result);
+    return constructSecretChat(result, await this.#c.getSelfId());
   }
 
   static parseText(text: string, entities: SecretMessageEntity[], parseMode: ParseMode, isEmptyAllowed = false): [string, SecretMessageEntity[]] {
@@ -260,7 +260,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     });
     state.encryptedChat = result;
     await state.commit(this.#c.messageStorage.storage);
-    return constructSecretChat(result);
+    return constructSecretChat(result, await this.#c.getSelfId());
   }
 
   async endSecretChat(id: number, params?: EndSecretChatParams): Promise<SecretChat> {
@@ -275,7 +275,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     await this.#c.invoke({ _: "messages.discardEncryption", chat_id: state.encryptedChat.id, delete_history: params?.isHistoryDeleted || undefined });
     state.encryptedChat = { _: "encryptedChatDiscarded", id: state.encryptedChat.id, history_deleted: params?.isHistoryDeleted || undefined };
     await state.commit(this.#c.messageStorage.storage);
-    return constructSecretChat(state.encryptedChat);
+    return constructSecretChat(state.encryptedChat, await this.#c.getSelfId());
   }
 
   async #discardSecretChat(state: SecretChatState, chatId: number) {
@@ -1339,7 +1339,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
       await state.commit(this.#c.messageStorage.storage);
     }
 
-    const secretChat = constructSecretChat(update.chat);
+    const secretChat = constructSecretChat(update.chat, await this.#c.getSelfId());
     return { type: "secretChat", secretChat };
   }
 

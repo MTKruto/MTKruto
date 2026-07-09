@@ -69,12 +69,14 @@ export interface SecretChatDiscarded {
 /** Any type of secret chat. */
 export type SecretChat = SecretChatPending | SecretChatRequested | SecretChatActive | SecretChatDiscarded;
 
-export function constructSecretChat(ec: Api.EncryptedChat): SecretChat {
+export function constructSecretChat(ec: Api.EncryptedChat, selfId?: number): SecretChat {
   if (Api.isOneOf(["encryptedChatEmpty", "encryptedChatDiscarded"], ec)) {
     return { type: "discarded", id: ec.id };
   }
 
-  const userId = Number(ec.participant_id);
+  const adminId = Number(ec.admin_id);
+  const participantId = Number(ec.participant_id);
+  const userId = selfId === participantId ? adminId : participantId;
   if (Api.is("encryptedChatRequested", ec)) {
     return { type: "requested", id: ec.id, userId };
   }
