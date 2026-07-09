@@ -1596,11 +1596,14 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     this.#checkParams(params);
     this.#c.storage.assertBot("editInlineMessageMedia");
     const id = await deserializeInlineMessageId(inlineMessageId);
+    const maybeParseResult = media.caption !== undefined ? this.parseText(media.caption, { entities: media.captionEntities, parseMode: media.parseMode }, true) : undefined;
     await this.#c.invoke({
       _: "messages.editInlineBotMessage",
       id,
       media: await this.#resolveInputMediaUpload(media),
       reply_markup: await this.#constructReplyMarkup(params),
+      message: maybeParseResult?.[0],
+      entities: maybeParseResult?.[1],
     }, { dc: getDc(id.dc_id) });
   }
 
