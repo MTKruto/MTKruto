@@ -1193,7 +1193,6 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     state.toCommitAuthKeyId_ = new Uint8Array();
     const noop: SecretChats.decryptedMessageActionNoop = { _: "decryptedMessageActionNoop" };
     await this.#sendMessage({ _: "decryptedMessageService", random_id: getRandomId(), action: noop }, state.encryptedChat, state.authKey, state.authKeyId_, undefined, true);
-    this.#clearPreviousKey(state);
   }
 
   async #handleDecryptedMessageLayer(chatId: number, decryptedMessageLayer: SecretChats.decryptedMessageLayer, encryptedMessage: Api.EncryptedMessage) {
