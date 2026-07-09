@@ -224,7 +224,12 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     state.g = dhConfig.g;
     state.prime = prime;
 
-    const b = getRandomInt(256, false);
+    let b: bigint;
+    let gB: bigint;
+    do {
+      b = getRandomInt(256, false);
+      gB = modExp(BigInt(dhConfig.g), b, prime);
+    } while (!isGoodModExpFirst(gB, prime));
 
     // key = (pow(g_a, b) mod dh_prime)
     const gA = intFromBytes(state.encryptedChat.g_a, { byteOrder: "big", isSigned: false });
@@ -248,7 +253,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     state.authKeyId = key_fingerprint;
 
     // g_b := pow(g, b) mod dh_prime
-    const g_b = intToBytes(modExp(BigInt(dhConfig.g), b, prime), 256, { byteOrder: "big", isSigned: false });
+    const g_b = intToBytes(gB, 256, { byteOrder: "big", isSigned: false });
 
     const peer: Api.inputEncryptedChat = { _: "inputEncryptedChat", chat_id: state.encryptedChat.id, access_hash: state.encryptedChat.access_hash };
 
