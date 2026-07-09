@@ -129,6 +129,8 @@ export interface _MessageBase {
   selfDestruct?: SelfDestructOption;
   /** If this message is a guest message, the user or chat that triggered it. */
   for?: ChatP;
+  /** The amount of stars needed to see the message. */
+  starCount?: number;
 }
 
 /**
@@ -1247,6 +1249,52 @@ export async function constructMessage(
   } else if (Api.is("messageMediaInvoice", message_.media)) {
     const invoice = constructInvoice(message_.media);
     m = { type: "invoice", ...message, invoice };
+  } else if (Api.is("messageMediaPaidMedia", message_.media)) {
+    message.starCount = messageMedia.starCount = Number(message_.media.stars_amount);
+    const messageExtendedMedia = message_.media.extended_media.find((v) => Api.is("messageExtendedMedia", v));
+    if (messageExtendedMedia?.media) {
+      if (Api.is("messageMediaPhoto", messageExtendedMedia.media) || Api.is("messageMediaDocument", messageExtendedMedia.media)) {
+        messageMedia.isSpoiler = messageExtendedMedia.media.spoiler || false;
+      }
+
+      if (Api.is("messageMediaPhoto", messageExtendedMedia.media)) {
+        if (!messageExtendedMedia.media.photo) {
+          unreachable();
+        }
+        const photo = constructPhoto(Api.as("photo", messageExtendedMedia.media.photo));
+        if (messageExtendedMedia.media.video) {
+          const video_ = Api.as("document", messageExtendedMedia.media.video);
+          const fileId: FileId = {
+            type: FileType.Video,
+            dcId: video_.dc_id,
+            location: {
+              type: "common",
+              id: video_.id,
+              accessHash: video_.access_hash,
+            },
+            fileReference: video_.file_reference,
+          };
+          const video = constructVideo(video_, video_.attributes.find((v) => Api.is("documentAttributeVideo", v))!, "video.mp4", serializeFileId(fileId), toUniqueFileId(fileId));
+          m = { type: "livePhoto", ...messageMedia, photo, video };
+        } else {
+          m = { type: "photo", ...messageMedia, photo };
+        }
+      } else if (Api.is("messageMediaDocument", messageExtendedMedia.media)) {
+        const video_ = Api.as("document", messageExtendedMedia.media.document);
+        const fileId: FileId = {
+          type: FileType.Video,
+          dcId: video_.dc_id,
+          location: {
+            type: "common",
+            id: video_.id,
+            accessHash: video_.access_hash,
+          },
+          fileReference: video_.file_reference,
+        };
+        const video = constructVideo(video_, video_.attributes.find((v) => Api.is("documentAttributeVideo", v))!, "video.mp4", serializeFileId(fileId), toUniqueFileId(fileId));
+        m = { type: "video", ...messageMedia, video };
+      }
+    }
   }
 
   if (m === null) {
