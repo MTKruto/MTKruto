@@ -225,6 +225,14 @@ export class Context {
     return this.update.type === "chosenInlineResult" ? this.update.chosenInlineResult : undefined;
   }
 
+  #withBusinessConnection<P extends { businessConnectionId?: string }>(params: P | undefined): P | undefined {
+    const businessConnectionId = this.msg?.businessConnectionId;
+    if (businessConnectionId === undefined) {
+      return params;
+    }
+    return { ...(params ?? {}), businessConnectionId } as P;
+  }
+
   #mustGetMsg() {
     if (this.msg !== undefined) {
       return { chatId: this.msg.chat.id, messageId: this.msg.id, businessConnectionId: this.msg.businessConnectionId, senderId: this.msg.from?.id, userId: this.msg.from?.id };
@@ -816,37 +824,37 @@ export class Context {
   /** Context-aware alias for {@link Client.editMessageCaption}. */
   async editMessageCaption(messageId: number, params?: EditMessageCaptionParams): Promise<Message> {
     const chatId = this.#mustGetChatId();
-    return await this.client.editMessageCaption(chatId, messageId, params);
+    return await this.client.editMessageCaption(chatId, messageId, this.#withBusinessConnection(params));
   }
 
   /** Context-aware alias for {@link Client.editMessageLiveLocation}. */
   async editMessageLiveLocation(messageId: number, latitude: number, longitude: number, params?: EditMessageLiveLocationParams): Promise<MessageLocation> {
     const chatId = this.#mustGetChatId();
-    return await this.client.editMessageLiveLocation(chatId, messageId, latitude, longitude, params);
+    return await this.client.editMessageLiveLocation(chatId, messageId, latitude, longitude, this.#withBusinessConnection(params));
   }
 
   /** Context-aware alias for {@link Client.editMessageMedia}. */
   async editMessageMedia(messageId: number, media: InputMedia, params?: EditMessageMediaParams): Promise<Message> {
     const chatId = this.#mustGetChatId();
-    return await this.client.editMessageMedia(chatId, messageId, media, params);
+    return await this.client.editMessageMedia(chatId, messageId, media, this.#withBusinessConnection(params));
   }
 
   /** Context-aware alias for {@link Client.editMessageReplyMarkup}. */
   async editMessageReplyMarkup(messageId: number, params?: EditMessageReplyMarkupParams): Promise<Message> {
     const chatId = this.#mustGetChatId();
-    return await this.client.editMessageReplyMarkup(chatId, messageId, params);
+    return await this.client.editMessageReplyMarkup(chatId, messageId, this.#withBusinessConnection(params));
   }
 
   /** Context-aware alias for {@link Client.editMessageRichText}. */
   async editMessageRichText(messageId: number, richText: InputRichText, params?: EditMessageRichTextParams): Promise<MessageRichText> {
     const chatId = this.#mustGetChatId();
-    return await this.client.editMessageRichText(chatId, messageId, richText, params);
+    return await this.client.editMessageRichText(chatId, messageId, richText, this.#withBusinessConnection(params));
   }
 
   /** Context-aware alias for {@link Client.editMessageText}. */
   async editMessageText(messageId: number, text: string, params?: EditMessageTextParams): Promise<MessageText> {
     const chatId = this.#mustGetChatId();
-    return await this.client.editMessageText(chatId, messageId, text, params);
+    return await this.client.editMessageText(chatId, messageId, text, this.#withBusinessConnection(params));
   }
 
   /** Context-aware alias for {@link Client.editStory}. */
