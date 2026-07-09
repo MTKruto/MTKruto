@@ -1379,6 +1379,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
       );
     } catch (err) {
       this.#clearInitiatedRekey(state);
+      await state.commit(this.#c.messageStorage.storage);
       throw err;
     }
   }
