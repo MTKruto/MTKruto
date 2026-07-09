@@ -422,7 +422,7 @@ export function constructSecretMessage(chatId: number, message: SecretChats.decr
           }
         } else if (audio) {
           if (audio.voice) {
-            const { fileId, fileUniqueId } = getFileIds(FileType.Audio);
+            const { fileId, fileUniqueId } = getFileIds(FileType.VoiceNote);
             const voice: Voice = {
               fileId,
               fileUniqueId,
