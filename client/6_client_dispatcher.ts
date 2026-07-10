@@ -2432,7 +2432,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @cache file
    */
   async *download(fileId: string, params?: DownloadParams): AsyncGenerator<Uint8Array, void, unknown> {
-    let offset = 0;
+    let offset = params?.offset ?? 0;
     const chunkSize = params?.chunkSize ?? DOWNLOAD_MAX_CHUNK_SIZE;
     const fileInformation = params?.fileInformation;
 
