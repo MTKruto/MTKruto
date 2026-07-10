@@ -21,7 +21,7 @@
 import { MINUTE } from "../0_deps.ts";
 import { LruCache, unreachable } from "../0_deps.ts";
 import { base64DecodeUrlSafe, base64EncodeUrlSafe, getLogger, intFromBytes, type Logger, type MaybePromise, rleDecode, rleEncode, sha1, ZERO_CHANNEL_ID } from "../1_utilities.ts";
-import { awaitablePooledMap } from "../1_utilities.ts";
+import { awaitablePooledMap, Mutex } from "../1_utilities.ts";
 import { fromString, type Storage, type StorageKeyPart, toString } from "../2_storage.ts";
 import { Api, TLReader, TLWriter, X } from "../2_tl.ts";
 import type { DC } from "../3_transport.ts";
@@ -199,10 +199,20 @@ export class StorageOperations {
   }
 
   #lastCommit: Date | null = null;
+  #commitMutex = new Mutex();
   async commit(force = false) {
     if (this.#storage.isMemory) {
       return;
     }
+    const unlock = await this.#commitMutex.lock();
+    try {
+      await this.#commitInner(force);
+    } finally {
+      unlock();
+    }
+  }
+
+  async #commitInner(force: boolean) {
     const pending = this.#values.filter((v) => v.isUpdatePending).length + this.#maps.filter((v) => v.pendingUpdateCount > 0).length;
     if (pending <= 0) {
       this.#L.debug("nothing to commit");
@@ -229,7 +239,11 @@ export class StorageOperations {
     if (commit) {
       const values = this.#values.filter((v) => v.isUpdatePending).map((v) => v.commit());
       const maps = this.#maps.filter((v) => v.pendingUpdateCount > 0).map((v) => v.commit());
-      await Promise.all(values.concat(maps));
+      for (const result of await Promise.allSettled(values.concat(maps))) {
+        if (result.status === "rejected") {
+          throw result.reason;
+        }
+      }
       this.#L.debug("committed", values.length, "value(s) and", maps.length, "map(s)");
       this.#lastCommit = new Date();
     }
@@ -741,17 +755,19 @@ class StorageValue<T> {
     this.#key = [path];
   }
 
-  #updatePending = false;
+  #isUpdatePending = false;
+  #revision = 0n;
   #value?: T | null;
   set(value: T | null) {
     this.#value = value;
     if (!this.#storage.isMemory) {
-      this.#updatePending = true;
+      this.#isUpdatePending = true;
+      ++this.#revision;
     }
   }
 
   get isUpdatePending(): boolean {
-    return this.#updatePending;
+    return this.#isUpdatePending;
   }
 
   mustGet(): T | null {
@@ -770,9 +786,10 @@ class StorageValue<T> {
       return;
     }
     const value = this.#value;
+    const revision = this.#revision;
     await this.#storage.set(this.#key, value);
-    if (this.#value === value) {
-      this.#updatePending = false;
+    if (this.#revision === revision) {
+      this.#isUpdatePending = false;
     }
   }
 }
