@@ -34,10 +34,10 @@ export class NetworkStatisticsManager {
 
   async getNetworkStatistics(): Promise<NetworkStatistics> {
     const [messagesRead, messagesWrite, mediaRead, mediaWrite] = await Promise.all([
-      this.#c.storage.get<number>(["netstat_messages_read"]),
-      this.#c.storage.get<number>(["netstat_messages_write"]),
-      this.#c.storage.get<number>(["netstat_media_read"]),
-      this.#c.storage.get<number>(["netstat_media_write"]),
+      this.#c.messageStorage.get<number>(["netstat_messages_read"]),
+      this.#c.messageStorage.get<number>(["netstat_messages_write"]),
+      this.#c.messageStorage.get<number>(["netstat_media_read"]),
+      this.#c.messageStorage.get<number>(["netstat_media_write"]),
     ]);
     const messages = {
       sent: Number(messagesWrite || 0),
