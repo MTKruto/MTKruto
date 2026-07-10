@@ -162,7 +162,7 @@ export class ClientPlain extends ClientAbstract implements ClientAbstract {
       nonce,
       server_nonce: serverNonce,
       retry_id: 0n,
-      g_b: intToBytes(gB, 256, { byteOrder: "big" }),
+      g_b: intToBytes(gB, 256, { byteOrder: "big", isSigned: false }),
     });
 
     let dataWithHash = concat([await sha1(data), data]);

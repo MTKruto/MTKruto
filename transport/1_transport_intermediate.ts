@@ -82,7 +82,7 @@ export class TransportIntermediate extends Transport implements Transport {
       buffer = concat([buffer, padding]);
     }
 
-    const length = intToBytes(buffer.byteLength, 4);
+    const length = intToBytes(buffer.byteLength, 4, { isSigned: false });
     const data = concat([length, buffer]);
 
     await this.#connection.write(await this.encrypt(data));
