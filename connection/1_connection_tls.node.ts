@@ -76,7 +76,7 @@ export class ConnectionTLS implements Connection {
       return;
     }
 
-    this.#isReady = false;
+    this.#cleanupSocket();
     const socket = this.#socket = new Socket();
     socket.on("error", () => {
       if (this.#socket !== socket) {
