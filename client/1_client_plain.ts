@@ -49,7 +49,7 @@ export class ClientPlain extends ClientAbstract implements ClientAbstract {
   async invoke<T extends Mtproto.AnyObject, R = T["_"] extends keyof Mtproto.Functions ? Mtproto.ReturnType<T> extends never ? Mtproto.ReturnType<Mtproto.Functions[T["_"]]> : never : never>(function_: T): Promise<R> {
     await this.session.send(Mtproto.serializeObject(function_), () => () => {});
     const body = await this.session.receive();
-    return await Mtproto.deserializeType(Mtproto.mustGetReturnType(function_._), body) as R;
+    return await Mtproto.deserializeType(Mtproto.mustGetReturnType(function_._), body, true) as R;
   }
 
   async createAuthKey(isTemporary: boolean): Promise<[Uint8Array<ArrayBuffer>, bigint]> {

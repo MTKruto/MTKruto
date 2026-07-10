@@ -609,6 +609,84 @@ Deno.test("primitive vectors", async () => {
   assertEquals(deserialized, expected);
 });
 
+Deno.test("bare result", async () => {
+  const schema: Schema = {
+    definitions: {
+      result: [0x01010101, [["value", "int"]], "Result"],
+    },
+    identifierToName: { [0x01010101]: "result" },
+  };
+  const writer = new TLWriter().writeInt32(42);
+  assertEquals(await new TLReader(writer.buffer).readResult("result", schema), { _: "result", value: 42 });
+});
+
+Deno.test("bare vectors", async (t) => {
+  await t.step("bare items", async () => {
+    const schema: Schema = {
+      definitions: {
+        future_salt: [
+          0x01010101,
+          [["valid_since", "int"], ["valid_until", "int"], ["salt", "long"]],
+          "FutureSalt",
+        ],
+        future_salts: [
+          0x02020202,
+          [["req_msg_id", "long"], ["now", "int"], ["salts", "vector<future_salt>"]],
+          "FutureSalts",
+        ],
+      },
+      identifierToName: {
+        [0x01010101]: "future_salt",
+        [0x02020202]: "future_salts",
+      },
+    };
+    const writer = new TLWriter()
+      .writeInt32(0x02020202, false)
+      .writeInt64(123n)
+      .writeInt32(456)
+      .writeInt32(2)
+      .writeInt32(1)
+      .writeInt32(2)
+      .writeInt64(3n)
+      .writeInt32(4)
+      .writeInt32(5)
+      .writeInt64(6n);
+
+    assertEquals(await new TLReader(writer.buffer).readType("future_salts", schema), {
+      _: "future_salts",
+      req_msg_id: 123n,
+      now: 456,
+      salts: [
+        { _: "future_salt", valid_since: 1, valid_until: 2, salt: 3n },
+        { _: "future_salt", valid_since: 4, valid_until: 5, salt: 6n },
+      ],
+    });
+  });
+
+  await t.step("boxed items", async () => {
+    const schema: Schema = {
+      definitions: {
+        rule: [0x03030303, [["value", "int"]], "Rule"],
+        config: [0x04040404, [["rules", "vector<Rule>"]], "Config"],
+      },
+      identifierToName: {
+        [0x03030303]: "rule",
+        [0x04040404]: "config",
+      },
+    };
+    const writer = new TLWriter()
+      .writeInt32(0x04040404, false)
+      .writeInt32(1)
+      .writeInt32(0x03030303, false)
+      .writeInt32(42);
+
+    assertEquals(await new TLReader(writer.buffer).readType("config", schema), {
+      _: "config",
+      rules: [{ _: "rule", value: 42 }],
+    });
+  });
+});
+
 Deno.test("errors", async () => {
   const schema: Schema = {
     definitions: {
@@ -630,7 +708,7 @@ Deno.test("errors", async () => {
           ["bytes", "bytes"],
           ["flags", "#"],
           ["flag1", "flags.0?true"],
-          ["flag2", "flags.1?Vector<testObject1>"],
+          ["flag2", "flags.1?Vector<TestObject>"],
           ["flag3", "flags.3?long"],
         ],
         "TestObject",
@@ -638,7 +716,7 @@ Deno.test("errors", async () => {
       testObject2Vector: [
         0x11111111,
         [
-          ["vector", "flags.1?Vector<testObject2>"],
+          ["vector", "flags.1?Vector<TestObject>"],
         ],
         "TestObjectVector",
       ],

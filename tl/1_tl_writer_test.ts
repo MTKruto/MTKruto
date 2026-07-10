@@ -302,7 +302,7 @@ const schema: Schema = {
         ["bytes", "bytes"],
         ["flags", "#"],
         ["flag1", "flags.0?true"],
-        ["flag2", "flags.1?Vector<testObject1>"],
+        ["flag2", "flags.1?Vector<TestObject>"],
         ["flag3", "flags.3?long"],
       ],
       "TestObject",
@@ -310,7 +310,7 @@ const schema: Schema = {
     testObject2Vector: [
       0x11111111,
       [
-        ["vector", "flags.1?Vector<testObject2>"],
+        ["vector", "flags.1?Vector<TestObject>"],
       ],
       "TestObjectVector",
     ],

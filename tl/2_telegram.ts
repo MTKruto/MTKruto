@@ -30,9 +30,9 @@ export * from "./1_telegram_api.ts";
 
 export type DeserializedType = boolean | number | bigint | string | Uint8Array | Api.AnyType | Array<DeserializedType>;
 
-export async function deserializeType<T extends (keyof Api.Types) | "X" | string>(name: T, bufferOrReader: TLReader | Uint8Array): Promise<T extends keyof Api.Types ? Api.Types[T] : DeserializedType> {
+export async function deserializeType<T extends (keyof Api.Types) | "X" | string>(name: T, bufferOrReader: TLReader | Uint8Array, isFunctionResult = false): Promise<T extends keyof Api.Types ? Api.Types[T] : DeserializedType> {
   const reader = bufferOrReader instanceof Uint8Array ? new TLReader(bufferOrReader) : bufferOrReader;
-  return await reader.readType(name, Api.schema);
+  return isFunctionResult ? await reader.readResult(name, Api.schema) : await reader.readType(name, Api.schema);
 }
 
 export function serializeObject(object: Api.AnyObject): Uint8Array<ArrayBuffer> {

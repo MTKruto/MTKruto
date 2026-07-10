@@ -28,9 +28,9 @@ export * from "./1_mtproto_api.ts";
 
 export type DeserializedType = boolean | number | bigint | string | Uint8Array | AnyType | Array<DeserializedType>;
 
-export async function deserializeType<T extends (keyof Types) | "X" | string>(name: T, bufferOrReader: TLReader | Uint8Array): Promise<T extends keyof Types ? Types[T] : DeserializedType> {
+export async function deserializeType<T extends (keyof Types) | "X" | string>(name: T, bufferOrReader: TLReader | Uint8Array, isFunctionResult = false): Promise<T extends keyof Types ? Types[T] : DeserializedType> {
   const reader = bufferOrReader instanceof Uint8Array ? new TLReader(bufferOrReader) : bufferOrReader;
-  return await reader.readType(name, schema);
+  return isFunctionResult ? await reader.readResult(name, schema) : await reader.readType(name, schema);
 }
 
 export function serializeObject(object: AnyObject): Uint8Array<ArrayBuffer> {

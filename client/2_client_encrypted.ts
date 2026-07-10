@@ -420,7 +420,7 @@ export class ClientEncrypted extends ClientAbstract {
     if (sentRequest) {
       let type: Api.DeserializedType;
       try {
-        type = await Api.deserializeType(Api.mustGetReturnType(sentRequest.call._), body);
+        type = await Api.deserializeType(Api.mustGetReturnType(sentRequest.call._), body, true);
         this.#L.in(type);
         this.#L.debug("received rpc_result", repr(type));
         sentRequest.promiseWithResolvers.resolve(type);

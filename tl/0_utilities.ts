@@ -100,11 +100,13 @@ export function toJSON(object: unknown): any {
   }
 }
 
-export function getVectorItemType(type: string): string | null {
-  if (!(type.startsWith(VECTOR_PREFIX) || type.startsWith(VECTOR_PREFIX.toLowerCase())) || !type.endsWith(VECTOR_SUFFIX)) {
+export function getVectorItemType(type_: string): { type: string; isBare: boolean } | null {
+  if (!(type_.startsWith(VECTOR_PREFIX) || type_.startsWith(VECTOR_PREFIX.toLowerCase())) || !type_.endsWith(VECTOR_SUFFIX)) {
     return null;
   }
-  return type.slice(VECTOR_PREFIX.length).slice(0, -1 * VECTOR_SUFFIX.length);
+  const type = type_.slice(VECTOR_PREFIX.length).slice(0, -1 * VECTOR_SUFFIX.length);
+  const isBare = type_.startsWith(VECTOR_PREFIX.toLowerCase());
+  return { type, isBare };
 }
 const VECTOR_PREFIX = "Vector<";
 const VECTOR_SUFFIX = ">";

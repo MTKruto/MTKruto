@@ -118,6 +118,17 @@ export class TLReader {
     if (primitive !== undefined) {
       return primitive;
     }
+    return await this.#readNonPrimitiveType(name, schema);
+  }
+
+  async readResult(name: string, schema: Schema): Promise<any> {
+    return await this.#readField(name, schema);
+  }
+
+  async #readNonPrimitiveType(name: string, schema: Schema) {
+    if (getVectorItemType(name)) {
+      return await this.#deserializeVector(name, schema);
+    }
     const id = this.readInt32(false);
     if (id === BOOL_TRUE) {
       return true;
@@ -131,9 +142,6 @@ export class TLReader {
       }
       this.unreadInt32();
       return await this.readType(typeName, schema);
-    }
-    if (id === VECTOR) {
-      return await this.#deserializeVector(name, schema);
     }
     const definition = schema.definitions[name];
     if (definition) {
@@ -163,6 +171,25 @@ export class TLReader {
       throw new TLError(`Expected constructor with ID ${constructorIdToHex(desc[0])} but received ${constructorIdToHex(id)}`, this.#path);
     }
 
+    return await this.#deserializeTypeFields(type, desc, schema);
+  }
+
+  async #readField(name: string, schema: Schema): Promise<any> {
+    if (isOptionalParam(name)) {
+      name = getOptionalParamInnerType(name);
+    }
+    const primitive = this.#deserializePrimitive(name);
+    if (primitive !== undefined) {
+      return primitive;
+    }
+    const definition = schema.definitions[name];
+    if (definition) {
+      return await this.#deserializeTypeFields(name, definition, schema);
+    }
+    return await this.#readNonPrimitiveType(name, schema);
+  }
+
+  async #deserializeTypeFields(type: string, desc: ObjectDefinition, schema: Schema) {
     let isFirstPathElementExisting = false;
     const type_: Record<string, any> = { _: type };
     const flagFields: Record<string, number> = {};
@@ -188,7 +215,7 @@ export class TLReader {
         isFirstPathElementExisting = true;
       }
 
-      const value = await this.readType(fieldType, schema);
+      const value = await this.#readField(fieldType, schema);
       type_[name] = value;
     }
 
@@ -196,14 +223,20 @@ export class TLReader {
   }
 
   async #deserializeVector(type: string, schema: Schema) {
-    const itemType = getVectorItemType(type);
-    if (!itemType) {
-      throw new TLError(`Expected Vector but received ${type}`, this.#path);
+    const vectorType = getVectorItemType(type);
+    if (!vectorType) {
+      throw new TLError(`Expected vector but received ${type}`, this.#path);
+    }
+    if (!vectorType.isBare) {
+      const id = this.readInt32(false);
+      if (id !== VECTOR) {
+        throw new TLError(`Expected constructor with ID ${constructorIdToHex(VECTOR)} but received ${constructorIdToHex(id)}`, this.#path);
+      }
     }
     const size = this.readInt32();
     const array = new Array<any>();
     for (let i = 0; i < size; ++i) {
-      array.push(await this.readType(itemType, schema));
+      array.push(await this.#readField(vectorType.type, schema));
     }
     return array;
   }

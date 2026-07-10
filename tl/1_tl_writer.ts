@@ -107,7 +107,7 @@ export class TLWriter {
     return this;
   }
 
-  #serialize(type: string, value: any, schema: Schema) {
+  #serialize(type: string, value: any, schema: Schema, writesConstructorId = true) {
     if (this.#serializePrimitive(type, value)) {
       return;
     }
@@ -124,7 +124,9 @@ export class TLWriter {
     }
     const type__ = value as any;
     const [id, parameters_] = maybeDefinition;
-    this.writeInt32(id, false);
+    if (writesConstructorId) {
+      this.writeInt32(id, false);
+    }
 
     let isFirstPathElementExisting = false;
     const flagFields: Record<string, number> = {};
@@ -168,7 +170,7 @@ export class TLWriter {
       if (isOptionalParam(type)) {
         type = getOptionalParamInnerType(type);
       }
-      this.#serialize(type, type__[name], schema);
+      this.#serializeField(type, type__[name], schema);
     }
 
     for (const [name, type] of parameters_.values()) {
@@ -188,6 +190,10 @@ export class TLWriter {
     }
   }
 
+  #serializeField(type: string, value: any, schema: Schema) {
+    this.#serialize(type, value, schema, schema.definitions[type] === undefined);
+  }
+
   #serializeVector(type: string, value: any, schema: Schema) {
     const itemType = getVectorItemType(type);
     if (!itemType) {
@@ -196,10 +202,12 @@ export class TLWriter {
     if (!Array.isArray(value)) {
       throw new TLError(`Expected an array but received ${repr(value)}`, this.#path);
     }
-    this.writeInt32(VECTOR, false);
+    if (!itemType.isBare) {
+      this.writeInt32(VECTOR, false);
+    }
     this.writeInt32(value.length);
     for (const item of value) {
-      this.#serialize(itemType, item, schema);
+      this.#serializeField(itemType.type, item, schema);
     }
     return true;
   }
