@@ -2685,7 +2685,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   async saveDraft(chatId: ID, text: string, params?: SaveDraftParams) {
     this.#c.storage.assertUser("saveDraft");
     const peer = await this.#c.getInputPeer(chatId);
-    const [message, entities] = this.parseText(text, params);
+    const [message, entities] = this.parseText(text, params, true);
     const effect = params?.effectId ? BigInt(params.effectId) : undefined;
     const media = params?.media ? await this.#resolveInputMedia(params.media) : undefined;
     const invert_media = params?.isMediaAboveText || undefined;
