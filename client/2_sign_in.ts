@@ -73,7 +73,7 @@ export async function signIn(client: ClientGeneric, logger: Logger, params: Sign
           await client.sendCode(phone);
           break;
         } catch (err) {
-          if (err instanceof PhoneNumberInvalid) {
+          if (err instanceof PhoneNumberInvalid && typeof params.phone !== "string") {
             continue;
           } else {
             throw err;
@@ -88,6 +88,9 @@ export async function signIn(client: ClientGeneric, logger: Logger, params: Sign
         if (codeCheckResult.type === "signedIn") {
           return;
         } else if (codeCheckResult.type === "invalidCode") {
+          if (typeof params.code === "string") {
+            throw new InputError("Invalid verification code.");
+          }
           continue code;
         } else if (codeCheckResult.type === "passwordRequired") {
           break code;
@@ -114,6 +117,9 @@ export async function signIn(client: ClientGeneric, logger: Logger, params: Sign
         if (passwordCheckResult.type === "signedIn") {
           return;
         } else if (passwordCheckResult.type === "invalidPassword") {
+          if (typeof params.password === "string") {
+            throw new InputError("Invalid password.");
+          }
           continue password;
         } else {
           unreachable();
