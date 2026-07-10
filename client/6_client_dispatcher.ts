@@ -2434,9 +2434,10 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   async *download(fileId: string, params?: DownloadParams): AsyncGenerator<Uint8Array, void, unknown> {
     let offset = 0;
     const chunkSize = params?.chunkSize ?? DOWNLOAD_MAX_CHUNK_SIZE;
+    const fileInformation = params?.fileInformation;
 
     while (true) {
-      const chunk = await this.downloadChunk(fileId, { chunkSize, offset });
+      const chunk = await this.downloadChunk(fileId, { chunkSize, offset, fileInformation });
       yield chunk;
 
       if (chunk.byteLength < chunkSize) {
