@@ -189,9 +189,7 @@ export class TLReader {
       }
 
       const value = await this.readType(fieldType, schema);
-      if (typeof value !== "boolean" || value) {
-        type_[name] = value;
-      }
+      type_[name] = value;
     }
 
     return type_;

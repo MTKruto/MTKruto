@@ -702,3 +702,54 @@ Deno.test("errors", async () => {
     assertEquals(err.message, `No data remaining at ${path.join(" ")}`);
   }
 });
+
+Deno.test("drops unset flags, keeps false", async () => {
+  const schema: Schema = {
+    definitions: {
+      testObject1: [
+        0x10101010,
+        [
+          ["boolean1", "Bool"],
+          ["boolean2", "Bool"],
+          ["flags", "#"],
+          ["flag1", "flags.0?true"],
+        ],
+        "TestObject",
+      ],
+    },
+    identifierToName: {
+      [0x10101010]: "testObject1",
+    },
+  };
+
+  const writer = new TLWriter()
+    .writeObject({
+      _: "testObject1",
+      boolean1: true,
+      boolean2: false,
+      flag1: true,
+    }, schema);
+  const type = await new TLReader(writer.buffer).readType("testObject1", schema);
+  assertEquals(type, {
+    _: "testObject1",
+    boolean1: true,
+    boolean2: false,
+    flag1: true,
+  });
+
+  {
+    const writer = new TLWriter()
+      .writeObject({
+        _: "testObject1",
+        boolean1: true,
+        boolean2: false,
+        flag1: undefined,
+      }, schema);
+    const type = await new TLReader(writer.buffer).readType("testObject1", schema);
+    assertEquals(type, {
+      _: "testObject1",
+      boolean1: true,
+      boolean2: false,
+    });
+  }
+});
