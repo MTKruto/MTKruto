@@ -439,6 +439,7 @@ export class FileManager {
     const limit = chunkSize;
     const requestedOffset = params?.offset ?? 0;
     let offset = decryptionInformation ? 0n : BigInt(requestedOffset);
+    const cacheId = offset === 0n ? id : null;
     let bytesToSkip = decryptionInformation ? requestedOffset : 0;
     let part = 0;
 
@@ -476,14 +477,14 @@ export class FileManager {
           if (result.bytes.byteLength) {
             yield result.bytes;
           }
-          if (id !== null) {
-            await this.#c.storage.saveFilePart(id, part, bytesToCache);
+          if (cacheId !== null) {
+            await this.#c.storage.saveFilePart(cacheId, part, bytesToCache);
             signal?.throwIfAborted();
           }
           ++part;
           if (finished) {
-            if (id !== null) {
-              await this.#c.storage.setFilePartCount(id, part, chunkSize);
+            if (cacheId !== null) {
+              await this.#c.storage.setFilePartCount(cacheId, part, chunkSize);
               signal?.throwIfAborted();
             }
             break;
