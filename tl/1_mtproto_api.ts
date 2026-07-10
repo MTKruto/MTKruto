@@ -30,15 +30,15 @@ export interface resPQ {
   _: "resPQ";
   nonce: bigint;
   server_nonce: bigint;
-  pq: Uint8Array;
+  pq: Uint8Array<ArrayBuffer>;
   server_public_key_fingerprints: Array<bigint>;
 }
 
 export interface p_q_inner_data_dc {
   _: "p_q_inner_data_dc";
-  pq: Uint8Array;
-  p: Uint8Array;
-  q: Uint8Array;
+  pq: Uint8Array<ArrayBuffer>;
+  p: Uint8Array<ArrayBuffer>;
+  q: Uint8Array<ArrayBuffer>;
   nonce: bigint;
   server_nonce: bigint;
   new_nonce: bigint;
@@ -47,9 +47,9 @@ export interface p_q_inner_data_dc {
 
 export interface p_q_inner_data_temp_dc {
   _: "p_q_inner_data_temp_dc";
-  pq: Uint8Array;
-  p: Uint8Array;
-  q: Uint8Array;
+  pq: Uint8Array<ArrayBuffer>;
+  p: Uint8Array<ArrayBuffer>;
+  q: Uint8Array<ArrayBuffer>;
   nonce: bigint;
   server_nonce: bigint;
   new_nonce: bigint;
@@ -61,7 +61,7 @@ export interface server_DH_params_ok {
   _: "server_DH_params_ok";
   nonce: bigint;
   server_nonce: bigint;
-  encrypted_answer: Uint8Array;
+  encrypted_answer: Uint8Array<ArrayBuffer>;
 }
 
 export interface server_DH_inner_data {
@@ -69,8 +69,8 @@ export interface server_DH_inner_data {
   nonce: bigint;
   server_nonce: bigint;
   g: number;
-  dh_prime: Uint8Array;
-  g_a: Uint8Array;
+  dh_prime: Uint8Array<ArrayBuffer>;
+  g_a: Uint8Array<ArrayBuffer>;
   server_time: number;
 }
 
@@ -79,7 +79,7 @@ export interface client_DH_inner_data {
   nonce: bigint;
   server_nonce: bigint;
   retry_id: bigint;
-  g_b: Uint8Array;
+  g_b: Uint8Array<ArrayBuffer>;
 }
 
 export interface dh_gen_ok {
@@ -144,7 +144,7 @@ export interface future_salts {
   _: "future_salts";
   req_msg_id: bigint;
   now: number;
-  salts: Array<FutureSalt>;
+  salts: Array<future_salt>;
 }
 
 export interface pong {
@@ -172,7 +172,7 @@ export interface new_session_created {
 
 export interface gzip_packed {
   _: "gzip_packed";
-  packed_data: Uint8Array;
+  packed_data: Uint8Array<ArrayBuffer>;
 }
 
 export interface msgs_ack {
@@ -208,13 +208,13 @@ export interface msgs_state_req {
 export interface msgs_state_info {
   _: "msgs_state_info";
   req_msg_id: bigint;
-  info: Uint8Array;
+  info: Uint8Array<ArrayBuffer>;
 }
 
 export interface msgs_all_info {
   _: "msgs_all_info";
   msg_ids: Array<bigint>;
-  info: Uint8Array;
+  info: Uint8Array<ArrayBuffer>;
 }
 
 export interface msg_detailed_info {
@@ -261,10 +261,10 @@ export interface req_DH_params {
   _: "req_DH_params";
   nonce: bigint;
   server_nonce: bigint;
-  p: Uint8Array;
-  q: Uint8Array;
+  p: Uint8Array<ArrayBuffer>;
+  q: Uint8Array<ArrayBuffer>;
   public_key_fingerprint: bigint;
-  encrypted_data: Uint8Array;
+  encrypted_data: Uint8Array<ArrayBuffer>;
   [R]?: Server_DH_Params;
 }
 
@@ -272,7 +272,7 @@ export interface set_client_DH_params {
   _: "set_client_DH_params";
   nonce: bigint;
   server_nonce: bigint;
-  encrypted_data: Uint8Array;
+  encrypted_data: Uint8Array<ArrayBuffer>;
   [R]?: Set_client_DH_params_answer;
 }
 
@@ -591,7 +591,7 @@ export const schema = Object.freeze({
       [
         ["req_msg_id", "long"],
         ["now", "int"],
-        ["salts", "vector<FutureSalt>"],
+        ["salts", "vector<future_salt>"],
       ],
       "FutureSalts",
     ],
