@@ -2437,6 +2437,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     const fileInformation = params?.fileInformation;
 
     while (true) {
+      params?.signal?.throwIfAborted();
       const chunk = await this.downloadChunk(fileId, { chunkSize, offset, fileInformation });
       yield chunk;
 
