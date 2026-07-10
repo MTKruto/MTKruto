@@ -169,7 +169,10 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
         if (!peer) {
           unreachable();
         }
-        chatMembers.push(constructChatMember(peer[0], p, this.#c.getPeer));
+        const chatMember = constructChatMember(peer[0], p, this.#c.getPeer);
+        if (chatMember.status === "creator" || chatMember.status === "administrator") {
+          chatMembers.push(chatMember);
+        }
       }
       return chatMembers;
     } else {
