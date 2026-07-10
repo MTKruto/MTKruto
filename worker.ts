@@ -72,10 +72,7 @@ async function handleMessage(message: WorkerRequest | WorkerResponse) {
       clientId: message.clientId,
       id: message.id,
       isError: true,
-      data: {
-        name: "InputError",
-        args: "Client not initialized.",
-      },
+      data: serializeWorkerError(new InputError("Client not initialized.")),
     };
   } else {
     try {
@@ -110,10 +107,7 @@ export function initClient(request: WorkerRequest): WorkerResponse {
       clientId: request.clientId,
       id: request.id,
       isError: true,
-      data: {
-        name: "InputError",
-        args: "Client already initialized.",
-      },
+      data: serializeWorkerError(new InputError("Client already initialized.")),
     };
   } else {
     try {

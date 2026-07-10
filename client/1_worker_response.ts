@@ -20,22 +20,20 @@
 
 import type { WorkerError } from "./0_worker_error.ts";
 
-export declare namespace WorkerResponse {
-  export interface Base {
-    type: "response";
-    clientId: string;
-    id: string;
-  }
-
-  export interface Error extends Base {
-    isError: true;
-    data: WorkerError;
-  }
-
-  export interface Data extends Base {
-    isError: false;
-    data: unknown;
-  }
+export interface _WorkerResponseBase {
+  type: "response";
+  clientId: string;
+  id: string;
 }
 
-export type WorkerResponse = WorkerResponse.Error | WorkerResponse.Data;
+export interface WorkerResponseError extends _WorkerResponseBase {
+  isError: true;
+  data: WorkerError;
+}
+
+export interface WorkerResponseData extends _WorkerResponseBase {
+  isError: false;
+  data: unknown;
+}
+
+export type WorkerResponse = WorkerResponseError | WorkerResponseData;
