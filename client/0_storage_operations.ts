@@ -466,6 +466,8 @@ export class StorageOperations {
     let id = BigInt(Date.now()) << 32n;
     if ("pts" in update && update.pts) {
       id |= BigInt(update.pts);
+    } else if ("qts" in update && update.qts) {
+      id |= 0x7FFFFFFFn + BigInt(update.qts);
     } else {
       id |= BigInt(0xFFFFFFFFn);
     }
