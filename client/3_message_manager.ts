@@ -2145,7 +2145,11 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     this.#c.storage.assertUser("readMessages");
     const peer = await this.#c.getInputPeer(chatId);
     const max_id = untilMessageId;
-    await this.#c.invoke({ _: "messages.readHistory", peer, max_id });
+    if (canBeInputChannel(peer)) {
+      await this.#c.invoke({ _: "channels.readHistory", channel: toInputChannel(peer), max_id });
+    } else {
+      await this.#c.invoke({ _: "messages.readHistory", peer, max_id });
+    }
   }
 
   async startBot(botId: ID, params?: StartBotParams): Promise<Message> {
