@@ -86,6 +86,7 @@ export abstract class Session {
   }
 
   #lastState?: boolean;
+  #isReconnecting = false;
   async #stateChangeHandler(isConnected: boolean) {
     if (this.#lastState !== isConnected) {
       setTimeout(() => {
@@ -102,14 +103,32 @@ export abstract class Session {
       }
       return;
     }
-    if (this.#lastConnect && Date.now() - this.#lastConnect.getTime() <= 10 * SECOND) {
-      this.#L.debug("reconnecting after a delay");
-      await delay(3 * SECOND);
-    } else {
-      this.#L.debug("reconnecting");
+    if (this.#isReconnecting) {
+      return;
     }
+    this.#isReconnecting = true;
+    try {
+      if (this.#lastConnect && Date.now() - this.#lastConnect.getTime() <= 10 * SECOND) {
+        this.#L.debug("reconnecting after a delay");
+        await delay(3 * SECOND);
+      } else {
+        this.#L.debug("reconnecting");
+      }
 
-    await this.connect();
+      while (!this.#isDisconnected && !this.isConnected) {
+        try {
+          this.#L.debug("reconnecting");
+          await this.connect();
+        } catch {
+          if (!this.#isDisconnected) {
+            this.#L.debug("reconnecting after a delay");
+            await delay(3 * SECOND);
+          }
+        }
+      }
+    } finally {
+      this.#isReconnecting = false;
+    }
   }
 
   get isConnected(): boolean {
