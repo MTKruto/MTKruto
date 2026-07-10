@@ -30,14 +30,18 @@ export class AbortableLoop {
   }
 
   #controller?: AbortController;
+  #restart = false;
 
   abort() {
+    this.#restart = false;
     this.#controller?.abort();
   }
 
   start() {
     if (this.#controller === undefined) {
       drop(this.#loop());
+    } else if (this.#controller.signal.aborted) {
+      this.#restart = true;
     }
   }
 
@@ -56,6 +60,10 @@ export class AbortableLoop {
       } while (!controller.signal.aborted);
     } finally {
       this.#controller = undefined;
+      if (this.#restart) {
+        this.#restart = false;
+        this.start();
+      }
     }
   }
 }

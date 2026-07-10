@@ -41,4 +41,18 @@ Deno.test("AbortableLoop", async (t) => {
     await delay(MS * ITERATIONS + MARGIN);
     assertEquals(array, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
   });
+
+  await t.step("restart while aborting", async () => {
+    const array = new Array<number>();
+    const loop = new AbortableLoop((loop) => {
+      array.push(array.length);
+      loop.abort();
+      if (array.length === 1) {
+        loop.start();
+      }
+    }, () => {});
+    loop.start();
+    await delay(MARGIN);
+    assertEquals(array, [0, 1]);
+  });
 });
