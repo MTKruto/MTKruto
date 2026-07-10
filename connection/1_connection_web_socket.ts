@@ -44,6 +44,7 @@ export class ConnectionWebSocket implements Connection {
       const webSocket = new WebSocket(this.#url, "binary");
       const mutex = new Mutex();
       webSocket.addEventListener("close", () => {
+        if (this.#webSocket && this.#webSocket !== webSocket) return;
         this.#rejectRead();
         this.stateChangeHandler?.(false);
       });
