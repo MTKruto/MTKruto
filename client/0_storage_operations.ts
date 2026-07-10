@@ -610,7 +610,20 @@ export class StorageOperations {
   }
 
   async reset() {
-    await this.#deleteByPrefix([]);
+    const unlock = await this.#commitMutex.lock();
+    try {
+      await this.#deleteByPrefix([]);
+    } finally {
+      for (const map of this.#maps) {
+        map.reset();
+      }
+      for (const value of this.#values) {
+        value.reset();
+      }
+      this.#accountId = null;
+      this.#lastCommit = null;
+      unlock();
+    }
   }
 
   async setPollResults(pollId: bigint, pollResults: Api.pollResults) {
@@ -704,6 +717,11 @@ class StorageMap<K extends StorageKeyPart[], V> {
     return this.#pendingUpdates.size;
   }
 
+  reset() {
+    this.#pendingUpdates.clear();
+    this.#cache.clear();
+  }
+
   mustGet(key: K) {
     const value = this.#cache.get(toString(key));
     if (value === undefined) {
@@ -770,6 +788,12 @@ class StorageValue<T> {
     return this.#isUpdatePending;
   }
 
+  reset() {
+    this.#value = undefined;
+    this.#isUpdatePending = false;
+    ++this.#revision;
+  }
+
   mustGet(): T | null {
     return this.#value === undefined ? unreachable() : this.#value;
   }
@@ -825,6 +849,11 @@ class StorageAuth extends StorageValue<Auth> {
   override async set(auth: Auth | null) {
     super.set(auth);
     await this.#resetAuthKeyId(auth);
+  }
+
+  override reset() {
+    super.reset();
+    this.#authKeyId = null;
   }
 
   async update(fn: (auth: Auth) => void) {

@@ -1079,6 +1079,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       };
     }
   }
+
+  async #resetStorages() {
+    const storages = [this.storage, this.messageStorage, ...this.#branchStorages];
+    for (const result of await Promise.allSettled(storages.map((storage) => storage.reset()))) {
+      if (result.status === "rejected") {
+        throw result.reason;
+      }
+    }
+  }
+
   //
   // ========================= CONNECTION ========================= //
   //
@@ -1332,13 +1342,21 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async signOut() {
     try {
-      await Promise.all([
-        this.storage.reset(),
-        this.invoke({ _: "auth.logOut" }).then(() => this.#propagateAuthorizationState(false)),
-      ]);
+      await this.invoke({ _: "auth.logOut" });
+      await this.#propagateAuthorizationState(false);
     } finally {
       this.#lastGetMe = null;
-      await this.disconnect();
+      try {
+        await this.#resetStorages();
+      } finally {
+        try {
+          await this.disconnect();
+        } finally {
+          this.#clients = [];
+          this.#downloadPools = {};
+          this.#uploadPools = {};
+        }
+      }
       await this.connect();
     }
   }
