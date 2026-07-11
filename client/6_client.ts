@@ -1054,7 +1054,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   async #setupClient(client: ClientEncrypted) {
-    const storage = client.dc === this.#client!.dc ? this.storage : new StorageOperations(this.storage.provider.branch(client.dc + (client.isMedia ? "_media" : "")));
+    const storage = client.dc === this.#client!.dc ? this.storage : new StorageOperations(this.storage.provider.branch(`${client.dc}${client.isMedia ? "_media" : ""}`));
     if (storage !== this.storage) {
       this.#branchStorages.add(storage);
     }
@@ -1082,7 +1082,22 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
 
   async #resetStorages() {
     const storages = [this.storage, this.messageStorage, ...this.#branchStorages];
-    for (const result of await Promise.allSettled(storages.map((storage) => storage.reset()))) {
+    const results = await Promise.allSettled(storages.map((storage) => storage.reset()));
+    results.push(
+      ...await Promise.allSettled(
+        (["1", "2", "3", "4", "5", "1-test", "2-test", "3-test"] as DC[]).flatMap((dc) => [dc, `${dc}_media`])
+          .map(async (id) => {
+            const storage = new StorageOperations(this.storage.provider.branch(id));
+            try {
+              await storage.initialize();
+              await storage.reset();
+            } finally {
+              await storage.close();
+            }
+          }),
+      ),
+    );
+    for (const result of results) {
       if (result.status === "rejected") {
         throw result.reason;
       }
@@ -1346,16 +1361,18 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       await this.#propagateAuthorizationState(false);
     } finally {
       this.#lastGetMe = null;
+      this.#disconnectAllClients();
+      this.#clients = [];
+      this.#downloadPools = {};
+      this.#uploadPools = {};
+      this.#clientDisconnectionLoop.abort();
+      this.#updateGapRecoveryLoop.abort();
+      this.#storageWriteLoop.abort();
+      this.#updateManager.closeAllChats();
       try {
         await this.#resetStorages();
       } finally {
-        try {
-          await this.disconnect();
-        } finally {
-          this.#clients = [];
-          this.#downloadPools = {};
-          this.#uploadPools = {};
-        }
+        await this.disconnect();
       }
       await this.connect();
     }
