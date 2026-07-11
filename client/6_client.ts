@@ -1082,7 +1082,10 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
 
   async #resetStorages() {
     const storages = [this.storage, this.messageStorage, ...this.#branchStorages];
-    const results = await Promise.allSettled(storages.map((storage) => storage.reset()));
+    const results = await Promise.allSettled(storages.map(async (storage) => {
+      await storage.initialize();
+      await storage.reset();
+    }));
     results.push(
       ...await Promise.allSettled(
         (["1", "2", "3", "4", "5", "1-test", "2-test", "3-test"] as DC[]).flatMap((dc) => [dc, `${dc}_media`])
@@ -1369,11 +1372,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       this.#updateGapRecoveryLoop.abort();
       this.#storageWriteLoop.abort();
       this.#updateManager.closeAllChats();
-      try {
-        await this.#resetStorages();
-      } finally {
-        await this.disconnect();
-      }
+      await this.disconnect();
+      await this.#resetStorages();
       await this.connect();
     }
   }
