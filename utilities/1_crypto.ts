@@ -20,6 +20,7 @@
 
 import { concat } from "../0_deps.ts";
 import { intFromBytes, intToBytes } from "./0_int.ts";
+import { Mutex } from "./0_mutex.ts";
 
 export class CTR {
   #key: CryptoKey;
@@ -40,11 +41,14 @@ export class CTR {
     return await crypto.subtle.importKey("raw", key, "AES-CTR", false, ["encrypt"]);
   }
 
+  #callMutex = new Mutex();
   async call(data: Uint8Array<ArrayBuffer>): Promise<Uint8Array<ArrayBuffer>> {
-    if (this.#promise) {
-      await Promise.allSettled([this.#promise]);
+    const unlock = await this.#callMutex.lock();
+    try {
+      return await this.#call(data);
+    } finally {
+      unlock();
     }
-    return await (this.#promise = this.#call(data));
   }
 
   async #call(data: Uint8Array<ArrayBuffer>) {
