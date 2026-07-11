@@ -93,7 +93,7 @@ export class FileManager {
     if (contents instanceof Uint8Array) {
       result = await this.#uploadBuffer(contents, fileId, mustTrackProgress, chunkSize, poolSize, params?.signal, encryptionInformation);
     } else {
-      result = await this.#uploadStream(contents, fileId, mustTrackProgress, chunkSize, poolSize, params?.signal, encryptionInformation);
+      result = await this.#uploadStream(contents, fileId, mustTrackProgress, size, chunkSize, poolSize, params?.signal, encryptionInformation);
     }
 
     this.#Lupload.debug(`[${fileId}] uploaded ` + result.parts + " part(s)");
@@ -122,7 +122,7 @@ export class FileManager {
     }
   }
 
-  async #uploadStream(stream: ReadableStream<Uint8Array>, fileId: bigint, mustTrackProgress: boolean, chunkSize: number, poolSize: number, signal: AbortSignal | undefined, encryptionInformation: EncryptionInformation | undefined) {
+  async #uploadStream(stream: ReadableStream<Uint8Array>, fileId: bigint, mustTrackProgress: boolean, size: number, chunkSize: number, poolSize: number, signal: AbortSignal | undefined, encryptionInformation: EncryptionInformation | undefined) {
     let part: Part;
     let promises = new Array<Promise<void>>();
     let ms = 0.05;
@@ -130,6 +130,7 @@ export class FileManager {
     let firstPart: Uint8Array | undefined;
     let iv = encryptionInformation?.iv;
     let fileSize = 0;
+    const total = size > 0 ? size : 0;
     for await (part of iterateReadableStream(stream.pipeThrough(new PartStream(chunkSize)))) {
       if (!part.isSmall && part.part > 0) {
         await delay(ms);
@@ -138,8 +139,9 @@ export class FileManager {
       if (!firstPart) {
         firstPart = part.bytes;
       }
+      const partSize = part.bytes.byteLength;
+      fileSize += partSize;
       if (encryptionInformation) {
-        fileSize += part.bytes.byteLength;
         if (part.bytes.byteLength % 16 !== 0) {
           part.bytes = concat([part.bytes, crypto.getRandomValues(new Uint8Array((16 - part.bytes.length % 16) % 16))]);
         }
@@ -153,13 +155,13 @@ export class FileManager {
       promises.push(
         this.#uploadPart(fileId, part.totalParts, !part.isSmall, part.part, part.bytes, signal).then(() => {
           if (mustTrackProgress) {
-            uploaded += part.bytes.byteLength;
+            uploaded += partSize;
             this.#c.handleUpdate({
               type: "uploadProgress",
               uploadProgress: {
                 id: String(fileId),
                 uploaded,
-                total: 0,
+                total,
                 isUploaded: false,
               },
             });
@@ -178,7 +180,7 @@ export class FileManager {
         uploadProgress: {
           id: String(fileId),
           uploaded,
-          total: 0,
+          total: total || uploaded,
           isUploaded: true,
         },
       });
