@@ -40,8 +40,10 @@ export class ConnectionWebSocket implements Connection {
   }
 
   #initWs() {
-    return new Promise<WebSocket>((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
+      this.#buffer = new Uint8Array();
       const webSocket = new WebSocket(this.#url, "binary");
+      this.#webSocket = webSocket;
       const mutex = new Mutex();
       webSocket.addEventListener("close", () => {
         if (this.#webSocket && this.#webSocket !== webSocket) return;
@@ -49,29 +51,35 @@ export class ConnectionWebSocket implements Connection {
         this.stateChangeHandler?.(false);
       });
       webSocket.addEventListener("open", () => {
+        if (this.#webSocket !== webSocket) return;
         this.stateChangeHandler?.(true);
-        resolve(webSocket);
+        resolve();
         L.debug("connected to", this.#url);
       });
       webSocket.addEventListener("message", async (e) => {
+        if (this.#webSocket !== webSocket) return;
         if (typeof e.data === "string") {
           return;
         }
         const unlock = await mutex.lock();
-        const data = new Uint8Array(await new Blob([e.data].map((v) => v instanceof Blob || v instanceof Uint8Array ? v as Blob | Uint8Array<ArrayBuffer> : v instanceof ArrayBuffer ? v : unreachable())).arrayBuffer());
+        try {
+          const data = new Uint8Array(await new Blob([e.data].map((v) => v instanceof Blob || v instanceof Uint8Array ? v as Blob | Uint8Array<ArrayBuffer> : v instanceof ArrayBuffer ? v : unreachable())).arrayBuffer());
+          if (this.#webSocket !== webSocket) return;
 
-        this.#buffer = concat([this.#buffer, data]);
+          this.#buffer = concat([this.#buffer, data]);
 
-        if (
-          this.#nextResolve !== null && this.#buffer.byteLength >= this.#nextResolve[0]
-        ) {
-          this.#nextResolve[1].resolve();
-          this.#nextResolve = null;
+          if (
+            this.#nextResolve !== null && this.#buffer.byteLength >= this.#nextResolve[0]
+          ) {
+            this.#nextResolve[1].resolve();
+            this.#nextResolve = null;
+          }
+        } finally {
+          unlock();
         }
-
-        unlock();
       });
       webSocket.addEventListener("error", (err) => {
+        if (this.#webSocket !== webSocket) return;
         if (this.#isConnecting) {
           reject("message" in err ? new ConnectionError(err.message as string) : new ConnectionError("Failed to connect."));
         }
@@ -94,7 +102,7 @@ export class ConnectionWebSocket implements Connection {
     this.#isConnecting = true;
 
     try {
-      this.#webSocket = await this.#initWs();
+      await this.#initWs();
     } finally {
       this.#isConnecting = false;
     }
