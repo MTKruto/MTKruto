@@ -378,7 +378,7 @@ export class FileManager {
           }
         }
       }
-      const contentLength = Number(response.headers.get("content-length"));
+      const contentLength = parseInt(response.headers.get("content-length") ?? "");
       if (contentLength && !isNaN(contentLength)) {
         size = contentLength;
       }
@@ -429,7 +429,7 @@ export class FileManager {
       const key = decodeHex(withoutVersion.slice(0, 64));
       const iv = decodeHex(withoutVersion.slice(64, 128));
       decryptionInformation = { key, iv };
-      fileSize = Number(withoutVersion.slice(128));
+      fileSize = parseInt(withoutVersion.slice(128));
     }
 
     const chunkSize = params?.chunkSize ?? DOWNLOAD_MAX_CHUNK_SIZE;

@@ -30,7 +30,7 @@ export class FloodWait extends TelegramError {
   constructor(params: TelegramErrorParams) {
     super(params);
     const p = params.error_message.split("_");
-    this.seconds = Number(p[p.length - 1]);
+    this.seconds = parseInt(p[p.length - 1]);
     if (isNaN(this.seconds)) {
       unreachable();
     }
@@ -43,7 +43,7 @@ export class Migrate extends TelegramError {
   constructor(params: TelegramErrorParams) {
     super(params);
     const p = params.error_message.split("_");
-    this.dc = Number(p[p.length - 1]);
+    this.dc = parseInt(p[p.length - 1]);
     if (isNaN(this.dc)) {
       unreachable();
     }

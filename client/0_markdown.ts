@@ -71,7 +71,7 @@ function getLinkUserId(url_: string) {
     if (url.protocol !== "tg:" || url.hostname !== "user" || url.pathname.slice(1) !== "" || url.port !== "") {
       return 0;
     }
-    return Number(url.searchParams.get("id")) || 0;
+    return parseInt(url.searchParams.get("id") ?? "") || 0;
   } catch {
     return 0;
   }
@@ -82,7 +82,7 @@ function getLinkTime(url_: string) {
     if (url.protocol !== "tg:" || url.hostname !== "time" || url.pathname.slice(1) !== "" || url.port !== "") {
       return null;
     }
-    const time = Number(url.searchParams.get("unix"));
+    const time = parseInt(url.searchParams.get("unix") ?? "");
     if (!time) {
       return null;
     }

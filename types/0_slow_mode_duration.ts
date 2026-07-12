@@ -28,7 +28,7 @@ export type SlowModeDuration =
   | "1h";
 
 export function slowModeDurationToSeconds(duration: SlowModeDuration): number {
-  const amount = Number(duration.slice(0, -1));
+  const amount = parseInt(duration.slice(0, -1));
   const unit = duration[duration.length - 1];
   if (unit === "s") {
     return amount;

@@ -35,7 +35,7 @@ export function analyzeOptionalParam(ntype: string, path: string[]): { flagField
   const flagField = ntype.split(".")[0];
   assertEquals(typeof flagField, "string");
 
-  const bitIndex = Number(ntype.split("?")[0].split(".")[1]);
+  const bitIndex = parseInt(ntype.split("?")[0].split(".")[1]);
   assertFalse(isNaN(bitIndex));
 
   return { flagField, bitIndex };

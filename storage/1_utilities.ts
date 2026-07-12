@@ -63,7 +63,7 @@ export function toString(value: unknown): string {
 }
 
 export function fromString<T>(string: string): T {
-  const [type, value] = [Number(string[0]) as ValueType, string.slice(1)];
+  const [type, value] = [parseInt(string[0]) as ValueType, string.slice(1)];
   switch (type) {
     case ValueType.Boolean:
       return !!Number(value) as T;
@@ -83,7 +83,7 @@ export function fromString<T>(string: string): T {
         const length_ = value.slice(i, value.indexOf("\n", i));
         i += length_.length + 1;
 
-        const length = Number(length_);
+        const length = parseInt(length_);
         const value_ = value.slice(i, i + length);
         i += value_.length - 1;
 
@@ -103,7 +103,7 @@ export function fixKey(key: readonly StorageKeyPart[]): IDBValidKey[] {
 export function restoreKey(key: readonly StorageKeyPart[]): StorageKeyPart[] {
   return key.map((v) => {
     if (typeof v === "string") {
-      const t = Number(v[0]);
+      const t = parseInt(v[0]);
       if (t === ValueType.BigInt) {
         return BigInt(v.slice(1));
       } else if (t === ValueType.String) {
