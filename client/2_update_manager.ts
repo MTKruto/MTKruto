@@ -538,6 +538,7 @@ export class UpdateManager {
           _: "updateNewMessage",
           message: {
             _: "message",
+            out: updates_.out,
             mentioned: updates_.mentioned,
             media_unread: updates_.media_unread,
             silent: updates_.silent,
