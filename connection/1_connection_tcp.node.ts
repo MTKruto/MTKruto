@@ -21,7 +21,7 @@
 import { Socket } from "node:net";
 import { ConnectionError } from "../0_errors.ts";
 import { getLogger, Mutex } from "../1_utilities.ts";
-import type { Connection } from "./0_connection.ts";
+import type { Connection, ConnectionCallback } from "./0_connection.ts";
 
 const L = getLogger("ConnectionTCP");
 const errConnectionNotOpen = new ConnectionError("The connection is not open.");
@@ -38,6 +38,7 @@ export class ConnectionTCP implements Connection {
     { resolve: () => void; reject: (err: unknown) => void },
   ] | null = null;
   stateChangeHandler?: Connection["stateChangeHandler"];
+  callback?: ConnectionCallback;
 
   constructor(hostname: string, port: number) {
     this.#hostname = hostname;
@@ -81,9 +82,12 @@ export class ConnectionTCP implements Connection {
         return;
       }
 
+      const oldLength = this.#buffer.length;
       for (const byte of data) {
         this.#buffer.push(byte);
       }
+      const read = this.#buffer.length - oldLength;
+      this.callback?.read(read);
 
       if (
         this.#nextResolve !== null && this.#buffer.length >= this.#nextResolve[0]
@@ -146,6 +150,7 @@ export class ConnectionTCP implements Connection {
             },
           );
         });
+        this.callback?.write(p.byteLength);
       } catch (err) {
         if (!this.isConnected) {
           throw errConnectionNotOpen;

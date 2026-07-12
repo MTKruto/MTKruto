@@ -22,7 +22,7 @@ import { Socket } from "node:net";
 import { concat, isIPv4, isIPv6 } from "../0_deps.ts";
 import { ConnectionError } from "../0_errors.ts";
 import { encodeText, getLogger, ipv4ToBytes, ipv6ToBytes, Mutex } from "../1_utilities.ts";
-import type { Connection } from "./0_connection.ts";
+import type { Connection, ConnectionCallback } from "./0_connection.ts";
 
 const VERSION_SOCKS = 5;
 const VERSION_USERNAME_PASSWORD_AUTH = 1;
@@ -62,6 +62,7 @@ export class ConnectionSocks5 implements Connection {
   ] | null = null;
   #isReady = false;
   stateChangeHandler?: Connection["stateChangeHandler"];
+  callback?: ConnectionCallback;
 
   constructor(hostname: string, port: number, socks5Hostname: string, socks5Port: number, params?: ConnectionSocks5Params) {
     this.#hostname = hostname.slice(0, 255);
@@ -108,6 +109,7 @@ export class ConnectionSocks5 implements Connection {
           },
         );
       });
+      this.callback?.write(p.byteLength);
     } catch (err) {
       if (this.#socket?.readyState !== "open") {
         throw errConnectionNotOpen;
@@ -154,9 +156,12 @@ export class ConnectionSocks5 implements Connection {
         return;
       }
 
+      const oldLength = this.#buffer.length;
       for (const byte of data) {
         this.#buffer.push(byte);
       }
+      const read = this.#buffer.length - oldLength;
+      this.callback?.read(read);
 
       if (
         this.#nextResolve !== null && this.#buffer.length >= this.#nextResolve[0]

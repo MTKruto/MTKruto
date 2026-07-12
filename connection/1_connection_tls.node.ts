@@ -22,6 +22,7 @@ import { Socket } from "node:net";
 import { concat, equals, startsWith } from "../0_deps.ts";
 import { ConnectionError } from "../0_errors.ts";
 import { getLogger, hmacSha256, Mutex } from "../1_utilities.ts";
+import type { ConnectionCallback } from "../2_connection.ts";
 import type { Connection } from "./0_connection.ts";
 import { getTlsHeader } from "./0_get_tls_header.ts";
 
@@ -45,6 +46,7 @@ export class ConnectionTLS implements Connection {
   ] | null = null;
   #isReady = false;
   stateChangeHandler?: Connection["stateChangeHandler"];
+  callback?: ConnectionCallback;
 
   constructor(hostname: string, port: number, secret: Uint8Array<ArrayBuffer>) {
     this.#hostname = hostname;
@@ -108,9 +110,12 @@ export class ConnectionTLS implements Connection {
         return;
       }
 
+      const oldLength = this.#buffer.length;
       for (const byte of data) {
         this.#buffer.push(byte);
       }
+      const read = this.#buffer.length - oldLength;
+      this.callback?.read(read);
 
       if (
         this.#nextResolve !== null && this.#buffer.length >= this.#nextResolve[0]
@@ -244,6 +249,7 @@ export class ConnectionTLS implements Connection {
         },
       );
     });
+    this.callback?.write(p.byteLength);
   }
 
   async read(p: Uint8Array): Promise<void> {
