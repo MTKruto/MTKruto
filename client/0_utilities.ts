@@ -240,3 +240,40 @@ export function checkStickerName(firstPart: Uint8Array) {
     return "file.webm";
   }
 }
+
+export function extractTransferrableObjects(value: unknown): ReadableStream[] {
+  const set = new Set(extractTransferrableObjectsInner(value));
+  const transferrableObjects = new Array<ReadableStream>();
+  for (const item of set) {
+    transferrableObjects.push(item);
+  }
+  return transferrableObjects;
+}
+
+function extractTransferrableObjectsInner(value: unknown) {
+  const transferrableObjects = new Array<ReadableStream>();
+  if (value === null || typeof value !== "object") {
+    return transferrableObjects;
+  }
+  if (Array.isArray(value)) {
+    for (const arg of value) {
+      for (const object of extractTransferrableObjectsInner(arg)) {
+        transferrableObjects.push(object);
+      }
+    }
+    return transferrableObjects;
+  }
+  if (value instanceof ReadableStream) {
+    transferrableObjects.push(value);
+    return transferrableObjects;
+  }
+  if (value.constructor.name !== Object.name) {
+    return transferrableObjects;
+  }
+  for (const v of Object.values(value)) {
+    for (const object of extractTransferrableObjectsInner(v)) {
+      transferrableObjects.push(object);
+    }
+  }
+  return transferrableObjects;
+}
