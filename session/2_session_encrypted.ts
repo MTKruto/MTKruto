@@ -283,13 +283,28 @@ export class SessionEncrypted extends Session implements Session {
     const aesKey = concat([a.subarray(0, 8), b.subarray(8, 24), a.subarray(24, 32)]);
     const aesIv = concat([b.subarray(0, 8), a.subarray(8, 24), b.subarray(24, 32)]);
 
-    const plaintext = ige256Decrypt(reader.buffer, aesKey, aesIv);
-    assertEquals(plaintext.buffer.byteLength % 4, 0);
+    const plainText = ige256Decrypt(reader.buffer, aesKey, aesIv);
 
-    const plainReader = new TLReader(plaintext);
+    const actualMessageKeyLarge = await sha256(concat([this.#authKey.subarray(96, 128), plainText]));
+    const actualMessageKey = actualMessageKeyLarge.subarray(8, 24);
 
+    let difference = 0;
+    for (let i = 0; i < actualMessageKey.length; i++) {
+      difference |= messageKey[i] ^ actualMessageKey[i];
+    }
+    if (difference !== 0) {
+      this.#L.debug("received message with invalid message key");
+      return null;
+    }
+
+    const plainReader = new TLReader(plainText);
     const _salt = plainReader.readInt64();
-    const _sessionId_ = plainReader.readInt64(false);
+    const sessionId = plainReader.readInt64();
+
+    if (this.#id !== sessionId) {
+      this.#L.debug("received message with session ID", sessionId, "current session ID is", this.#id);
+      return null;
+    }
 
     return deserializeMessage(plainReader);
   }
@@ -414,7 +429,7 @@ export class SessionEncrypted extends Session implements Session {
     this.#LreceiveLoop.error("unhandled receive loop error:", err);
   });
   async #receiveLoopBody(loop: AbortableLoop) {
-    let message: message;
+    let message: message | null;
     try {
       this.#LreceiveLoop.debug("receiving");
       message = await this.#receive();
@@ -426,7 +441,9 @@ export class SessionEncrypted extends Session implements Session {
       } else if (err instanceof TransportError) {
         await this.handlers.onTransportError?.(err);
       }
-
+      return;
+    }
+    if (message === null) {
       return;
     }
     try {
