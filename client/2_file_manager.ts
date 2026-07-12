@@ -608,6 +608,9 @@ export class FileManager {
         }
       }
     } else if (fileId_.location.type === "common") {
+      if (fileId_.type === FileType.Encrypted && params?.fileInformation === undefined) {
+        throw new InputError("fileInformation must be provided for encrypted files.");
+      }
       const location: Api.inputDocumentFileLocation | Api.inputEncryptedFileLocation = fileId_.type === FileType.Encrypted
         ? {
           _: "inputEncryptedFileLocation",
