@@ -85,6 +85,10 @@ export function getDcId(dc: DC, isMedia: boolean): number {
   return (Number(dc[0]) + (dc.endsWith("-test") ? 10_000 : 0)) * (isMedia ? -1 : 1);
 }
 
+export function getRawDcId(dc: DC): number {
+  return Number(dc[0]);
+}
+
 export function getDc(dcId: number): DC {
   dcId = Math.abs(dcId);
   const isTest = dcId >= 10_000;
