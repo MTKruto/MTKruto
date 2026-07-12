@@ -958,6 +958,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     const unlock = await this.#getMainClientMutex.lock();
     client = this.#clients.find((v) => v.dc === dc);
     if (client) {
+      unlock();
       return client;
     }
     try {

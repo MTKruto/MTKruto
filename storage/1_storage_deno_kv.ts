@@ -98,19 +98,15 @@ export class StorageDenoKV implements Storage {
   }
 
   async *getMany<T>(filter: GetManyFilter, params?: { limit?: number; reverse?: boolean }): AsyncGenerator<[readonly StorageKeyPart[], T], void, unknown> {
-    filter = { ...filter };
-    if ("prefix" in filter && this.#id !== null) {
-      filter.prefix = this.#fixKey(filter.prefix);
-    }
-    if ("start" in filter && this.#id !== null) {
-      filter.start = this.#fixKey(filter.start);
-    }
-    if ("end" in filter && this.#id !== null) {
-      filter.end = this.#fixKey(filter.end);
-    }
+    const selector: Deno.KvListSelector = "prefix" in filter ? { prefix: this.#fixKey(filter.prefix) } : {
+      start: this.#fixKey(filter.start),
+      // Deno KV excludes the end key. Appending its lowest key part includes
+      // the end itself without including any of its descendants.
+      end: [...this.#fixKey(filter.end), new Uint8Array()],
+    };
     const kv = assertInitialized(this.kv);
 
-    for await (const i of kv.list(filter, { limit: params?.limit, reverse: params?.reverse })) {
+    for await (const i of kv.list(selector, { limit: params?.limit, reverse: params?.reverse })) {
       if (i.key === null) { // just in case
         continue;
       }
