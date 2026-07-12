@@ -571,7 +571,8 @@ export class FileManager {
           yield* this.downloadInner(location, fileId_.dcId, params);
           break;
         }
-        case FileType.Photo: {
+        case FileType.Photo:
+        case FileType.PhotoStory: {
           let location: Api.inputPhotoFileLocation | Api.inputStickerSetThumb;
           if (fileId_.location.source.type === PhotoSourceType.StickerSetThumbnailVersion) {
             location = {
