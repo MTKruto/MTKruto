@@ -3614,7 +3614,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       return result;
     }
 
-    unreachable();
+    return new Uint8Array();
   }
 
   /**
