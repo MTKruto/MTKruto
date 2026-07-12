@@ -3558,7 +3558,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @returns A generator yielding the contents of the file.
    * @cache file
    */
-  async *download(fileId: string, params?: DownloadParams): AsyncGenerator<Uint8Array, void, unknown> {
+  async *download(fileId: string, params?: DownloadParams): AsyncGenerator<Uint8Array<ArrayBuffer>, void, unknown> {
     for await (const chunk of this.#fileManager.download(fileId, params)) {
       yield chunk;
     }

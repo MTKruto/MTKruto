@@ -1857,7 +1857,7 @@ export abstract class ClientGeneric {
    * @returns A generator yielding the contents of the file.
    * @cache file
    */
-  abstract download(fileId: string, params?: DownloadParams): AsyncGenerator<Uint8Array, void, unknown>;
+  abstract download(fileId: string, params?: DownloadParams): AsyncGenerator<Uint8Array<ArrayBuffer>, void, unknown>;
 
   /**
    * Download a chunk of a file.

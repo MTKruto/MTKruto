@@ -2438,7 +2438,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @returns A generator yielding the contents of the file.
    * @cache file
    */
-  async *download(fileId: string, params?: DownloadParams): AsyncGenerator<Uint8Array, void, unknown> {
+  async *download(fileId: string, params?: DownloadParams): AsyncGenerator<Uint8Array<ArrayBuffer>, void, unknown> {
     let offset = params?.offset ?? 0;
     const chunkSize = params?.chunkSize ?? DOWNLOAD_MAX_CHUNK_SIZE;
     const fileInformation = params?.fileInformation;
@@ -2470,7 +2470,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @returns The downloaded chunk.
    * @cache file
    */
-  async downloadChunk(fileId: string, params?: DownloadParams): Promise<Uint8Array> {
+  async downloadChunk(fileId: string, params?: DownloadParams): Promise<Uint8Array<ArrayBuffer>> {
     return await this.#dispatch("downloadChunk", fileId, params);
   }
 

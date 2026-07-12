@@ -392,7 +392,7 @@ export class FileManager {
   }
 
   // deno-lint-ignore no-explicit-any
-  async *downloadInner(location: Api.InputFileLocation, dcId: number, params: DownloadParams | undefined): AsyncGenerator<Uint8Array<ArrayBufferLike>, void, any> {
+  async *downloadInner(location: Api.InputFileLocation, dcId: number, params: DownloadParams | undefined): AsyncGenerator<Uint8Array<ArrayBuffer>, void, any> {
     const signal = params?.signal;
     signal?.throwIfAborted();
     if (params?.offset !== undefined) {
@@ -557,7 +557,7 @@ export class FileManager {
   }
 
   // deno-lint-ignore no-explicit-any
-  async *download(fileId: string, params?: DownloadParams): AsyncGenerator<Uint8Array<ArrayBufferLike>, void, any> {
+  async *download(fileId: string, params?: DownloadParams): AsyncGenerator<Uint8Array<ArrayBuffer>, void, any> {
     const fileId_ = deserializeFileId(fileId);
     if (fileId_.location.type === "photo") {
       switch (fileId_.type) {
