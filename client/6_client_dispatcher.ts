@@ -143,8 +143,15 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
       method,
       args,
     };
-    this.#L.debug("posted message to worker", request);
-    this.#worker.postMessage(request, args.filter((value) => value instanceof ReadableStream));
+
+    try {
+      this.#worker.postMessage(request, args.filter((value) => value instanceof ReadableStream));
+      this.#L.debug("posted message to worker", request);
+    } catch (err) {
+      this.#L.debug("failed to post message", request, "to worker:", err);
+      promiseWithResolvers.reject(err);
+      this.#pendingRequests.delete(id);
+    }
 
     return await promiseWithResolvers.promise;
   }
