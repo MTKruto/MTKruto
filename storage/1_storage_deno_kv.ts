@@ -100,8 +100,6 @@ export class StorageDenoKV implements Storage {
   async *getMany<T>(filter: GetManyFilter, params?: { limit?: number; reverse?: boolean }): AsyncGenerator<[readonly StorageKeyPart[], T], void, unknown> {
     const selector: Deno.KvListSelector = "prefix" in filter ? { prefix: this.#fixKey(filter.prefix) } : {
       start: this.#fixKey(filter.start),
-      // Deno KV excludes the end key. Appending its lowest key part includes
-      // the end itself without including any of its descendants.
       end: [...this.#fixKey(filter.end), new Uint8Array()],
     };
     const kv = assertInitialized(this.kv);
