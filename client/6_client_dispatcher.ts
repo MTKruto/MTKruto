@@ -144,7 +144,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
       args,
     };
     this.#L.debug("posted message to worker", request);
-    this.#worker.postMessage(request);
+    this.#worker.postMessage(request, args.filter((value) => value instanceof ReadableStream));
 
     return await promiseWithResolvers.promise;
   }
