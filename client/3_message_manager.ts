@@ -908,7 +908,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const replyMarkup = await this.#constructReplyMarkup(params);
 
     const caption_ = params?.caption;
-    const parseResult = caption_ !== undefined ? this.parseText(caption_, { parseMode: params?.parseMode, entities: params?.captionEntities }) : undefined;
+    const parseResult = caption_ !== undefined ? this.parseText(caption_, { parseMode: params?.parseMode, entities: params?.captionEntities }, true) : undefined;
 
     const caption = parseResult?.[0];
     const captionEntities = parseResult?.[1];
