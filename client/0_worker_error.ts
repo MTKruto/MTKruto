@@ -74,7 +74,7 @@ export function deserializeWorkerError(error: WorkerError) {
         _: "rpc_error",
         error_code: error.args[0].error_code,
         error_message: error.args[0].error_message,
-      }, error.args.call);
+      }, error.args[0].call);
     case "ConnectionError":
       return new ConnectionError(error.args[0]);
     case "AccessError":
