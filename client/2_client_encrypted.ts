@@ -244,9 +244,6 @@ export class ClientEncrypted extends ClientAbstract {
       } catch (err) {
         errored = true;
         lastErr = err;
-        if (this.isDisconnected) {
-          break;
-        }
         this.#L.error("failed to create auth key:", err);
       } finally {
         plain.disconnect();
