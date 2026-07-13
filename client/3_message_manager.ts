@@ -2104,7 +2104,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const multiMedia: Api.inputSingleMedia[] = new Array<Api.InputSingleMedia>();
     for (const v of media) {
       const randomId = getRandomId();
-      const [message, entities] = v.caption !== undefined ? this.parseText(v.caption, { entities: v.captionEntities, parseMode: v.parseMode }) : ["", []];
+      const [message, entities] = v.caption !== undefined ? this.parseText(v.caption, { entities: v.captionEntities, parseMode: v.parseMode }, true) : ["", []];
       multiMedia.push({ _: "inputSingleMedia", message, entities, random_id: randomId, media: await this.#resolveInputMedia(v) });
     }
 
