@@ -221,9 +221,15 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         } else if (Api.is("updateNewChannelMessage", update) || Api.is("updateEditChannelMessage", update)) {
           messages.push(await this.constructMessage(update.message));
         } else if (Api.is("updateBotNewBusinessMessage", update)) {
-          messages.push(await this.constructMessage(update.message, false, { connectionId: businessConnectionId ?? update.connection_id, replyToMessage: update.reply_to_message }));
+          if (businessConnectionId !== undefined && update.connection_id !== businessConnectionId) {
+            unreachable();
+          }
+          messages.push(await this.constructMessage(update.message, false, { connectionId: update.connection_id, replyToMessage: update.reply_to_message }));
         } else if (Api.is("updateBotEditBusinessMessage", update)) {
-          messages.push(await this.constructMessage(update.message, false, { connectionId: businessConnectionId ?? update.connection_id, replyToMessage: update.reply_to_message }));
+          if (businessConnectionId !== undefined && update.connection_id !== businessConnectionId) {
+            unreachable();
+          }
+          messages.push(await this.constructMessage(update.message, false, { connectionId: update.connection_id, replyToMessage: update.reply_to_message }));
         }
       }
     }
@@ -1157,7 +1163,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       reply_markup: await this.#constructReplyMarkup(params),
     }, { businessConnectionId: params?.businessConnectionId });
 
-    const message_ = (await this.updatesToMessages(chatId, result))[0];
+    const message_ = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return message_;
   }
 
@@ -1218,7 +1224,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       reply_markup: await this.#constructReplyMarkup(params),
     }, { businessConnectionId: params?.businessConnectionId });
 
-    const message_ = (await this.updatesToMessages(chatId, result))[0];
+    const message_ = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message_, "text");
   }
 
@@ -1248,7 +1254,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       reply_markup: await this.#constructReplyMarkup(params),
     }, { businessConnectionId: params?.businessConnectionId });
 
-    const message_ = (await this.updatesToMessages(chatId, result))[0];
+    const message_ = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message_, "richText");
   }
 
@@ -1280,7 +1286,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       reply_markup: await this.#constructReplyMarkup(params),
     }, { businessConnectionId: params?.businessConnectionId });
 
-    return (await this.updatesToMessages(chatId, result))[0];
+    return (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
   }
 
   async #editInlineMessageTextInner(inlineMessageId: string, text: string, allowEmpty: boolean, params?: EditMessageTextParams) {
@@ -1588,7 +1594,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       entities: maybeParseResult?.[1],
     }, { businessConnectionId: params?.businessConnectionId });
 
-    const message_ = (await this.updatesToMessages(chatId, result))[0];
+    const message_ = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return message_;
   }
 
@@ -1986,7 +1992,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       reply_markup: await this.#constructReplyMarkup(params),
     }, { businessConnectionId: params?.businessConnectionId });
 
-    const message_ = (await this.updatesToMessages(chatId, result))[0];
+    const message_ = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message_, "poll").poll;
   }
 
@@ -2002,7 +2008,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         reply_markup: await this.#constructReplyMarkup(params),
       }, { businessConnectionId: params?.businessConnectionId });
 
-      const message = (await this.updatesToMessages(chatId, result))[0];
+      const message = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
       return assertMessageType(message, "location");
     }
     unreachable();
