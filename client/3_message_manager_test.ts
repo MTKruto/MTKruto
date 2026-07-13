@@ -182,4 +182,12 @@ Deno.test("parseMessageLink()", async (t) => {
     assertEquals(pml("http://t.me/username/1.2/2"), null);
     assertEquals(pml("http://t.me/c/1/1.2/2"), null);
   });
+
+  await t.step("non-decimal values", () => {
+    assertEquals(pml("http://t.me/username/1e3"), null);
+    assertEquals(pml("http://t.me/c/1e3/1"), null);
+    assertEquals(pml("http://t.me/c/01/12"), null);
+    assertEquals(pml("http://t.me/c/1/012"), null);
+    assertEquals(pml("http://t.me/username/01"), null);
+  });
 });

@@ -2247,6 +2247,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return await this.getMessage(chatId, messageId);
   }
 
+  static #DECIMAL = /^[1-9]\d*$/;
   static parseMessageLink(link: string): [ID, number] | null {
     let url: URL;
     try {
@@ -2285,6 +2286,9 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         return null;
       }
       for (const part of parts.slice(1)) {
+        if (!MessageManager.#DECIMAL.test(part)) {
+          return null;
+        }
         const number = Number(part);
         if (number < 1 || number % 1 !== 0) {
           return null;
@@ -2297,6 +2301,9 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         return null;
       }
       for (const part of parts.slice(1)) {
+        if (!MessageManager.#DECIMAL.test(part)) {
+          return null;
+        }
         const number = Number(part);
         if (number < 1 || number % 1 !== 0) {
           return null;
