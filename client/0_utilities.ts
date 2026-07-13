@@ -241,39 +241,37 @@ export function checkStickerName(firstPart: Uint8Array) {
   }
 }
 
-export function extractTransferrableObjects(value: unknown): ReadableStream[] {
-  const set = new Set(extractTransferrableObjectsInner(value));
+export function extractTransferrableObjects(value: unknown) {
+  const set = new Set<ReadableStream>();
+  const visited = new WeakSet<object>();
+
+  function visit(value: unknown) {
+    if (value === null || typeof value !== "object" || visited.has(value)) {
+      return;
+    }
+    visited.add(value);
+    if (Array.isArray(value)) {
+      for (const item of value) {
+        visit(item);
+      }
+      return;
+    }
+    if (value instanceof ReadableStream) {
+      set.add(value);
+      return;
+    }
+    if (Object.getPrototypeOf(value) !== Object.prototype) {
+      return;
+    }
+    for (const v of Object.values(value)) {
+      visit(v);
+    }
+  }
+
+  visit(value);
   const transferrableObjects = new Array<ReadableStream>();
   for (const item of set) {
     transferrableObjects.push(item);
-  }
-  return transferrableObjects;
-}
-
-function extractTransferrableObjectsInner(value: unknown) {
-  const transferrableObjects = new Array<ReadableStream>();
-  if (value === null || typeof value !== "object") {
-    return transferrableObjects;
-  }
-  if (Array.isArray(value)) {
-    for (const arg of value) {
-      for (const object of extractTransferrableObjectsInner(arg)) {
-        transferrableObjects.push(object);
-      }
-    }
-    return transferrableObjects;
-  }
-  if (value instanceof ReadableStream) {
-    transferrableObjects.push(value);
-    return transferrableObjects;
-  }
-  if (value.constructor.name !== Object.name) {
-    return transferrableObjects;
-  }
-  for (const v of Object.values(value)) {
-    for (const object of extractTransferrableObjectsInner(v)) {
-      transferrableObjects.push(object);
-    }
   }
   return transferrableObjects;
 }
