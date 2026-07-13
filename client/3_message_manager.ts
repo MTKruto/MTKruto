@@ -1433,12 +1433,14 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
             file_reference: messageMedia.photo.file_reference,
           },
           spoiler: "isSpoiler" in media && media.isSpoiler || undefined,
+          ttl_seconds: inputMedia.ttl_seconds,
         };
       } else if ("document" in messageMedia && Api.is("document", messageMedia.document)) {
         return {
           _: "inputMediaDocument",
           id: { _: "inputDocument", id: messageMedia.document.id, access_hash: messageMedia.document.access_hash, file_reference: messageMedia.document.file_reference },
           spoiler: "isSpoiler" in media && media.isSpoiler || undefined,
+          ttl_seconds: inputMedia.ttl_seconds,
         };
       } else {
         unreachable();
