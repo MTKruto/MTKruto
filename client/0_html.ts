@@ -260,8 +260,8 @@ export function parseHtml(html_: string, isSecret?: boolean): [string, (MessageE
             throw new InputError(`Unsupported URL protocol at offset ${i}: ${url_.protocol}`);
           }
           if (url_.protocol === "tg:" && url_.hostname === "user") {
-            const id = ~~Number(url_.searchParams.get("id"));
-            if (!isNaN(id) && id > 0) {
+            const id = Number(url_.searchParams.get("id"));
+            if (Number.isSafeInteger(id) && id > 0) {
               userId = id;
               url = undefined;
             } else {
@@ -270,8 +270,8 @@ export function parseHtml(html_: string, isSecret?: boolean): [string, (MessageE
           }
           if (!isSecret) {
             if (url_.protocol === "tg:" && url_.hostname === "time") {
-              time = ~~Number(url_.searchParams.get("unix") ?? "");
-              if (!isNaN(time) && time > 0) {
+              time = Number(url_.searchParams.get("unix") ?? "");
+              if (Number.isSafeInteger(time) && time > 0) {
                 timeFormat = url_.searchParams.get("format") ?? undefined;
                 url = undefined;
               } else {
