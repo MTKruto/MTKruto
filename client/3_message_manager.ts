@@ -256,6 +256,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   }
 
   async forwardMessages(from: ID, to: ID, messageIds: number[], params?: ForwardMessagesParams): Promise<Message[]> {
+    this.#checkParams(params);
     checkArray(messageIds, checkMessageId);
     const result = await this.#c.invoke({
       _: "messages.forwardMessages",
