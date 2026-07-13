@@ -1576,7 +1576,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     };
   }
 
-  async #uploadVideo(video: FileSource, params?: _UploadCommon & Partial<Pick<InputPollMediaVideo, "duration" | "width" | "height" | "thumbnail" | "isSpoiler">>): Promise<Api.inputDocument> {
+  async #uploadVideo(video: FileSource, params?: _UploadCommon & Partial<Pick<InputPollMediaVideo, "duration" | "width" | "height" | "thumbnail" | "isSpoiler" | "isStreamingSupported">>): Promise<Api.inputDocument> {
     if (typeof video === "string") {
       const fileId = this.resolveFileId(video, [FileType.Video]);
       if (fileId !== null) {
@@ -1584,7 +1584,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       }
     }
 
-    const messageMediaDocument = await this.#uploadDocument(video, [{ _: "documentAttributeVideo", duration: params?.duration ?? 0, w: params?.width ?? 0, h: params?.height ?? 0 }], FileType.Video, VIDEO_MIME_TYPES, params, MessageManager.#createVideoName);
+    const messageMediaDocument = await this.#uploadDocument(video, [{ _: "documentAttributeVideo", supports_streaming: params?.isStreamingSupported || undefined, duration: params?.duration ?? 0, w: params?.width ?? 0, h: params?.height ?? 0 }], FileType.Video, VIDEO_MIME_TYPES, params, MessageManager.#createVideoName);
     const document = Api.as("document", Api.as("messageMediaDocument", messageMediaDocument).document);
     return {
       _: "inputDocument",
