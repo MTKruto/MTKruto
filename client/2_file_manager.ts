@@ -59,9 +59,9 @@ export class FileManager {
     return Promise.resolve(String(id));
   }
 
-  async upload(file: FileSource, params: _UploadCommon | undefined, checkName: null | ((name: string, firstPart?: Uint8Array) => string), allowStream: boolean, encryptionInformation: EncryptionInformation): Promise<{ inputEncryptedFile: Api.InputEncryptedFile; fileSize: number }>;
-  async upload(file: FileSource, params?: _UploadCommon, checkName?: null | ((name: string, firstPart?: Uint8Array) => string), allowStream?: boolean, encryptionInformation?: undefined): Promise<Api.InputFile>;
-  async upload(file: FileSource, params?: _UploadCommon, checkName?: null | ((name: string, firstPart?: Uint8Array) => string), allowStream = true, encryptionInformation?: EncryptionInformation): Promise<Api.InputFile | { inputEncryptedFile: Api.InputEncryptedFile; fileSize: number }> {
+  async upload(file: FileSource, params: _UploadCommon | undefined, checkName: null | ((name: string, firstPart?: Uint8Array<ArrayBuffer>) => string), allowStream: boolean, encryptionInformation: EncryptionInformation): Promise<{ inputEncryptedFile: Api.InputEncryptedFile; fileSize: number }>;
+  async upload(file: FileSource, params?: _UploadCommon, checkName?: null | ((name: string, firstPart?: Uint8Array<ArrayBuffer>) => string), allowStream?: boolean, encryptionInformation?: undefined): Promise<Api.InputFile>;
+  async upload(file: FileSource, params?: _UploadCommon, checkName?: null | ((name: string, firstPart?: Uint8Array<ArrayBuffer>) => string), allowStream = true, encryptionInformation?: EncryptionInformation): Promise<Api.InputFile | { inputEncryptedFile: Api.InputEncryptedFile; fileSize: number }> {
     if (params?.progressId !== undefined && !this.#progressIds.has(BigInt(params.progressId))) {
       throw new InputError("Invalid progressId.");
     }
@@ -89,7 +89,7 @@ export class FileManager {
     const whatIsUploaded = contents instanceof Uint8Array ? (isBig ? "big file" : "file") + " of size " + size : "stream";
     this.#Lupload.debug("uploading " + whatIsUploaded + " with chunk size of " + chunkSize + " and pool size of " + poolSize + " and file ID of " + fileId);
 
-    let result: { isSmall: boolean; parts: number; firstPart?: Uint8Array; fileSize: number };
+    let result: { isSmall: boolean; parts: number; firstPart?: Uint8Array<ArrayBuffer>; fileSize: number };
     if (contents instanceof Uint8Array) {
       result = await this.#uploadBuffer(contents, fileId, mustTrackProgress, chunkSize, poolSize, params?.signal, encryptionInformation);
     } else {
@@ -127,7 +127,7 @@ export class FileManager {
     let promises = new Array<Promise<void>>();
     let ms = 0.05;
     let uploaded = 0;
-    let firstPart: Uint8Array | undefined;
+    let firstPart: Uint8Array<ArrayBuffer> | undefined;
     let iv = encryptionInformation?.iv;
     let fileSize = 0;
     const total = size > 0 ? size : 0;
@@ -195,7 +195,7 @@ export class FileManager {
     let started = false;
     let ms = 0.05;
     let uploaded = 0;
-    let firstPart: Uint8Array | undefined;
+    let firstPart: Uint8Array<ArrayBuffer> | undefined;
     let iv = encryptionInformation?.iv;
     let fileSize = 0;
     main: for (let part = 0; part < partCount;) {

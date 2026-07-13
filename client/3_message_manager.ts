@@ -755,7 +755,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return assertMessageType(message, "audio");
   }
 
-  static #isM4a(firstPart: Uint8Array) {
+  static #isM4a(firstPart: Uint8Array<ArrayBuffer>) {
     return firstPart.byteLength >= 10 && startsWith(firstPart.subarray(4), new Uint8Array([0x66, 0x74, 0x79, 0x70, 0x4D, 0x34]));
   }
 
@@ -784,7 +784,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return assertMessageType(message, "voice");
   }
 
-  static #createAnimationName(firstPart: Uint8Array) {
+  static #createAnimationName(firstPart: Uint8Array<ArrayBuffer>) {
     if (startsWith(firstPart, new Uint8Array([0x47, 0x49, 0x46]))) {
       return "file.gif";
     } else {
@@ -831,7 +831,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return assertMessageType(message, "video");
   }
 
-  async #sendDocumentInner(chatId: ID, document: FileSource, params: SendDocumentParams & _SpoilCommon | undefined, fileType: FileType, otherAttribs: Api.DocumentAttribute[], urlSupported = true, expectedMimeTypes?: string[], createName?: (firstPart: Uint8Array) => string) {
+  async #sendDocumentInner(chatId: ID, document: FileSource, params: SendDocumentParams & _SpoilCommon | undefined, fileType: FileType, otherAttribs: Api.DocumentAttribute[], urlSupported = true, expectedMimeTypes?: string[], createName?: (firstPart: Uint8Array<ArrayBuffer>) => string) {
     let media: Api.InputMedia | null = null;
     const spoiler = params?.isSpoiler || undefined;
     const ttl_seconds = params && "selfDestruct" in params && params.selfDestruct !== undefined ? selfDestructOptionToInt(params.selfDestruct as SelfDestructOption) : undefined;
@@ -1502,7 +1502,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return media;
   }
 
-  async #uploadDocument(document: FileSource, attributes: Api.DocumentAttribute[], fileType: FileType, expectedMimeTypes?: string[], params?: _UploadCommon & { isSpoiler?: boolean; thumbnail?: FileSource }, createName?: (firstPart: Uint8Array) => string, allowStream?: boolean): Promise<Api.messageMediaDocument> {
+  async #uploadDocument(document: FileSource, attributes: Api.DocumentAttribute[], fileType: FileType, expectedMimeTypes?: string[], params?: _UploadCommon & { isSpoiler?: boolean; thumbnail?: FileSource }, createName?: (firstPart: Uint8Array<ArrayBuffer>) => string, allowStream?: boolean): Promise<Api.messageMediaDocument> {
     let mimeType: string | undefined;
     const result = await this.#c.fileManager.upload(document, params, (name, firstPart) => {
       if (!params?.fileName && firstPart && createName) {
