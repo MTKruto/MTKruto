@@ -2095,6 +2095,9 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       if (!Array.isArray(media) || !media.length) {
         throw new InputError("Media group must not be empty.");
       }
+      if (media.length > 10) {
+        throw new InputError("Media group cannot have more than 10 items.");
+      }
       const firstMediaType = media[0]!.type;
       for (const media_ of media) {
         const thisMediaType = media_.type;
