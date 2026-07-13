@@ -783,6 +783,14 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return assertMessageType(message, "voice");
   }
 
+  static #createAnimationName(firstPart: Uint8Array) {
+    if (startsWith(firstPart, new Uint8Array([0x47, 0x49, 0x46]))) {
+      return "file.gif";
+    } else {
+      return "file.mp4";
+    }
+  }
+
   async sendAnimation(chatId: ID, animation: FileSource, params?: SendAnimationParams): Promise<MessageAnimation> {
     this.#checkParams(params);
     const message = await this.#sendDocumentInner(
@@ -796,15 +804,13 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       ],
       undefined,
       ANIMATION_MIME_TYPES,
-      (firstPart) => {
-        if (startsWith(firstPart, new Uint8Array([0x47, 0x49, 0x46]))) {
-          return "file.gif";
-        } else {
-          return "file.mp4";
-        }
-      },
+      MessageManager.#createAnimationName,
     );
     return assertMessageType(message, "animation");
+  }
+
+  static #createVideoName() {
+    return "video.mp4";
   }
 
   async sendVideo(chatId: ID, video: FileSource, params?: SendVideoParams): Promise<MessageVideo> {
@@ -819,7 +825,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       ],
       undefined,
       VIDEO_MIME_TYPES,
-      () => "video.mp4",
+      MessageManager.#createVideoName,
     );
     return assertMessageType(message, "video");
   }
@@ -1495,8 +1501,23 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return media;
   }
 
-  async #uploadDocument(document: FileSource, attributes: Api.DocumentAttribute[], mimeType: string, params?: _UploadCommon & { isSpoiler?: boolean; thumbnail?: FileSource }, checkName?: null | ((name: string, firstPart?: Uint8Array) => string), allowStream?: boolean): Promise<Api.messageMediaDocument> {
-    const result = await this.#c.fileManager.upload(document, params, checkName, allowStream);
+  async #uploadDocument(document: FileSource, attributes: Api.DocumentAttribute[], fileType: FileType, expectedMimeTypes?: string[], params?: _UploadCommon & { isSpoiler?: boolean; thumbnail?: FileSource }, createName?: (firstPart: Uint8Array) => string, allowStream?: boolean): Promise<Api.messageMediaDocument> {
+    let mimeType: string | undefined;
+    const result = await this.#c.fileManager.upload(document, params, (name, firstPart) => {
+      if (!params?.fileName && firstPart && createName) {
+        name = createName(firstPart);
+      }
+      mimeType = params?.mimeType ?? contentType(name.split(".").slice(-1)[0]);
+      if (name.endsWith(".tgs") && fileType === FileType.Document) {
+        name += "-";
+      }
+      return name;
+    }, allowStream);
+    mimeType ??= FALLBACK_MIME_TYPE;
+    if (mimeType && expectedMimeTypes && !expectedMimeTypes.includes(mimeType)) {
+      unreachable();
+    }
+
     const thumb = params?.thumbnail ? await this.#c.fileManager.upload(params.thumbnail, { chunkSize: params.chunkSize, signal: params.signal }) : undefined;
 
     const uploadedMedia = await this.#c.invoke({
@@ -1526,7 +1547,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       }
     }
 
-    const messageMediaDocument = await this.#uploadDocument(video, [{ _: "documentAttributeVideo", duration: params?.duration ?? 0, w: params?.width ?? 0, h: params?.height ?? 0 }, { _: "documentAttributeAnimated" }], "video/mp4", params);
+    const messageMediaDocument = await this.#uploadDocument(video, [{ _: "documentAttributeVideo", duration: params?.duration ?? 0, w: params?.width ?? 0, h: params?.height ?? 0 }, { _: "documentAttributeAnimated" }], FileType.Animation, ANIMATION_MIME_TYPES, params, MessageManager.#createAnimationName);
     const document = Api.as("document", Api.as("messageMediaDocument", messageMediaDocument).document);
     return {
       _: "inputDocument",
@@ -1544,7 +1565,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       }
     }
 
-    const messageMediaDocument = await this.#uploadDocument(video, [{ _: "documentAttributeSticker", alt: params?.emoji ?? "", stickerset: { _: "inputStickerSetEmpty" } }], "video/mp4", params);
+    const messageMediaDocument = await this.#uploadDocument(video, [{ _: "documentAttributeSticker", alt: params?.emoji ?? "", stickerset: { _: "inputStickerSetEmpty" } }], FileType.Sticker, STICKER_MIME_TYPES, params, checkStickerName);
     const document = Api.as("document", Api.as("messageMediaDocument", messageMediaDocument).document);
     return {
       _: "inputDocument",
@@ -1562,7 +1583,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       }
     }
 
-    const messageMediaDocument = await this.#uploadDocument(video, [{ _: "documentAttributeVideo", duration: params?.duration ?? 0, w: params?.width ?? 0, h: params?.height ?? 0 }], "video/mp4", params);
+    const messageMediaDocument = await this.#uploadDocument(video, [{ _: "documentAttributeVideo", duration: params?.duration ?? 0, w: params?.width ?? 0, h: params?.height ?? 0 }], FileType.Video, VIDEO_MIME_TYPES, params, MessageManager.#createVideoName);
     const document = Api.as("document", Api.as("messageMediaDocument", messageMediaDocument).document);
     return {
       _: "inputDocument",
