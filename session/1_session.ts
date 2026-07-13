@@ -140,6 +140,7 @@ export abstract class Session {
     const unlock = await this.#connectMutex.lock();
     try {
       if (this.isConnected) {
+        this.#resolveConnectionStateChange();
         return;
       }
       await this.transport.connection.open();
@@ -157,13 +158,23 @@ export abstract class Session {
       }
       this.#lastConnect = new Date();
       this.#isDisconnected = false;
+      this.#resolveConnectionStateChange();
     } finally {
       unlock();
     }
   }
 
+  #connectionStateChange = Promise.withResolvers<void>();
+  #resolveConnectionStateChange() {
+    const connectionStateChange = this.#connectionStateChange;
+    this.#connectionStateChange = Promise.withResolvers();
+    connectionStateChange.resolve();
+  }
+
   protected async waitUntilConnected() {
-    (await this.#connectMutex.lock())();
+    while (!this.#isDisconnected && !this.isConnected) {
+      await this.#connectionStateChange.promise;
+    }
   }
 
   get isDisconnected(): boolean {
@@ -175,6 +186,7 @@ export abstract class Session {
     if (this.transport.connection.isConnected) {
       drop(this.transport.connection.close());
     }
+    this.#resolveConnectionStateChange();
   }
 
   abstract send(body: Uint8Array, onMessageId: (messageId: bigint) => () => void): Promise<void>;
