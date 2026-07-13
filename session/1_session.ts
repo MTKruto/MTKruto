@@ -143,7 +143,18 @@ export abstract class Session {
         return;
       }
       await this.transport.connection.open();
-      await this.transport.transport.initialize();
+      try {
+        await this.transport.transport.initialize();
+      } catch (err) {
+        if (this.transport.connection.isConnected) {
+          try {
+            await this.transport.connection.close();
+          } catch {
+            //
+          }
+        }
+        throw err;
+      }
       this.#lastConnect = new Date();
       this.#isDisconnected = false;
     } finally {
