@@ -129,6 +129,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   }
 
   static parseText(text: string, entities: MessageEntity[], parseMode: ParseMode, isEmptyAllowed = false): [string, MessageEntity[]] {
+    entities = entities.map((v) => ({ ...v }));
     switch (parseMode) {
       case null:
         break;
