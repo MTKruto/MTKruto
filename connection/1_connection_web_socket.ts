@@ -102,6 +102,7 @@ export class ConnectionWebSocket implements Connection {
     this.#isConnecting = true;
 
     try {
+      this.#webSocket?.close();
       await this.#initWs();
     } finally {
       this.#isConnecting = false;
