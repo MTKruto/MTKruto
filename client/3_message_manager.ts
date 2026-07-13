@@ -1387,7 +1387,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
         if (media_ === null) {
           if (typeof media.photo === "string" && isHttpUrl(media.photo)) {
-            media_ = { _: "inputMediaPhotoExternal", url: media.photo, spoiler };
+            media_ = { _: "inputMediaPhotoExternal", url: media.photo, spoiler, ttl_seconds };
           } else {
             const file = await this.#c.fileManager.upload(media.photo, media, null, false);
             media_ = { _: "inputMediaUploadedPhoto", file, spoiler, ttl_seconds };
