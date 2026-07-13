@@ -104,11 +104,5 @@ export async function hmacSha256(data: Uint8Array<ArrayBuffer>, secret: Uint8Arr
     false,
     ["sign"],
   );
-  return new Uint8Array(
-    await crypto.subtle.sign(
-      "HMAC",
-      key,
-      data.buffer,
-    ),
-  );
+  return new Uint8Array(await crypto.subtle.sign("HMAC", key, data));
 }
