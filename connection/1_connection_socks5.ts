@@ -150,7 +150,8 @@ export class ConnectionSocks5 implements Connection {
         hostname = new Uint8Array(ipv6ToBytes(this.#hostname));
       } else {
         hostnameType = ADDRESS_TYPE_DOMAIN_NAME;
-        hostname = concat([new Uint8Array([this.#hostname.length]), encodeText(this.#hostname)]);
+        const hostname_ = encodeText(this.#hostname);
+        hostname = concat([new Uint8Array([hostname_.byteLength]), hostname_]);
       }
       const address = concat([new Uint8Array([hostnameType]), hostname, new Uint8Array(2)]);
       new DataView(address.buffer).setUint16(hostname.byteLength + 1, this.#port);
