@@ -1052,6 +1052,7 @@ export abstract class ClientGeneric {
    * @param chatId The identifier of the chat which the message belongs to.
    * @param receiverUserId The identifier of the user who received the ephemeral message.
    * @param messageId The identifier of the message.
+   * @param media The message's new media.
    * @returns The edited message.
    */
   abstract editEphemeralMessageMedia(chatId: ID, receiverUserId: ID, messageId: number, media: InputMedia, params?: EditMessageMediaParams): Promise<Message>;
