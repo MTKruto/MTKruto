@@ -77,6 +77,9 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
     }
     const chats = new Array<ChatListItem>();
     for (const dialog of dialogs.dialogs) {
+      if (Api.is("dialogCommunity", dialog)) {
+        continue;
+      }
       const chat = await constructChatListItem(dialog, dialogs, this.#c.getPeer, this.#c.messageManager.getMessage.bind(this.#c.messageManager), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager));
       chats.push(chat);
     }
