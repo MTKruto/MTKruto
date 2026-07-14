@@ -1900,7 +1900,6 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   }
 
   async deleteEphemeralMessage(chatId: ID, receiverUserId: ID, messageId: number) {
-    this.#c.storage.assertUser("deleteEphemeralMessage");
     checkMessageId(messageId);
     const peer = await this.#c.getInputPeer(chatId);
     const receiver_id = await this.#c.getInputUser(receiverUserId);
