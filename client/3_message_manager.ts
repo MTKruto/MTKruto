@@ -23,7 +23,8 @@ import { InputError } from "../0_errors.ts";
 import { base64EncodeUrlSafe, encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
-import { type Animation, assertMessageType, type BlockedUserList, type ChatActionType, collectMediaFileIds, constructAnimation, constructBlockedUserList, constructChatAction, constructMessage as constructMessage_, constructMessageDraft, constructMessageEntity, constructMessageReactionList, constructMessageViewer, constructMiniAppInfo, constructSavedChats, constructSticker, constructSummarizedText, constructVoiceTranscription, deserializeFileId, deserializeInlineMessageId, type FileId, type FileSource, FileType, type ID, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, type InputPollMedia, type InputPollMediaAnimation, type InputPollMediaSticker, type InputPollMediaVideo, type InputPollOption, type InputRichText, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageCounters, type MessageDice, type MessageDocument, type MessageEntity, messageEntityToTlObject, type MessageGetter, type MessageInvoice, type MessageList, type MessageLivePhoto, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageRichText, messageSearchFilterToTlObject, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageViewer, type MessageVoice, type MiniAppInfo, pageBlockToTlObject, type ParseMode, type Poll, type PriceTag, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type RichText, type SavedChats, type SelfDestructOption, selfDestructOptionToInt, serializeFileId, type Sticker, type SummarizedText, type TextToTranslate, toUniqueFileId, type TranslatedText, type Update, type UsernameResolver, type VoiceTranscription } from "../3_types.ts";
+import { type Animation, assertMessageType, type BlockedUserList, type ChatActionType, collectMediaFileIds, constructAnimation, constructBlockedUserList, constructChatAction, constructMessage as constructMessage_, constructMessageDraft, constructMessageEntity, constructMessageReactionList, constructMessageViewer, constructMiniAppInfo, constructSavedChats, constructSticker, constructSummarizedText, constructVoiceTranscription, deserializeFileId, deserializeInlineMessageId, type FileId, type FileSource, FileType, type ID, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, type InputPollMedia, type InputPollMediaAnimation, type InputPollMediaSticker, type InputPollMediaVideo, type InputPollOption, type InputRichText, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageCounters, type MessageDice, type MessageDocument, type MessageEntity, messageEntityToTlObject, type MessageGetter, type MessageInvoice, type MessageList, type MessageLivePhoto, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageReference, type MessageRichText, messageSearchFilterToTlObject, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageViewer, type MessageVoice, type MiniAppInfo, pageBlockToTlObject, type ParseMode, type Poll, type PriceTag, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type RichText, type SavedChats, type SelfDestructOption, selfDestructOptionToInt, serializeFileId, type Sticker, type SummarizedText, type TextToTranslate, toUniqueFileId, type TranslatedText, type Update, type UsernameResolver, type VoiceTranscription } from "../3_types.ts";
+import { peerToChatId } from "../tl/2_telegram.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
 import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, _UploadCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetBlockedUsersParams, GetHistoryParams, GetMessageReactionsParams, GetSavedChatsParams, GetSavedMessagesParams, OpenMiniAppParams, PinMessageParams, SaveDraftParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams as SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendRichTextParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, StartBotParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams } from "./0_params.ts";
@@ -47,6 +48,9 @@ interface C extends C_ {
 const messageManagerUpdates = [
   "updateNewMessage",
   "updateNewChannelMessage",
+  "updateNewEphemeralMessage",
+  "updateEditEphemeralMessage",
+  "updateDeleteEphemeralMessages",
   "updateEditMessage",
   "updateNewScheduledMessage",
   "updateEditChannelMessage",
@@ -231,6 +235,8 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
             unreachable();
           }
           messages.push(await this.constructMessage(update.message, false, { connectionId: update.connection_id, replyToMessage: update.reply_to_message }));
+        } else if (Api.isOneOf(["updateNewEphemeralMessage", "updateEditEphemeralMessage"], update)) {
+          messages.push(await this.constructMessage(update.message));
         }
       }
     }
@@ -238,7 +244,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return messages;
   }
 
-  async constructMessage(message_: Api.Message, r?: boolean, business?: { connectionId: string; replyToMessage?: Api.Message }, messageGetter?: MessageGetter): Promise<Message> {
+  async constructMessage(message_: Api.Message | Api.EphemeralMessage, r?: boolean, business?: { connectionId: string; replyToMessage?: Api.Message }, messageGetter?: MessageGetter): Promise<Message> {
     const mediaPoll = "media" in message_ && Api.is("messageMediaPoll", message_.media) ? message_.media : null;
     const pollId = mediaPoll?.poll.id;
     let poll: Api.poll | null = null;
@@ -385,37 +391,33 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
     let result: Api.Updates;
     if (!noWebpage && params?.linkPreview?.url) {
-      result = await this.#c.invoke({
-        _: "messages.sendMedia",
-        peer,
-        random_id: randomId,
-        media: {
-          _: "inputMediaWebPage",
-          url: params.linkPreview.url,
-          force_large_media: params.linkPreview.mediaSize === "large" || undefined,
-          force_small_media: params.linkPreview.mediaSize === "small" || undefined,
-          optional: !message.length || undefined,
-        },
-        message,
-        invert_media: invertMedia,
-        silent,
-        noforwards,
-        reply_to: await this.#constructReplyTo(params),
-        send_as: sendAs,
-        entities,
-        reply_markup: replyMarkup,
-        effect,
-        schedule_date,
-        allow_paid_floodskip,
-      }, { businessConnectionId: params?.businessConnectionId });
-    } else {
-      result = await this.#c.invoke(
-        {
-          _: "messages.sendMessage",
+      const media: Api.inputMediaWebPage = {
+        _: "inputMediaWebPage",
+        url: params.linkPreview.url,
+        force_large_media: params.linkPreview.mediaSize === "large" || undefined,
+        force_small_media: params.linkPreview.mediaSize === "small" || undefined,
+        optional: !message.length || undefined,
+      };
+      if (params.receiverId !== undefined) {
+        result = await this.#c.invoke({
+          _: "ephemeral.sendMessage",
           peer,
           random_id: randomId,
+          media,
           message,
-          no_webpage: noWebpage,
+          receiver_id: await this.#c.getInputUser(params.receiverId),
+          entities,
+          query_id: params.callbackQueryId !== undefined ? BigInt(params.callbackQueryId) : undefined,
+          reply_to: await this.#constructReplyTo(params),
+          reply_markup: replyMarkup,
+        });
+      } else {
+        result = await this.#c.invoke({
+          _: "messages.sendMedia",
+          peer,
+          random_id: randomId,
+          media,
+          message,
           invert_media: invertMedia,
           silent,
           noforwards,
@@ -426,9 +428,43 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
           effect,
           schedule_date,
           allow_paid_floodskip,
-        },
-        { businessConnectionId: params?.businessConnectionId },
-      );
+        }, { businessConnectionId: params?.businessConnectionId });
+      }
+    } else {
+      if (params?.receiverId !== undefined) {
+        result = await this.#c.invoke({
+          _: "ephemeral.sendMessage",
+          peer,
+          random_id: randomId,
+          message,
+          receiver_id: await this.#c.getInputUser(params.receiverId),
+          entities,
+          query_id: params.callbackQueryId !== undefined ? BigInt(params.callbackQueryId) : undefined,
+          reply_to: await this.#constructReplyTo(params),
+          reply_markup: replyMarkup,
+        });
+      } else {
+        result = await this.#c.invoke(
+          {
+            _: "messages.sendMessage",
+            peer,
+            random_id: randomId,
+            message,
+            no_webpage: noWebpage,
+            invert_media: invertMedia,
+            silent,
+            noforwards,
+            reply_to: await this.#constructReplyTo(params),
+            send_as: sendAs,
+            entities,
+            reply_markup: replyMarkup,
+            effect,
+            schedule_date,
+            allow_paid_floodskip,
+          },
+          { businessConnectionId: params?.businessConnectionId },
+        );
+      }
     }
 
     const message_ = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
@@ -441,6 +477,9 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     params?: SendRichTextParams,
   ): Promise<MessageRichText> {
     this.#checkParams(params);
+    if (params?.receiverId !== undefined) {
+      throw new InputError("Cannot send ephemeral rich text messages.");
+    }
 
     const replyMarkup = await this.#constructReplyMarkup(params);
 
@@ -455,24 +494,39 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
     const rich_message = MessageManager.inputRichTextToInputRichMessage(richText);
 
-    const result = await this.#c.invoke(
-      {
-        _: "messages.sendMessage",
+    let result: Api.Updates;
+    if (params?.receiverId !== undefined) {
+      result = await this.#c.invoke({
+        _: "ephemeral.sendMessage",
         peer,
         random_id: randomId,
         message: "",
         rich_message,
-        silent,
-        noforwards,
-        reply_to: await this.#constructReplyTo(params),
-        send_as: sendAs,
+        receiver_id: await this.#c.getInputUser(params.receiverId),
+        query_id: params.callbackQueryId !== undefined ? BigInt(params.callbackQueryId) : undefined,
         reply_markup: replyMarkup,
-        effect,
-        schedule_date,
-        allow_paid_floodskip,
-      },
-      { businessConnectionId: params?.businessConnectionId },
-    );
+        reply_to: await this.#constructReplyTo(params),
+      });
+    } else {
+      result = await this.#c.invoke(
+        {
+          _: "messages.sendMessage",
+          peer,
+          random_id: randomId,
+          message: "",
+          rich_message,
+          silent,
+          noforwards,
+          reply_to: await this.#constructReplyTo(params),
+          send_as: sendAs,
+          reply_markup: replyMarkup,
+          effect,
+          schedule_date,
+          allow_paid_floodskip,
+        },
+        { businessConnectionId: params?.businessConnectionId },
+      );
+    }
 
     const message_ = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message_, "richText");
@@ -546,6 +600,11 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         poll_option: params.replyTo.pollOptionIndex !== undefined ? encodeText(String(params.replyTo.pollOptionIndex)) : undefined,
         todo_item_id: params.replyTo.checklistItemId,
       };
+    } else if (params.replyTo.type === "ephemeralMessage") {
+      return {
+        _: "inputReplyToEphemeralMessage",
+        id: params.replyTo.messageId,
+      };
     } else {
       return { _: "inputReplyToStory", peer: await this.#c.getInputPeer(params.replyTo.chatId), story_id: params.replyTo.storyId };
     }
@@ -560,33 +619,50 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined;
     const replyMarkup = await this.#constructReplyMarkup(params);
 
-    const result = await this.#c.invoke({
-      _: "messages.sendMedia",
-      peer,
-      random_id: randomId,
-      silent,
-      noforwards,
-      reply_to: await this.#constructReplyTo(params),
-      send_as: sendAs,
-      reply_markup: replyMarkup,
-      media: {
-        _: "inputMediaVenue",
-        geo_point: {
-          _: "inputGeoPoint",
-          lat: latitude,
-          long: longitude,
-        },
-        title,
-        address,
-        venue_id: params?.foursquareId ?? "",
-        venue_type: params?.foursquareType ?? "",
-        provider: "foursquare",
+    const media: Api.inputMediaVenue = {
+      _: "inputMediaVenue",
+      geo_point: {
+        _: "inputGeoPoint",
+        lat: latitude,
+        long: longitude,
       },
-      message: "",
-      effect: params?.effectId ? BigInt(params.effectId) : undefined,
-      schedule_date: params?.sendAt,
-      allow_paid_floodskip: params?.isPaidBroadcast || undefined,
-    }, { businessConnectionId: params?.businessConnectionId });
+      title,
+      address,
+      venue_id: params?.foursquareId ?? "",
+      venue_type: params?.foursquareType ?? "",
+      provider: "foursquare",
+    };
+
+    let result: Api.Updates;
+    if (params?.receiverId !== undefined) {
+      result = await this.#c.invoke({
+        _: "ephemeral.sendMessage",
+        message: "",
+        media,
+        reply_to: await this.#constructReplyTo(params),
+        peer,
+        random_id: randomId,
+        receiver_id: await this.#c.getInputUser(params.receiverId),
+        query_id: params.callbackQueryId !== undefined ? BigInt(params.callbackQueryId) : undefined,
+        reply_markup: replyMarkup,
+      });
+    } else {
+      result = await this.#c.invoke({
+        _: "messages.sendMedia",
+        peer,
+        random_id: randomId,
+        silent,
+        noforwards,
+        reply_to: await this.#constructReplyTo(params),
+        send_as: sendAs,
+        reply_markup: replyMarkup,
+        media,
+        message: "",
+        effect: params?.effectId ? BigInt(params.effectId) : undefined,
+        schedule_date: params?.sendAt,
+        allow_paid_floodskip: params?.isPaidBroadcast || undefined,
+      }, { businessConnectionId: params?.businessConnectionId });
+    }
 
     const message = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message, "venue");
@@ -600,31 +676,49 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const noforwards = params?.isContentProtected || undefined;
     const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined;
     const replyMarkup = await this.#constructReplyMarkup(params);
+    const media: Api.inputMediaContact = {
+      _: "inputMediaContact",
+      phone_number: number,
+      first_name: firstName,
+      last_name: params?.lastName ?? "",
+      vcard: params?.vcard ?? "",
+    };
 
-    const result = await this.#c.invoke(
-      {
-        _: "messages.sendMedia",
-        peer,
-        random_id: randomId,
-        silent,
-        noforwards,
-        reply_to: await this.#constructReplyTo(params),
-        send_as: sendAs,
-        reply_markup: replyMarkup,
-        media: {
-          _: "inputMediaContact",
-          phone_number: number,
-          first_name: firstName,
-          last_name: params?.lastName ?? "",
-          vcard: params?.vcard ?? "",
+    let result: Api.Updates;
+    if (params?.receiverId !== undefined) {
+      result = await this.#c.invoke(
+        {
+          _: "ephemeral.sendMessage",
+          peer,
+          random_id: randomId,
+          reply_to: await this.#constructReplyTo(params),
+          reply_markup: replyMarkup,
+          media,
+          message: "",
+          receiver_id: await this.#c.getInputUser(params.receiverId),
+          query_id: params.callbackQueryId !== undefined ? BigInt(params.callbackQueryId) : undefined,
         },
-        message: "",
-        effect: params?.effectId ? BigInt(params.effectId) : undefined,
-        schedule_date: params?.sendAt,
-        allow_paid_floodskip: params?.isPaidBroadcast || undefined,
-      },
-      { businessConnectionId: params?.businessConnectionId },
-    );
+      );
+    } else {
+      result = await this.#c.invoke(
+        {
+          _: "messages.sendMedia",
+          peer,
+          random_id: randomId,
+          silent,
+          noforwards,
+          reply_to: await this.#constructReplyTo(params),
+          send_as: sendAs,
+          reply_markup: replyMarkup,
+          media,
+          message: "",
+          effect: params?.effectId ? BigInt(params.effectId) : undefined,
+          schedule_date: params?.sendAt,
+          allow_paid_floodskip: params?.isPaidBroadcast || undefined,
+        },
+        { businessConnectionId: params?.businessConnectionId },
+      );
+    }
 
     const message = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message, "contact");
@@ -632,6 +726,10 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async sendDice(chatId: ID, params?: SendDiceParams): Promise<MessageDice> {
     this.#checkParams(params);
+    if (params?.receiverId !== undefined) {
+      throw new InputError("Cannot send ephemeral dice.");
+    }
+
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
     const silent = params?.isSilent || undefined;
@@ -671,45 +769,62 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined;
     const replyMarkup = await this.#constructReplyMarkup(params);
 
-    const result = await this.#c.invoke(
-      {
-        _: "messages.sendMedia",
+    const media: Api.inputMediaGeoPoint | Api.inputMediaGeoLive = params?.livePeriod !== undefined
+      ? ({
+        _: "inputMediaGeoLive",
+        geo_point: {
+          _: "inputGeoPoint",
+          lat: latitude,
+          long: longitude,
+          accuracy_radius: params?.horizontalAccuracy,
+        },
+        heading: params?.heading,
+        period: params.livePeriod,
+        proximity_notification_radius: params?.proximityAlertRadius,
+      })
+      : ({
+        _: "inputMediaGeoPoint",
+        geo_point: {
+          _: "inputGeoPoint",
+          lat: latitude,
+          long: longitude,
+          accuracy_radius: params?.horizontalAccuracy,
+        },
+      });
+
+    let result: Api.Updates;
+    if (params?.receiverId !== undefined) {
+      result = await this.#c.invoke({
+        _: "ephemeral.sendMessage",
         peer,
+        receiver_id: await this.#c.getInputUser(params.receiverId),
         random_id: randomId,
-        silent,
-        noforwards,
-        reply_to: await this.#constructReplyTo(params),
-        send_as: sendAs,
-        reply_markup: replyMarkup,
-        media: params?.livePeriod !== undefined
-          ? ({
-            _: "inputMediaGeoLive",
-            geo_point: {
-              _: "inputGeoPoint",
-              lat: latitude,
-              long: longitude,
-              accuracy_radius: params?.horizontalAccuracy,
-            },
-            heading: params?.heading,
-            period: params.livePeriod,
-            proximity_notification_radius: params?.proximityAlertRadius,
-          })
-          : ({
-            _: "inputMediaGeoPoint",
-            geo_point: {
-              _: "inputGeoPoint",
-              lat: latitude,
-              long: longitude,
-              accuracy_radius: params?.horizontalAccuracy,
-            },
-          }),
         message: "",
-        effect: params?.effectId ? BigInt(params.effectId) : undefined,
-        schedule_date: params?.sendAt,
-        allow_paid_floodskip: params?.isPaidBroadcast || undefined,
-      },
-      { businessConnectionId: params?.businessConnectionId },
-    );
+        media,
+        query_id: params.callbackQueryId !== undefined ? BigInt(params.callbackQueryId) : undefined,
+        reply_markup: replyMarkup,
+        reply_to: await this.#constructReplyTo(params),
+      });
+    } else {
+      result = await this.#c.invoke(
+        {
+          _: "messages.sendMedia",
+          peer,
+          random_id: randomId,
+          silent,
+          noforwards,
+          reply_to: await this.#constructReplyTo(params),
+          send_as: sendAs,
+          reply_markup: replyMarkup,
+          media,
+          message: "",
+          effect: params?.effectId ? BigInt(params.effectId) : undefined,
+          schedule_date: params?.sendAt,
+          allow_paid_floodskip: params?.isPaidBroadcast || undefined,
+        },
+        { businessConnectionId: params?.businessConnectionId },
+      );
+    }
 
     const message = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message, "location");
@@ -927,25 +1042,41 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const caption = parseResult?.[0];
     const captionEntities = parseResult?.[1];
 
-    const result = await this.#c.invoke(
-      {
-        _: "messages.sendMedia",
+    let result: Api.Updates;
+    if (params?.receiverId !== undefined) {
+      result = await this.#c.invoke({
+        _: "ephemeral.sendMessage",
         peer,
         random_id: randomId,
-        silent,
-        noforwards,
-        reply_markup: replyMarkup,
-        reply_to: await this.#constructReplyTo(params),
-        send_as: sendAs,
-        media,
+        receiver_id: await this.#c.getInputUser(params.receiverId),
         message: caption ?? "",
         entities: captionEntities,
-        effect: params?.effectId ? BigInt(params.effectId) : undefined,
-        schedule_date: params?.sendAt,
-        allow_paid_floodskip: params?.isPaidBroadcast || undefined,
-      },
-      { businessConnectionId: params?.businessConnectionId },
-    );
+        media,
+        query_id: params.callbackQueryId !== undefined ? BigInt(params.callbackQueryId) : undefined,
+        reply_markup: replyMarkup,
+        reply_to: await this.#constructReplyTo(params),
+      });
+    } else {
+      result = await this.#c.invoke(
+        {
+          _: "messages.sendMedia",
+          peer,
+          random_id: randomId,
+          silent,
+          noforwards,
+          reply_markup: replyMarkup,
+          reply_to: await this.#constructReplyTo(params),
+          send_as: sendAs,
+          media,
+          message: caption ?? "",
+          entities: captionEntities,
+          effect: params?.effectId ? BigInt(params.effectId) : undefined,
+          schedule_date: params?.sendAt,
+          allow_paid_floodskip: params?.isPaidBroadcast || undefined,
+        },
+        { businessConnectionId: params?.businessConnectionId },
+      );
+    }
 
     return (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
   }
@@ -979,6 +1110,9 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     }
     if (!Array.isArray(options) || options.length < 1) {
       throw new InputError("There must be at least one option.");
+    }
+    if (params?.receiverId !== undefined) {
+      throw new InputError("Cannot send ephemeral polls.");
     }
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
@@ -1105,6 +1239,9 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async sendChecklist(chatId: ID, title: string, items: InputChecklistItem[], params?: SendChecklistParams): Promise<MessageChecklist> {
     this.#checkParams(params);
+    if (params?.receiverId !== undefined) {
+      throw new InputError("Cannot send ephemeral checklists.");
+    }
     title = title?.trim();
     if (!title) {
       throw new InputError("Title must not be empty.");
@@ -1175,6 +1312,26 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return message_;
   }
 
+  async editEphemeralMessageReplyMarkup(
+    chatId: ID,
+    receiverUserId: ID,
+    messageId: number,
+    params?: EditMessageReplyMarkupParams,
+  ): Promise<Message> {
+    this.#c.storage.assertBot("editEphemeralMessageReplyMarkup");
+    this.#checkParams(params);
+    const result = await this.#c.invoke({
+      _: "ephemeral.editMessage",
+      id: checkMessageId(messageId),
+      receiver_id: await this.#c.getInputUser(receiverUserId),
+      peer: await this.#c.getInputPeer(chatId),
+      reply_markup: await this.#constructReplyMarkup(params),
+    }, { businessConnectionId: params?.businessConnectionId });
+
+    const message_ = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
+    return message_;
+  }
+
   async editInlineMessageReplyMarkup(
     inlineMessageId: string,
     params?: EditMessageReplyMarkupParams,
@@ -1231,6 +1388,44 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       invert_media: invertMedia,
       reply_markup: await this.#constructReplyMarkup(params),
     }, { businessConnectionId: params?.businessConnectionId });
+
+    const message_ = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
+    return assertMessageType(message_, "text");
+  }
+
+  async editEphemeralMessageText(
+    chatId: ID,
+    receiverUserId: ID,
+    messageId: number,
+    text: string,
+    params?: EditMessageTextParams,
+  ): Promise<MessageText> {
+    this.#c.storage.assertBot("editEphemeralMessageText");
+    this.#checkParams(params);
+    const [message, entities] = this.parseText(text, params);
+    if (!message) {
+      throw new InputError("Message text cannot be empty.");
+    }
+    if (params?.linkPreview && params.linkPreview.type !== "input") {
+      throw new InputError("Expected link preview of type input.");
+    }
+    const noWebpage = params?.linkPreview && params.linkPreview.type === "input" && params.linkPreview.isDisabled || undefined;
+
+    let media: Api.InputMedia | undefined = undefined;
+    if (!noWebpage && params?.linkPreview?.url) {
+      media = { _: "inputMediaWebPage", url: params.linkPreview.url, force_large_media: params.linkPreview.mediaSize === "large" || undefined, force_small_media: params.linkPreview.mediaSize === "small" || undefined, optional: !message.length || undefined };
+    }
+
+    const result = await this.#c.invoke({
+      _: "ephemeral.editMessage",
+      id: checkMessageId(messageId),
+      peer: await this.#c.getInputPeer(chatId),
+      receiver_id: await this.#c.getInputUser(receiverUserId),
+      entities,
+      media,
+      message,
+      reply_markup: await this.#constructReplyMarkup(params),
+    });
 
     const message_ = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message_, "text");
@@ -1293,6 +1488,25 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       message,
       reply_markup: await this.#constructReplyMarkup(params),
     }, { businessConnectionId: params?.businessConnectionId });
+
+    return (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
+  }
+
+  async editEphemeralMessageCaption(chatId: ID, receiverUserId: ID, messageId: number, params?: EditMessageCaptionParams): Promise<Message> {
+    this.#c.storage.assertBot("editEphemeralMessageCaption");
+    this.#checkParams(params);
+
+    const [message, entities] = this.parseText(params?.caption ?? "", params, true);
+
+    const result = await this.#c.invoke({
+      _: "ephemeral.editMessage",
+      id: checkMessageId(messageId),
+      receiver_id: await this.#c.getInputUser(receiverUserId),
+      peer: await this.#c.getInputPeer(chatId),
+      entities: message ? entities : [],
+      message,
+      reply_markup: await this.#constructReplyMarkup(params),
+    });
 
     return (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
   }
@@ -1623,6 +1837,31 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return message_;
   }
 
+  async editEphemeralMessageMedia(
+    chatId: ID,
+    receiverUserId: ID,
+    messageId: number,
+    media: InputMedia,
+    params?: EditMessageMediaParams,
+  ): Promise<Message> {
+    this.#c.storage.assertBot("editEphemeralMessageMedia");
+    this.#checkParams(params);
+    const maybeParseResult = media.caption !== undefined ? this.parseText(media.caption, { entities: media.captionEntities, parseMode: media.parseMode }, true) : undefined;
+    const result = await this.#c.invoke({
+      _: "ephemeral.editMessage",
+      receiver_id: await this.#c.getInputUser(receiverUserId),
+      peer: await this.#c.getInputPeer(chatId),
+      id: messageId,
+      media: await this.#resolveInputMedia(media),
+      reply_markup: await this.#constructReplyMarkup(params),
+      message: maybeParseResult?.[0],
+      entities: maybeParseResult?.[1],
+    });
+
+    const message_ = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
+    return message_;
+  }
+
   async editInlineMessageMedia(inlineMessageId: string, media: InputMedia, params?: EditInlineMessageMediaParams) {
     this.#checkParams(params);
     this.#c.storage.assertBot("editInlineMessageMedia");
@@ -1658,6 +1897,14 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     } else {
       await this.#c.invoke({ _: "messages.deleteMessages", id: messageIds, revoke: !params?.isOnlyForMe || undefined });
     }
+  }
+
+  async deleteEphemeralMessage(chatId: ID, receiverUserId: ID, messageId: number) {
+    checkMessageId(messageId);
+    const peer = await this.#c.getInputPeer(chatId);
+    const receiver_id = await this.#c.getInputUser(receiverUserId);
+    const id = messageId;
+    await this.#c.invoke({ _: "ephemeral.deleteMessage", peer, receiver_id, id });
   }
 
   async deleteScheduledMessages(chatId: ID, messageIds: number[]) {
@@ -1879,6 +2126,41 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         message.replyToMessage = await this.constructMessage(replyToMessage, false);
       }
       return { type: "guestQuery", guestQuery: { id: String(update.query_id), message } };
+    }
+
+    if (Api.is("updateNewEphemeralMessage", update)) {
+      const isOutgoing = update.message.out;
+      let shouldIgnore = false;
+      if (isOutgoing) {
+        shouldIgnore = !this.#c.outgoingMessages;
+      }
+
+      if (!shouldIgnore) {
+        const message = await this.constructMessage(update.message, false);
+        return { type: "message", message };
+      }
+    }
+
+    if (Api.is("updateEditEphemeralMessage", update)) {
+      const isOutgoing = update.message.out;
+      let shouldIgnore = false;
+      if (isOutgoing) {
+        shouldIgnore = !this.#c.outgoingMessages;
+      }
+
+      if (!shouldIgnore) {
+        const editedMessage = await this.constructMessage(update.message, false);
+        return { type: "editedMessage", editedMessage };
+      }
+    }
+
+    if (Api.is("updateDeleteEphemeralMessages", update)) {
+      const deletedMessages = new Array<MessageReference>();
+      const chatId = peerToChatId(update.peer);
+      for (const id of update.ids) {
+        deletedMessages.push({ chatId, messageId: id });
+      }
+      return { type: "deletedMessages", deletedMessages, isEphemeral: true };
     }
 
     return null;
@@ -2113,6 +2395,9 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async sendMediaGroup(chatId: ID, media: InputMedia[], params?: SendMediaGroupParams): Promise<Message[]> {
     this.#checkParams(params);
+    if (params?.receiverId !== undefined) {
+      throw new InputError("Cannot send ephemeral media groups.");
+    }
     {
       if (!Array.isArray(media) || !media.length) {
         throw new InputError("Media group must not be empty.");

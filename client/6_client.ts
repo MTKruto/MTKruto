@@ -369,7 +369,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     this.#stickerSetManager = new StickerSetManager({ ...c, fileManager });
     this.#videoChatManager = new VideoChatManager({ ...c, fileManager });
     // 4_
-    this.#callbackQueryManager = new CallbackQueryManager({ ...c, messageManager });
+    this.#callbackQueryManager = new CallbackQueryManager({ ...c, fileManager, messageManager });
     this.#chatListManager = new ChatListManager({ ...c, fileManager, messageManager });
     this.#chatManager = new ChatManager({ ...c, fileManager, messageManager });
     this.#checklistManager = new ChecklistManager({ ...c, messageManager });
@@ -2419,6 +2419,18 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Delete an ephemeral message.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param receiverUserId The identifier of the user who received the ephemeral message.
+   * @param messageId The identifier of the message to delete.
+   */
+  async deleteEphemeralMessage(chatId: ID, receiverUserId: ID, messageId: number): Promise<void> {
+    return await this.#messageManager.deleteEphemeralMessage(chatId, receiverUserId, messageId);
+  }
+
+  /**
    * Delete a single message.
    *
    * @method ms
@@ -2460,6 +2472,60 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async deleteScheduledMessages(chatId: ID, messageIds: number[]) {
     await this.#messageManager.deleteScheduledMessages(chatId, messageIds);
+  }
+
+  /**
+   * Edit an ephemeral message's caption. Bot-only.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param receiverUserId The identifier of the user who received the ephemeral message.
+   * @param messageId The identifier of the message.
+   * @returns The edited message.
+   */
+  async editEphemeralMessageCaption(chatId: ID, receiverUserId: ID, messageId: number, params?: EditMessageCaptionParams): Promise<Message> {
+    return await this.#messageManager.editEphemeralMessageCaption(chatId, receiverUserId, messageId, params);
+  }
+
+  /**
+   * Edit an ephemeral message's media. Bot-only.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param receiverUserId The identifier of the user who received the ephemeral message.
+   * @param messageId The identifier of the message.
+   * @param media The message's new media.
+   * @returns The edited message.
+   */
+  async editEphemeralMessageMedia(chatId: ID, receiverUserId: ID, messageId: number, media: InputMedia, params?: EditMessageMediaParams): Promise<Message> {
+    return await this.#messageManager.editEphemeralMessageMedia(chatId, receiverUserId, messageId, media, params);
+  }
+
+  /**
+   * Edit an ephemeral message's reply markup. Bot-only.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param receiverUserId The identifier of the user who received the ephemeral message.
+   * @param messageId The identifier of the message.
+   * @returns The edited message.
+   */
+  async editEphemeralMessageReplyMarkup(chatId: ID, receiverUserId: ID, messageId: number, params?: EditMessageReplyMarkupParams): Promise<Message> {
+    return await this.#messageManager.editEphemeralMessageReplyMarkup(chatId, receiverUserId, messageId, params);
+  }
+
+  /**
+   * Edit an ephemeral message's text. Bot-only.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param receiverUserId The identifier of the user who received the ephemeral message.
+   * @param messageId The identifier of the message.
+   * @param text The new text of the message.
+   * @returns The edited text message.
+   */
+  async editEphemeralMessageText(chatId: ID, receiverUserId: ID, messageId: number, text: string, params?: EditMessageTextParams): Promise<MessageText> {
+    return await this.#messageManager.editEphemeralMessageText(chatId, receiverUserId, messageId, text, params);
   }
 
   /**

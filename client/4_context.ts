@@ -235,12 +235,12 @@ export class Context {
 
   #mustGetMsg() {
     if (this.msg !== undefined) {
-      return { chatId: this.msg.chat.id, messageId: this.msg.id, businessConnectionId: this.msg.businessConnectionId, senderId: this.msg.from?.id, userId: this.msg.from?.id };
+      return { chatId: this.msg.chat.id, messageId: this.msg.id, businessConnectionId: this.msg.businessConnectionId, senderId: this.msg.from?.id, userId: this.msg.from?.id, isEphemeral: !!this.msg.receiver };
     }
 
     const reactions = this.update.type === "messageInteractions" ? this.update.messageInteractions : undefined;
     if (reactions !== undefined) {
-      return { chatId: reactions.chatId, messageId: reactions.messageId };
+      return { chatId: reactions.chatId, messageId: reactions.messageId, isEphemeral: false };
     } else {
       unreachable();
     }
@@ -300,7 +300,14 @@ export class Context {
     unreachable();
   }
 
-  #getReplyTo = (isQuoted: boolean | undefined, chatId: number, messageId: number): { messageThreadId?: number; directMessagesTopicId?: number; replyTo?: ReplyTo } => {
+  #getReplyTo = (isQuoted: boolean | undefined, chatId: number, messageId: number, isEphemeral: boolean | undefined, userId: number | undefined): { receiverId?: number; messageThreadId?: number; directMessagesTopicId?: number; replyTo?: ReplyTo } => {
+    if (isEphemeral) {
+      if (!userId) {
+        unreachable();
+      }
+      return { receiverId: userId, replyTo: { type: "ephemeralMessage", messageId: messageId } };
+    }
+
     if (this.update.type === "story") {
       return { replyTo: { type: "story", chatId: this.update.story.chat.id, storyId: this.update.story.id } };
     }
@@ -649,8 +656,15 @@ export class Context {
 
   /** Context-aware alias for {@link Client.deleteMessage}. */
   async delete(): Promise<void> {
-    const { chatId, messageId } = this.#mustGetMsg();
-    return await this.client.deleteMessage(chatId, messageId);
+    const { chatId, messageId, userId, isEphemeral } = this.#mustGetMsg();
+    if (isEphemeral) {
+      if (!userId) {
+        unreachable();
+      }
+      return await this.client.deleteEphemeralMessage(chatId, userId, messageId);
+    } else {
+      return await this.client.deleteMessage(chatId, messageId);
+    }
   }
 
   /** Context-aware alias for {@link Client.deleteChat}. */
@@ -675,6 +689,12 @@ export class Context {
   async deleteChatStickerSet(): Promise<void> {
     const chatId = this.#mustGetChatId();
     return await this.client.deleteChatStickerSet(chatId);
+  }
+
+  /** Context-aware alias for {@link Client.deleteEphemeralMessage}. */
+  async deleteEphemeralMessage(receiverUserId: ID, messageId: number): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.deleteEphemeralMessage(chatId, receiverUserId, messageId);
   }
 
   /** Context-aware alias for {@link Client.deleteMessage}. */
@@ -783,6 +803,30 @@ export class Context {
   async disallowUnpaidMessages(params?: DisallowUnpaidMessagesFromUserParams): Promise<void> {
     const userId = this.#mustGetUserId();
     return await this.client.disallowUnpaidMessagesFromUser(userId, params);
+  }
+
+  /** Context-aware alias for {@link Client.editEphemeralMessageCaption}. */
+  async editEphemeralMessageCaption(receiverUserId: ID, messageId: number, params?: EditMessageCaptionParams): Promise<Message> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.editEphemeralMessageCaption(chatId, receiverUserId, messageId, this.#withBusinessConnection(params));
+  }
+
+  /** Context-aware alias for {@link Client.editEphemeralMessageMedia}. */
+  async editEphemeralMessageMedia(receiverUserId: ID, messageId: number, media: InputMedia, params?: EditMessageReplyMarkupParams): Promise<Message> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.editEphemeralMessageMedia(chatId, receiverUserId, messageId, media, this.#withBusinessConnection(params));
+  }
+
+  /** Context-aware alias for {@link Client.editEphemeralMessageReplyMarkup}. */
+  async editEphemeralMessageReplyMarkup(receiverUserId: ID, messageId: number, params?: EditMessageReplyMarkupParams): Promise<Message> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.editEphemeralMessageReplyMarkup(chatId, receiverUserId, messageId, this.#withBusinessConnection(params));
+  }
+
+  /** Context-aware alias for {@link Client.editEphemeralMessageText}. */
+  async editEphemeralMessageText(receiverUserId: ID, messageId: number, text: string, params?: EditMessageTextParams): Promise<MessageText> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.editEphemeralMessageText(chatId, receiverUserId, messageId, text, this.#withBusinessConnection(params));
   }
 
   /** Context-aware alias for {@link Client.editInlineMessageCaption}. */
@@ -1345,113 +1389,113 @@ export class Context {
 
   /** Context-aware alias for {@link Client.sendMessage}. */
   async reply(text: string, params?: Omit<SendMessageParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageText> {
-    const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
-    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
+    const { chatId, messageId, businessConnectionId, isEphemeral, userId } = this.#mustGetMsg();
+    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId, isEphemeral, userId);
     return await this.client.sendMessage(chatId, text, { ...params, ...replyTo, businessConnectionId });
   }
 
   /** Context-aware alias for {@link Client.sendAnimation}. */
   async replyAnimation(animation: FileSource, params?: Omit<SendAnimationParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageAnimation> {
-    const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
-    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
+    const { chatId, messageId, businessConnectionId, isEphemeral, userId } = this.#mustGetMsg();
+    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId, isEphemeral, userId);
     return await this.client.sendAnimation(chatId, animation, { ...params, ...replyTo, businessConnectionId });
   }
 
   /** Context-aware alias for {@link Client.sendAudio}. */
   async replyAudio(audio: FileSource, params?: Omit<SendAudioParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageAudio> {
-    const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
-    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
+    const { chatId, messageId, businessConnectionId, isEphemeral, userId } = this.#mustGetMsg();
+    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId, isEphemeral, userId);
     return await this.client.sendAudio(chatId, audio, { ...params, ...replyTo, businessConnectionId });
   }
 
   /** Context-aware alias for {@link Client.sendChecklist}. */
   async replyChecklist(title: string, items: InputChecklistItem[], params?: Omit<SendChecklistParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageChecklist> {
-    const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
-    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
+    const { chatId, messageId, businessConnectionId, isEphemeral, userId } = this.#mustGetMsg();
+    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId, isEphemeral, userId);
     return await this.client.sendChecklist(chatId, title, items, { ...params, ...replyTo, businessConnectionId });
   }
 
   /** Context-aware alias for {@link Client.sendContact}. */
   async replyContact(firstName: string, phoneNumber: string, params?: Omit<SendContactParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageContact> {
-    const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
-    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
+    const { chatId, messageId, businessConnectionId, isEphemeral, userId } = this.#mustGetMsg();
+    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId, isEphemeral, userId);
     return await this.client.sendContact(chatId, firstName, phoneNumber, { ...params, ...replyTo, businessConnectionId });
   }
 
   /** Context-aware alias for {@link Client.sendDice}. */
   async replyDice(params?: Omit<SendDiceParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageDice> {
-    const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
-    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
+    const { chatId, messageId, businessConnectionId, isEphemeral, userId } = this.#mustGetMsg();
+    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId, isEphemeral, userId);
     return await this.client.sendDice(chatId, { ...params, ...replyTo, businessConnectionId });
   }
 
   /** Context-aware alias for {@link Client.sendDocument}. */
   async replyDocument(document: FileSource, params?: Omit<SendDocumentParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageDocument> {
-    const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
-    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
+    const { chatId, messageId, businessConnectionId, isEphemeral, userId } = this.#mustGetMsg();
+    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId, isEphemeral, userId);
     return await this.client.sendDocument(chatId, document, { ...params, ...replyTo, businessConnectionId });
   }
 
   /** Context-aware alias for {@link Client.sendMessageDraft}. */
   async replyDraft(draftId: number, text: string, params?: Omit<SendMessageDraftParams, "messageThreadId"> & ReplyParams): Promise<void> {
-    const { chatId, messageId } = this.#mustGetMsg();
-    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
+    const { chatId, messageId, isEphemeral, userId } = this.#mustGetMsg();
+    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId, isEphemeral, userId);
     return await this.client.sendMessageDraft(chatId, draftId, text, { ...params, ...replyTo });
   }
 
   /** Context-aware alias for {@link Client.sendInvoice}. */
   async replyInvoice(title: string, description: string, payload: string, currency: string, prices: PriceTag[], params?: Omit<SendInvoiceParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageInvoice> {
-    const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
-    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
+    const { chatId, messageId, businessConnectionId, isEphemeral, userId } = this.#mustGetMsg();
+    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId, isEphemeral, userId);
     return await this.client.sendInvoice(chatId, title, description, payload, currency, prices, { ...params, ...replyTo, businessConnectionId });
   }
 
   /** Context-aware alias for {@link Client.sendLivePhoto}. */
   async replyLivePhoto(photo: FileSource, video: FileSource, params?: Omit<SendLivePhotoParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageLivePhoto> {
-    const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
-    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
+    const { chatId, messageId, businessConnectionId, isEphemeral, userId } = this.#mustGetMsg();
+    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId, isEphemeral, userId);
     return await this.client.sendLivePhoto(chatId, photo, video, { ...params, ...replyTo, businessConnectionId });
   }
 
   /** Context-aware alias for {@link Client.sendLocation}. */
   async replyLocation(latitude: number, longitude: number, params?: Omit<SendLocationParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageLocation> {
-    const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
-    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
+    const { chatId, messageId, businessConnectionId, isEphemeral, userId } = this.#mustGetMsg();
+    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId, isEphemeral, userId);
     return await this.client.sendLocation(chatId, latitude, longitude, { ...params, ...replyTo, businessConnectionId });
   }
 
   /** Context-aware alias for {@link Client.sendMediaGroup}. */
   async replyMediaGroup(media: InputMedia[], params?: Omit<SendMediaGroupParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<Message[]> {
-    const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
-    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
+    const { chatId, messageId, businessConnectionId, isEphemeral, userId } = this.#mustGetMsg();
+    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId, isEphemeral, userId);
     return await this.client.sendMediaGroup(chatId, media, { ...params, ...replyTo, businessConnectionId });
   }
 
   /** Context-aware alias for {@link Client.sendPhoto}. */
   async replyPhoto(photo: FileSource, params?: Omit<SendPhotoParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessagePhoto> {
-    const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
-    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
+    const { chatId, messageId, businessConnectionId, isEphemeral, userId } = this.#mustGetMsg();
+    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId, isEphemeral, userId);
     return await this.client.sendPhoto(chatId, photo, { ...params, ...replyTo, businessConnectionId });
   }
 
   /** Context-aware alias for {@link Client.sendPoll}. */
   async replyPoll(question: string, options: InputPollOption[], params?: Omit<SendPollParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessagePoll> {
-    const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
-    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
+    const { chatId, messageId, businessConnectionId, isEphemeral, userId } = this.#mustGetMsg();
+    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId, isEphemeral, userId);
     return await this.client.sendPoll(chatId, question, options, { ...params, ...replyTo, businessConnectionId });
   }
 
   /** Context-aware alias for {@link Client.sendRichText}. */
   async replyRichText(richText: InputRichText, params?: Omit<SendMessageParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageRichText> {
-    const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
-    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
+    const { chatId, messageId, businessConnectionId, isEphemeral, userId } = this.#mustGetMsg();
+    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId, isEphemeral, userId);
     return await this.client.sendRichText(chatId, richText, { ...params, ...replyTo, businessConnectionId });
   }
 
   /** Context-aware alias for {@link Client.sendRichTextDraft}. */
   async replyRichTextDraft(draftId: number, richText: InputRichText, params?: Omit<SendRichTextDraftParams, "messageThreadId"> & ReplyParams): Promise<void> {
-    const { chatId, messageId } = this.#mustGetMsg();
-    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
+    const { chatId, messageId, isEphemeral, userId } = this.#mustGetMsg();
+    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId, isEphemeral, userId);
     return await this.client.sendRichTextDraft(chatId, draftId, richText, { ...params, ...replyTo });
   }
 
@@ -1541,36 +1585,36 @@ export class Context {
 
   /** Context-aware alias for {@link Client.sendSticker}. */
   async replySticker(sticker: FileSource, params?: Omit<SendStickerParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageSticker> {
-    const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
-    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
+    const { chatId, messageId, businessConnectionId, isEphemeral, userId } = this.#mustGetMsg();
+    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId, isEphemeral, userId);
     return await this.client.sendSticker(chatId, sticker, { ...params, ...replyTo, businessConnectionId });
   }
 
   /** Context-aware alias for {@link Client.sendVenue}. */
   async replyVenue(latitude: number, longitude: number, title: string, address: string, params?: Omit<SendVenueParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageVenue> {
-    const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
-    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
+    const { chatId, messageId, businessConnectionId, isEphemeral, userId } = this.#mustGetMsg();
+    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId, isEphemeral, userId);
     return await this.client.sendVenue(chatId, latitude, longitude, title, address, { ...params, ...replyTo, businessConnectionId });
   }
 
   /** Context-aware alias for {@link Client.sendVideo}. */
   async replyVideo(video: FileSource, params?: Omit<SendVideoParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageVideo> {
-    const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
-    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
+    const { chatId, messageId, businessConnectionId, isEphemeral, userId } = this.#mustGetMsg();
+    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId, isEphemeral, userId);
     return await this.client.sendVideo(chatId, video, { ...params, ...replyTo, businessConnectionId });
   }
 
   /** Context-aware alias for {@link Client.sendVideoNote}. */
   async replyVideoNote(videoNote: FileSource, params?: Omit<SendVideoNoteParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageVideoNote> {
-    const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
-    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
+    const { chatId, messageId, businessConnectionId, isEphemeral, userId } = this.#mustGetMsg();
+    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId, isEphemeral, userId);
     return await this.client.sendVideoNote(chatId, videoNote, { ...params, ...replyTo, businessConnectionId });
   }
 
   /** Context-aware alias for {@link Client.sendVoice}. */
   async replyVoice(voice: FileSource, params?: Omit<SendVoiceParams, "replyTo" | "messageThreadId" | "businessConnectionId"> & ReplyParams): Promise<MessageVoice> {
-    const { chatId, messageId, businessConnectionId } = this.#mustGetMsg();
-    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId);
+    const { chatId, messageId, businessConnectionId, isEphemeral, userId } = this.#mustGetMsg();
+    const replyTo = this.#getReplyTo(params?.isQuoted, chatId, messageId, isEphemeral, userId);
     return await this.client.sendVoice(chatId, voice, { ...params, ...replyTo, businessConnectionId });
   }
 

@@ -34,5 +34,6 @@ export function constructBotCommand(bc: Api.botCommand): BotCommand {
   return {
     command: bc.command,
     description: bc.description,
+    isEphemeral: !!bc.ephemeral,
   };
 }

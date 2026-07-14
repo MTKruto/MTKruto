@@ -27,13 +27,15 @@ import { checkPassword } from "./0_password.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { checkCallbackQueryId, checkMessageId } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
+import type { FileManager } from "./2_file_manager.ts";
 import type { MessageManager } from "./3_message_manager.ts";
 
-type C = C_ & { messageManager: MessageManager };
+type C = C_ & { fileManager: FileManager; messageManager: MessageManager };
 
 const callbackQueryManagerUpdates = [
   "updateBotCallbackQuery",
   "updateInlineBotCallbackQuery",
+  "updateEphemeralBotCallbackQuery",
 ] as const;
 
 type CallbackQueryManagerUpdate = Api.Types[(typeof callbackQueryManagerUpdates)[number]];
@@ -81,6 +83,6 @@ export class CallbackQueryManager implements UpdateProcessor<CallbackQueryManage
   }
 
   async handleUpdate(update: CallbackQueryManagerUpdate): Promise<Update> {
-    return { type: "callbackQuery", callbackQuery: await constructCallbackQuery(update, this.#c.getPeer, this.#c.messageManager.getMessageWithReply.bind(this.#c.messageManager)) };
+    return { type: "callbackQuery", callbackQuery: await constructCallbackQuery(update, this.#c.getPeer, this.#c.messageManager.getMessageWithReply.bind(this.#c.messageManager), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager)) };
   }
 }

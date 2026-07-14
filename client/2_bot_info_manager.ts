@@ -86,7 +86,7 @@ export class BotInfoManager implements UpdateProcessor<BotInfoManagerUpdate, fal
       lang_code: params?.languageCode ?? "",
       scope: await botCommandScopeToTlObject(params?.scope ?? { type: "default" }, this.#c.getInputPeer),
     });
-    return commands_.map((v) => ({ command: v.command, description: v.description, isEphemeral: !!v.ephemeral }));
+    return commands_.map(constructBotCommand);
   }
 
   async setMyCommands(commands: BotCommand[], params?: SetMyCommandsParams) {
