@@ -182,6 +182,7 @@ export interface UpdateMessagesDeleted {
   /** The deleted messages. */
   deletedMessages: MessageReference[];
   isScheduled?: boolean;
+  isEphemeral?: boolean;
   businessConnectionId?: string;
 }
 
