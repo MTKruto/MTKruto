@@ -724,7 +724,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   async sendDice(chatId: ID, params?: SendDiceParams): Promise<MessageDice> {
     this.#checkParams(params);
     if (params?.receiverUserId !== undefined) {
-      throw new InputError("Cannot send ephemeral dice.")
+      throw new InputError("Cannot send ephemeral dice.");
     }
 
     const peer = await this.#c.getInputPeer(chatId);
@@ -1315,6 +1315,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     messageId: number,
     params?: EditMessageReplyMarkupParams,
   ): Promise<Message> {
+    this.#c.storage.assertBot("editEphemeralMessageReplyMarkup");
     this.#checkParams(params);
     const result = await this.#c.invoke({
       _: "ephemeral.editMessage",
@@ -1396,6 +1397,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     text: string,
     params?: EditMessageTextParams,
   ): Promise<MessageText> {
+    this.#c.storage.assertBot("editEphemeralMessageText");
     this.#checkParams(params);
     const [message, entities] = this.parseText(text, params);
     if (!message) {
@@ -1488,6 +1490,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   }
 
   async editEphemeralMessageCaption(chatId: ID, receiverUserId: ID, messageId: number, params?: EditMessageCaptionParams): Promise<Message> {
+    this.#c.storage.assertBot("editEphemeralMessageCaption");
     this.#checkParams(params);
 
     const [message, entities] = this.parseText(params?.caption ?? "", params, true);
@@ -1838,6 +1841,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     media: InputMedia,
     params?: EditMessageMediaParams,
   ): Promise<Message> {
+    this.#c.storage.assertBot("editEphemeralMessageMedia");
     this.#checkParams(params);
     const maybeParseResult = media.caption !== undefined ? this.parseText(media.caption, { entities: media.captionEntities, parseMode: media.parseMode }, true) : undefined;
     const result = await this.#c.invoke({
