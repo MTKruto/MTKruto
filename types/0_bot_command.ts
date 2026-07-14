@@ -26,6 +26,8 @@ export interface BotCommand {
   command: string;
   /** The command's description. */
   description: string;
+  /** Whether the command is ephemeral. */
+  isEphemeral?: boolean;
 }
 
 export function constructBotCommand(bc: Api.botCommand): BotCommand {

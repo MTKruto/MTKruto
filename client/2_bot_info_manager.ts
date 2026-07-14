@@ -86,14 +86,14 @@ export class BotInfoManager implements UpdateProcessor<BotInfoManagerUpdate, fal
       lang_code: params?.languageCode ?? "",
       scope: await botCommandScopeToTlObject(params?.scope ?? { type: "default" }, this.#c.getInputPeer),
     });
-    return commands_.map((v) => ({ command: v.command, description: v.description }));
+    return commands_.map((v) => ({ command: v.command, description: v.description, isEphemeral: !!v.ephemeral }));
   }
 
   async setMyCommands(commands: BotCommand[], params?: SetMyCommandsParams) {
     this.#c.storage.assertBot("setMyCommands");
     await this.#c.invoke({
       _: "bots.setBotCommands",
-      commands: commands.map((v) => ({ ...v, _: "botCommand" })),
+      commands: commands.map((v) => ({ _: "botCommand", command: v.command, description: v.description, ephemeral: v.isEphemeral || undefined })),
       lang_code: params?.languageCode ?? "",
       scope: await botCommandScopeToTlObject(params?.scope ?? { type: "default" }, this.#c.getInputPeer),
     });
