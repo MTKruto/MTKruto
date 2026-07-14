@@ -954,7 +954,7 @@ export abstract class ClientGeneric {
   abstract deleteScheduledMessages(chatId: ID, messageIds: number[]): Promise<void>;
 
   /**
-   * Edit an ephemeral message's caption.
+   * Edit an ephemeral message's caption. Bot-only.
    *
    * @method ms
    * @param chatId The identifier of the chat which the message belongs to.
@@ -965,7 +965,7 @@ export abstract class ClientGeneric {
   abstract editEphemeralMessageCaption(chatId: ID, receiverUserId: ID, messageId: number, params?: EditMessageCaptionParams): Promise<Message>;
 
   /**
-   * Edit an ephemeral message's media.
+   * Edit an ephemeral message's media. Bot-only.
    *
    * @method ms
    * @param chatId The identifier of the chat which the message belongs to.
@@ -977,7 +977,7 @@ export abstract class ClientGeneric {
   abstract editEphemeralMessageMedia(chatId: ID, receiverUserId: ID, messageId: number, media: InputMedia, params?: EditMessageMediaParams): Promise<Message>;
 
   /**
-   * Edit an ephemeral message's reply markup.
+   * Edit an ephemeral message's reply markup. Bot-only.
    *
    * @method ms
    * @param chatId The identifier of the chat which the message belongs to.
@@ -988,7 +988,7 @@ export abstract class ClientGeneric {
   abstract editEphemeralMessageReplyMarkup(chatId: ID, receiverUserId: ID, messageId: number, params?: EditMessageReplyMarkupParams): Promise<Message>;
 
   /**
-   * Edit an ephemeral message's text.
+   * Edit an ephemeral message's text. Bot-only.
    *
    * @method ms
    * @param chatId The identifier of the chat which the message belongs to.

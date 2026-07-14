@@ -2475,7 +2475,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Edit an ephemeral message's caption.
+   * Edit an ephemeral message's caption. Bot-only.
    *
    * @method ms
    * @param chatId The identifier of the chat which the message belongs to.
@@ -2488,7 +2488,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Edit an ephemeral message's media.
+   * Edit an ephemeral message's media. Bot-only.
    *
    * @method ms
    * @param chatId The identifier of the chat which the message belongs to.
@@ -2502,7 +2502,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Edit an ephemeral message's reply markup.
+   * Edit an ephemeral message's reply markup. Bot-only.
    *
    * @method ms
    * @param chatId The identifier of the chat which the message belongs to.
@@ -2515,7 +2515,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Edit an ephemeral message's text.
+   * Edit an ephemeral message's text. Bot-only.
    *
    * @method ms
    * @param chatId The identifier of the chat which the message belongs to.
