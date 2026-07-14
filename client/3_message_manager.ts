@@ -474,6 +474,9 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     params?: SendRichTextParams,
   ): Promise<MessageRichText> {
     this.#checkParams(params);
+    if (params?.receiverUserId !== undefined) {
+      throw new InputError("Cannot send ephemeral rich text messages.");
+    }
 
     const replyMarkup = await this.#constructReplyMarkup(params);
 
@@ -1211,6 +1214,9 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async sendChecklist(chatId: ID, title: string, items: InputChecklistItem[], params?: SendChecklistParams): Promise<MessageChecklist> {
     this.#checkParams(params);
+    if (params?.receiverUserId !== undefined) {
+      throw new InputError("Cannot send ephemeral checklists.");
+    }
     title = title?.trim();
     if (!title) {
       throw new InputError("Title must not be empty.");
@@ -2338,6 +2344,9 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async sendMediaGroup(chatId: ID, media: InputMedia[], params?: SendMediaGroupParams): Promise<Message[]> {
     this.#checkParams(params);
+    if (params?.receiverUserId !== undefined) {
+      throw new InputError("Cannot send ephemeral media groups.");
+    }
     {
       if (!Array.isArray(media) || !media.length) {
         throw new InputError("Media group must not be empty.");
