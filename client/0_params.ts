@@ -90,7 +90,7 @@ export interface _SendCommon extends _BusinessConnectionIdCommon, _PaidBroadcast
   sendAt?: number;
   /** The identifier of the user that will receive the ephemeral message. */
   receiverUserId?: ID;
-  /** The identifier of the callback query ID that triggered the ephemeral message. */
+  /** The identifier of the callback query that triggered the ephemeral message. */
   callbackQueryId?: string;
 }
 export interface SendMessageParams extends _SendCommon, _ReplyMarkupCommon {
