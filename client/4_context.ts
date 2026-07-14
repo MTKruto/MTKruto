@@ -235,7 +235,7 @@ export class Context {
 
   #mustGetMsg() {
     if (this.msg !== undefined) {
-      return { chatId: this.msg.chat.id, messageId: this.msg.id, businessConnectionId: this.msg.businessConnectionId, senderId: this.msg.from?.id, userId: this.msg.from?.id, isEphemeral: this.msg.isEphemeral };
+      return { chatId: this.msg.chat.id, messageId: this.msg.id, businessConnectionId: this.msg.businessConnectionId, senderId: this.msg.from?.id, userId: this.msg.from?.id, isEphemeral: !!this.msg.receiver };
     }
 
     const reactions = this.update.type === "messageInteractions" ? this.update.messageInteractions : undefined;

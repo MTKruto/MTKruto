@@ -131,8 +131,8 @@ export interface _MessageBase {
   for?: ChatP;
   /** The amount of stars needed to see the message. */
   starCount?: number;
-  /** Whether the message is ephemeral. */
-  isEphemeral?: boolean;
+  /** The receiver of the ephemeral message. */
+  receiver?: User;
 }
 
 /**
@@ -1006,8 +1006,15 @@ export async function constructMessage(
     isScheduled: Api.is("ephemeralMessage", message_) ? undefined : message_.from_scheduled || undefined,
     ...getSender(message_, getPeer),
     for: Api.is("ephemeralMessage", message_) ? undefined : message_.guestchat_via_from ? getPeer(message_.guestchat_via_from)?.[0] : undefined,
-    isEphemeral: Api.is("ephemeralMessage", message_),
   };
+
+  if (Api.is("ephemeralMessage", message_)) {
+    const maybePeer = getPeer({ _: "peerUser", user_id: message_.receiver_id });
+    if (maybePeer === null) {
+      unreachable();
+    }
+    message.receiver = constructUser2(maybePeer[0]);
+  }
 
   if (!Api.is("ephemeralMessage", message_)) {
     if (chat_.type === "supergroup" && chat_.isDirectMessagesChat && message_.saved_peer_id) {
