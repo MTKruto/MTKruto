@@ -673,31 +673,49 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const noforwards = params?.isContentProtected || undefined;
     const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined;
     const replyMarkup = await this.#constructReplyMarkup(params);
+    const media: Api.inputMediaContact = {
+      _: "inputMediaContact",
+      phone_number: number,
+      first_name: firstName,
+      last_name: params?.lastName ?? "",
+      vcard: params?.vcard ?? "",
+    };
 
-    const result = await this.#c.invoke(
-      {
-        _: "messages.sendMedia",
-        peer,
-        random_id: randomId,
-        silent,
-        noforwards,
-        reply_to: await this.#constructReplyTo(params),
-        send_as: sendAs,
-        reply_markup: replyMarkup,
-        media: {
-          _: "inputMediaContact",
-          phone_number: number,
-          first_name: firstName,
-          last_name: params?.lastName ?? "",
-          vcard: params?.vcard ?? "",
+    let result: Api.Updates;
+    if (params?.receiverUserId !== undefined) {
+      result = await this.#c.invoke(
+        {
+          _: "ephemeral.sendMessage",
+          peer,
+          random_id: randomId,
+          reply_to: await this.#constructReplyTo(params),
+          reply_markup: replyMarkup,
+          media,
+          message: "",
+          receiver_id: await this.#c.getInputUser(params.receiverUserId),
+          query_id: params.callbackQueryId !== undefined ? BigInt(params.callbackQueryId) : undefined,
         },
-        message: "",
-        effect: params?.effectId ? BigInt(params.effectId) : undefined,
-        schedule_date: params?.sendAt,
-        allow_paid_floodskip: params?.isPaidBroadcast || undefined,
-      },
-      { businessConnectionId: params?.businessConnectionId },
-    );
+      );
+    } else {
+      result = await this.#c.invoke(
+        {
+          _: "messages.sendMedia",
+          peer,
+          random_id: randomId,
+          silent,
+          noforwards,
+          reply_to: await this.#constructReplyTo(params),
+          send_as: sendAs,
+          reply_markup: replyMarkup,
+          media,
+          message: "",
+          effect: params?.effectId ? BigInt(params.effectId) : undefined,
+          schedule_date: params?.sendAt,
+          allow_paid_floodskip: params?.isPaidBroadcast || undefined,
+        },
+        { businessConnectionId: params?.businessConnectionId },
+      );
+    }
 
     const message = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message, "contact");
@@ -705,6 +723,10 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async sendDice(chatId: ID, params?: SendDiceParams): Promise<MessageDice> {
     this.#checkParams(params);
+    if (params?.receiverUserId !== undefined) {
+      throw new InputError("Cannot send ephemeral dice.")
+    }
+
     const peer = await this.#c.getInputPeer(chatId);
     const randomId = getRandomId();
     const silent = params?.isSilent || undefined;
