@@ -48,6 +48,7 @@ const messageManagerUpdates = [
   "updateNewMessage",
   "updateNewChannelMessage",
   "updateNewEphemeralMessage",
+  "updateEditEphemeralMessage",
   "updateEditMessage",
   "updateNewScheduledMessage",
   "updateEditChannelMessage",
@@ -2136,6 +2137,19 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       if (!shouldIgnore) {
         const message = await this.constructMessage(update.message, false);
         return { type: "message", message };
+      }
+    }
+
+    if (Api.is("updateEditEphemeralMessage", update)) {
+      const isOutgoing = update.message.out;
+      let shouldIgnore = false;
+      if (isOutgoing) {
+        shouldIgnore = !this.#c.outgoingMessages;
+      }
+
+      if (!shouldIgnore) {
+        const editedMessage = await this.constructMessage(update.message, false);
+        return { type: "editedMessage", editedMessage };
       }
     }
 
