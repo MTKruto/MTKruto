@@ -131,6 +131,8 @@ export interface _MessageBase {
   for?: ChatP;
   /** The amount of stars needed to see the message. */
   starCount?: number;
+  /** Whether the message is ephemeral. */
+  isEphemeral?: boolean;
 }
 
 /**
@@ -772,7 +774,7 @@ export interface MessageGetter {
 
 type Message_MessageGetter = MessageGetter | null;
 
-function getSender(message_: Api.message | Api.messageService, getPeer: PeerGetter) {
+function getSender(message_: Api.message | Api.messageService | Api.ephemeralMessage, getPeer: PeerGetter) {
   const peer = message_.from_id ?? message_.peer_id;
   if (Api.isOneOf(["peerChannel", "peerUser"], peer)) {
     const peer_ = getPeer(peer);
@@ -786,7 +788,7 @@ function getSender(message_: Api.message | Api.messageService, getPeer: PeerGett
   }
 }
 
-async function getReply(message_: Api.message | Api.messageService, chat: ChatP, getMessage: Message_MessageGetter) {
+async function getReply(message_: Api.message | Api.messageService | Api.ephemeralMessage, chat: ChatP, getMessage: Message_MessageGetter) {
   let threadId: number | undefined;
   let isTopicMessage = false;
   let replyToMessage: Message | null = null;
@@ -957,7 +959,7 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
 }
 
 export async function constructMessage(
-  message_: Api.Message,
+  message_: Api.Message | Api.EphemeralMessage,
   getPeer: PeerGetter,
   getMessage: Message_MessageGetter,
   getStickerSetName: StickerSetNameGetter,
@@ -966,7 +968,7 @@ export async function constructMessage(
   poll?: Api.poll,
   pollResults?: Api.pollResults,
 ): Promise<Message> {
-  if (!(Api.is("message", message_)) && !(Api.is("messageService", message_))) {
+  if (!(Api.is("message", message_)) && !(Api.is("messageService", message_)) && !Api.is("ephemeralMessage", message_)) {
     unreachable();
   }
 
@@ -995,24 +997,27 @@ export async function constructMessage(
     chat: chat_,
     link,
     date: message_.date,
-    views: message_.views,
-    forwards: message_.forwards,
+    views: Api.is("ephemeralMessage", message_) ? undefined : message_.views,
+    forwards: Api.is("ephemeralMessage", message_) ? undefined : message_.forwards,
     isTopicMessage: !!(message_.reply_to && Api.is("messageReplyHeader", message_.reply_to) && message_.reply_to.forum_topic),
-    hasProtectedContent: message_.noforwards || false,
-    senderBoostCount: message_.from_boosts_applied,
-    effectId: message_.effect ? String(message_.effect) : undefined,
-    isScheduled: message_.from_scheduled || undefined,
+    hasProtectedContent: Api.is("ephemeralMessage", message_) ? undefined : message_.noforwards || false,
+    senderBoostCount: Api.is("ephemeralMessage", message_) ? undefined : message_.from_boosts_applied,
+    effectId: Api.is("ephemeralMessage", message_) ? undefined : message_.effect ? String(message_.effect) : undefined,
+    isScheduled: Api.is("ephemeralMessage", message_) ? undefined : message_.from_scheduled || undefined,
     ...getSender(message_, getPeer),
-    for: message_.guestchat_via_from ? getPeer(message_.guestchat_via_from)?.[0] : undefined,
+    for: Api.is("ephemeralMessage", message_) ? undefined : message_.guestchat_via_from ? getPeer(message_.guestchat_via_from)?.[0] : undefined,
+    isEphemeral: Api.is("ephemeralMessage", message_),
   };
 
-  if (chat_.type === "supergroup" && chat_.isDirectMessagesChat && message_.saved_peer_id) {
-    message.directMessagesTopicId = peerToChatId(message_.saved_peer_id);
-  }
+  if (!Api.is("ephemeralMessage", message_)) {
+    if (chat_.type === "supergroup" && chat_.isDirectMessagesChat && message_.saved_peer_id) {
+      message.directMessagesTopicId = peerToChatId(message_.saved_peer_id);
+    }
 
-  if (message_.reactions) {
-    const recentReactions = message_.reactions.recent_reactions ?? [];
-    message.reactions = message_.reactions.results.map((v) => constructMessageReaction(v, recentReactions));
+    if (message_.reactions) {
+      const recentReactions = message_.reactions.recent_reactions ?? [];
+      message.reactions = message_.reactions.results.map((v) => constructMessageReaction(v, recentReactions));
+    }
   }
 
   if (Api.is("messageReplyHeader", message_.reply_to) && message_.reply_to.reply_to_msg_id) {
@@ -1036,75 +1041,77 @@ export async function constructMessage(
     message.replyMarkup = constructReplyMarkup(message_.reply_markup);
   }
 
-  if (message_.via_bot_id !== undefined) {
-    const peer = getPeer({ _: "peerUser", user_id: message_.via_bot_id });
-    if (peer) {
-      message.viaBot = constructUser2(peer[0]);
-    } else {
-      unreachable();
+  if (!Api.is("ephemeralMessage", message_)) {
+    if (message_.via_bot_id !== undefined) {
+      const peer = getPeer({ _: "peerUser", user_id: message_.via_bot_id });
+      if (peer) {
+        message.viaBot = constructUser2(peer[0]);
+      } else {
+        unreachable();
+      }
     }
-  }
-  if (message_.via_business_bot_id !== undefined) {
-    const peer = getPeer({ _: "peerUser", user_id: message_.via_business_bot_id });
-    if (peer) {
-      message.viaBusinessBot = constructUser2(peer[0]);
-    } else {
-      unreachable();
+    if (message_.via_business_bot_id !== undefined) {
+      const peer = getPeer({ _: "peerUser", user_id: message_.via_business_bot_id });
+      if (peer) {
+        message.viaBusinessBot = constructUser2(peer[0]);
+      } else {
+        unreachable();
+      }
     }
-  }
 
-  if (message_.post_author !== undefined) {
-    message.authorSignature = message_.post_author;
-  }
+    if (message_.post_author !== undefined) {
+      message.authorSignature = message_.post_author;
+    }
 
-  if (message_.from_rank !== undefined) {
-    message.tag = message_.from_rank;
-  }
+    if (message_.from_rank !== undefined) {
+      message.tag = message_.from_rank;
+    }
 
-  if (Api.is("messageFwdHeader", message_.fwd_from)) {
-    message.isAutomaticForward = message_.fwd_from.saved_from_peer !== undefined && message_.fwd_from.saved_from_msg_id !== undefined;
-    message.forwardFrom = constructForwardHeader(message_.fwd_from, getPeer);
-  }
+    if (Api.is("messageFwdHeader", message_.fwd_from)) {
+      message.isAutomaticForward = message_.fwd_from.saved_from_peer !== undefined && message_.fwd_from.saved_from_msg_id !== undefined;
+      message.forwardFrom = constructForwardHeader(message_.fwd_from, getPeer);
+    }
 
-  if (message_.grouped_id !== undefined) {
-    message.mediaGroupId = String(message_.grouped_id);
-  }
+    if (message_.grouped_id !== undefined) {
+      message.mediaGroupId = String(message_.grouped_id);
+    }
 
-  if (message_.edit_date) {
-    message.editDate = message_.edit_date;
-  }
+    if (message_.edit_date) {
+      message.editDate = message_.edit_date;
+    }
 
-  if (message_.rich_message) {
-    return cleanObject({
-      ...message,
-      type: "richText",
-      richText: {
-        blocks: message_.rich_message.blocks.map((v) => constructPageBlock(v, message_.rich_message!.photos, message_.rich_message!.documents)),
-        isRtl: !!message_.rich_message.rtl,
-        isPartial: !!message_.rich_message.part,
-        photos: message_.rich_message.photos.map((v) => constructPhoto(Api.as("photo", v))),
-        documents: message_.rich_message.documents.map((v) => {
-          v = Api.as("document", v);
+    if (message_.rich_message) {
+      return cleanObject({
+        ...message,
+        type: "richText",
+        richText: {
+          blocks: message_.rich_message.blocks.map((v) => constructPageBlock(v, message_.rich_message!.photos, message_.rich_message!.documents)),
+          isRtl: !!message_.rich_message.rtl,
+          isPartial: !!message_.rich_message.part,
+          photos: message_.rich_message.photos.map((v) => constructPhoto(Api.as("photo", v))),
+          documents: message_.rich_message.documents.map((v) => {
+            v = Api.as("document", v);
 
-          const fileId: FileId = {
-            type: FileType.Document,
-            dcId: v.dc_id,
-            location: {
-              type: "common",
-              id: v.id,
-              accessHash: v.access_hash,
-            },
-            fileReference: v.file_reference,
-          };
-          return constructDocument(
-            v,
-            v.attributes.find((v) => Api.is("documentAttributeFilename", v)) ?? { _: "documentAttributeFilename", file_name: "unknown" },
-            serializeFileId(fileId),
-            toUniqueFileId(fileId),
-          );
-        }),
-      },
-    });
+            const fileId: FileId = {
+              type: FileType.Document,
+              dcId: v.dc_id,
+              location: {
+                type: "common",
+                id: v.id,
+                accessHash: v.access_hash,
+              },
+              fileReference: v.file_reference,
+            };
+            return constructDocument(
+              v,
+              v.attributes.find((v) => Api.is("documentAttributeFilename", v)) ?? { _: "documentAttributeFilename", file_name: "unknown" },
+              serializeFileId(fileId),
+              toUniqueFileId(fileId),
+            );
+          }),
+        },
+      });
+    }
   }
 
   const messageText = {
@@ -1115,7 +1122,7 @@ export async function constructMessage(
   if (message_.message && message_.media === undefined || message_.message && Api.is("messageMediaWebPage", message_.media)) {
     let linkPreview: LinkPreview | undefined;
     if (Api.is("messageMediaWebPage", message_.media)) {
-      linkPreview = constructLinkPreview(message_.media, message_.invert_media, getPeer);
+      linkPreview = constructLinkPreview(message_.media, Api.is("ephemeralMessage", message_) ? undefined : message_.invert_media, getPeer);
     }
     return cleanObject({ type: "text", ...messageText, linkPreview });
   }
@@ -1237,7 +1244,7 @@ export async function constructMessage(
     const location = constructLocation(message_.media);
     m = { type: "location", ...message, location };
   } else if (Api.is("messageMediaWebPage", message_.media)) {
-    const linkPreview = constructLinkPreview(message_.media, message_.invert_media, getPeer);
+    const linkPreview = constructLinkPreview(message_.media, Api.is("ephemeralMessage", message_) ? false : message_.invert_media, getPeer);
     if (message_.message) {
       m = { type: "link", ...messageText, linkPreview };
     } else {

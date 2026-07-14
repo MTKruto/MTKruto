@@ -46,5 +46,12 @@ export interface ReplyToStory {
   storyId: number;
 }
 
+/** Information on an ephemeral message that another message is replying to. */
+export interface ReplyToEphemeralMessage {
+  type: "ephemeralMessage";
+  /** The identifier of the ephemeral message that is being replied to. */
+  messageId: number;
+}
+
 /** Any type of information on what a message is replying to. */
-export type ReplyTo = ReplyToMessage | ReplyToStory;
+export type ReplyTo = ReplyToMessage | ReplyToStory | ReplyToEphemeralMessage;

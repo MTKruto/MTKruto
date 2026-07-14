@@ -88,6 +88,10 @@ export interface _SendCommon extends _BusinessConnectionIdCommon, _PaidBroadcast
   effectId?: string;
   /** If specified, the message will be scheduled to be sent at that date. User-only. */
   sendAt?: number;
+  /** The identifier of the user that will receive the ephemeral message. */
+  receiverUserId?: ID;
+  /** The identifier of the callback query ID that triggered the ephemeral message. */
+  callbackQueryId?: string;
 }
 export interface SendMessageParams extends _SendCommon, _ReplyMarkupCommon {
   /** The parse mode to use. If omitted, the default parse mode will be used. */
