@@ -613,33 +613,50 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined;
     const replyMarkup = await this.#constructReplyMarkup(params);
 
-    const result = await this.#c.invoke({
-      _: "messages.sendMedia",
-      peer,
-      random_id: randomId,
-      silent,
-      noforwards,
-      reply_to: await this.#constructReplyTo(params),
-      send_as: sendAs,
-      reply_markup: replyMarkup,
-      media: {
-        _: "inputMediaVenue",
-        geo_point: {
-          _: "inputGeoPoint",
-          lat: latitude,
-          long: longitude,
-        },
-        title,
-        address,
-        venue_id: params?.foursquareId ?? "",
-        venue_type: params?.foursquareType ?? "",
-        provider: "foursquare",
+    const media: Api.inputMediaVenue = {
+      _: "inputMediaVenue",
+      geo_point: {
+        _: "inputGeoPoint",
+        lat: latitude,
+        long: longitude,
       },
-      message: "",
-      effect: params?.effectId ? BigInt(params.effectId) : undefined,
-      schedule_date: params?.sendAt,
-      allow_paid_floodskip: params?.isPaidBroadcast || undefined,
-    }, { businessConnectionId: params?.businessConnectionId });
+      title,
+      address,
+      venue_id: params?.foursquareId ?? "",
+      venue_type: params?.foursquareType ?? "",
+      provider: "foursquare",
+    };
+
+    let result: Api.Updates;
+    if (params?.receiverUserId !== undefined) {
+      result = await this.#c.invoke({
+        _: "ephemeral.sendMessage",
+        message: "",
+        media,
+        reply_to: await this.#constructReplyTo(params),
+        peer,
+        random_id: randomId,
+        receiver_id: await this.#c.getInputUser(params.receiverUserId),
+        query_id: params.callbackQueryId !== undefined ? BigInt(params.callbackQueryId) : undefined,
+        reply_markup: replyMarkup,
+      });
+    } else {
+      result = await this.#c.invoke({
+        _: "messages.sendMedia",
+        peer,
+        random_id: randomId,
+        silent,
+        noforwards,
+        reply_to: await this.#constructReplyTo(params),
+        send_as: sendAs,
+        reply_markup: replyMarkup,
+        media,
+        message: "",
+        effect: params?.effectId ? BigInt(params.effectId) : undefined,
+        schedule_date: params?.sendAt,
+        allow_paid_floodskip: params?.isPaidBroadcast || undefined,
+      }, { businessConnectionId: params?.businessConnectionId });
+    }
 
     const message = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message, "venue");
