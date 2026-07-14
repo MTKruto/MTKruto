@@ -122,9 +122,9 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
     if (canBeInputUser(inputPeer)) {
       fullChat = (await this.#c.invoke({ _: "users.getFullUser", id: toInputUser(inputPeer) })).full_user;
     } else if (Api.is("inputPeerChat", inputPeer)) {
-      fullChat = (await this.#c.invoke({ ...inputPeer, _: "messages.getFullChat" })).full_chat;
+      fullChat = (await this.#c.invoke({ ...inputPeer, _: "messages.getFullChat" })).full_chat as Api.chatFull;
     } else if (canBeInputChannel(inputPeer)) {
-      fullChat = (await this.#c.invoke({ _: "channels.getFullChannel", channel: toInputChannel(inputPeer) })).full_chat;
+      fullChat = (await this.#c.invoke({ _: "channels.getFullChannel", channel: toInputChannel(inputPeer) })).full_chat as Api.channelFull;
     }
     await this.#c.messageStorage.setFullChat(chatId_, fullChat);
     if (fullChat !== null && "call" in fullChat && Api.is("inputGroupCall", fullChat.call)) {

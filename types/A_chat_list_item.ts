@@ -45,12 +45,13 @@ export interface ChatListItem {
 }
 
 export async function constructChatListItem(dialog: Api.Dialog, dialogs: Api.messages_dialogs | Api.messages_dialogsSlice | Api.messages_peerDialogs, getPeer: PeerGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): Promise<ChatListItem> {
-  const topMessage_ = dialogs.messages.find((v) => "id" in v && v.id === dialog.top_message);
+  const topMessage_ = "top_message" in dialog ? dialogs.messages.find((v) => "id" in v && v.id === dialog.top_message) : undefined;
   const lastMessage = topMessage_ ? await constructMessage(topMessage_, getPeer, getMessage, getStickerSetName, false) : undefined;
-  const userId = "user_id" in dialog.peer ? dialog.peer.user_id : null;
-  const chatId = "chat_id" in dialog.peer ? dialog.peer.chat_id : null;
-  const channelId = "channel_id" in dialog.peer ? dialog.peer.channel_id : null;
-  const chat__ = chatId !== null ? dialogs.chats.find((v) => Api.isOneOf(["chat", "chatForbidden"], v) && v.id === chatId) : channelId !== null ? dialogs.chats.find((v) => Api.isOneOf(["channel", "channelForbidden"], v) && v.id === channelId) : userId !== null ? dialogs.users.find((v) => Api.is("user", v) && v.id === userId) : unreachable();
+  const userId = "peer" in dialog ? "user_id" in dialog.peer ? dialog.peer.user_id : null : null;
+  const chatId = "peer" in dialog ? "chat_id" in dialog.peer ? dialog.peer.chat_id : null : null;
+  const channelId = "peer" in dialog ? "channel_id" in dialog.peer ? dialog.peer.channel_id : null : null;
+  const communityId = "community_id" in dialog ? dialog.community_id : null;
+  const chat__ = communityId !== null ? dialogs.chats.find((v) => Api.isOneOf(["community", "communityForbidden"], v)) : chatId !== null ? dialogs.chats.find((v) => Api.isOneOf(["chat", "chatForbidden"], v) && v.id === chatId) : channelId !== null ? dialogs.chats.find((v) => Api.isOneOf(["channel", "channelForbidden"], v) && v.id === channelId) : userId !== null ? dialogs.users.find((v) => Api.is("user", v) && v.id === userId) : unreachable();
   if (!chat__) {
     unreachable();
   }
