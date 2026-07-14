@@ -1315,17 +1315,6 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Delete a single message.
-   *
-   * @method ms
-   * @param chatId The identifier of the chat which the message belongs to.
-   * @param messageId The identifier of the message to delete.
-   */
-  async deleteMessage(chatId: ID, messageId: number, params?: DeleteMessageParams): Promise<void> {
-    return await this.#dispatch("deleteMessage", chatId, messageId, params);
-  }
-
-  /**
    * Delete an ephemeral message.
    *
    * @method ms
@@ -1335,6 +1324,17 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async deleteEphemeralMessage(chatId: ID, receiverUserId: ID, messageId: number): Promise<void> {
     return await this.#dispatch("deleteEphemeralMessage", chatId, receiverUserId, messageId);
+  }
+
+  /**
+   * Delete a single message.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageId The identifier of the message to delete.
+   */
+  async deleteMessage(chatId: ID, messageId: number, params?: DeleteMessageParams): Promise<void> {
+    return await this.#dispatch("deleteMessage", chatId, messageId, params);
   }
 
   /**
@@ -1368,6 +1368,46 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async deleteScheduledMessages(chatId: ID, messageIds: number[]): Promise<void> {
     return await this.#dispatch("deleteScheduledMessages", chatId, messageIds);
+  }
+
+  /**
+   * Edit an ephemeral message's caption.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param receiverUserId The identifier of the user who received the ephemeral message.
+   * @param messageId The identifier of the message.
+   * @returns The edited message.
+   */
+  async editEphemeralMessageCaption(chatId: ID, receiverUserId: ID, messageId: number, params?: EditMessageCaptionParams): Promise<Message> {
+    return await this.#dispatch("editEphemeralMessageCaption", chatId, receiverUserId, messageId, params);
+  }
+
+  /**
+   * Edit an ephemeral message's media.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param receiverUserId The identifier of the user who received the ephemeral message.
+   * @param messageId The identifier of the message.
+   * @param media The message's new media.
+   * @returns The edited message.
+   */
+  async editEphemeralMessageMedia(chatId: ID, receiverUserId: ID, messageId: number, media: InputMedia, params?: EditMessageMediaParams): Promise<Message> {
+    return await this.#dispatch("editEphemeralMessageMedia", chatId, receiverUserId, messageId, media, params);
+  }
+
+  /**
+   * Edit an ephemeral message's reply markup.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param receiverUserId The identifier of the user who received the ephemeral message.
+   * @param messageId The identifier of the message.
+   * @returns The edited message.
+   */
+  async editEphemeralMessageReplyMarkup(chatId: ID, receiverUserId: ID, messageId: number, params?: EditMessageReplyMarkupParams): Promise<Message> {
+    return await this.#dispatch("editEphemeralMessageReplyMarkup", chatId, receiverUserId, messageId, params);
   }
 
   /**
@@ -1463,19 +1503,6 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Edit an ephemeral message's caption.
-   *
-   * @method ms
-   * @param chatId The identifier of the chat which the message belongs to.
-   * @param receiverUserId The identifier of the user who received the ephemeral message.
-   * @param messageId The identifier of the message.
-   * @returns The edited message.
-   */
-  async editEphemeralMessageCaption(chatId: ID, receiverUserId: ID, messageId: number, params?: EditMessageCaptionParams): Promise<Message> {
-    return await this.#dispatch("editEphemeralMessageCaption", chatId, receiverUserId, messageId, params);
-  }
-
-  /**
    * Edit a message's live location.
    *
    * @method ms
@@ -1525,33 +1552,6 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async editMessageRichText(chatId: ID, messageId: number, richText: InputRichText, params?: EditMessageRichTextParams): Promise<MessageRichText> {
     return await this.#dispatch("editMessageRichText", chatId, messageId, richText, params);
-  }
-
-  /**
-   * Edit an ephemeral message's media.
-   *
-   * @method ms
-   * @param chatId The identifier of the chat which the message belongs to.
-   * @param receiverUserId The identifier of the user who received the ephemeral message.
-   * @param messageId The identifier of the message.
-   * @param media The message's new media.
-   * @returns The edited message.
-   */
-  async editEphemeralMessageMedia(chatId: ID, receiverUserId: ID, messageId: number, media: InputMedia, params?: EditMessageMediaParams): Promise<Message> {
-    return await this.#dispatch("editEphemeralMessageMedia", chatId, receiverUserId, messageId, media, params);
-  }
-
-  /**
-   * Edit an ephemeral message's reply markup.
-   *
-   * @method ms
-   * @param chatId The identifier of the chat which the message belongs to.
-   * @param receiverUserId The identifier of the user who received the ephemeral message.
-   * @param messageId The identifier of the message.
-   * @returns The edited message.
-   */
-  async editEphemeralMessageReplyMarkup(chatId: ID, receiverUserId: ID, messageId: number, params?: EditMessageReplyMarkupParams): Promise<Message> {
-    return await this.#dispatch("editEphemeralMessageReplyMarkup", chatId, receiverUserId, messageId, params);
   }
 
   /**

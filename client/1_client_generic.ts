@@ -908,15 +908,6 @@ export abstract class ClientGeneric {
   abstract deleteChatMemberMessages(chatId: ID, memberId: ID): Promise<void>;
 
   /**
-   * Delete a single message.
-   *
-   * @method ms
-   * @param chatId The identifier of the chat which the message belongs to.
-   * @param messageId The identifier of the message to delete.
-   */
-  abstract deleteMessage(chatId: ID, messageId: number, params?: DeleteMessageParams): Promise<void>;
-
-  /**
    * Delete an ephemeral message.
    *
    * @method ms
@@ -925,6 +916,15 @@ export abstract class ClientGeneric {
    * @param messageId The identifier of the message to delete.
    */
   abstract deleteEphemeralMessage(chatId: ID, receiverUserId: ID, messageId: number): Promise<void>;
+
+  /**
+   * Delete a single message.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageId The identifier of the message to delete.
+   */
+  abstract deleteMessage(chatId: ID, messageId: number, params?: DeleteMessageParams): Promise<void>;
 
   /**
    * Delete multiple messages.
@@ -952,6 +952,40 @@ export abstract class ClientGeneric {
    * @param messageIds The identifiers of the scheduled messages to delete.
    */
   abstract deleteScheduledMessages(chatId: ID, messageIds: number[]): Promise<void>;
+
+  /**
+   * Edit an ephemeral message's caption.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param receiverUserId The identifier of the user who received the ephemeral message.
+   * @param messageId The identifier of the message.
+   * @returns The edited message.
+   */
+  abstract editEphemeralMessageCaption(chatId: ID, receiverUserId: ID, messageId: number, params?: EditMessageCaptionParams): Promise<Message>;
+
+  /**
+   * Edit an ephemeral message's media.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param receiverUserId The identifier of the user who received the ephemeral message.
+   * @param messageId The identifier of the message.
+   * @param media The message's new media.
+   * @returns The edited message.
+   */
+  abstract editEphemeralMessageMedia(chatId: ID, receiverUserId: ID, messageId: number, media: InputMedia, params?: EditMessageMediaParams): Promise<Message>;
+
+  /**
+   * Edit an ephemeral message's reply markup.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param receiverUserId The identifier of the user who received the ephemeral message.
+   * @param messageId The identifier of the message.
+   * @returns The edited message.
+   */
+  abstract editEphemeralMessageReplyMarkup(chatId: ID, receiverUserId: ID, messageId: number, params?: EditMessageReplyMarkupParams): Promise<Message>;
 
   /**
    * Edit an ephemeral message's text.
@@ -1033,40 +1067,6 @@ export abstract class ClientGeneric {
    * @returns The edited message.
    */
   abstract editMessageCaption(chatId: ID, messageId: number, params?: EditMessageCaptionParams): Promise<Message>;
-
-  /**
-   * Edit an ephemeral message's caption.
-   *
-   * @method ms
-   * @param chatId The identifier of the chat which the message belongs to.
-   * @param receiverUserId The identifier of the user who received the ephemeral message.
-   * @param messageId The identifier of the message.
-   * @returns The edited message.
-   */
-  abstract editEphemeralMessageCaption(chatId: ID, receiverUserId: ID, messageId: number, params?: EditMessageCaptionParams): Promise<Message>;
-
-  /**
-   * Edit an ephemeral message's media.
-   *
-   * @method ms
-   * @param chatId The identifier of the chat which the message belongs to.
-   * @param receiverUserId The identifier of the user who received the ephemeral message.
-   * @param messageId The identifier of the message.
-   * @param media The message's new media.
-   * @returns The edited message.
-   */
-  abstract editEphemeralMessageMedia(chatId: ID, receiverUserId: ID, messageId: number, media: InputMedia, params?: EditMessageMediaParams): Promise<Message>;
-
-  /**
-   * Edit an ephemeral message's reply markup.
-   *
-   * @method ms
-   * @param chatId The identifier of the chat which the message belongs to.
-   * @param receiverUserId The identifier of the user who received the ephemeral message.
-   * @param messageId The identifier of the message.
-   * @returns The edited message.
-   */
-  abstract editEphemeralMessageReplyMarkup(chatId: ID, receiverUserId: ID, messageId: number, params?: EditMessageReplyMarkupParams): Promise<Message>;
 
   /**
    * Edit a message's live location.

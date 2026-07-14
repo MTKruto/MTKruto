@@ -667,12 +667,6 @@ export class Context {
     }
   }
 
-  /** Context-aware alias for {@link Client.deleteEphemeralMessage}. */
-  async deleteEphemeralMessage(receiverUserId: ID, messageId: number): Promise<void> {
-    const chatId = this.#mustGetChatId();
-    return await this.client.deleteEphemeralMessage(chatId, receiverUserId, messageId);
-  }
-
   /** Context-aware alias for {@link Client.deleteChat}. */
   async deleteChat(): Promise<void> {
     const chatId = this.#mustGetChatId();
@@ -695,6 +689,12 @@ export class Context {
   async deleteChatStickerSet(): Promise<void> {
     const chatId = this.#mustGetChatId();
     return await this.client.deleteChatStickerSet(chatId);
+  }
+
+  /** Context-aware alias for {@link Client.deleteEphemeralMessage}. */
+  async deleteEphemeralMessage(receiverUserId: ID, messageId: number): Promise<void> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.deleteEphemeralMessage(chatId, receiverUserId, messageId);
   }
 
   /** Context-aware alias for {@link Client.deleteMessage}. */
@@ -805,6 +805,30 @@ export class Context {
     return await this.client.disallowUnpaidMessagesFromUser(userId, params);
   }
 
+  /** Context-aware alias for {@link Client.editEphemeralMessageCaption}. */
+  async editEphemeralMessageCaption(receiverUserId: ID, messageId: number, params?: EditMessageCaptionParams): Promise<Message> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.editEphemeralMessageCaption(chatId, receiverUserId, messageId, this.#withBusinessConnection(params));
+  }
+
+  /** Context-aware alias for {@link Client.editEphemeralMessageMedia}. */
+  async editEphemeralMessageMedia(receiverUserId: ID, messageId: number, media: InputMedia, params?: EditMessageReplyMarkupParams): Promise<Message> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.editEphemeralMessageMedia(chatId, receiverUserId, messageId, media, this.#withBusinessConnection(params));
+  }
+
+  /** Context-aware alias for {@link Client.editEphemeralMessageReplyMarkup}. */
+  async editEphemeralMessageReplyMarkup(receiverUserId: ID, messageId: number, params?: EditMessageReplyMarkupParams): Promise<Message> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.editEphemeralMessageReplyMarkup(chatId, receiverUserId, messageId, this.#withBusinessConnection(params));
+  }
+
+  /** Context-aware alias for {@link Client.editEphemeralMessageText}. */
+  async editEphemeralMessageText(receiverUserId: ID, messageId: number, text: string, params?: EditMessageTextParams): Promise<MessageText> {
+    const chatId = this.#mustGetChatId();
+    return await this.client.editEphemeralMessageText(chatId, receiverUserId, messageId, text, this.#withBusinessConnection(params));
+  }
+
   /** Context-aware alias for {@link Client.editInlineMessageCaption}. */
   async editInlineMessageCaption(params?: EditInlineMessageCaptionParams): Promise<void> {
     const inlineMessageId = this.#mustGetInlineMsgId();
@@ -875,30 +899,6 @@ export class Context {
   async editMessageText(messageId: number, text: string, params?: EditMessageTextParams): Promise<MessageText> {
     const chatId = this.#mustGetChatId();
     return await this.client.editMessageText(chatId, messageId, text, this.#withBusinessConnection(params));
-  }
-
-  /** Context-aware alias for {@link Client.editEphemeralMessageText}. */
-  async editEphemeralMessageText(receiverUserId: ID, messageId: number, text: string, params?: EditMessageTextParams): Promise<MessageText> {
-    const chatId = this.#mustGetChatId();
-    return await this.client.editEphemeralMessageText(chatId, receiverUserId, messageId, text, this.#withBusinessConnection(params));
-  }
-
-  /** Context-aware alias for {@link Client.editEphemeralMessageReplyMarkup}. */
-  async editEphemeralMessageReplyMarkup(receiverUserId: ID, messageId: number, params?: EditMessageReplyMarkupParams): Promise<Message> {
-    const chatId = this.#mustGetChatId();
-    return await this.client.editEphemeralMessageReplyMarkup(chatId, receiverUserId, messageId, this.#withBusinessConnection(params));
-  }
-
-  /** Context-aware alias for {@link Client.editEphemeralMessageMedia}. */
-  async editEphemeralMessageMedia(receiverUserId: ID, messageId: number, media: InputMedia, params?: EditMessageReplyMarkupParams): Promise<Message> {
-    const chatId = this.#mustGetChatId();
-    return await this.client.editEphemeralMessageMedia(chatId, receiverUserId, messageId, media, this.#withBusinessConnection(params));
-  }
-
-  /** Context-aware alias for {@link Client.editEphemeralMessageCaption}. */
-  async editEphemeralMessageCaption(receiverUserId: ID, messageId: number, params?: EditMessageCaptionParams): Promise<Message> {
-    const chatId = this.#mustGetChatId();
-    return await this.client.editEphemeralMessageCaption(chatId, receiverUserId, messageId, this.#withBusinessConnection(params));
   }
 
   /** Context-aware alias for {@link Client.editStory}. */
