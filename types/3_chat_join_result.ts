@@ -33,11 +33,7 @@ export interface ChatJoinResultJoined {
 export interface ChatJoinResultCaptcha {
   type: "captcha";
   bot: User;
-  isFullSize: boolean;
-  isFullscreen: boolean;
-  isSameOrigin: boolean;
-  queryId?: string;
-  url: string;
+  queryId: string;
 }
 
 /** Any type of chat join result. */
@@ -56,11 +52,7 @@ export function constructChatJoinResult(cijr: Api.messages_ChatInviteJoinResult,
       return cleanObject({
         type: "captcha",
         bot,
-        isFullSize: !!cijr.webview.fullsize,
-        isFullscreen: !!cijr.webview.fullscreen,
-        isSameOrigin: !!cijr.webview.same_origin,
-        queryId: cijr.webview.query_id ? String(cijr.webview.query_id) : undefined,
-        url: cijr.webview.url,
+        queryId: String(cijr.query_id),
       });
     }
   }

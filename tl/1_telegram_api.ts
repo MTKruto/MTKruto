@@ -627,6 +627,7 @@ export interface user {
   bot_active_users?: number;
   bot_verification_icon?: bigint;
   send_paid_messages_stars?: bigint;
+  linked_community_id?: bigint;
 }
 
 /** https://core.telegram.org/constructor/userProfilePhotoEmpty */
@@ -764,6 +765,7 @@ export interface channel {
   bot_verification_icon?: bigint;
   send_paid_messages_stars?: bigint;
   linked_monoforum_id?: bigint;
+  linked_community_id?: bigint;
 }
 
 /** https://core.telegram.org/constructor/channelForbidden */
@@ -776,6 +778,30 @@ export interface channelForbidden {
   access_hash: bigint;
   title: string;
   until_date?: number;
+}
+
+/** https://core.telegram.org/constructor/communityForbidden */
+export interface communityForbidden {
+  _: "communityForbidden";
+  id: bigint;
+  access_hash?: bigint;
+  title: string;
+}
+
+/** https://core.telegram.org/constructor/community */
+export interface community {
+  _: "community";
+  creator?: true;
+  left?: true;
+  min?: true;
+  collapsed_in_dialogs?: true;
+  id: bigint;
+  access_hash?: bigint;
+  title: string;
+  photo: ChatPhoto;
+  date: number;
+  admin_rights?: ChatAdminRights;
+  default_banned_rights?: ChatBannedRights;
 }
 
 /** https://core.telegram.org/constructor/chatFull */
@@ -873,6 +899,18 @@ export interface channelFull {
   send_paid_messages_stars?: bigint;
   main_tab?: ProfileTab;
   guard_bot_id?: bigint;
+}
+
+/** https://core.telegram.org/constructor/communityFull */
+export interface communityFull {
+  _: "communityFull";
+  id: bigint;
+  about: string;
+  chat_photo: Photo;
+  linked_peers: Array<CommunityPeer>;
+  admins_count?: number;
+  kicked_count?: number;
+  peer_link_requests_pending?: number;
 }
 
 /** https://core.telegram.org/constructor/chatParticipant */
@@ -1717,6 +1755,12 @@ export interface messageActionManagedBotCreated {
   bot_id: bigint;
 }
 
+/** https://core.telegram.org/constructor/messageActionChangeCommunity */
+export interface messageActionChangeCommunity {
+  _: "messageActionChangeCommunity";
+  community_id?: bigint;
+}
+
 /** https://core.telegram.org/constructor/dialog */
 export interface dialog {
   _: "dialog";
@@ -1749,6 +1793,14 @@ export interface dialogFolder {
   unread_unmuted_peers_count: number;
   unread_muted_messages_count: number;
   unread_unmuted_messages_count: number;
+}
+
+/** https://core.telegram.org/constructor/dialogCommunity */
+export interface dialogCommunity {
+  _: "dialogCommunity";
+  pinned?: true;
+  community_id: bigint;
+  notify_settings: PeerNotifySettings;
 }
 
 /** https://core.telegram.org/constructor/photoEmpty */
@@ -1907,6 +1959,12 @@ export interface inputNotifyForumTopic {
   _: "inputNotifyForumTopic";
   peer: InputPeer;
   top_msg_id: number;
+}
+
+/** https://core.telegram.org/constructor/inputNotifyCommunity */
+export interface inputNotifyCommunity {
+  _: "inputNotifyCommunity";
+  community: InputChannel;
 }
 
 /** https://core.telegram.org/constructor/inputPeerNotifySettings */
@@ -3573,6 +3631,47 @@ export interface updateWebBrowserException {
   exception: WebDomainException;
 }
 
+/** https://core.telegram.org/constructor/updateNewEphemeralMessage */
+export interface updateNewEphemeralMessage {
+  _: "updateNewEphemeralMessage";
+  message: EphemeralMessage;
+}
+
+/** https://core.telegram.org/constructor/updateDeleteEphemeralMessages */
+export interface updateDeleteEphemeralMessages {
+  _: "updateDeleteEphemeralMessages";
+  peer: Peer;
+  ids: Array<number>;
+}
+
+/** https://core.telegram.org/constructor/updateEditEphemeralMessage */
+export interface updateEditEphemeralMessage {
+  _: "updateEditEphemeralMessage";
+  message: EphemeralMessage;
+}
+
+/** https://core.telegram.org/constructor/updateEphemeralBotCallbackQuery */
+export interface updateEphemeralBotCallbackQuery {
+  _: "updateEphemeralBotCallbackQuery";
+  query_id: bigint;
+  user_id: bigint;
+  peer: Peer;
+  msg_id: number;
+  data: Uint8Array<ArrayBuffer>;
+  message: EphemeralMessage;
+}
+
+/** https://core.telegram.org/constructor/updateBotStarsSubscription */
+export interface updateBotStarsSubscription {
+  _: "updateBotStarsSubscription";
+  canceled?: true;
+  payment_failed?: true;
+  restored?: true;
+  user_id: bigint;
+  payload: Uint8Array<ArrayBuffer>;
+  qts: number;
+}
+
 /** https://core.telegram.org/constructor/updates.state */
 export interface updates_state {
   _: "updates.state";
@@ -4056,6 +4155,12 @@ export interface notifyForumTopic {
   _: "notifyForumTopic";
   peer: Peer;
   top_msg_id: number;
+}
+
+/** https://core.telegram.org/constructor/notifyCommunity */
+export interface notifyCommunity {
+  _: "notifyCommunity";
+  community_id: bigint;
 }
 
 /** https://core.telegram.org/constructor/sendMessageTypingAction */
@@ -4861,6 +4966,7 @@ export interface messages_stickerSetNotModified {
 /** https://core.telegram.org/constructor/botCommand */
 export interface botCommand {
   _: "botCommand";
+  ephemeral?: true;
   command: string;
   description: string;
 }
@@ -6352,6 +6458,13 @@ export interface textDate {
   date: number;
 }
 
+/** https://core.telegram.org/constructor/textDiff */
+export interface textDiff {
+  _: "textDiff";
+  text: RichText;
+  old_text: RichText;
+}
+
 /** https://core.telegram.org/constructor/pageBlockUnsupported */
 export interface pageBlockUnsupported {
   _: "pageBlockUnsupported";
@@ -7644,6 +7757,12 @@ export interface inputDialogPeerFolder {
   folder_id: number;
 }
 
+/** https://core.telegram.org/constructor/inputDialogPeerCommunity */
+export interface inputDialogPeerCommunity {
+  _: "inputDialogPeerCommunity";
+  community: InputChannel;
+}
+
 /** https://core.telegram.org/constructor/dialogPeer */
 export interface dialogPeer {
   _: "dialogPeer";
@@ -7654,6 +7773,12 @@ export interface dialogPeer {
 export interface dialogPeerFolder {
   _: "dialogPeerFolder";
   folder_id: number;
+}
+
+/** https://core.telegram.org/constructor/dialogPeerCommunity */
+export interface dialogPeerCommunity {
+  _: "dialogPeerCommunity";
+  community_id: bigint;
 }
 
 /** https://core.telegram.org/constructor/messages.foundStickerSetsNotModified */
@@ -8309,6 +8434,7 @@ export interface chatAdminRights {
   delete_stories?: true;
   manage_direct_messages?: true;
   manage_ranks?: true;
+  manage_linked_peers?: true;
 }
 
 /** https://core.telegram.org/constructor/chatBannedRights */
@@ -8336,6 +8462,7 @@ export interface chatBannedRights {
   send_plain?: true;
   edit_rank?: true;
   send_reactions?: true;
+  manage_linked_peers?: true;
   until_date: number;
 }
 
@@ -9031,6 +9158,7 @@ export interface messageReplyHeader {
   reply_to_scheduled?: true;
   forum_topic?: true;
   quote?: true;
+  reply_to_ephemeral?: true;
   reply_to_msg_id?: number;
   reply_to_peer_id?: Peer;
   reply_from?: MessageFwdHeader;
@@ -10678,6 +10806,12 @@ export interface inputReplyToStory {
 export interface inputReplyToMonoForum {
   _: "inputReplyToMonoForum";
   monoforum_peer_id: InputPeer;
+}
+
+/** https://core.telegram.org/constructor/inputReplyToEphemeralMessage */
+export interface inputReplyToEphemeralMessage {
+  _: "inputReplyToEphemeralMessage";
+  id: number;
 }
 
 /** https://core.telegram.org/constructor/exportedStoryLink */
@@ -12933,6 +13067,12 @@ export interface inputAiComposeToneSlug {
   slug: string;
 }
 
+/** https://core.telegram.org/constructor/inputAiComposeToneSingleUse */
+export interface inputAiComposeToneSingleUse {
+  _: "inputAiComposeToneSingleUse";
+  custom_prompt: string;
+}
+
 /** https://core.telegram.org/constructor/aiComposeTone */
 export interface aiComposeTone {
   _: "aiComposeTone";
@@ -12993,7 +13133,7 @@ export interface messages_chatInviteJoinResultOk {
 export interface messages_chatInviteJoinResultWebView {
   _: "messages.chatInviteJoinResultWebView";
   bot_id: bigint;
-  webview: WebViewResult;
+  query_id: bigint;
   users: Array<User>;
 }
 
@@ -13093,6 +13233,71 @@ export interface richMessage {
   blocks: Array<PageBlock>;
   photos: Array<Photo>;
   documents: Array<Document>;
+}
+
+/** https://core.telegram.org/constructor/communityPeer */
+export interface communityPeer {
+  _: "communityPeer";
+  can_view_history?: true;
+  visible?: boolean;
+  peer: Peer;
+}
+
+/** https://core.telegram.org/constructor/communityPeerRequest */
+export interface communityPeerRequest {
+  _: "communityPeerRequest";
+  visible?: true;
+  peer: Peer;
+  requested_by: bigint;
+  date: number;
+}
+
+/** https://core.telegram.org/constructor/communities.peerLinkRequests */
+export interface communities_peerLinkRequests {
+  _: "communities.peerLinkRequests";
+  total_count: number;
+  requests: Array<CommunityPeerRequest>;
+  next_offset?: string;
+  chats: Array<Chat>;
+  users: Array<User>;
+}
+
+/** https://core.telegram.org/constructor/ephemeralMessage */
+export interface ephemeralMessage {
+  _: "ephemeralMessage";
+  out?: true;
+  id: number;
+  from_id: Peer;
+  peer_id: Peer;
+  receiver_id: bigint;
+  top_msg_id?: number;
+  date: number;
+  message: string;
+  entities?: Array<MessageEntity>;
+  media?: MessageMedia;
+  reply_markup?: ReplyMarkup;
+  reply_to?: MessageReplyHeader;
+}
+
+/** https://core.telegram.org/constructor/communities.participantJoinedChats */
+export interface communities_participantJoinedChats {
+  _: "communities.participantJoinedChats";
+  creator_chat_ids: Array<bigint>;
+  joined_chat_ids: Array<bigint>;
+  chats: Array<Chat>;
+  users: Array<User>;
+}
+
+/** https://core.telegram.org/constructor/messages.translatedRichMessage */
+export interface messages_translatedRichMessage {
+  _: "messages.translatedRichMessage";
+  result: Array<RichMessage>;
+}
+
+/** https://core.telegram.org/constructor/messages.composedRichMessageWithAI */
+export interface messages_composedRichMessageWithAI {
+  _: "messages.composedRichMessageWithAI";
+  result: RichMessage;
 }
 
 /** https://core.telegram.org/method/invokeWithBusinessConnectionPrefix */
@@ -15165,6 +15370,7 @@ export interface messages_searchGlobal {
   groups_only?: true;
   users_only?: true;
   folder_id?: number;
+  community?: InputChannel;
   q: string;
   filter: MessagesFilter;
   min_date: number;
@@ -17060,6 +17266,37 @@ export interface messages_getRichMessage {
   [R]?: messages_Messages;
 }
 
+/** https://core.telegram.org/method/messages.translateRichMessage */
+export interface messages_translateRichMessage {
+  _: "messages.translateRichMessage";
+  peer?: InputPeer;
+  id?: Array<number>;
+  text?: Array<InputRichMessage>;
+  to_lang: string;
+  tone?: string;
+  [R]?: messages_TranslatedRichMessage;
+}
+
+/** https://core.telegram.org/method/messages.composeRichMessageWithAI */
+export interface messages_composeRichMessageWithAI {
+  _: "messages.composeRichMessageWithAI";
+  proofread?: true;
+  emojify?: true;
+  text?: InputRichMessage;
+  translate_to_lang?: string;
+  tone?: InputAiComposeTone;
+  [R]?: messages_ComposedRichMessageWithAI;
+}
+
+/** https://core.telegram.org/method/messages.requestChatJoinWebView */
+export interface messages_requestChatJoinWebView {
+  _: "messages.requestChatJoinWebView";
+  query_id: bigint;
+  theme_params?: DataJSON;
+  platform: string;
+  [R]?: WebViewResult;
+}
+
 /** https://core.telegram.org/method/updates.getState */
 export interface updates_getState {
   _: "updates.getState";
@@ -17560,6 +17797,7 @@ export interface channels_getAdminedPublicChannels {
   by_location?: true;
   check_limit?: true;
   for_personal?: true;
+  for_community_peer?: true;
   [R]?: messages_Chats;
 }
 
@@ -19876,6 +20114,141 @@ export interface aicompose_getToneExample {
   [R]?: AiComposeToneExample;
 }
 
+/** https://core.telegram.org/method/communities.create */
+export interface communities_create {
+  _: "communities.create";
+  hidden?: true;
+  title: string;
+  about?: string;
+  peer: InputPeer;
+  [R]?: Updates;
+}
+
+/** https://core.telegram.org/method/communities.togglePeerLink */
+export interface communities_togglePeerLink {
+  _: "communities.togglePeerLink";
+  visible?: true;
+  hidden?: true;
+  deleted?: true;
+  community: InputChannel;
+  peer: InputPeer;
+  [R]?: boolean;
+}
+
+/** https://core.telegram.org/method/communities.getJoinedCommunities */
+export interface communities_getJoinedCommunities {
+  _: "communities.getJoinedCommunities";
+  [R]?: messages_Chats;
+}
+
+/** https://core.telegram.org/method/communities.toggleCommunityCollapsedInDialogs */
+export interface communities_toggleCommunityCollapsedInDialogs {
+  _: "communities.toggleCommunityCollapsedInDialogs";
+  collapsed?: true;
+  community: InputChannel;
+  [R]?: Updates;
+}
+
+/** https://core.telegram.org/method/communities.getPeerLinkRequests */
+export interface communities_getPeerLinkRequests {
+  _: "communities.getPeerLinkRequests";
+  community: InputChannel;
+  offset: string;
+  limit: number;
+  [R]?: communities_PeerLinkRequests;
+}
+
+/** https://core.telegram.org/method/communities.togglePeerLinkRequestApproval */
+export interface communities_togglePeerLinkRequestApproval {
+  _: "communities.togglePeerLinkRequestApproval";
+  reject?: true;
+  community: InputChannel;
+  peer: InputPeer;
+  [R]?: boolean;
+}
+
+/** https://core.telegram.org/method/communities.toggleAllPeerLinkRequestApproval */
+export interface communities_toggleAllPeerLinkRequestApproval {
+  _: "communities.toggleAllPeerLinkRequestApproval";
+  reject?: true;
+  community: InputChannel;
+  [R]?: boolean;
+}
+
+/** https://core.telegram.org/method/communities.toggleParticipantBanned */
+export interface communities_toggleParticipantBanned {
+  _: "communities.toggleParticipantBanned";
+  unban?: true;
+  community: InputChannel;
+  participant: InputPeer;
+  [R]?: boolean;
+}
+
+/** https://core.telegram.org/method/communities.getParticipantJoinedChats */
+export interface communities_getParticipantJoinedChats {
+  _: "communities.getParticipantJoinedChats";
+  community: InputChannel;
+  participant: InputPeer;
+  [R]?: communities_ParticipantJoinedChats;
+}
+
+/** https://core.telegram.org/method/ephemeral.sendMessage */
+export interface ephemeral_sendMessage {
+  _: "ephemeral.sendMessage";
+  peer: InputPeer;
+  receiver_id: InputUser;
+  query_id?: bigint;
+  message: string;
+  entities?: Array<MessageEntity>;
+  media?: InputMedia;
+  reply_markup?: ReplyMarkup;
+  rich_message?: InputRichMessage;
+  random_id: bigint;
+  reply_to?: InputReplyTo;
+  [R]?: Updates;
+}
+
+/** https://core.telegram.org/method/ephemeral.deleteMessage */
+export interface ephemeral_deleteMessage {
+  _: "ephemeral.deleteMessage";
+  peer: InputPeer;
+  receiver_id: InputUser;
+  id: number;
+  [R]?: boolean;
+}
+
+/** https://core.telegram.org/method/ephemeral.reportMessage */
+export interface ephemeral_reportMessage {
+  _: "ephemeral.reportMessage";
+  peer: InputPeer;
+  id: number;
+  option: Uint8Array<ArrayBuffer>;
+  message: string;
+  [R]?: ReportResult;
+}
+
+/** https://core.telegram.org/method/ephemeral.getCallbackAnswer */
+export interface ephemeral_getCallbackAnswer {
+  _: "ephemeral.getCallbackAnswer";
+  peer: InputPeer;
+  id: number;
+  data?: Uint8Array<ArrayBuffer>;
+  [R]?: messages_BotCallbackAnswer;
+}
+
+/** https://core.telegram.org/method/ephemeral.editMessage */
+export interface ephemeral_editMessage {
+  _: "ephemeral.editMessage";
+  peer: InputPeer;
+  receiver_id: InputUser;
+  id: number;
+  message?: string;
+  media?: InputMedia;
+  entities?: Array<MessageEntity>;
+  reply_markup?: ReplyMarkup;
+  [R]?: Updates;
+}
+
 export interface Types {
   "true": true_;
   "error": error;
@@ -19965,8 +20338,11 @@ export interface Types {
   "chatForbidden": chatForbidden;
   "channel": channel;
   "channelForbidden": channelForbidden;
+  "communityForbidden": communityForbidden;
+  "community": community;
   "chatFull": chatFull;
   "channelFull": channelFull;
+  "communityFull": communityFull;
   "chatParticipant": chatParticipant;
   "chatParticipantCreator": chatParticipantCreator;
   "chatParticipantAdmin": chatParticipantAdmin;
@@ -20063,8 +20439,10 @@ export interface Types {
   "messageActionPollAppendAnswer": messageActionPollAppendAnswer;
   "messageActionPollDeleteAnswer": messageActionPollDeleteAnswer;
   "messageActionManagedBotCreated": messageActionManagedBotCreated;
+  "messageActionChangeCommunity": messageActionChangeCommunity;
   "dialog": dialog;
   "dialogFolder": dialogFolder;
+  "dialogCommunity": dialogCommunity;
   "photoEmpty": photoEmpty;
   "photo": photo;
   "photoSizeEmpty": photoSizeEmpty;
@@ -20086,6 +20464,7 @@ export interface Types {
   "inputNotifyChats": inputNotifyChats;
   "inputNotifyBroadcasts": inputNotifyBroadcasts;
   "inputNotifyForumTopic": inputNotifyForumTopic;
+  "inputNotifyCommunity": inputNotifyCommunity;
   "inputPeerNotifySettings": inputPeerNotifySettings;
   "peerNotifySettings": peerNotifySettings;
   "peerSettings": peerSettings;
@@ -20299,6 +20678,11 @@ export interface Types {
   "updateNewBotConnection": updateNewBotConnection;
   "updateWebBrowserSettings": updateWebBrowserSettings;
   "updateWebBrowserException": updateWebBrowserException;
+  "updateNewEphemeralMessage": updateNewEphemeralMessage;
+  "updateDeleteEphemeralMessages": updateDeleteEphemeralMessages;
+  "updateEditEphemeralMessage": updateEditEphemeralMessage;
+  "updateEphemeralBotCallbackQuery": updateEphemeralBotCallbackQuery;
+  "updateBotStarsSubscription": updateBotStarsSubscription;
   "updates.state": updates_state;
   "updates.differenceEmpty": updates_differenceEmpty;
   "updates.difference": updates_difference;
@@ -20350,6 +20734,7 @@ export interface Types {
   "notifyChats": notifyChats;
   "notifyBroadcasts": notifyBroadcasts;
   "notifyForumTopic": notifyForumTopic;
+  "notifyCommunity": notifyCommunity;
   "sendMessageTypingAction": sendMessageTypingAction;
   "sendMessageCancelAction": sendMessageCancelAction;
   "sendMessageRecordVideoAction": sendMessageRecordVideoAction;
@@ -20664,6 +21049,7 @@ export interface Types {
   "textBankCard": textBankCard;
   "textMentionName": textMentionName;
   "textDate": textDate;
+  "textDiff": textDiff;
   "pageBlockUnsupported": pageBlockUnsupported;
   "pageBlockTitle": pageBlockTitle;
   "pageBlockSubtitle": pageBlockSubtitle;
@@ -20831,8 +21217,10 @@ export interface Types {
   "inputMessageCallbackQuery": inputMessageCallbackQuery;
   "inputDialogPeer": inputDialogPeer;
   "inputDialogPeerFolder": inputDialogPeerFolder;
+  "inputDialogPeerCommunity": inputDialogPeerCommunity;
   "dialogPeer": dialogPeer;
   "dialogPeerFolder": dialogPeerFolder;
+  "dialogPeerCommunity": dialogPeerCommunity;
   "messages.foundStickerSetsNotModified": messages_foundStickerSetsNotModified;
   "messages.foundStickerSets": messages_foundStickerSets;
   "fileHash": fileHash;
@@ -21206,6 +21594,7 @@ export interface Types {
   "inputReplyToMessage": inputReplyToMessage;
   "inputReplyToStory": inputReplyToStory;
   "inputReplyToMonoForum": inputReplyToMonoForum;
+  "inputReplyToEphemeralMessage": inputReplyToEphemeralMessage;
   "exportedStoryLink": exportedStoryLink;
   "storiesStealthMode": storiesStealthMode;
   "mediaAreaCoordinates": mediaAreaCoordinates;
@@ -21478,6 +21867,7 @@ export interface Types {
   "inputAiComposeToneDefault": inputAiComposeToneDefault;
   "inputAiComposeToneID": inputAiComposeToneID;
   "inputAiComposeToneSlug": inputAiComposeToneSlug;
+  "inputAiComposeToneSingleUse": inputAiComposeToneSingleUse;
   "aiComposeTone": aiComposeTone;
   "aiComposeToneDefault": aiComposeToneDefault;
   "aicompose.tonesNotModified": aicompose_tonesNotModified;
@@ -21499,6 +21889,13 @@ export interface Types {
   "inputRichMessageHTML": inputRichMessageHTML;
   "inputRichMessageMarkdown": inputRichMessageMarkdown;
   "richMessage": richMessage;
+  "communityPeer": communityPeer;
+  "communityPeerRequest": communityPeerRequest;
+  "communities.peerLinkRequests": communities_peerLinkRequests;
+  "ephemeralMessage": ephemeralMessage;
+  "communities.participantJoinedChats": communities_participantJoinedChats;
+  "messages.translatedRichMessage": messages_translatedRichMessage;
+  "messages.composedRichMessageWithAI": messages_composedRichMessageWithAI;
 }
 
 export interface Functions<T = Function> {
@@ -21962,6 +22359,9 @@ export interface Functions<T = Function> {
   "messages.deleteParticipantReaction": messages_deleteParticipantReaction;
   "messages.getPersonalChannelHistory": messages_getPersonalChannelHistory;
   "messages.getRichMessage": messages_getRichMessage;
+  "messages.translateRichMessage": messages_translateRichMessage;
+  "messages.composeRichMessageWithAI": messages_composeRichMessageWithAI;
+  "messages.requestChatJoinWebView": messages_requestChatJoinWebView;
   "updates.getState": updates_getState;
   "updates.getDifference": updates_getDifference;
   "updates.getChannelDifference": updates_getChannelDifference;
@@ -22296,6 +22696,20 @@ export interface Functions<T = Function> {
   "aicompose.getTone": aicompose_getTone;
   "aicompose.getTones": aicompose_getTones;
   "aicompose.getToneExample": aicompose_getToneExample;
+  "communities.create": communities_create;
+  "communities.togglePeerLink": communities_togglePeerLink;
+  "communities.getJoinedCommunities": communities_getJoinedCommunities;
+  "communities.toggleCommunityCollapsedInDialogs": communities_toggleCommunityCollapsedInDialogs;
+  "communities.getPeerLinkRequests": communities_getPeerLinkRequests;
+  "communities.togglePeerLinkRequestApproval": communities_togglePeerLinkRequestApproval;
+  "communities.toggleAllPeerLinkRequestApproval": communities_toggleAllPeerLinkRequestApproval;
+  "communities.toggleParticipantBanned": communities_toggleParticipantBanned;
+  "communities.getParticipantJoinedChats": communities_getParticipantJoinedChats;
+  "ephemeral.sendMessage": ephemeral_sendMessage;
+  "ephemeral.deleteMessage": ephemeral_deleteMessage;
+  "ephemeral.reportMessage": ephemeral_reportMessage;
+  "ephemeral.getCallbackAnswer": ephemeral_getCallbackAnswer;
+  "ephemeral.editMessage": ephemeral_editMessage;
 }
 
 export interface Enums {
@@ -22901,6 +23315,13 @@ export interface Enums {
   "InputRichFile": InputRichFile;
   "InputRichMessage": InputRichMessage;
   "RichMessage": RichMessage;
+  "CommunityPeer": CommunityPeer;
+  "CommunityPeerRequest": CommunityPeerRequest;
+  "communities.PeerLinkRequests": communities_PeerLinkRequests;
+  "EphemeralMessage": EphemeralMessage;
+  "communities.ParticipantJoinedChats": communities_ParticipantJoinedChats;
+  "messages.TranslatedRichMessage": messages_TranslatedRichMessage;
+  "messages.ComposedRichMessageWithAI": messages_ComposedRichMessageWithAI;
 }
 
 export type AnyType = Types[keyof Types];
@@ -22969,10 +23390,10 @@ export type UserProfilePhoto = userProfilePhotoEmpty | userProfilePhoto;
 export type UserStatus = userStatusEmpty | userStatusOnline | userStatusOffline | userStatusRecently | userStatusLastWeek | userStatusLastMonth;
 
 /** https://core.telegram.org/type/Chat */
-export type Chat = chatEmpty | chat | chatForbidden | channel | channelForbidden;
+export type Chat = chatEmpty | chat | chatForbidden | channel | channelForbidden | communityForbidden | community;
 
 /** https://core.telegram.org/type/ChatFull */
-export type ChatFull = chatFull | channelFull;
+export type ChatFull = chatFull | channelFull | communityFull;
 
 /** https://core.telegram.org/type/ChatParticipant */
 export type ChatParticipant = chatParticipant | chatParticipantCreator | chatParticipantAdmin;
@@ -22990,10 +23411,10 @@ export type Message = messageEmpty | message | messageService;
 export type MessageMedia = messageMediaEmpty | messageMediaPhoto | messageMediaGeo | messageMediaContact | messageMediaUnsupported | messageMediaDocument | messageMediaWebPage | messageMediaVenue | messageMediaGame | messageMediaInvoice | messageMediaGeoLive | messageMediaPoll | messageMediaDice | messageMediaStory | messageMediaGiveaway | messageMediaGiveawayResults | messageMediaPaidMedia | messageMediaToDo | messageMediaVideoStream;
 
 /** https://core.telegram.org/type/MessageAction */
-export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults | messageActionBoostApply | messageActionRequestedPeerSentMe | messageActionPaymentRefunded | messageActionGiftStars | messageActionPrizeStars | messageActionStarGift | messageActionStarGiftUnique | messageActionPaidMessagesRefunded | messageActionPaidMessagesPrice | messageActionConferenceCall | messageActionTodoCompletions | messageActionTodoAppendTasks | messageActionSuggestedPostApproval | messageActionSuggestedPostSuccess | messageActionSuggestedPostRefund | messageActionGiftTon | messageActionSuggestBirthday | messageActionStarGiftPurchaseOffer | messageActionStarGiftPurchaseOfferDeclined | messageActionNewCreatorPending | messageActionChangeCreator | messageActionNoForwardsToggle | messageActionNoForwardsRequest | messageActionPollAppendAnswer | messageActionPollDeleteAnswer | messageActionManagedBotCreated;
+export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults | messageActionBoostApply | messageActionRequestedPeerSentMe | messageActionPaymentRefunded | messageActionGiftStars | messageActionPrizeStars | messageActionStarGift | messageActionStarGiftUnique | messageActionPaidMessagesRefunded | messageActionPaidMessagesPrice | messageActionConferenceCall | messageActionTodoCompletions | messageActionTodoAppendTasks | messageActionSuggestedPostApproval | messageActionSuggestedPostSuccess | messageActionSuggestedPostRefund | messageActionGiftTon | messageActionSuggestBirthday | messageActionStarGiftPurchaseOffer | messageActionStarGiftPurchaseOfferDeclined | messageActionNewCreatorPending | messageActionChangeCreator | messageActionNoForwardsToggle | messageActionNoForwardsRequest | messageActionPollAppendAnswer | messageActionPollDeleteAnswer | messageActionManagedBotCreated | messageActionChangeCommunity;
 
 /** https://core.telegram.org/type/Dialog */
-export type Dialog = dialog | dialogFolder;
+export type Dialog = dialog | dialogFolder | dialogCommunity;
 
 /** https://core.telegram.org/type/Photo */
 export type Photo = photoEmpty | photo;
@@ -23014,7 +23435,7 @@ export type auth_Authorization = auth_authorization | auth_authorizationSignUpRe
 export type auth_ExportedAuthorization = auth_exportedAuthorization;
 
 /** https://core.telegram.org/type/InputNotifyPeer */
-export type InputNotifyPeer = inputNotifyPeer | inputNotifyUsers | inputNotifyChats | inputNotifyBroadcasts | inputNotifyForumTopic;
+export type InputNotifyPeer = inputNotifyPeer | inputNotifyUsers | inputNotifyChats | inputNotifyBroadcasts | inputNotifyForumTopic | inputNotifyCommunity;
 
 /** https://core.telegram.org/type/InputPeerNotifySettings */
 export type InputPeerNotifySettings = inputPeerNotifySettings;
@@ -23071,7 +23492,7 @@ export type messages_AffectedHistory = messages_affectedHistory;
 export type MessagesFilter = inputMessagesFilterEmpty | inputMessagesFilterPhotos | inputMessagesFilterVideo | inputMessagesFilterPhotoVideo | inputMessagesFilterDocument | inputMessagesFilterUrl | inputMessagesFilterGif | inputMessagesFilterVoice | inputMessagesFilterMusic | inputMessagesFilterChatPhotos | inputMessagesFilterPhoneCalls | inputMessagesFilterRoundVoice | inputMessagesFilterRoundVideo | inputMessagesFilterMyMentions | inputMessagesFilterGeo | inputMessagesFilterContacts | inputMessagesFilterPinned | inputMessagesFilterPoll;
 
 /** https://core.telegram.org/type/Update */
-export type Update = updateNewMessage | updateMessageID | updateDeleteMessages | updateUserTyping | updateChatUserTyping | updateChatParticipants | updateUserStatus | updateUserName | updateNewAuthorization | updateNewEncryptedMessage | updateEncryptedChatTyping | updateEncryption | updateEncryptedMessagesRead | updateChatParticipantAdd | updateChatParticipantDelete | updateDcOptions | updateNotifySettings | updateServiceNotification | updatePrivacy | updateUserPhone | updateReadHistoryInbox | updateReadHistoryOutbox | updateWebPage | updateReadMessagesContents | updateChannelTooLong | updateChannel | updateNewChannelMessage | updateReadChannelInbox | updateDeleteChannelMessages | updateChannelMessageViews | updateChatParticipantAdmin | updateNewStickerSet | updateStickerSetsOrder | updateStickerSets | updateSavedGifs | updateBotInlineQuery | updateBotInlineSend | updateEditChannelMessage | updateBotCallbackQuery | updateEditMessage | updateInlineBotCallbackQuery | updateReadChannelOutbox | updateDraftMessage | updateReadFeaturedStickers | updateRecentStickers | updateConfig | updatePtsChanged | updateChannelWebPage | updateDialogPinned | updatePinnedDialogs | updateBotWebhookJSON | updateBotWebhookJSONQuery | updateBotShippingQuery | updateBotPrecheckoutQuery | updatePhoneCall | updateLangPackTooLong | updateLangPack | updateFavedStickers | updateChannelReadMessagesContents | updateContactsReset | updateChannelAvailableMessages | updateDialogUnreadMark | updateMessagePoll | updateChatDefaultBannedRights | updateFolderPeers | updatePeerSettings | updatePeerLocated | updateNewScheduledMessage | updateDeleteScheduledMessages | updateTheme | updateGeoLiveViewed | updateLoginToken | updateMessagePollVote | updateDialogFilter | updateDialogFilterOrder | updateDialogFilters | updatePhoneCallSignalingData | updateChannelMessageForwards | updateReadChannelDiscussionInbox | updateReadChannelDiscussionOutbox | updatePeerBlocked | updateChannelUserTyping | updatePinnedMessages | updatePinnedChannelMessages | updateChat | updateGroupCallParticipants | updateGroupCall | updatePeerHistoryTTL | updateChatParticipant | updateChannelParticipant | updateBotStopped | updateGroupCallConnection | updateBotCommands | updatePendingJoinRequests | updateBotChatInviteRequester | updateMessageReactions | updateAttachMenuBots | updateWebViewResultSent | updateBotMenuButton | updateSavedRingtones | updateTranscribedAudio | updateReadFeaturedEmojiStickers | updateUserEmojiStatus | updateRecentEmojiStatuses | updateRecentReactions | updateMoveStickerSetToTop | updateMessageExtendedMedia | updateUser | updateAutoSaveSettings | updateStory | updateReadStories | updateStoryID | updateStoriesStealthMode | updateSentStoryReaction | updateBotChatBoost | updateChannelViewForumAsMessages | updatePeerWallpaper | updateBotMessageReaction | updateBotMessageReactions | updateSavedDialogPinned | updatePinnedSavedDialogs | updateSavedReactionTags | updateSmsJob | updateQuickReplies | updateNewQuickReply | updateDeleteQuickReply | updateQuickReplyMessage | updateDeleteQuickReplyMessages | updateBotBusinessConnect | updateBotNewBusinessMessage | updateBotEditBusinessMessage | updateBotDeleteBusinessMessage | updateNewStoryReaction | updateStarsBalance | updateBusinessBotCallbackQuery | updateStarsRevenueStatus | updateBotPurchasedPaidMedia | updatePaidReactionPrivacy | updateSentPhoneCode | updateGroupCallChainBlocks | updateReadMonoForumInbox | updateReadMonoForumOutbox | updateMonoForumNoPaidException | updateGroupCallMessage | updateGroupCallEncryptedMessage | updatePinnedForumTopic | updatePinnedForumTopics | updateDeleteGroupCallMessages | updateStarGiftAuctionState | updateStarGiftAuctionUserState | updateEmojiGameInfo | updateStarGiftCraftFail | updateChatParticipantRank | updateManagedBot | updateBotGuestChatQuery | updateAiComposeTones | updateJoinChatWebViewDecision | updateNewBotConnection | updateWebBrowserSettings | updateWebBrowserException;
+export type Update = updateNewMessage | updateMessageID | updateDeleteMessages | updateUserTyping | updateChatUserTyping | updateChatParticipants | updateUserStatus | updateUserName | updateNewAuthorization | updateNewEncryptedMessage | updateEncryptedChatTyping | updateEncryption | updateEncryptedMessagesRead | updateChatParticipantAdd | updateChatParticipantDelete | updateDcOptions | updateNotifySettings | updateServiceNotification | updatePrivacy | updateUserPhone | updateReadHistoryInbox | updateReadHistoryOutbox | updateWebPage | updateReadMessagesContents | updateChannelTooLong | updateChannel | updateNewChannelMessage | updateReadChannelInbox | updateDeleteChannelMessages | updateChannelMessageViews | updateChatParticipantAdmin | updateNewStickerSet | updateStickerSetsOrder | updateStickerSets | updateSavedGifs | updateBotInlineQuery | updateBotInlineSend | updateEditChannelMessage | updateBotCallbackQuery | updateEditMessage | updateInlineBotCallbackQuery | updateReadChannelOutbox | updateDraftMessage | updateReadFeaturedStickers | updateRecentStickers | updateConfig | updatePtsChanged | updateChannelWebPage | updateDialogPinned | updatePinnedDialogs | updateBotWebhookJSON | updateBotWebhookJSONQuery | updateBotShippingQuery | updateBotPrecheckoutQuery | updatePhoneCall | updateLangPackTooLong | updateLangPack | updateFavedStickers | updateChannelReadMessagesContents | updateContactsReset | updateChannelAvailableMessages | updateDialogUnreadMark | updateMessagePoll | updateChatDefaultBannedRights | updateFolderPeers | updatePeerSettings | updatePeerLocated | updateNewScheduledMessage | updateDeleteScheduledMessages | updateTheme | updateGeoLiveViewed | updateLoginToken | updateMessagePollVote | updateDialogFilter | updateDialogFilterOrder | updateDialogFilters | updatePhoneCallSignalingData | updateChannelMessageForwards | updateReadChannelDiscussionInbox | updateReadChannelDiscussionOutbox | updatePeerBlocked | updateChannelUserTyping | updatePinnedMessages | updatePinnedChannelMessages | updateChat | updateGroupCallParticipants | updateGroupCall | updatePeerHistoryTTL | updateChatParticipant | updateChannelParticipant | updateBotStopped | updateGroupCallConnection | updateBotCommands | updatePendingJoinRequests | updateBotChatInviteRequester | updateMessageReactions | updateAttachMenuBots | updateWebViewResultSent | updateBotMenuButton | updateSavedRingtones | updateTranscribedAudio | updateReadFeaturedEmojiStickers | updateUserEmojiStatus | updateRecentEmojiStatuses | updateRecentReactions | updateMoveStickerSetToTop | updateMessageExtendedMedia | updateUser | updateAutoSaveSettings | updateStory | updateReadStories | updateStoryID | updateStoriesStealthMode | updateSentStoryReaction | updateBotChatBoost | updateChannelViewForumAsMessages | updatePeerWallpaper | updateBotMessageReaction | updateBotMessageReactions | updateSavedDialogPinned | updatePinnedSavedDialogs | updateSavedReactionTags | updateSmsJob | updateQuickReplies | updateNewQuickReply | updateDeleteQuickReply | updateQuickReplyMessage | updateDeleteQuickReplyMessages | updateBotBusinessConnect | updateBotNewBusinessMessage | updateBotEditBusinessMessage | updateBotDeleteBusinessMessage | updateNewStoryReaction | updateStarsBalance | updateBusinessBotCallbackQuery | updateStarsRevenueStatus | updateBotPurchasedPaidMedia | updatePaidReactionPrivacy | updateSentPhoneCode | updateGroupCallChainBlocks | updateReadMonoForumInbox | updateReadMonoForumOutbox | updateMonoForumNoPaidException | updateGroupCallMessage | updateGroupCallEncryptedMessage | updatePinnedForumTopic | updatePinnedForumTopics | updateDeleteGroupCallMessages | updateStarGiftAuctionState | updateStarGiftAuctionUserState | updateEmojiGameInfo | updateStarGiftCraftFail | updateChatParticipantRank | updateManagedBot | updateBotGuestChatQuery | updateAiComposeTones | updateJoinChatWebViewDecision | updateNewBotConnection | updateWebBrowserSettings | updateWebBrowserException | updateNewEphemeralMessage | updateDeleteEphemeralMessages | updateEditEphemeralMessage | updateEphemeralBotCallbackQuery | updateBotStarsSubscription;
 
 /** https://core.telegram.org/type/updates.State */
 export type updates_State = updates_state;
@@ -23137,7 +23558,7 @@ export type Document = documentEmpty | document;
 export type help_Support = help_support;
 
 /** https://core.telegram.org/type/NotifyPeer */
-export type NotifyPeer = notifyPeer | notifyUsers | notifyChats | notifyBroadcasts | notifyForumTopic;
+export type NotifyPeer = notifyPeer | notifyUsers | notifyChats | notifyBroadcasts | notifyForumTopic | notifyCommunity;
 
 /** https://core.telegram.org/type/SendMessageAction */
 export type SendMessageAction = sendMessageTypingAction | sendMessageCancelAction | sendMessageRecordVideoAction | sendMessageUploadVideoAction | sendMessageRecordAudioAction | sendMessageUploadAudioAction | sendMessageUploadPhotoAction | sendMessageUploadDocumentAction | sendMessageGeoLocationAction | sendMessageChooseContactAction | sendMessageGamePlayAction | sendMessageRecordRoundAction | sendMessageUploadRoundAction | speakingInGroupCallAction | sendMessageHistoryImportAction | sendMessageChooseStickerAction | sendMessageEmojiInteraction | sendMessageEmojiInteractionSeen | sendMessageTextDraftAction | inputSendMessageRichMessageDraftAction | sendMessageRichMessageDraftAction;
@@ -23359,7 +23780,7 @@ export type HighScore = highScore;
 export type messages_HighScores = messages_highScores;
 
 /** https://core.telegram.org/type/RichText */
-export type RichText = textEmpty | textPlain | textBold | textItalic | textUnderline | textStrike | textFixed | textUrl | textEmail | textConcat | textSubscript | textSuperscript | textMarked | textPhone | textImage | textAnchor | textMath | textCustomEmoji | textSpoiler | textMention | textHashtag | textBotCommand | textCashtag | textAutoUrl | textAutoEmail | textAutoPhone | textBankCard | textMentionName | textDate;
+export type RichText = textEmpty | textPlain | textBold | textItalic | textUnderline | textStrike | textFixed | textUrl | textEmail | textConcat | textSubscript | textSuperscript | textMarked | textPhone | textImage | textAnchor | textMath | textCustomEmoji | textSpoiler | textMention | textHashtag | textBotCommand | textCashtag | textAutoUrl | textAutoEmail | textAutoPhone | textBankCard | textMentionName | textDate | textDiff;
 
 /** https://core.telegram.org/type/PageBlock */
 export type PageBlock = pageBlockUnsupported | pageBlockTitle | pageBlockSubtitle | pageBlockAuthorDate | pageBlockHeader | pageBlockSubheader | pageBlockParagraph | pageBlockPreformatted | pageBlockFooter | pageBlockDivider | pageBlockAnchor | pageBlockList | pageBlockBlockquote | pageBlockPullquote | pageBlockPhoto | pageBlockVideo | pageBlockCover | pageBlockEmbed | pageBlockEmbedPost | pageBlockCollage | pageBlockSlideshow | pageBlockChannel | pageBlockAudio | pageBlockKicker | pageBlockTable | pageBlockOrderedList | pageBlockDetails | pageBlockRelatedArticles | pageBlockMap | pageBlockHeading1 | pageBlockHeading2 | pageBlockHeading3 | pageBlockHeading4 | pageBlockHeading5 | pageBlockHeading6 | pageBlockMath | pageBlockThinking | inputPageBlockMap | pageBlockBlockquoteBlocks;
@@ -23497,10 +23918,10 @@ export type account_WebAuthorizations = account_webAuthorizations;
 export type InputMessage = inputMessageID | inputMessageReplyTo | inputMessagePinned | inputMessageCallbackQuery;
 
 /** https://core.telegram.org/type/InputDialogPeer */
-export type InputDialogPeer = inputDialogPeer | inputDialogPeerFolder;
+export type InputDialogPeer = inputDialogPeer | inputDialogPeerFolder | inputDialogPeerCommunity;
 
 /** https://core.telegram.org/type/DialogPeer */
-export type DialogPeer = dialogPeer | dialogPeerFolder;
+export type DialogPeer = dialogPeer | dialogPeerFolder | dialogPeerCommunity;
 
 /** https://core.telegram.org/type/messages.FoundStickerSets */
 export type messages_FoundStickerSets = messages_foundStickerSetsNotModified | messages_foundStickerSets;
@@ -24130,7 +24551,7 @@ export type stories_StoryViewsList = stories_storyViewsList;
 export type stories_StoryViews = stories_storyViews;
 
 /** https://core.telegram.org/type/InputReplyTo */
-export type InputReplyTo = inputReplyToMessage | inputReplyToStory | inputReplyToMonoForum;
+export type InputReplyTo = inputReplyToMessage | inputReplyToStory | inputReplyToMonoForum | inputReplyToEphemeralMessage;
 
 /** https://core.telegram.org/type/ExportedStoryLink */
 export type ExportedStoryLink = exportedStoryLink;
@@ -24682,7 +25103,7 @@ export type messages_ComposedMessageWithAI = messages_composedMessageWithAI;
 export type stats_PollStats = stats_pollStats;
 
 /** https://core.telegram.org/type/InputAiComposeTone */
-export type InputAiComposeTone = inputAiComposeToneDefault | inputAiComposeToneID | inputAiComposeToneSlug;
+export type InputAiComposeTone = inputAiComposeToneDefault | inputAiComposeToneID | inputAiComposeToneSlug | inputAiComposeToneSingleUse;
 
 /** https://core.telegram.org/type/AiComposeTone */
 export type AiComposeTone = aiComposeTone | aiComposeToneDefault;
@@ -24716,6 +25137,27 @@ export type InputRichMessage = inputRichMessage | inputRichMessageHTML | inputRi
 
 /** https://core.telegram.org/type/RichMessage */
 export type RichMessage = richMessage;
+
+/** https://core.telegram.org/type/CommunityPeer */
+export type CommunityPeer = communityPeer;
+
+/** https://core.telegram.org/type/CommunityPeerRequest */
+export type CommunityPeerRequest = communityPeerRequest;
+
+/** https://core.telegram.org/type/communities.PeerLinkRequests */
+export type communities_PeerLinkRequests = communities_peerLinkRequests;
+
+/** https://core.telegram.org/type/EphemeralMessage */
+export type EphemeralMessage = ephemeralMessage;
+
+/** https://core.telegram.org/type/communities.ParticipantJoinedChats */
+export type communities_ParticipantJoinedChats = communities_participantJoinedChats;
+
+/** https://core.telegram.org/type/messages.TranslatedRichMessage */
+export type messages_TranslatedRichMessage = messages_translatedRichMessage;
+
+/** https://core.telegram.org/type/messages.ComposedRichMessageWithAI */
+export type messages_ComposedRichMessageWithAI = messages_composedRichMessageWithAI;
 
 export const schema = Object.freeze({
   definitions: {
@@ -25339,7 +25781,7 @@ export const schema = Object.freeze({
       "User",
     ],
     user: [
-      0x31774388,
+      0xB1B8CC83,
       [
         ["flags", "#"],
         ["self", "flags.10?true"],
@@ -25393,6 +25835,7 @@ export const schema = Object.freeze({
         ["bot_active_users", "flags2.12?int"],
         ["bot_verification_icon", "flags2.14?long"],
         ["send_paid_messages_stars", "flags2.15?long"],
+        ["linked_community_id", "flags2.21?long"],
       ],
       "User",
     ],
@@ -25494,7 +25937,7 @@ export const schema = Object.freeze({
       "Chat",
     ],
     channel: [
-      0x1C32B11C,
+      0xD49F34C6,
       [
         ["flags", "#"],
         ["creator", "flags.0?true"],
@@ -25547,6 +25990,7 @@ export const schema = Object.freeze({
         ["bot_verification_icon", "flags2.13?long"],
         ["send_paid_messages_stars", "flags2.14?long"],
         ["linked_monoforum_id", "flags2.18?long"],
+        ["linked_community_id", "flags2.20?long"],
       ],
       "Chat",
     ],
@@ -25561,6 +26005,35 @@ export const schema = Object.freeze({
         ["access_hash", "long"],
         ["title", "string"],
         ["until_date", "flags.16?int"],
+      ],
+      "Chat",
+    ],
+    communityForbidden: [
+      0xFD3CDAB8,
+      [
+        ["flags", "#"],
+        ["id", "long"],
+        ["access_hash", "flags.13?long"],
+        ["title", "string"],
+      ],
+      "Chat",
+    ],
+    community: [
+      0x65EFE954,
+      [
+        ["flags", "#"],
+        ["creator", "flags.0?true"],
+        ["left", "flags.2?true"],
+        ["min", "flags.12?true"],
+        ["flags2", "#"],
+        ["collapsed_in_dialogs", "flags2.20?true"],
+        ["id", "long"],
+        ["access_hash", "flags.13?long"],
+        ["title", "string"],
+        ["photo", "ChatPhoto"],
+        ["date", "int"],
+        ["admin_rights", "flags.14?ChatAdminRights"],
+        ["default_banned_rights", "flags.18?ChatBannedRights"],
       ],
       "Chat",
     ],
@@ -25663,6 +26136,20 @@ export const schema = Object.freeze({
         ["send_paid_messages_stars", "flags2.21?long"],
         ["main_tab", "flags2.22?ProfileTab"],
         ["guard_bot_id", "flags2.23?long"],
+      ],
+      "ChatFull",
+    ],
+    communityFull: [
+      0xCBB7A507,
+      [
+        ["flags", "#"],
+        ["id", "long"],
+        ["about", "string"],
+        ["chat_photo", "Photo"],
+        ["linked_peers", "Vector<CommunityPeer>"],
+        ["admins_count", "flags.1?int"],
+        ["kicked_count", "flags.2?int"],
+        ["peer_link_requests_pending", "flags.0?int"],
       ],
       "ChatFull",
     ],
@@ -26641,6 +27128,14 @@ export const schema = Object.freeze({
       ],
       "MessageAction",
     ],
+    messageActionChangeCommunity: [
+      0x5D20BAE8,
+      [
+        ["flags", "#"],
+        ["community_id", "flags.0?long"],
+      ],
+      "MessageAction",
+    ],
     dialog: [
       0xFC89F7F3,
       [
@@ -26676,6 +27171,16 @@ export const schema = Object.freeze({
         ["unread_unmuted_peers_count", "int"],
         ["unread_muted_messages_count", "int"],
         ["unread_unmuted_messages_count", "int"],
+      ],
+      "Dialog",
+    ],
+    dialogCommunity: [
+      0xF78A0973,
+      [
+        ["flags", "#"],
+        ["pinned", "flags.2?true"],
+        ["community_id", "long"],
+        ["notify_settings", "PeerNotifySettings"],
       ],
       "Dialog",
     ],
@@ -26856,6 +27361,13 @@ export const schema = Object.freeze({
       [
         ["peer", "InputPeer"],
         ["top_msg_id", "int"],
+      ],
+      "InputNotifyPeer",
+    ],
+    inputNotifyCommunity: [
+      0x27BB1ADC,
+      [
+        ["community", "InputChannel"],
       ],
       "InputNotifyPeer",
     ],
@@ -28749,6 +29261,53 @@ export const schema = Object.freeze({
       ],
       "Update",
     ],
+    updateNewEphemeralMessage: [
+      0x20BCBBA1,
+      [
+        ["message", "EphemeralMessage"],
+      ],
+      "Update",
+    ],
+    updateDeleteEphemeralMessages: [
+      0x56DBFCF8,
+      [
+        ["peer", "Peer"],
+        ["ids", "Vector<int>"],
+      ],
+      "Update",
+    ],
+    updateEditEphemeralMessage: [
+      0x4BBB8F01,
+      [
+        ["message", "EphemeralMessage"],
+      ],
+      "Update",
+    ],
+    updateEphemeralBotCallbackQuery: [
+      0x9B380762,
+      [
+        ["query_id", "long"],
+        ["user_id", "long"],
+        ["peer", "Peer"],
+        ["msg_id", "int"],
+        ["data", "bytes"],
+        ["message", "EphemeralMessage"],
+      ],
+      "Update",
+    ],
+    updateBotStarsSubscription: [
+      0x6C0D8E23,
+      [
+        ["flags", "#"],
+        ["canceled", "flags.0?true"],
+        ["payment_failed", "flags.1?true"],
+        ["restored", "flags.2?true"],
+        ["user_id", "long"],
+        ["payload", "bytes"],
+        ["qts", "int"],
+      ],
+      "Update",
+    ],
     "updates.state": [
       0xA56C2A3E,
       [
@@ -29283,6 +29842,13 @@ export const schema = Object.freeze({
       [
         ["peer", "Peer"],
         ["top_msg_id", "int"],
+      ],
+      "NotifyPeer",
+    ],
+    notifyCommunity: [
+      0xBE376999,
+      [
+        ["community_id", "long"],
       ],
       "NotifyPeer",
     ],
@@ -30154,8 +30720,10 @@ export const schema = Object.freeze({
       "messages.StickerSet",
     ],
     botCommand: [
-      0xC27AC8C7,
+      0x9852D6D2,
       [
+        ["flags", "#"],
+        ["ephemeral", "flags.0?true"],
         ["command", "string"],
         ["description", "string"],
       ],
@@ -31883,6 +32451,14 @@ export const schema = Object.freeze({
       ],
       "RichText",
     ],
+    textDiff: [
+      0x9686CB50,
+      [
+        ["text", "RichText"],
+        ["old_text", "RichText"],
+      ],
+      "RichText",
+    ],
     pageBlockUnsupported: [
       0x13567E8A,
       [],
@@ -33363,6 +33939,13 @@ export const schema = Object.freeze({
       ],
       "InputDialogPeer",
     ],
+    inputDialogPeerCommunity: [
+      0x69EF72C4,
+      [
+        ["community", "InputChannel"],
+      ],
+      "InputDialogPeer",
+    ],
     dialogPeer: [
       0xE56DBF05,
       [
@@ -33374,6 +33957,13 @@ export const schema = Object.freeze({
       0x514519E2,
       [
         ["folder_id", "int"],
+      ],
+      "DialogPeer",
+    ],
+    dialogPeerCommunity: [
+      0x2F65C8E4,
+      [
+        ["community_id", "long"],
       ],
       "DialogPeer",
     ],
@@ -34110,6 +34700,7 @@ export const schema = Object.freeze({
         ["delete_stories", "flags.16?true"],
         ["manage_direct_messages", "flags.17?true"],
         ["manage_ranks", "flags.18?true"],
+        ["manage_linked_peers", "flags.19?true"],
       ],
       "ChatAdminRights",
     ],
@@ -34139,6 +34730,7 @@ export const schema = Object.freeze({
         ["send_plain", "flags.25?true"],
         ["edit_rank", "flags.26?true"],
         ["send_reactions", "flags.27?true"],
+        ["manage_linked_peers", "flags.28?true"],
         ["until_date", "int"],
       ],
       "ChatBannedRights",
@@ -34931,6 +35523,7 @@ export const schema = Object.freeze({
         ["reply_to_scheduled", "flags.2?true"],
         ["forum_topic", "flags.3?true"],
         ["quote", "flags.9?true"],
+        ["reply_to_ephemeral", "flags.13?true"],
         ["reply_to_msg_id", "flags.4?int"],
         ["reply_to_peer_id", "flags.0?Peer"],
         ["reply_from", "flags.5?MessageFwdHeader"],
@@ -36807,6 +37400,13 @@ export const schema = Object.freeze({
       0x69D66C45,
       [
         ["monoforum_peer_id", "InputPeer"],
+      ],
+      "InputReplyTo",
+    ],
+    inputReplyToEphemeralMessage: [
+      0x4119B95E,
+      [
+        ["id", "int"],
       ],
       "InputReplyTo",
     ],
@@ -39386,6 +39986,13 @@ export const schema = Object.freeze({
       ],
       "InputAiComposeTone",
     ],
+    inputAiComposeToneSingleUse: [
+      0x0E0C35AF,
+      [
+        ["custom_prompt", "string"],
+      ],
+      "InputAiComposeTone",
+    ],
     aiComposeTone: [
       0xCFF63EA9,
       [
@@ -39451,10 +40058,10 @@ export const schema = Object.freeze({
       "messages.ChatInviteJoinResult",
     ],
     "messages.chatInviteJoinResultWebView": [
-      0x2F51C337,
+      0x61CA29D3,
       [
         ["bot_id", "long"],
-        ["webview", "WebViewResult"],
+        ["query_id", "long"],
         ["users", "Vector<User>"],
       ],
       "messages.ChatInviteJoinResult",
@@ -39571,6 +40178,82 @@ export const schema = Object.freeze({
         ["documents", "Vector<Document>"],
       ],
       "RichMessage",
+    ],
+    communityPeer: [
+      0x76141EBD,
+      [
+        ["flags", "#"],
+        ["can_view_history", "flags.2?true"],
+        ["visible", "flags.0?Bool"],
+        ["peer", "Peer"],
+      ],
+      "CommunityPeer",
+    ],
+    communityPeerRequest: [
+      0x7BEAFA85,
+      [
+        ["flags", "#"],
+        ["visible", "flags.0?true"],
+        ["peer", "Peer"],
+        ["requested_by", "long"],
+        ["date", "int"],
+      ],
+      "CommunityPeerRequest",
+    ],
+    "communities.peerLinkRequests": [
+      0x2244AFAD,
+      [
+        ["flags", "#"],
+        ["total_count", "int"],
+        ["requests", "Vector<CommunityPeerRequest>"],
+        ["next_offset", "flags.0?string"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
+      ],
+      "communities.PeerLinkRequests",
+    ],
+    ephemeralMessage: [
+      0xD9C6DC1A,
+      [
+        ["flags", "#"],
+        ["out", "flags.0?true"],
+        ["id", "int"],
+        ["from_id", "Peer"],
+        ["peer_id", "Peer"],
+        ["receiver_id", "long"],
+        ["top_msg_id", "flags.1?int"],
+        ["date", "int"],
+        ["message", "string"],
+        ["entities", "flags.2?Vector<MessageEntity>"],
+        ["media", "flags.3?MessageMedia"],
+        ["reply_markup", "flags.4?ReplyMarkup"],
+        ["reply_to", "flags.6?MessageReplyHeader"],
+      ],
+      "EphemeralMessage",
+    ],
+    "communities.participantJoinedChats": [
+      0x8D78512A,
+      [
+        ["creator_chat_ids", "Vector<long>"],
+        ["joined_chat_ids", "Vector<long>"],
+        ["chats", "Vector<Chat>"],
+        ["users", "Vector<User>"],
+      ],
+      "communities.ParticipantJoinedChats",
+    ],
+    "messages.translatedRichMessage": [
+      0x4203998F,
+      [
+        ["result", "Vector<RichMessage>"],
+      ],
+      "messages.TranslatedRichMessage",
+    ],
+    "messages.composedRichMessageWithAI": [
+      0x4C4537C8,
+      [
+        ["result", "RichMessage"],
+      ],
+      "messages.ComposedRichMessageWithAI",
     ],
     invokeWithBusinessConnectionPrefix: [
       0xDD289F8E,
@@ -41663,13 +42346,14 @@ export const schema = Object.freeze({
       "Updates",
     ],
     "messages.searchGlobal": [
-      0x4BC6589A,
+      0x6126A43C,
       [
         ["flags", "#"],
         ["broadcasts_only", "flags.1?true"],
         ["groups_only", "flags.2?true"],
         ["users_only", "flags.3?true"],
         ["folder_id", "flags.0?int"],
+        ["community", "flags.4?InputChannel"],
         ["q", "string"],
         ["filter", "MessagesFilter"],
         ["min_date", "int"],
@@ -43638,6 +44322,40 @@ export const schema = Object.freeze({
       ],
       "messages.Messages",
     ],
+    "messages.translateRichMessage": [
+      0x1A542004,
+      [
+        ["flags", "#"],
+        ["peer", "flags.0?InputPeer"],
+        ["id", "flags.0?Vector<int>"],
+        ["text", "flags.1?Vector<InputRichMessage>"],
+        ["to_lang", "string"],
+        ["tone", "flags.2?string"],
+      ],
+      "messages.TranslatedRichMessage",
+    ],
+    "messages.composeRichMessageWithAI": [
+      0x8D7AE6AF,
+      [
+        ["flags", "#"],
+        ["proofread", "flags.0?true"],
+        ["emojify", "flags.3?true"],
+        ["text", "flags.4?InputRichMessage"],
+        ["translate_to_lang", "flags.1?string"],
+        ["tone", "flags.2?InputAiComposeTone"],
+      ],
+      "messages.ComposedRichMessageWithAI",
+    ],
+    "messages.requestChatJoinWebView": [
+      0xBA9EE679,
+      [
+        ["flags", "#"],
+        ["query_id", "long"],
+        ["theme_params", "flags.0?DataJSON"],
+        ["platform", "string"],
+      ],
+      "WebViewResult",
+    ],
     "updates.getState": [
       0xEDD4882A,
       [],
@@ -44139,6 +44857,7 @@ export const schema = Object.freeze({
         ["by_location", "flags.0?true"],
         ["check_limit", "flags.1?true"],
         ["for_personal", "flags.2?true"],
+        ["for_community_peer", "flags.3?true"],
       ],
       "messages.Chats",
     ],
@@ -46523,6 +47242,149 @@ export const schema = Object.freeze({
       ],
       "AiComposeToneExample",
     ],
+    "communities.create": [
+      0xA63859EC,
+      [
+        ["flags", "#"],
+        ["hidden", "flags.1?true"],
+        ["title", "string"],
+        ["about", "flags.0?string"],
+        ["peer", "InputPeer"],
+      ],
+      "Updates",
+    ],
+    "communities.togglePeerLink": [
+      0x736DCFEA,
+      [
+        ["flags", "#"],
+        ["visible", "flags.0?true"],
+        ["hidden", "flags.1?true"],
+        ["deleted", "flags.2?true"],
+        ["community", "InputChannel"],
+        ["peer", "InputPeer"],
+      ],
+      "Bool",
+    ],
+    "communities.getJoinedCommunities": [
+      0xA663E830,
+      [],
+      "messages.Chats",
+    ],
+    "communities.toggleCommunityCollapsedInDialogs": [
+      0xD766E3EA,
+      [
+        ["flags", "#"],
+        ["collapsed", "flags.0?true"],
+        ["community", "InputChannel"],
+      ],
+      "Updates",
+    ],
+    "communities.getPeerLinkRequests": [
+      0x93773344,
+      [
+        ["community", "InputChannel"],
+        ["offset", "string"],
+        ["limit", "int"],
+      ],
+      "communities.PeerLinkRequests",
+    ],
+    "communities.togglePeerLinkRequestApproval": [
+      0x8C8219A8,
+      [
+        ["flags", "#"],
+        ["reject", "flags.0?true"],
+        ["community", "InputChannel"],
+        ["peer", "InputPeer"],
+      ],
+      "Bool",
+    ],
+    "communities.toggleAllPeerLinkRequestApproval": [
+      0xBFE3DD3D,
+      [
+        ["flags", "#"],
+        ["reject", "flags.0?true"],
+        ["community", "InputChannel"],
+      ],
+      "Bool",
+    ],
+    "communities.toggleParticipantBanned": [
+      0x9967AD0F,
+      [
+        ["flags", "#"],
+        ["unban", "flags.0?true"],
+        ["community", "InputChannel"],
+        ["participant", "InputPeer"],
+      ],
+      "Bool",
+    ],
+    "communities.getParticipantJoinedChats": [
+      0xF87EABAB,
+      [
+        ["community", "InputChannel"],
+        ["participant", "InputPeer"],
+      ],
+      "communities.ParticipantJoinedChats",
+    ],
+    "ephemeral.sendMessage": [
+      0x68CBD09F,
+      [
+        ["flags", "#"],
+        ["peer", "InputPeer"],
+        ["receiver_id", "InputUser"],
+        ["query_id", "flags.0?long"],
+        ["message", "string"],
+        ["entities", "flags.1?Vector<MessageEntity>"],
+        ["media", "flags.2?InputMedia"],
+        ["reply_markup", "flags.3?ReplyMarkup"],
+        ["rich_message", "flags.4?InputRichMessage"],
+        ["random_id", "long"],
+        ["reply_to", "flags.5?InputReplyTo"],
+      ],
+      "Updates",
+    ],
+    "ephemeral.deleteMessage": [
+      0xA3C0D511,
+      [
+        ["peer", "InputPeer"],
+        ["receiver_id", "InputUser"],
+        ["id", "int"],
+      ],
+      "Bool",
+    ],
+    "ephemeral.reportMessage": [
+      0x8704F2BF,
+      [
+        ["peer", "InputPeer"],
+        ["id", "int"],
+        ["option", "bytes"],
+        ["message", "string"],
+      ],
+      "ReportResult",
+    ],
+    "ephemeral.getCallbackAnswer": [
+      0x3FA464C8,
+      [
+        ["flags", "#"],
+        ["peer", "InputPeer"],
+        ["id", "int"],
+        ["data", "flags.1?bytes"],
+      ],
+      "messages.BotCallbackAnswer",
+    ],
+    "ephemeral.editMessage": [
+      0x13F250EE,
+      [
+        ["flags", "#"],
+        ["peer", "InputPeer"],
+        ["receiver_id", "InputUser"],
+        ["id", "int"],
+        ["message", "flags.0?string"],
+        ["media", "flags.3?InputMedia"],
+        ["entities", "flags.1?Vector<MessageEntity>"],
+        ["reply_markup", "flags.2?ReplyMarkup"],
+      ],
+      "Updates",
+    ],
   },
   identifierToName: {
     [0x3FEDD339]: "true",
@@ -46599,7 +47461,7 @@ export const schema = Object.freeze({
     [0xB3CEA0E4]: "storage.fileMp4",
     [0x1081464C]: "storage.fileWebp",
     [0xD3BC4B7A]: "userEmpty",
-    [0x31774388]: "user",
+    [0xB1B8CC83]: "user",
     [0x4F11BAE1]: "userProfilePhotoEmpty",
     [0x82D1F706]: "userProfilePhoto",
     [0x09D05049]: "userStatusEmpty",
@@ -46611,10 +47473,13 @@ export const schema = Object.freeze({
     [0x29562865]: "chatEmpty",
     [0x41CBF256]: "chat",
     [0x6592A1A7]: "chatForbidden",
-    [0x1C32B11C]: "channel",
+    [0xD49F34C6]: "channel",
     [0x17D493D5]: "channelForbidden",
+    [0xFD3CDAB8]: "communityForbidden",
+    [0x65EFE954]: "community",
     [0x2633421B]: "chatFull",
     [0xA04E8D3A]: "channelFull",
+    [0xCBB7A507]: "communityFull",
     [0x38E79FDE]: "chatParticipant",
     [0xE1F867B8]: "chatParticipantCreator",
     [0x0360D5D2]: "chatParticipantAdmin",
@@ -46711,8 +47576,10 @@ export const schema = Object.freeze({
     [0x9DA1CD6C]: "messageActionPollAppendAnswer",
     [0x399674DC]: "messageActionPollDeleteAnswer",
     [0x16605E3E]: "messageActionManagedBotCreated",
+    [0x5D20BAE8]: "messageActionChangeCommunity",
     [0xFC89F7F3]: "dialog",
     [0x71BD134C]: "dialogFolder",
+    [0xF78A0973]: "dialogCommunity",
     [0x2331B22D]: "photoEmpty",
     [0xFB197A65]: "photo",
     [0x0E17E23C]: "photoSizeEmpty",
@@ -46734,6 +47601,7 @@ export const schema = Object.freeze({
     [0x4A95E84E]: "inputNotifyChats",
     [0xB1DB7C7E]: "inputNotifyBroadcasts",
     [0x5C467992]: "inputNotifyForumTopic",
+    [0x27BB1ADC]: "inputNotifyCommunity",
     [0xCACB6AE2]: "inputPeerNotifySettings",
     [0x99622C0C]: "peerNotifySettings",
     [0xF47741F7]: "peerSettings",
@@ -46947,6 +47815,11 @@ export const schema = Object.freeze({
     [0xB22083A6]: "updateNewBotConnection",
     [0xC39A2ADE]: "updateWebBrowserSettings",
     [0x140502D1]: "updateWebBrowserException",
+    [0x20BCBBA1]: "updateNewEphemeralMessage",
+    [0x56DBFCF8]: "updateDeleteEphemeralMessages",
+    [0x4BBB8F01]: "updateEditEphemeralMessage",
+    [0x9B380762]: "updateEphemeralBotCallbackQuery",
+    [0x6C0D8E23]: "updateBotStarsSubscription",
     [0xA56C2A3E]: "updates.state",
     [0x5D75A138]: "updates.differenceEmpty",
     [0x00F49CA0]: "updates.difference",
@@ -46998,6 +47871,7 @@ export const schema = Object.freeze({
     [0xC007CEC3]: "notifyChats",
     [0xD612E8EF]: "notifyBroadcasts",
     [0x226E6308]: "notifyForumTopic",
+    [0xBE376999]: "notifyCommunity",
     [0x16BF744E]: "sendMessageTypingAction",
     [0xFD5EC8F5]: "sendMessageCancelAction",
     [0xA187D66F]: "sendMessageRecordVideoAction",
@@ -47119,7 +47993,7 @@ export const schema = Object.freeze({
     [0x2DD14EDC]: "stickerSet",
     [0x6E153F16]: "messages.stickerSet",
     [0xD3F924EB]: "messages.stickerSetNotModified",
-    [0xC27AC8C7]: "botCommand",
+    [0x9852D6D2]: "botCommand",
     [0x4D8A0299]: "botInfo",
     [0x7D170CFF]: "keyboardButton",
     [0xD80C25EC]: "keyboardButtonUrl",
@@ -47312,6 +48186,7 @@ export const schema = Object.freeze({
     [0xB956812D]: "textBankCard",
     [0x01A9FBFC]: "textMentionName",
     [0xA5B45E2B]: "textDate",
+    [0x9686CB50]: "textDiff",
     [0x13567E8A]: "pageBlockUnsupported",
     [0x70ABC3FD]: "pageBlockTitle",
     [0x8FFA9A1F]: "pageBlockSubtitle",
@@ -47479,8 +48354,10 @@ export const schema = Object.freeze({
     [0xACFA1A7E]: "inputMessageCallbackQuery",
     [0xFCAAFEB7]: "inputDialogPeer",
     [0x64600527]: "inputDialogPeerFolder",
+    [0x69EF72C4]: "inputDialogPeerCommunity",
     [0xE56DBF05]: "dialogPeer",
     [0x514519E2]: "dialogPeerFolder",
+    [0x2F65C8E4]: "dialogPeerCommunity",
     [0x0D54B65D]: "messages.foundStickerSetsNotModified",
     [0x8AF09DD2]: "messages.foundStickerSets",
     [0xF39B035C]: "fileHash",
@@ -47854,6 +48731,7 @@ export const schema = Object.freeze({
     [0x3BD4B7C2]: "inputReplyToMessage",
     [0x5881323A]: "inputReplyToStory",
     [0x69D66C45]: "inputReplyToMonoForum",
+    [0x4119B95E]: "inputReplyToEphemeralMessage",
     [0x3FC9053B]: "exportedStoryLink",
     [0x712E27FD]: "storiesStealthMode",
     [0xCFC9E002]: "mediaAreaCoordinates",
@@ -48126,6 +49004,7 @@ export const schema = Object.freeze({
     [0x1FE9A9BF]: "inputAiComposeToneDefault",
     [0x0773C080]: "inputAiComposeToneID",
     [0x1FA01357]: "inputAiComposeToneSlug",
+    [0x0E0C35AF]: "inputAiComposeToneSingleUse",
     [0xCFF63EA9]: "aiComposeTone",
     [0x9BAD6414]: "aiComposeToneDefault",
     [0xC1F46103]: "aicompose.tonesNotModified",
@@ -48133,7 +49012,7 @@ export const schema = Object.freeze({
     [0xF1D628EC]: "aiComposeToneExample",
     [0xDD1FBF93]: "bots.accessSettings",
     [0x445663A7]: "messages.chatInviteJoinResultOk",
-    [0x2F51C337]: "messages.chatInviteJoinResultWebView",
+    [0x61CA29D3]: "messages.chatInviteJoinResultWebView",
     [0xAE152A69]: "joinChatBotResultApproved",
     [0x0EFA0194]: "joinChatBotResultDeclined",
     [0x98A3A840]: "joinChatBotResultQueued",
@@ -48147,7 +49026,14 @@ export const schema = Object.freeze({
     [0xDACB836A]: "inputRichMessageHTML",
     [0x004B572C]: "inputRichMessageMarkdown",
     [0xBAF39D8B]: "richMessage",
+    [0x76141EBD]: "communityPeer",
+    [0x7BEAFA85]: "communityPeerRequest",
+    [0x2244AFAD]: "communities.peerLinkRequests",
+    [0xD9C6DC1A]: "ephemeralMessage",
+    [0x8D78512A]: "communities.participantJoinedChats",
+    [0x4203998F]: "messages.translatedRichMessage",
+    [0x4C4537C8]: "messages.composedRichMessageWithAI",
   },
 }) as unknown as Schema;
 
-export const LAYER = 227;
+export const LAYER = 228;

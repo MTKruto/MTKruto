@@ -210,7 +210,9 @@ export class UpdateManager {
       return; // TODO
     }
 
-    this.#c.messageStorage.setPeer(chat);
+    if (!Api.isOneOf(["community", "communityForbidden"], chat)) {
+      this.#c.messageStorage.setPeer(chat);
+    }
 
     if ("username" in chat && chat.username) {
       this.#c.messageStorage.usernames.set([chat.username], [Api.peerToChatId(chat), new Date()]);
