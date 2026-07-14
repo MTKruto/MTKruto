@@ -89,7 +89,7 @@ export interface _SendCommon extends _BusinessConnectionIdCommon, _PaidBroadcast
   /** If specified, the message will be scheduled to be sent at that date. User-only. */
   sendAt?: number;
   /** The identifier of the user that will receive the ephemeral message. */
-  receiverUserId?: ID;
+  receiverId?: ID;
   /** The identifier of the callback query that triggered the ephemeral message. */
   callbackQueryId?: string;
 }
@@ -176,7 +176,7 @@ export interface EditMessageMediaParams extends _BusinessConnectionIdCommon, _Re
 export interface EditInlineMessageMediaParams extends _ReplyMarkupCommon {
 }
 
-export interface ForwardMessagesParams extends Omit<_SendCommon, "replyToMessageId" | "replyMarkup" | "businessConnectionId"> {
+export interface ForwardMessagesParams extends Omit<_SendCommon, "replyToMessageId" | "replyMarkup" | "businessConnectionId" | 'receiverUserId'> {
   /** Whether to omit the original sender of the message that is going to be forwarded. */
   isSenderNameDropped?: boolean;
   /** Whether to omit the original caption of the message that is going to be forwarded. */

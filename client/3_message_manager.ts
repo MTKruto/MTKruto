@@ -398,14 +398,14 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         force_small_media: params.linkPreview.mediaSize === "small" || undefined,
         optional: !message.length || undefined,
       };
-      if (params.receiverUserId !== undefined) {
+      if (params.receiverId !== undefined) {
         result = await this.#c.invoke({
           _: "ephemeral.sendMessage",
           peer,
           random_id: randomId,
           media,
           message,
-          receiver_id: await this.#c.getInputUser(params.receiverUserId),
+          receiver_id: await this.#c.getInputUser(params.receiverId),
           entities,
           query_id: params.callbackQueryId !== undefined ? BigInt(params.callbackQueryId) : undefined,
           reply_to: await this.#constructReplyTo(params),
@@ -431,13 +431,13 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         }, { businessConnectionId: params?.businessConnectionId });
       }
     } else {
-      if (params?.receiverUserId !== undefined) {
+      if (params?.receiverId !== undefined) {
         result = await this.#c.invoke({
           _: "ephemeral.sendMessage",
           peer,
           random_id: randomId,
           message,
-          receiver_id: await this.#c.getInputUser(params.receiverUserId),
+          receiver_id: await this.#c.getInputUser(params.receiverId),
           entities,
           query_id: params.callbackQueryId !== undefined ? BigInt(params.callbackQueryId) : undefined,
           reply_to: await this.#constructReplyTo(params),
@@ -477,7 +477,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     params?: SendRichTextParams,
   ): Promise<MessageRichText> {
     this.#checkParams(params);
-    if (params?.receiverUserId !== undefined) {
+    if (params?.receiverId !== undefined) {
       throw new InputError("Cannot send ephemeral rich text messages.");
     }
 
@@ -495,14 +495,14 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const rich_message = MessageManager.inputRichTextToInputRichMessage(richText);
 
     let result: Api.Updates;
-    if (params?.receiverUserId !== undefined) {
+    if (params?.receiverId !== undefined) {
       result = await this.#c.invoke({
         _: "ephemeral.sendMessage",
         peer,
         random_id: randomId,
         message: "",
         rich_message,
-        receiver_id: await this.#c.getInputUser(params.receiverUserId),
+        receiver_id: await this.#c.getInputUser(params.receiverId),
         query_id: params.callbackQueryId !== undefined ? BigInt(params.callbackQueryId) : undefined,
         reply_markup: replyMarkup,
         reply_to: await this.#constructReplyTo(params),
@@ -634,7 +634,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     };
 
     let result: Api.Updates;
-    if (params?.receiverUserId !== undefined) {
+    if (params?.receiverId !== undefined) {
       result = await this.#c.invoke({
         _: "ephemeral.sendMessage",
         message: "",
@@ -642,7 +642,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         reply_to: await this.#constructReplyTo(params),
         peer,
         random_id: randomId,
-        receiver_id: await this.#c.getInputUser(params.receiverUserId),
+        receiver_id: await this.#c.getInputUser(params.receiverId),
         query_id: params.callbackQueryId !== undefined ? BigInt(params.callbackQueryId) : undefined,
         reply_markup: replyMarkup,
       });
@@ -685,7 +685,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     };
 
     let result: Api.Updates;
-    if (params?.receiverUserId !== undefined) {
+    if (params?.receiverId !== undefined) {
       result = await this.#c.invoke(
         {
           _: "ephemeral.sendMessage",
@@ -695,7 +695,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
           reply_markup: replyMarkup,
           media,
           message: "",
-          receiver_id: await this.#c.getInputUser(params.receiverUserId),
+          receiver_id: await this.#c.getInputUser(params.receiverId),
           query_id: params.callbackQueryId !== undefined ? BigInt(params.callbackQueryId) : undefined,
         },
       );
@@ -726,7 +726,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async sendDice(chatId: ID, params?: SendDiceParams): Promise<MessageDice> {
     this.#checkParams(params);
-    if (params?.receiverUserId !== undefined) {
+    if (params?.receiverId !== undefined) {
       throw new InputError("Cannot send ephemeral dice.");
     }
 
@@ -793,11 +793,11 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       });
 
     let result: Api.Updates;
-    if (params?.receiverUserId !== undefined) {
+    if (params?.receiverId !== undefined) {
       result = await this.#c.invoke({
         _: "ephemeral.sendMessage",
         peer,
-        receiver_id: await this.#c.getInputUser(params.receiverUserId),
+        receiver_id: await this.#c.getInputUser(params.receiverId),
         random_id: randomId,
         message: "",
         media,
@@ -1043,12 +1043,12 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const captionEntities = parseResult?.[1];
 
     let result: Api.Updates;
-    if (params?.receiverUserId !== undefined) {
+    if (params?.receiverId !== undefined) {
       result = await this.#c.invoke({
         _: "ephemeral.sendMessage",
         peer,
         random_id: randomId,
-        receiver_id: await this.#c.getInputUser(params.receiverUserId),
+        receiver_id: await this.#c.getInputUser(params.receiverId),
         message: caption ?? "",
         entities: captionEntities,
         media,
@@ -1111,7 +1111,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     if (!Array.isArray(options) || options.length < 1) {
       throw new InputError("There must be at least one option.");
     }
-    if (params?.receiverUserId !== undefined) {
+    if (params?.receiverId !== undefined) {
       throw new InputError("Cannot send ephemeral polls.");
     }
     const peer = await this.#c.getInputPeer(chatId);
@@ -1239,7 +1239,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async sendChecklist(chatId: ID, title: string, items: InputChecklistItem[], params?: SendChecklistParams): Promise<MessageChecklist> {
     this.#checkParams(params);
-    if (params?.receiverUserId !== undefined) {
+    if (params?.receiverId !== undefined) {
       throw new InputError("Cannot send ephemeral checklists.");
     }
     title = title?.trim();
@@ -2396,7 +2396,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async sendMediaGroup(chatId: ID, media: InputMedia[], params?: SendMediaGroupParams): Promise<Message[]> {
     this.#checkParams(params);
-    if (params?.receiverUserId !== undefined) {
+    if (params?.receiverId !== undefined) {
       throw new InputError("Cannot send ephemeral media groups.");
     }
     {
