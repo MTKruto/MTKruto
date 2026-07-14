@@ -1397,6 +1397,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       entities,
       media,
       message,
+      reply_markup: await this.#constructReplyMarkup(params),
     });
 
     const message_ = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
