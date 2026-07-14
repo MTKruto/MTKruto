@@ -23,8 +23,9 @@ import { InputError } from "../0_errors.ts";
 import { base64DecodeUrlSafe, base64EncodeUrlSafe, cleanObject, decodeText } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import type { PeerGetter } from "./1_chat_p.ts";
+import type { StickerSetNameGetter } from "./1_sticker.ts";
 import { constructUser2, type User } from "./2_user.ts";
-import type { Message, MessageGetter } from "./9_message.ts";
+import { constructMessage, type Message, type MessageGetter } from "./9_message.ts";
 
 /** A received callback query. */
 export interface CallbackQuery {
@@ -37,7 +38,7 @@ export interface CallbackQuery {
   /** The identifier of the inline result message from which the callback query was made. Unset if made from a message not originating from an inline query result. */
   inlineMessageId?: string;
   /** A special identifier for the chat from which the callback was made. Useful for inline result messages. */
-  chatInstance: string;
+  chatInstance?: string;
   /** The data associated with the button that was used to make the callback query. */
   data?: string;
   /** The short name of the game to be returned. */
@@ -59,21 +60,24 @@ export async function deserializeInlineMessageId(inlineMessageId: string): Promi
   throw ERR_INVALID_INLINE_MESSAGE_ID;
 }
 
-export async function constructCallbackQuery(callbackQuery: Api.updateBotCallbackQuery | Api.updateInlineBotCallbackQuery, getPeer: PeerGetter, getMessage: MessageGetter): Promise<CallbackQuery> {
+export async function constructCallbackQuery(callbackQuery: Api.updateBotCallbackQuery | Api.updateInlineBotCallbackQuery | Api.updateEphemeralBotCallbackQuery, getPeer: PeerGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): Promise<CallbackQuery> {
   const peer = getPeer({ _: "peerUser", user_id: callbackQuery.user_id });
   if (!peer) {
     unreachable();
   }
   const user = constructUser2(peer[0]);
   const id = String(callbackQuery.query_id);
-  const gameShortName = callbackQuery.game_short_name;
+  const gameShortName = Api.is("updateEphemeralBotCallbackQuery", callbackQuery) ? undefined : callbackQuery.game_short_name;
   const data = callbackQuery.data !== undefined ? decodeText(callbackQuery.data) : undefined;
-  const chatInstance = callbackQuery.chat_instance === 0n ? "" : String(callbackQuery.chat_instance);
+  const chatInstance = Api.is("updateEphemeralBotCallbackQuery", callbackQuery) ? undefined : callbackQuery.chat_instance === 0n ? "" : String(callbackQuery.chat_instance);
   if (Api.is("updateBotCallbackQuery", callbackQuery)) {
     const message = await getMessage(Api.peerToChatId(callbackQuery.peer), Number(callbackQuery.msg_id));
     if (message === null) {
       unreachable();
     }
+    return cleanObject({ id, from: user, message, chatInstance, data, gameShortName });
+  } else if (Api.is("updateEphemeralBotCallbackQuery", callbackQuery)) {
+    const message = await constructMessage(callbackQuery.message, getPeer, getMessage, getStickerSetName);
     return cleanObject({ id, from: user, message, chatInstance, data, gameShortName });
   } else {
     return cleanObject({ id, from: user, inlineMessageId: base64EncodeUrlSafe(Api.serializeObject(callbackQuery.msg_id)), chatInstance, data, gameShortName });

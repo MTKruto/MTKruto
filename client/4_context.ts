@@ -300,12 +300,12 @@ export class Context {
     unreachable();
   }
 
-  #getReplyTo = (isQuoted: boolean | undefined, chatId: number, messageId: number, isEphemeral: boolean | undefined, userId: number | undefined): { receiverUserId?: number; messageThreadId?: number; directMessagesTopicId?: number; replyTo?: ReplyTo } => {
+  #getReplyTo = (isQuoted: boolean | undefined, chatId: number, messageId: number, isEphemeral: boolean | undefined, userId: number | undefined): { receiverId?: number; messageThreadId?: number; directMessagesTopicId?: number; replyTo?: ReplyTo } => {
     if (isEphemeral) {
       if (!userId) {
         unreachable();
       }
-      return { receiverUserId: userId, replyTo: { type: "ephemeralMessage", messageId: messageId } };
+      return { receiverId: userId, replyTo: { type: "ephemeralMessage", messageId: messageId } };
     }
 
     if (this.update.type === "story") {

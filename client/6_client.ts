@@ -369,7 +369,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     this.#stickerSetManager = new StickerSetManager({ ...c, fileManager });
     this.#videoChatManager = new VideoChatManager({ ...c, fileManager });
     // 4_
-    this.#callbackQueryManager = new CallbackQueryManager({ ...c, messageManager });
+    this.#callbackQueryManager = new CallbackQueryManager({ ...c, fileManager, messageManager });
     this.#chatListManager = new ChatListManager({ ...c, fileManager, messageManager });
     this.#chatManager = new ChatManager({ ...c, fileManager, messageManager });
     this.#checklistManager = new ChecklistManager({ ...c, messageManager });
