@@ -724,45 +724,62 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const sendAs = params?.sendAs ? await this.#c.getInputPeer(params.sendAs) : undefined;
     const replyMarkup = await this.#constructReplyMarkup(params);
 
-    const result = await this.#c.invoke(
-      {
-        _: "messages.sendMedia",
+    const media: Api.inputMediaGeoPoint | Api.inputMediaGeoLive = params?.livePeriod !== undefined
+      ? ({
+        _: "inputMediaGeoLive",
+        geo_point: {
+          _: "inputGeoPoint",
+          lat: latitude,
+          long: longitude,
+          accuracy_radius: params?.horizontalAccuracy,
+        },
+        heading: params?.heading,
+        period: params.livePeriod,
+        proximity_notification_radius: params?.proximityAlertRadius,
+      })
+      : ({
+        _: "inputMediaGeoPoint",
+        geo_point: {
+          _: "inputGeoPoint",
+          lat: latitude,
+          long: longitude,
+          accuracy_radius: params?.horizontalAccuracy,
+        },
+      });
+
+    let result: Api.Updates;
+    if (params?.receiverUserId !== undefined) {
+      result = await this.#c.invoke({
+        _: "ephemeral.sendMessage",
         peer,
+        receiver_id: await this.#c.getInputUser(params.receiverUserId),
         random_id: randomId,
-        silent,
-        noforwards,
-        reply_to: await this.#constructReplyTo(params),
-        send_as: sendAs,
-        reply_markup: replyMarkup,
-        media: params?.livePeriod !== undefined
-          ? ({
-            _: "inputMediaGeoLive",
-            geo_point: {
-              _: "inputGeoPoint",
-              lat: latitude,
-              long: longitude,
-              accuracy_radius: params?.horizontalAccuracy,
-            },
-            heading: params?.heading,
-            period: params.livePeriod,
-            proximity_notification_radius: params?.proximityAlertRadius,
-          })
-          : ({
-            _: "inputMediaGeoPoint",
-            geo_point: {
-              _: "inputGeoPoint",
-              lat: latitude,
-              long: longitude,
-              accuracy_radius: params?.horizontalAccuracy,
-            },
-          }),
         message: "",
-        effect: params?.effectId ? BigInt(params.effectId) : undefined,
-        schedule_date: params?.sendAt,
-        allow_paid_floodskip: params?.isPaidBroadcast || undefined,
-      },
-      { businessConnectionId: params?.businessConnectionId },
-    );
+        media,
+        query_id: params.callbackQueryId !== undefined ? BigInt(params.callbackQueryId) : undefined,
+        reply_markup: replyMarkup,
+        reply_to: await this.#constructReplyTo(params),
+      });
+    } else {
+      result = await this.#c.invoke(
+        {
+          _: "messages.sendMedia",
+          peer,
+          random_id: randomId,
+          silent,
+          noforwards,
+          reply_to: await this.#constructReplyTo(params),
+          send_as: sendAs,
+          reply_markup: replyMarkup,
+          media,
+          message: "",
+          effect: params?.effectId ? BigInt(params.effectId) : undefined,
+          schedule_date: params?.sendAt,
+          allow_paid_floodskip: params?.isPaidBroadcast || undefined,
+        },
+        { businessConnectionId: params?.businessConnectionId },
+      );
+    }
 
     const message = (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
     return assertMessageType(message, "location");
