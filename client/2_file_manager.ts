@@ -27,6 +27,7 @@ import { getDc } from "../3_transport.ts";
 import { constructSticker, deserializeFileId, type FileId, type FileSource, FileType, PhotoSourceType, serializeFileId, type Sticker, toUniqueFileId } from "../3_types.ts";
 import { DOWNLOAD_MAX_CHUNK_SIZE, STICKER_SET_NAME_TTL } from "../4_constants.ts";
 import { FloodWait, StickersetInvalid } from "../4_errors.ts";
+import { chatIdToPeer } from "../tl/2_telegram.ts";
 import type { _UploadCommon, DownloadParams } from "./0_params.ts";
 import { DOWNLOAD_POOL_SIZE, DOWNLOAD_REQUEST_PER_CONNECTION, UPLOAD_REQUEST_PER_CONNECTION } from "./0_utilities.ts";
 import type { C } from "./1_types.ts";
@@ -566,8 +567,22 @@ export class FileManager {
             unreachable();
           }
           const big = fileId_.location.source.type === PhotoSourceType.ChatPhotoBig;
-          const peer = await this.#c.getInputPeer(Number(fileId_.location.source.chatId));
-          const location: Api.inputPeerPhotoFileLocation = { _: "inputPeerPhotoFileLocation", big: big || undefined, peer, photo_id: fileId_.location.id };
+          const peer = chatIdToPeer(Number(fileId_.location.source.chatId));
+          let inputPeer: Api.InputPeer;
+          switch (peer._) {
+            case "peerUser":
+              inputPeer = { _: "inputPeerUser", user_id: peer.user_id, access_hash: fileId_.location.source.chatAccessHash };
+              break;
+            case "peerChat":
+              inputPeer = { _: "inputPeerChat", chat_id: peer.chat_id };
+              break;
+            case "peerChannel":
+              inputPeer = { _: "inputPeerChannel", channel_id: peer.channel_id, access_hash: fileId_.location.source.chatAccessHash };
+              break;
+            default:
+              unreachable();
+          }
+          const location: Api.inputPeerPhotoFileLocation = { _: "inputPeerPhotoFileLocation", big: big || undefined, peer: inputPeer, photo_id: fileId_.location.id };
           yield* this.downloadInner(location, fileId_.dcId, params);
           break;
         }
