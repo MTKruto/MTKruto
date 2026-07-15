@@ -25,7 +25,7 @@ import { type ChatAdministratorRights, constructChatAdministratorRights } from "
 import { type ChatMemberRights, constructChatMemberRights } from "./0_chat_member_rights.ts";
 import { type ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
 
-export interface Community {
+export interface CommunityP {
   isCreator: boolean;
   id: number;
   name: string;
@@ -36,7 +36,7 @@ export interface Community {
   defaultPermissions?: ChatMemberRights;
 }
 
-export function constructCommunity(community: Api.community): Community {
+export function constructCommunityP(community: Api.community): CommunityP {
   if (community.min) {
     unreachable();
   }
