@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
 import type { PeerGetter } from "./1_chat_p.ts";
 import type { StickerSetNameGetter } from "./1_sticker.ts";
-import type { MessageGetter } from "./9_message.ts";
+import type { CommunityGetter, MessageGetter } from "./9_message.ts";
 import { constructSavedChat, type SavedChat } from "./A_saved_chat.ts";
 
 /** A list of saved chats. */
@@ -33,14 +33,14 @@ export interface SavedChats {
   total: number;
 }
 
-export async function constructSavedChats(result: Api.messages_SavedDialogs, getPeer: PeerGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): Promise<SavedChats> {
+export async function constructSavedChats(result: Api.messages_SavedDialogs, getPeer: PeerGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter, getCommunity: CommunityGetter): Promise<SavedChats> {
   if (Api.is("messages.savedDialogsNotModified", result)) {
     unreachable();
   }
   const chats = new Array<Promise<SavedChat>>();
   const total = "count" in result ? result.count : result.dialogs.length;
   for (const dialog of result.dialogs) {
-    chats.push(constructSavedChat(dialog, result, getPeer, getMessage, getStickerSetName));
+    chats.push(constructSavedChat(dialog, result, getPeer, getMessage, getStickerSetName, getCommunity));
   }
   return {
     chats: await Promise.all(chats),

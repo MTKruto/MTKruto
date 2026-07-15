@@ -24,7 +24,7 @@ import { Api } from "../2_tl.ts";
 import { type ChatFolder, constructChatFolder } from "./0_chat_folder.ts";
 import { type ChatP, constructChatP, type PeerGetter } from "./1_chat_p.ts";
 import type { StickerSetNameGetter } from "./1_sticker.ts";
-import { constructMessage, type Message, type MessageGetter } from "./9_message.ts";
+import { type CommunityGetter, constructMessage, type Message, type MessageGetter } from "./9_message.ts";
 
 /** An item of a chat list. */
 export interface ChatListItem {
@@ -44,9 +44,9 @@ export interface ChatListItem {
   unreadMutedMessageCount?: number;
 }
 
-export async function constructChatListItem(dialog: Api.Dialog, dialogs: Api.messages_dialogs | Api.messages_dialogsSlice | Api.messages_peerDialogs, getPeer: PeerGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): Promise<ChatListItem> {
+export async function constructChatListItem(dialog: Api.Dialog, dialogs: Api.messages_dialogs | Api.messages_dialogsSlice | Api.messages_peerDialogs, getPeer: PeerGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter, getCommunity: CommunityGetter): Promise<ChatListItem> {
   const topMessage_ = "top_message" in dialog ? dialogs.messages.find((v) => "id" in v && v.id === dialog.top_message) : undefined;
-  const lastMessage = topMessage_ ? await constructMessage(topMessage_, getPeer, getMessage, getStickerSetName, false) : undefined;
+  const lastMessage = topMessage_ ? await constructMessage(topMessage_, getPeer, getMessage, getStickerSetName, getCommunity, false) : undefined;
   const userId = "peer" in dialog ? "user_id" in dialog.peer ? dialog.peer.user_id : null : null;
   const chatId = "peer" in dialog ? "chat_id" in dialog.peer ? dialog.peer.chat_id : null : null;
   const channelId = "peer" in dialog ? "channel_id" in dialog.peer ? dialog.peer.channel_id : null : null;

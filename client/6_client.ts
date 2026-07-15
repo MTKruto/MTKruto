@@ -335,6 +335,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       messageStorage: this.messageStorage,
       guaranteeUpdateDelivery: this.#guaranteeUpdateDelivery,
       setConnectionState: this.#propagateConnectionState.bind(this),
+      getCommunity: this.#getCommunity.bind(this),
       resetConnectionState: () => this.#stateChangeHandler(this.isConnected),
       getSelfId: this.#getSelfId.bind(this),
       getIsPremium: this.#getIsPremium.bind(this),
@@ -694,6 +695,10 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     } else {
       return null;
     }
+  }
+
+  async #getCommunity(communityId: number) {
+    return await this.messageStorage.communities.get([communityId]);
   }
 
   private [getPeer](peer: Api.peerUser): Promise<[ChatPPrivate, bigint] | null>;

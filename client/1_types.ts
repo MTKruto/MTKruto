@@ -19,7 +19,7 @@
  */
 
 import type { Api, Mtproto } from "../2_tl.ts";
-import type { ConnectionState, ID, ParseMode, PeerGetter, Update } from "../3_types.ts";
+import type { CommunityGetter, ConnectionState, ID, ParseMode, PeerGetter, Update } from "../3_types.ts";
 import type { InvokeParams } from "./0_params.ts";
 import type { StorageOperations } from "./0_storage_operations.ts";
 
@@ -32,6 +32,7 @@ export interface C {
   setConnectionState: (connectionState: ConnectionState) => void;
   resetConnectionState: () => void;
   getSelfId: () => Promise<number>;
+  getCommunity: CommunityGetter;
   getInputPeer: (id: ID) => Promise<Api.InputPeer>;
   getInputChannel: (id: ID) => Promise<Api.inputChannel | Api.inputChannelFromMessage>;
   getInputUser: (id: ID) => Promise<Api.inputUserSelf | Api.inputUser | Api.inputUserFromMessage>;

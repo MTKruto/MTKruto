@@ -25,7 +25,7 @@ import { Api } from "../2_tl.ts";
 import type { PeerGetter } from "./1_chat_p.ts";
 import type { StickerSetNameGetter } from "./1_sticker.ts";
 import { constructUser2, type User } from "./2_user.ts";
-import { constructMessage, type Message, type MessageGetter } from "./9_message.ts";
+import { type CommunityGetter, constructMessage, type Message, type MessageGetter } from "./9_message.ts";
 
 /** A received callback query. */
 export interface CallbackQuery {
@@ -60,7 +60,7 @@ export async function deserializeInlineMessageId(inlineMessageId: string): Promi
   throw ERR_INVALID_INLINE_MESSAGE_ID;
 }
 
-export async function constructCallbackQuery(callbackQuery: Api.updateBotCallbackQuery | Api.updateInlineBotCallbackQuery | Api.updateEphemeralBotCallbackQuery, getPeer: PeerGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): Promise<CallbackQuery> {
+export async function constructCallbackQuery(callbackQuery: Api.updateBotCallbackQuery | Api.updateInlineBotCallbackQuery | Api.updateEphemeralBotCallbackQuery, getPeer: PeerGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter, getCommunity: CommunityGetter): Promise<CallbackQuery> {
   const peer = getPeer({ _: "peerUser", user_id: callbackQuery.user_id });
   if (!peer) {
     unreachable();
@@ -77,7 +77,7 @@ export async function constructCallbackQuery(callbackQuery: Api.updateBotCallbac
     }
     return cleanObject({ id, from: user, message, chatInstance, data, gameShortName });
   } else if (Api.is("updateEphemeralBotCallbackQuery", callbackQuery)) {
-    const message = await constructMessage(callbackQuery.message, getPeer, getMessage, getStickerSetName);
+    const message = await constructMessage(callbackQuery.message, getPeer, getMessage, getStickerSetName, getCommunity);
     return cleanObject({ id, from: user, message, chatInstance, data, gameShortName });
   } else {
     return cleanObject({ id, from: user, inlineMessageId: base64EncodeUrlSafe(Api.serializeObject(callbackQuery.msg_id)), chatInstance, data, gameShortName });

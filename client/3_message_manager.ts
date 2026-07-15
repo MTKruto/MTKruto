@@ -252,7 +252,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     if (pollId) {
       [poll, pollResults] = await Promise.all([this.#c.messageStorage.getPoll(pollId), this.#c.messageStorage.getPollResults(pollId)]);
     }
-    const message = await constructMessage_(message_, this.#c.getPeer, messageGetter ?? this.getMessage.bind(this), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager), r, business, poll ?? undefined, pollResults ?? undefined);
+    const message = await constructMessage_(message_, this.#c.getPeer, messageGetter ?? this.getMessage.bind(this), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager), this.#c.getCommunity, r, business, poll ?? undefined, pollResults ?? undefined);
     if (!poll && mediaPoll) {
       await this.#c.messageStorage.setPoll(mediaPoll.poll.id, mediaPoll.poll);
     }
@@ -2705,7 +2705,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       offset_peer: offsetPeer,
       exclude_pinned: params?.excludePinned || undefined,
     });
-    return constructSavedChats(result, this.#c.getPeer, this.getMessage.bind(this), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager));
+    return constructSavedChats(result, this.#c.getPeer, this.getMessage.bind(this), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager), this.#c.getCommunity);
   }
 
   async getMessageReactions(chatId: ID, messageId: number, params?: GetMessageReactionsParams): Promise<MessageReactionList> {

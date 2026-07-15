@@ -80,7 +80,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
       if (Api.is("dialogCommunity", dialog)) {
         continue;
       }
-      const chat = await constructChatListItem(dialog, dialogs, this.#c.getPeer, this.#c.messageManager.getMessage.bind(this.#c.messageManager), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager));
+      const chat = await constructChatListItem(dialog, dialogs, this.#c.getPeer, this.#c.messageManager.getMessage.bind(this.#c.messageManager), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager), this.#c.getCommunity);
       chats.push(chat);
     }
     return chats;
@@ -92,7 +92,7 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
     const dialogs = await this.#c.invoke({ _: "messages.getPinnedDialogs", folder_id: listId });
     const chats = new Array<ChatListItem>();
     for (const dialog of dialogs.dialogs) {
-      const chat = await constructChatListItem(dialog, dialogs, this.#c.getPeer, this.#c.messageManager.getMessage.bind(this.#c.messageManager), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager));
+      const chat = await constructChatListItem(dialog, dialogs, this.#c.getPeer, this.#c.messageManager.getMessage.bind(this.#c.messageManager), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager), this.#c.getCommunity);
       chats.push(chat);
     }
     return chats;

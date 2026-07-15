@@ -30,7 +30,7 @@ import { constructPhoto, type Photo } from "./1_photo.ts";
 import type { StickerSetNameGetter } from "./1_sticker.ts";
 import { type ChatMember, constructChatMember } from "./2_chat_member.ts";
 import { constructInviteLink, type InviteLink } from "./3_invite_link.ts";
-import { constructMessage, type Message, type MessageGetter } from "./9_message.ts";
+import { type CommunityGetter, constructMessage, type Message, type MessageGetter } from "./9_message.ts";
 import { constructTopic2, type Topic } from "./A_topic.ts";
 
 /** @unlisted */
@@ -398,7 +398,7 @@ function getChannelParticipantPeer(participant: Api.ChannelParticipant): Api.Pee
   }
 }
 
-export async function constructRecentAction(a: Api.ChannelAdminLogEventAction, getPeer: PeerGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): Promise<RecentAction> {
+export async function constructRecentAction(a: Api.ChannelAdminLogEventAction, getPeer: PeerGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter, getCommunity: CommunityGetter): Promise<RecentAction> {
   switch (a._) {
     case "channelAdminLogEventActionChangeTitle":
       return {
@@ -437,18 +437,18 @@ export async function constructRecentAction(a: Api.ChannelAdminLogEventAction, g
     case "channelAdminLogEventActionUpdatePinned":
       return {
         type: "pinMessage",
-        message: await constructMessage(a.message, getPeer, getMessage, getStickerSetName, false),
+        message: await constructMessage(a.message, getPeer, getMessage, getStickerSetName, getCommunity, false),
       };
     case "channelAdminLogEventActionEditMessage":
       return {
         type: "editMessage",
-        previous: await constructMessage(a.prev_message, getPeer, getMessage, getStickerSetName, false),
-        new: await constructMessage(a.new_message, getPeer, getMessage, getStickerSetName, false),
+        previous: await constructMessage(a.prev_message, getPeer, getMessage, getStickerSetName, getCommunity, false),
+        new: await constructMessage(a.new_message, getPeer, getMessage, getStickerSetName, getCommunity, false),
       };
     case "channelAdminLogEventActionDeleteMessage":
       return {
         type: "deleteMessage",
-        message: await constructMessage(a.message, getPeer, getMessage, getStickerSetName, false),
+        message: await constructMessage(a.message, getPeer, getMessage, getStickerSetName, getCommunity, false),
       };
     case "channelAdminLogEventActionParticipantJoin":
       return {
@@ -510,7 +510,7 @@ export async function constructRecentAction(a: Api.ChannelAdminLogEventAction, g
     case "channelAdminLogEventActionStopPoll":
       return {
         type: "stopPoll",
-        message: await constructMessage(a.message, getPeer, getMessage, getStickerSetName, false),
+        message: await constructMessage(a.message, getPeer, getMessage, getStickerSetName, getCommunity, false),
       };
     case "channelAdminLogEventActionChangeLinkedChat":
       return {
@@ -601,7 +601,7 @@ export async function constructRecentAction(a: Api.ChannelAdminLogEventAction, g
     case "channelAdminLogEventActionSendMessage":
       return {
         type: "sendMessage",
-        message: await constructMessage(a.message, getPeer, getMessage, getStickerSetName, false),
+        message: await constructMessage(a.message, getPeer, getMessage, getStickerSetName, getCommunity, false),
       };
     case "channelAdminLogEventActionChangeAvailableReactions":
       return {

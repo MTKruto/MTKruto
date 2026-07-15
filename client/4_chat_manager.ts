@@ -655,7 +655,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
       admins,
       events_filter,
     });
-    const entries = result.events.map((v) => constructRecentActionsEntry(v, this.#c.getPeer, this.#c.messageManager.getMessage.bind(this.#c.messageManager), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager)));
+    const entries = result.events.map((v) => constructRecentActionsEntry(v, this.#c.getPeer, this.#c.messageManager.getMessage.bind(this.#c.messageManager), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager), this.#c.getCommunity));
     return await Promise.all(entries);
   }
 

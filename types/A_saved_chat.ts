@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
 import { type ChatP, constructChatP, type PeerGetter } from "./1_chat_p.ts";
 import type { StickerSetNameGetter } from "./1_sticker.ts";
-import { constructMessage, type Message, type MessageGetter } from "./9_message.ts";
+import { type CommunityGetter, constructMessage, type Message, type MessageGetter } from "./9_message.ts";
 
 /** Information on a saved chat. */
 export interface SavedChat {
@@ -34,7 +34,7 @@ export interface SavedChat {
   isPinned: boolean;
 }
 
-export async function constructSavedChat(dialog: Api.SavedDialog, result: Api.messages_savedDialogs | Api.messages_savedDialogsSlice, getPeer: PeerGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter): Promise<SavedChat> {
+export async function constructSavedChat(dialog: Api.SavedDialog, result: Api.messages_savedDialogs | Api.messages_savedDialogsSlice, getPeer: PeerGetter, getMessage: MessageGetter, getStickerSetName: StickerSetNameGetter, getCommunity: CommunityGetter): Promise<SavedChat> {
   const message = result.messages.find((v) => v.id === dialog.top_message);
   if (message === undefined) {
     unreachable();
@@ -45,7 +45,7 @@ export async function constructSavedChat(dialog: Api.SavedDialog, result: Api.me
     unreachable();
   }
   const chat = constructChatP(chat_);
-  const lastMessage = await constructMessage(message, getPeer, getMessage, getStickerSetName, false);
+  const lastMessage = await constructMessage(message, getPeer, getMessage, getStickerSetName, getCommunity, false);
   const pinned = "pinned" in dialog ? !!dialog.pinned : false;
   return {
     chat,

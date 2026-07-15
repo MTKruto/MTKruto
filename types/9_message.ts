@@ -35,6 +35,7 @@ import { constructVoice, type Voice } from "./0_voice.ts";
 import { type Animation, constructAnimation } from "./1_animation.ts";
 import { type Audio, constructAudio } from "./1_audio.ts";
 import { type ChatP, isChatPUser, type PeerGetter } from "./1_chat_p.ts";
+import { type Community, constructCommunity } from "./1_community.ts";
 import { constructDocument, type Document } from "./1_document.ts";
 import { constructGiveaway, type Giveaway } from "./1_giveaway.ts";
 import { constructMessageReaction, type MessageReaction } from "./1_message_reaction.ts";
@@ -652,6 +653,23 @@ export interface MessageRichText extends _MessageBase {
   richText: RichText;
 }
 
+/**
+ * The chat was added to a community.
+ * @unlisted
+ */
+export interface MessageAddedToCommunity extends _MessageBase {
+  type: "addedToCommunity";
+  community: Community;
+}
+
+/**
+ * The chat was removed from its community.
+ * @unlisted
+ */
+export interface MessageRemovedFromCommunity extends _MessageBase {
+  type: "removedFromCommunity";
+}
+
 // message type map
 export const messageTypes: Message["type"][] = [
   "text",
@@ -704,6 +722,8 @@ export const messageTypes: Message["type"][] = [
   "pollOptionRemoved",
   "pollOptionAdded",
   "richText",
+  "addedToCommunity",
+  "removedFromCommunity",
 ];
 export function assertMessageType<T extends Message["type"]>(message: Message, type: T): Message & { type: T } {
   if (message.type !== type) {
@@ -765,7 +785,9 @@ export type Message =
   | MessagePollOptionAdded
   | MessagePollOptionRemoved
   | MessageScreenshotTaken
-  | MessageRichText;
+  | MessageRichText
+  | MessageAddedToCommunity
+  | MessageRemovedFromCommunity;
 
 /** @unlisted */
 export interface MessageGetter {
@@ -791,7 +813,7 @@ function getSender(message_: Api.message | Api.messageService | Api.ephemeralMes
 async function getReply(message_: Api.message | Api.messageService | Api.ephemeralMessage, chat: ChatP, getMessage: Message_MessageGetter) {
   let threadId: number | undefined;
   let isTopicMessage = false;
-  let replyToMessage: Message | null = null;
+  let replyToMessage: Message | undefined;
 
   if (Api.is("messageReplyHeader", message_.reply_to)) {
     if (message_.reply_to.forum_topic) {
@@ -801,7 +823,7 @@ async function getReply(message_: Api.message | Api.messageService | Api.ephemer
     threadId = message_.reply_to.reply_to_top_id;
 
     if (getMessage && message_.reply_to.reply_to_msg_id) {
-      replyToMessage = await getMessage(chat.id, message_.reply_to.reply_to_msg_id);
+      replyToMessage = await getMessage(chat.id, message_.reply_to.reply_to_msg_id) || undefined;
       if (!replyToMessage) {
         L.warning("couldn't get replied message");
       }
@@ -811,7 +833,7 @@ async function getReply(message_: Api.message | Api.messageService | Api.ephemer
   return { replyToMessage, threadId, isTopicMessage };
 }
 
-async function constructServiceMessage(message_: Api.messageService, chat: ChatP, getPeer: PeerGetter, getMessage: Message_MessageGetter, getStickerSetName: StickerSetNameGetter, getReply_: boolean): Promise<Message> {
+async function constructServiceMessage(message_: Api.messageService, chat: ChatP, getPeer: PeerGetter, getMessage: Message_MessageGetter, getStickerSetName: StickerSetNameGetter, getReply_: boolean, getCommunity: CommunityGetter): Promise<Message> {
   const message: _MessageBase = {
     isOutgoing: message_.out ?? false,
     id: message_.id,
@@ -954,15 +976,28 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
     return { type: "pollOptionRemoved", ...message, pollOptionRemoved };
   } else if (Api.is("messageActionScreenshotTaken", message_.action)) {
     return { type: "screenshotTaken", ...message };
+  } else if (Api.is("messageActionChangeCommunity", message_.action)) {
+    if (message_.action.community_id !== undefined) {
+      const community = await getCommunity(Number(message_.action.community_id));
+      if (!Api.is("community", community)) {
+        unreachable();
+      }
+      return { type: "addedToCommunity", ...message, community: constructCommunity(community) };
+    } else {
+      return { type: "removedFromCommunity", ...message };
+    }
   }
   return { type: "unsupported", ...message };
 }
+
+export type CommunityGetter = (communityId: number) => Promise<Api.community | Api.communityForbidden | null>;
 
 export async function constructMessage(
   message_: Api.Message | Api.EphemeralMessage,
   getPeer: PeerGetter,
   getMessage: Message_MessageGetter,
   getStickerSetName: StickerSetNameGetter,
+  getCommunity: CommunityGetter,
   getReply_ = true,
   business?: { connectionId: string; replyToMessage?: Api.Message },
   poll?: Api.poll,
@@ -988,7 +1023,7 @@ export async function constructMessage(
   }
 
   if (Api.is("messageService", message_)) {
-    return cleanObject(await constructServiceMessage(message_, chat_, getPeer, getMessage, getStickerSetName, getReply_));
+    return cleanObject(await constructServiceMessage(message_, chat_, getPeer, getMessage, getStickerSetName, getReply_, getCommunity));
   }
 
   const message: _MessageBase = {
@@ -1038,7 +1073,7 @@ export async function constructMessage(
     message.businessConnectionId = business.connectionId;
     if (business.replyToMessage) {
       message.replyToMessageId = business.replyToMessage.id;
-      message.replyToMessage = await constructMessage(business.replyToMessage, getPeer, getMessage, getStickerSetName, false, { connectionId: business.connectionId });
+      message.replyToMessage = await constructMessage(business.replyToMessage, getPeer, getMessage, getStickerSetName, getCommunity, false, { connectionId: business.connectionId });
     }
   } else if (getReply_) {
     Object.assign(message, await getReply(message_, chat_, getMessage));
