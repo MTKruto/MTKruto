@@ -43,7 +43,7 @@ export function constructCommunity(community: Api.community): Community {
   const isCreator = !!community.creator;
   const id = Number(community.id);
   const name = community.title;
-  const photo = Api.is("chatPhotoEmpty", community.photo) ? undefined : constructChatPhoto(community.photo, id, community.access_hash ?? 0n);
+  const photo = Api.is("chatPhotoEmpty", community.photo) ? undefined : constructChatPhoto(community.photo, Api.getChannelChatId(community.id), community.access_hash ?? 0n);
   const isLeft = !!community.left;
   const isShownAsOneChat = !!community.collapsed_in_dialogs;
   const administratorRights = community.admin_rights ? constructChatAdministratorRights(community.admin_rights) : undefined;
