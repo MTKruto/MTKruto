@@ -206,13 +206,11 @@ export class UpdateManager {
     if (Api.is("chatEmpty", chat)) {
       return;
     }
-    if (Api.is("channel", chat) && chat.min) {
+    if (Api.isOneOf(["channel", "community"], chat) && chat.min) {
       return; // TODO
     }
 
-    if (!Api.isOneOf(["community", "communityForbidden"], chat)) {
-      this.#c.messageStorage.setPeer(chat);
-    }
+    this.#c.messageStorage.setPeer(chat);
 
     if ("username" in chat && chat.username) {
       this.#c.messageStorage.usernames.set([chat.username], [Api.peerToChatId(chat), new Date()]);

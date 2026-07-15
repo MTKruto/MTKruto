@@ -87,6 +87,8 @@ export interface ChatPPrivate extends _ChatPBase {
   hasMainMiniApp?: boolean;
   /** Whether the user is a bot that supports guest queries. */
   isGuestQuerySupported?: boolean;
+  /** The identifier of the community to which the bot is linked. */
+  communityId?: number;
 }
 
 /** @unlisted */
@@ -116,6 +118,8 @@ export interface ChatPChannelBase extends _ChatPBase {
   isRestricted: boolean;
   /** The reason why the chat or channel has been restricted. */
   restrictionReason?: RestrictionReason[];
+  /** The identifier of the community to which the chat or channel is linked. */
+  communityId?: number;
 }
 
 /** @unlisted */
@@ -174,6 +178,7 @@ export function constructChatP(chat: Api.User | Api.Chat): ChatP {
       isAddedToAttachmentsMenu: chat.bot ? chat.attach_menu_enabled || false : undefined,
       hasMainMiniApp: chat.bot ? chat.bot_has_main_app || false : undefined,
       isGuestQuerySupported: chat.bot ? chat.bot_guestchat || false : undefined,
+      communityId: chat.linked_community_id ? Number(chat.linked_community_id) : undefined,
     };
     if (Api.is("userProfilePhoto", chat.photo)) {
       chat_.photo = constructChatPhoto(chat.photo, chat_.id, chat.access_hash ?? 0n);
@@ -210,6 +215,7 @@ export function constructChatP(chat: Api.User | Api.Chat): ChatP {
         return { id, color: getColorFromPeerId(id), title, type: "channel", isScam: false, isFake: false, isVerified: false, isRestricted: false };
       }
     }
+    const communityId = chat.linked_community_id ? Number(chat.linked_community_id) : undefined;
     const {
       title,
       scam: isScam = false,
@@ -229,6 +235,7 @@ export function constructChatP(chat: Api.User | Api.Chat): ChatP {
         isRestricted,
         isForum: !!chat.forum,
         isDirectMessagesChat: !!chat.monoforum,
+        communityId,
       };
     } else {
       const id = ZERO_CHANNEL_ID + -Number(chat.id);
@@ -242,6 +249,7 @@ export function constructChatP(chat: Api.User | Api.Chat): ChatP {
         isFake,
         isVerified,
         isRestricted,
+        communityId,
       };
     }
 

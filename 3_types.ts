@@ -100,6 +100,7 @@ export * from "./types/1_bot_commands.ts";
 export * from "./types/1_channel_location.ts";
 export * from "./types/1_chat_action.ts";
 export * from "./types/1_chat_p.ts";
+export * from "./types/1_community.ts";
 export * from "./types/1_country.ts";
 export * from "./types/1_document.ts";
 export * from "./types/1_giveaway.ts";

@@ -98,6 +98,7 @@ export class StorageOperations {
   auth: StorageAuth;
   channelPts: StorageMap<[bigint], number>;
   peers: StorageMap<[number], [ChatP, bigint]>;
+  communities: StorageMap<[number], Api.community | Api.communityForbidden>;
   usernames: StorageMap<[string], [number, Date]>;
   phoneNumbers: StorageMap<[string], [number, Date]>;
   translations: StorageMap<[string, string], {
@@ -115,6 +116,7 @@ export class StorageOperations {
     this.auth = this.#addValue(new StorageAuth(storage));
     this.channelPts = this.#addMap(new StorageMap(storage, "channelPts"));
     this.peers = this.#addMap(new StorageMap(storage, "peers"));
+    this.communities = this.#addMap(new StorageMap(storage, "communities"));
     this.usernames = this.#addMap(new StorageMap(storage, "usernames"));
     this.phoneNumbers = this.#addMap(new StorageMap(storage, "phoneNumbers"));
     this.translations = this.#addMap(new StorageMap(storage, "translations"));
@@ -305,7 +307,11 @@ export class StorageOperations {
     return await this.getTlObject(K.messages.message(chatId, messageId)) as Api.Message | null;
   }
 
-  setPeer(peer_: Api.user | Api.chat | Api.chatForbidden | Api.channel | Api.channelForbidden) {
+  setPeer(peer_: Api.user | Api.chat | Api.chatForbidden | Api.channel | Api.channelForbidden | Api.community | Api.communityForbidden) {
+    if (Api.isOneOf(["community", "communityForbidden"], peer_)) {
+      this.communities.set([Number(peer_.id)], peer_);
+      return;
+    }
     const chatP = constructChatP(peer_);
     this.setPeer2(chatP, "access_hash" in peer_ ? peer_.access_hash ?? 0n : 0n);
   }
