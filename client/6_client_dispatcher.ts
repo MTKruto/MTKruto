@@ -5062,4 +5062,13 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   async showCommunityAsOneChat(communityId: number): Promise<void> {
     return await this.#dispatch("showCommunityAsOneChat", communityId);
   }
+
+  /**
+   * Get joined communities. User-only.
+   *
+   * @method ct
+   */
+  async getJoinedCommunities(): Promise<Community[]> {
+    return await this.#dispatch("getJoinedCommunities");
+  }
 }

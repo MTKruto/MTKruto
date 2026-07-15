@@ -107,4 +107,10 @@ export class CommunityManager {
     const community = await this.#mustAccessibleGetCommunity(communityId);
     await this.#c.invoke({ _: "communities.toggleCommunityCollapsedInDialogs", community: { _: "inputChannel", channel_id: community.id, access_hash: community.access_hash } });
   }
+
+  async getJoinedCommunities(): Promise<Community[]> {
+    this.#c.storage.assertUser("getJoinedCommunities");
+    const result = await this.#c.invoke({ _: "communities.getJoinedCommunities" });
+    return result.chats.filter((v) => Api.is("community", v)).map(constructCommunity);
+  }
 }
