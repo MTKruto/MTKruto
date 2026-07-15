@@ -82,6 +82,8 @@ export interface User {
   hasMainMiniApp?: boolean;
   /** Whether the user is a bot that supports guest queries. */
   isGuestQuerySupported?: boolean;
+  /** The identifier of the community to which the bot is linked. */
+  communityId?: number;
 }
 
 export function constructUser(user_: Api.user): User {
@@ -115,6 +117,7 @@ export function constructUser(user_: Api.user): User {
     isAddedToAttachmentsMenu: user_.bot ? user_.attach_menu_enabled || false : undefined,
     hasMainMiniApp: user_.bot ? user_.bot_has_main_app || false : undefined,
     isGuestQuerySupported: user_.bot ? user_.bot_guestchat || false : undefined,
+    communityId: user_.linked_community_id ? Number(user_.linked_community_id) : undefined,
   };
   if (Api.is("userProfilePhoto", user_.photo)) {
     user.photo = constructChatPhoto(user_.photo, user.id, user_.access_hash ?? 0n);
@@ -152,6 +155,7 @@ export function constructUser2(chatP: ChatPPrivate): User {
     isAddedToAttachmentsMenu: chatP.isAddedToAttachmentsMenu,
     hasMainMiniApp: chatP.hasMainMiniApp,
     isGuestQuerySupported: chatP.isGuestQuerySupported,
+    communityId: chatP.communityId,
   };
   return cleanObject(user);
 }
