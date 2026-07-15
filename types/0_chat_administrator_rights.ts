@@ -56,6 +56,8 @@ export interface ChatAdministratorRights {
   canManageDirectMessages: boolean;
   /** Whether the administrator can manage member tags. */
   canManageTags: boolean;
+  /** Whether the administrator can managed linked chats. */
+  canManageLinkedChats: boolean;
 }
 
 export function constructChatAdministratorRights(rights_: Api.ChatAdminRights): ChatAdministratorRights {
@@ -77,6 +79,7 @@ export function constructChatAdministratorRights(rights_: Api.ChatAdminRights): 
     canDeleteStories: rights_.delete_stories || false,
     canManageDirectMessages: rights_.manage_direct_messages || false,
     canManageTags: rights_.manage_ranks || false,
+    canManageLinkedChats: rights_.manage_linked_peers || false,
   };
 }
 
@@ -100,5 +103,6 @@ export function chatAdministratorRightsToTlObject<T extends Partial<ChatAdminist
     delete_stories: rights.canDeleteStories || undefined,
     manage_direct_messages: rights.canManageDirectMessages || undefined,
     manage_ranks: rights.canManageTags || undefined,
+    manage_linked_peers: rights.canManageLinkedChats || undefined,
   } as Required<T> extends ChatAdministratorRights ? Api.chatAdminRights : never;
 }
