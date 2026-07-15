@@ -6193,7 +6193,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * Get a community. User-only.
    *
    * @method ct
-   * @param communityId The identifier of the community to delete.
+   * @param communityId The identifier of the community.
    */
   async getCommunity(communityId: number): Promise<Community> {
     return await this.#communityManager.getCommunity(communityId);

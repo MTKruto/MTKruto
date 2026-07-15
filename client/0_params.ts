@@ -592,7 +592,7 @@ export interface CreateInviteLinkParams {
   title?: string;
   /** A point in time in the future when the invite link will be invalidated. */
   expireAt?: number;
-  /** The times the invite link can be used. Cannot be specified while `requireApproval` is `true`. */
+  /** The number of times the invite link can be used. Cannot be specified while `requireApproval` is `true`. */
   limit?: number;
   /** Whether an admin must explicitly approve join requests originating from this invite link. Cannot be `true` while `limit` is specified. */
   isApprovalRequired?: boolean;
@@ -918,7 +918,7 @@ export interface PromoteChatMemberParams {
   canManageDirectMessages?: boolean;
   /** Whether the administrator can manage member tags. */
   canManageTags?: boolean;
-  /** Whether the administrator can managed linked chats. */
+  /** Whether the administrator can manage linked chats. */
   canManageLinkedChats?: boolean;
   /** The custom title of the administrator. */
   title?: string;
