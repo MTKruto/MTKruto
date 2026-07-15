@@ -919,7 +919,7 @@ export interface PromoteChatMemberParams {
   /** Whether the administrator can manage member tags. */
   canManageTags?: boolean;
   /** Whether the administrator can managed linked chats. */
-  canManageLinkedChats: boolean;
+  canManageLinkedChats?: boolean;
   /** The custom title of the administrator. */
   title?: string;
 }
@@ -1412,4 +1412,11 @@ export interface GetMyNameParams {
 
 export interface GetMyShortDescriptionParams {
   languageCode?: string;
+}
+
+export interface CreateCommunityParams {
+  /** The description of the community. */
+  description?: string;
+  /** Whether the chat should be hidden inside the community. */
+  isHidden?: boolean;
 }
