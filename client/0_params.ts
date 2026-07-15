@@ -918,6 +918,8 @@ export interface PromoteChatMemberParams {
   canManageDirectMessages?: boolean;
   /** Whether the administrator can manage member tags. */
   canManageTags?: boolean;
+  /** Whether the administrator can managed linked chats. */
+  canManageLinkedChats: boolean;
   /** The custom title of the administrator. */
   title?: string;
 }
