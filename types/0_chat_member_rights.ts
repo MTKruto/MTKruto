@@ -61,6 +61,8 @@ export interface ChatMemberRights {
   canPinMessages?: boolean;
   /** Whether it is allowed to manage topics. */
   canManageTopics?: boolean;
+  /** Whether it is allowed to manage linked chats. */
+  canManageLinkedChats?: boolean;
 }
 
 export function constructChatMemberRights(rights: Api.chatBannedRights): ChatMemberRights {
@@ -86,6 +88,7 @@ export function constructChatMemberRights(rights: Api.chatBannedRights): ChatMem
     canInviteUsers: !rights.invite_users || undefined,
     canPinMessages: !rights.pin_messages || undefined,
     canManageTopics: !rights.manage_topics || undefined,
+    canManageLinkedChats: !rights.manage_linked_peers || undefined,
   });
 }
 
@@ -112,5 +115,6 @@ export function chatMemberRightsToTlObject(rights?: ChatMemberRights, until?: nu
     invite_users: rights?.canInviteUsers === false || undefined,
     pin_messages: rights?.canPinMessages === false || undefined,
     manage_topics: rights?.canManageTopics === false || undefined,
+    manage_linked_peers: rights?.canManageLinkedChats === false || undefined,
   };
 }
