@@ -45,7 +45,7 @@ export class CommunityManager {
     return constructCommunity(community);
   }
 
-  async #mustAcessibleGetCommunity<T extends Api.community | Api.communityForbidden>(communityId: number): Promise<T & { access_hash: NonNullable<T["access_hash"]> }> {
+  async #mustAccessibleGetCommunity<T extends Api.community | Api.communityForbidden>(communityId: number): Promise<T & { access_hash: NonNullable<T["access_hash"]> }> {
     const community = await this.#c.messageStorage.communities.get([communityId]);
     if (community === null) {
       throw new InputError("Community not found.");
@@ -58,13 +58,13 @@ export class CommunityManager {
 
   async deleteCommunity(communityId: number) {
     this.#c.storage.assertUser("deleteCommunity");
-    const community = await this.#mustAcessibleGetCommunity(communityId);
+    const community = await this.#mustAccessibleGetCommunity(communityId);
     await this.#c.invoke({ _: "channels.deleteChannel", channel: { _: "inputChannel", channel_id: community.id, access_hash: community.access_hash } });
   }
 
   async addChatToCommunity(communityId: number, chatId: ID, params?: AddChatToCommunityParams) {
     this.#c.storage.assertUser("addChatToCommunity");
-    const community = await this.#mustAcessibleGetCommunity(communityId);
+    const community = await this.#mustAccessibleGetCommunity(communityId);
     const peer = await this.#c.getInputPeer(chatId);
     await this.#c.invoke({
       _: "communities.togglePeerLink",
@@ -77,7 +77,7 @@ export class CommunityManager {
 
   async removeChatFromCommunity(communityId: number, chatId: ID) {
     this.#c.storage.assertUser("removeChatFromCommunity");
-    const community = await this.#mustAcessibleGetCommunity(communityId);
+    const community = await this.#mustAccessibleGetCommunity(communityId);
     const peer = await this.#c.getInputPeer(chatId);
     await this.#c.invoke({
       _: "communities.togglePeerLink",
@@ -89,13 +89,13 @@ export class CommunityManager {
 
   async showCommunityAsOneChat(communityId: number) {
     this.#c.storage.assertUser("showCommunityAsOneChat");
-    const community = await this.#mustAcessibleGetCommunity(communityId);
+    const community = await this.#mustAccessibleGetCommunity(communityId);
     await this.#c.invoke({ _: "communities.toggleCommunityCollapsedInDialogs", community: { _: "inputChannel", channel_id: community.id, access_hash: community.access_hash }, collapsed: true });
   }
 
   async showCommunityAsDifferentChats(communityId: number) {
     this.#c.storage.assertUser("showCommunityAsDifferentChats");
-    const community = await this.#mustAcessibleGetCommunity(communityId);
+    const community = await this.#mustAccessibleGetCommunity(communityId);
     await this.#c.invoke({ _: "communities.toggleCommunityCollapsedInDialogs", community: { _: "inputChannel", channel_id: community.id, access_hash: community.access_hash } });
   }
 }
