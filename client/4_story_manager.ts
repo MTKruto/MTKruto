@@ -22,7 +22,7 @@ import { contentType, unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { base64DecodeUrlSafe, getRandomId } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { constructStory, constructStoryReportResult, FileType, type ID, type InputStoryContent, type Story, storyInteractiveAreaToTlObject, storyPrivacyToTlObject, type StoryReportResult, type Update } from "../3_types.ts";
+import { constructReportResult, constructStory, FileType, type ID, type InputStoryContent, type ReportResult, type Story, storyInteractiveAreaToTlObject, storyPrivacyToTlObject, type Update } from "../3_types.ts";
 import type { CreateStoryParams, EditStoryParams, ReportStoryParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { checkArray, checkStoryId, isHttpUrl } from "./0_utilities.ts";
@@ -314,15 +314,15 @@ export class StoryManager implements UpdateProcessor<StoryManagerUpdate> {
     checkArray(storyIds, checkStoryId);
     const id = storyIds;
     const result = await this.#c.invoke({ _: "stories.report", peer, id, message: params?.text ?? "", option: params?.option ? base64DecodeUrlSafe(params.option) : new Uint8Array() });
-    return constructStoryReportResult(result);
+    return constructReportResult(result);
   }
 
-  async reportStory(chatId: ID, storyId: number, params?: ReportStoryParams): Promise<StoryReportResult> {
+  async reportStory(chatId: ID, storyId: number, params?: ReportStoryParams): Promise<ReportResult> {
     this.#c.storage.assertUser("reportStory");
     return await this.#reportStories(chatId, [storyId], params);
   }
 
-  async reportStories(chatId: ID, storyIds: number[], params?: ReportStoryParams): Promise<StoryReportResult> {
+  async reportStories(chatId: ID, storyIds: number[], params?: ReportStoryParams): Promise<ReportResult> {
     this.#c.storage.assertUser("reportStories");
     return await this.#reportStories(chatId, storyIds, params);
   }

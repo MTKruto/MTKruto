@@ -27,7 +27,7 @@ import { constructStoryReportOption, type StoryReportOption } from "./0_story_re
  * A story report result indicating that a report option is required to complete the report.
  * @unlisted
  */
-export interface StoryReportResultOptionRequired {
+export interface ReportResultOptionRequired {
   type: "optionRequired";
   /** The title of the report result. */
   title: string;
@@ -39,7 +39,7 @@ export interface StoryReportResultOptionRequired {
  * A story report result indicating that a text is required to complete the report.
  * @unlisted
  */
-export interface StoryReportResultTextRequired {
+export interface ReportResultTextRequired {
   type: "textRequired";
   /** The identifier of the option requiring text. */
   option: string;
@@ -51,14 +51,14 @@ export interface StoryReportResultTextRequired {
  * A story report result indicating that the story was reported.
  * @unlisted
  */
-export interface StoryReportResultReported {
+export interface ReportResultReported {
   type: "reported";
 }
 
 /** Any type of story report result. */
-export type StoryReportResult = StoryReportResultOptionRequired | StoryReportResultTextRequired | StoryReportResultReported;
+export type ReportResult = ReportResultOptionRequired | ReportResultTextRequired | ReportResultReported;
 
-export function constructStoryReportResult(rr: Api.ReportResult): StoryReportResult {
+export function constructReportResult(rr: Api.ReportResult): ReportResult {
   switch (rr._) {
     case "reportResultChooseOption": {
       const title = rr.title;

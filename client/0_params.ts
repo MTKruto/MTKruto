@@ -1425,3 +1425,10 @@ export interface AddChatToCommunityParams {
   /** Whether the chat should be hidden inside the community. */
   isHidden?: boolean;
 }
+
+export interface ReportEphemeralMessageParams {
+  /** The option of the report. */
+  option?: string;
+  /** The text of the report. */
+  text?: string;
+}
