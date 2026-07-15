@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { AccessError, InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { constructCommunity, type ID } from "../3_types.ts";
+import { type Community, constructCommunity, type ID } from "../3_types.ts";
 import type { AddChatToCommunityParams, CreateCommunityParams } from "./0_params.ts";
 import type { C } from "./1_types.ts";
 
@@ -32,7 +32,7 @@ export class CommunityManager {
     this.#c = c;
   }
 
-  async getCommunity(communityId: number) {
+  async getCommunity(communityId: number): Promise<Community> {
     this.#c.storage.assertUser("getCommunity");
     const community = await this.#mustAccessibleGetCommunity(communityId);
     if (Api.is("communityForbidden", community)) {
@@ -41,7 +41,7 @@ export class CommunityManager {
     return constructCommunity(community);
   }
 
-  async createCommunity(name: string, chatId: ID, params?: CreateCommunityParams) {
+  async createCommunity(name: string, chatId: ID, params?: CreateCommunityParams): Promise<Community> {
     this.#c.storage.assertUser("createCommunity");
     const result = await this.#c.invoke({ _: "communities.create", hidden: params?.isHidden || undefined, title: name, about: params?.description, peer: await this.#c.getInputPeer(chatId) });
     if (!("chats" in result)) {
