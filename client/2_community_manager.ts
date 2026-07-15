@@ -32,6 +32,15 @@ export class CommunityManager {
     this.#c = c;
   }
 
+  async getCommunity(communityId: number) {
+    this.#c.storage.assertUser("getCommunity");
+    const community = await this.#mustAccessibleGetCommunity(communityId);
+    if (Api.is("communityForbidden", community)) {
+      throw new AccessError("Cannot access the community.");
+    }
+    return constructCommunity(community);
+  }
+
   async createCommunity(name: string, chatId: ID, params?: CreateCommunityParams) {
     this.#c.storage.assertUser("createCommunity");
     const result = await this.#c.invoke({ _: "communities.create", hidden: params?.isHidden || undefined, title: name, about: params?.description, peer: await this.#c.getInputPeer(chatId) });

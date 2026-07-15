@@ -3935,6 +3935,14 @@ export abstract class ClientGeneric {
   //
 
   /**
+   * Get a community. User-only.
+   *
+   * @method ct
+   * @param communityId The identifier of the community to delete.
+   */
+  abstract getCommunity(communityId: number): Promise<Community>;
+
+  /**
    * Create a community. User-only.
    *
    * @method ct
