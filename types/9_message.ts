@@ -35,7 +35,7 @@ import { constructVoice, type Voice } from "./0_voice.ts";
 import { type Animation, constructAnimation } from "./1_animation.ts";
 import { type Audio, constructAudio } from "./1_audio.ts";
 import { type ChatP, isChatPUser, type PeerGetter } from "./1_chat_p.ts";
-import { type Community, constructCommunity } from "./1_community.ts";
+import { type CommunityP, constructCommunityP } from "./1_community_p.ts";
 import { constructDocument, type Document } from "./1_document.ts";
 import { constructGiveaway, type Giveaway } from "./1_giveaway.ts";
 import { constructMessageReaction, type MessageReaction } from "./1_message_reaction.ts";
@@ -659,7 +659,7 @@ export interface MessageRichText extends _MessageBase {
  */
 export interface MessageAddedToCommunity extends _MessageBase {
   type: "addedToCommunity";
-  community: Community;
+  community: CommunityP;
 }
 
 /**
@@ -982,7 +982,7 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
       if (!Api.is("community", community)) {
         unreachable();
       }
-      return { type: "addedToCommunity", ...message, community: constructCommunity(community) };
+      return { type: "addedToCommunity", ...message, community: constructCommunityP(community) };
     } else {
       return { type: "removedFromCommunity", ...message };
     }

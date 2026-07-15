@@ -21,7 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { AccessError, InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
-import { type Community, constructCommunity, type ID } from "../3_types.ts";
+import { type Community, type CommunityP, constructCommunity, constructCommunityP, type ID } from "../3_types.ts";
 import type { AddChatToCommunityParams, CreateCommunityParams } from "./0_params.ts";
 import type { C } from "./1_types.ts";
 
@@ -32,16 +32,16 @@ export class CommunityManager {
     this.#c = c;
   }
 
-  async getCommunity(communityId: number): Promise<Community> {
+  async getCommunityP(communityId: number): Promise<CommunityP> {
     this.#c.storage.assertUser("getCommunity");
     const community = await this.#mustAccessibleGetCommunity(communityId);
     if (Api.is("communityForbidden", community)) {
       throw new AccessError("Cannot access the community.");
     }
-    return constructCommunity(community);
+    return constructCommunityP(community);
   }
 
-  async createCommunity(name: string, chatId: ID, params?: CreateCommunityParams): Promise<Community> {
+  async createCommunity(name: string, chatId: ID, params?: CreateCommunityParams): Promise<CommunityP> {
     this.#c.storage.assertUser("createCommunity");
     const result = await this.#c.invoke({ _: "communities.create", hidden: params?.isHidden || undefined, title: name, about: params?.description, peer: await this.#c.getInputPeer(chatId) });
     if (!("chats" in result)) {
@@ -51,7 +51,19 @@ export class CommunityManager {
     if (community === undefined) {
       unreachable();
     }
-    return constructCommunity(community);
+    return constructCommunityP(community);
+  }
+
+  async getCommunity(communityId: number): Promise<Community> {
+    const community = await this.#mustAccessibleGetCommunity(communityId);
+    if (Api.is("communityForbidden", community)) {
+      throw new AccessError("Cannot access the community.");
+    }
+    const result = await this.#c.invoke({ _: "channels.getFullChannel", channel: { _: "inputChannel", channel_id: community.id, access_hash: community.access_hash } });
+    if (!Api.is("communityFull", result.full_chat)) {
+      unreachable();
+    }
+    return constructCommunity(community, result.full_chat, this.#c.getPeer);
   }
 
   async #mustAccessibleGetCommunity<T extends Api.community | Api.communityForbidden>(communityId: number): Promise<T & { access_hash: NonNullable<T["access_hash"]> }> {
@@ -108,9 +120,9 @@ export class CommunityManager {
     await this.#c.invoke({ _: "communities.toggleCommunityCollapsedInDialogs", community: { _: "inputChannel", channel_id: community.id, access_hash: community.access_hash } });
   }
 
-  async getJoinedCommunities(): Promise<Community[]> {
+  async getJoinedCommunities(): Promise<CommunityP[]> {
     this.#c.storage.assertUser("getJoinedCommunities");
     const result = await this.#c.invoke({ _: "communities.getJoinedCommunities" });
-    return result.chats.filter((v) => Api.is("community", v)).map(constructCommunity);
+    return result.chats.filter((v) => Api.is("community", v)).map(constructCommunityP);
   }
 }
