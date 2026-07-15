@@ -6234,4 +6234,13 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   async showCommunityAsOneChat(communityId: number): Promise<void> {
     return await this.#communityManager.showCommunityAsOneChat(communityId);
   }
+
+  /**
+   * Get joined communities. User-only.
+   *
+   * @method ct
+   */
+  async getJoinedCommunities(): Promise<Community[]> {
+    return await this.#communityManager.getJoinedCommunities();
+  }
 }

@@ -3992,4 +3992,11 @@ export abstract class ClientGeneric {
    * @param communityId The identifier of the community.
    */
   abstract showCommunityAsOneChat(communityId: number): Promise<void>;
+
+  /**
+   * Get joined communities. User-only.
+   *
+   * @method ct
+   */
+  abstract getJoinedCommunities(): Promise<Community[]>;
 }
