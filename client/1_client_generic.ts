@@ -3935,12 +3935,13 @@ export abstract class ClientGeneric {
   //
 
   /**
-   * Get a community. User-only.
+   * Add a chat to a community. User-only.
    *
    * @method ct
-   * @param communityId The identifier of the community to delete.
+   * @param communityId The identifier of the community.
+   * @param chatId The identifier of the chat to add.
    */
-  abstract getCommunity(communityId: number): Promise<Community>;
+  abstract addChatToCommunity(communityId: number, chatId: ID, params?: AddChatToCommunityParams): Promise<void>;
 
   /**
    * Create a community. User-only.
@@ -3960,13 +3961,12 @@ export abstract class ClientGeneric {
   abstract deleteCommunity(communityId: number): Promise<void>;
 
   /**
-   * Add a chat to a community. User-only.
+   * Get a community. User-only.
    *
    * @method ct
-   * @param communityId The identifier of the community.
-   * @param chatId The identifier of the chat to add.
+   * @param communityId The identifier of the community to delete.
    */
-  abstract addChatToCommunity(communityId: number, chatId: ID, params?: AddChatToCommunityParams): Promise<void>;
+  abstract getCommunity(communityId: number): Promise<Community>;
 
   /**
    * Remove a chat from a community. User-only.
@@ -3978,18 +3978,18 @@ export abstract class ClientGeneric {
   abstract removeChatFromCommunity(communityId: number, chatId: ID): Promise<void>;
 
   /**
-   * Show a community as one chat. User-only.
-   *
-   * @method ct
-   * @param communityId The identifier of the community.
-   */
-  abstract showCommunityAsOneChat(communityId: number): Promise<void>;
-
-  /**
    * Show a community as different chats. User-only.
    *
    * @method ct
    * @param communityId The identifier of the community.
    */
   abstract showCommunityAsDifferentChats(communityId: number): Promise<void>;
+
+  /**
+   * Show a community as one chat. User-only.
+   *
+   * @method ct
+   * @param communityId The identifier of the community.
+   */
+  abstract showCommunityAsOneChat(communityId: number): Promise<void>;
 }

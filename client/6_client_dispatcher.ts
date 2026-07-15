@@ -4991,13 +4991,14 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   //
 
   /**
-   * Get a community. User-only.
+   * Add a chat to a community. User-only.
    *
    * @method ct
-   * @param communityId The identifier of the community to delete.
+   * @param communityId The identifier of the community.
+   * @param chatId The identifier of the chat to add.
    */
-  async getCommunity(communityId: number): Promise<Community> {
-    return await this.#dispatch("getCommunity", communityId);
+  async addChatToCommunity(communityId: number, chatId: ID, params?: AddChatToCommunityParams): Promise<void> {
+    return await this.#dispatch("addChatToCommunity", communityId, chatId, params);
   }
 
   /**
@@ -5022,14 +5023,13 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Add a chat to a community. User-only.
+   * Get a community. User-only.
    *
    * @method ct
-   * @param communityId The identifier of the community.
-   * @param chatId The identifier of the chat to add.
+   * @param communityId The identifier of the community to delete.
    */
-  async addChatToCommunity(communityId: number, chatId: ID, params?: AddChatToCommunityParams): Promise<void> {
-    return await this.#dispatch("addChatToCommunity", communityId, chatId, params);
+  async getCommunity(communityId: number): Promise<Community> {
+    return await this.#dispatch("getCommunity", communityId);
   }
 
   /**
@@ -5044,16 +5044,6 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Show a community as one chat. User-only.
-   *
-   * @method ct
-   * @param communityId The identifier of the community.
-   */
-  async showCommunityAsOneChat(communityId: number): Promise<void> {
-    return await this.#dispatch("showCommunityAsOneChat", communityId);
-  }
-
-  /**
    * Show a community as different chats. User-only.
    *
    * @method ct
@@ -5061,5 +5051,15 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    */
   async showCommunityAsDifferentChats(communityId: number): Promise<void> {
     return await this.#dispatch("showCommunityAsDifferentChats", communityId);
+  }
+
+  /**
+   * Show a community as one chat. User-only.
+   *
+   * @method ct
+   * @param communityId The identifier of the community.
+   */
+  async showCommunityAsOneChat(communityId: number): Promise<void> {
+    return await this.#dispatch("showCommunityAsOneChat", communityId);
   }
 }
