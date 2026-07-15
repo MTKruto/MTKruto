@@ -1420,3 +1420,8 @@ export interface CreateCommunityParams {
   /** Whether the chat should be hidden inside the community. */
   isHidden?: boolean;
 }
+
+export interface AddChatToCommunityParams {
+  /** Whether the chat should be hidden inside the community. */
+  isHidden?: boolean;
+}

@@ -24,11 +24,11 @@ import { drop, getLogger, type Logger, MAX_MONOFORUM_CHANNEL_ID, type MaybePromi
 import { type Storage, StorageMemory } from "../2_storage.ts";
 import { Api, Mtproto } from "../2_tl.ts";
 import { type DC, getDcId, getRawDcId, type TransportProvider } from "../3_transport.ts";
-import { type AlbumStoryList, type Animation, type AppSupport, type Audio, type AuthorizationSession, type AvailableReactions, type Birthday, type BlockedUserList, type BotAccessSettings, type BotCommand, type BotTokenCheckResult, type BusinessAwayMessageSchedule, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatActionType, type ChatJoinResult, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type CodeCheckResult, type ConnectedWebsite, type ConnectionState, constructChatP, constructUser2, type Country, type EmojiStatus, type FailedInvitation, type FileSource, type Gift, type GiftCollection, type GiftPrivacy, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputBusinessRecipients, type InputChecklistItem, type InputEmojiStatus, type InputGift, type InputMedia, type InputPollOption, type InputPrivacyRule, type InputRichText, type InputSticker, type InputStoryContent, type InviteLink, type JoinRequest, type LeftChannelList, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageCounters, type MessageDice, type MessageDocument, type MessageInvoice, type MessageList, type MessageLivePhoto, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageRichText, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageViewer, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type NewChatPrivacy, type NotificationSettings, type ParseMode, type PasswordCheckResult, type Poll, type PollVoterList, type PremiumSubscriptionDuration, type PriceTag, type PrivacyRule, type PrivacySettingKey, type ProfilePhotoList, type Reaction, type RecentActionsEntry, type ReportReason, type ResolvedInviteLink, type RichText, type SavedChats, type SavedNotificationSound, type SecretChat, type SlowModeDuration, type StarAmount, type StarTransactionList, type Sticker, type StickerSet, type StickerSetP, type Story, type StoryAlbum, type StoryReportResult, type SummarizedText, type TextToTranslate, type Timezone, type TonTransactionList, type Topic, type TopicList, type TopicListItem, type TranslatedText, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
+import { type AlbumStoryList, type Animation, type AppSupport, type Audio, type AuthorizationSession, type AvailableReactions, type Birthday, type BlockedUserList, type BotAccessSettings, type BotCommand, type BotTokenCheckResult, type BusinessAwayMessageSchedule, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatActionType, type ChatJoinResult, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type CodeCheckResult, type Community, type ConnectedWebsite, type ConnectionState, constructChatP, constructUser2, type Country, type EmojiStatus, type FailedInvitation, type FileSource, type Gift, type GiftCollection, type GiftPrivacy, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputBusinessRecipients, type InputChecklistItem, type InputEmojiStatus, type InputGift, type InputMedia, type InputPollOption, type InputPrivacyRule, type InputRichText, type InputSticker, type InputStoryContent, type InviteLink, type JoinRequest, type LeftChannelList, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageCounters, type MessageDice, type MessageDocument, type MessageInvoice, type MessageList, type MessageLivePhoto, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageRichText, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageViewer, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type NewChatPrivacy, type NotificationSettings, type ParseMode, type PasswordCheckResult, type Poll, type PollVoterList, type PremiumSubscriptionDuration, type PriceTag, type PrivacyRule, type PrivacySettingKey, type ProfilePhotoList, type Reaction, type RecentActionsEntry, type ReportReason, type ResolvedInviteLink, type RichText, type SavedChats, type SavedNotificationSound, type SecretChat, type SlowModeDuration, type StarAmount, type StarTransactionList, type Sticker, type StickerSet, type StickerSetP, type Story, type StoryAlbum, type StoryReportResult, type SummarizedText, type TextToTranslate, type Timezone, type TonTransactionList, type Topic, type TopicList, type TopicListItem, type TranslatedText, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, DOWNLOAD_MAX_CHUNK_SIZE, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, PHONE_NUMBER_TTL, type PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, SessionRevoked } from "../4_errors.ts";
 import { AbortableLoop } from "./0_abortable_loop.ts";
-import type { AddBotToAttachmentsMenuParams, AddChatMemberParams, AddContactParams, AddMusicToProfileParams, AddReactionParams, AddSavedNotificationSoundParams, AddStickerToStickerSetParams, AllowUnpaidMessagesFromUserParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, BoostChatParams, CheckUsernameParams, CreateChannelParams, CreateGroupParams, CreateInviteLinkParams, CreateStickerSetParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteAccountParams, DeleteMessageParams, DeleteMessagesParams, DeleteMyCommandsParams, DisallowUnpaidMessagesFromUserParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageRichTextParams, EditMessageTextParams, EditStoryParams, EditTopicParams, EnableSignaturesParams, EndSecretChatParams, EndTakeoutSessionParams, ForwardMessagesParams, GetAdministeredChatsParams, GetBlockedUsersParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLeftChannelsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetMyDescriptionParams, GetMyNameParams, GetMyShortDescriptionParams, GetPollVotersParams, GetProfileMusicParams, GetProfilePhotosParams, GetRecentActionsParams, GetSavedChatsParams, GetSavedMessagesParams, GetStarTransactionsParams, GetStoriesInAlbumParams, GetTonTransactionsParams, GetTopicsParams, GetTranslationsParams, GiftPremiumSubscriptionParams, InvokeParams, JoinVideoChatParams, MarkAllMentionsAsReadParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, RemoveProfilePhotoParams, ReplaceStickerInStickerSetParams, ReportChatParams, ReportStoryParams, ResolveUsernameParams, SaveDraftParams, SaveRichTextDraftParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLivePhotoParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendRichTextParams, SendSecretAnimationParams, SendSecretAudioParams, SendSecretContactParams, SendSecretDocumentParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretPhotoParams, SendSecretStickerParams, SendSecretVenueParams, SendSecretVideoNoteParams, SendSecretVideoParams, SendSecretVoiceParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetBusinessAwayMessageParams, SetBusinessIntroParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetContactNoteParams, SetEmojiStatusParams, SetLocationParams, SetManagedBotAccessSettingsParams, SetMyCommandsParams, SetMyDescriptionParams, SetMyNameParams, SetMyShortDescriptionParams, SetNameColorParams, SetNotificationSettingsParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetStickerSetThumbnailParams, SetWorkingHoursParams, SignInParams, SignUpParams, StartBotParams, StartTakeoutSessionParams, StartVideoChatParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
+import type { AddBotToAttachmentsMenuParams, AddChatMemberParams, AddChatToCommunityParams, AddContactParams, AddMusicToProfileParams, AddReactionParams, AddSavedNotificationSoundParams, AddStickerToStickerSetParams, AllowUnpaidMessagesFromUserParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, BoostChatParams, CheckUsernameParams, CreateChannelParams, CreateCommunityParams, CreateGroupParams, CreateInviteLinkParams, CreateStickerSetParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteAccountParams, DeleteMessageParams, DeleteMessagesParams, DeleteMyCommandsParams, DisallowUnpaidMessagesFromUserParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageRichTextParams, EditMessageTextParams, EditStoryParams, EditTopicParams, EnableSignaturesParams, EndSecretChatParams, EndTakeoutSessionParams, ForwardMessagesParams, GetAdministeredChatsParams, GetBlockedUsersParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLeftChannelsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetMyDescriptionParams, GetMyNameParams, GetMyShortDescriptionParams, GetPollVotersParams, GetProfileMusicParams, GetProfilePhotosParams, GetRecentActionsParams, GetSavedChatsParams, GetSavedMessagesParams, GetStarTransactionsParams, GetStoriesInAlbumParams, GetTonTransactionsParams, GetTopicsParams, GetTranslationsParams, GiftPremiumSubscriptionParams, InvokeParams, JoinVideoChatParams, MarkAllMentionsAsReadParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, RemoveProfilePhotoParams, ReplaceStickerInStickerSetParams, ReportChatParams, ReportStoryParams, ResolveUsernameParams, SaveDraftParams, SaveRichTextDraftParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLivePhotoParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendRichTextParams, SendSecretAnimationParams, SendSecretAudioParams, SendSecretContactParams, SendSecretDocumentParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretPhotoParams, SendSecretStickerParams, SendSecretVenueParams, SendSecretVideoNoteParams, SendSecretVideoParams, SendSecretVoiceParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetBirthdayParams, SetBusinessAwayMessageParams, SetBusinessIntroParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetContactNoteParams, SetEmojiStatusParams, SetLocationParams, SetManagedBotAccessSettingsParams, SetMyCommandsParams, SetMyDescriptionParams, SetMyNameParams, SetMyShortDescriptionParams, SetNameColorParams, SetNotificationSettingsParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetStickerSetThumbnailParams, SetWorkingHoursParams, SignInParams, SignUpParams, StartBotParams, StartTakeoutSessionParams, StartVideoChatParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 import { canBeInputChannel, canBeInputUser, DOWNLOAD_POOL_SIZE, getUsername, toInputChannel, toInputUser } from "./0_utilities.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
@@ -37,6 +37,7 @@ import { type InvokeErrorHandler, skipInvoke } from "./1_invoke_middleware.ts";
 import { BotInfoManager } from "./2_bot_info_manager.ts";
 import { BusinessConnectionManager } from "./2_business_connection_manager.ts";
 import { ClientEncrypted } from "./2_client_encrypted.ts";
+import { CommunityManager } from "./2_community_manager.ts";
 import { FileManager } from "./2_file_manager.ts";
 import { GiftCollectionManager } from "./2_gift_collection_manager.ts";
 import { ManagedBotManager } from "./2_managed_bot_manager.ts";
@@ -133,6 +134,7 @@ export interface ClientParams extends ClientPlainParams {
 export interface ClientManagers {
   // 2_
   botInfoManager: BotInfoManager;
+  communityManager: CommunityManager;
   businessConnectionManager: BusinessConnectionManager;
   fileManager: FileManager;
   giftCollectionManager: GiftCollectionManager;
@@ -172,6 +174,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   #guaranteeUpdateDelivery: boolean;
   // 2_
   #botInfoManager: BotInfoManager;
+  #communityManager: CommunityManager;
   #businessConnectionManager: BusinessConnectionManager;
   #fileManager: FileManager;
   #giftCollectionManager: GiftCollectionManager;
@@ -207,6 +210,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     return this.#managers ?? (this.#managers ??= {
       // 2_
       botInfoManager: this.#botInfoManager,
+      communityManager: this.#communityManager,
       businessConnectionManager: this.#businessConnectionManager,
       fileManager: this.#fileManager,
       giftCollectionManager: this.#giftCollectionManager,
@@ -351,6 +355,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
 
     // 2_
     this.#botInfoManager = new BotInfoManager(c);
+    this.#communityManager = new CommunityManager(c);
     this.#businessConnectionManager = new BusinessConnectionManager(c);
     const fileManager = this.#fileManager = new FileManager(c);
     this.#giftCollectionManager = new GiftCollectionManager(c);
@@ -6146,5 +6151,72 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async sendSecretVoice(id: number, voice: FileSource, params?: SendSecretVoiceParams): Promise<void> {
     return await this.#secretChatManager.sendSecretVoice(id, voice, params);
+  }
+
+  //
+  // ========================= COMMUNITIES ========================= //
+  //
+
+  /**
+   * Create a community. User-only.
+   *
+   * @method ct
+   * @param name The name of the community.
+   * @param chatId The identifier of a chat to add to the community.
+   */
+  async createCommunity(name: string, chatId: ID, params?: CreateCommunityParams): Promise<Community> {
+    return await this.#communityManager.createCommunity(name, chatId, params);
+  }
+
+  /**
+   * Delete a community. User-only.
+   *
+   * @method ct
+   * @param communityId The identifier of the community to delete.
+   */
+  async deleteCommunity(communityId: number): Promise<void> {
+    return await this.#communityManager.deleteCommunity(communityId);
+  }
+
+  /**
+   * Add a chat to a community. User-only.
+   *
+   * @method ct
+   * @param communityId The identifier of the community.
+   * @param chatId The identifier of the chat to add.
+   */
+  async addChatToCommunity(communityId: number, chatId: ID, params?: AddChatToCommunityParams): Promise<void> {
+    return await this.#communityManager.addChatToCommunity(communityId, chatId, params);
+  }
+
+  /**
+   * Remove a chat from a community. User-only.
+   *
+   * @method ct
+   * @param communityId The identifier of the community.
+   * @param chatId The identifier of the chat to remove.
+   */
+  async removeChatFromCommunity(communityId: number, chatId: ID): Promise<void> {
+    return await this.#communityManager.removeChatFromCommunity(communityId, chatId);
+  }
+
+  /**
+   * Show a community as one chat. User-only.
+   *
+   * @method ct
+   * @param communityId The identifier of the community.
+   */
+  async showCommunityAsOneChat(communityId: number): Promise<void> {
+    return await this.#communityManager.showCommunityAsOneChat(communityId);
+  }
+
+  /**
+   * Show a community as different chats. User-only.
+   *
+   * @method ct
+   * @param communityId The identifier of the community.
+   */
+  async showCommunityAsDifferentChats(communityId: number): Promise<void> {
+    return await this.#communityManager.showCommunityAsDifferentChats(communityId);
   }
 }
