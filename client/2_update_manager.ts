@@ -702,6 +702,9 @@ export class UpdateManager {
           for (const message of difference.new_messages) {
             await this.#processPtsUpdateInner({ _: "updateNewMessage", message, pts: 0, pts_count: 0 }, false);
           }
+          for (const message of difference.new_encrypted_messages) {
+            await this.#processQtsUpdateInner({ _: "updateNewEncryptedMessage", qts: 0, message }, false);
+          }
           for (const update of difference.other_updates) {
             if (UpdateManager.isPtsUpdate(update)) {
               await this.#processPtsUpdateInner(update, false);
