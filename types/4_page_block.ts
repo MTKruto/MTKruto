@@ -957,7 +957,8 @@ function collectPageBlockMedia(pageBlocks: PageBlock[]) {
   for (const pb of pageBlocks) {
     if (pb.type === "photo" || pb.type === "video" || pb.type === "audio" || pb.type === "voice" || pb.type === "animation") {
       media.push(pb);
-    } else {switch (pb.type) {
+    } else {
+      switch (pb.type) {
         case "list":
           for (const item of pb.items) {
             if (item.type === "blockList") {
@@ -993,7 +994,12 @@ function collectPageBlockMedia(pageBlocks: PageBlock[]) {
             media.push(m);
           }
           break;
-      }}
+        case "cover":
+          for (const m of collectPageBlockMedia([pb.cover])) {
+            media.push(m);
+          }
+      }
+    }
   }
 
   return media;
