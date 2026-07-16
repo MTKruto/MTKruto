@@ -691,11 +691,7 @@ export class UpdateManager {
             }
             continue;
           } else {
-            if (this.#c.isDisconnected()) {
-              return;
-            } else {
-              throw err;
-            }
+            throw err;
           }
         }
         if (Api.is("updates.difference", difference) || Api.is("updates.differenceSlice", difference)) {
@@ -704,10 +700,16 @@ export class UpdateManager {
           this.#LrecoverUpdateGap.debug("processing", difference.new_messages.length, "new message(s)");
           this.#LrecoverUpdateGap.debug("processing", difference.other_updates.length, "other update(s)");
           for (const message of difference.new_messages) {
-            await this.#processUpdates({ _: "updateNewMessage", message, pts: 0, pts_count: 0 }, false);
+            await this.#processPtsUpdateInner({ _: "updateNewMessage", message, pts: 0, pts_count: 0 }, false);
           }
           for (const update of difference.other_updates) {
-            await this.#processUpdates(update, false);
+            if (UpdateManager.isPtsUpdate(update)) {
+              await this.#processPtsUpdateInner(update, false);
+            } else if (UpdateManager.isQtsUpdate(update)) {
+              await this.#processQtsUpdateInner(update, false);
+            } else {
+              await this.#processUpdates(update, false);
+            }
           }
           if (Api.is("updates.difference", difference)) {
             await this.#setState(difference.state);
@@ -735,6 +737,7 @@ export class UpdateManager {
       }
     } catch (err) {
       this.#LrecoverUpdateGap.error(err);
+      throw err;
     } finally {
       if (wasRecovered) {
         ++this.#updateGapRecoveryCount;
@@ -826,12 +829,14 @@ export class UpdateManager {
         break;
       }
       const [key, update] = maybeUpdate;
+      let handled = false;
       for (let i = 0; i < 100; ++i) {
         try {
           const handle = await this.#handleUpdate(update);
           handle: for (let i = 0; i < 2; ++i) {
             try {
               await handle();
+              handled = true;
               break handle;
             } catch {
               continue handle;
@@ -841,6 +846,9 @@ export class UpdateManager {
         } catch (err) {
           this.#L$handleUpdate.error(err);
         }
+      }
+      if (!handled) {
+        break;
       }
       await this.#c.storage.set(key, null);
     } while (true);
