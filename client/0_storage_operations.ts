@@ -482,6 +482,7 @@ export class StorageOperations {
     return await this.#storage.get(K.cache.groupCallAccessHash(id));
   }
 
+  #lastUpdateId = 0n;
   #getUpdateId(update: Api.Update) {
     let id = BigInt(Date.now()) << 32n;
     if ("pts" in update && update.pts) {
@@ -491,7 +492,10 @@ export class StorageOperations {
     } else {
       id |= BigInt(0xFFFFFFFFn);
     }
-    return id;
+    if (id <= this.#lastUpdateId) {
+      id = this.#lastUpdateId + 1n;
+    }
+    return this.#lastUpdateId = id;
   }
   async setUpdate(boxId: bigint, update: Api.Update) {
     await this.setTlObject(K.updates.update(boxId, this.#getUpdateId(update)), update);
