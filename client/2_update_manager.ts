@@ -35,10 +35,8 @@ export type PtsUpdate =
   | Api.updateDeleteMessages
   | Api.updateReadHistoryInbox
   | Api.updateReadHistoryOutbox
-  | Api.updatePinnedChannelMessages
   | Api.updatePinnedMessages
   | Api.updateFolderPeers
-  | Api.updateChannelWebPage
   | Api.updateEditMessage
   | Api.updateReadMessagesContents
   | Api.updateWebPage;
@@ -47,6 +45,8 @@ export type ChannelPtsUpdate =
   | Api.updateNewChannelMessage
   | Api.updateEditChannelMessage
   | Api.updateDeleteChannelMessages
+  | Api.updatePinnedChannelMessages
+  | Api.updateChannelWebPage
   | Api.updateChannelTooLong;
 
 export type QtsUpdate =
@@ -62,7 +62,11 @@ export type QtsUpdate =
   | Api.updateBotBusinessConnect
   | Api.updateBotNewBusinessMessage
   | Api.updateBotEditBusinessMessage
-  | Api.updateBotDeleteBusinessMessage;
+  | Api.updateBotDeleteBusinessMessage
+  | Api.updateBotPurchasedPaidMedia
+  | Api.updateManagedBot
+  | Api.updateBotGuestChatQuery
+  | Api.updateBotStarsSubscription;
 
 export class UpdateManager {
   static readonly QTS_COUNT = 1;
@@ -92,11 +96,39 @@ export class UpdateManager {
   }
 
   static isPtsUpdate(v: Api.Update): v is PtsUpdate {
-    return Api.isOneOf(["updateNewMessage", "updateDeleteMessages", "updateReadHistoryInbox", "updateReadHistoryOutbox", "updatePinnedChannelMessages", "updatePinnedMessages", "updateFolderPeers", "updateChannelWebPage", "updateEditMessage", "updateReadMessagesContents", "updateWebPage"], v);
+    return Api.isOneOf([
+      "updateNewMessage",
+      "updateDeleteMessages",
+      "updateReadHistoryInbox",
+      "updateReadHistoryOutbox",
+      "updatePinnedMessages",
+      "updateFolderPeers",
+      "updateEditMessage",
+      "updateReadMessagesContents",
+      "updateWebPage",
+    ], v);
   }
 
   static isQtsUpdate(v: Api.Update): v is QtsUpdate {
-    return Api.isOneOf(["updateNewEncryptedMessage", "updateMessagePollVote", "updateBotStopped", "updateChatParticipant", "updateChannelParticipant", "updateBotChatInviteRequester", "updateBotChatBoost", "updateBotMessageReaction", "updateBotMessageReactions", "updateBotBusinessConnect", "updateBotNewBusinessMessage", "updateBotEditBusinessMessage", "updateBotDeleteBusinessMessage"], v);
+    return Api.isOneOf([
+      "updateNewEncryptedMessage",
+      "updateMessagePollVote",
+      "updateBotStopped",
+      "updateChatParticipant",
+      "updateChannelParticipant",
+      "updateBotChatInviteRequester",
+      "updateBotChatBoost",
+      "updateBotMessageReaction",
+      "updateBotMessageReactions",
+      "updateBotBusinessConnect",
+      "updateBotNewBusinessMessage",
+      "updateBotEditBusinessMessage",
+      "updateBotDeleteBusinessMessage",
+      "updateBotPurchasedPaidMedia",
+      "updateManagedBot",
+      "updateBotGuestChatQuery",
+      "updateBotStarsSubscription",
+    ], v);
   }
 
   static isChannelPtsUpdate(v: Api.Update | Api.Updates): v is ChannelPtsUpdate {
@@ -104,6 +136,8 @@ export class UpdateManager {
       "updateNewChannelMessage",
       "updateEditChannelMessage",
       "updateDeleteChannelMessages",
+      "updatePinnedChannelMessages",
+      "updateChannelWebPage",
       "updateChannelTooLong",
     ], v);
   }
@@ -353,7 +387,7 @@ export class UpdateManager {
 
   #channelUpdateQueues = new Map<bigint, Queue>();
 
-  async #processChannelPtsUpdateInner(update: Api.updateNewChannelMessage | Api.updateEditChannelMessage | Api.updateDeleteChannelMessages | Api.updateChannelTooLong, checkGap: boolean) {
+  async #processChannelPtsUpdateInner(update: ChannelPtsUpdate, checkGap: boolean) {
     const channelId = Api.is("updateNewChannelMessage", update) || Api.is("updateEditChannelMessage", update) ? Api.as("peerChannel", (update.message as Api.message | Api.messageService).peer_id).channel_id : update.channel_id;
     if (Api.is("updateChannelTooLong", update)) {
       if (update.pts !== undefined) {
