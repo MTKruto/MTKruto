@@ -730,7 +730,10 @@ export class UpdateManager {
           state.pts = difference.pts;
           this.#LrecoverUpdateGap.debug("received differenceTooLong");
         } else if (Api.is("updates.differenceEmpty", difference)) {
-          await this.#setUpdateStateDate(difference.date);
+          const localState = await this.#getLocalState();
+          localState.date = difference.date;
+          localState.seq = difference.seq;
+          await this.#setState(localState);
           this.#LrecoverUpdateGap.debug("there was no update gap");
           wasRecovered = true;
           break;
