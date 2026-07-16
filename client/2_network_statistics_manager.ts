@@ -67,22 +67,27 @@ export class NetworkStatisticsManager {
   }
 
   #writing = false;
+  #writeAgain = false;
   async #write() {
     if (this.#writing) {
+      this.#writeAgain = true;
       return;
     }
     this.#writing = true;
-    for (const [k, v] of Object.entries(this.#pendingWrites)) {
-      if (v < 1) {
-        continue;
+    do {
+      this.#writeAgain = false;
+      for (const [k, v] of Object.entries(this.#pendingWrites)) {
+        if (v < 1) {
+          continue;
+        }
+        try {
+          await this.#c.messageStorage.incr([k], v);
+          this.#pendingWrites[k] -= v;
+        } catch (err) {
+          this.#L.error("write failed:", err);
+        }
       }
-      try {
-        await this.#c.messageStorage.incr([k], v);
-        this.#pendingWrites[k] -= v;
-      } catch (err) {
-        this.#L.error("write failed:", err);
-      }
-    }
+    } while (this.#writeAgain);
     this.#writing = false;
   }
 }
