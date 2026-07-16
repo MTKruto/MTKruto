@@ -416,7 +416,7 @@ export async function constructRecentAction(a: Api.ChannelAdminLogEventAction, g
       return {
         type: "changeUsername",
         previous: a.prev_value,
-        new: a.prev_value,
+        new: a.new_value,
       };
     case "channelAdminLogEventActionChangePhoto":
       return {
