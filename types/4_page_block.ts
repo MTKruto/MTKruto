@@ -852,7 +852,6 @@ function flattenRichTextComponent(component: RichTextComponent): RichTextCompone
         items.push(item);
       }
       break;
-
     case "concatenate":
       for (const c of component.components) {
         for (const i of flattenRichTextComponent(c)) {
@@ -896,7 +895,6 @@ function collectRichTextComponents(pageBlocks: PageBlock[]): RichTextComponent[]
         components.push(pb.text);
         components.push(pb.caption);
         break;
-
       case "photo":
       case "video":
       case "embed":
@@ -943,7 +941,6 @@ function collectRichTextComponents(pageBlocks: PageBlock[]): RichTextComponent[]
           components.push(c);
         }
         break;
-
       case "blockQuoteBlocks":
         components.push(pb.caption);
         for (const c of collectRichTextComponents(pb.blocks)) {
