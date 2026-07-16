@@ -1845,6 +1845,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     params?: EditMessageMediaParams,
   ): Promise<Message> {
     this.#c.storage.assertBot("editEphemeralMessageMedia");
+    checkMessageId(messageId);
     this.#checkParams(params);
     const maybeParseResult = media.caption !== undefined ? this.parseText(media.caption, { entities: media.captionEntities, parseMode: media.parseMode }, true) : undefined;
     const result = await this.#c.invoke({
