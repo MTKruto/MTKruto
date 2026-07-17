@@ -1168,6 +1168,9 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
         this.#L.debug("not starting storageWriteLoop");
       }
       await this.storage.commit(true);
+      if (this.#guaranteeUpdateDelivery) {
+        await this.#updateManager.replayStoredUpdates();
+      }
     } finally {
       unlock();
     }

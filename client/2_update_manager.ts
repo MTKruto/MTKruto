@@ -868,6 +868,12 @@ export class UpdateManager {
   }
 
   #handleUpdatesSet = new Set<bigint>();
+  async replayStoredUpdates() {
+    for (const boxId of await this.#c.storage.getUpdateBoxIds()) {
+      await this.#handleStoredUpdates(boxId);
+    }
+  }
+
   async #handleStoredUpdates(boxId: bigint) {
     if (this.#handleUpdatesSet.has(boxId)) {
       return;

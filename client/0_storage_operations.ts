@@ -505,6 +505,14 @@ export class StorageOperations {
     await this.#deleteByPrefix(K.updates.all());
   }
 
+  async getUpdateBoxIds() {
+    const boxIds = new Set<bigint>();
+    for await (const [key] of await this.#storage.getMany({ prefix: K.updates.all() })) {
+      boxIds.add(key[1] as bigint);
+    }
+    return boxIds;
+  }
+
   async getFirstUpdate(boxId: bigint): Promise<[readonly StorageKeyPart[], Api.Update] | null> {
     for await (const [key, update] of await this.#storage.getMany<Uint8Array>({ prefix: K.updates.updates(boxId) }, { limit: 1 })) {
       return [key, (await this.getTlObject(update)) as Api.Update];
