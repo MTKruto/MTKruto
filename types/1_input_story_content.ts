@@ -20,19 +20,31 @@
 
 import type { FileSource } from "./0_file_source.ts";
 
-/** @unlisted */
+/**
+ * An input photo story content.
+ * @unlisted
+ */
 export interface InputStoryContentPhoto {
   type: "photo";
+  /** The photo. */
   photo: FileSource;
+  /** The file identifiers of the attached stickers. */
   attachedStickerFileIds?: string[];
 }
 
-/** @unlisted */
+/**
+ * An input video story content.
+ * @unlisted
+ */
 export interface InputStoryContentVideo {
   type: "video";
+  /** The video. */
   video: FileSource;
+  /** The file identifiers of the attached stickers. */
   attachedStickerFileIds?: string[];
+  /** The duration of the video. */
   duration: number;
+  /** Whether the video is an animation. */
   isAnimation?: boolean;
 }
 

@@ -24,19 +24,30 @@ import { type FileId, FileType, serializeFileId, toUniqueFileId } from "./_file_
 import { constructPhoto, type Photo } from "./1_photo.ts";
 import { constructVideo, type Video } from "./1_video.ts";
 
-/** @unlisted */
+/**
+ * A photo story content.
+ * @unlisted
+ */
 export interface StoryContentPhoto {
   type: "photo";
+  /** The photo. */
   photo: Photo;
 }
 
-/** @unlisted */
+/**
+ * A video story content.
+ * @unlisted
+ */
 export interface StoryContentVideo {
   type: "video";
+  /** The video. */
   video: Video;
 }
 
-/** @unlisted */
+/**
+ * An unsupported story content.
+ * @unlisted
+ */
 export interface StoryContentUnsupported {
   type: "unsupported";
 }
