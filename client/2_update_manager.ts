@@ -878,10 +878,15 @@ export class UpdateManager {
           unreachable();
         }
         this.#LrecoverChannelUpdateGap.debug("processed channelDifferenceTooLong", channelId);
+        if (difference.final) {
+          break;
+        }
       } else if (Api.is("updates.channelDifferenceEmpty", difference)) {
         this.#c.storage.channelPts.set([channelId], difference.pts);
         this.#LrecoverChannelUpdateGap.debug("there was no update gap");
-        break;
+        if (difference.final) {
+          break;
+        }
       }
     }
     return lastTimeout;
