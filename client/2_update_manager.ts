@@ -472,10 +472,11 @@ export class UpdateManager {
   }
 
   async #processQtsUpdateInner(update: QtsUpdate, checkGap: boolean) {
-    const localState = await this.#getLocalState();
+    let localState = await this.#getLocalState();
     if (update.qts !== 0) {
       if (checkGap) {
         await this.#checkGapQts(update.qts);
+        localState = await this.#getLocalState();
       }
       if (localState.qts + UpdateManager.QTS_COUNT > update.qts) {
         return;
