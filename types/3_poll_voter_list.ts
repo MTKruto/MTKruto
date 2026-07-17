@@ -32,9 +32,9 @@ export interface PollVoterList {
   nextOffset?: string;
 }
 
-export function constructPollVoterList(mvl: Api.messages_votesList, getPeer: PeerGetter): PollVoterList {
+export function constructPollVoterList(mvl: Api.messages_votesList, getPeer: PeerGetter, optionIndex?: number): PollVoterList {
   return cleanObject({
-    voters: mvl.votes.map((v) => constructPollVoter(v, getPeer)),
+    voters: mvl.votes.map((v) => constructPollVoter(v, getPeer, optionIndex)),
     count: mvl.count,
     nextOffset: mvl.next_offset,
   });

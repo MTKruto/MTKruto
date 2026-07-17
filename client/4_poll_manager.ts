@@ -157,6 +157,6 @@ export class PollManager implements UpdateProcessor<PollManagerUpdate, true> {
     const offset = params?.offset;
 
     const result = await this.#c.invoke({ _: "messages.getPollVotes", peer, id, option, limit, offset });
-    return constructPollVoterList(result, this.#c.getPeer);
+    return constructPollVoterList(result, this.#c.getPeer, params?.optionIndex);
   }
 }

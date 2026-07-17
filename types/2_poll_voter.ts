@@ -33,19 +33,25 @@ export interface PollVoter {
   votedAt: number;
 }
 
-export function constructPollVoter(mpv: Api.MessagePeerVote, getPeer: PeerGetter): PollVoter {
-  if (Api.is("messagePeerVoteInputOption", mpv)) {
-    unreachable();
-  }
+export function constructPollVoter(mpv: Api.MessagePeerVote, getPeer: PeerGetter, optionIndex?: number): PollVoter {
   const peer = getPeer(mpv.peer);
   if (peer === null) {
     unreachable();
   }
 
-  const options = Api.is("messagePeerVote", mpv) ? [mpv.option] : mpv.options;
+  let optionIndexes: number[];
+  if (Api.is("messagePeerVoteInputOption", mpv)) {
+    if (optionIndex === undefined) {
+      unreachable();
+    }
+    optionIndexes = [optionIndex];
+  } else {
+    const options = Api.is("messagePeerVote", mpv) ? [mpv.option] : mpv.options;
+    optionIndexes = options.map(decodeText).map(Number);
+  }
   return {
     voter: peer[0],
-    optionIndexes: options.map(decodeText).map(Number),
+    optionIndexes,
     votedAt: mpv.date,
   };
 }
