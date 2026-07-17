@@ -154,4 +154,10 @@ Deno.test("intToBytes", () => {
   assertThrows(() => {
     intToBytes(32768, 2);
   });
+  assertThrows(() => {
+    intToBytes(255.1, 1, { isSigned: false });
+  });
+  assertThrows(() => {
+    intToBytes(1.1, 2);
+  });
 });

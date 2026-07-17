@@ -157,6 +157,10 @@ export function intToBytes(int: bigint | number, byteCount: number, {
   isSigned = true,
   path = [],
 }: BufferFromBigintParams = {}): Uint8Array<ArrayBuffer> {
+  if (typeof int === "number" && !Number.isInteger(int)) {
+    throw new TLError("Expected an integer.", path);
+  }
+
   if (!isSigned && int < 0n) {
     throw new TLError("Received a signed integer while an unsigned one was expected.", path);
   }
@@ -173,7 +177,7 @@ export function intToBytes(int: bigint | number, byteCount: number, {
     return buffer;
   }
 
-  int = BigInt(typeof int === "number" ? Math.ceil(int) : int);
+  int = BigInt(int);
   if (byteCount === 8) { // fast path
     const buffer = new Uint8Array(byteCount);
     const dataView = new DataView(buffer.buffer);
