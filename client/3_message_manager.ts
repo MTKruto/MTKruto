@@ -1937,7 +1937,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async #uploadAudio(peer: Api.InputPeer | undefined, audio: FileSource, params?: _UploadCommon & SendAudioParams): Promise<Api.inputDocument> {
     if (typeof audio === "string") {
-      const fileId = this.resolveFileId(audio, [FileType.Video]);
+      const fileId = this.resolveFileId(audio, [FileType.Audio]);
       if (fileId !== null) {
         return { ...fileId, _: "inputDocument" };
       }
@@ -1968,7 +1968,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async #uploadVoice(peer: Api.InputPeer | undefined, voice: FileSource, params?: _UploadCommon & SendAudioParams): Promise<Api.inputDocument> {
     if (typeof voice === "string") {
-      const fileId = this.resolveFileId(voice, [FileType.Video]);
+      const fileId = this.resolveFileId(voice, [FileType.VoiceNote]);
       if (fileId !== null) {
         return { ...fileId, _: "inputDocument" };
       }
