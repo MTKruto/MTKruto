@@ -84,7 +84,10 @@ export interface MessageContentVenue {
   googlePlaceType?: string;
 }
 
-/** @unlisted */
+/**
+ * A text message content.
+ * @unlisted
+ */
 export interface MessageContentText {
   type: "text";
   /** The message's text. */
@@ -97,14 +100,20 @@ export interface MessageContentText {
   linkPreview?: LinkPreview;
 }
 
-/** @unlisted */
+/**
+ * A rich text message content.
+ * @unlisted
+ */
 export interface MessageContentRichText {
   type: "richText";
   /** The message's rich text. */
   richText: InputRichText;
 }
 
-/** @unlisted */
+/**
+ * An invoice message content.
+ * @unlisted
+ */
 export interface MessageContentInvoice {
   type: "invoice";
   title: string;
