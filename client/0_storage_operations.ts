@@ -505,7 +505,7 @@ export class StorageOperations {
     await this.#deleteByPrefix(K.updates.all());
   }
 
-  async getUpdateBoxIds() {
+  async getUpdateBoxIds(): Promise<Set<bigint>> {
     const boxIds = new Set<bigint>();
     for await (const [key] of await this.#storage.getMany({ prefix: K.updates.all() })) {
       boxIds.add(key[1] as bigint);
