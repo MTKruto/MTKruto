@@ -827,10 +827,14 @@ export class UpdateManager {
         this.processChats(difference.chats, difference);
         await this.processUsers(difference.users, difference);
         for (const message of difference.new_messages) {
-          await this.#processUpdates({ _: "updateNewChannelMessage", message, pts: 0, pts_count: 0 }, false);
+          await this.#processChannelPtsUpdateInner({ _: "updateNewChannelMessage", message, pts: 0, pts_count: 0 }, false);
         }
         for (const update of difference.other_updates) {
-          await this.#processUpdates(update, false);
+          if (UpdateManager.isChannelPtsUpdate(update) && !Api.is("updateChannelTooLong", update)) {
+            await this.#processChannelPtsUpdateInner(update, false);
+          } else {
+            await this.#processUpdates(update, false);
+          }
         }
         this.#c.storage.channelPts.set([channelId], difference.pts);
         this.#LrecoverChannelUpdateGap.debug(`recovered from update gap [${channelId}, ${source}]`, channelId, source);
