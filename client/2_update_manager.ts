@@ -365,7 +365,7 @@ export class UpdateManager {
 
   async #checkGap(pts: number, ptsCount: number) {
     const localState = await this.#getLocalState();
-    if (localState.pts + ptsCount < pts) {
+    if (localState.pts < pts && localState.pts + ptsCount !== pts) {
       await this.recoverUpdateGap("processUpdates[pts]");
     }
   }
