@@ -36,11 +36,22 @@ export function mustPrompt(message: string) {
 }
 
 export function mustPromptNumber(message: string) {
-  let result = Number(BigInt(mustPrompt(message)));
-  while (isNaN(result)) {
+  let string: string;
+  do {
+    string = mustPrompt(message).trim();
+  } while (string === "");
+
+  let result = Number(string);
+  while (isNaN(result) || !Number.isSafeInteger(result)) {
     // deno-lint-ignore no-console
     console.log("Expected a number.");
-    result = Number(BigInt(mustPrompt(message)));
+
+    let string: string;
+    do {
+      string = mustPrompt(message).trim();
+    } while (string === "");
+
+    result = Number(string);
   }
   return result;
 }
