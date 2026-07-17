@@ -20,7 +20,7 @@
 
 import type { NotificationSound } from "./0_notification_sound.ts";
 
-/** A chat's notification settings that is to be used as an input. */
+/** A chat's notification settings that are to be used as an input. */
 export interface InputNotificationSettings {
   showsPreviews?: boolean;
   isSilent?: boolean;

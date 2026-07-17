@@ -56,7 +56,7 @@ export interface ChatAdministratorRights {
   canManageDirectMessages: boolean;
   /** Whether the administrator can manage member tags. */
   canManageTags: boolean;
-  /** Whether the administrator can managed linked chats. */
+  /** Whether the administrator can manage linked chats. */
   canManageLinkedChats: boolean;
 }
 

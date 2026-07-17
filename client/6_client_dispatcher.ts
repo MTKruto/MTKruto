@@ -877,7 +877,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Remove the profile video of the current user or a bot managed by the current user.
+   * Remove the profile photo of the current user or a bot managed by the current user.
    *
    * @method ac
    */
@@ -2556,7 +2556,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * Get custom emoji documents for download.
    *
    * @method fs
-   * @param id Identifier of one or more of custom emojis.
+   * @param id Identifier of one or more custom emojis.
    * @returns The custom emoji documents.
    * @cache
    */
@@ -2645,7 +2645,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Add a single user to a chat. User-only.
+   * Boost a chat. User-only.
    *
    * @method ch
    * @param chatId The identifier of the chat to boost.
@@ -3064,7 +3064,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    *
    * @method ch
    * @param chatId The identifier of a chat.
-   * @returns The invite links created for the chat. This might be a subset of the results if they were less than `limit`. The parameters `afterDate` and `afterInviteLink` can be used for pagination.
+   * @returns The invite links created for the chat. The returned list might be a subset if more than `limit` links exist. The parameters `afterDate` and `afterInviteLink` can be used for pagination.
    */
   async getCreatedInviteLinks(chatId: ID, params?: GetCreatedInviteLinksParams): Promise<InviteLink[]> {
     return await this.#dispatch("getCreatedInviteLinks", chatId, params);
@@ -5044,7 +5044,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Get a community. User-only.
+   * Get a partial community. User-only.
    *
    * @method ct
    * @param communityId The identifier of the community.

@@ -556,7 +556,7 @@ export abstract class ClientGeneric {
   abstract removeMusicFromProfile(fileId: string): Promise<void>;
 
   /**
-   * Remove the profile video of the current user or a bot managed by the current user.
+   * Remove the profile photo of the current user or a bot managed by the current user.
    *
    * @method ac
    */
@@ -2014,7 +2014,7 @@ export abstract class ClientGeneric {
   abstract banChatMember(chatId: ID, memberId: ID, params?: BanChatMemberParams): Promise<void>;
 
   /**
-   * Add a single user to a chat. User-only.
+   * Boost a chat. User-only.
    *
    * @method ch
    * @param chatId The identifier of the chat to boost.
@@ -2353,7 +2353,7 @@ export abstract class ClientGeneric {
    *
    * @method ch
    * @param chatId The identifier of a chat.
-   * @returns The invite links created for the chat. This might be a subset of the results if they were less than `limit`. The parameters `afterDate` and `afterInviteLink` can be used for pagination.
+   * @returns The invite links created for the chat. The returned list might be a subset if more than `limit` links exist. The parameters `afterDate` and `afterInviteLink` can be used for pagination.
    */
   abstract getCreatedInviteLinks(chatId: ID, params?: GetCreatedInviteLinksParams): Promise<InviteLink[]>;
 

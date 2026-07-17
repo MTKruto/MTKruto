@@ -87,7 +87,7 @@ export interface StoryInteractiveAreaGift extends _StoryInteractiveAreaPositionC
   slug: string;
 }
 
-/** A any type of a story's interactive area. */
+/** Any type of a story's interactive area. */
 export type StoryInteractiveArea =
   | StoryInteractiveAreaLocation
   | StoryInteractiveAreaVenue

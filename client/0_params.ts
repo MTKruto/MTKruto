@@ -1376,7 +1376,7 @@ export interface AddSavedNotificationSoundParams extends _UploadCommon {
 }
 
 export interface AddMusicToProfileParams {
-  /** File identifier of a music to add the music after. */
+  /** File identifier of the music to add the music after. */
   afterFileId?: string;
 }
 
