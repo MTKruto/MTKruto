@@ -390,7 +390,7 @@ export class UpdateManager {
   async #processChannelPtsUpdateInner(update: ChannelPtsUpdate, checkGap: boolean) {
     const channelId = Api.is("updateNewChannelMessage", update) || Api.is("updateEditChannelMessage", update) ? Api.as("peerChannel", (update.message as Api.message | Api.messageService).peer_id).channel_id : update.channel_id;
     if (Api.is("updateChannelTooLong", update)) {
-      if (update.pts !== undefined) {
+      if (update.pts !== undefined && this.#mustDropPendingUpdates()) {
         const localPts = await this.#c.storage.channelPts.get([channelId]);
         if (localPts === null) {
           this.#c.storage.channelPts.set([channelId], update.pts);
