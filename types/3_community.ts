@@ -27,17 +27,29 @@ import type { PeerGetter } from "./1_chat_p.ts";
 import { constructPhoto, type Photo } from "./1_photo.ts";
 import { type CommunityChat, constructCommunityChat } from "./2_community_chat.ts";
 
+/** A community. */
 export interface Community {
+  /** Whether the current user is the owner of the community. */
   isCreator: boolean;
+  /** The identifier of the community. */
   id: number;
+  /** The community's name. */
   name: string;
+  /** The community's description. */
   description?: string;
+  /** The community's photo. */
   photo?: Photo;
+  /** Whether the current account has left the community. */
   isLeft: boolean;
+  /** Whether the community is shown as one chat. */
   isShownAsOneChat: boolean;
+  /** Rights of community administrators. */
   administratorRights?: ChatAdministratorRights;
+  /** Default permissions of community members. */
   defaultPermissions?: ChatMemberRights;
+  /** The number of administrators in the community. */
   adminCount: number;
+  /** The chats in the community. */
   chats: CommunityChat[];
 }
 

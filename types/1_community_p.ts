@@ -25,14 +25,23 @@ import { type ChatAdministratorRights, constructChatAdministratorRights } from "
 import { type ChatMemberRights, constructChatMemberRights } from "./0_chat_member_rights.ts";
 import { type ChatPhoto, constructChatPhoto } from "./0_chat_photo.ts";
 
+/** A partial community. */
 export interface CommunityP {
+  /** Whether the current user is the owner of the community. */
   isCreator: boolean;
+  /** The identifier of the community. */
   id: number;
+  /** The community's name. */
   name: string;
+  /** The community's photo. */
   photo?: ChatPhoto;
+  /** Whether the current account has left the community. */
   isLeft: boolean;
+  /** Whether the community is shown as one chat. */
   isShownAsOneChat: boolean;
+  /** Rights of community administrators. */
   administratorRights?: ChatAdministratorRights;
+  /** Default permissions of community members. */
   defaultPermissions?: ChatMemberRights;
 }
 

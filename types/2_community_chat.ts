@@ -22,9 +22,13 @@ import { unreachable } from "../0_deps.ts";
 import type { Api } from "../2_tl.ts";
 import type { ChatP, PeerGetter } from "./1_chat_p.ts";
 
+/** A chat in a community. */
 export interface CommunityChat {
+  /** Whether the chat's history is visible. */
   isHistoryVisible: boolean;
+  /** Whether the chat is visible inside the community. */
   isVisible: boolean;
+  /** The chat. */
   chat: ChatP;
 }
 
