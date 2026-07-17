@@ -990,6 +990,7 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
   return { type: "unsupported", ...message };
 }
 
+/** @unlisted */
 export type CommunityGetter = (communityId: number) => Promise<Api.community | Api.communityForbidden | null>;
 
 export async function constructMessage(
