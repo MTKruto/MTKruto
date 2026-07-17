@@ -20,7 +20,10 @@
 
 import type { InputMediaAnimation, InputMediaAudio, InputMediaPhoto, InputMediaVideo, InputMediaVoice } from "./3_input_media.ts";
 
+/** A media that is to be used with HTML and Markdown input rich texts. */
 export interface InputRichTextMedia {
+  /** The identifier of the media used in the HTML or the Markdown. */
   id: string;
+  /** The media. */
   media: InputMediaAnimation | InputMediaAudio | InputMediaPhoto | InputMediaVideo | InputMediaVoice;
 }
