@@ -41,7 +41,7 @@ export interface _InputPageBlockMediaCommon {
 }
 
 /**
- * A paragraph page block.
+ * An input paragraph page block.
  * @unlisted
  */
 export interface InputPageBlockParagraph {
@@ -51,7 +51,7 @@ export interface InputPageBlockParagraph {
 }
 
 /**
- * A pre-formatted page block.
+ * An input pre-formatted page block.
  * @unlisted
  */
 export interface InputPageBlockPre {
@@ -63,7 +63,7 @@ export interface InputPageBlockPre {
 }
 
 /**
- * A footer page block.
+ * An input footer page block.
  * @unlisted
  */
 export interface InputPageBlockFooter {
@@ -73,7 +73,7 @@ export interface InputPageBlockFooter {
 }
 
 /**
- * A divider page block.
+ * An input divider page block.
  * @unlisted
  */
 export interface InputPageBlockDivider {
@@ -81,7 +81,7 @@ export interface InputPageBlockDivider {
 }
 
 /**
- * An anchor page block.
+ * An input anchor page block.
  * @unlisted
  */
 export interface InputPageBlockAnchor {
@@ -121,7 +121,7 @@ export function pageBlockListItemToTlObject(pbli: InputPageBlockListItem, photoI
   }
 }
 /**
- * A list page block.
+ * An input list page block.
  * @unlisted
  */
 export interface InputPageBlockList {
@@ -131,7 +131,7 @@ export interface InputPageBlockList {
 }
 
 /**
- * A block quote page block.
+ * An input block quote page block.
  * @unlisted
  */
 export interface InputPageBlockBlockQuote {
@@ -143,7 +143,7 @@ export interface InputPageBlockBlockQuote {
 }
 
 /**
- * A pull quote page block.
+ * An input pull quote page block.
  * @unlisted
  */
 export interface InputPageBlockPullQuote {
@@ -155,7 +155,7 @@ export interface InputPageBlockPullQuote {
 }
 
 /**
- * A page block's caption.
+ * An input page block's caption.
  *
  * @unlisted
  */
@@ -173,7 +173,7 @@ export function pageBlockCaptionToTlObject(pbc: InputPageBlockCaption): Api.Page
   };
 }
 /**
- * A photo page block.
+ * An input photo page block.
  * @unlisted
  */
 export interface InputPageBlockPhoto extends _InputPageBlockMediaCommon {
@@ -189,7 +189,7 @@ export interface InputPageBlockPhoto extends _InputPageBlockMediaCommon {
 }
 
 /**
- * A video page block.
+ * An input video page block.
  * @unlisted
  */
 export interface InputPageBlockVideo extends _InputPageBlockMediaCommon {
@@ -216,7 +216,7 @@ export interface InputPageBlockVideo extends _InputPageBlockMediaCommon {
 }
 
 /**
- * An animation page block.
+ * An input animation page block.
  * @unlisted
  */
 export interface InputPageBlockAnimation extends _InputPageBlockMediaCommon {
@@ -241,7 +241,7 @@ export interface InputPageBlockAnimation extends _InputPageBlockMediaCommon {
 }
 
 /**
- * A cover page block.
+ * An input cover page block.
  * @unlisted
  */
 export interface InputPageBlockCover {
@@ -251,7 +251,7 @@ export interface InputPageBlockCover {
 }
 
 /**
- * An embed page block.
+ * An input embed page block.
  * @unlisted
  */
 export interface InputPageBlockEmbed {
@@ -267,7 +267,7 @@ export interface InputPageBlockEmbed {
 }
 
 /**
- * An embed post page block.
+ * An input embed post page block.
  * @unlisted
  */
 export interface InputPageBlockEmbedPost {
@@ -282,7 +282,7 @@ export interface InputPageBlockEmbedPost {
 }
 
 /**
- * A collage page block.
+ * An input collage page block.
  * @unlisted
  */
 export interface InputPageBlockCollage {
@@ -292,7 +292,7 @@ export interface InputPageBlockCollage {
 }
 
 /**
- * A slideshow page block.
+ * An input slideshow page block.
  * @unlisted
  */
 export interface InputPageBlockSlideshow {
@@ -302,7 +302,7 @@ export interface InputPageBlockSlideshow {
 }
 
 /**
- * An audio page block.
+ * An input audio page block.
  * @unlisted
  */
 export interface InputPageBlockAudio extends _InputPageBlockMediaCommon {
@@ -315,7 +315,7 @@ export interface InputPageBlockAudio extends _InputPageBlockMediaCommon {
 }
 
 /**
- * A voice page block.
+ * An input voice page block.
  * @unlisted
  */
 export interface InputPageBlockVoice extends _InputPageBlockMediaCommon {
@@ -326,7 +326,7 @@ export interface InputPageBlockVoice extends _InputPageBlockMediaCommon {
 }
 
 /**
- * A kicker page block.
+ * An input kicker page block.
  * @unlisted
  */
 export interface InputPageBlockKicker {
@@ -369,7 +369,7 @@ export function pageBlockTableRowToTlObject(pbtr: InputPageBlockTableRow): Api.P
   };
 }
 /**
- * A table page block.
+ * An input table page block.
  * @unlisted
  */
 export interface InputPageBlockTable {
@@ -411,7 +411,7 @@ export function pageBlockOrderedListItemToTlObject(pboli: InputPageBlockOrderedL
   }
 }
 /**
- * An order list page block.
+ * An input order list page block.
  * @unlisted
  */
 export interface InputPageBlockOrderedList {
@@ -423,7 +423,7 @@ export interface InputPageBlockOrderedList {
 }
 
 /**
- * A details page block.
+ * An input details page block.
  * @unlisted
  */
 export interface InputPageBlockDetails {
@@ -434,7 +434,7 @@ export interface InputPageBlockDetails {
 }
 
 /**
- * A map page block.
+ * An input map page block.
  * @unlisted
  */
 export interface InputPageBlockMap {
@@ -447,7 +447,7 @@ export interface InputPageBlockMap {
 }
 
 /**
- * A heading 1 page block.
+ * An input heading 1 page block.
  * @unlisted
  */
 export interface InputPageBlockHeading1 {
@@ -457,7 +457,7 @@ export interface InputPageBlockHeading1 {
 }
 
 /**
- * A heading 2 page block.
+ * An input heading 2 page block.
  * @unlisted
  */
 export interface InputPageBlockHeading2 {
@@ -467,7 +467,7 @@ export interface InputPageBlockHeading2 {
 }
 
 /**
- * A heading 3 page block.
+ * An input heading 3 page block.
  * @unlisted
  */
 export interface InputPageBlockHeading3 {
@@ -477,7 +477,7 @@ export interface InputPageBlockHeading3 {
 }
 
 /**
- * A heading 4 page block.
+ * An input heading 4 page block.
  * @unlisted
  */
 export interface InputPageBlockHeading4 {
@@ -487,7 +487,7 @@ export interface InputPageBlockHeading4 {
 }
 
 /**
- * A heading 5 page block.
+ * An input heading 5 page block.
  * @unlisted
  */
 export interface InputPageBlockHeading5 {
@@ -497,7 +497,7 @@ export interface InputPageBlockHeading5 {
 }
 
 /**
- * A heading 6 page block.
+ * An input heading 6 page block.
  * @unlisted
  */
 export interface InputPageBlockHeading6 {
@@ -507,7 +507,7 @@ export interface InputPageBlockHeading6 {
 }
 
 /**
- * A math page block.
+ * An input math page block.
  * @unlisted
  */
 export interface InputPageBlockMath {
@@ -517,7 +517,7 @@ export interface InputPageBlockMath {
 }
 
 /**
- * A thinking block.
+ * An input thinking block.
  * @unlisted
  */
 export interface InputPageBlockThinking {
@@ -527,7 +527,7 @@ export interface InputPageBlockThinking {
 }
 
 /**
- * A block quote blocks block.
+ * An input block quote blocks block.
  * @unlisted
  */
 export interface InputPageBlockBlockQuoteBlocks {

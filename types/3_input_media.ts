@@ -121,7 +121,7 @@ export interface InputMediaVoice extends _InputMediaCommon {
   type: "voice";
   /** The voice. */
   voice: FileSource;
-  /** The duration of the audio file in seconds. */
+  /** The duration of the voice message in seconds. */
   duration?: number;
 }
 
