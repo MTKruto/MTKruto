@@ -174,14 +174,20 @@ export interface MessageLink extends _MessageBase {
   linkPreview: LinkPreview;
 }
 
-/** @unlisted */
+/**
+ * A photo message.
+ * @unlisted
+ */
 export interface MessagePhoto extends _MessageMediaBase {
   type: "photo";
   /** The photo included in the message. */
   photo: Photo;
 }
 
-/** @unlisted */
+/**
+ * A live photo message.
+ * @unlisted
+ */
 export interface MessageLivePhoto extends _MessageMediaBase {
   type: "livePhoto";
   /** The photo included in the message. */
