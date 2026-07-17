@@ -695,7 +695,7 @@ function collectRichTextComponentPhoto(components: RichTextComponent[]): RichTex
   return photos;
 }
 function flattenRichTextComponent(component: RichTextComponent): RichTextComponent[] {
-  const items = new Array<RichTextComponent>();
+  const items = new Array<RichTextComponent>(component);
   switch (component.type) {
     case "anchor":
     case "dateTime":
@@ -769,8 +769,10 @@ function collectRichTextComponents(pageBlocks: InputPageBlock[]): RichTextCompon
         break;
       case "photo":
       case "video":
+      case "animation":
       case "embed":
       case "audio":
+      case "voice":
       case "map": {
         const caption = pb.caption ?? { text: { type: "empty" }, credit: { type: "empty" } };
         components.push(caption.text);
