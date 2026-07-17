@@ -798,7 +798,22 @@ export class UpdateManager {
     }
   }
 
+  #recoverChannelUpdateGapMutexes = new Map<bigint, Mutex>();
   async #recoverChannelUpdateGap(channelId: bigint, source: string) {
+    let mutex = this.#recoverChannelUpdateGapMutexes.get(channelId);
+    if (!mutex) {
+      mutex = new Mutex();
+      this.#recoverChannelUpdateGapMutexes.set(channelId, mutex);
+    }
+    const unlock = await mutex.lock();
+    try {
+      return await this.#recoverChannelUpdateGapInner(channelId, source);
+    } finally {
+      unlock();
+    }
+  }
+
+  async #recoverChannelUpdateGapInner(channelId: bigint, source: string) {
     let lastTimeout = 10;
     this.#LrecoverChannelUpdateGap.debug(`recovering channel update gap [${channelId}, ${source}]`);
     let retryIn = 5;
