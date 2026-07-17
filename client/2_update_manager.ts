@@ -380,7 +380,7 @@ export class UpdateManager {
     if (!localPts) {
       localPts = pts - ptsCount;
     }
-    if (localPts + ptsCount < pts) {
+    if (localPts < pts && localPts + ptsCount !== pts) {
       await this.#recoverChannelUpdateGap(channelId, "processUpdates");
     }
   }
