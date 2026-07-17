@@ -211,7 +211,7 @@ export interface InputPageBlockVideo extends _InputPageBlockMediaCommon {
   height?: number;
   /** The duration of the video. */
   duration?: number;
-  /** Whether streaming is suppported. */
+  /** Whether streaming is supported. */
   isStreamingSupported?: boolean;
 }
 
@@ -411,7 +411,7 @@ export function pageBlockOrderedListItemToTlObject(pboli: InputPageBlockOrderedL
   }
 }
 /**
- * An input order list page block.
+ * An input ordered list page block.
  * @unlisted
  */
 export interface InputPageBlockOrderedList {

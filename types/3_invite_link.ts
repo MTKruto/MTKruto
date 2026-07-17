@@ -39,7 +39,7 @@ export interface InviteLink {
   title?: string;
   /** A point in time in the future when the invite link will be revoked. */
   expiresAt?: number;
-  /** The times the invite link can be used. */
+  /** The number of times the invite link can be used. */
   limit?: number;
   /** The number of pending join requests originating from this invite link. */
   pendingJoinRequestCount?: number;

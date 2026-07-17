@@ -2800,7 +2800,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * @param chatId The identifier of a chat to retrieve the messages from.
    * @param messageIds The identifiers of the messages to retrieve.
    * @example ```ts
-   * const message = await client.getMessages("@MTKruto", [210, 212]);
+   * const messages = await client.getMessages("@MTKruto", [210, 212]);
    * ```
    * @returns The retrieved messages.
    * @cache
@@ -3801,7 +3801,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Add a single user to a chat. User-only.
+   * Boost a chat. User-only.
    *
    * @method ch
    * @param chatId The identifier of the chat to boost.
@@ -4235,7 +4235,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    *
    * @method ch
    * @param chatId The identifier of a chat.
-   * @returns The invite links created for the chat. This might be a subset of the results if they were less than `limit`. The parameters `afterDate` and `afterInviteLink` can be used for pagination.
+   * @returns The invite links created for the chat. The returned list might be a subset if more than `limit` links exist. The parameters `afterDate` and `afterInviteLink` can be used for pagination.
    */
   async getCreatedInviteLinks(chatId: ID, params?: GetCreatedInviteLinksParams): Promise<InviteLink[]> {
     return await this.#chatManager.getCreatedInviteLinks(chatId, params);
@@ -6219,7 +6219,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Get a community. User-only.
+   * Get a partial community. User-only.
    *
    * @method ct
    * @param communityId The identifier of the community.

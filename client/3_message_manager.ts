@@ -2684,7 +2684,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       throw new InputError("Message not found.");
     }
     if (message.type !== "voice") {
-      throw new InputError("Message not voice.");
+      throw new InputError("Message is not a voice message.");
     }
     const cachedTranscription = await this.#getCachedVoiceTranscription(message);
     if (cachedTranscription) {
