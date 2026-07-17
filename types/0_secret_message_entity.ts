@@ -23,87 +23,134 @@ import { SecretChats } from "../2_tl.ts";
 
 /** @unlisted */
 export interface _SecretMessageEntityBase {
+  /** The offset of the entity. */
   offset: number;
+  /** The length of the entity. */
   length: number;
 }
 
-/** @unlisted */
+/**
+ * A message entity that highlights a user mention.
+ * @unlisted
+ */
 export interface SecretMessageEntityMention extends _SecretMessageEntityBase {
   type: "mention";
 }
 
-/** @unlisted */
+/**
+ * A message entity that highlights a hashtag.
+ * @unlisted
+ */
 export interface SecretMessageEntityHashtag extends _SecretMessageEntityBase {
   type: "hashtag";
 }
 
-/** @unlisted */
+/**
+ * A message entity that highlights a bot command.
+ * @unlisted
+ */
 export interface SecretMessageEntityBotCommand extends _SecretMessageEntityBase {
   type: "botCommand";
 }
 
-/** @unlisted */
+/**
+ * A message entity that highlights a URL.
+ * @unlisted
+ */
 export interface SecretMessageEntityURL extends _SecretMessageEntityBase {
   type: "url";
 }
 
-/** @unlisted */
+/**
+ * A message entity that marks an email address.
+ * @unlisted
+ */
 export interface SecretMessageEntityEmailAddress extends _SecretMessageEntityBase {
   type: "email";
 }
 
-/** @unlisted */
+/**
+ * A message entity that marks text as bold.
+ * @unlisted
+ */
 export interface SecretMessageEntityBold extends _SecretMessageEntityBase {
   type: "bold";
 }
 
-/** @unlisted */
+/**
+ * A message entity that marks text as italic.
+ * @unlisted
+ */
 export interface SecretMessageEntityItalic extends _SecretMessageEntityBase {
   type: "italic";
 }
 
-/** @unlisted */
+/**
+ * A preformatted message entity.
+ * @unlisted
+ */
 export interface SecretMessageEntityPre extends _SecretMessageEntityBase {
   type: "pre";
   /** The language identifier of the code. */
   language: string;
 }
 
-/** @unlisted */
+/**
+ * A code message entity.
+ * @unlisted
+ */
 export interface SecretMessageEntityCode extends _SecretMessageEntityBase {
   type: "code";
 }
 
-/** @unlisted */
+/**
+ * A hyperlink message entity.
+ * @unlisted
+ */
 export interface SecretMessageEntityTextLink extends _SecretMessageEntityBase {
   type: "textLink";
   /** A URL that will be opened after the text is tapped. */
   url: string;
 }
 
-/** @unlisted */
+/**
+ * A text mention message entity.
+ * @unlisted
+ */
 export interface SecretMessageEntityTextMention extends _SecretMessageEntityBase {
   type: "textMention";
   /** The identifier of the user to mention. */
   userId: number;
 }
 
-/** @unlisted */
+/**
+ * A message entity that highlights a cashtag.
+ * @unlisted
+ */
 export interface SecretMessageEntityCashtag extends _SecretMessageEntityBase {
   type: "cashtag";
 }
 
-/** @unlisted */
+/**
+ * A message entity that highlights a phone number.
+ * @unlisted
+ */
 export interface SecretMessageEntityPhoneNumber extends _SecretMessageEntityBase {
   type: "phoneNumber";
 }
 
-/** @unlisted */
+/**
+ * A message entity that marks text as underline.
+ * @unlisted
+ */
 export interface SecretMessageEntityUnderline extends _SecretMessageEntityBase {
   type: "underline";
 }
 
-/** @unlisted */
+/**
+ * A message entity that marks text as strikethrough.
+ * @unlisted
+ */
 export interface SecretMessageEntityStrikethrough extends _SecretMessageEntityBase {
   type: "strikethrough";
 }
@@ -113,17 +160,26 @@ export interface SecretMessageEntityBlockquote extends _SecretMessageEntityBase 
   type: "blockquote";
 }
 
-/** @unlisted */
+/**
+ * A message entity that highlights a bank card number.
+ * @unlisted
+ */
 export interface SecretMessageEntityBankCard extends _SecretMessageEntityBase {
   type: "bankCard";
 }
 
-/** @unlisted */
+/**
+ * A message entity that marks text as spoiler.
+ * @unlisted
+ */
 export interface SecretMessageEntitySpoiler extends _SecretMessageEntityBase {
   type: "spoiler";
 }
 
-/** @unlisted */
+/**
+ * A custom emoji message entity.
+ * @unlisted
+ */
 export interface SecretMessageEntityCustomEmoji extends _SecretMessageEntityBase {
   type: "customEmoji";
   /** The identifier of the custom emoji. */

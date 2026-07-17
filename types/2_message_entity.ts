@@ -25,115 +25,177 @@ import type { PeerGetter } from "./1_chat_p.ts";
 
 /** @unlisted */
 export interface _MessageEntityBase {
+  /** The offset of the entity. */
   offset: number;
+  /** The length of the entity. */
   length: number;
 }
 
-/** @unlisted */
+/**
+ * A message entity that highlights a user mention.
+ * @unlisted
+ */
 export interface MessageEntityMention extends _MessageEntityBase {
   type: "mention";
 }
 
-/** @unlisted */
+/**
+ * A message entity that highlights a hashtag.
+ * @unlisted
+ */
 export interface MessageEntityHashtag extends _MessageEntityBase {
   type: "hashtag";
 }
 
-/** @unlisted */
+/**
+ * A message entity that highlights a bot command.
+ * @unlisted
+ */
 export interface MessageEntityBotCommand extends _MessageEntityBase {
   type: "botCommand";
 }
 
-/** @unlisted */
+/**
+ * A message entity that highlights a URL.
+ * @unlisted
+ */
 export interface MessageEntityURL extends _MessageEntityBase {
   type: "url";
 }
 
-/** @unlisted */
+/**
+ * A message entity that marks an email address.
+ * @unlisted
+ */
 export interface MessageEntityEmailAddress extends _MessageEntityBase {
   type: "email";
 }
 
-/** @unlisted */
+/**
+ * A message entity that marks text as bold.
+ * @unlisted
+ */
 export interface MessageEntityBold extends _MessageEntityBase {
   type: "bold";
 }
 
-/** @unlisted */
+/**
+ * A message entity that marks text as italic.
+ * @unlisted
+ */
 export interface MessageEntityItalic extends _MessageEntityBase {
   type: "italic";
 }
 
-/** @unlisted */
+/**
+ * A preformatted message entity.
+ * @unlisted
+ */
 export interface MessageEntityPre extends _MessageEntityBase {
   type: "pre";
   /** The language identifier of the code. */
   language: string;
 }
 
-/** @unlisted */
+/**
+ * A code message entity.
+ * @unlisted
+ */
 export interface MessageEntityCode extends _MessageEntityBase {
   type: "code";
 }
 
-/** @unlisted */
+/**
+ * A hyperlink message entity.
+ * @unlisted
+ */
 export interface MessageEntityTextLink extends _MessageEntityBase {
   type: "textLink";
   /** A URL that will be opened after the text is tapped. */
   url: string;
 }
 
-/** @unlisted */
+/**
+ * A text mention message entity.
+ * @unlisted
+ */
 export interface MessageEntityTextMention extends _MessageEntityBase {
   type: "textMention";
   /** The identifier of the user to mention. */
   userId: number;
 }
 
-/** @unlisted */
+/**
+ * A message entity that highlights a cashtag.
+ * @unlisted
+ */
 export interface MessageEntityCashtag extends _MessageEntityBase {
   type: "cashtag";
 }
 
-/** @unlisted */
+/**
+ * A message entity that highlights a phone number.
+ * @unlisted
+ */
 export interface MessageEntityPhoneNumber extends _MessageEntityBase {
   type: "phoneNumber";
 }
 
-/** @unlisted */
+/**
+ * A message entity that marks text as underline.
+ * @unlisted
+ */
 export interface MessageEntityUnderline extends _MessageEntityBase {
   type: "underline";
 }
 
-/** @unlisted */
+/**
+ * A message entity that marks text as strikethrough.
+ * @unlisted
+ */
 export interface MessageEntityStrikethrough extends _MessageEntityBase {
   type: "strikethrough";
 }
 
-/** @unlisted */
+/**
+ * A blockquote message entity.
+ * @unlisted
+ */
 export interface MessageEntityBlockquote extends _MessageEntityBase {
   type: "blockquote";
   collapsible?: true;
 }
 
-/** @unlisted */
+/**
+ * A message entity that highlights a bank card number.
+ * @unlisted
+ */
 export interface MessageEntityBankCard extends _MessageEntityBase {
   type: "bankCard";
 }
 
-/** @unlisted */
+/**
+ * A message entity that marks text as spoiler.
+ * @unlisted
+ */
 export interface MessageEntitySpoiler extends _MessageEntityBase {
   type: "spoiler";
 }
 
-/** @unlisted */
+/**
+ * A custom emoji message entity.
+ * @unlisted
+ */
 export interface MessageEntityCustomEmoji extends _MessageEntityBase {
   type: "customEmoji";
   /** The identifier of the custom emoji. */
   customEmojiId: string;
 }
 
-/** @unlisted */
+/**
+ * A date time message entity.
+ * @unlisted
+ */
 export interface MessageEntityDateTime extends _MessageEntityBase {
   type: "dateTime";
   /** The format of the date time. */
