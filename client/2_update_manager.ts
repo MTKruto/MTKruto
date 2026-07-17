@@ -645,14 +645,10 @@ export class UpdateManager {
       await this.#setUpdateStateDate(updates_.date);
     }
 
+    let updatePtsChanged = false;
     for (const update of updates) {
       if (Api.is("updatePtsChanged", update)) {
-        await this.fetchState("updatePtsChanged");
-        if (this.#updateState) {
-          await this.#setState(this.#updateState);
-        } else {
-          unreachable();
-        }
+        updatePtsChanged = true;
       } else if (UpdateManager.isPtsUpdate(update)) {
         this.#processPtsUpdate(update, checkGap);
       } else if (UpdateManager.isChannelPtsUpdate(update)) {
@@ -661,6 +657,15 @@ export class UpdateManager {
         this.#processQtsUpdate(update, checkGap);
       } else {
         this.#queueUpdate(update, 0n, false);
+      }
+    }
+    if (updatePtsChanged) {
+      await Promise.all([this.#ptsUpdateQueue, this.#qtsUpdateQueue].map((queue) => new Promise<void>((resolve) => queue.add(() => Promise.resolve().then(resolve)))));
+      await this.fetchState("updatePtsChanged");
+      if (this.#updateState) {
+        await this.#setState(this.#updateState);
+      } else {
+        unreachable();
       }
     }
   }
