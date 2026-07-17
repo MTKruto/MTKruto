@@ -521,22 +521,27 @@ export class UpdateManager {
         if (seqStart === 0) {
           this.#L$processUpdates.debug("seqStart=0");
         } else {
-          const localState = await this.#getLocalState();
-          const localSeq = localState.seq;
+          let localState = await this.#getLocalState();
 
-          if (localSeq + 1 === seqStart) {
+          if (localState.seq + 1 < seqStart) {
+            // There's an update gap that must be filled.
+            await this.recoverUpdateGap("localSeq + 1 < seqStart");
+            localState = await this.#getLocalState();
+          }
+
+          if (localState.seq + 1 === seqStart) {
             // The update sequence can be applied.
             localState.seq = seq;
             localState.date = updates_.date;
             await this.#setUpdateStateDate(updates_.date);
             await this.#setState(localState);
-          } else if (localSeq + 1 > seqStart) {
+          } else if (localState.seq + 1 > seqStart) {
             // The update sequence was already applied, and must be ignored.
             this.#L$processUpdates.debug("localSeq + 1 > seqStart");
             return;
-          } else if (localSeq + 1 < seqStart) {
-            // There's an update gap that must be filled.
-            await this.recoverUpdateGap("localSeq + 1 < seqStart");
+          } else {
+            this.#L$processUpdates.warning("localSeq + 1 < seqStart after update gap recovery");
+            return;
           }
         }
       }
