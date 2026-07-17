@@ -56,7 +56,10 @@ export interface _InlineQueryResultThumbnailCommon {
   thumbnailHeight?: string;
 }
 
-/** @unlisted */
+/**
+ * An inline query result sending an article.
+ * @unlisted
+ */
 export interface InlineQueryResultArticle extends _InlineQueryResultBase, _InlineQueryResultThumbnailCommon {
   type: "article";
   title: string;
@@ -67,7 +70,10 @@ export interface InlineQueryResultArticle extends _InlineQueryResultBase, _Inlin
   isUrlHidden?: boolean;
 }
 
-/** @unlisted */
+/**
+ * An inline query result sending an audio file.
+ * @unlisted
+ */
 export interface InlineQueryResultAudio extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
   type: "audio";
   title: string;
@@ -76,34 +82,49 @@ export interface InlineQueryResultAudio extends _InlineQueryResultBase, _InlineQ
   audioDuration?: number;
 }
 
-/** @unlisted */
+/**
+ * An inline query result sending a cached audio file.
+ * @unlisted
+ */
 export interface InlineQueryResultCachedAudio extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
   type: "cachedAudio";
   fileId: string;
 }
 
-/** @unlisted */
+/**
+ * An inline query result sending a cached document.
+ * @unlisted
+ */
 export interface InlineQueryResultCachedDocument extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
   type: "cachedDocument";
   fileId: string;
   description?: string;
 }
 
-/** @unlisted */
+/**
+ * An inline query result sending a cached GIF.
+ * @unlisted
+ */
 export interface InlineQueryResultCachedGif extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
   type: "cachedGif";
   fileId: string;
   title?: string;
 }
 
-/** @unlisted */
+/**
+ * An inline query result sending a cached MPEG-4 GIF.
+ * @unlisted
+ */
 export interface InlineQueryResultCachedMpeg4Gif extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
   type: "cachedMpeg4Gif";
   fileId: string;
   title?: string;
 }
 
-/** @unlisted */
+/**
+ * An inline query result sending a cached photo.
+ * @unlisted
+ */
 export interface InlineQueryResultCachedPhoto extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
   type: "cachedPhoto";
   fileId: string;
@@ -112,13 +133,19 @@ export interface InlineQueryResultCachedPhoto extends _InlineQueryResultBase, _I
   description?: string;
 }
 
-/** @unlisted */
+/**
+ * An inline query result sending a cached sticker.
+ * @unlisted
+ */
 export interface InlineQueryResultSticker extends _InlineQueryResultBase, _InlineQueryResultMessageContentReplyMarkupCommon {
   type: "sticker";
   fileId: string;
 }
 
-/** @unlisted */
+/**
+ * An inline query result sending a cached video.
+ * @unlisted
+ */
 export interface InlineQueryResultCachedVideo extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
   type: "cachedVideo";
   title: string;
@@ -126,14 +153,20 @@ export interface InlineQueryResultCachedVideo extends _InlineQueryResultBase, _I
   description?: string;
 }
 
-/** @unlisted */
+/**
+ * An inline query result sending a cached voice message.
+ * @unlisted
+ */
 export interface InlineQueryResultCachedVoice extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
   type: "cachedVoice";
   title: string;
   fileId: string;
 }
 
-/** @unlisted */
+/**
+ * An inline query result sending a contact.
+ * @unlisted
+ */
 export interface InlineQueryResultContact extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon, _InlineQueryResultThumbnailCommon {
   type: "contact";
   phoneNumber: string;
@@ -142,21 +175,30 @@ export interface InlineQueryResultContact extends _InlineQueryResultBase, _Inlin
   vcard?: string;
 }
 
-/** @unlisted */
+/**
+ * An inline query result sending a document.
+ * @unlisted
+ */
 export interface InlineQueryResultDocument extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon, _InlineQueryResultThumbnailCommon {
   type: "document";
   title: string;
   url: string;
 }
 
-/** @unlisted */
+/**
+ * An inline query result sending a game.
+ * @unlisted
+ */
 export interface InlineQueryResultGame extends _InlineQueryResultBase {
   type: "game";
   gameShortName: string;
   replyMarkup?: ReplyMarkupInlineKeyboard;
 }
 
-/** @unlisted */
+/**
+ * An inline query result sending a GIF.
+ * @unlisted
+ */
 export interface InlineQueryResultGif extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
   type: "gif";
   title?: string;
@@ -168,7 +210,10 @@ export interface InlineQueryResultGif extends _InlineQueryResultBase, _InlineQue
   thumbnailMimeType?: string;
 }
 
-/** @unlisted */
+/**
+ * An inline query result sending a location.
+ * @unlisted
+ */
 export interface InlineQueryResultLocation extends _InlineQueryResultBase, _InlineQueryResultMessageContentReplyMarkupCommon, _InlineQueryResultThumbnailCommon {
   type: "location";
   title: string;
@@ -180,7 +225,10 @@ export interface InlineQueryResultLocation extends _InlineQueryResultBase, _Inli
   proximityAlertRadius?: number;
 }
 
-/** @unlisted */
+/**
+ * An inline query result sending an MPEG-4 GIF.
+ * @unlisted
+ */
 export interface InlineQueryResultMpeg4Gif extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
   type: "mpeg4Gif";
   url: string;
@@ -192,7 +240,10 @@ export interface InlineQueryResultMpeg4Gif extends _InlineQueryResultBase, _Inli
   thumbnailMimeType?: string;
 }
 
-/** @unlisted */
+/**
+ * An inline query result sending a photo.
+ * @unlisted
+ */
 export interface InlineQueryResultPhoto extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
   type: "photo";
   url: string;
@@ -203,7 +254,10 @@ export interface InlineQueryResultPhoto extends _InlineQueryResultBase, _InlineQ
   height?: number;
 }
 
-/** @unlisted */
+/**
+ * An inline query result sending a venue.
+ * @unlisted
+ */
 export interface InlineQueryResultVenue extends _InlineQueryResultBase, _InlineQueryResultMessageContentReplyMarkupCommon, _InlineQueryResultThumbnailCommon {
   type: "venue";
   title: string;
@@ -214,7 +268,10 @@ export interface InlineQueryResultVenue extends _InlineQueryResultBase, _InlineQ
   foursquareType?: string;
 }
 
-/** @unlisted */
+/**
+ * An inline query result sending a video.
+ * @unlisted
+ */
 export interface InlineQueryResultVideo extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
   type: "video";
   title: string;
@@ -227,7 +284,10 @@ export interface InlineQueryResultVideo extends _InlineQueryResultBase, _InlineQ
   videoDuration?: number;
 }
 
-/** @unlisted */
+/**
+ * An inline query result sending a voice message.
+ * @unlisted
+ */
 export interface InlineQueryResultVoice extends _InlineQueryResultBase, _InlineQueryResultCaptionCommon, _InlineQueryResultMessageContentReplyMarkupCommon {
   type: "voice";
   title: string;
