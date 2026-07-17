@@ -116,5 +116,14 @@ export interface InputMediaVideo extends _InputMediaCommon {
   selfDestruct?: SelfDestructOption;
 }
 
+/** @unlisted */
+export interface InputMediaVoice extends _InputMediaCommon {
+  type: "voice";
+  /** The voice. */
+  voice: FileSource;
+  /** The duration of the audio file in seconds. */
+  duration?: number;
+}
+
 /** Any type of input media. */
-export type InputMedia = InputMediaAnimation | InputMediaAudio | InputMediaDocument | InputMediaPhoto | InputMediaVideo;
+export type InputMedia = InputMediaAnimation | InputMediaAudio | InputMediaDocument | InputMediaPhoto | InputMediaVideo | InputMediaVoice;

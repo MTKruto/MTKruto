@@ -536,6 +536,39 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     let rich_message: Api.InputRichMessage;
     const rtl = richText?.isRtl || undefined;
     const noautolink = richText?.isAutomaticLinkDetectionDisabled || undefined;
+    let files: Api.InputRichFile[] | undefined;
+    if ((richText.type === "html" || richText.type === "markdown") && richText.media !== undefined) {
+      files = new Array<Api.InputRichFile>();
+      for (const media of richText.media) {
+        switch (media.media.type) {
+          case "animation": {
+            const inputDocument = await this.#uploadAnimation(peer, media.media.animation, media.media);
+            files.push({ _: "inputRichFileDocument", id: media.id, document: inputDocument });
+            break;
+          }
+          case "audio": {
+            const inputDocument = await this.#uploadAudio(peer, media.media.audio, media.media);
+            files.push({ _: "inputRichFileDocument", id: media.id, document: inputDocument });
+            break;
+          }
+          case "photo": {
+            const { id } = await this.#getInputMediaPhoto(peer, media.media.photo, media.media);
+            files.push({ _: "inputRichFilePhoto", id: media.id, photo: id });
+            break;
+          }
+          case "video": {
+            const inputDocument = await this.#uploadVideo(peer, media.media.video, media.media);
+            files.push({ _: "inputRichFileDocument", id: media.id, document: inputDocument });
+            break;
+          }
+          case "voice": {
+            const inputDocument = await this.#uploadVoice(peer, media.media.voice, media.media);
+            files.push({ _: "inputRichFileDocument", id: media.id, document: inputDocument });
+            break;
+          }
+        }
+      }
+    }
     switch (richText.type) {
       case "blocks": {
         const photos = new Array<Api.InputPhoto>();
@@ -610,28 +643,28 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
               break;
             }
             case "audio": {
-              const inputDocument = await this.#uploadAudio(fileSource, params);
+              const inputDocument = await this.#uploadAudio(peer, fileSource, params);
               documents.push(inputDocument);
               documentIds.push(inputDocument.id);
               uploadedFileSources.set(fileSource, { type: "document", id: inputDocument.id });
               break;
             }
             case "video": {
-              const inputDocument = await this.#uploadVideo(fileSource, params);
+              const inputDocument = await this.#uploadVideo(peer, fileSource, params);
               documents.push(inputDocument);
               documentIds.push(inputDocument.id);
               uploadedFileSources.set(fileSource, { type: "document", id: inputDocument.id });
               break;
             }
             case "voice": {
-              const inputDocument = await this.#uploadVoice(fileSource, params);
+              const inputDocument = await this.#uploadVoice(peer, fileSource, params);
               documents.push(inputDocument);
               documentIds.push(inputDocument.id);
               uploadedFileSources.set(fileSource, { type: "document", id: inputDocument.id });
               break;
             }
             case "animation": {
-              const inputDocument = await this.#uploadAnimation(fileSource, params);
+              const inputDocument = await this.#uploadAnimation(peer, fileSource, params);
               documents.push(inputDocument);
               documentIds.push(inputDocument.id);
               uploadedFileSources.set(fileSource, { type: "document", id: inputDocument.id });
@@ -643,10 +676,10 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         break;
       }
       case "markdown":
-        rich_message = { _: "inputRichMessageMarkdown", markdown: richText.markdown, rtl, noautolink };
+        rich_message = { _: "inputRichMessageMarkdown", markdown: richText.markdown, rtl, noautolink, files };
         break;
       case "html":
-        rich_message = { _: "inputRichMessageHTML", html: richText.html, rtl, noautolink };
+        rich_message = { _: "inputRichMessageHTML", html: richText.html, rtl, noautolink, files };
         break;
       default:
         unreachable();
@@ -1099,7 +1132,8 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async #sendPhotoInner(chatId: ID, photo: FileSource, params?: SendPhotoParams & { video?: FileSource }) {
     this.#checkParams(params);
-    const media = await this.#uploadPhoto(photo, params);
+    const peer = await this.#c.getInputPeer(chatId);
+    const media = await this.#uploadPhoto(peer, photo, params);
     const message = await this.#sendMedia(chatId, media, params);
     return assertMessageType(message, params?.video ? "livePhoto" : "photo");
   }
@@ -1288,11 +1322,11 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       case "photo":
         return await this.#getInputMediaPhoto(peer, media.photo, media);
       case "video":
-        return this.#getInputMediaDocument(await this.#uploadVideo(media.video, media));
+        return this.#getInputMediaDocument(await this.#uploadVideo(peer, media.video, media));
       case "animation":
-        return this.#getInputMediaDocument(await this.#uploadAnimation(media.animation, media));
+        return this.#getInputMediaDocument(await this.#uploadAnimation(peer, media.animation, media));
       case "sticker":
-        return this.#getInputMediaDocument(await this.#uploadSticker(media.sticker, media));
+        return this.#getInputMediaDocument(await this.#uploadSticker(peer, media.sticker, media));
 
       case "livePhoto":
         return await this.#getInputMediaPhoto(peer, media.photo, media);
@@ -1755,11 +1789,15 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return inputMedia;
   }
 
-  async #getInputMediaPhoto(peer: Api.InputPeer, photo: FileSource, params?: SendPhotoParams & { video?: FileSource }): Promise<Api.inputMediaPhoto> {
-    const result = await this.#uploadPhoto(photo, params);
+  async #getInputMediaPhoto(peer: Api.InputPeer | undefined, photo: FileSource, params?: SendPhotoParams & { video?: FileSource }): Promise<Api.inputMediaPhoto> {
+    const result = await this.#uploadPhoto(peer, photo, params);
     if (Api.is("inputMediaPhoto", result)) {
       return result;
     }
+    if (peer === undefined) {
+      throw new InputError("Cannot upload photo.");
+    }
+
     const messageMediaPhoto = Api.as("messageMediaPhoto", await this.#c.invoke({ _: "messages.uploadMedia", peer, media: result, business_connection_id: params?.businessConnectionId }));
     const photo_ = Api.as("photo", messageMediaPhoto.photo);
     return {
@@ -1770,14 +1808,14 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     };
   }
 
-  async #uploadPhoto(photo: FileSource, params?: SendPhotoParams & { video?: FileSource }) {
+  async #uploadPhoto(peer: Api.InputPeer | undefined, photo: FileSource, params?: SendPhotoParams & { video?: FileSource }) {
     let media: Api.InputMedia | null = null;
     const spoiler = params?.isSpoiler || undefined;
     const ttl_seconds = params && "selfDestruct" in params && params.selfDestruct !== undefined ? selfDestructOptionToInt(params.selfDestruct) : undefined;
 
     let video: Api.InputDocument | undefined;
     if (params?.video) {
-      video = await this.#uploadVideo(params.video);
+      video = await this.#uploadVideo(peer, params.video);
     }
 
     if (typeof photo === "string") {
@@ -1799,7 +1837,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return media;
   }
 
-  async #uploadDocument(document: FileSource, attributes: Api.DocumentAttribute[], fileType: FileType, expectedMimeTypes?: string[], params?: _UploadCommon & { isSpoiler?: boolean; thumbnail?: FileSource }, createName?: (firstPart: Uint8Array<ArrayBuffer>) => string, allowStream?: boolean): Promise<Api.messageMediaDocument> {
+  async #uploadDocument(peer: Api.InputPeer, document: FileSource, attributes: Api.DocumentAttribute[], fileType: FileType, expectedMimeTypes?: string[], params?: _UploadCommon & { isSpoiler?: boolean; thumbnail?: FileSource }, createName?: (firstPart: Uint8Array<ArrayBuffer>) => string, allowStream?: boolean): Promise<Api.messageMediaDocument> {
     let mimeType: string | undefined;
     const result = await this.#c.fileManager.upload(document, params, (name, firstPart) => {
       if (!params?.fileName && firstPart && createName) {
@@ -1820,7 +1858,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
     const uploadedMedia = await this.#c.invoke({
       _: "messages.uploadMedia",
-      peer: { _: "inputPeerSelf" },
+      peer: peer,
       media: { _: "inputMediaUploadedDocument", file: result, thumb, attributes, mime_type: mimeType, spoiler: params?.isSpoiler || undefined },
     });
 
@@ -1837,15 +1875,18 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     };
   }
 
-  async #uploadAnimation(animation: FileSource, params?: _UploadCommon & SendAnimationParams): Promise<Api.inputDocument> {
+  async #uploadAnimation(peer: Api.InputPeer | undefined, animation: FileSource, params?: _UploadCommon & SendAnimationParams): Promise<Api.inputDocument> {
     if (typeof animation === "string") {
       const fileId = this.resolveFileId(animation, [FileType.Animation]);
       if (fileId !== null) {
         return { ...fileId, _: "inputDocument" };
       }
     }
+    if (peer === undefined) {
+      throw new InputError("Cannot upload animation.");
+    }
 
-    const messageMediaDocument = await this.#uploadDocument(animation, [{ _: "documentAttributeVideo", duration: params?.duration ?? 0, w: params?.width ?? 0, h: params?.height ?? 0 }, { _: "documentAttributeAnimated" }], FileType.Animation, ANIMATION_MIME_TYPES, params, MessageManager.#createAnimationName);
+    const messageMediaDocument = await this.#uploadDocument(peer, animation, [{ _: "documentAttributeVideo", duration: params?.duration ?? 0, w: params?.width ?? 0, h: params?.height ?? 0 }, { _: "documentAttributeAnimated" }], FileType.Animation, ANIMATION_MIME_TYPES, params, MessageManager.#createAnimationName);
     const document = Api.as("document", Api.as("messageMediaDocument", messageMediaDocument).document);
     return {
       _: "inputDocument",
@@ -1855,7 +1896,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     };
   }
 
-  async #uploadSticker(video: FileSource, params?: _UploadCommon & InputPollMediaSticker): Promise<Api.inputDocument> {
+  async #uploadSticker(peer: Api.InputPeer, video: FileSource, params?: _UploadCommon & InputPollMediaSticker): Promise<Api.inputDocument> {
     if (typeof video === "string") {
       const fileId = this.resolveFileId(video, [FileType.Sticker]);
       if (fileId !== null) {
@@ -1863,7 +1904,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       }
     }
 
-    const messageMediaDocument = await this.#uploadDocument(video, [{ _: "documentAttributeSticker", alt: params?.emoji ?? "", stickerset: { _: "inputStickerSetEmpty" } }], FileType.Sticker, STICKER_MIME_TYPES, params, checkStickerName);
+    const messageMediaDocument = await this.#uploadDocument(peer, video, [{ _: "documentAttributeSticker", alt: params?.emoji ?? "", stickerset: { _: "inputStickerSetEmpty" } }], FileType.Sticker, STICKER_MIME_TYPES, params, checkStickerName);
     const document = Api.as("document", Api.as("messageMediaDocument", messageMediaDocument).document);
     return {
       _: "inputDocument",
@@ -1873,15 +1914,18 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     };
   }
 
-  async #uploadVideo(video: FileSource, params?: _UploadCommon & Partial<Pick<InputPollMediaVideo, "duration" | "width" | "height" | "thumbnail" | "isSpoiler" | "isStreamingSupported">>): Promise<Api.inputDocument> {
+  async #uploadVideo(peer: Api.InputPeer | undefined, video: FileSource, params?: _UploadCommon & Partial<Pick<InputPollMediaVideo, "duration" | "width" | "height" | "thumbnail" | "isSpoiler" | "isStreamingSupported">>): Promise<Api.inputDocument> {
     if (typeof video === "string") {
       const fileId = this.resolveFileId(video, [FileType.Video]);
       if (fileId !== null) {
         return { ...fileId, _: "inputDocument" };
       }
     }
+    if (peer === undefined) {
+      throw new InputError("Cannot upload video.");
+    }
 
-    const messageMediaDocument = await this.#uploadDocument(video, [{ _: "documentAttributeVideo", supports_streaming: params?.isStreamingSupported || undefined, duration: params?.duration ?? 0, w: params?.width ?? 0, h: params?.height ?? 0 }], FileType.Video, VIDEO_MIME_TYPES, params, MessageManager.#createVideoName);
+    const messageMediaDocument = await this.#uploadDocument(peer, video, [{ _: "documentAttributeVideo", supports_streaming: params?.isStreamingSupported || undefined, duration: params?.duration ?? 0, w: params?.width ?? 0, h: params?.height ?? 0 }], FileType.Video, VIDEO_MIME_TYPES, params, MessageManager.#createVideoName);
     const document = Api.as("document", Api.as("messageMediaDocument", messageMediaDocument).document);
     return {
       _: "inputDocument",
@@ -1891,15 +1935,19 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     };
   }
 
-  async #uploadAudio(audio: FileSource, params?: _UploadCommon & SendAudioParams): Promise<Api.inputDocument> {
+  async #uploadAudio(peer: Api.InputPeer | undefined, audio: FileSource, params?: _UploadCommon & SendAudioParams): Promise<Api.inputDocument> {
     if (typeof audio === "string") {
       const fileId = this.resolveFileId(audio, [FileType.Video]);
       if (fileId !== null) {
         return { ...fileId, _: "inputDocument" };
       }
     }
+    if (peer === undefined) {
+      throw new InputError("Cannot upload audio.");
+    }
 
     const messageMediaDocument = await this.#uploadDocument(
+      peer,
       audio,
       [
         { _: "documentAttributeAudio", duration: params?.duration ?? 0, performer: params?.performer, title: params?.title },
@@ -1918,15 +1966,19 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     };
   }
 
-  async #uploadVoice(voice: FileSource, params?: _UploadCommon & SendAudioParams): Promise<Api.inputDocument> {
+  async #uploadVoice(peer: Api.InputPeer | undefined, voice: FileSource, params?: _UploadCommon & SendAudioParams): Promise<Api.inputDocument> {
     if (typeof voice === "string") {
       const fileId = this.resolveFileId(voice, [FileType.Video]);
       if (fileId !== null) {
         return { ...fileId, _: "inputDocument" };
       }
     }
+    if (peer === undefined) {
+      throw new InputError("Cannot upload voice.");
+    }
 
     const messageMediaDocument = await this.#uploadDocument(
+      peer,
       voice,
       [
         { _: "documentAttributeAudio", duration: params?.duration ?? 0, voice: true },

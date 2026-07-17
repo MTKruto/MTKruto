@@ -18,34 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { InputPageBlock } from "./4_input_page_block.ts";
-import type { InputRichTextMedia } from "./4_input_rich_text_media.ts";
+import type { InputMediaAnimation, InputMediaAudio, InputMediaPhoto, InputMediaVideo, InputMediaVoice } from "./3_input_media.ts";
 
-/** @unlisted */
-export interface _InputRichTextCommon {
-  isRtl?: boolean;
-  isAutomaticLinkDetectionDisabled?: boolean;
+export interface InputRichTextMedia {
+  id: string;
+  media: InputMediaAnimation | InputMediaAudio | InputMediaPhoto | InputMediaVideo | InputMediaVoice;
 }
-
-/** @unlisted */
-export interface InputRichTextBlocks extends _InputRichTextCommon {
-  type: "blocks";
-  blocks: InputPageBlock[];
-}
-
-/** @unlisted */
-export interface InputRichTextMarkdown extends _InputRichTextCommon {
-  type: "markdown";
-  markdown: string;
-  media?: InputRichTextMedia[];
-}
-
-/** @unlisted */
-export interface InputRichTextHtml extends _InputRichTextCommon {
-  type: "html";
-  html: string;
-  media?: InputRichTextMedia[];
-}
-
-/** Any type of input rich text. */
-export type InputRichText = InputRichTextBlocks | InputRichTextMarkdown | InputRichTextHtml;
