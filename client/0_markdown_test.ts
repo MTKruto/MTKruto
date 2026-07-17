@@ -122,7 +122,8 @@ Deno.test("Ignore invalid user IDs", () => {
   const text = `[User](tg://user?idd=123)
 [User](tgs://user?id=123)
 [User](tg://user?id=)
-[User](tg://userr?id=123)`;
+[User](tg://userr?id=123)
+[User](tg://user?id=0123)`;
   assertEquals(parseMarkdown(text)[1].filter((v) => v.type === "textMention"), []);
 });
 
@@ -135,4 +136,22 @@ Deno.test("Ignore invalid URLs", () => {
 Deno.test("Ignore unsupported URLs", () => {
   const text = "[Link](foo://bar)";
   assertEquals(parseMarkdown(text)[1], []);
+});
+
+Deno.test("Ignore invalid time", () => {
+  const text = `[User](tg://time?unixx=123)
+[User](tgs://time?unix=123)
+[User](tg://time?unix=)
+[User](tg://timee?unix=123)
+[User](tg://time?unix=0123)`;
+  assertEquals(parseMarkdown(text)[1].filter((v) => v.type === "textMention"), []);
+});
+
+Deno.test("Ignore invalid customEmojiId", () => {
+  const text = `[User](tg://emoji?idd=123)
+[User](tgs://emoji?id=123)
+[User](tg://emoji?id=)
+[User](tg://emojii?id=123)
+[User](tg://emoji?id=0123)`;
+  assertEquals(parseMarkdown(text)[1].filter((v) => v.type === "textMention"), []);
 });

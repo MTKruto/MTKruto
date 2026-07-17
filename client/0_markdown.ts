@@ -25,6 +25,8 @@ import { type MessageEntity, type SecretMessageEntity, sortMessageEntities, sort
 import { InputError } from "../0_errors.ts";
 import { decodeText, encodeText } from "../1_utilities.ts";
 
+const reDecimal = /^[1-9][0-9]*$/;
+
 export const CODEPOINTS = {
   "\t": 9,
   "\r": 13,
@@ -71,7 +73,11 @@ function getLinkUserId(url_: string) {
     if (url.protocol !== "tg:" || url.hostname !== "user" || url.pathname.slice(1) !== "" || url.port !== "") {
       return 0;
     }
-    return parseInt(url.searchParams.get("id") ?? "") || 0;
+    const id = url.searchParams.get("id");
+    if (!id || !reDecimal.test(id)) {
+      return 0;
+    }
+    return parseInt(id);
   } catch {
     return 0;
   }
@@ -82,7 +88,11 @@ function getLinkTime(url_: string) {
     if (url.protocol !== "tg:" || url.hostname !== "time" || url.pathname.slice(1) !== "" || url.port !== "") {
       return null;
     }
-    const time = parseInt(url.searchParams.get("unix") ?? "");
+    const unix = url.searchParams.get("unix");
+    if (!unix || !reDecimal.test(unix)) {
+      return null;
+    }
+    const time = parseInt(unix);
     if (!time) {
       return null;
     }
@@ -98,7 +108,7 @@ function getLinkCustomEmojiId(url_: string) {
       return "";
     }
     const id_ = url.searchParams.get("id");
-    if (!id_) {
+    if (!id_ || !reDecimal.test(id_)) {
       return "";
     }
     const id = BigInt(id_);

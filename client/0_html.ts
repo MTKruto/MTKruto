@@ -21,6 +21,8 @@
 import { InputError } from "../0_errors.ts";
 import { type MessageEntity, type MessageEntityBlockquote, type SecretMessageEntity, sortMessageEntities, sortSecretMessageEntities } from "../3_types.ts";
 
+const reDecimal = /^[1-9][0-9]*$/;
+
 const TAG_NAMES: string[] = [
   "a",
   "b",
@@ -270,10 +272,15 @@ export function parseHtml(html_: string, isSecret?: boolean): [string, (MessageE
           }
           if (!isSecret) {
             if (url_.protocol === "tg:" && url_.hostname === "time") {
-              time = Number(url_.searchParams.get("unix") ?? "");
-              if (Number.isSafeInteger(time) && time > 0) {
-                timeFormat = url_.searchParams.get("format") ?? undefined;
-                url = undefined;
+              const unix = url_.searchParams.get("unix");
+              if (unix && reDecimal.test(unix)) {
+                time = Number(unix);
+                if (time > 0) {
+                  timeFormat = url_.searchParams.get("format") ?? undefined;
+                  url = undefined;
+                } else {
+                  throw new InputError(`Invalid time specified at offset ${i}.`);
+                }
               } else {
                 throw new InputError(`Invalid time specified at offset ${i}.`);
               }
@@ -285,10 +292,13 @@ export function parseHtml(html_: string, isSecret?: boolean): [string, (MessageE
       } else if (tagName === "blockquote" && attributes?.expandable !== undefined) {
         isCollapsible = true;
       } else if (tagName === "tg-emoji") {
-        customEmojiId = attributes?.["emoji-id"];
+        customEmojiId = attributes?.["emoji-id"] ?? "";
         let isValid: boolean;
         try {
-          isValid = BigInt(customEmojiId ?? "") !== 0n;
+          isValid = reDecimal.test(customEmojiId);
+          if (isValid) {
+            isValid = BigInt(customEmojiId) !== 0n;
+          }
         } catch {
           isValid = false;
         }
