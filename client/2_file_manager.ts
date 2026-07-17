@@ -331,16 +331,12 @@ export class FileManager {
       if (!allowStream) {
         throw new InputError("Streamed upload not allowed.");
       }
+      const iterator = Symbol.asyncIterator in source ? (source as AsyncIterable<Uint8Array>)[Symbol.asyncIterator]() : (source as Iterable<Uint8Array>)[Symbol.iterator]();
       contents = new ReadableStream({
-        pull: Symbol.asyncIterator in source
-          ? async (controller) => {
-            const { value, done } = await (source as AsyncIterableIterator<Uint8Array>).next();
-            done ? controller.close() : controller.enqueue(value);
-          }
-          : (controller) => {
-            const { value, done } = (source as IterableIterator<Uint8Array>).next();
-            done ? controller.close() : controller.enqueue(value);
-          },
+        async pull(controller) {
+          const { value, done } = await iterator.next();
+          done ? controller.close() : controller.enqueue(value);
+        },
       });
     } else {
       let url: string;
