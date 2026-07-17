@@ -21,11 +21,11 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import { deserializeFileId, type FileId, FileType, serializeFileId } from "./_file_id.ts";
+import { type FileId, FileType, serializeFileId } from "./_file_id.ts";
 import { constructLocation, type Location } from "./0_location.ts";
 import { type ChatP, constructChatP } from "./1_chat_p.ts";
 import { constructPhoto } from "./1_photo.ts";
-import { constructRichTextComponent, type RichTextComponent, type RichTextComponentPhoto, richTextComponentToTlObject } from "./3_rich_text_component.ts";
+import { constructRichTextComponent, type RichTextComponent } from "./3_rich_text_component.ts";
 
 /**
  * An unsupported type of page block.
@@ -115,14 +115,6 @@ export function constructPageBlockListItem(pli: Api.PageListItem, photos: Api.Ph
       return { type: "blockList", isCheckbox: !!pli.checkbox, isChecked: !!pli.checked, blocks: pli.blocks.map((v) => constructPageBlock(v, photos, documents)) };
   }
 }
-export function pageBlockListItemToTlObject(pbli: PageBlockListItem): Api.PageListItem {
-  switch (pbli.type) {
-    case "text":
-      return { _: "pageListItemText", checkbox: pbli.isCheckbox || undefined, checked: pbli.isChecked || undefined, text: richTextComponentToTlObject(pbli.text) };
-    case "blockList":
-      return { _: "pageListItemBlocks", checkbox: pbli.isCheckbox || undefined, checked: pbli.isChecked || undefined, blocks: pbli.blocks.map(pageBlockToTlObject) };
-  }
-}
 /**
  * A list page block.
  * @unlisted
@@ -172,13 +164,6 @@ export function constructPageBlockCaption(pc: Api.PageCaption, photos: Api.Photo
   return {
     text: constructRichTextComponent(pc.text, photos),
     credit: constructRichTextComponent(pc.credit, photos),
-  };
-}
-export function pageBlockCaptionToTlObject(pbc: PageBlockCaption): Api.PageCaption {
-  return {
-    _: "pageCaption",
-    text: richTextComponentToTlObject(pbc.text),
-    credit: richTextComponentToTlObject(pbc.credit),
   };
 }
 /**
@@ -357,19 +342,6 @@ export function constructPageBlockTableCell(ptc: Api.PageTableCell, photos: Api.
     rowspan: ptc.rowspan,
   });
 }
-export function pageBlockTableCellToTlObject(pbtc: PageBlockTableCell): Api.PageTableCell {
-  return {
-    _: "pageTableCell",
-    header: pbtc.isHeader || undefined,
-    align_center: pbtc.isCenterAligned || undefined,
-    align_right: pbtc.isRightAligned || undefined,
-    valign_middle: pbtc.isMiddleVerticallyAligned || undefined,
-    valign_bottom: pbtc.isBottomVerticallyAligned || undefined,
-    text: pbtc.text ? richTextComponentToTlObject(pbtc.text) : undefined,
-    colspan: pbtc.colspan,
-    rowspan: pbtc.rowspan,
-  };
-}
 /** @unlisted */
 export interface PageBlockTableRow {
   cells: PageBlockTableCell[];
@@ -377,12 +349,6 @@ export interface PageBlockTableRow {
 export function constructPageBlockTableRow(ptr: Api.PageTableRow, photos: Api.Photo[]): PageBlockTableRow {
   return {
     cells: ptr.cells.map((v) => constructPageBlockTableCell(v, photos)),
-  };
-}
-export function pageBlockTableRowToTlObject(pbtr: PageBlockTableRow): Api.PageTableRow {
-  return {
-    _: "pageTableRow",
-    cells: pbtr.cells.map(pageBlockTableCellToTlObject),
   };
 }
 /**
@@ -428,14 +394,6 @@ export function constructPageBlockOrderedListItem(ploi: Api.PageListOrderedItem,
   }
 
   unreachable();
-}
-export function pageBlockOrderedListItemToTlObject(pboli: PageBlockOrderedListItem): Api.PageListOrderedItem {
-  switch (pboli.type) {
-    case "text":
-      return { _: "pageListOrderedItemText", checkbox: pboli.isCheckbox || undefined, checked: pboli.isChecked || undefined, text: richTextComponentToTlObject(pboli.text), num: pboli.number, type: pboli.itemType, value: pboli.value };
-    case "blockList":
-      return { _: "pageListOrderedItemBlocks", checkbox: pboli.isCheckbox || undefined, checked: pboli.isChecked || undefined, blocks: pboli.blocks.map(pageBlockToTlObject), num: pboli.number, type: pboli.itemType, value: pboli.value };
-  }
 }
 /**
  * An order list page block.
@@ -628,7 +586,7 @@ export function constructPageBlock(pb: Api.PageBlock, photos: Api.Photo[], docum
       const document = Api.as("document", documents.find((v) => v.id === pb.video_id));
       const isAnimated = !!document.attributes.find((v) => Api.is("documentAttributeAnimated", v));
       const fileId: FileId = {
-        type: FileType.Video,
+        type: isAnimated ? FileType.Animation : FileType.Video,
         dcId: document.dc_id,
         location: { type: "common", id: document.id, accessHash: document.access_hash },
         fileReference: document.file_reference,
@@ -654,7 +612,7 @@ export function constructPageBlock(pb: Api.PageBlock, photos: Api.Photo[], docum
         unreachable();
       }
       const fileId: FileId = {
-        type: FileType.Video,
+        type: audioAttribute.voice ? FileType.VoiceNote : FileType.Audio,
         dcId: document.dc_id,
         location: { type: "common", id: document.id, accessHash: document.access_hash },
         fileReference: document.file_reference,
@@ -708,299 +666,4 @@ export function constructPageBlock(pb: Api.PageBlock, photos: Api.Photo[], docum
   }
 
   unreachable();
-}
-
-export function pageBlockToTlObject(pb: PageBlock): Api.PageBlock {
-  switch (pb.type) {
-    case "unsupported":
-      return { _: "pageBlockUnsupported" };
-    case "paragraph":
-      return { _: "pageBlockParagraph", text: richTextComponentToTlObject(pb.text) };
-    case "pre":
-      return { _: "pageBlockPreformatted", text: richTextComponentToTlObject(pb.text), language: pb.language ?? "" };
-    case "footer":
-      return { _: "pageBlockFooter", text: richTextComponentToTlObject(pb.text) };
-    case "divider":
-      return { _: "pageBlockDivider" };
-    case "anchor":
-      return { _: "pageBlockAnchor", name: pb.name };
-    case "list":
-      return { _: "pageBlockList", items: pb.items.map(pageBlockListItemToTlObject) };
-    case "blockQuote":
-      return { _: "pageBlockBlockquote", text: richTextComponentToTlObject(pb.text), caption: richTextComponentToTlObject(pb.caption) };
-    case "pullQuote":
-      return { _: "pageBlockPullquote", text: richTextComponentToTlObject(pb.text), caption: richTextComponentToTlObject(pb.caption) };
-    case "photo": {
-      const location = deserializeFileId(pb.fileId).location;
-      if (!("id" in location)) {
-        unreachable();
-      }
-      return { _: "pageBlockPhoto", photo_id: location.id, caption: pageBlockCaptionToTlObject(pb.caption), spoiler: pb.isSpoiler || undefined, url: pb.url, webpage_id: pb.linkPreviewId ? BigInt(pb.linkPreviewId) : undefined };
-    }
-    case "video":
-    case "animation": {
-      const location = deserializeFileId(pb.fileId).location;
-      if (!("id" in location)) {
-        unreachable();
-      }
-      return { _: "pageBlockVideo", video_id: location.id, caption: pageBlockCaptionToTlObject(pb.caption), spoiler: pb.isSpoiler || undefined, autoplay: pb.isAutoplay || undefined, loop: pb.isLoop || undefined };
-    }
-    case "cover":
-      return { _: "pageBlockCover", cover: pageBlockToTlObject(pb.cover) };
-    case "embed":
-      return { _: "pageBlockEmbed", caption: pageBlockCaptionToTlObject(pb.caption), allow_scrolling: pb.isScrollingAllowed || undefined, full_width: pb.isFullWidth || undefined, w: pb.width, h: pb.height, html: pb.html, url: pb.url, poster_photo_id: pb.posterPhotoId ? BigInt(pb.posterPhotoId) : undefined };
-    case "embedPost":
-      return { _: "pageBlockEmbedPost", caption: pageBlockCaptionToTlObject(pb.caption), url: pb.url, author: pb.author, author_photo_id: BigInt(pb.authorPhotoId), blocks: pb.blocks.map(pageBlockToTlObject), date: pb.date, webpage_id: BigInt(pb.linkPreviewId) };
-    case "collage":
-      return { _: "pageBlockCollage", caption: pageBlockCaptionToTlObject(pb.caption), items: pb.items.map(pageBlockToTlObject) };
-    case "slideshow":
-      return { _: "pageBlockSlideshow", caption: pageBlockCaptionToTlObject(pb.caption), items: pb.items.map(pageBlockToTlObject) };
-    case "channel":
-      unreachable();
-      break;
-    case "audio":
-    case "voice": {
-      const location = deserializeFileId(pb.fileId).location;
-      if (!("id" in location)) {
-        unreachable();
-      }
-      return { _: "pageBlockAudio", audio_id: location.id, caption: pageBlockCaptionToTlObject(pb.caption) };
-    }
-    case "kicker":
-      return { _: "pageBlockKicker", text: richTextComponentToTlObject(pb.text) };
-    case "math":
-      return { _: "pageBlockMath", source: pb.code };
-    case "table":
-      return { _: "pageBlockTable", title: richTextComponentToTlObject(pb.title), rows: pb.rows.map(pageBlockTableRowToTlObject), bordered: pb.isBordered || undefined, striped: pb.isStriped || undefined };
-    case "orderedList":
-      return { _: "pageBlockOrderedList", items: pb.items.map(pageBlockOrderedListItemToTlObject), reversed: pb.isReversed || undefined, start: pb.start, type: pb.itemsType };
-    case "details":
-      return { _: "pageBlockDetails", title: richTextComponentToTlObject(pb.title), blocks: pb.blocks.map(pageBlockToTlObject), open: pb.isOpen || undefined };
-    case "map":
-      return { _: "inputPageBlockMap", geo: { _: "inputGeoPoint", lat: pb.location.latitude, long: pb.location.longitude, accuracy_radius: pb.location.horizontalAccuracy }, caption: pageBlockCaptionToTlObject(pb.caption), w: pb.width, h: pb.height, zoom: pb.zoom };
-    case "heading1":
-      return { _: "pageBlockHeading1", text: richTextComponentToTlObject(pb.text) };
-    case "heading2":
-      return { _: "pageBlockHeading2", text: richTextComponentToTlObject(pb.text) };
-    case "heading3":
-      return { _: "pageBlockHeading3", text: richTextComponentToTlObject(pb.text) };
-    case "heading4":
-      return { _: "pageBlockHeading4", text: richTextComponentToTlObject(pb.text) };
-    case "heading5":
-      return { _: "pageBlockHeading5", text: richTextComponentToTlObject(pb.text) };
-    case "heading6":
-      return { _: "pageBlockHeading6", text: richTextComponentToTlObject(pb.text) };
-    case "thinking":
-      return { _: "pageBlockThinking", text: richTextComponentToTlObject(pb.text) };
-    case "blockQuoteBlocks":
-      return { _: "pageBlockBlockquoteBlocks", caption: richTextComponentToTlObject(pb.caption), blocks: pb.blocks.map(pageBlockToTlObject) };
-  }
-
-  unreachable();
-}
-
-export function collectMediaFileIds(pageBlocks: PageBlock[]): { fileId: string; type: "photo" | "audio" | "video" | "voice" | "animation" }[] {
-  const fileIds = new Array<{ fileId: string; type: "photo" | "audio" | "video" | "voice" | "animation" }>();
-  for (const m of collectPageBlockMedia(pageBlocks)) {
-    fileIds.push({ type: m.type, fileId: m.fileId });
-  }
-  for (const photo of collectRichTextComponentPhoto(collectRichTextComponents(pageBlocks))) {
-    fileIds.push({ type: "photo", fileId: photo.fileId });
-  }
-  return fileIds;
-}
-function collectRichTextComponentPhoto(components: RichTextComponent[]): RichTextComponentPhoto[] {
-  const photos = new Array<RichTextComponentPhoto>();
-
-  for (const component of components) {
-    for (const c of flattenRichTextComponent(component)) {
-      if (c.type === "photo") {
-        photos.push(c);
-      }
-    }
-  }
-
-  return photos;
-}
-function flattenRichTextComponent(component: RichTextComponent): RichTextComponent[] {
-  const items = new Array<RichTextComponent>();
-  switch (component.type) {
-    case "anchor":
-    case "dateTime":
-    case "bold":
-    case "italic":
-    case "underline":
-    case "strikethrough":
-    case "fixed":
-    case "link":
-    case "emailLink":
-    case "subscript":
-    case "superscript":
-    case "marked":
-    case "phoneNumberLink":
-    case "spoiler":
-    case "mention":
-    case "hashtag":
-    case "botCommand":
-    case "cashtag":
-    case "url":
-    case "email":
-    case "phoneNumber":
-    case "bankCard":
-    case "textMention":
-      for (const item of flattenRichTextComponent(component.text)) {
-        items.push(item);
-      }
-      break;
-    case "concatenate":
-      for (const c of component.components) {
-        for (const i of flattenRichTextComponent(c)) {
-          items.push(i);
-        }
-      }
-  }
-  return items;
-}
-function collectRichTextComponents(pageBlocks: PageBlock[]): RichTextComponent[] {
-  const components = new Array<RichTextComponent>();
-  for (const pb of pageBlocks) {
-    switch (pb.type) {
-      case "paragraph":
-      case "pre":
-      case "footer":
-      case "kicker":
-      case "heading1":
-      case "heading2":
-      case "heading3":
-      case "heading4":
-      case "heading5":
-      case "heading6":
-      case "thinking":
-        components.push(pb.text);
-        break;
-      case "list":
-      case "orderedList":
-        for (const item of pb.items) {
-          if (item.type === "text") {
-            components.push(item.text);
-          } else {
-            for (const c of collectRichTextComponents(item.blocks)) {
-              components.push(c);
-            }
-          }
-        }
-        break;
-      case "blockQuote":
-      case "pullQuote":
-        components.push(pb.text);
-        components.push(pb.caption);
-        break;
-      case "photo":
-      case "video":
-      case "embed":
-      case "audio":
-      case "map":
-        components.push(pb.caption.text);
-        components.push(pb.caption.credit);
-        break;
-      case "cover":
-        for (const c of collectRichTextComponents([pb.cover])) {
-          components.push(c);
-        }
-        break;
-      case "collage":
-      case "slideshow":
-        components.push(pb.caption.text);
-        components.push(pb.caption.credit);
-        for (const c of collectRichTextComponents(pb.items)) {
-          components.push(c);
-        }
-        break;
-      case "embedPost":
-        components.push(pb.caption.text);
-        components.push(pb.caption.credit);
-        for (const c of collectRichTextComponents(pb.blocks)) {
-          components.push(c);
-        }
-        break;
-      case "math":
-        break;
-      case "table":
-        components.push(pb.title);
-        for (const row of pb.rows) {
-          for (const cell of row.cells) {
-            if (cell.text) {
-              components.push(cell.text);
-            }
-          }
-        }
-        break;
-      case "details":
-        components.push(pb.title);
-        for (const c of collectRichTextComponents(pb.blocks)) {
-          components.push(c);
-        }
-        break;
-      case "blockQuoteBlocks":
-        components.push(pb.caption);
-        for (const c of collectRichTextComponents(pb.blocks)) {
-          components.push(c);
-        }
-        break;
-    }
-  }
-
-  return components;
-}
-function collectPageBlockMedia(pageBlocks: PageBlock[]) {
-  const media = new Array<PageBlockPhoto | PageBlockVideo | PageBlockAudio | PageBlockVoice | PageBlockAnimation>();
-  for (const pb of pageBlocks) {
-    if (pb.type === "photo" || pb.type === "video" || pb.type === "audio" || pb.type === "voice" || pb.type === "animation") {
-      media.push(pb);
-    } else {
-      switch (pb.type) {
-        case "list":
-          for (const item of pb.items) {
-            if (item.type === "blockList") {
-              for (const m of collectPageBlockMedia(item.blocks)) {
-                media.push(m);
-              }
-            }
-          }
-          break;
-        case "embedPost":
-          for (const m of collectPageBlockMedia(pb.blocks)) {
-            media.push(m);
-          }
-          break;
-        case "collage":
-        case "slideshow":
-          for (const m of collectPageBlockMedia(pb.items)) {
-            media.push(m);
-          }
-          break;
-        case "orderedList":
-          for (const item of pb.items) {
-            if (item.type === "blockList") {
-              for (const m of collectPageBlockMedia(item.blocks)) {
-                media.push(m);
-              }
-            }
-          }
-          break;
-        case "details":
-        case "blockQuoteBlocks":
-          for (const m of collectPageBlockMedia(pb.blocks)) {
-            media.push(m);
-          }
-          break;
-        case "cover":
-          for (const m of collectPageBlockMedia([pb.cover])) {
-            media.push(m);
-          }
-      }
-    }
-  }
-
-  return media;
 }

@@ -531,7 +531,7 @@ export async function inlineQueryResultToTlObject(
     | undefined,
   ],
   usernameResolver: UsernameResolver,
-  inputRichTextToInputRichMessage: (irt: InputRichText) => Api.InputRichMessage,
+  inputRichTextToInputRichMessage: (irt: InputRichText) => Promise<Api.InputRichMessage>,
 ): Promise<Api.InputBotInlineResult> {
   let document: Api.InputWebDocument | null = null;
   let thumb: Api.inputWebDocument | null = null;
@@ -710,7 +710,7 @@ export async function inlineQueryResultToTlObject(
         };
         break;
       case "richText":
-        sendMessage = { _: "inputBotInlineMessageRichMessage", rich_message: inputRichTextToInputRichMessage(result_.messageContent.richText), reply_markup: replyMarkup };
+        sendMessage = { _: "inputBotInlineMessageRichMessage", rich_message: await inputRichTextToInputRichMessage(result_.messageContent.richText), reply_markup: replyMarkup };
         break;
       case "text": {
         const [message, entities] = parseText(result_.messageContent.text, { entities: result_.messageContent.entities, parseMode: result_.messageContent.parseMode });

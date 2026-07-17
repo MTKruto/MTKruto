@@ -23,7 +23,7 @@ import { InputError } from "../0_errors.ts";
 import { base64EncodeUrlSafe, encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
-import { type Animation, assertMessageType, type BlockedUserList, type ChatActionType, collectMediaFileIds, constructAnimation, constructBlockedUserList, constructChatAction, constructMessage as constructMessage_, constructMessageDraft, constructMessageEntity, constructMessageReactionList, constructMessageViewer, constructMiniAppInfo, constructReportResult, constructSavedChats, constructSticker, constructSummarizedText, constructVoiceTranscription, deserializeFileId, deserializeInlineMessageId, type FileId, type FileSource, FileType, type ID, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, type InputPollMedia, type InputPollMediaAnimation, type InputPollMediaSticker, type InputPollMediaVideo, type InputPollOption, type InputRichText, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageCounters, type MessageDice, type MessageDocument, type MessageEntity, messageEntityToTlObject, type MessageGetter, type MessageInvoice, type MessageList, type MessageLivePhoto, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageReference, type MessageRichText, messageSearchFilterToTlObject, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageViewer, type MessageVoice, type MiniAppInfo, pageBlockToTlObject, type ParseMode, type Poll, type PriceTag, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type ReportResult, type RichText, type SavedChats, type SelfDestructOption, selfDestructOptionToInt, serializeFileId, type Sticker, type SummarizedText, type TextToTranslate, toUniqueFileId, type TranslatedText, type Update, type UsernameResolver, type VoiceTranscription } from "../3_types.ts";
+import { type Animation, assertMessageType, type BlockedUserList, type ChatActionType, collectMediaFileSources, constructAnimation, constructBlockedUserList, constructChatAction, constructMessage as constructMessage_, constructMessageDraft, constructMessageEntity, constructMessageReactionList, constructMessageViewer, constructMiniAppInfo, constructReportResult, constructSavedChats, constructSticker, constructSummarizedText, constructVoiceTranscription, deserializeFileId, deserializeInlineMessageId, type FileId, type FileSource, FileType, type ID, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, inputPageBlockToTlObject, type InputPollMedia, type InputPollMediaSticker, type InputPollMediaVideo, type InputPollOption, type InputRichText, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageCounters, type MessageDice, type MessageDocument, type MessageEntity, messageEntityToTlObject, type MessageGetter, type MessageInvoice, type MessageList, type MessageLivePhoto, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageReference, type MessageRichText, messageSearchFilterToTlObject, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageViewer, type MessageVoice, type MiniAppInfo, type ParseMode, type Poll, type PriceTag, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type ReportResult, type RichText, type SavedChats, type SelfDestructOption, selfDestructOptionToInt, serializeFileId, type Sticker, type SummarizedText, type TextToTranslate, toUniqueFileId, type TranslatedText, type Update, type UsernameResolver, type VoiceTranscription } from "../3_types.ts";
 import { peerToChatId } from "../tl/2_telegram.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
@@ -359,7 +359,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   async sendRichTextDraft(chatId: ID, draftId: number, richText: InputRichText, params?: SendRichTextDraftParams) {
     this.#c.storage.assertBot("sendRichTextDraft");
     const peer = await this.#c.getInputPeer(chatId);
-    const rich_message = MessageManager.inputRichTextToInputRichMessage(richText);
+    const rich_message = await this.inputRichTextToInputRichMessage(richText, peer);
     await this.#c.invoke({
       _: "messages.setTyping",
       peer,
@@ -492,7 +492,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const schedule_date = params?.sendAt;
     const allow_paid_floodskip = params?.isPaidBroadcast || undefined;
 
-    const rich_message = MessageManager.inputRichTextToInputRichMessage(richText);
+    const rich_message = await this.inputRichTextToInputRichMessage(richText, peer);
 
     let result: Api.Updates;
     if (params?.receiverId !== undefined) {
@@ -532,7 +532,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return assertMessageType(message_, "richText");
   }
 
-  static inputRichTextToInputRichMessage(richText: InputRichText): Api.InputRichMessage {
+  async inputRichTextToInputRichMessage(richText: InputRichText, peer?: Api.InputPeer): Promise<Api.InputRichMessage> {
     let rich_message: Api.InputRichMessage;
     const rtl = richText?.isRtl || undefined;
     const noautolink = richText?.isAutomaticLinkDetectionDisabled || undefined;
@@ -540,28 +540,106 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       case "blocks": {
         const photos = new Array<Api.InputPhoto>();
         const documents = new Array<Api.InputDocument>();
-        for (const { type, fileId } of collectMediaFileIds(richText.blocks)) {
-          const deserializedFileId = deserializeFileId(fileId);
-          if (!("id" in deserializedFileId.location) || !deserializedFileId.fileReference) {
-            unreachable();
+        const uploadedFileSources = new Map<FileSource, { type: "photo" | "document"; id: bigint }>();
+        const photoIds = new Array<bigint>();
+        const documentIds = new Array<bigint>();
+        for (const { type, fileSource, params } of collectMediaFileSources(richText.blocks)) {
+          if (typeof fileSource === "string") {
+            let fileType: FileType;
+            switch (type) {
+              case "photo":
+                fileType = FileType.Photo;
+                break;
+              case "audio":
+                fileType = FileType.Audio;
+                break;
+              case "video":
+                fileType = FileType.Video;
+                break;
+              case "voice":
+                fileType = FileType.VoiceNote;
+                break;
+              case "animation":
+                fileType = FileType.Animation;
+                break;
+            }
+            const fileId = this.resolveFileId(fileSource, [fileType]);
+            if (fileId !== null) {
+              if (type === "photo") {
+                if (!photos.some((v) => Api.is("inputPhoto", v) && v.id === fileId.id)) {
+                  photos.push({
+                    ...fileId,
+                    _: "inputPhoto",
+                  });
+                }
+                photoIds.push(fileId.id);
+              } else {
+                if (!documents.some((v) => Api.is("inputDocument", v) && v.id === fileId.id)) {
+                  documents.push({
+                    ...fileId,
+                    _: "inputDocument",
+                  });
+                }
+                documentIds.push(fileId.id);
+              }
+
+              continue;
+            }
           }
-          if (type === "photo") {
-            photos.push({
-              _: "inputPhoto",
-              id: deserializedFileId.location.id,
-              access_hash: deserializedFileId.location.accessHash,
-              file_reference: deserializedFileId.fileReference,
-            });
-          } else {
-            documents.push({
-              _: "inputDocument",
-              id: deserializedFileId.location.id,
-              access_hash: deserializedFileId.location.accessHash,
-              file_reference: deserializedFileId.fileReference,
-            });
+
+          if (!peer) {
+            throw new InputError("Cannot upload page block media.");
+          }
+          const uploadedFileSource = uploadedFileSources.get(fileSource);
+          if (uploadedFileSource !== undefined) {
+            if (uploadedFileSource.type === "photo") {
+              photoIds.push(uploadedFileSource.id);
+            } else {
+              documentIds.push(uploadedFileSource.id);
+            }
+            continue;
+          }
+
+          switch (type) {
+            case "photo": {
+              const { id } = await this.#getInputMediaPhoto(peer, fileSource, params);
+              photos.push(id);
+              const id_ = Api.as("inputPhoto", id).id;
+              photoIds.push(id_);
+              uploadedFileSources.set(fileSource, { type: "photo", id: id_ });
+              break;
+            }
+            case "audio": {
+              const inputDocument = await this.#uploadAudio(fileSource, params);
+              documents.push(inputDocument);
+              documentIds.push(inputDocument.id);
+              uploadedFileSources.set(fileSource, { type: "document", id: inputDocument.id });
+              break;
+            }
+            case "video": {
+              const inputDocument = await this.#uploadVideo(fileSource, params);
+              documents.push(inputDocument);
+              documentIds.push(inputDocument.id);
+              uploadedFileSources.set(fileSource, { type: "document", id: inputDocument.id });
+              break;
+            }
+            case "voice": {
+              const inputDocument = await this.#uploadVoice(fileSource, params);
+              documents.push(inputDocument);
+              documentIds.push(inputDocument.id);
+              uploadedFileSources.set(fileSource, { type: "document", id: inputDocument.id });
+              break;
+            }
+            case "animation": {
+              const inputDocument = await this.#uploadAnimation(fileSource, params);
+              documents.push(inputDocument);
+              documentIds.push(inputDocument.id);
+              uploadedFileSources.set(fileSource, { type: "document", id: inputDocument.id });
+              break;
+            }
           }
         }
-        rich_message = { _: "inputRichMessage", blocks: richText.blocks.map(pageBlockToTlObject), photos, documents, rtl, noautolink };
+        rich_message = { _: "inputRichMessage", blocks: richText.blocks.map((v) => inputPageBlockToTlObject(v, photoIds, documentIds)), photos, documents, rtl, noautolink };
         break;
       }
       case "markdown":
@@ -859,19 +937,23 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       ],
       undefined,
       AUDIO_MIME_TYPES,
-      (firstPart) => {
-        if (MessageManager.#isM4a(firstPart)) {
-          return "audio.m4a";
-        } else {
-          return "audio.mp3";
-        }
-      },
+      MessageManager.#createAudioName,
     );
     return assertMessageType(message, "audio");
   }
 
   static #isM4a(firstPart: Uint8Array<ArrayBuffer>) {
     return firstPart.byteLength >= 10 && startsWith(firstPart.subarray(4), new Uint8Array([0x66, 0x74, 0x79, 0x70, 0x4D, 0x34]));
+  }
+
+  static #createVoiceName(firstPart: Uint8Array<ArrayBuffer>) {
+    if (startsWith(firstPart, new Uint8Array([0x4F, 0x67, 0x67]))) {
+      return "voice.ogg";
+    } else if (MessageManager.#isM4a(firstPart)) {
+      return "voice.m4a";
+    } else {
+      return "voice.mp3";
+    }
   }
 
   async sendVoice(chatId: ID, voice: FileSource, params?: SendVoiceParams): Promise<MessageVoice> {
@@ -886,15 +968,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       ],
       undefined,
       VOICE_MIME_TYPES,
-      (firstPart) => {
-        if (startsWith(firstPart, new Uint8Array([0x4F, 0x67, 0x67]))) {
-          return "voice.ogg";
-        } else if (MessageManager.#isM4a(firstPart)) {
-          return "voice.m4a";
-        } else {
-          return "voice.mp3";
-        }
-      },
+      MessageManager.#createVoiceName,
     );
     return assertMessageType(message, "voice");
   }
@@ -927,6 +1001,14 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   static #createVideoName() {
     return "video.mp4";
+  }
+
+  static #createAudioName(firstPart: Uint8Array<ArrayBuffer>) {
+    if (MessageManager.#isM4a(firstPart)) {
+      return "audio.m4a";
+    } else {
+      return "audio.mp3";
+    }
   }
 
   async sendVideo(chatId: ID, video: FileSource, params?: SendVideoParams): Promise<MessageVideo> {
@@ -1447,12 +1529,13 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
         throw new InputError("The referenced message is not a rich text message.");
       }
     }
-    const rich_message = MessageManager.inputRichTextToInputRichMessage(richText);
+    const peer = await this.#c.getInputPeer(chatId);
+    const rich_message = await this.inputRichTextToInputRichMessage(richText, peer);
 
     const result = await this.#c.invoke({
       _: "messages.editMessage",
       id: checkMessageId(messageId),
-      peer: await this.#c.getInputPeer(chatId),
+      peer,
       rich_message,
       reply_markup: await this.#constructReplyMarkup(params),
     }, { businessConnectionId: params?.businessConnectionId });
@@ -1754,15 +1837,15 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     };
   }
 
-  async #uploadAnimation(video: FileSource, params?: _UploadCommon & InputPollMediaAnimation): Promise<Api.inputDocument> {
-    if (typeof video === "string") {
-      const fileId = this.resolveFileId(video, [FileType.Animation]);
+  async #uploadAnimation(animation: FileSource, params?: _UploadCommon & SendAnimationParams): Promise<Api.inputDocument> {
+    if (typeof animation === "string") {
+      const fileId = this.resolveFileId(animation, [FileType.Animation]);
       if (fileId !== null) {
         return { ...fileId, _: "inputDocument" };
       }
     }
 
-    const messageMediaDocument = await this.#uploadDocument(video, [{ _: "documentAttributeVideo", duration: params?.duration ?? 0, w: params?.width ?? 0, h: params?.height ?? 0 }, { _: "documentAttributeAnimated" }], FileType.Animation, ANIMATION_MIME_TYPES, params, MessageManager.#createAnimationName);
+    const messageMediaDocument = await this.#uploadDocument(animation, [{ _: "documentAttributeVideo", duration: params?.duration ?? 0, w: params?.width ?? 0, h: params?.height ?? 0 }, { _: "documentAttributeAnimated" }], FileType.Animation, ANIMATION_MIME_TYPES, params, MessageManager.#createAnimationName);
     const document = Api.as("document", Api.as("messageMediaDocument", messageMediaDocument).document);
     return {
       _: "inputDocument",
@@ -1799,6 +1882,60 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     }
 
     const messageMediaDocument = await this.#uploadDocument(video, [{ _: "documentAttributeVideo", supports_streaming: params?.isStreamingSupported || undefined, duration: params?.duration ?? 0, w: params?.width ?? 0, h: params?.height ?? 0 }], FileType.Video, VIDEO_MIME_TYPES, params, MessageManager.#createVideoName);
+    const document = Api.as("document", Api.as("messageMediaDocument", messageMediaDocument).document);
+    return {
+      _: "inputDocument",
+      id: document.id,
+      access_hash: document.access_hash,
+      file_reference: document.file_reference,
+    };
+  }
+
+  async #uploadAudio(audio: FileSource, params?: _UploadCommon & SendAudioParams): Promise<Api.inputDocument> {
+    if (typeof audio === "string") {
+      const fileId = this.resolveFileId(audio, [FileType.Video]);
+      if (fileId !== null) {
+        return { ...fileId, _: "inputDocument" };
+      }
+    }
+
+    const messageMediaDocument = await this.#uploadDocument(
+      audio,
+      [
+        { _: "documentAttributeAudio", duration: params?.duration ?? 0, performer: params?.performer, title: params?.title },
+      ],
+      FileType.Video,
+      AUDIO_MIME_TYPES,
+      params,
+      MessageManager.#createAudioName,
+    );
+    const document = Api.as("document", Api.as("messageMediaDocument", messageMediaDocument).document);
+    return {
+      _: "inputDocument",
+      id: document.id,
+      access_hash: document.access_hash,
+      file_reference: document.file_reference,
+    };
+  }
+
+  async #uploadVoice(voice: FileSource, params?: _UploadCommon & SendAudioParams): Promise<Api.inputDocument> {
+    if (typeof voice === "string") {
+      const fileId = this.resolveFileId(voice, [FileType.Video]);
+      if (fileId !== null) {
+        return { ...fileId, _: "inputDocument" };
+      }
+    }
+
+    const messageMediaDocument = await this.#uploadDocument(
+      voice,
+      [
+        { _: "documentAttributeAudio", duration: params?.duration ?? 0, voice: true },
+      ],
+      FileType.Video,
+      VOICE_MIME_TYPES,
+      params,
+      MessageManager.#createVoiceName,
+    );
     const document = Api.as("document", Api.as("messageMediaDocument", messageMediaDocument).document);
     return {
       _: "inputDocument",
@@ -1881,7 +2018,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   async editInlineMessageRichText(inlineMessageId: string, richText: InputRichText, params?: EditInlineMessageRichTextParams) {
     this.#c.storage.assertBot("editInlineMessageRichText");
     const id = await deserializeInlineMessageId(inlineMessageId);
-    const rich_message = MessageManager.inputRichTextToInputRichMessage(richText);
+    const rich_message = await this.inputRichTextToInputRichMessage(richText);
     await this.#c.invoke({
       _: "messages.editInlineBotMessage",
       id,
@@ -2746,7 +2883,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async answerGuestQuery(id: string, result_: InlineQueryResult): Promise<string> {
     this.#c.storage.assertBot("answerGuestQuery");
-    const result = await inlineQueryResultToTlObject(result_, this.parseText.bind(this), this.usernameResolver.bind(this), MessageManager.inputRichTextToInputRichMessage);
+    const result = await inlineQueryResultToTlObject(result_, this.parseText.bind(this), this.usernameResolver.bind(this), async (irt) => await this.inputRichTextToInputRichMessage(irt));
     const result__ = await this.#c.invoke({ _: "messages.setBotGuestChatResult", query_id: BigInt(id), result });
     return base64EncodeUrlSafe(Api.serializeObject(result__));
   }
@@ -3034,7 +3171,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   async saveRichTextDraft(chatId: ID, richText: InputRichText, params?: SaveDraftParams) {
     this.#c.storage.assertUser("saveRichTextDraft");
     const peer = await this.#c.getInputPeer(chatId);
-    const rich_message = MessageManager.inputRichTextToInputRichMessage(richText);
+    const rich_message = await this.inputRichTextToInputRichMessage(richText, peer);
     const effect = params?.effectId ? BigInt(params.effectId) : undefined;
     const media = params?.media ? await this.#resolveInputMedia(params.media) : undefined;
     const invert_media = params?.isMediaAboveText || undefined;

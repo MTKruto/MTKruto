@@ -26,6 +26,7 @@ export * from "./types/0_birthday.ts";
 export * from "./types/0_bot_command.ts";
 export * from "./types/0_bot_token_check_result.ts";
 export * from "./types/0_business_away_message_schedule.ts";
+export * from "./types/4_input_page_block.ts";
 export * from "./types/0_button_style.ts";
 export * from "./types/0_callback_query_answer.ts";
 export * from "./types/0_callback_query_question.ts";

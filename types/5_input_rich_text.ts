@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import type { PageBlock } from "./4_page_block.ts";
+import type { InputPageBlock } from "./4_input_page_block.ts";
 
 /** @unlisted */
 export interface _InputRichTextCommon {
@@ -29,7 +29,7 @@ export interface _InputRichTextCommon {
 /** @unlisted */
 export interface InputRichTextBlocks extends _InputRichTextCommon {
   type: "blocks";
-  blocks: PageBlock[];
+  blocks: InputPageBlock[];
 }
 
 /** @unlisted */
