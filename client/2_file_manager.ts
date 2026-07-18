@@ -192,7 +192,7 @@ export class FileManager {
   async #uploadBuffer(buffer: Uint8Array<ArrayBuffer>, fileId: bigint, mustTrackProgress: boolean, chunkSize: number, poolSize: number, signal: AbortSignal | undefined, encryptionInformation: EncryptionInformation | undefined) {
     const isBig = buffer.byteLength > FileManager.#BIG_FILE_THRESHOLD;
     const partCount = Math.ceil(buffer.byteLength / chunkSize);
-    let promises = new Array<Promise<void>>();
+    const promises = new Array<Promise<void>>();
     let started = false;
     let ms = 0.05;
     let uploaded = 0;
@@ -246,14 +246,13 @@ export class FileManager {
               }
             }),
           );
+          const promise = promises.at(-1)!;
+          promise.then(() => promises.splice(promises.indexOf(promise), 1), () => {});
           if (promises.length === poolSize * UPLOAD_REQUEST_PER_CONNECTION) {
-            await Promise.all(promises);
-            promises = [];
+            await Promise.race(promises);
           }
         }
       }
-      await Promise.all(promises);
-      promises = [];
     }
     await Promise.all(promises);
     if (mustTrackProgress) {
@@ -444,11 +443,29 @@ export class FileManager {
 
     let totalSize = 0;
     const requestCount = DOWNLOAD_POOL_SIZE * DOWNLOAD_REQUEST_PER_CONNECTION;
-    let finished = false;
-    while (true) {
-      signal?.throwIfAborted();
-      const results = await Promise.all(Array.from({ length: requestCount }, (_, i) => this.#downloadPart(location, offset + BigInt(i * limit), limit, dc, signal, id, part + i)));
-      for (const result of results) {
+    const requestController = new AbortController();
+    const abortRequests = () => requestController.abort(signal?.reason);
+    signal?.addEventListener("abort", abortRequests, { once: true });
+    const downloadPart = (offset: bigint, part: number) => {
+      return this.#downloadPart(location, offset, limit, dc, requestController.signal, id, part).then(
+        (value) => ({ status: "fulfilled" as const, value }),
+        (reason: unknown) => ({ status: "rejected" as const, reason }),
+      );
+    };
+    const requests = Array.from({ length: requestCount }, (_, i) => downloadPart(offset + BigInt(i * limit), part + i));
+
+    try {
+      let finished = false;
+      while (true) {
+        signal?.throwIfAborted();
+        const request = await requests.shift()!;
+        if (request.status === "rejected") {
+          throw request.reason;
+        }
+        const result = request.value;
+        if (Api.is("upload.file", result) && result.bytes.byteLength === limit) {
+          requests.push(downloadPart(offset + BigInt(requestCount * limit), part + requestCount));
+        }
         signal?.throwIfAborted();
 
         if (Api.is("upload.file", result)) {
@@ -494,9 +511,9 @@ export class FileManager {
           unreachable();
         }
       }
-      if (finished) {
-        break;
-      }
+    } finally {
+      signal?.removeEventListener("abort", abortRequests);
+      requestController.abort();
     }
   }
 
@@ -511,6 +528,7 @@ export class FileManager {
         if (typeof err === "object" && err instanceof AssertionError) {
           throw err;
         }
+        signal?.throwIfAborted();
         ++errorCount;
         if (errorCount > 20) {
           retryIn = 0;
