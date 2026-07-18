@@ -611,17 +611,17 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       if (id[0] === "+" || !isNaN(Number(id[0]))) {
         if (id[0] === "+") {
           id = id.slice(1);
-          const maybePhoneNumber = await this.messageStorage.phoneNumbers.get([id]);
-          if (maybePhoneNumber !== null && Date.now() - maybePhoneNumber[1].getTime() < PHONE_NUMBER_TTL) {
-            const [id] = maybePhoneNumber;
-            resolvedId = id;
-          } else {
-            const resolved = await this.invoke({ _: "contacts.resolvePhone", phone: id });
-            this.#updateManager.processChats(resolved.chats, resolved);
-            await this.#updateManager.processUsers(resolved.users, resolved);
-            resolvedId = Api.peerToChatId(resolved.peer);
-            this.messageStorage.phoneNumbers.set([id], [resolvedId, new Date()]);
-          }
+        }
+        const maybePhoneNumber = await this.messageStorage.phoneNumbers.get([id]);
+        if (maybePhoneNumber !== null && Date.now() - maybePhoneNumber[1].getTime() < PHONE_NUMBER_TTL) {
+          const [id] = maybePhoneNumber;
+          resolvedId = id;
+        } else {
+          const resolved = await this.invoke({ _: "contacts.resolvePhone", phone: id });
+          this.#updateManager.processChats(resolved.chats, resolved);
+          await this.#updateManager.processUsers(resolved.users, resolved);
+          resolvedId = Api.peerToChatId(resolved.peer);
+          this.messageStorage.phoneNumbers.set([id], [resolvedId, new Date()]);
         }
       } else {
         id = getUsername(id);
