@@ -63,6 +63,8 @@ export function skip<C>(_ctx: C, next: NextFunction): Promise<void> {
   return next();
 }
 
+const lastGetMe = new WeakMap<ClientGeneric, User>();
+
 export class Composer<C extends Context> implements MiddlewareObj<C> {
   #handle: MiddlewareFn<C>;
   #prefixes?: string | string[];
@@ -78,13 +80,18 @@ export class Composer<C extends Context> implements MiddlewareObj<C> {
     this.#handle = middleware.length === 0 ? skip : middleware.map(flatten).reduce(concat);
   }
 
-  #lastGetMe?: User;
+  protected resetLastGetMe(client: ClientGeneric) {
+    lastGetMe.delete(client);
+  }
+
   async handleUpdate(client: ClientGeneric, update: Update) {
-    if (!this.#lastGetMe && !("connectionState" in update) && (!("authorizationState" in update) || ("authorizationState" in update && update.authorizationState.isAuthorized))) {
-      this.#lastGetMe = await client.getMe();
+    let me = lastGetMe.get(client);
+    if (!me && !("connectionState" in update) && (!("authorizationState" in update) || ("authorizationState" in update && update.authorizationState.isAuthorized))) {
+      me = await client.getMe();
+      lastGetMe.set(client, me);
     }
 
-    const ctx = new Context(client, this.#lastGetMe, update);
+    const ctx = new Context(client, me, update);
     const next = () => Promise.resolve();
     await this.#handle(ctx as C, next);
   }

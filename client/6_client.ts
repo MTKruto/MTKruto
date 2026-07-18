@@ -1323,6 +1323,8 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     }
     await this.#initStorage();
     await this.storage.importAuthString(authString);
+    this.#lastGetMe = null;
+    this.resetLastGetMe(this);
     this.#authStringImported = true;
     if (!this.#apiId) {
       this.#apiId = this.storage.auth.mustGet().apiId;
@@ -1378,6 +1380,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       await this.#propagateAuthorizationState(false);
     } finally {
       this.#lastGetMe = null;
+      this.resetLastGetMe(this);
       this.#disconnectAllClients();
       this.#clients = [];
       this.#downloadPools = {};

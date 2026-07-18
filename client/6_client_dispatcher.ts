@@ -279,7 +279,8 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @method au
    */
   async importAuthString(authString: string): Promise<void> {
-    return await this.#dispatch("importAuthString", authString);
+    await this.#dispatch("importAuthString", authString);
+    this.resetLastGetMe(this);
   }
 
   /**
@@ -312,7 +313,11 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @method au
    */
   async signOut(): Promise<void> {
-    return await this.#dispatch("signOut");
+    try {
+      await this.#dispatch("signOut");
+    } finally {
+      this.resetLastGetMe(this);
+    }
   }
 
   /**

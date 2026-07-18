@@ -198,6 +198,7 @@ export class StorageOperations {
       isBot,
       userId,
     });
+    this.#accountId = userId;
   }
 
   #lastCommit: Date | null = null;
