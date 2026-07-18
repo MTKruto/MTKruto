@@ -192,7 +192,7 @@ export class FileManager {
   async #uploadBuffer(buffer: Uint8Array<ArrayBuffer>, fileId: bigint, mustTrackProgress: boolean, chunkSize: number, poolSize: number, signal: AbortSignal | undefined, encryptionInformation: EncryptionInformation | undefined) {
     const isBig = buffer.byteLength > FileManager.#BIG_FILE_THRESHOLD;
     const partCount = Math.ceil(buffer.byteLength / chunkSize);
-    let promises = new Array<Promise<void>>();
+    const promises = new Array<Promise<void>>();
     let started = false;
     let ms = 0.05;
     let uploaded = 0;
@@ -246,14 +246,13 @@ export class FileManager {
               }
             }),
           );
+          const promise = promises.at(-1)!;
+          promise.then(() => promises.splice(promises.indexOf(promise), 1), () => {});
           if (promises.length === poolSize * UPLOAD_REQUEST_PER_CONNECTION) {
-            await Promise.all(promises);
-            promises = [];
+            await Promise.race(promises);
           }
         }
       }
-      await Promise.all(promises);
-      promises = [];
     }
     await Promise.all(promises);
     if (mustTrackProgress) {
@@ -444,57 +443,61 @@ export class FileManager {
 
     let totalSize = 0;
     const requestCount = DOWNLOAD_POOL_SIZE * DOWNLOAD_REQUEST_PER_CONNECTION;
+    const requests = Array.from({ length: requestCount }, (_, i) => this.#downloadPart(location, offset + BigInt(i * limit), limit, dc, signal, id, part + i));
+
     let finished = false;
     while (true) {
       signal?.throwIfAborted();
-      const results = await Promise.all(Array.from({ length: requestCount }, (_, i) => this.#downloadPart(location, offset + BigInt(i * limit), limit, dc, signal, id, part + i)));
-      for (const result of results) {
-        signal?.throwIfAborted();
+      const result = await requests.shift()!;
+      if (Api.is("upload.file", result) && result.bytes.byteLength === limit) {
+        requests.push(this.#downloadPart(location, offset + BigInt(requestCount * limit), limit, dc, signal, id, part + requestCount));
+      }
+      signal?.throwIfAborted();
 
-        if (Api.is("upload.file", result)) {
-          const downloadedSize = result.bytes.byteLength;
-          finished = downloadedSize < limit;
-          if (decryptionInformation) {
-            const left = result.bytes.subarray(-16);
+      if (Api.is("upload.file", result)) {
+        const downloadedSize = result.bytes.byteLength;
+        finished = downloadedSize < limit;
+        if (decryptionInformation) {
+          const left = result.bytes.subarray(-16);
 
-            const decryptedBytes = ige256Decrypt(result.bytes, decryptionInformation.key, decryptionInformation.iv);
-            const right = decryptedBytes.subarray(-16);
+          const decryptedBytes = ige256Decrypt(result.bytes, decryptionInformation.key, decryptionInformation.iv);
+          const right = decryptedBytes.subarray(-16);
 
-            const remainingSize = Math.max(0, fileSize - totalSize);
-            result.bytes = decryptedBytes.slice(0, remainingSize);
-            totalSize += result.bytes.byteLength;
-            finished = totalSize >= fileSize;
+          const remainingSize = Math.max(0, fileSize - totalSize);
+          result.bytes = decryptedBytes.slice(0, remainingSize);
+          totalSize += result.bytes.byteLength;
+          finished = totalSize >= fileSize;
 
-            decryptionInformation.iv = concat([left, right]);
-          }
-          const bytesToCache = result.bytes;
-          if (bytesToSkip > 0) {
-            const skipped = Math.min(bytesToSkip, result.bytes.byteLength);
-            bytesToSkip -= skipped;
-            result.bytes = result.bytes.subarray(skipped);
-          }
-          if (result.bytes.byteLength) {
-            yield result.bytes;
-          }
+          decryptionInformation.iv = concat([left, right]);
+        }
+        const bytesToCache = result.bytes;
+        if (bytesToSkip > 0) {
+          const skipped = Math.min(bytesToSkip, result.bytes.byteLength);
+          bytesToSkip -= skipped;
+          result.bytes = result.bytes.subarray(skipped);
+        }
+        if (result.bytes.byteLength) {
+          yield result.bytes;
+        }
+        if (cacheId !== null) {
+          await this.#c.storage.saveFilePart(cacheId, part, bytesToCache);
+          signal?.throwIfAborted();
+        }
+        ++part;
+        if (finished) {
           if (cacheId !== null) {
-            await this.#c.storage.saveFilePart(cacheId, part, bytesToCache);
+            await this.#c.storage.setFilePartCount(cacheId, part, chunkSize);
             signal?.throwIfAborted();
           }
-          ++part;
-          if (finished) {
-            if (cacheId !== null) {
-              await this.#c.storage.setFilePartCount(cacheId, part, chunkSize);
-              signal?.throwIfAborted();
-            }
-            break;
-          } else {
-            offset += BigInt(downloadedSize);
-          }
+          break;
         } else {
-          unreachable();
+          offset += BigInt(downloadedSize);
         }
+      } else {
+        unreachable();
       }
       if (finished) {
+        await Promise.all(requests);
         break;
       }
     }
