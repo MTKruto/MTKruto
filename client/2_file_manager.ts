@@ -125,7 +125,7 @@ export class FileManager {
 
   async #uploadStream(stream: ReadableStream<Uint8Array>, fileId: bigint, mustTrackProgress: boolean, size: number, chunkSize: number, poolSize: number, signal: AbortSignal | undefined, encryptionInformation: EncryptionInformation | undefined) {
     let part: Part;
-    let promises = new Array<Promise<void>>();
+    const promises = new Set<Promise<void>>();
     let ms = 0.05;
     let uploaded = 0;
     let firstPart: Uint8Array<ArrayBuffer> | undefined;
@@ -153,25 +153,24 @@ export class FileManager {
 
         iv = concat([left, right]);
       }
-      promises.push(
-        this.#uploadPart(fileId, part.totalParts, !part.isSmall, part.part, part.bytes, signal).then(() => {
-          if (mustTrackProgress) {
-            uploaded += partSize;
-            this.#c.handleUpdate({
-              type: "uploadProgress",
-              uploadProgress: {
-                id: String(fileId),
-                uploaded,
-                total,
-                isUploaded: false,
-              },
-            });
-          }
-        }),
-      );
-      if (promises.length === poolSize * UPLOAD_REQUEST_PER_CONNECTION) {
-        await Promise.all(promises);
-        promises = [];
+      const promise = this.#uploadPart(fileId, part.totalParts, !part.isSmall, part.part, part.bytes, signal).then(() => {
+        if (mustTrackProgress) {
+          uploaded += partSize;
+          this.#c.handleUpdate({
+            type: "uploadProgress",
+            uploadProgress: {
+              id: String(fileId),
+              uploaded,
+              total,
+              isUploaded: false,
+            },
+          });
+        }
+      });
+      promises.add(promise);
+      promise.then(() => promises.delete(promise), () => {});
+      if (promises.size === poolSize * UPLOAD_REQUEST_PER_CONNECTION) {
+        await Promise.race(promises);
       }
     }
     await Promise.all(promises);
@@ -192,7 +191,7 @@ export class FileManager {
   async #uploadBuffer(buffer: Uint8Array<ArrayBuffer>, fileId: bigint, mustTrackProgress: boolean, chunkSize: number, poolSize: number, signal: AbortSignal | undefined, encryptionInformation: EncryptionInformation | undefined) {
     const isBig = buffer.byteLength > FileManager.#BIG_FILE_THRESHOLD;
     const partCount = Math.ceil(buffer.byteLength / chunkSize);
-    let promises = new Array<Promise<void>>();
+    const promises = new Set<Promise<void>>();
     let started = false;
     let ms = 0.05;
     let uploaded = 0;
@@ -230,30 +229,27 @@ export class FileManager {
             await delay(ms);
             ms = Math.max(ms * .8, 0.003);
           }
-          promises.push(
-            this.#uploadPart(fileId, partCount, isBig, part++, bytes, signal).then(() => {
-              if (mustTrackProgress) {
-                uploaded += partSize;
-                this.#c.handleUpdate({
-                  type: "uploadProgress",
-                  uploadProgress: {
-                    id: String(fileId),
-                    uploaded,
-                    total: buffer.byteLength,
-                    isUploaded: false,
-                  },
-                });
-              }
-            }),
-          );
-          if (promises.length === poolSize * UPLOAD_REQUEST_PER_CONNECTION) {
-            await Promise.all(promises);
-            promises = [];
+          const promise = this.#uploadPart(fileId, partCount, isBig, part++, bytes, signal).then(() => {
+            if (mustTrackProgress) {
+              uploaded += partSize;
+              this.#c.handleUpdate({
+                type: "uploadProgress",
+                uploadProgress: {
+                  id: String(fileId),
+                  uploaded,
+                  total: buffer.byteLength,
+                  isUploaded: false,
+                },
+              });
+            }
+          });
+          promises.add(promise);
+          promise.then(() => promises.delete(promise), () => {});
+          if (promises.size === poolSize * UPLOAD_REQUEST_PER_CONNECTION) {
+            await Promise.race(promises);
           }
         }
       }
-      await Promise.all(promises);
-      promises = [];
     }
     await Promise.all(promises);
     if (mustTrackProgress) {
@@ -437,65 +433,87 @@ export class FileManager {
 
     const limit = chunkSize;
     const requestedOffset = params?.offset ?? 0;
-    let offset = decryptionInformation ? 0n : BigInt(requestedOffset);
+    const offset = decryptionInformation ? 0n : BigInt(requestedOffset);
     const cacheId = offset === 0n ? id : null;
     let bytesToSkip = decryptionInformation ? requestedOffset : 0;
     let part = 0;
 
     let totalSize = 0;
     const requestCount = DOWNLOAD_POOL_SIZE * DOWNLOAD_REQUEST_PER_CONNECTION;
+    const download = (requestPart: number) => this.#downloadPart(location, offset + BigInt(requestPart) * BigInt(limit), limit, dc, signal, id, requestPart).then((result) => ({ requestPart, result }));
+    type DownloadResult = Awaited<ReturnType<typeof download>>["result"];
+    const requests = new Map<number, ReturnType<typeof download>>();
+    const results = new Map<number, DownloadResult>();
+    let nextRequestPart = 0;
+    let noMoreRequests = false;
+    const startDownload = () => {
+      const requestPart = nextRequestPart++;
+      requests.set(requestPart, download(requestPart));
+    };
+    for (let i = 0; i < requestCount; ++i) {
+      startDownload();
+    }
+
     let finished = false;
     while (true) {
       signal?.throwIfAborted();
-      const results = await Promise.all(Array.from({ length: requestCount }, (_, i) => this.#downloadPart(location, offset + BigInt(i * limit), limit, dc, signal, id, part + i)));
-      for (const result of results) {
-        signal?.throwIfAborted();
-
-        if (Api.is("upload.file", result)) {
-          const downloadedSize = result.bytes.byteLength;
-          finished = downloadedSize < limit;
-          if (decryptionInformation) {
-            const left = result.bytes.subarray(-16);
-
-            const decryptedBytes = ige256Decrypt(result.bytes, decryptionInformation.key, decryptionInformation.iv);
-            const right = decryptedBytes.subarray(-16);
-
-            const remainingSize = Math.max(0, fileSize - totalSize);
-            result.bytes = decryptedBytes.slice(0, remainingSize);
-            totalSize += result.bytes.byteLength;
-            finished = totalSize >= fileSize;
-
-            decryptionInformation.iv = concat([left, right]);
-          }
-          const bytesToCache = result.bytes;
-          if (bytesToSkip > 0) {
-            const skipped = Math.min(bytesToSkip, result.bytes.byteLength);
-            bytesToSkip -= skipped;
-            result.bytes = result.bytes.subarray(skipped);
-          }
-          if (result.bytes.byteLength) {
-            yield result.bytes;
-          }
-          if (cacheId !== null) {
-            await this.#c.storage.saveFilePart(cacheId, part, bytesToCache);
-            signal?.throwIfAborted();
-          }
-          ++part;
-          if (finished) {
-            if (cacheId !== null) {
-              await this.#c.storage.setFilePartCount(cacheId, part, chunkSize);
-              signal?.throwIfAborted();
-            }
-            break;
-          } else {
-            offset += BigInt(downloadedSize);
-          }
-        } else {
-          unreachable();
+      if (!results.has(part)) {
+        const { requestPart, result } = await Promise.race(requests.values());
+        requests.delete(requestPart);
+        results.set(requestPart, result);
+        noMoreRequests ||= Api.is("upload.file", result) && result.bytes.byteLength < limit;
+        if (!noMoreRequests) {
+          startDownload();
         }
       }
-      if (finished) {
-        break;
+
+      const result = results.get(part);
+      if (result === undefined) {
+        continue;
+      }
+      results.delete(part);
+      signal?.throwIfAborted();
+
+      if (Api.is("upload.file", result)) {
+        const downloadedSize = result.bytes.byteLength;
+        finished = downloadedSize < limit;
+        if (decryptionInformation) {
+          const left = result.bytes.subarray(-16);
+
+          const decryptedBytes = ige256Decrypt(result.bytes, decryptionInformation.key, decryptionInformation.iv);
+          const right = decryptedBytes.subarray(-16);
+
+          const remainingSize = Math.max(0, fileSize - totalSize);
+          result.bytes = decryptedBytes.slice(0, remainingSize);
+          totalSize += result.bytes.byteLength;
+          finished = totalSize >= fileSize;
+
+          decryptionInformation.iv = concat([left, right]);
+        }
+        const bytesToCache = result.bytes;
+        if (bytesToSkip > 0) {
+          const skipped = Math.min(bytesToSkip, result.bytes.byteLength);
+          bytesToSkip -= skipped;
+          result.bytes = result.bytes.subarray(skipped);
+        }
+        if (result.bytes.byteLength) {
+          yield result.bytes;
+        }
+        if (cacheId !== null) {
+          await this.#c.storage.saveFilePart(cacheId, part, bytesToCache);
+          signal?.throwIfAborted();
+        }
+        ++part;
+        if (finished) {
+          await Promise.all(requests.values());
+          if (cacheId !== null) {
+            await this.#c.storage.setFilePartCount(cacheId, part, chunkSize);
+            signal?.throwIfAborted();
+          }
+          break;
+        }
+      } else {
+        unreachable();
       }
     }
   }
