@@ -394,7 +394,7 @@ export class FileManager {
     if (params?.offset !== undefined) {
       FileManager.validateOffset(params.offset);
     }
-    const id = "id" in location ? location.id : "photo_id" in location ? location.photo_id : null;
+    const id = "thumb_size" in location && location.thumb_size ? null : "id" in location ? location.id : "photo_id" in location ? location.photo_id : null;
     if (id !== null && this.#c.storage.supportsFiles) {
       const file = await this.#c.storage.getFile(id);
       if (file !== null && file[0] > 0) {
