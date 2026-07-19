@@ -19,7 +19,7 @@
  */
 
 import type { GetManyFilter, Storage, StorageKeyPart } from "./0_storage.ts";
-import { fromString, isInRange, toString } from "./1_utilities.ts";
+import { compareKeys, fromString, isInRange, toString } from "./1_utilities.ts";
 
 export class StorageLocalStorage implements Storage {
   readonly #prefix: string;
@@ -71,7 +71,14 @@ export class StorageLocalStorage implements Storage {
   }
 
   *getMany<T>(filter: GetManyFilter, params?: { limit?: number; reverse?: boolean }): Generator<[readonly StorageKeyPart[], T]> {
-    const entries = Object.entries(localStorage).sort(([a], [b]) => a.localeCompare(b));
+    const entries = Object.entries(localStorage)
+      .filter(([key]) => key.startsWith(this.prefix))
+      .sort(([a], [b]) =>
+        compareKeys(
+          fromString<StorageKeyPart[]>(a.slice(this.prefix.length)),
+          fromString<StorageKeyPart[]>(b.slice(this.prefix.length)),
+        )
+      );
     if (params?.reverse) {
       entries.reverse();
     }

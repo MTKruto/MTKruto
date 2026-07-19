@@ -190,7 +190,7 @@ function successor(key: any) {
   throw new TypeError();
 }
 
-function compareKeys(left: readonly StorageKeyPart[], right: readonly StorageKeyPart[]) {
+export function compareKeys(left: readonly StorageKeyPart[], right: readonly StorageKeyPart[]) {
   const length = Math.min(left.length, right.length);
   for (let i = 0; i < length; ++i) {
     if (left[i] < right[i]) {
