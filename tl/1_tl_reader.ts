@@ -130,12 +130,12 @@ export class TLReader {
       return await this.#deserializeVector(name, schema);
     }
     const id = this.readInt32(false);
-    if (id === BOOL_TRUE) {
-      return true;
-    } else if (id === BOOL_FALSE) {
-      return false;
-    }
     if (name === X) {
+      if (id === BOOL_TRUE) {
+        return true;
+      } else if (id === BOOL_FALSE) {
+        return false;
+      }
       const typeName = schema.identifierToName[id];
       if (!typeName) {
         throw new TLError(`Unknown constructor ID: ${constructorIdToHex(id)}`, this.#path);
