@@ -133,6 +133,9 @@ export class FileManager {
     let fileSize = 0;
     const total = size > 0 ? size : 0;
     for await (part of iterateReadableStream(stream.pipeThrough(new PartStream(chunkSize)))) {
+      if (part.totalParts === 0) {
+        throw new InputError("Invalid file size.");
+      }
       if (!part.isSmall && part.part > 0) {
         await delay(ms);
         ms = Math.max(ms * .8, 0.003);
