@@ -177,7 +177,7 @@ export class StorageIndexedDB implements Storage {
           res(items);
           return;
         }
-        items.push(restoreKey(cursor.key as readonly StorageKeyPart[]));
+        items.push(restoreKey(cursor.key as readonly IDBValidKey[]));
         if (params?.limit !== undefined && items.length >= params.limit) {
           res(items);
         } else {

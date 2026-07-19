@@ -97,12 +97,23 @@ export function fromString<T>(string: string): T {
   }
 }
 
-export function fixKey(key: readonly StorageKeyPart[]): IDBValidKey[] {
-  return key.map((v) => typeof v === "bigint" ? String(ValueType.BigInt) + String(v) : typeof v === "string" ? String(ValueType.String) + v : v);
+type FixedBigInt = [typeof ValueType.BigInt, -1 | 1, number, ...number[]];
+
+function fixBigInt(value: bigint): FixedBigInt {
+  const sign = value < 0n ? -1 : 1;
+  const digits = Array.from((value < 0n ? -value : value).toString(), Number);
+  return [ValueType.BigInt, sign, sign * digits.length, ...digits.map((digit) => sign * digit)];
 }
-export function restoreKey(key: readonly StorageKeyPart[]): StorageKeyPart[] {
+
+export function fixKey(key: readonly StorageKeyPart[]): IDBValidKey[] {
+  return key.map((v) => typeof v === "bigint" ? fixBigInt(v) : typeof v === "string" ? String(ValueType.String) + v : v);
+}
+export function restoreKey(key: readonly IDBValidKey[]): StorageKeyPart[] {
   return key.map((v) => {
-    if (typeof v === "string") {
+    if (Array.isArray(v) && v[0] === ValueType.BigInt) {
+      const [, sign, , ...digits] = v as FixedBigInt;
+      return BigInt(digits.map(Math.abs).join("")) * BigInt(sign);
+    } else if (typeof v === "string") {
       const t = parseInt(v[0]);
       if (t === ValueType.BigInt) {
         return BigInt(v.slice(1));
@@ -112,7 +123,7 @@ export function restoreKey(key: readonly StorageKeyPart[]): StorageKeyPart[] {
         return v;
       }
     } else {
-      return v;
+      return v as StorageKeyPart;
     }
   });
 }
