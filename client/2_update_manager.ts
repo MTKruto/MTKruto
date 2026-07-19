@@ -904,36 +904,39 @@ export class UpdateManager {
       return;
     }
     this.#handleUpdatesSet.add(boxId);
-    do {
-      const maybeUpdate = await this.#c.storage.getFirstUpdate(boxId);
-      if (maybeUpdate === null) {
-        break;
-      }
-      const [key, update] = maybeUpdate;
-      let handled = false;
-      for (let i = 0; i < 100; ++i) {
-        try {
-          const handle = await this.#handleUpdate(update);
-          handle: for (let i = 0; i < 2; ++i) {
-            try {
-              await handle();
-              handled = true;
-              break handle;
-            } catch {
-              continue handle;
-            }
-          }
+    try {
+      do {
+        const maybeUpdate = await this.#c.storage.getFirstUpdate(boxId);
+        if (maybeUpdate === null) {
           break;
-        } catch (err) {
-          this.#L$handleUpdate.error(err);
         }
-      }
-      if (!handled) {
-        break;
-      }
-      await this.#c.storage.set(key, null);
-    } while (true);
-    this.#handleUpdatesSet.delete(boxId);
+        const [key, update] = maybeUpdate;
+        let handled = false;
+        for (let i = 0; i < 100; ++i) {
+          try {
+            const handle = await this.#handleUpdate(update);
+            handle: for (let i = 0; i < 2; ++i) {
+              try {
+                await handle();
+                handled = true;
+                break handle;
+              } catch {
+                continue handle;
+              }
+            }
+            break;
+          } catch (err) {
+            this.#L$handleUpdate.error(err);
+          }
+        }
+        if (!handled) {
+          break;
+        }
+        await this.#c.storage.set(key, null);
+      } while (true);
+    } finally {
+      this.#handleUpdatesSet.delete(boxId);
+    }
   }
 
   #handleUpdate(update: Api.Update) {
