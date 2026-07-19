@@ -151,6 +151,7 @@ export class ConnectionTLS implements Connection {
         throw new TypeError("Failed to initialize TLS connection.");
       }
 
+      this.#buffer = new Uint8Array();
       this.#connection = connection;
       this.#canRead = this.#canWrite = this.#isFirstWrite = true;
       this.stateChangeHandler?.(true);
