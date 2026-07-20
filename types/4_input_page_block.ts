@@ -200,7 +200,7 @@ export interface InputPageBlockVideo extends _InputPageBlockMediaCommon {
   caption?: InputPageBlockCaption;
   /** Whether the video is a spoiler. */
   isSpoiler?: boolean;
-  /** Whether the video is played in loop. */
+  /** Whether the video is played in a loop. */
   isLoop?: boolean;
   /** Whether the video is automatically played. */
   isAutoplay?: boolean;
@@ -227,7 +227,7 @@ export interface InputPageBlockAnimation extends _InputPageBlockMediaCommon {
   caption?: InputPageBlockCaption;
   /** Whether the animation is a spoiler. */
   isSpoiler?: boolean;
-  /** Whether the animation is played in loop. */
+  /** Whether the animation is played in a loop. */
   isLoop?: boolean;
   /** Whether the animation is automatically played. */
   isAutoplay?: boolean;

@@ -298,7 +298,7 @@ export interface _UploadCommon {
 export interface AnswerInlineQueryParams {
   /** The TTL of cached results, in seconds. Defaults to 300. */
   cacheTime?: number;
-  /** Whether the result caches should only be for the user who made the inline query. */
+  /** Whether the results should be cached only for the user who made the inline query. */
   isPersonal?: boolean;
   /** A parameter to be passed to the same query next time when the user’s client asks for more results. Can’t be longer than 64 bytes. */
   nextOffset?: string;

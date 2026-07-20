@@ -35,7 +35,7 @@ export interface _InputMediaCommon {
   signal?: AbortSignal;
   /** The caption of the media. */
   caption?: string;
-  /** The entities of media's caption. */
+  /** The entities of the media's caption. */
   captionEntities?: MessageEntity[];
   /** Override the parse mode used for the media's caption. */
   parseMode?: ParseMode;

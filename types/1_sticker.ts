@@ -39,7 +39,7 @@ export interface Sticker {
   isAnimated: boolean;
   /** Whether the sticker is a video. */
   isVideo: boolean;
-  /** Thumbnails of the sticker in the WebP or JPG. */
+  /** Thumbnails of the sticker in WebP or JPG format. */
   thumbnails: Thumbnail[];
   /** The emoji associated with the sticker. */
   emoji?: string;

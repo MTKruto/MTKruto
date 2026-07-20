@@ -3719,7 +3719,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    * Get custom emoji documents for download.
    *
    * @method fs
-   * @param id Identifier of one or more of custom emojis.
+   * @param id Identifier of one or more custom emojis.
    * @returns The custom emoji documents.
    * @cache
    */

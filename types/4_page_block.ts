@@ -194,7 +194,7 @@ export interface PageBlockVideo {
   caption: PageBlockCaption;
   /** Whether the video is a spoiler. */
   isSpoiler: boolean;
-  /** Whether the video is played in loop. */
+  /** Whether the video is played in a loop. */
   isLoop: boolean;
   /** Whether the video is automatically played. */
   isAutoplay: boolean;
@@ -213,7 +213,7 @@ export interface PageBlockAnimation {
   caption: PageBlockCaption;
   /** Whether the animation is a spoiler. */
   isSpoiler: boolean;
-  /** Whether the animation is played in loop. */
+  /** Whether the animation is played in a loop. */
   isLoop: boolean;
   /** Whether the animation is automatically played. */
   isAutoplay: boolean;
@@ -396,7 +396,7 @@ export function constructPageBlockOrderedListItem(ploi: Api.PageListOrderedItem,
   unreachable();
 }
 /**
- * An order list page block.
+ * An ordered list page block.
  * @unlisted
  */
 export interface PageBlockOrderedList {
