@@ -78,7 +78,7 @@ let id = 0;
 
 const getPeer = Symbol();
 
-const mustGetPeer = Symbol();
+const getPeerSync = Symbol();
 
 export interface ClientParams extends ClientPlainParams {
   /** The storage provider to use. Defaults to memory storage. */
@@ -344,7 +344,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       getInputUser: this.getInputUser.bind(this),
       getInputPeerChatId: this.#getInputPeerChatId.bind(this),
       inputPeerToPeer: this.#inputPeerToPeer.bind(this),
-      getPeer: this[mustGetPeer].bind(this),
+      getPeer: this[getPeerSync].bind(this),
       handleUpdate: this.#queueHandleCtxUpdate.bind(this),
       parseMode: this.#parseMode,
       outgoingMessages: this.#outgoingMessages,
@@ -718,12 +718,12 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     return await this.messageStorage.peers.get([id]);
   }
 
-  private [mustGetPeer](peer: Api.peerUser): [ChatPPrivate, bigint] | null;
-  private [mustGetPeer](peer: Api.peerChat): [ChatPGroup, bigint] | null;
-  private [mustGetPeer](peer: Api.peerChannel): [ChatPChannel, bigint] | null;
-  private [mustGetPeer](peer: Api.peerUser | Api.peerChat | Api.peerChannel): [ChatP, bigint] | null;
-  private [mustGetPeer](peer: Api.peerUser | Api.peerChat | Api.peerChannel) {
-    return this.messageStorage.peers.mustGet([Api.peerToChatId(peer)]);
+  private [getPeerSync](peer: Api.peerUser): [ChatPPrivate, bigint] | null;
+  private [getPeerSync](peer: Api.peerChat): [ChatPGroup, bigint] | null;
+  private [getPeerSync](peer: Api.peerChannel): [ChatPChannel, bigint] | null;
+  private [getPeerSync](peer: Api.peerUser | Api.peerChat | Api.peerChannel): [ChatP, bigint] | null;
+  private [getPeerSync](peer: Api.peerUser | Api.peerChat | Api.peerChannel) {
+    return this.messageStorage.peers.getSync([Api.peerToChatId(peer)]);
   }
 
   async #handleCtxUpdate(update: Update) {

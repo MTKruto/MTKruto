@@ -18,7 +18,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { unreachable } from "../0_deps.ts";
 import { Api } from "../2_tl.ts";
 import { type BotAccessSettings, constructBotAccessSettings, constructUser2, type ID, type Update } from "../3_types.ts";
 import type { SetManagedBotAccessSettingsParams } from "./0_params.ts";
@@ -70,14 +69,14 @@ export class ManagedBotManager implements UpdateProcessor<ManagedBotManagerUpdat
     return Api.isOneOf(managedBotManagerUpdates, update);
   }
 
-  handleUpdate(update: ManagedBotManagerUpdate): Update {
+  handleUpdate(update: ManagedBotManagerUpdate): Update | null {
     const maybeUser = this.#c.getPeer({ _: "peerUser", user_id: update.user_id });
     if (maybeUser === null) {
-      unreachable();
+      return null;
     }
     const maybeBot = this.#c.getPeer({ _: "peerUser", user_id: update.bot_id });
     if (maybeBot === null) {
-      unreachable();
+      return null;
     }
 
     const user = constructUser2(maybeUser[0]);
