@@ -35,6 +35,7 @@ import type { MessageInteractions } from "./2_message_interactions.ts";
 import type { MessageReactionCount } from "./2_message_reaction_count.ts";
 import type { PollAnswer } from "./2_poll_answer.ts";
 import type { SecretMessage } from "./2_secret_message.ts";
+import type { User } from "./2_user.ts";
 import type { BusinessConnection } from "./3_business_connection.ts";
 import type { ChosenInlineResult } from "./3_chosen_inline_result.ts";
 import type { InlineQuery } from "./3_inline_query.ts";
@@ -627,6 +628,24 @@ export interface UpdateSecretTyping {
   chatId: number;
 }
 
+/**
+ * A managed bot was updated. Bot-only.
+ *
+ * ```
+ * client.on("managedBot", (ctx) => {
+ *   // ctx.update.managedBot
+ * });
+ * ```
+ * @unlisted
+ */
+export interface UpdateManagedBot {
+  type: "managedBot";
+  /** The owner of the managed bot. */
+  user: User;
+  /** The managed bot. */
+  bot: User;
+}
+
 /** Any type of update. */
 export type Update =
   | UpdateConnectionState
@@ -667,4 +686,5 @@ export type Update =
   | UpdateMessageDraft
   | UpdateSecretChat
   | UpdateSecretMessage
-  | UpdateSecretTyping;
+  | UpdateSecretTyping
+  | UpdateManagedBot;

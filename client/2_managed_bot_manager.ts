@@ -18,11 +18,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { type BotAccessSettings, constructBotAccessSettings, type ID } from "../3_types.ts";
+import { unreachable } from "../0_deps.ts";
+import { Api } from "../2_tl.ts";
+import { type BotAccessSettings, constructBotAccessSettings, constructUser2, type ID, type Update } from "../3_types.ts";
 import type { SetManagedBotAccessSettingsParams } from "./0_params.ts";
+import type { UpdateProcessor } from "./0_update_processor.ts";
 import type { C } from "./1_types.ts";
 
-export class ManagedBotManager {
+const managedBotManagerUpdates = [
+  "updateManagedBot",
+] as const;
+
+type ManagedBotManagerUpdate = Api.Types[(typeof managedBotManagerUpdates)[number]];
+
+export class ManagedBotManager implements UpdateProcessor<ManagedBotManagerUpdate> {
   #c: C;
 
   constructor(c: C) {
@@ -55,5 +64,24 @@ export class ManagedBotManager {
     const bot = await this.#c.getInputUser(userId);
     const result = await this.#c.invoke({ _: "bots.getAccessSettings", bot });
     return constructBotAccessSettings(result);
+  }
+
+  canHandleUpdate(update: Api.Update): update is ManagedBotManagerUpdate {
+    return Api.isOneOf(managedBotManagerUpdates, update);
+  }
+
+  handleUpdate(update: ManagedBotManagerUpdate): Update {
+    const maybeUser = this.#c.getPeer({ _: "peerUser", user_id: update.user_id });
+    if (maybeUser === null) {
+      unreachable();
+    }
+    const maybeBot = this.#c.getPeer({ _: "peerUser", user_id: update.bot_id });
+    if (maybeBot === null) {
+      unreachable();
+    }
+
+    const user = constructUser2(maybeUser[0]);
+    const bot = constructUser2(maybeBot[0]);
+    return { type: "managedBot", user, bot };
   }
 }
