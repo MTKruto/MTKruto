@@ -137,6 +137,7 @@ export class StickerSetManager {
   }
 
   async suggestStickerSetSlug(name: string): Promise<string> {
+    this.#c.storage.assertUser("suggestStickerSetSlug");
     const result = await this.#c.invoke({ _: "stickers.suggestShortName", title: name });
     return result.short_name;
   }

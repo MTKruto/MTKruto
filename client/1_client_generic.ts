@@ -3705,7 +3705,7 @@ export abstract class ClientGeneric {
   abstract setStickerSetTitle(slug: string, title: string): Promise<void>;
 
   /**
-   * Suggest a sticker set slug from its title.
+   * Suggest a sticker set slug from its title. User-only.
    *
    * @method ss
    * @param title A sticker set title.

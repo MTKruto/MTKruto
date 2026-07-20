@@ -4718,7 +4718,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   }
 
   /**
-   * Suggest a sticker set slug from its title.
+   * Suggest a sticker set slug from its title. User-only.
    *
    * @method ss
    * @param title A sticker set title.
