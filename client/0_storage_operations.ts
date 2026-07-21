@@ -741,7 +741,7 @@ class StorageMap<K extends StorageKeyPart[], V> {
     this.#cache.clear();
   }
 
-  getSync(key: K) {
+  getSync(key: K): V | null {
     const value = this.#cache.get(toString(key));
     if (value === undefined) {
       return null;
