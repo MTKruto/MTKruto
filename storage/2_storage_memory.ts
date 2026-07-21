@@ -30,6 +30,9 @@ function compareKeys(left: readonly StorageKeyPart[], right: readonly StorageKey
     } else if (left[i] > right[i]) {
       return 1;
     }
+    if (typeof left[i] !== typeof right[i]) {
+      return typeof left[i] < typeof right[i] ? -1 : 1;
+    }
   }
   return left.length === right.length ? 0 : left.length < right.length ? -1 : 1;
 }
