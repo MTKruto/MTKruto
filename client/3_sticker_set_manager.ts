@@ -276,7 +276,7 @@ export class StickerSetManager {
 
   async unarchiveStickerSet(slug: string) {
     this.#c.storage.assertUser("unarchiveStickerSet");
-    await this.#installStickerSet(slug, true);
+    await this.#installStickerSet(slug, false);
   }
 
   async getAddedStickerSets(): Promise<StickerSetP[]> {
