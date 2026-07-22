@@ -3382,7 +3382,7 @@ export abstract class ClientGeneric {
   //
 
   /**
-   * Craft gifts.
+   * Craft gifts. User-only.
    *
    * @method gf
    * @param gifts The gifts to craft.

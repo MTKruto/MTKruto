@@ -4323,7 +4323,7 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
   //
 
   /**
-   * Craft gifts.
+   * Craft gifts. User-only.
    *
    * @method gf
    * @param gifts The gifts to craft.

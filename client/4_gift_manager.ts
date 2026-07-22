@@ -90,6 +90,7 @@ export class GiftManager {
   }
 
   async craftGifts(gifts: InputGift[]) {
+    this.#c.storage.assertUser("craftGifts");
     const stargift = await Promise.all(gifts.map((v) => inputGiftToTlObject(v, this.#c.getInputPeer)));
     await this.#c.invoke({ _: "payments.craftStarGift", stargift });
   }

@@ -5500,7 +5500,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   //
 
   /**
-   * Craft gifts.
+   * Craft gifts. User-only.
    *
    * @method gf
    * @param gifts The gifts to craft.
