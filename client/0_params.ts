@@ -1435,3 +1435,6 @@ export interface ReportEphemeralMessageParams {
 
 export interface CraftGiftsParams extends _BusinessConnectionIdCommon {
 }
+
+export interface SellGiftParams extends _BusinessConnectionIdCommon {
+}

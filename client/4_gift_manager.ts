@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { type ClaimedGifts, constructClaimedGifts, constructGift, type Gift, type ID, type InputGift, inputGiftToTlObject, type PremiumSubscriptionDuration } from "../3_types.ts";
-import type { CraftGiftsParams, GetClaimedGiftsParams, GiftPremiumSubscriptionParams, SendGiftParams } from "./0_params.ts";
+import type { CraftGiftsParams, GetClaimedGiftsParams, GiftPremiumSubscriptionParams, SellGiftParams, SendGiftParams } from "./0_params.ts";
 import { getLimit } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
 import type { MessageManager } from "./3_message_manager.ts";
@@ -84,9 +84,12 @@ export class GiftManager {
     await this.#c.invoke({ _: "payments.sendStarsForm", form_id: paymentForm.form_id, invoice });
   }
 
-  async sellGift(gift: InputGift) {
+  async sellGift(gift: InputGift, params?: SellGiftParams) {
+    if (this.#c.storage.isBot && params?.businessConnectionId === undefined) {
+      throw new InputError("The parameter businessConnectionId is required for bots.");
+    }
     const stargift = await inputGiftToTlObject(gift, this.#c.getInputPeer);
-    await this.#c.invoke({ _: "payments.convertStarGift", stargift });
+    await this.#c.invoke({ _: "payments.convertStarGift", stargift }, { businessConnectionId: params?.businessConnectionId });
   }
 
   async craftGifts(gifts: InputGift[], params?: CraftGiftsParams) {
