@@ -1887,7 +1887,8 @@ export class Context {
   /** Context-aware alias for {@link Client.transferGift}. */
   async transferGift(gift: InputGift): Promise<void> {
     const chatId = this.#mustGetChatId();
-    return await this.client.transferGift(chatId, gift);
+    const businessConnectionId = this.msg?.businessConnectionId;
+    return await this.client.transferGift(chatId, gift, { businessConnectionId });
   }
 
   /** Context-aware alias for {@link Client.transferChatOwnership}. */
