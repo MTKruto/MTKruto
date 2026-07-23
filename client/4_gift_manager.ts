@@ -22,7 +22,7 @@ import { unreachable } from "../0_deps.ts";
 import { InputError } from "../0_errors.ts";
 import { Api } from "../2_tl.ts";
 import { type ClaimedGifts, constructClaimedGifts, constructGift, type Gift, type ID, type InputGift, inputGiftToTlObject, type PremiumSubscriptionDuration } from "../3_types.ts";
-import type { CraftGiftsParams, GetClaimedGiftsParams, GiftPremiumSubscriptionParams, SellGiftParams, SendGiftParams } from "./0_params.ts";
+import type { CraftGiftsParams, GetClaimedGiftsParams, GiftPremiumSubscriptionParams, SellGiftParams, SendGiftParams, TransferGiftParams } from "./0_params.ts";
 import { getLimit } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
 import type { MessageManager } from "./3_message_manager.ts";
@@ -76,7 +76,7 @@ export class GiftManager {
     const gift_id = BigInt(giftId);
     let message: Api.textWithEntities | undefined;
     if (params?.message) {
-      const parsedText = await this.#c.messageManager.parseText(params.message, params);
+      const parsedText = this.#c.messageManager.parseText(params.message, params);
       message = { _: "textWithEntities", text: parsedText[0], entities: parsedText[1] ?? [] };
     }
     const invoice: Api.inputInvoiceStarGift = { _: "inputInvoiceStarGift", hide_name, include_upgrade, peer, gift_id, message };
@@ -113,20 +113,29 @@ export class GiftManager {
     return constructGift(result.gift, this.#c.getPeer.bind(this));
   }
 
-  async transferGift(chatId: ID, gift: InputGift) {
-    this.#c.storage.assertUser("transferGift");
+  async transferGift(chatId: ID, gift: InputGift, params?: TransferGiftParams) {
+    if (this.#c.storage.isBot && params?.businessConnectionId === undefined) {
+      throw new InputError("The parameter businessConnectionId is required for bots.");
+    }
     const stargift = await inputGiftToTlObject(gift, this.#c.getInputPeer);
-    const gifts = await this.#c.invoke({ _: "payments.getSavedStarGift", stargift: [stargift] });
-    if (gifts.gifts.length < 1) {
-      throw new InputError("Gift not found.");
+    let transferStars = params?.transferPrice !== undefined ? BigInt(params.transferPrice) : undefined;
+    if (!this.#c.storage.isBot) {
+      const gifts = await this.#c.invoke({ _: "payments.getSavedStarGift", stargift: [stargift] });
+      if (gifts.gifts.length < 1) {
+        throw new InputError("Gift not found.");
+      }
+      if (transferStars !== gifts.gifts[0].transfer_stars) {
+        throw new InputError("Invalid transferPrice specified.");
+      }
+      transferStars = gifts.gifts[0].transfer_stars;
     }
     const to_id = await this.#c.getInputPeer(chatId);
-    if (gifts.gifts[0].transfer_stars === undefined) {
-      await this.#c.invoke({ _: "payments.transferStarGift", stargift, to_id });
+    if (transferStars === 0n || transferStars === undefined) {
+      await this.#c.invoke({ _: "payments.transferStarGift", stargift, to_id }, { businessConnectionId: params?.businessConnectionId });
     } else {
       const invoice: Api.inputInvoiceStarGiftTransfer = { _: "inputInvoiceStarGiftTransfer", stargift, to_id };
-      const { form_id } = await this.#c.invoke({ _: "payments.getPaymentForm", invoice });
-      await this.#c.invoke({ _: "payments.sendStarsForm", form_id, invoice });
+      const { form_id } = await this.#c.invoke({ _: "payments.getPaymentForm", invoice }, { businessConnectionId: params?.businessConnectionId });
+      await this.#c.invoke({ _: "payments.sendStarsForm", form_id, invoice }, { businessConnectionId: params?.businessConnectionId });
     }
   }
 

@@ -1438,3 +1438,7 @@ export interface CraftGiftsParams extends _BusinessConnectionIdCommon {
 
 export interface SellGiftParams extends _BusinessConnectionIdCommon {
 }
+
+export interface TransferGiftParams extends _BusinessConnectionIdCommon {
+  transferPrice?: number;
+}
