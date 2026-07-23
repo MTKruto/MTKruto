@@ -1432,3 +1432,6 @@ export interface ReportEphemeralMessageParams {
   /** The text of the report. */
   text?: string;
 }
+
+export interface CraftGiftsParams extends _BusinessConnectionIdCommon {
+}
