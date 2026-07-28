@@ -21,6 +21,7 @@
 import { InputError } from "../0_errors.ts";
 import { drop } from "../utilities/0_misc.ts";
 import { getLogger } from "../utilities/1_logger.ts";
+import { serializeWorkerError } from "./0_worker_error.ts";
 import type { WorkerRequest } from "./0_worker_request.ts";
 import type { WorkerResponse } from "./1_worker_response.ts";
 import { ClientDispatcher, type ClientDispatcherParams } from "./6_client_dispatcher.ts";
@@ -43,14 +44,25 @@ export class ClientWorker {
           if (message.method === "handleInvokeError") {
             const client = this.#clients.get(message.clientId);
             if (client) {
-              const result = await client.handleInvokeError(message);
-              const response: WorkerResponse = {
-                type: "response",
-                clientId: message.clientId,
-                id: message.id,
-                isError: false,
-                data: result,
-              };
+              let response: WorkerResponse;
+              try {
+                const result = await client.handleInvokeError(message);
+                response = {
+                  type: "response",
+                  clientId: message.clientId,
+                  id: message.id,
+                  isError: false,
+                  data: result,
+                };
+              } catch (err) {
+                response = {
+                  type: "response",
+                  clientId: message.clientId,
+                  id: message.id,
+                  isError: true,
+                  data: serializeWorkerError(err),
+                };
+              }
               this.#worker.postMessage(response);
             }
           }
