@@ -33,6 +33,14 @@ export class ClientWorker {
 
   constructor(worker: Worker | MessagePort) {
     this.#worker = worker;
+    const handleWorkerError = (event: Event) => {
+      const error = event instanceof ErrorEvent ? event.error ?? new Error(event.message) : new Error("Failed to receive a worker message.");
+      for (const client of this.#clients.values()) {
+        client.handleWorkerError(error);
+      }
+    };
+    this.#worker.addEventListener("error", handleWorkerError);
+    this.#worker.addEventListener("messageerror", handleWorkerError);
     this.#worker.addEventListener("message", (e) => {
       drop((async () => {
         const message = (e as unknown as { data: WorkerRequest | WorkerResponse }).data;

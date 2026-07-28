@@ -126,6 +126,14 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     }
   }
 
+  /** @internal */
+  handleWorkerError(error: unknown) {
+    for (const { reject } of this.#pendingRequests.values()) {
+      reject(error);
+    }
+    this.#pendingRequests.clear();
+  }
+
   get id(): string {
     return this.#id;
   }
