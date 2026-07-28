@@ -104,8 +104,8 @@ export function constructKeyboardButton(button_: Api.KeyboardButton): KeyboardBu
         text,
         style,
         requestId: button_.button_id,
-        isBot: button_.peer_type.bot || false,
-        isPremium: button_.peer_type.premium || false,
+        isBot: button_.peer_type.bot,
+        isPremium: button_.peer_type.premium,
       });
     } else if (Api.is("requestPeerTypeChat", button_.peer_type)) {
       const button: KeyboardButtonRequestChat = {
@@ -113,8 +113,8 @@ export function constructKeyboardButton(button_: Api.KeyboardButton): KeyboardBu
         text,
         requestId: button_.button_id,
         isChannel: false, // GUESS
-        isForum: button_.peer_type.forum || false,
-        hasUsername: button_.peer_type.has_username || false,
+        isForum: button_.peer_type.forum,
+        hasUsername: button_.peer_type.has_username,
         isOwner: button_.peer_type.creator || false,
         isBotMember: button_.peer_type.bot_participant || false,
       };
@@ -135,7 +135,7 @@ export function constructKeyboardButton(button_: Api.KeyboardButton): KeyboardBu
         requestId: button_.button_id,
         isChannel: true, // GUESS
         isOwner: button_.peer_type.creator || false,
-        hasUsername: button_.peer_type.has_username || false,
+        hasUsername: button_.peer_type.has_username,
       };
       if (button_.peer_type.bot_admin_rights) {
         button.botAdministratorRights = constructChatAdministratorRights(button_.peer_type.bot_admin_rights);
