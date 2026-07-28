@@ -265,9 +265,9 @@ export class StorageOperations {
     const buffer = (keyOrBuffer instanceof Uint8Array || Api.isValidObject(keyOrBuffer)) ? keyOrBuffer : await this.#storage.get<[string, Uint8Array]>(keyOrBuffer);
     if (buffer !== null) {
       if (buffer instanceof Uint8Array) {
-        return await Api.deserializeType(X, rleDecode(buffer));
+        return Api.deserializeType(X, rleDecode(buffer));
       } else if (Array.isArray(buffer)) {
-        return await Api.deserializeType(buffer[0], rleDecode(buffer[1]));
+        return Api.deserializeType(buffer[0], rleDecode(buffer[1]));
       } else {
         return buffer;
       }

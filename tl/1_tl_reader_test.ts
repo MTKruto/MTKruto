@@ -438,14 +438,14 @@ Deno.test("TLReader", async (t) => {
         0x00, 0x00, 0x00, 0x10, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00
       ]);
     const reader = new TLReader(buffer);
-    const config = await reader.readType("config", schema);
+    const config = reader.readType("config", schema);
 
     assertEquals(new TLWriter().writeObject(config, schema).buffer, buffer);
     assertEquals(config._, "config");
 
-    await t.step("X", async () => {
+    await t.step("X", () => {
       const reader = new TLReader(buffer);
-      const config = await reader.readType(X, schema);
+      const config = reader.readType(X, schema);
 
       assertEquals(new TLWriter().writeObject(config, schema).buffer, buffer);
       assertEquals(config._, "config");
@@ -453,7 +453,7 @@ Deno.test("TLReader", async (t) => {
   });
 });
 
-Deno.test("optional double", async () => {
+Deno.test("optional double", () => {
   const schema: Schema = {
     definitions: {
       videoSize: [
@@ -497,7 +497,7 @@ Deno.test("optional double", async () => {
   } as any;
 
   const reader = new TLReader(buffer);
-  const actual = await reader.readType("videoSize", schema);
+  const actual = reader.readType("videoSize", schema);
 
   assertEquals(actual, expected);
 });
@@ -541,63 +541,63 @@ Deno.test("primitives", async (t) => {
 
   const reader = new TLReader(writer.buffer);
 
-  await t.step("bytes", async () => {
-    let deserialized = await reader.readType("bytes", emptySchema);
+  await t.step("bytes", () => {
+    let deserialized = reader.readType("bytes", emptySchema);
     assertEquals(deserialized, bytes);
-    deserialized = await reader.readType("bytes", emptySchema);
+    deserialized = reader.readType("bytes", emptySchema);
     assertEquals(deserialized, bytes2);
   });
 
-  await t.step("int128", async () => {
-    const deserialized = await reader.readType("int128", emptySchema);
+  await t.step("int128", () => {
+    const deserialized = reader.readType("int128", emptySchema);
     assertEquals(deserialized, int128);
   });
 
-  await t.step("int256", async () => {
-    const deserialized = await reader.readType("int256", emptySchema);
+  await t.step("int256", () => {
+    const deserialized = reader.readType("int256", emptySchema);
     assertEquals(deserialized, int256);
   });
 
-  await t.step("double", async () => {
-    const deserialized = await reader.readType("double", emptySchema);
+  await t.step("double", () => {
+    const deserialized = reader.readType("double", emptySchema);
     assertEquals(deserialized, double);
   });
 
-  await t.step("long", async () => {
-    const deserialized = await reader.readType("long", emptySchema);
+  await t.step("long", () => {
+    const deserialized = reader.readType("long", emptySchema);
     assertEquals(deserialized, long);
   });
 
-  await t.step("true", async () => {
+  await t.step("true", () => {
     const lengthBefore = reader.buffer.byteLength;
     for (let i = 0; i < 10; ++i) {
-      const deserialized = await reader.readType("true", emptySchema);
+      const deserialized = reader.readType("true", emptySchema);
       assertEquals(deserialized, true);
     }
     assertEquals(reader.buffer.byteLength, lengthBefore);
   });
 
-  await t.step("int", async () => {
-    const deserialized = await reader.readType("int", emptySchema);
+  await t.step("int", () => {
+    const deserialized = reader.readType("int", emptySchema);
     assertEquals(deserialized, int);
   });
 
-  await t.step("Bool", async () => {
-    let deserialized = await reader.readType("Bool", emptySchema);
+  await t.step("Bool", () => {
+    let deserialized = reader.readType("Bool", emptySchema);
     assertEquals(deserialized, boolTrue);
-    deserialized = await reader.readType("Bool", emptySchema);
+    deserialized = reader.readType("Bool", emptySchema);
     assertEquals(deserialized, boolFalse);
   });
 
-  await t.step("string", async () => {
-    let deserialized = await reader.readType("string", emptySchema);
+  await t.step("string", () => {
+    let deserialized = reader.readType("string", emptySchema);
     assertEquals(deserialized, string);
-    deserialized = await reader.readType("string", emptySchema);
+    deserialized = reader.readType("string", emptySchema);
     assertEquals(deserialized, string2);
   });
 });
 
-Deno.test("primitive vectors", async () => {
+Deno.test("primitive vectors", () => {
   const writer = new TLWriter();
   writer.writeInt32(VECTOR, false);
   const expected = new Array(1024).fill(null).map((_, i) => i * Math.random());
@@ -605,11 +605,11 @@ Deno.test("primitive vectors", async () => {
   for (const item of expected) {
     writer.writeDouble(item);
   }
-  const deserialized = await new TLReader(writer.buffer).readType("Vector<double>", emptySchema);
+  const deserialized = new TLReader(writer.buffer).readType("Vector<double>", emptySchema);
   assertEquals(deserialized, expected);
 });
 
-Deno.test("bare result", async () => {
+Deno.test("bare result", () => {
   const schema: Schema = {
     definitions: {
       result: [0x01010101, [["value", "int"]], "Result"],
@@ -617,11 +617,11 @@ Deno.test("bare result", async () => {
     identifierToName: { [0x01010101]: "result" },
   };
   const writer = new TLWriter().writeInt32(42);
-  assertEquals(await new TLReader(writer.buffer).readResult("result", schema), { _: "result", value: 42 });
+  assertEquals(new TLReader(writer.buffer).readResult("result", schema), { _: "result", value: 42 });
 });
 
 Deno.test("bare vectors", async (t) => {
-  await t.step("bare items", async () => {
+  await t.step("bare items", () => {
     const schema: Schema = {
       definitions: {
         future_salt: [
@@ -652,7 +652,7 @@ Deno.test("bare vectors", async (t) => {
       .writeInt32(5)
       .writeInt64(6n);
 
-    assertEquals(await new TLReader(writer.buffer).readType("future_salts", schema), {
+    assertEquals(new TLReader(writer.buffer).readType("future_salts", schema), {
       _: "future_salts",
       req_msg_id: 123n,
       now: 456,
@@ -663,7 +663,7 @@ Deno.test("bare vectors", async (t) => {
     });
   });
 
-  await t.step("boxed items", async () => {
+  await t.step("boxed items", () => {
     const schema: Schema = {
       definitions: {
         rule: [0x03030303, [["value", "int"]], "Rule"],
@@ -680,14 +680,14 @@ Deno.test("bare vectors", async (t) => {
       .writeInt32(0x03030303, false)
       .writeInt32(42);
 
-    assertEquals(await new TLReader(writer.buffer).readType("config", schema), {
+    assertEquals(new TLReader(writer.buffer).readType("config", schema), {
       _: "config",
       rules: [{ _: "rule", value: 42 }],
     });
   });
 });
 
-Deno.test("errors", async () => {
+Deno.test("errors", () => {
   const schema: Schema = {
     definitions: {
       testObject1: [
@@ -733,7 +733,7 @@ Deno.test("errors", async () => {
     const writer = new TLWriter();
     writer.writeInt32(0x01010101);
 
-    await new TLReader(writer.buffer).readType("someObject2", schema);
+    new TLReader(writer.buffer).readType("someObject2", schema);
     unreachable();
   } catch (err) {
     assertInstanceOf(err, TLError);
@@ -745,7 +745,7 @@ Deno.test("errors", async () => {
     const writer = new TLWriter();
     writer.writeInt32(0x11111110);
 
-    await new TLReader(writer.buffer).readType("X", schema);
+    new TLReader(writer.buffer).readType("X", schema);
     unreachable();
   } catch (err) {
     assertInstanceOf(err, TLError);
@@ -757,7 +757,7 @@ Deno.test("errors", async () => {
     const writer = new TLWriter();
     writer.writeInt32(0x11111110);
 
-    await new TLReader(writer.buffer).readType("testObject1", schema);
+    new TLReader(writer.buffer).readType("testObject1", schema);
     unreachable();
   } catch (err) {
     assertInstanceOf(err, TLError);
@@ -771,7 +771,7 @@ Deno.test("errors", async () => {
       .writeInt32(BOOL_FALSE, false)
       .writeInt32(BOOL_FALSE, false);
 
-    await new TLReader(writer.buffer).readType("testObject2", schema);
+    new TLReader(writer.buffer).readType("testObject2", schema);
     unreachable();
   } catch (err) {
     assertInstanceOf(err, TLError);
@@ -781,7 +781,7 @@ Deno.test("errors", async () => {
   }
 });
 
-Deno.test("drops unset flags, keeps false", async () => {
+Deno.test("drops unset flags, keeps false", () => {
   const schema: Schema = {
     definitions: {
       testObject1: [
@@ -807,7 +807,7 @@ Deno.test("drops unset flags, keeps false", async () => {
       boolean2: false,
       flag1: true,
     }, schema);
-  const type = await new TLReader(writer.buffer).readType("testObject1", schema);
+  const type = new TLReader(writer.buffer).readType("testObject1", schema);
   assertEquals(type, {
     _: "testObject1",
     boolean1: true,
@@ -823,7 +823,7 @@ Deno.test("drops unset flags, keeps false", async () => {
         boolean2: false,
         flag1: undefined,
       }, schema);
-    const type = await new TLReader(writer.buffer).readType("testObject1", schema);
+    const type = new TLReader(writer.buffer).readType("testObject1", schema);
     assertEquals(type, {
       _: "testObject1",
       boolean1: true,

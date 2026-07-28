@@ -49,7 +49,7 @@ export class ClientPlain extends ClientAbstract implements ClientAbstract {
   async invoke<T extends Mtproto.AnyObject, R = T["_"] extends keyof Mtproto.Functions ? Mtproto.ReturnType<T> extends never ? Mtproto.ReturnType<Mtproto.Functions[T["_"]]> : never : never>(function_: T): Promise<R> {
     await this.session.send(Mtproto.serializeObject(function_), () => () => {});
     const body = await this.session.receive();
-    return await Mtproto.deserializeType(Mtproto.mustGetReturnType(function_._), body, true) as R;
+    return Mtproto.deserializeType(Mtproto.mustGetReturnType(function_._), body, true) as R;
   }
 
   async createAuthKey(isTemporary: boolean): Promise<[Uint8Array<ArrayBuffer>, bigint]> {
@@ -149,7 +149,7 @@ export class ClientPlain extends ClientAbstract implements ClientAbstract {
     const tmpAesIv = concat([(await sha1(concat([serverNonce_, newNonce_]))).subarray(12, 12 + 8), await sha1(concat([newNonce_, newNonce_])), newNonce_.subarray(0, 0 + 4)]);
     const answerWithHash = ige256Decrypt(dhParams.encrypted_answer, tmpAesKey, tmpAesIv);
 
-    const dhInnerData = await Mtproto.deserializeType("server_DH_inner_data", answerWithHash.slice(20));
+    const dhInnerData = Mtproto.deserializeType("server_DH_inner_data", answerWithHash.slice(20));
     const { g, g_a: gA_, dh_prime: dhPrime_ } = dhInnerData;
     const gA = intFromBytes(gA_, { byteOrder: "big", isSigned: false });
     const dhPrime = intFromBytes(dhPrime_, { byteOrder: "big", isSigned: false });

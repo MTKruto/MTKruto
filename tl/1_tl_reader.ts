@@ -27,13 +27,16 @@ import { analyzeOptionalParam, BOOL_FALSE, BOOL_TRUE, constructorIdToHex, getOpt
 export class TLReader {
   #path = new Array<string>();
   protected _buffer: Uint8Array;
+  #view: DataView;
+  #offset = 0;
 
   constructor(buffer: Uint8Array) {
     this._buffer = buffer;
+    this.#view = new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength);
   }
 
   get buffer(): Uint8Array {
-    return this._buffer;
+    return this._buffer.subarray(this.#offset);
   }
 
   read(byteCount: number): Uint8Array<ArrayBuffer> {
@@ -42,32 +45,32 @@ export class TLReader {
   }
 
   #readView(byteCount: number): Uint8Array<ArrayBufferLike> {
-    if (this._buffer.byteLength < byteCount) {
+    if (this._buffer.byteLength - this.#offset < byteCount) {
       throw new TLError("No data remaining", this.#path);
     }
 
-    const buffer = this._buffer.subarray(0, byteCount);
-    this._buffer = this._buffer.subarray(byteCount);
+    const buffer = this._buffer.subarray(this.#offset, this.#offset + byteCount);
+    this.#offset += byteCount;
     return buffer;
   }
 
-  #readDataView(byteCount: number): DataView {
-    if (this._buffer.byteLength < byteCount) {
+  #readDataViewOffset(byteCount: number): number {
+    if (this._buffer.byteLength - this.#offset < byteCount) {
       throw new TLError("No data remaining", this.#path);
     }
 
-    const view = new DataView(this._buffer.buffer, this._buffer.byteOffset, byteCount);
-    this._buffer = this._buffer.subarray(byteCount);
-    return view;
+    const offset = this.#offset;
+    this.#offset += byteCount;
+    return offset;
   }
 
   unread(count: number) {
-    const newOffset = this._buffer.byteOffset - count;
+    const newOffset = this.#offset - count;
     if (newOffset < 0) {
       throw new TLError("No data has been read", this.#path);
     }
 
-    this._buffer = new Uint8Array(this._buffer.buffer, newOffset);
+    this.#offset = newOffset;
   }
 
   readInt24(isSigned = true): number {
@@ -77,8 +80,8 @@ export class TLReader {
   }
 
   readInt32(isSigned = true): number {
-    const view = this.#readDataView(32 / 8);
-    return isSigned ? view.getInt32(0, true) : view.getUint32(0, true);
+    const offset = this.#readDataViewOffset(32 / 8);
+    return isSigned ? this.#view.getInt32(offset, true) : this.#view.getUint32(offset, true);
   }
 
   unreadInt32() {
@@ -86,12 +89,12 @@ export class TLReader {
   }
 
   readInt64(isSigned = true): bigint {
-    const view = this.#readDataView(64 / 8);
-    return isSigned ? view.getBigInt64(0, true) : view.getBigUint64(0, true);
+    const offset = this.#readDataViewOffset(64 / 8);
+    return isSigned ? this.#view.getBigInt64(offset, true) : this.#view.getBigUint64(offset, true);
   }
 
   readDouble(): number {
-    return this.#readDataView(8).getFloat64(0, true);
+    return this.#view.getFloat64(this.#readDataViewOffset(8), true);
   }
 
   readInt128(isSigned = true): bigint {
@@ -105,7 +108,7 @@ export class TLReader {
   }
 
   readBytes(): Uint8Array<ArrayBuffer> {
-    let L = this.read(1)[0];
+    let L = this.#readView(1)[0];
     let padding: number;
     if (L > 253) {
       L = this.readInt24(false);
@@ -125,7 +128,7 @@ export class TLReader {
     return decodeText(this.readBytes());
   }
 
-  async readType(name: string, schema: Schema): Promise<any> {
+  readType(name: string, schema: Schema): any {
     if (isOptionalParam(name)) {
       name = getOptionalParamInnerType(name);
     }
@@ -133,16 +136,16 @@ export class TLReader {
     if (primitive !== undefined) {
       return primitive;
     }
-    return await this.#readNonPrimitiveType(name, schema);
+    return this.#readNonPrimitiveType(name, schema);
   }
 
-  async readResult(name: string, schema: Schema): Promise<any> {
-    return await this.#readField(name, schema);
+  readResult(name: string, schema: Schema): any {
+    return this.#readField(name, schema);
   }
 
-  async #readNonPrimitiveType(name: string, schema: Schema) {
+  #readNonPrimitiveType(name: string, schema: Schema): any {
     if (getVectorItemType(name)) {
-      return await this.#deserializeVector(name, schema);
+      return this.#deserializeVector(name, schema);
     }
     const id = this.readInt32(false);
     if (name === X) {
@@ -156,20 +159,20 @@ export class TLReader {
         throw new TLError(`Unknown constructor ID: ${constructorIdToHex(id)}`, this.#path);
       }
       this.unreadInt32();
-      return await this.readType(typeName, schema);
+      return this.#readNonPrimitiveType(typeName, schema);
     }
     const definition = schema.definitions[name];
     if (definition) {
-      return await this.#deserializeType(name, definition, id, schema);
+      return this.#deserializeType(name, definition, id, schema);
     }
-    const deserializedEnum = await this.#deserializeEnum(name, id, schema);
+    const deserializedEnum = this.#deserializeEnum(name, id, schema);
     if (deserializedEnum !== undefined) {
       return deserializedEnum;
     }
     throw new TLError(`Unknown type: ${name}#${constructorIdToHex(id)}`, this.#path);
   }
 
-  async #deserializeEnum(type: string, id: number, schema: Schema) {
+  #deserializeEnum(type: string, id: number, schema: Schema) {
     const name = schema.identifierToName[id];
     if (!name) {
       return;
@@ -178,18 +181,18 @@ export class TLReader {
     if (definition[2] !== type) {
       return;
     }
-    return await this.#deserializeType(name, definition, id, schema);
+    return this.#deserializeType(name, definition, id, schema);
   }
 
-  async #deserializeType(type: string, desc: ObjectDefinition, id: number, schema: Schema) {
+  #deserializeType(type: string, desc: ObjectDefinition, id: number, schema: Schema) {
     if (desc[0] !== id) {
       throw new TLError(`Expected constructor with ID ${constructorIdToHex(desc[0])} but received ${constructorIdToHex(id)}`, this.#path);
     }
 
-    return await this.#deserializeTypeFields(type, desc, schema);
+    return this.#deserializeTypeFields(type, desc, schema);
   }
 
-  async #readField(name: string, schema: Schema): Promise<any> {
+  #readField(name: string, schema: Schema): any {
     if (isOptionalParam(name)) {
       name = getOptionalParamInnerType(name);
     }
@@ -199,12 +202,12 @@ export class TLReader {
     }
     const definition = schema.definitions[name];
     if (definition) {
-      return await this.#deserializeTypeFields(name, definition, schema);
+      return this.#deserializeTypeFields(name, definition, schema);
     }
-    return await this.#readNonPrimitiveType(name, schema);
+    return this.#readNonPrimitiveType(name, schema);
   }
 
-  async #deserializeTypeFields(type: string, desc: ObjectDefinition, schema: Schema) {
+  #deserializeTypeFields(type: string, desc: ObjectDefinition, schema: Schema) {
     let isFirstPathElementExisting = false;
     const type_: Record<string, any> = { _: type };
     const flagFields: Record<string, number> = {};
@@ -230,14 +233,14 @@ export class TLReader {
         isFirstPathElementExisting = true;
       }
 
-      const value = await this.#readField(fieldType, schema);
+      const value = this.#readField(fieldType, schema);
       type_[name] = value;
     }
 
     return type_;
   }
 
-  async #deserializeVector(type: string, schema: Schema) {
+  #deserializeVector(type: string, schema: Schema) {
     const vectorType = getVectorItemType(type);
     if (!vectorType) {
       throw new TLError(`Expected vector but received ${type}`, this.#path);
@@ -251,7 +254,7 @@ export class TLReader {
     const size = this.readInt32();
     const array = new Array<any>();
     for (let i = 0; i < size; ++i) {
-      array.push(await this.#readField(vectorType.type, schema));
+      array.push(this.#readField(vectorType.type, schema));
     }
     return array;
   }

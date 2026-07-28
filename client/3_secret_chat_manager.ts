@@ -905,7 +905,7 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
       throw new TypeError("Received invalid encrypted message padding.");
     }
     const serializedMessage = decryptedTextReader.read(length);
-    return await SecretChats.deserializeType(X, serializedMessage);
+    return SecretChats.deserializeType(X, serializedMessage);
   }
 
   async #checkGap(chatId: number, message: SecretChats.decryptedMessageLayer, encryptedMessage: Api.EncryptedMessage) {

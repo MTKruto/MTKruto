@@ -482,7 +482,7 @@ export class SessionEncrypted extends Session implements Session {
     let type: Mtproto.DeserializedType;
     try {
       reader.unreadInt32();
-      type = await Mtproto.deserializeType(X, reader);
+      type = Mtproto.deserializeType(X, reader);
     } catch (err) {
       logger.error("failed to deserialize MTProto type:", err);
       return;
@@ -522,7 +522,7 @@ export class SessionEncrypted extends Session implements Session {
     }
     if (id === RPC_ERROR) {
       logger.debug("received rpc_error from message", msgId);
-      const error = await Mtproto.deserializeType("rpc_error", reader);
+      const error = Mtproto.deserializeType("rpc_error", reader);
       await this.handlers.onRpcError?.(reqMsgId, error);
     } else {
       await this.handlers.onRpcResult?.(reqMsgId, reader.buffer);

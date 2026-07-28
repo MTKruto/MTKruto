@@ -360,7 +360,7 @@ export class ClientEncrypted extends ClientAbstract {
   async #onUpdate(body: Uint8Array) {
     let type: Api.DeserializedType;
     try {
-      type = await Api.deserializeType(X, body);
+      type = Api.deserializeType(X, body);
       this.#L.debug("received update", repr(type));
     } catch (err) {
       this.#L.error("failed to deserialize update:", err);
@@ -417,7 +417,7 @@ export class ClientEncrypted extends ClientAbstract {
     if (sentRequest) {
       let type: Api.DeserializedType;
       try {
-        type = await Api.deserializeType(Api.mustGetReturnType(sentRequest.call._), body, true);
+        type = Api.deserializeType(Api.mustGetReturnType(sentRequest.call._), body, true);
         this.#L.in(type);
         this.#L.debug("received rpc_result", repr(type));
         sentRequest.promiseWithResolvers.resolve(type);

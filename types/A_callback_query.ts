@@ -46,10 +46,10 @@ export interface CallbackQuery {
 }
 
 const ERR_INVALID_INLINE_MESSAGE_ID = new InputError("Invalid inline message ID.");
-export async function deserializeInlineMessageId(inlineMessageId: string): Promise<Api.InputBotInlineMessageID> {
+export function deserializeInlineMessageId(inlineMessageId: string): Api.InputBotInlineMessageID {
   try {
     const buffer = base64DecodeUrlSafe(inlineMessageId);
-    const object = await Api.deserializeType("InputBotInlineMessageID", buffer);
+    const object = Api.deserializeType("InputBotInlineMessageID", buffer);
     if (Api.is("inputBotInlineMessageID64", object) || Api.is("inputBotInlineMessageID", object)) {
       return object;
     }

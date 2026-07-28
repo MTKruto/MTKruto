@@ -1453,7 +1453,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     params?: EditMessageReplyMarkupParams,
   ) {
     this.#c.storage.assertBot("editInlineMessageReplyMarkup");
-    const id = await deserializeInlineMessageId(inlineMessageId);
+    const id = deserializeInlineMessageId(inlineMessageId);
 
     await this.#c.invoke({
       _: "messages.editInlineBotMessage",
@@ -1635,7 +1635,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       throw new InputError("Message text cannot be empty.");
     }
 
-    const id = await deserializeInlineMessageId(inlineMessageId);
+    const id = deserializeInlineMessageId(inlineMessageId);
     if (params?.linkPreview && params.linkPreview.type !== "input") {
       throw new InputError("Expected link preview of type input.");
     }
@@ -2055,7 +2055,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   async editInlineMessageMedia(inlineMessageId: string, media: InputMedia, params?: EditInlineMessageMediaParams) {
     this.#checkParams(params);
     this.#c.storage.assertBot("editInlineMessageMedia");
-    const id = await deserializeInlineMessageId(inlineMessageId);
+    const id = deserializeInlineMessageId(inlineMessageId);
     const maybeParseResult = media.caption !== undefined ? this.parseText(media.caption, { entities: media.captionEntities, parseMode: media.parseMode }, true) : undefined;
     await this.#c.invoke({
       _: "messages.editInlineBotMessage",
@@ -2069,7 +2069,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
 
   async editInlineMessageRichText(inlineMessageId: string, richText: InputRichText, params?: EditInlineMessageRichTextParams) {
     this.#c.storage.assertBot("editInlineMessageRichText");
-    const id = await deserializeInlineMessageId(inlineMessageId);
+    const id = deserializeInlineMessageId(inlineMessageId);
     const rich_message = await this.inputRichTextToInputRichMessage(richText);
     await this.#c.invoke({
       _: "messages.editInlineBotMessage",
@@ -2514,7 +2514,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
   async editInlineMessageLiveLocation(inlineMessageId: string, latitude: number, longitude: number, params?: EditMessageLiveLocationParams) {
     this.#checkParams(params);
     this.#c.storage.assertBot("editInlineMessageLiveLocation");
-    const id = await deserializeInlineMessageId(inlineMessageId);
+    const id = deserializeInlineMessageId(inlineMessageId);
     await this.#c.invoke({
       _: "messages.editInlineBotMessage",
       id,
