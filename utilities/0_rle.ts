@@ -19,56 +19,67 @@
  */
 
 export function rleEncode(s: Uint8Array) {
-  const r = new Array<number>();
-  let n = 0;
-
-  for (const b of s) {
-    if (!b) {
-      if (n === 255) {
-        r.push(0);
-        r.push(n);
-        n = 1;
-      } else {
-        n++;
-      }
+  let length = 0;
+  for (let i = 0; i < s.length;) {
+    if (s[i] !== 0) {
+      length++;
+      i++;
     } else {
-      if (n) {
-        r.push(0);
-        r.push(n);
-        n = 0;
+      let count = 0;
+      while (i < s.length && s[i] === 0 && count < 255) {
+        count++;
+        i++;
       }
-
-      r.push(b);
+      length += 2;
     }
   }
 
-  if (n) {
-    r.push(0);
-    r.push(n);
+  const r = new Uint8Array(length);
+  let offset = 0;
+  for (let i = 0; i < s.length;) {
+    if (s[i] !== 0) {
+      r[offset++] = s[i++];
+    } else {
+      let count = 0;
+      while (i < s.length && s[i] === 0 && count < 255) {
+        count++;
+        i++;
+      }
+      r[offset++] = 0;
+      r[offset++] = count;
+    }
   }
-
-  return new Uint8Array(r);
+  return r;
 }
 
 export function rleDecode(s: Uint8Array) {
-  const r = new Array<number>();
+  let length = 0;
   let z = false;
-
-  for (const b of s) {
+  for (let i = 0; i < s.length; i++) {
+    const b = s[i];
     if (!b) {
       z = true;
-      continue;
-    }
-
-    if (z) {
-      for (let i = 0; i < b; i++) {
-        r.push(0);
-      }
+    } else if (z) {
+      length += b;
       z = false;
     } else {
-      r.push(b);
+      length++;
     }
   }
 
-  return new Uint8Array(r);
+  const r = new Uint8Array(length);
+  let offset = 0;
+  z = false;
+  for (let i = 0; i < s.length; i++) {
+    const b = s[i];
+    if (!b) {
+      z = true;
+    } else if (z) {
+      offset += b;
+      z = false;
+    } else {
+      r[offset++] = b;
+    }
+  }
+  return r;
 }
