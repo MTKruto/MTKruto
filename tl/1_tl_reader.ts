@@ -37,13 +37,28 @@ export class TLReader {
   }
 
   read(byteCount: number): Uint8Array<ArrayBuffer> {
+    const buffer = this.#readView(byteCount).slice();
+    return buffer;
+  }
+
+  #readView(byteCount: number): Uint8Array<ArrayBufferLike> {
     if (this._buffer.byteLength < byteCount) {
       throw new TLError("No data remaining", this.#path);
     }
 
-    const buffer = this._buffer.slice(0, byteCount);
+    const buffer = this._buffer.subarray(0, byteCount);
     this._buffer = this._buffer.subarray(byteCount);
     return buffer;
+  }
+
+  #readDataView(byteCount: number): DataView {
+    if (this._buffer.byteLength < byteCount) {
+      throw new TLError("No data remaining", this.#path);
+    }
+
+    const view = new DataView(this._buffer.buffer, this._buffer.byteOffset, byteCount);
+    this._buffer = this._buffer.subarray(byteCount);
+    return view;
   }
 
   unread(count: number) {
@@ -56,13 +71,14 @@ export class TLReader {
   }
 
   readInt24(isSigned = true): number {
-    const buffer = this.read(24 / 8);
-    return Number(intFromBytes(buffer, { isSigned }));
+    const buffer = this.#readView(24 / 8);
+    const value = buffer[0] | (buffer[1] << 8) | (buffer[2] << 16);
+    return isSigned ? (value << 8) >> 8 : value;
   }
 
   readInt32(isSigned = true): number {
-    const buffer = this.read(32 / 8);
-    return Number(intFromBytes(buffer, { isSigned }));
+    const view = this.#readDataView(32 / 8);
+    return isSigned ? view.getInt32(0, true) : view.getUint32(0, true);
   }
 
   unreadInt32() {
@@ -70,22 +86,21 @@ export class TLReader {
   }
 
   readInt64(isSigned = true): bigint {
-    const buffer = this.read(64 / 8);
-    return intFromBytes(buffer, { isSigned });
+    const view = this.#readDataView(64 / 8);
+    return isSigned ? view.getBigInt64(0, true) : view.getBigUint64(0, true);
   }
 
   readDouble(): number {
-    const buffer = this.read(8);
-    return new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength).getFloat64(0, true);
+    return this.#readDataView(8).getFloat64(0, true);
   }
 
   readInt128(isSigned = true): bigint {
-    const buffer = this.read(128 / 8);
+    const buffer = this.#readView(128 / 8);
     return intFromBytes(buffer, { isSigned });
   }
 
   readInt256(isSigned = true): bigint {
-    const buffer = this.read(256 / 8);
+    const buffer = this.#readView(256 / 8);
     return intFromBytes(buffer, { isSigned });
   }
 
@@ -101,7 +116,7 @@ export class TLReader {
     const bytes = this.read(L);
     if (padding > 0) {
       padding = 4 - padding;
-      this.read(padding);
+      this.#readView(padding);
     }
     return bytes;
   }
