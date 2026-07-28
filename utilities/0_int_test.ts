@@ -100,6 +100,16 @@ Deno.test("intFromBytes", () => {
   for (const [buffer, value] of cases.big.unsigned) {
     assertEquals(intFromBytes(buffer, { byteOrder: "big", isSigned: false }), value);
   }
+
+  assertEquals(intFromBytes(new Uint8Array([0xFF])), -1n);
+  assertEquals(intFromBytes(new Uint8Array([0xFF]), { isSigned: false }), 255n);
+  assertEquals(intFromBytes(new Uint8Array([0, 0, 0x80])), -0x800000n);
+  assertEquals(intFromBytes(new Uint8Array([0x80, 0, 0]), { byteOrder: "big" }), -0x800000n);
+  assertEquals(intFromBytes(new Uint8Array([0, 0])), 0n);
+  assertEquals(intFromBytes(new Uint8Array([0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF])), -1n);
+  assertEquals(intFromBytes(new Uint8Array(16).fill(0xFF)), -1n);
+  assertEquals(intFromBytes(new Uint8Array(16).fill(0xFF), { isSigned: false }), (1n << 128n) - 1n);
+  assertEquals(intFromBytes(new Uint8Array([0, 0x12, 0x34, 0]).subarray(1, 3), { byteOrder: "big" }), 0x1234n);
 });
 
 Deno.test("getRandomInt", async (t) => {
@@ -141,6 +151,19 @@ Deno.test("getRandomId", () => {
 Deno.test("intToBytes", () => {
   assertEquals(intToBytes(-6203395183255650816n, 64 / 8), new Uint8Array([0, 126, 173, 164, 242, 28, 233, 169]));
   assertEquals(intToBytes(-32768, 2), new Uint8Array([0, 128]));
+  assertEquals(intToBytes(0x123456, 3), new Uint8Array([0x56, 0x34, 0x12]));
+  assertEquals(intToBytes(0x123456, 3, { byteOrder: "big" }), new Uint8Array([0x12, 0x34, 0x56]));
+  assertEquals(intToBytes(-0x800000, 3), new Uint8Array([0, 0, 0x80]));
+  assertEquals(intToBytes(-2n, 16), new Uint8Array([0xFE, ...new Uint8Array(15).fill(0xFF)]));
+
+  for (const byteCount of [1, 2, 3, 4, 5, 7, 8, 9, 15, 16, 17, 31, 32, 33, 256]) {
+    for (const byteOrder of ["little", "big"] as const) {
+      const bytes = crypto.getRandomValues(new Uint8Array(byteCount));
+      bytes[byteOrder === "little" ? byteCount - 1 : 0] &= 0x7F;
+      const int = intFromBytes(bytes, { byteOrder, isSigned: false });
+      assertEquals(intToBytes(int, byteCount, { byteOrder, isSigned: false }), bytes);
+    }
+  }
 
   assertThrows(() => {
     intToBytes(-1, 2, { isSigned: false });

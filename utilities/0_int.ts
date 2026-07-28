@@ -66,19 +66,54 @@ export interface IntFromBytesParams {
  * @param params Additional parameters.
  */
 export function intFromBytes(bytes: Uint8Array, { byteOrder = "little", isSigned = true }: IntFromBytesParams = {}) {
-  const bytesLength = bytes.byteLength;
+  const byteLength = bytes.byteLength;
 
-  if (byteOrder === "little") {
-    bytes = bytes.toReversed();
+  if (byteLength === 0) {
+    throw new TypeError("Received an empty byte array.");
   }
 
-  let bigIntVar = BigInt("0x" + [...bytes].map((v) => v.toString(16).padStart(2, "0")).join(""));
-
-  if (isSigned && Math.floor(bigIntVar.toString(2).length / 8) >= bytesLength) {
-    bigIntVar = bigIntVar - (2n ** (BigInt(bytesLength * 8)));
+  const littleEndian = byteOrder === "little";
+  if (byteLength === 1) {
+    return BigInt(isSigned && bytes[0] >= 0x80 ? bytes[0] - 0x100 : bytes[0]);
+  }
+  if (byteLength === 3) {
+    const value = littleEndian ? bytes[0] | (bytes[1] << 8) | (bytes[2] << 16) : bytes[2] | (bytes[1] << 8) | (bytes[0] << 16);
+    return BigInt(isSigned ? (value << 8) >> 8 : value);
+  }
+  const dataView = new DataView(bytes.buffer, bytes.byteOffset, byteLength);
+  if (byteLength === 2) {
+    return BigInt(isSigned ? dataView.getInt16(0, littleEndian) : dataView.getUint16(0, littleEndian));
+  }
+  if (byteLength === 4) {
+    return BigInt(isSigned ? dataView.getInt32(0, littleEndian) : dataView.getUint32(0, littleEndian));
+  }
+  if (byteLength === 8) {
+    return isSigned ? dataView.getBigInt64(0, littleEndian) : dataView.getBigUint64(0, littleEndian);
   }
 
-  return bigIntVar;
+  let value = 0n;
+  if (littleEndian) {
+    let i = byteLength;
+    while (i >= 8) {
+      i -= 8;
+      value = (value << 64n) | dataView.getBigUint64(i, true);
+    }
+    for (i--; i >= 0; i--) {
+      value = (value << 8n) | BigInt(bytes[i]);
+    }
+  } else {
+    let i = 0;
+    while (i + 8 <= byteLength) {
+      value = (value << 64n) | dataView.getBigUint64(i);
+      i += 8;
+    }
+    for (; i < byteLength; i++) {
+      value = (value << 8n) | BigInt(bytes[i]);
+    }
+  }
+
+  const mostSignificantByte = bytes[littleEndian ? byteLength - 1 : 0];
+  return isSigned && (mostSignificantByte & 0x80) !== 0 ? value - (1n << BigInt(byteLength * 8)) : value;
 }
 
 /**
@@ -133,8 +168,6 @@ export function gcd(a: bigint, b: bigint) {
   }
 }
 
-const bufferFromHexString = (hexString: string) => Uint8Array.from(hexString.match(/.{1,2}/g)!.map((byte) => parseInt(byte, 16)));
-
 /** Additional parameters for {@link intToBuffer}. */
 export interface BufferFromBigintParams {
   /** The byte order to use for the representation. Defaults to `little`. */
@@ -155,46 +188,80 @@ export interface BufferFromBigintParams {
 export function intToBytes(int: bigint | number, byteCount: number, {
   byteOrder = "little",
   isSigned = true,
-  path = [],
+  path,
 }: BufferFromBigintParams = {}): Uint8Array<ArrayBuffer> {
   if (typeof int === "number" && !Number.isInteger(int)) {
-    throw new TLError("Expected an integer.", path);
+    throw new TLError("Expected an integer.", path ?? []);
   }
 
   if (!isSigned && int < 0n) {
-    throw new TLError("Received a signed integer while an unsigned one was expected.", path);
+    throw new TLError("Received a signed integer while an unsigned one was expected.", path ?? []);
   }
 
-  const limit = 2n ** BigInt(byteCount * 8 - (isSigned ? 1 : 0));
-  if (int < (isSigned ? -limit : 0n) || int >= limit) {
-    throw new TLError(`The provided integer is too big for int${byteCount * 8}.`, path);
-  }
+  const littleEndian = byteOrder === "little";
+  if (byteCount === 1 || byteCount === 3) {
+    const limit = typeof int === "number" ? 2 ** (byteCount * 8 - (isSigned ? 1 : 0)) : byteCount === 1 ? isSigned ? 128n : 256n : isSigned ? 0x80_0000n : 0x100_0000n;
+    if (int < (isSigned ? -limit : 0) || int >= limit) {
+      throw new TLError(`The provided integer is too big for int${byteCount * 8}.`, path ?? []);
+    }
 
-  if (byteCount === 4 || byteCount === 2) { // fast path
     const buffer = new Uint8Array(byteCount);
-    const dataView = new DataView(buffer.buffer);
-    (byteCount === 2 ? isSigned ? dataView.setInt16 : dataView.setUint16 : isSigned ? dataView.setInt32 : dataView.setUint32).call(dataView, 0, Number(int), byteOrder === "little");
+    const value = Number(int);
+    buffer[littleEndian ? 0 : byteCount - 1] = value;
+    if (byteCount === 3) {
+      buffer[1] = value >>> 8;
+      buffer[littleEndian ? 2 : 0] = value >>> 16;
+    }
+    return buffer;
+  }
+
+  const limit = 1n << BigInt(byteCount * 8 - (isSigned ? 1 : 0));
+  if (int < (isSigned ? -limit : 0n) || int >= limit) {
+    throw new TLError(`The provided integer is too big for int${byteCount * 8}.`, path ?? []);
+  }
+
+  const buffer = new Uint8Array(byteCount);
+  const dataView = new DataView(buffer.buffer);
+  if (byteCount === 2) {
+    isSigned ? dataView.setInt16(0, Number(int), littleEndian) : dataView.setUint16(0, Number(int), littleEndian);
+    return buffer;
+  }
+  if (byteCount === 4) {
+    isSigned ? dataView.setInt32(0, Number(int), littleEndian) : dataView.setUint32(0, Number(int), littleEndian);
     return buffer;
   }
 
   int = BigInt(int);
-  if (byteCount === 8) { // fast path
-    const buffer = new Uint8Array(byteCount);
-    const dataView = new DataView(buffer.buffer);
-    (isSigned ? dataView.setBigInt64 : dataView.setBigUint64).call(dataView, 0, int, byteOrder === "little");
+  if (byteCount === 8) {
+    isSigned ? dataView.setBigInt64(0, int, littleEndian) : dataView.setBigUint64(0, int, littleEndian);
     return buffer;
   }
-
   if (isSigned && int < 0n) {
-    int = 2n ** BigInt(byteCount * 8) + int;
+    int = (1n << BigInt(byteCount * 8)) + int;
   }
 
-  const hex = int.toString(16).padStart(byteCount * 2, "0");
-  const buffer = bufferFromHexString(hex);
-
-  if (byteOrder === "little") {
-    buffer.reverse();
+  if (littleEndian) {
+    let i = 0;
+    while (i + 8 <= byteCount) {
+      dataView.setBigUint64(i, int & 0xFFFF_FFFF_FFFF_FFFFn, true);
+      int >>= 64n;
+      i += 8;
+    }
+    for (; i < byteCount; i++) {
+      buffer[i] = Number(int & 0xFFn);
+      int >>= 8n;
+    }
+  } else {
+    let i = byteCount;
+    while (i >= 8) {
+      i -= 8;
+      dataView.setBigUint64(i, int & 0xFFFF_FFFF_FFFF_FFFFn);
+      int >>= 64n;
+    }
+    for (i--; i >= 0; i--) {
+      buffer[i] = Number(int & 0xFFn);
+      int >>= 8n;
+    }
   }
-
   return buffer;
 }
