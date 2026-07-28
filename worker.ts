@@ -78,6 +78,9 @@ async function handleMessage(message: WorkerRequest | WorkerResponse) {
     try {
       // @ts-ignore: it works
       const data = await clientReceiver.client[message.method](...message.args);
+      if (message.method === "disconnect") {
+        clientReceivers.delete(message.clientId);
+      }
       response = {
         type: "response",
         clientId: message.clientId,

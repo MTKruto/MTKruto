@@ -219,7 +219,8 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * @method cn
    */
   async disconnect(): Promise<void> {
-    return await this.#dispatch("disconnect");
+    await this.#dispatch("disconnect");
+    this.#isInited = false;
   }
 
   /**
