@@ -164,7 +164,12 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
     }
     this.#isInited = true;
 
-    return await this.#dispatch("initClient", params);
+    try {
+      await this.#dispatch("initClient", params);
+    } catch (err) {
+      this.#isInited = false;
+      throw err;
+    }
   }
 
   async #invoke<T extends Api.AnyFunction | Mtproto.ping, R = T extends Mtproto.ping ? Mtproto.pong : T extends Api.AnyGenericFunction<infer X> ? Api.ReturnType<X> : T["_"] extends keyof Api.Functions ? Api.ReturnType<T> extends never ? Api.ReturnType<Api.Functions[T["_"]]> : never : never>(function_: T, params?: InvokeParams): Promise<R> {
