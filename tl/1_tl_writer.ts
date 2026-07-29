@@ -251,35 +251,33 @@ export class TLWriter {
   }
 
   #serializePrimitive(type: string, value: any) {
-    const valueRepr = repr(value);
-
     switch (type) {
       case "bytes":
         if ((value instanceof Uint8Array)) {
           this.writeBytes(value);
         } else {
-          throw new TLError(`Expected Uint8Array but received ${valueRepr}`, this.#path);
+          throw new TLError(`Expected Uint8Array but received ${repr(value)}`, this.#path);
         }
         return true;
       case "int128":
         if (typeof value === "bigint") {
           this.writeInt128(value);
         } else {
-          throw new TLError(`Expected bigint but received ${valueRepr}`, this.#path);
+          throw new TLError(`Expected bigint but received ${repr(value)}`, this.#path);
         }
         return true;
       case "int256":
         if (typeof value === "bigint") {
           this.writeInt256(value);
         } else {
-          throw new TLError(`Expected bigint but received ${valueRepr}`, this.#path);
+          throw new TLError(`Expected bigint but received ${repr(value)}`, this.#path);
         }
         return true;
       case "long":
         if (typeof value === "bigint") {
           this.writeInt64(value);
         } else {
-          throw new TLError(`Expected bigint but received ${valueRepr}`, this.#path);
+          throw new TLError(`Expected bigint but received ${repr(value)}`, this.#path);
         }
         return true;
       case "Bool":
@@ -290,7 +288,7 @@ export class TLWriter {
             this.writeInt32(BOOL_FALSE, false);
           }
         } else {
-          throw new TLError(`Expected boolean but received ${valueRepr}`, this.#path);
+          throw new TLError(`Expected boolean but received ${repr(value)}`, this.#path);
         }
         return true;
       case "int":
@@ -306,7 +304,7 @@ export class TLWriter {
             throw new TLError("Expected an integer value but received a floating point", this.#path);
           }
         } else {
-          throw new TLError(`Expected number but received ${valueRepr}`, this.#path);
+          throw new TLError(`Expected number but received ${repr(value)}`, this.#path);
         }
         return true;
       case "double":
@@ -318,7 +316,7 @@ export class TLWriter {
         if (typeof value === "number") {
           this.writeDouble(value);
         } else {
-          throw new TLError(`Expected number but received ${valueRepr}`, this.#path);
+          throw new TLError(`Expected number but received ${repr(value)}`, this.#path);
         }
         return true;
       case "string":
@@ -335,7 +333,7 @@ export class TLWriter {
         return true;
       case "true":
         if (value !== true) {
-          throw new TLError(`Expected \`true\` but received ${valueRepr}`, this.#path);
+          throw new TLError(`Expected \`true\` but received ${repr(value)}`, this.#path);
         }
         return true;
       default:
