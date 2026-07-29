@@ -158,8 +158,11 @@ export class TLReader {
       if (!typeName) {
         throw new TLError(`Unknown constructor ID: ${constructorIdToHex(id)}`, this.#path);
       }
-      this.unreadInt32();
-      return this.#readNonPrimitiveType(typeName, schema);
+      const definition = schema.definitions[typeName];
+      if (!definition) {
+        throw new TLError(`Unknown type: ${typeName}#${constructorIdToHex(id)}`, this.#path);
+      }
+      return this.#deserializeType(typeName, definition, id, schema);
     }
     const definition = schema.definitions[name];
     if (definition) {
@@ -210,18 +213,18 @@ export class TLReader {
   #deserializeTypeFields(type: string, desc: ObjectDefinition, schema: Schema) {
     let isFirstPathElementExisting = false;
     const type_: Record<string, any> = { _: type };
-    const flagFields: Record<string, number> = {};
+    let flagFields: Record<string, number> | undefined;
     for (const [name, fieldType] of desc[1]) {
       if (isOptionalParam(fieldType)) {
         const { flagField, bitIndex } = analyzeOptionalParam(fieldType, this.#path);
-        const bits = flagFields[flagField];
+        const bits = flagFields?.[flagField] ?? 0;
         if ((bits & (1 << bitIndex)) === 0) {
           continue;
         }
       }
 
       if (fieldType === "#") {
-        flagFields[name] = this.readInt32();
+        (flagFields ??= {})[name] = this.readInt32();
         continue;
       }
 

@@ -167,24 +167,35 @@ export class TLWriter {
     }
 
     let isFirstPathElementExisting = false;
-    const flagFields: Record<string, number> = {};
+    let flagFields: Record<string, number> | undefined;
     for (const [name, type] of parameters_) {
       if (type === "#") {
-        flagFields[name] ??= 0;
+        (flagFields ??= {})[name] ??= 0;
       } else if (type__[name] !== undefined && isOptionalParam(type)) {
         const { flagField, bitIndex } = analyzeOptionalParam(type, this.#path);
-        flagFields[flagField] |= 1 << bitIndex;
+        (flagFields ??= {})[flagField] = (flagFields[flagField] ?? 0) | (1 << bitIndex);
       }
     }
 
     for (let [name, type] of parameters_) {
-      if (isOptionalParam(type) && type__[name] === undefined) {
+      const isOptional = isOptionalParam(type);
+
+      if (type === "#") {
+        this.writeInt32(flagFields?.[name] ?? 0);
         continue;
       }
 
-      if (type === "#") {
-        this.writeInt32(flagFields[name]);
-        continue;
+      if (isOptional && type__[name] === undefined) {
+        const { flagField, bitIndex } = analyzeOptionalParam(type, this.#path);
+        if (((flagFields?.[flagField] ?? 0) & (1 << bitIndex)) === 0) {
+          continue;
+        }
+
+        const pathElement = `[${value._}.]${name}`;
+        if (isFirstPathElementExisting) {
+          this.#path[this.#path.length - 1] = pathElement;
+        }
+        throw new TLError("Missing required field", this.#path);
       }
 
       const pathElement = `[${value._}.]${name}`;
@@ -195,30 +206,14 @@ export class TLWriter {
         isFirstPathElementExisting = true;
       }
 
-      if (type__[name] === undefined && !isOptionalParam(type)) {
+      if (type__[name] === undefined && !isOptional) {
         throw new TLError("Missing required field", this.#path);
       }
 
-      if (isOptionalParam(type)) {
+      if (isOptional) {
         type = getOptionalParamInnerType(type);
       }
       this.#serializeField(type, type__[name], schema);
-    }
-
-    for (const [name, type] of parameters_.values()) {
-      if (type === "#" || !isOptionalParam(type) || type__[name] !== undefined) {
-        continue;
-      }
-
-      const pathElement = `[${value._}.]${name}`;
-      if (isFirstPathElementExisting) {
-        this.#path[this.#path.length - 1] = pathElement;
-      }
-
-      const { flagField, bitIndex } = analyzeOptionalParam(type, this.#path);
-      if ((flagFields[flagField] & (1 << bitIndex)) !== 0) {
-        throw new TLError("Missing required field", this.#path);
-      }
     }
   }
 
