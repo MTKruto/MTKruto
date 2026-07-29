@@ -18,8 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { concat } from "../0_deps.ts";
-import { getRandomId, intToBytes } from "../1_utilities.ts";
+import { getRandomId } from "../1_utilities.ts";
 import type { Connection } from "../2_connection.ts";
 import { getObfuscationParameters } from "./0_obfuscation.ts";
 import { Transport } from "./0_transport.ts";
@@ -77,13 +76,13 @@ export class TransportIntermediate extends Transport implements Transport {
   }
 
   async send(buffer: Uint8Array) {
-    if (this.#isPadded) {
-      const padding = crypto.getRandomValues(new Uint8Array(Math.abs(getRandomId(true) % 16)));
-      buffer = concat([buffer, padding]);
+    const paddingLength = this.#isPadded ? Math.abs(getRandomId(true) % 16) : 0;
+    const data = new Uint8Array(4 + buffer.byteLength + paddingLength);
+    new DataView(data.buffer).setUint32(0, data.byteLength - 4, true);
+    data.set(buffer, 4);
+    if (paddingLength > 0) {
+      crypto.getRandomValues(data.subarray(4 + buffer.byteLength));
     }
-
-    const length = intToBytes(buffer.byteLength, 4, { isSigned: false });
-    const data = concat([length, buffer]);
 
     await this.#connection.write(await this.encrypt(data));
   }
