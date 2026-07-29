@@ -25,17 +25,19 @@ export function isOptionalParam(ntype: string): boolean {
   return ntype.includes("?");
 }
 export function getOptionalParamInnerType(ntype: string): string {
-  return ntype.split("?")[1];
+  return ntype.slice(ntype.indexOf("?") + 1);
 }
 export function analyzeOptionalParam(ntype: string, path: string[]): { flagField: string; bitIndex: number } {
-  if (!isOptionalParam(ntype)) {
+  const dotIndex = ntype.indexOf(".");
+  const questionMarkIndex = ntype.indexOf("?", dotIndex + 1);
+  if (dotIndex === -1 || questionMarkIndex === -1) {
     throw new TLError(`Parameter ${ntype} is not optional.`, path);
   }
 
-  const flagField = ntype.split(".")[0];
+  const flagField = ntype.slice(0, dotIndex);
   assertEquals(typeof flagField, "string");
 
-  const bitIndex = parseInt(ntype.split("?")[0].split(".")[1]);
+  const bitIndex = parseInt(ntype.slice(dotIndex + 1, questionMarkIndex));
   assertFalse(isNaN(bitIndex));
 
   return { flagField, bitIndex };

@@ -20,7 +20,7 @@
 
 import { assert, assertEquals, assertFalse, encodeBase64, encodeHex } from "../0_deps.ts";
 import { assertThrows } from "../0_test_deps.ts";
-import { analyzeOptionalParam, isOptionalParam, repr, toJSON } from "./0_utilities.ts";
+import { analyzeOptionalParam, getOptionalParamInnerType, isOptionalParam, repr, toJSON } from "./0_utilities.ts";
 
 Deno.test("isOptionalParam", () => {
   assert(isOptionalParam("flags.8?string"));
@@ -34,6 +34,10 @@ Deno.test("analyzeOptionalParam", () => {
 
   assertEquals(flagField, "flags");
   assertEquals(bitIndex, 0);
+});
+
+Deno.test("getOptionalParamInnerType", () => {
+  assertEquals(getOptionalParamInnerType("flags.0?long"), "long");
 });
 
 Deno.test("toJSON", () => {
