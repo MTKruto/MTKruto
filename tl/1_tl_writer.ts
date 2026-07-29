@@ -19,7 +19,6 @@
  */
 // deno-lint-ignore-file no-explicit-any
 
-import { concat } from "../0_deps.ts";
 import { TLError } from "../0_errors.ts";
 import { analyzeOptionalParam, BOOL_FALSE, BOOL_TRUE, getOptionalParamInnerType, getVectorItemType, isOptionalParam, repr, VECTOR } from "./0_utilities.ts";
 import type { Schema } from "./0_types.ts";
@@ -27,45 +26,80 @@ import { intToBytes } from "../utilities/0_int.ts";
 import { encodeText } from "../1_utilities.ts";
 
 export class TLWriter {
-  protected _buffer: Uint8Array<ArrayBuffer> = new Uint8Array();
-  #chunks = new Array<Uint8Array>();
+  protected _buffer: Uint8Array<ArrayBuffer> = new Uint8Array(256);
+  #view = new DataView(this._buffer.buffer);
+  #length = 0;
   #path = new Array<string>();
 
   constructor() {
   }
 
   get buffer(): Uint8Array<ArrayBuffer> {
-    if (this.#chunks.length > 0) {
-      this._buffer = concat([this._buffer, ...this.#chunks]);
-      this.#chunks.length = 0;
+    if (this._buffer.byteLength !== this.#length) {
+      this._buffer = this._buffer.slice(0, this.#length);
+      this.#view = new DataView(this._buffer.buffer);
     }
     return this._buffer;
   }
 
   write(buffer: Uint8Array): typeof this {
-    this.#chunks.push(buffer);
+    this.#ensureCapacity(buffer.byteLength);
+    this._buffer.set(buffer, this.#length);
+    this.#length += buffer.byteLength;
     return this;
   }
 
+  #ensureCapacity(byteCount: number) {
+    const requiredLength = this.#length + byteCount;
+    if (requiredLength <= this._buffer.byteLength) {
+      return;
+    }
+
+    const buffer = new Uint8Array(Math.max(requiredLength, this._buffer.byteLength * 2, 256));
+    buffer.set(this._buffer.subarray(0, this.#length));
+    this._buffer = buffer;
+    this.#view = new DataView(buffer.buffer);
+  }
+
+  #ensureIntegerInRange(int: number | bigint, byteCount: number, isSigned: boolean) {
+    if (typeof int === "number" && !Number.isInteger(int)) {
+      throw new TLError("Expected an integer.", this.#path);
+    }
+    const limit = typeof int === "number" ? 2 ** (byteCount * 8 - (isSigned ? 1 : 0)) : 1n << BigInt(byteCount * 8 - (isSigned ? 1 : 0));
+    if (int < (isSigned ? -limit : 0) || int >= limit) {
+      throw new TLError(`The provided integer is too big for int${byteCount * 8}.`, this.#path);
+    }
+  }
+
   writeInt24(int: number, isSigned = true): typeof this {
-    this.write(intToBytes(int, 24 / 8, { isSigned, path: this.#path }));
+    this.#ensureIntegerInRange(int, 24 / 8, isSigned);
+    this.#ensureCapacity(3);
+    this._buffer[this.#length++] = int;
+    this._buffer[this.#length++] = int >>> 8;
+    this._buffer[this.#length++] = int >>> 16;
     return this;
   }
 
   writeInt32(int: number, isSigned = true): typeof this {
-    this.write(intToBytes(int, 32 / 8, { isSigned, path: this.#path }));
+    this.#ensureIntegerInRange(int, 32 / 8, isSigned);
+    this.#ensureCapacity(4);
+    isSigned ? this.#view.setInt32(this.#length, int, true) : this.#view.setUint32(this.#length, int, true);
+    this.#length += 4;
     return this;
   }
 
   writeInt64(int: bigint, isSigned = true): typeof this {
-    this.write(intToBytes(int, 64 / 8, { isSigned, path: this.#path }));
+    this.#ensureIntegerInRange(int, 64 / 8, isSigned);
+    this.#ensureCapacity(8);
+    isSigned ? this.#view.setBigInt64(this.#length, int, true) : this.#view.setBigUint64(this.#length, int, true);
+    this.#length += 8;
     return this;
   }
 
   writeDouble(double: number): typeof this {
-    const buffer = new Uint8Array(8);
-    new DataView(buffer.buffer, buffer.byteOffset, buffer.byteLength).setFloat64(0, double, true);
-    this.write(buffer);
+    this.#ensureCapacity(8);
+    this.#view.setFloat64(this.#length, double, true);
+    this.#length += 8;
     return this;
   }
 
@@ -80,20 +114,24 @@ export class TLWriter {
   }
 
   writeBytes(bytes: Uint8Array): typeof this {
-    let padding: number;
+    const headerLength = bytes.byteLength > 253 ? 4 : 1;
+    if (headerLength === 4) {
+      this.#ensureIntegerInRange(bytes.byteLength, 3, false);
+    }
+    const padding = (4 - (headerLength + bytes.byteLength) % 4) % 4;
+    this.#ensureCapacity(headerLength + bytes.byteLength + padding);
     if (bytes.byteLength > 253) {
-      this.write(new Uint8Array([254]));
-      this.writeInt24(bytes.byteLength, false);
-      padding = bytes.byteLength % 4;
+      this._buffer[this.#length++] = 254;
+      this._buffer[this.#length++] = bytes.byteLength;
+      this._buffer[this.#length++] = bytes.byteLength >>> 8;
+      this._buffer[this.#length++] = bytes.byteLength >>> 16;
     } else {
-      this.write(new Uint8Array([bytes.byteLength]));
-      padding = (bytes.byteLength + 1) % 4;
+      this._buffer[this.#length++] = bytes.byteLength;
     }
-    this.write(bytes);
-    if (padding > 0) {
-      padding = 4 - padding;
-      this.write(new Uint8Array(padding));
-    }
+    this._buffer.set(bytes, this.#length);
+    this.#length += bytes.byteLength;
+    this._buffer.fill(0, this.#length, this.#length + padding);
+    this.#length += padding;
     return this;
   }
 
