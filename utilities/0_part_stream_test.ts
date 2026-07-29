@@ -71,3 +71,19 @@ Deno.test("small 2", async () => {
     assertEquals(part.totalParts, 1);
   }
 });
+
+Deno.test("many small chunks", async () => {
+  const input = new Uint8Array(chunkSize * 3 + 17).map((_, i) => i % 251);
+  const buffers = Array.from({ length: Math.ceil(input.byteLength / 7) }, (_, i) => input.slice(i * 7, (i + 1) * 7));
+  // @ts-ignore: lib
+  const parts = await Array.fromAsync(ReadableStream.from(buffers).pipeThrough(new PartStream(chunkSize)));
+
+  assertEquals(parts.map((v) => v.bytes), [
+    input.slice(0, chunkSize),
+    input.slice(chunkSize, chunkSize * 2),
+    input.slice(chunkSize * 2, chunkSize * 3),
+    input.slice(chunkSize * 3),
+  ]);
+  assertEquals(parts.map((v) => v.part), [0, 1, 2, 3]);
+  assertEquals(parts.map((v) => v.totalParts), [-1, -1, -1, 4]);
+});

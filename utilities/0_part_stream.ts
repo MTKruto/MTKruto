@@ -18,8 +18,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { concat } from "../0_deps.ts";
-
 export interface Part {
   isSmall: boolean;
   part: number;
@@ -28,34 +26,44 @@ export interface Part {
 }
 
 export class PartStream extends TransformStream<Uint8Array<ArrayBuffer>, Part> {
-  #buffer = new Uint8Array();
+  #buffer: Uint8Array<ArrayBuffer>;
+  #bufferLength = 0;
   #totalRead = 0;
   #part = 0;
 
   constructor(chunkSize: number) {
+    const buffer = new Uint8Array(chunkSize);
     super({
       transform: (chunk, controller) => {
         this.#totalRead += chunk.byteLength;
-        chunk = concat([this.#buffer, chunk]);
-        while (chunk.byteLength > chunkSize) {
-          controller.enqueue({
-            isSmall: false,
-            part: this.#part++,
-            totalParts: -1,
-            bytes: chunk.slice(0, chunkSize),
-          });
-          chunk = chunk.slice(chunkSize);
+        let offset = 0;
+        while (offset < chunk.byteLength) {
+          if (this.#bufferLength === chunkSize) {
+            controller.enqueue({
+              isSmall: false,
+              part: this.#part++,
+              totalParts: -1,
+              bytes: this.#buffer,
+            });
+            this.#buffer = new Uint8Array(chunkSize);
+            this.#bufferLength = 0;
+          }
+
+          const byteCount = Math.min(chunkSize - this.#bufferLength, chunk.byteLength - offset);
+          this.#buffer.set(chunk.subarray(offset, offset + byteCount), this.#bufferLength);
+          this.#bufferLength += byteCount;
+          offset += byteCount;
         }
-        this.#buffer = chunk;
       },
       flush: (controller) => {
         controller.enqueue({
           isSmall: this.#totalRead <= chunkSize,
           part: this.#part,
           totalParts: Math.ceil(this.#totalRead / chunkSize),
-          bytes: this.#buffer,
+          bytes: this.#buffer.slice(0, this.#bufferLength),
         });
       },
     });
+    this.#buffer = buffer;
   }
 }
