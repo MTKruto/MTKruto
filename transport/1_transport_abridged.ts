@@ -18,8 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { concat } from "../0_deps.ts";
-import { intFromBytes, intToBytes } from "../1_utilities.ts";
+import { intFromBytes } from "../1_utilities.ts";
 import type { Connection } from "../2_connection.ts";
 import { getObfuscationParameters } from "./0_obfuscation.ts";
 import { Transport } from "./0_transport.ts";
@@ -70,10 +69,17 @@ export class TransportAbridged extends Transport implements Transport {
 
   async send(buffer: Uint8Array) {
     const bufferLength = buffer.byteLength / 4;
-
-    const header = new Uint8Array([bufferLength >= 0x7F ? 0x7F : bufferLength]);
-    const length = bufferLength >= 0x7F ? intToBytes(bufferLength, 3, { isSigned: false }) : new Uint8Array();
-    const data = concat([header, length, buffer]);
+    const data = new Uint8Array(buffer.byteLength + (bufferLength >= 0x7F ? 4 : 1));
+    if (bufferLength >= 0x7F) {
+      data[0] = 0x7F;
+      data[1] = bufferLength;
+      data[2] = bufferLength >>> 8;
+      data[3] = bufferLength >>> 16;
+      data.set(buffer, 4);
+    } else {
+      data[0] = bufferLength;
+      data.set(buffer, 1);
+    }
 
     await this.#connection.write(await this.encrypt(data));
   }
