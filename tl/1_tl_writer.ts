@@ -168,28 +168,22 @@ export class TLWriter {
 
     let isFirstPathElementExisting = false;
     const flagFields: Record<string, number> = {};
+    for (const [name, type] of parameters_) {
+      if (type === "#") {
+        flagFields[name] ??= 0;
+      } else if (type__[name] !== undefined && isOptionalParam(type)) {
+        const { flagField, bitIndex } = analyzeOptionalParam(type, this.#path);
+        flagFields[flagField] |= 1 << bitIndex;
+      }
+    }
+
     for (let [name, type] of parameters_) {
       if (isOptionalParam(type) && type__[name] === undefined) {
         continue;
       }
 
       if (type === "#") {
-        let flags = 0;
-        const flagField_ = name;
-
-        for (const [name, type] of parameters_) {
-          if (isOptionalParam(type)) {
-            const { flagField, bitIndex } = analyzeOptionalParam(type, this.#path);
-
-            if (flagField === flagField_) {
-              if (type__[name] !== undefined) {
-                flags |= 1 << bitIndex;
-              }
-            }
-          }
-        }
-        flagFields[flagField_] = flags;
-        this.writeInt32(flags);
+        this.writeInt32(flagFields[name]);
         continue;
       }
 
