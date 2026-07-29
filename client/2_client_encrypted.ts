@@ -104,7 +104,7 @@ export class ClientEncrypted extends ClientAbstract {
 
     payloadWriter.writeInt64(getRandomId());
     payloadWriter.writeInt64(getRandomId());
-    payloadWriter.write(await serializeMessage(message));
+    payloadWriter.write(serializeMessage(message));
 
     let payload = payloadWriter.buffer;
 

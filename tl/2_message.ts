@@ -30,22 +30,24 @@ export interface message {
   body: Uint8Array | msg_container;
 }
 
-export async function serializeMessage(message: message): Promise<Uint8Array> {
-  let body: Uint8Array;
-  if (message.body instanceof Uint8Array) {
-    body = message.body;
-  } else {
-    body = await serializeMsgContainer(message.body);
-  }
-  const writer = new TLWriter()
-    .writeInt64(message.msg_id)
-    .writeInt32(message.seqno)
-    .writeInt32(body.byteLength)
-    .write(body);
+export function serializeMessage(message: message): Uint8Array {
+  const writer = new TLWriter();
+  writeMessage(writer, message);
   return writer.buffer;
 }
 
-export async function deserializeMessage(reader: TLReader): Promise<message> {
+function writeMessage(writer: TLWriter, message: message) {
+  writer.writeInt64(message.msg_id).writeInt32(message.seqno);
+  if (message.body instanceof Uint8Array) {
+    writer.writeInt32(message.body.byteLength).write(message.body);
+  } else {
+    const bodyWriter = new TLWriter();
+    writeMsgContainer(bodyWriter, message.body);
+    writer.writeInt32(bodyWriter.buffer.byteLength).write(bodyWriter.buffer);
+  }
+}
+
+export function deserializeMessage(reader: TLReader): message {
   const id_ = reader.readInt64();
   const seqno = reader.readInt32();
   const length = reader.readInt32();
@@ -55,7 +57,7 @@ export async function deserializeMessage(reader: TLReader): Promise<message> {
   let body: message["body"];
   {
     if (id === MSG_CONTAINER_CONSTRUCTOR) {
-      body = await deserializeMsgContainer(reader2.buffer);
+      body = deserializeMsgContainer(reader2.buffer);
     } else {
       body = reader.buffer;
     }
@@ -64,7 +66,6 @@ export async function deserializeMessage(reader: TLReader): Promise<message> {
 }
 
 // msg_container#73f1f8dc messages:vector<%Message> = MessageContainer;
-
 export interface msg_container {
   _: "msg_container";
   messages: message[];
@@ -72,22 +73,26 @@ export interface msg_container {
 
 export const MSG_CONTAINER_CONSTRUCTOR = 0x73F1F8DC;
 
-export async function serializeMsgContainer(msgContainer: msg_container): Promise<Uint8Array> {
+export function serializeMsgContainer(msgContainer: msg_container): Uint8Array {
   const writer = new TLWriter();
-  writer.writeInt32(MSG_CONTAINER_CONSTRUCTOR, false);
-  writer.writeInt32(msgContainer.messages.length);
-  for (const message of msgContainer.messages) {
-    writer.write(await serializeMessage(message));
-  }
+  writeMsgContainer(writer, msgContainer);
   return writer.buffer;
 }
 
-export async function deserializeMsgContainer(buffer: Uint8Array): Promise<msg_container> {
+function writeMsgContainer(writer: TLWriter, msgContainer: msg_container) {
+  writer.writeInt32(MSG_CONTAINER_CONSTRUCTOR, false);
+  writer.writeInt32(msgContainer.messages.length);
+  for (const message of msgContainer.messages) {
+    writeMessage(writer, message);
+  }
+}
+
+export function deserializeMsgContainer(buffer: Uint8Array): msg_container {
   const reader = new TLReader(buffer);
   const length = reader.readInt32();
   const messages = new Array<message>();
   for (let i = 0; i < length; i++) {
-    messages.push(await deserializeMessage(reader));
+    messages.push(deserializeMessage(reader));
   }
   return { _: "msg_container", messages };
 }

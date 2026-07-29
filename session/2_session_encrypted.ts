@@ -250,7 +250,7 @@ export class SessionEncrypted extends Session implements Session {
 
     payloadWriter.writeInt64(this.state.serverSalt);
     payloadWriter.writeInt64(this.#id);
-    payloadWriter.write(await serializeMessage(message));
+    payloadWriter.write(serializeMessage(message));
     payloadWriter.write(new Uint8Array(mod(-(payloadWriter.buffer.byteLength + 12), 16) + 12));
 
     const payload = payloadWriter.buffer;
