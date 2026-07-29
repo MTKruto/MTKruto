@@ -23,6 +23,7 @@ import { concat, equals, startsWith } from "../0_deps.ts";
 import { ConnectionError } from "../0_errors.ts";
 import { getLogger, hmacSha256, Mutex } from "../1_utilities.ts";
 import type { ConnectionCallback } from "../2_connection.ts";
+import { ByteQueue } from "./0_byte_queue.ts";
 import type { Connection } from "./0_connection.ts";
 import { getTlsHeader } from "./0_get_tls_header.ts";
 
@@ -39,7 +40,7 @@ export class ConnectionTLS implements Connection {
   #socket?: Socket;
   #rMutex = new Mutex();
   #wMutex = new Mutex();
-  #buffer = new Array<number>();
+  #buffer = new ByteQueue();
   #nextResolve: [
     number,
     { resolve: () => void; reject: (err: unknown) => void },
@@ -64,8 +65,8 @@ export class ConnectionTLS implements Connection {
   #cleanupSocket(socket = this.#socket) {
     this.#isReady = false;
     this.#rejectRead();
-    this.#buffer = [];
-    this.#packetBuffer = new Uint8Array();
+    this.#buffer.clear();
+    this.#packetBuffer.clear();
     this.#isFirstWrite = true;
     if (this.#socket === socket) {
       this.#socket = undefined;
@@ -110,12 +111,8 @@ export class ConnectionTLS implements Connection {
         return;
       }
 
-      const oldLength = this.#buffer.length;
-      for (const byte of data) {
-        this.#buffer.push(byte);
-      }
-      const read = this.#buffer.length - oldLength;
-      this.callback?.read(read);
+      this.#buffer.push(data);
+      this.callback?.read(data.byteLength);
 
       if (
         this.#nextResolve !== null && this.#buffer.length >= this.#nextResolve[0]
@@ -170,7 +167,9 @@ export class ConnectionTLS implements Connection {
           if (this.#buffer.length === 0) {
             await new Promise<void>((resolve, reject) => this.#nextResolve = [1, { resolve, reject }]);
           }
-          read = concat([read, new Uint8Array(this.#buffer.splice(0, this.#buffer.length))]);
+          const buffered = new Uint8Array(this.#buffer.length);
+          this.#buffer.read(buffered);
+          read = concat([read, buffered]);
         }
       }
 
@@ -205,7 +204,7 @@ export class ConnectionTLS implements Connection {
     }
   }
 
-  #packetBuffer = new Uint8Array();
+  #packetBuffer = new ByteQueue();
 
   async #readPacket() {
     const header = new Uint8Array(HEADER_LENGTH);
@@ -217,7 +216,7 @@ export class ConnectionTLS implements Connection {
     const length = new DataView(header.buffer).getUint16(3);
     const packet = new Uint8Array(length);
     await this.#read(packet);
-    this.#packetBuffer = concat([this.#packetBuffer, packet]);
+    this.#packetBuffer.push(packet);
   }
 
   #isFirstWrite = true;
@@ -237,7 +236,7 @@ export class ConnectionTLS implements Connection {
     if (this.#buffer.length < p.byteLength) {
       await new Promise<void>((resolve, reject) => this.#nextResolve = [p.byteLength, { resolve, reject }]);
     }
-    p.set(this.#buffer.splice(0, p.byteLength));
+    this.#buffer.read(p);
   }
 
   async #write(p: Uint8Array) {
@@ -256,11 +255,10 @@ export class ConnectionTLS implements Connection {
     this.#assertConnected();
     const unlock = await this.#rMutex.lock();
     try {
-      while (this.#packetBuffer.byteLength < p.byteLength) {
+      while (this.#packetBuffer.length < p.byteLength) {
         await this.#readPacket();
       }
-      p.set(this.#packetBuffer.subarray(0, p.byteLength));
-      this.#packetBuffer = this.#packetBuffer.slice(p.byteLength);
+      this.#packetBuffer.read(p);
     } finally {
       unlock();
     }

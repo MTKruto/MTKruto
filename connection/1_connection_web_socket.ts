@@ -18,9 +18,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { concat, unreachable } from "../0_deps.ts";
 import { ConnectionError } from "../0_errors.ts";
 import { getLogger, Mutex } from "../1_utilities.ts";
+import { ByteQueue } from "./0_byte_queue.ts";
 import type { Connection } from "./0_connection.ts";
 
 const L = getLogger("ConnectionWebSocket");
@@ -31,7 +31,7 @@ export class ConnectionWebSocket implements Connection {
   #webSocket?: WebSocket;
   #rMutex = new Mutex();
   #wMutex = new Mutex();
-  #buffer = new Uint8Array();
+  #buffer = new ByteQueue();
   #nextResolve: [number, { resolve: () => void; reject: (err: unknown) => void }] | null = null;
   stateChangeHandler?: Connection["stateChangeHandler"];
 
@@ -41,8 +41,9 @@ export class ConnectionWebSocket implements Connection {
 
   #initWs() {
     return new Promise<void>((resolve, reject) => {
-      this.#buffer = new Uint8Array();
+      this.#buffer.clear();
       const webSocket = new WebSocket(this.#url, "binary");
+      webSocket.binaryType = "arraybuffer";
       this.#webSocket = webSocket;
       const mutex = new Mutex();
       webSocket.addEventListener("close", () => {
@@ -63,13 +64,13 @@ export class ConnectionWebSocket implements Connection {
         }
         const unlock = await mutex.lock();
         try {
-          const data = new Uint8Array(await new Blob([e.data].map((v) => v instanceof Blob || v instanceof Uint8Array ? v as Blob | Uint8Array<ArrayBuffer> : v instanceof ArrayBuffer ? v : unreachable())).arrayBuffer());
+          const data = e.data instanceof ArrayBuffer ? new Uint8Array(e.data) : e.data instanceof Uint8Array ? e.data : new Uint8Array(await e.data.arrayBuffer());
           if (this.#webSocket !== webSocket) return;
 
-          this.#buffer = concat([this.#buffer, data]);
+          this.#buffer.push(data);
 
           if (
-            this.#nextResolve !== null && this.#buffer.byteLength >= this.#nextResolve[0]
+            this.#nextResolve !== null && this.#buffer.length >= this.#nextResolve[0]
           ) {
             this.#nextResolve[1].resolve();
             this.#nextResolve = null;
@@ -120,12 +121,10 @@ export class ConnectionWebSocket implements Connection {
     const unlock = await this.#rMutex.lock();
     try {
       this.#assertConnected();
-      if (this.#buffer.byteLength < p.byteLength) {
+      if (this.#buffer.length < p.byteLength) {
         await new Promise<void>((resolve, reject) => this.#nextResolve = [p.byteLength, { resolve, reject }]);
       }
-      const slice = this.#buffer.slice(0, p.byteLength);
-      p.set(slice);
-      this.#buffer = this.#buffer.slice(slice.byteLength);
+      this.#buffer.read(p);
     } finally {
       unlock();
     }
@@ -153,6 +152,7 @@ export class ConnectionWebSocket implements Connection {
     this.#assertConnected();
     this.#webSocket!.close(1000, "method");
     this.#webSocket = undefined;
+    this.#buffer.clear();
     this.#rejectRead();
   }
 }

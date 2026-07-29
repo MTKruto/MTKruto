@@ -21,6 +21,7 @@
 import { concat, equals, startsWith, writeAll } from "../0_deps.ts";
 import { ConnectionError } from "../0_errors.ts";
 import { getLogger, hmacSha256, Mutex } from "../1_utilities.ts";
+import { ByteQueue } from "./0_byte_queue.ts";
 import type { Connection } from "./0_connection.ts";
 import { getTlsHeader } from "./0_get_tls_header.ts";
 
@@ -36,7 +37,7 @@ export class ConnectionTLS implements Connection {
   #connection?: Deno.Conn;
   #rMutex = new Mutex();
   #wMutex = new Mutex();
-  #buffer = new Uint8Array();
+  #buffer = new ByteQueue();
   #canRead = false;
   #canWrite = false;
   #isFirstWrite = true;
@@ -151,7 +152,7 @@ export class ConnectionTLS implements Connection {
         throw new TypeError("Failed to initialize TLS connection.");
       }
 
-      this.#buffer = new Uint8Array();
+      this.#buffer.clear();
       this.#connection = connection;
       this.#canRead = this.#canWrite = this.#isFirstWrite = true;
       this.stateChangeHandler?.(true);
@@ -179,7 +180,7 @@ export class ConnectionTLS implements Connection {
     const length = new DataView(header.buffer).getUint16(3);
     const packet = new Uint8Array(length);
     await this.#read(packet);
-    this.#buffer = concat([this.#buffer, packet]);
+    this.#buffer.push(packet);
   }
 
   async #writePacket(packet: Uint8Array) {
@@ -204,11 +205,10 @@ export class ConnectionTLS implements Connection {
     this.#assertConnected();
     const unlock = await this.#rMutex.lock();
     try {
-      while (this.#buffer.byteLength < p.byteLength) {
+      while (this.#buffer.length < p.byteLength) {
         await this.#readPacket();
       }
-      p.set(this.#buffer.subarray(0, p.byteLength));
-      this.#buffer = this.#buffer.slice(p.byteLength);
+      this.#buffer.read(p);
     } finally {
       unlock();
     }
@@ -238,6 +238,7 @@ export class ConnectionTLS implements Connection {
     this.#connection!.close();
     this.#canRead = this.#canWrite = false;
     this.#isFirstWrite = true;
+    this.#buffer.clear();
     this.#connection = undefined;
   }
 }

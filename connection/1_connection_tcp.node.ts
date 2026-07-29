@@ -21,6 +21,7 @@
 import { Socket } from "node:net";
 import { ConnectionError } from "../0_errors.ts";
 import { getLogger, Mutex } from "../1_utilities.ts";
+import { ByteQueue } from "./0_byte_queue.ts";
 import type { Connection, ConnectionCallback } from "./0_connection.ts";
 
 const L = getLogger("ConnectionTCP");
@@ -32,7 +33,7 @@ export class ConnectionTCP implements Connection {
   #socket?: Socket;
   #rMutex = new Mutex();
   #wMutex = new Mutex();
-  #buffer = new Array<number>();
+  #buffer = new ByteQueue();
   #nextResolve: [
     number,
     { resolve: () => void; reject: (err: unknown) => void },
@@ -71,7 +72,7 @@ export class ConnectionTCP implements Connection {
       }
       this.#rejectRead();
       this.#socket = undefined;
-      this.#buffer = [];
+      this.#buffer.clear();
       this.stateChangeHandler?.(false);
     });
     socket.on("data", (data) => {
@@ -82,12 +83,8 @@ export class ConnectionTCP implements Connection {
         return;
       }
 
-      const oldLength = this.#buffer.length;
-      for (const byte of data) {
-        this.#buffer.push(byte);
-      }
-      const read = this.#buffer.length - oldLength;
-      this.callback?.read(read);
+      this.#buffer.push(data);
+      this.callback?.read(data.byteLength);
 
       if (
         this.#nextResolve !== null && this.#buffer.length >= this.#nextResolve[0]
@@ -130,7 +127,7 @@ export class ConnectionTCP implements Connection {
       if (this.#buffer.length < p.byteLength) {
         await new Promise<void>((resolve, reject) => this.#nextResolve = [p.byteLength, { resolve, reject }]);
       }
-      p.set(this.#buffer.splice(0, p.byteLength));
+      this.#buffer.read(p);
     } finally {
       unlock();
     }
