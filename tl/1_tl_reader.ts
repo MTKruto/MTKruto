@@ -252,9 +252,9 @@ export class TLReader {
       }
     }
     const size = this.readInt32();
-    const array = new Array<any>();
+    const array = new Array<any>(size);
     for (let i = 0; i < size; ++i) {
-      array.push(this.#readField(vectorType.type, schema));
+      array[i] = this.#readField(vectorType.type, schema);
     }
     return array;
   }
