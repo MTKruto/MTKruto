@@ -21,10 +21,9 @@
 import { assertEquals, concat, delay, ige256Decrypt, ige256Encrypt, initTgCrypto, LruCache, SECOND } from "../0_deps.ts";
 import { ConnectionError, TransportError } from "../0_errors.ts";
 import { drop, getLogger, getRandomId, gunzip, gzip, intFromBytes, intToBytes, type Logger, type MaybePromise, mod, sha1, sha256, toUnixTimestamp } from "../1_utilities.ts";
-import { deserializeMessage, type message, type msg_container, Mtproto, repr, serializeMessage, TLReader, X } from "../2_tl.ts";
+import { deserializeMessage, type message, type msg_container, Mtproto, repr, TLReader, TLWriter, writeMessage, X } from "../2_tl.ts";
 import type { DC } from "../3_transport.ts";
 import { AbortableLoop } from "../client/0_abortable_loop.ts";
-import { TLWriter } from "../tl/1_tl_writer.ts";
 import { SessionError } from "./0_session_error.ts";
 import { Session, type SessionParams } from "./1_session.ts";
 
@@ -250,8 +249,8 @@ export class SessionEncrypted extends Session implements Session {
 
     payloadWriter.writeInt64(this.state.serverSalt);
     payloadWriter.writeInt64(this.#id);
-    payloadWriter.write(serializeMessage(message));
-    payloadWriter.write(new Uint8Array(mod(-(payloadWriter.buffer.byteLength + 12), 16) + 12));
+    writeMessage(payloadWriter, message);
+    payloadWriter.write(new Uint8Array(mod(-(payloadWriter.length + 12), 16) + 12));
 
     const payload = payloadWriter.buffer;
 

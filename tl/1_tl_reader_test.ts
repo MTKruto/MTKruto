@@ -26,6 +26,21 @@ import { BOOL_FALSE, BOOL_TRUE, VECTOR, X } from "./0_utilities.ts";
 import { TLReader } from "./1_tl_reader.ts";
 import { TLWriter } from "./1_tl_writer.ts";
 
+Deno.test("TLReader.readView does not copy", () => {
+  const buffer = new Uint8Array([1, 2, 3]);
+  const view = new TLReader(buffer).readView(2);
+  view[0] = 4;
+  assertEquals(buffer, new Uint8Array([4, 2, 3]));
+});
+
+Deno.test("large signed integers round trip", () => {
+  const writer = new TLWriter();
+  writer.writeInt128(-1n).writeInt256(-2n);
+  const reader = new TLReader(writer.buffer);
+  assertEquals(reader.readInt128(), -1n);
+  assertEquals(reader.readInt256(), -2n);
+});
+
 Deno.test("TLReader", async (t) => {
   // deno-fmt-ignore
   const buffer = new Uint8Array([

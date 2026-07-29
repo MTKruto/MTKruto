@@ -18,7 +18,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { concat } from "../0_deps.ts";
 import { Mutex } from "./0_mutex.ts";
 
 export class CTR {
@@ -50,26 +49,17 @@ export class CTR {
   }
 
   async #call(data: Uint8Array<ArrayBuffer>) {
-    let header: Uint8Array<ArrayBuffer> | undefined;
-    if (this.#bytesUntilNextBlock) {
-      const headerLength = Math.min(data.byteLength, this.#iv.byteLength - this.#bytesUntilNextBlock);
-      const encrypted = await this.#encrypt(concat([new Uint8Array(this.#bytesUntilNextBlock), data.subarray(0, headerLength)]));
-      header = encrypted.subarray(this.#bytesUntilNextBlock);
-      data = data.subarray(headerLength);
-      if (encrypted.byteLength === this.#iv.byteLength) {
-        this.#increaseIv(1);
-        this.#bytesUntilNextBlock = 0;
-      } else {
-        this.#bytesUntilNextBlock += headerLength;
-      }
+    const skippedBytes = this.#bytesUntilNextBlock;
+    let input = data;
+    if (skippedBytes !== 0) {
+      input = new Uint8Array(skippedBytes + data.byteLength);
+      input.set(data, skippedBytes);
     }
-    if (!data.byteLength && header) {
-      return header;
-    }
-    const encrypted = await this.#encrypt(data);
+
+    const encrypted = await this.#encrypt(input);
     this.#bytesUntilNextBlock = encrypted.byteLength % this.#iv.byteLength;
     this.#increaseIv((encrypted.byteLength - this.#bytesUntilNextBlock) / this.#iv.byteLength);
-    return header ? concat([header, encrypted]) : encrypted;
+    return skippedBytes === 0 ? encrypted : encrypted.subarray(skippedBytes);
   }
 
   async #encrypt(data: Uint8Array<ArrayBuffer>) {

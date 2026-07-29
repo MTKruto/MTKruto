@@ -26,48 +26,57 @@ function getRandomNumberInRange(min: number, max: number) {
 }
 
 export function factorize(pq: bigint): [bigint, bigint] {
-  let a: bigint;
-  let b: bigint;
-  let p = 0n;
-  let q: bigint;
-  const one = 1n;
-
-  let found = false;
-  for (let i = 0, iter = 0; !found && (i < 3 || iter < 1000); i++) {
-    const t = BigInt(getRandomNumberInRange(17, 32)) % (pq - 1n);
-    a = getRandomId();
-    b = a;
-
-    const lim = 1 << (i + 23);
-    for (let j = 1; j < lim; j++) {
-      iter++;
-      a = mod(a * a, pq);
-      a += t;
-      if (a >= pq) {
-        a = a - pq;
-      }
-      if (a > b) {
-        q = a - b;
-      } else {
-        q = b - a;
-      }
-      p = gcd(q, pq);
-      if (p !== one) {
-        found = true;
-        break;
-      }
-      if ((j & (j - 1)) === 0) {
-        b = a;
-      }
-    }
+  if (pq < 4n) {
+    throw new RangeError("Expected a composite positive integer.");
+  }
+  if ((pq & 1n) === 0n) {
+    return [2n, pq / 2n];
   }
 
-  if (found) {
-    q = pq / p;
-    if (p > q) {
-      return [q, p];
-    } else {
-      return [p, q];
+  const one = 1n;
+  const batchSize = 128;
+  for (let attempt = 0; attempt < 16; ++attempt) {
+    const c = BigInt(getRandomNumberInRange(1, 32));
+    let y = mod(getRandomId(), pq - 1n) + one;
+    let x = 0n;
+    let savedY = 0n;
+    let divisor = one;
+    let product = one;
+    let cycleLength = 1;
+
+    while (divisor === one && cycleLength <= 1 << 20) {
+      x = y;
+      for (let i = 0; i < cycleLength; ++i) {
+        y = (y * y + c) % pq;
+      }
+
+      let offset = 0;
+      while (offset < cycleLength && divisor === one) {
+        savedY = y;
+        const end = Math.min(batchSize, cycleLength - offset);
+        for (let i = 0; i < end; ++i) {
+          y = (y * y + c) % pq;
+          product = product * (x > y ? x - y : y - x) % pq;
+        }
+        divisor = gcd(product, pq);
+        offset += end;
+      }
+      cycleLength *= 2;
+    }
+
+    if (divisor === one) {
+      continue;
+    }
+    if (divisor === pq) {
+      do {
+        savedY = (savedY * savedY + c) % pq;
+        divisor = gcd(x > savedY ? x - savedY : savedY - x, pq);
+      } while (divisor === one);
+    }
+
+    if (divisor > one && divisor < pq && pq % divisor === 0n) {
+      const other = pq / divisor;
+      return divisor < other ? [divisor, other] : [other, divisor];
     }
   }
 

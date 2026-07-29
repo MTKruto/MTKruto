@@ -19,7 +19,7 @@
  */
 // deno-lint-ignore-file no-explicit-any
 
-import { decodeText, intFromBytes } from "../1_utilities.ts";
+import { decodeText } from "../1_utilities.ts";
 import { TLError } from "../0_errors.ts";
 import type { ObjectDefinition, Schema } from "./0_types.ts";
 import { analyzeOptionalParam, BOOL_FALSE, BOOL_TRUE, constructorIdToHex, getOptionalParamInnerType, getVectorItemType, isOptionalParam, VECTOR, X } from "./0_utilities.ts";
@@ -42,6 +42,11 @@ export class TLReader {
   read(byteCount: number): Uint8Array<ArrayBuffer> {
     const buffer = this.#readView(byteCount).slice();
     return buffer;
+  }
+
+  /** Reads bytes without copying them. The returned view aliases the input buffer. */
+  readView(byteCount: number): Uint8Array {
+    return this.#readView(byteCount);
   }
 
   #readView(byteCount: number): Uint8Array<ArrayBufferLike> {
@@ -98,16 +103,30 @@ export class TLReader {
   }
 
   readInt128(isSigned = true): bigint {
-    const buffer = this.#readView(128 / 8);
-    return intFromBytes(buffer, { isSigned });
+    return this.#readLargeInt(128 / 8, isSigned);
   }
 
   readInt256(isSigned = true): bigint {
-    const buffer = this.#readView(256 / 8);
-    return intFromBytes(buffer, { isSigned });
+    return this.#readLargeInt(256 / 8, isSigned);
+  }
+
+  #readLargeInt(byteCount: number, isSigned: boolean): bigint {
+    const offset = this.#readDataViewOffset(byteCount);
+    let value = 0n;
+    for (let i = offset + byteCount - 8; i >= offset; i -= 8) {
+      value = (value << 64n) | this.#view.getBigUint64(i, true);
+    }
+    if (isSigned && (this._buffer[offset + byteCount - 1] & 0x80) !== 0) {
+      value -= 1n << BigInt(byteCount * 8);
+    }
+    return value;
   }
 
   readBytes(): Uint8Array<ArrayBuffer> {
+    return this.#readBytesView().slice();
+  }
+
+  #readBytesView(): Uint8Array<ArrayBufferLike> {
     let L = this.#readView(1)[0];
     let padding: number;
     if (L > 253) {
@@ -116,7 +135,7 @@ export class TLReader {
     } else {
       padding = (L + 1) % 4;
     }
-    const bytes = this.read(L);
+    const bytes = this.#readView(L);
     if (padding > 0) {
       padding = 4 - padding;
       this.#readView(padding);
@@ -125,7 +144,7 @@ export class TLReader {
   }
 
   readString(): string {
-    return decodeText(this.readBytes());
+    return decodeText(this.#readBytesView());
   }
 
   readType(name: string, schema: Schema): any {

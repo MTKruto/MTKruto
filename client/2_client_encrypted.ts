@@ -20,7 +20,7 @@
 
 import { concat, delay, ige256Encrypt, SECOND } from "../0_deps.ts";
 import { drop, fromUnixTimestamp, getLogger, getRandomId, intFromBytes, type Logger, type MaybePromise, mod, sha1, toUnixTimestamp } from "../1_utilities.ts";
-import { Api, type message, Mtproto, serializeMessage, TLWriter, X } from "../2_tl.ts";
+import { Api, type message, Mtproto, TLWriter, writeMessage, X } from "../2_tl.ts";
 import type { DC } from "../3_transport.ts";
 import { APP_VERSION, DEVICE_MODEL, LANG_CODE, LANG_PACK, SYSTEM_LANG_CODE, SYSTEM_VERSION, TEMPORARY_AUTH_KEY_TTL } from "../4_constants.ts";
 import { ConnectionError, ConnectionNotInited, constructTelegramError, InputError, RetryError, type TransportError } from "../4_errors.ts";
@@ -104,7 +104,7 @@ export class ClientEncrypted extends ClientAbstract {
 
     payloadWriter.writeInt64(getRandomId());
     payloadWriter.writeInt64(getRandomId());
-    payloadWriter.write(serializeMessage(message));
+    writeMessage(payloadWriter, message);
 
     let payload = payloadWriter.buffer;
 

@@ -19,6 +19,7 @@
  */
 
 import { assertEquals } from "../0_deps.ts";
+import { assertThrows } from "../0_test_deps.ts";
 import { factorize } from "./1_math.ts";
 
 const cases = [
@@ -77,4 +78,8 @@ Deno.test("factorize", () => {
   for (const [x, y] of cases) {
     assertEquals(factorize(x), y);
   }
+  assertEquals(factorize(4n), [2n, 2n]);
+  assertEquals(factorize(6n), [2n, 3n]);
+  assertThrows(() => factorize(0n), RangeError);
+  assertThrows(() => factorize(1n), RangeError);
 });

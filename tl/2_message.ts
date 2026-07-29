@@ -30,36 +30,37 @@ export interface message {
   body: Uint8Array | msg_container;
 }
 
-export function serializeMessage(message: message): Uint8Array {
-  const writer = new TLWriter();
-  writeMessage(writer, message);
-  return writer.buffer;
-}
-
-function writeMessage(writer: TLWriter, message: message) {
+export function writeMessage(writer: TLWriter, message: message) {
   writer.writeInt64(message.msg_id).writeInt32(message.seqno);
   if (message.body instanceof Uint8Array) {
     writer.writeInt32(message.body.byteLength).write(message.body);
   } else {
-    const bodyWriter = new TLWriter();
-    writeMsgContainer(bodyWriter, message.body);
-    writer.writeInt32(bodyWriter.buffer.byteLength).write(bodyWriter.buffer);
+    writer.writeInt32(getMsgContainerLength(message.body));
+    writeMsgContainer(writer, message.body);
   }
+}
+
+function getMsgContainerLength(msgContainer: msg_container): number {
+  let length = 8;
+  for (const message of msgContainer.messages) {
+    length += 16 + (message.body instanceof Uint8Array ? message.body.byteLength : getMsgContainerLength(message.body));
+  }
+  return length;
 }
 
 export function deserializeMessage(reader: TLReader): message {
   const id_ = reader.readInt64();
   const seqno = reader.readInt32();
   const length = reader.readInt32();
-  reader = new TLReader(reader.read(length));
-  const reader2 = new TLReader(reader.buffer);
-  const id = reader2.readInt32(false);
+  reader = new TLReader(reader.readView(length));
+  const rawBody = reader.buffer;
+  const id = reader.readInt32(false);
   let body: message["body"];
   {
     if (id === MSG_CONTAINER_CONSTRUCTOR) {
-      body = deserializeMsgContainer(reader2.buffer);
+      body = deserializeMsgContainer(reader.buffer);
     } else {
-      body = reader.buffer;
+      body = rawBody;
     }
   }
   return { _: "message", msg_id: id_, seqno, body };
@@ -90,9 +91,9 @@ function writeMsgContainer(writer: TLWriter, msgContainer: msg_container) {
 export function deserializeMsgContainer(buffer: Uint8Array): msg_container {
   const reader = new TLReader(buffer);
   const length = reader.readInt32();
-  const messages = new Array<message>();
+  const messages = new Array<message>(length);
   for (let i = 0; i < length; i++) {
-    messages.push(deserializeMessage(reader));
+    messages[i] = deserializeMessage(reader);
   }
   return { _: "msg_container", messages };
 }

@@ -22,7 +22,6 @@
 import { TLError } from "../0_errors.ts";
 import { analyzeOptionalParam, BOOL_FALSE, BOOL_TRUE, getOptionalParamInnerType, getVectorItemType, isOptionalParam, repr, VECTOR } from "./0_utilities.ts";
 import type { Schema } from "./0_types.ts";
-import { intToBytes } from "../utilities/0_int.ts";
 import { encodeText } from "../1_utilities.ts";
 
 export class TLWriter {
@@ -32,6 +31,10 @@ export class TLWriter {
   #path = new Array<string>();
 
   constructor() {
+  }
+
+  get length(): number {
+    return this.#length;
   }
 
   get buffer(): Uint8Array<ArrayBuffer> {
@@ -104,12 +107,25 @@ export class TLWriter {
   }
 
   writeInt128(int: bigint, isSigned = true): typeof this {
-    this.write(intToBytes(int, 128 / 8, { isSigned, path: this.#path }));
-    return this;
+    return this.#writeLargeInt(int, 128 / 8, isSigned);
   }
 
   writeInt256(int: bigint, isSigned = true): typeof this {
-    this.write(intToBytes(int, 256 / 8, { isSigned, path: this.#path }));
+    return this.#writeLargeInt(int, 256 / 8, isSigned);
+  }
+
+  #writeLargeInt(int: bigint, byteCount: number, isSigned: boolean): typeof this {
+    this.#ensureIntegerInRange(int, byteCount, isSigned);
+    this.#ensureCapacity(byteCount);
+    if (int < 0n) {
+      int += 1n << BigInt(byteCount * 8);
+    }
+    const end = this.#length + byteCount;
+    while (this.#length < end) {
+      this.#view.setBigUint64(this.#length, int & 0xFFFF_FFFF_FFFF_FFFFn, true);
+      this.#length += 8;
+      int >>= 64n;
+    }
     return this;
   }
 

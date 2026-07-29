@@ -143,29 +143,12 @@ export function getRandomId(isNumber?: boolean): bigint | number {
 }
 
 export function gcd(a: bigint, b: bigint) {
-  if (a === 0n) {
-    return b;
+  while (b !== 0n) {
+    const remainder = a % b;
+    a = b;
+    b = remainder;
   }
-
-  while ((a & 1n) === 0n) {
-    a >>= 1n;
-  }
-
-  while (true) {
-    if (a > b) {
-      a = (a - b) >> 1n;
-      while ((a & 1n) === 0n) {
-        a >>= 1n;
-      }
-    } else if (b > a) {
-      b = (b - a) >> 1n;
-      while ((b & 1n) === 0n) {
-        b >>= 1n;
-      }
-    } else {
-      return a;
-    }
-  }
+  return a;
 }
 
 /** Additional parameters for {@link intToBuffer}. */

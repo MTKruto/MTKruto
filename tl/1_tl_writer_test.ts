@@ -28,6 +28,8 @@ Deno.test("TLWriter", async (t) => {
   const writer = new TLWriter();
   let wrote = 0;
 
+  assertEquals(writer.length, wrote);
+
   await t.step("write", () => {
     writer.write(new Uint8Array([0x00]));
 
@@ -35,6 +37,7 @@ Deno.test("TLWriter", async (t) => {
     wrote += size;
 
     const expected = new Uint8Array([0x00]);
+    assertEquals(writer.length, wrote);
     assertEquals(writer.buffer.subarray(wrote - size), expected);
     assertEquals(writer.buffer.byteLength, wrote);
   });
