@@ -66,7 +66,8 @@ export class SessionEncrypted extends Session implements Session {
   #isInvalidating = false;
 
   #sentMessages = new Set<bigint>();
-  #pendingMessages = new Array<PendingMessage>();
+  #pendingMessages = new Array<PendingMessage | undefined>();
+  #pendingMessageHead = 0;
   #containers = new LruCache<bigint, bigint[]>(20_000);
   #pendingPings = new Map<bigint, PendingPing>();
 
@@ -151,10 +152,15 @@ export class SessionEncrypted extends Session implements Session {
   }
 
   #rejectAllPending(reason: unknown) {
-    const pendingMessages = this.#pendingMessages.splice(0);
-    for (const pendingMessage of pendingMessages) {
+    for (let i = this.#pendingMessageHead; i < this.#pendingMessages.length; ++i) {
+      const pendingMessage = this.#pendingMessages[i];
+      if (pendingMessage === undefined) {
+        continue;
+      }
       pendingMessage.promiseWithResolvers.reject(reason);
     }
+    this.#pendingMessages.length = 0;
+    this.#pendingMessageHead = 0;
     for (const id of this.#sentMessages) {
       this.#onMessageFailed(id, reason);
     }
@@ -320,8 +326,10 @@ export class SessionEncrypted extends Session implements Session {
       loop.abort();
       return;
     }
-    const pendingMessage = this.#pendingMessages.shift();
+    const pendingMessage = this.#pendingMessages[this.#pendingMessageHead];
     if (pendingMessage === undefined) {
+      this.#pendingMessages.length = 0;
+      this.#pendingMessageHead = 0;
       this.#LsendLoop.debug("no pending messages");
       return await new Promise<void>((resolve) => {
         const onAbort = () => {
@@ -336,6 +344,7 @@ export class SessionEncrypted extends Session implements Session {
         };
       });
     }
+    this.#pendingMessages[this.#pendingMessageHead++] = undefined;
 
     let msg_id: bigint;
     let message: message;

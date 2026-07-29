@@ -456,19 +456,21 @@ export class FileManager {
       );
     };
     const requests = Array.from({ length: requestCount }, (_, i) => downloadPart(offset + BigInt(i * limit), part + i));
+    let requestIndex = 0;
 
     try {
       let finished = false;
       while (true) {
         signal?.throwIfAborted();
-        const request = await requests.shift()!;
+        const request = await requests[requestIndex];
         if (request.status === "rejected") {
           throw request.reason;
         }
         const result = request.value;
         if (Api.is("upload.file", result) && result.bytes.byteLength === limit) {
-          requests.push(downloadPart(offset + BigInt(requestCount * limit), part + requestCount));
+          requests[requestIndex] = downloadPart(offset + BigInt(requestCount * limit), part + requestCount);
         }
+        requestIndex = (requestIndex + 1) % requestCount;
         signal?.throwIfAborted();
 
         if (Api.is("upload.file", result)) {
