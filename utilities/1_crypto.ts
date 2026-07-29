@@ -19,14 +19,12 @@
  */
 
 import { concat } from "../0_deps.ts";
-import { intFromBytes, intToBytes } from "./0_int.ts";
 import { Mutex } from "./0_mutex.ts";
 
 export class CTR {
   #key: CryptoKey;
-  #iv: Uint8Array;
+  #iv: Uint8Array<ArrayBuffer>;
   #bytesUntilNextBlock = 0;
-  #promise?: Promise<Uint8Array<ArrayBuffer>>;
 
   get _state(): { iv: Uint8Array; state: number } {
     return { iv: new Uint8Array(this.#iv), state: this.#bytesUntilNextBlock };
@@ -34,7 +32,7 @@ export class CTR {
 
   constructor(key: CryptoKey, iv: Uint8Array) {
     this.#key = key;
-    this.#iv = iv;
+    this.#iv = new Uint8Array(iv);
   }
 
   static async importKey(key: Uint8Array<ArrayBuffer>): Promise<CryptoKey> {
@@ -79,7 +77,7 @@ export class CTR {
       await crypto.subtle.encrypt(
         {
           name: "AES-CTR",
-          counter: new Uint8Array(this.#iv),
+          counter: this.#iv,
           length: this.#iv.byteLength * 8,
         },
         this.#key,
@@ -89,10 +87,11 @@ export class CTR {
   }
 
   #increaseIv(amount: number) {
-    if (amount < 1) {
-      return;
+    for (let i = this.#iv.byteLength - 1; i >= 0 && amount > 0; --i) {
+      amount += this.#iv[i];
+      this.#iv[i] = amount & 0xFF;
+      amount = Math.floor(amount / 0x100);
     }
-    this.#iv = intToBytes(intFromBytes(this.#iv, { byteOrder: "big", isSigned: false }) + BigInt(amount), this.#iv.byteLength, { byteOrder: "big", isSigned: false });
   }
 }
 
