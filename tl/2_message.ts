@@ -19,7 +19,7 @@
  */
 
 import { TLReader } from "./1_tl_reader.ts";
-import { TLWriter } from "./1_tl_writer.ts";
+import type { TLWriter } from "./1_tl_writer.ts";
 
 // message msg_id:long seqno:int bytes:int body:Object = Message;
 
@@ -73,12 +73,6 @@ export interface msg_container {
 }
 
 export const MSG_CONTAINER_CONSTRUCTOR = 0x73F1F8DC;
-
-export function serializeMsgContainer(msgContainer: msg_container): Uint8Array {
-  const writer = new TLWriter();
-  writeMsgContainer(writer, msgContainer);
-  return writer.buffer;
-}
 
 function writeMsgContainer(writer: TLWriter, msgContainer: msg_container) {
   writer.writeInt32(MSG_CONTAINER_CONSTRUCTOR, false);

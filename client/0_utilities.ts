@@ -24,8 +24,6 @@ import { Api, repr as repr_ } from "../2_tl.ts";
 
 export type NextFunction<T = void> = () => Promise<T>;
 
-export const resolve = () => Promise.resolve();
-
 export function isHttpUrl(string: string) {
   try {
     const protocol = new URL(string).protocol;
@@ -121,12 +119,6 @@ export function checkStoryId(storyId: number) {
     throw new InputError("Invalid story ID.");
   }
   return storyId;
-}
-
-export function checkPollOption(option: string) {
-  if (!option.trim()) {
-    throw new InputError("Poll option must not be empty.");
-  }
 }
 
 export function checkArray<T>(array: T[], check: (value: T) => void) {

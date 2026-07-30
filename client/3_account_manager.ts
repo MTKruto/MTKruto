@@ -201,23 +201,6 @@ export class AccountManager implements UpdateProcessor<AccountManagerUpdate, fal
     await this.#setCanBotSetEmojiStatus(botId, false);
   }
 
-  async #getUserFull(chatId: ID): Promise<Api.userFull> {
-    const inputPeer = await this.#c.getInputPeer(chatId);
-    const chatId_ = await this.#c.getInputPeerChatId(inputPeer);
-    let fullChat = await this.#c.messageStorage.getFullChat(chatId_);
-    if (fullChat !== null) {
-      if (!Api.is("userFull", fullChat)) {
-        unreachable();
-      }
-      return fullChat;
-    }
-    if (canBeInputUser(inputPeer)) {
-      fullChat = (await this.#c.invoke({ _: "users.getFullUser", id: toInputUser(inputPeer) })).full_user;
-    } else {
-      unreachable();
-    }
-    return fullChat;
-  }
   async updateProfile(params?: UpdateProfileParams) {
     this.#c.storage.assertUser("updateProfile");
     if (params?.firstName === undefined && params?.lastName === undefined && params?.bio === undefined) {
