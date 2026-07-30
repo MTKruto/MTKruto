@@ -20,11 +20,11 @@
 
 // deno-lint-ignore no-explicit-any
 export function cleanObject<T extends Record<string, any>>(object: T): T {
-  for (const [k, v] of Object.entries(object)) {
-    switch (typeof v) {
-      case "undefined":
-        delete object[k];
-        break;
+  const keys = Object.keys(object);
+  for (let i = 0; i < keys.length; ++i) {
+    const key = keys[i];
+    if (object[key] === undefined) {
+      delete object[key];
     }
   }
   return object;
