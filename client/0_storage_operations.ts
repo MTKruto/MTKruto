@@ -216,7 +216,7 @@ export class StorageOperations {
   }
 
   async #commitInner(force: boolean) {
-    const pending = this.#values.filter((v) => v.isUpdatePending).length + this.#maps.filter((v) => v.pendingUpdateCount > 0).length;
+    const pending = this.#values.filter((v) => v.isUpdatePending).length + this.#maps.reduce((count, v) => count + v.pendingUpdateCount, 0);
     if (pending <= 0) {
       this.#L.debug("nothing to commit");
       return;
