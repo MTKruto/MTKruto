@@ -120,29 +120,32 @@ function isQuadraticResidue(a: bigint) {
 
 function serializeOps(ops: Op[], domain: Uint8Array) {
   const GREASE = getGrease();
-  let buffer = new Uint8Array();
-  const scopes = new Array<number>();
+  const chunks = new Array<Uint8Array>();
+  const scopes = new Array<{ offset: number; length: Uint8Array }>();
+  let length = 0;
+
+  function write(data: Uint8Array) {
+    chunks.push(data);
+    length += data.byteLength;
+  }
 
   function serializeOp(op: Op) {
     switch (op.type) {
       case "string":
-        buffer = concat([buffer, op.data]);
+        write(op.data);
         break;
       case "random":
-        buffer = concat([
-          buffer,
-          crypto.getRandomValues(new Uint8Array(op.length)),
-        ]);
+        write(crypto.getRandomValues(new Uint8Array(op.length)));
         break;
       case "zero":
-        buffer = concat([buffer, new Uint8Array(op.length)]);
+        write(new Uint8Array(op.length));
         break;
       case "domain":
-        buffer = concat([buffer, domain]);
+        write(domain);
         break;
       case "grease": {
         const grease = GREASE[op.seed];
-        buffer = concat([buffer, new Uint8Array([grease, grease])]);
+        write(new Uint8Array([grease, grease]));
         break;
       }
       case "key": {
@@ -166,25 +169,27 @@ function serializeOps(ops: Op[], domain: Uint8Array) {
             break;
           }
         }
-        buffer = concat([buffer, key]);
+        write(key);
         break;
       }
-      case "beginScope":
-        scopes.push(buffer.byteLength);
-        buffer = concat([buffer, new Uint8Array([0, 0])]);
+      case "beginScope": {
+        const length_ = new Uint8Array(2);
+        scopes.push({ offset: length, length: length_ });
+        write(length_);
         break;
+      }
       case "endScope": {
-        const beginOffset = scopes.pop();
-        if (beginOffset === undefined) {
+        const scope = scopes.pop();
+        if (scope === undefined) {
           throw new TypeError("Invalid endScope");
         }
-        const endOffset = buffer.byteLength;
-        const size = endOffset - beginOffset - 2;
-        new DataView(buffer.buffer).setUint16(beginOffset, size);
+        const size = length - scope.offset - 2;
+        scope.length[0] = size >>> 8;
+        scope.length[1] = size;
         break;
       }
       case "padding": {
-        const size = 513 - buffer.byteLength;
+        const size = 513 - length;
         if (size > 0) {
           serializeOp({ type: "string", data: new Uint8Array([0x00, 0x15]) });
           serializeOp({ type: "beginScope" });
@@ -199,5 +204,5 @@ function serializeOps(ops: Op[], domain: Uint8Array) {
     serializeOp(op);
   }
 
-  return buffer;
+  return concat(chunks);
 }
