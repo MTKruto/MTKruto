@@ -19,7 +19,11 @@
  */
 
 import { assert } from "../0_deps.ts";
-import { match } from "./3_filters.ts";
+import { createMatch, type FilterQuery } from "./3_filters.ts";
+
+export function match<Q extends FilterQuery, T extends object>(filter: Q, value: T) {
+  return createMatch(filter)(value);
+}
 
 Deno.test("match", () => {
   assert(match("message", { type: "message", message: {} }));

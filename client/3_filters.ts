@@ -103,8 +103,13 @@ type Filter<Q extends AnyLevelX> = { update: FilterCore<Q> } & GetShortcuts<Filt
 export type FilterQuery = AnyLevelX;
 export type WithFilter<T, Q extends FilterQuery> = T & Filter<Q>;
 
-export function match<Q extends FilterQuery, T extends object>(filter: Q, value: T) {
-  let [type, ...other] = filter.split(":");
+export function createMatch<Q extends FilterQuery>(filter: Q) {
+  const [type, ...other] = filter.split(":");
+  return <T extends object>(value: T) => matchParsed(type, other, value);
+}
+
+function matchParsed<T extends object>(type_: string, other: string[], value: T) {
+  let type = type_;
   if (other.length === 0 && type !== "update" && "update" in value && (value.update as { _: unknown })._ === type) {
     return true;
   } else if (type !== "" && !(type in value)) {
