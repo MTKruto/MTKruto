@@ -39,7 +39,7 @@ export function is(typeName: string, value: any, schema: Schema) {
   }
 }
 export function isOneOf(names: string[], value: unknown, schema: Schema) {
-  return names.some((v) => is(v, value, schema));
+  return isValidObject(value, schema) && names.includes((value as any)._);
 }
 export function isOfEnum(name: string, value: any, schema: Schema) {
   return isValidObject(value, schema) && schema.definitions[value._][2] === name;
