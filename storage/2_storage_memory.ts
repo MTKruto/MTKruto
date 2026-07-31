@@ -82,9 +82,12 @@ export class StorageMemory implements Storage {
     return this.map.get(toString(key)) as T ?? null;
   }
 
-  #getEntries() {
+  #getEntries(prefix: string | undefined) {
     const entries = new Array<[StorageKeyPart[], unknown]>();
     for (const [key, value] of this.map.entries()) {
+      if (prefix !== undefined && !key.startsWith(prefix)) {
+        continue;
+      }
       const parts = fromString<StorageKeyPart[]>(key);
       if (Array.isArray(parts)) {
         entries.push([parts, value]);
@@ -95,7 +98,7 @@ export class StorageMemory implements Storage {
   }
 
   *getMany<T>(filter: GetManyFilter, params?: { limit?: number; reverse?: boolean }): Generator<[readonly StorageKeyPart[], T]> {
-    const entries = this.#getEntries();
+    const entries = this.#getEntries("prefix" in filter ? toString(this.#fixKey(filter.prefix)) : undefined);
     if (params?.reverse) {
       entries.reverse();
     }
