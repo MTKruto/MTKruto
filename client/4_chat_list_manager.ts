@@ -75,27 +75,24 @@ export class ChatListManager implements UpdateProcessor<ChatListManagerUpdate, t
     if (!(Api.is("messages.dialogs", dialogs)) && !(Api.is("messages.dialogsSlice", dialogs))) {
       unreachable();
     }
-    const chats = new Array<ChatListItem>();
-    for (const dialog of dialogs.dialogs) {
-      if (Api.is("dialogCommunity", dialog)) {
-        continue;
-      }
-      const chat = await constructChatListItem(dialog, dialogs, this.#c.getPeer, this.#c.messageManager.getMessage.bind(this.#c.messageManager), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager), this.#c.getCommunity);
-      chats.push(chat);
-    }
-    return chats;
+    const getMessage = this.#c.messageManager.getMessage.bind(this.#c.messageManager);
+    const getStickerSetName = this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager);
+    return await Promise.all(
+      dialogs.dialogs
+        .filter((dialog) => !Api.is("dialogCommunity", dialog))
+        .map((dialog) => constructChatListItem(dialog, dialogs, this.#c.getPeer, getMessage, getStickerSetName, this.#c.getCommunity)),
+    );
   }
 
   async getPinnedChats(from: "archived" | "main" = "main"): Promise<ChatListItem[]> {
     this.#c.storage.assertUser("getPinnedChats");
     const listId = getChatListId(from);
     const dialogs = await this.#c.invoke({ _: "messages.getPinnedDialogs", folder_id: listId });
-    const chats = new Array<ChatListItem>();
-    for (const dialog of dialogs.dialogs) {
-      const chat = await constructChatListItem(dialog, dialogs, this.#c.getPeer, this.#c.messageManager.getMessage.bind(this.#c.messageManager), this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager), this.#c.getCommunity);
-      chats.push(chat);
-    }
-    return chats;
+    const getMessage = this.#c.messageManager.getMessage.bind(this.#c.messageManager);
+    const getStickerSetName = this.#c.fileManager.getStickerSetName.bind(this.#c.fileManager);
+    return await Promise.all(
+      dialogs.dialogs.map((dialog) => constructChatListItem(dialog, dialogs, this.#c.getPeer, getMessage, getStickerSetName, this.#c.getCommunity)),
+    );
   }
 
   canHandleUpdate(update: Api.Update): update is ChatListManagerUpdate {
