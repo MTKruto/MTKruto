@@ -1108,23 +1108,19 @@ export async function constructMessage(
     }
   }
 
-  const messageText = {
-    ...message,
-    text: message_.message,
-    entities: message_.entities?.map(constructMessageEntity).filter((v): v is NonNullable<typeof v> => !!v) ?? [],
-  };
+  const entities = message_.entities?.map(constructMessageEntity).filter((v): v is NonNullable<typeof v> => !!v) ?? [];
   if (message_.message && message_.media === undefined || message_.message && Api.is("messageMediaWebPage", message_.media)) {
     let linkPreview: LinkPreview | undefined;
     if (Api.is("messageMediaWebPage", message_.media)) {
       linkPreview = constructLinkPreview(message_.media, Api.is("ephemeralMessage", message_) ? undefined : message_.invert_media, getPeer);
     }
-    return cleanObject({ type: "text", ...messageText, linkPreview });
+    return cleanObject({ type: "text", ...message, text: message_.message, entities, linkPreview });
   }
 
   const messageMedia: _MessageMediaBase = {
     ...message,
     caption: message_.message,
-    captionEntities: message_.entities?.map(constructMessageEntity).filter((v): v is NonNullable<typeof v> => !!v) ?? [],
+    captionEntities: entities,
   };
 
   if (message_.media && "ttl_seconds" in message_.media && typeof message_.media.ttl_seconds === "number") {
@@ -1240,6 +1236,7 @@ export async function constructMessage(
   } else if (Api.is("messageMediaWebPage", message_.media)) {
     const linkPreview = constructLinkPreview(message_.media, Api.is("ephemeralMessage", message_) ? false : message_.invert_media, getPeer);
     if (message_.message) {
+      const messageText = { ...message, text: message_.message, entities };
       m = { type: "link", ...messageText, linkPreview };
     } else {
       m = { type: "link", ...message, linkPreview: { ...linkPreview, url: linkPreview.url ? linkPreview.url : unreachable() } };
