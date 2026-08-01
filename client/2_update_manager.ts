@@ -299,14 +299,6 @@ export class UpdateManager {
         }
       }
     }
-
-    if (Api.is("messages.messages", result)) {
-      for (const message of result.messages) {
-        if (Api.is("message", message) || Api.is("messageService", message)) {
-          await this.#c.messageStorage.setMessage(Api.peerToChatId(message.peer_id), message.id, message);
-        }
-      }
-    }
   }
 
   async processUsers(users: Api.User[], context: Api.DeserializedType) {
