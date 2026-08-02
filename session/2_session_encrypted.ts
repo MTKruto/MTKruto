@@ -20,7 +20,7 @@
 
 import { assertEquals, concat, delay, ige256Decrypt, ige256Encrypt, initTgCrypto, LruCache, SECOND } from "../0_deps.ts";
 import { ConnectionError, TransportError } from "../0_errors.ts";
-import { drop, getLogger, getRandomId, gunzip, gzip, intFromBytes, intToBytes, type Logger, type MaybePromise, mod, sha1, sha256, toUnixTimestamp } from "../1_utilities.ts";
+import { drop, getLogger, getRandomId, gunzip, gzip, intFromBytes, type Logger, type MaybePromise, mod, sha1, sha256, toUnixTimestamp } from "../1_utilities.ts";
 import { deserializeMessage, type message, type msg_container, Mtproto, repr, TLReader, TLWriter, writeMessage, X } from "../2_tl.ts";
 import type { DC } from "../3_transport.ts";
 import { AbortableLoop } from "../client/0_abortable_loop.ts";
@@ -256,8 +256,10 @@ export class SessionEncrypted extends Session implements Session {
 
     const messageKey = (await sha256(concat([this.#authKey.subarray(88, 120), payload]))).subarray(8, 24);
 
-    const a = await sha256(concat([messageKey, this.#authKey.subarray(0, 36)]));
-    const b = await sha256(concat([this.#authKey.subarray(40, 76), messageKey]));
+    const [a, b] = await Promise.all([
+      sha256(concat([messageKey, this.#authKey.subarray(0, 36)])),
+      sha256(concat([this.#authKey.subarray(40, 76), messageKey])),
+    ]);
 
     const aesKey = concat([a.subarray(0, 8), b.subarray(8, 24), a.subarray(24, 32)]);
     const aesIV = concat([b.subarray(0, 8), a.subarray(8, 24), b.subarray(24, 32)]);
@@ -281,8 +283,10 @@ export class SessionEncrypted extends Session implements Session {
       reader = new TLReader(reader.buffer.subarray(0, -(reader.buffer.byteLength % 16)));
     }
 
-    const a = await sha256(concat([messageKey, this.#authKey.subarray(8, 44)]));
-    const b = await sha256(concat([this.#authKey.subarray(48, 84), messageKey]));
+    const [a, b] = await Promise.all([
+      sha256(concat([messageKey, this.#authKey.subarray(8, 44)])),
+      sha256(concat([this.#authKey.subarray(48, 84), messageKey])),
+    ]);
 
     const aesKey = concat([a.subarray(0, 8), b.subarray(8, 24), a.subarray(24, 32)]);
     const aesIv = concat([b.subarray(0, 8), a.subarray(8, 24), b.subarray(24, 32)]);
