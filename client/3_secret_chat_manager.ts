@@ -852,10 +852,12 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
     const messageKeyLarge = await sha256(concat([authKey.subarray(88 + x, 88 + x + 32), plainText]));
     // msg_key = substr (msg_key_large, 8, 16);
     const messageKey = messageKeyLarge.subarray(8, 8 + 16);
-    // sha256_a = SHA256 (msg_key + substr (key, x, 36));
-    const sha256A = await sha256(concat([messageKey, authKey.subarray(x, x + 36)]));
-    // sha256_b = SHA256 (substr (key, 40+x, 36) + msg_key);
-    const sha256B = await sha256(concat([authKey.subarray(40 + x, 40 + x + 36), messageKey]));
+    const [sha256A, sha256B] = await Promise.all([
+      // sha256_a = SHA256 (msg_key + substr (key, x, 36));
+      sha256(concat([messageKey, authKey.subarray(x, x + 36)])),
+      // sha256_b = SHA256 (substr (key, 40+x, 36) + msg_key);
+      sha256(concat([authKey.subarray(40 + x, 40 + x + 36), messageKey])),
+    ]);
     // aes_key = substr (sha256_a, 0, 8) + substr (sha256_b, 8, 16) + substr (sha256_a, 24, 8);
     const aesKey = concat([sha256A.subarray(0, 8), sha256B.subarray(8, 8 + 16), sha256A.subarray(24, 24 + 8)]);
     // aes_iv = substr (sha256_b, 0, 8) + substr (sha256_a, 8, 16) + substr (sha256_b, 24, 8);
@@ -883,10 +885,12 @@ export class SecretChatManager implements UpdateProcessor<SecretChatManagerUpdat
 
     const messageKey = messageReader.read(16);
 
-    // sha256_a = SHA256 (msg_key + substr (key, x, 36));
-    const sha256A = await sha256(concat([messageKey, authKey.subarray(x, x + 36)]));
-    // sha256_b = SHA256 (substr (key, 40+x, 36) + msg_key);
-    const sha256B = await sha256(concat([authKey.subarray(40 + x, 40 + x + 36), messageKey]));
+    const [sha256A, sha256B] = await Promise.all([
+      // sha256_a = SHA256 (msg_key + substr (key, x, 36));
+      sha256(concat([messageKey, authKey.subarray(x, x + 36)])),
+      // sha256_b = SHA256 (substr (key, 40+x, 36) + msg_key);
+      sha256(concat([authKey.subarray(40 + x, 40 + x + 36), messageKey])),
+    ]);
     // aes_key = substr (sha256_a, 0, 8) + substr (sha256_b, 8, 16) + substr (sha256_a, 24, 8);
     const aesKey = concat([sha256A.subarray(0, 8), sha256B.subarray(8, 8 + 16), sha256A.subarray(24, 24 + 8)]);
     // aes_iv = substr (sha256_b, 0, 8) + substr (sha256_a, 8, 16) + substr (sha256_b, 24, 8);
