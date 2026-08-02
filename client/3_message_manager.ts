@@ -298,10 +298,6 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       offsetDate = 0;
     }
     const peer = await this.#c.getInputPeer(chatId);
-    const messages = new Array<Message>();
-    if (messages.length > 0) {
-      offsetId = messages[messages.length - 1].id; // TODO: track id of oldest message and don't send requests for it
-    }
     const result = await this.#c.invoke({
       _: "messages.getHistory",
       peer: peer,
@@ -317,11 +313,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     if (!("messages" in result)) {
       unreachable();
     }
-    for (const message_ of result.messages) {
-      const message = await this.constructMessage(message_, false);
-      messages.push(message);
-    }
-    return messages;
+    return await Promise.all(result.messages.map((v) => this.constructMessage(v, false)));
   }
 
   usernameResolver: UsernameResolver = async (v) => {
@@ -2429,11 +2421,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       unreachable();
     }
     const count = "count" in result ? result.count : result.messages.length;
-    const messages = new Array<Message>();
-    for (const message_ of result.messages) {
-      const message = await this.constructMessage(message_, false);
-      messages.push(message);
-    }
+    const messages = await Promise.all(result.messages.map((v) => this.constructMessage(v, false)));
     return { messages, count };
   }
 
@@ -2864,12 +2852,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     if (!("messages" in result)) {
       unreachable();
     }
-    const messages = new Array<Message>();
-    for (const message_ of result.messages) {
-      const message = await this.constructMessage(message_, false);
-      messages.push(message);
-    }
-    return messages;
+    return await Promise.all(result.messages.map((v) => this.constructMessage(v, false)));
   }
 
   async getSavedChats(params?: GetSavedChatsParams): Promise<SavedChats> {
