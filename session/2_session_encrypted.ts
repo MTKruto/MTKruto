@@ -275,8 +275,7 @@ export class SessionEncrypted extends Session implements Session {
     let reader = new TLReader(buffer);
     assertEquals(reader.readInt64(), this.#authKeyId);
 
-    const messageKey_ = reader.readInt128();
-    const messageKey = intToBytes(messageKey_, 16);
+    const messageKey = reader.readView(16);
 
     if (reader.buffer.byteLength % 16 !== 0) {
       reader = new TLReader(reader.buffer.subarray(0, -(reader.buffer.byteLength % 16)));
