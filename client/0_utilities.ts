@@ -70,6 +70,9 @@ function validateUsername(string: string, ignoreAt = false) {
   return string;
 }
 export function getUsername(string: string) {
+  if (/^\s*@?[A-Za-z][A-Za-z0-9_]*\s*$/.test(string)) {
+    return validateUsername(string, true);
+  }
   let url: URL | null = null;
   try {
     url = new URL(string);
