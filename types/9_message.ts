@@ -798,7 +798,7 @@ async function constructServiceMessage(message_: Api.messageService, chat: ChatP
     message.threadId = message_.reply_to.reply_to_top_id;
     message.replyToMessageId = message_.reply_to.reply_to_msg_id;
   }
-  if (getReply_) {
+  if (getReply_ && message_.reply_to) {
     Object.assign(message, await getReply(message_, chat, getMessage));
   }
 
@@ -1027,7 +1027,7 @@ export async function constructMessage(
       message.replyToMessageId = business.replyToMessage.id;
       message.replyToMessage = await constructMessage(business.replyToMessage, getPeer, getMessage, getStickerSetName, getCommunity, false, { connectionId: business.connectionId });
     }
-  } else if (getReply_) {
+  } else if (getReply_ && message_.reply_to) {
     Object.assign(message, await getReply(message_, chat_, getMessage));
   }
 

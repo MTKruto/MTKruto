@@ -114,10 +114,12 @@ export class ClientEncrypted extends ClientAbstract {
     payloadWriter.write(new Uint8Array(mod(-payload.byteLength, 16)));
     payload = payloadWriter.buffer;
 
-    const sha1A = await sha1(concat([messageKey, this.#authKey.subarray(0, 32)]));
-    const sha1B = await sha1(concat([this.#authKey.slice(32, 48), messageKey, this.#authKey.slice(48, 64)]));
-    const sha1C = await sha1(concat([this.#authKey.slice(64, 96), messageKey]));
-    const sha1D = await sha1(concat([messageKey, this.#authKey.slice(96, 128)]));
+    const [sha1A, sha1B, sha1C, sha1D] = await Promise.all([
+      sha1(concat([messageKey, this.#authKey.subarray(0, 32)])),
+      sha1(concat([this.#authKey.slice(32, 48), messageKey, this.#authKey.slice(48, 64)])),
+      sha1(concat([this.#authKey.slice(64, 96), messageKey])),
+      sha1(concat([messageKey, this.#authKey.slice(96, 128)])),
+    ]);
 
     const encryptionKey = concat([sha1A.slice(0, 8), sha1B.slice(8, 20), sha1C.slice(4, 16)]);
     const encryptionIv = concat([sha1A.slice(8, 20), sha1B.slice(0, 8), sha1C.slice(16, 20), sha1D.slice(0, 8)]);

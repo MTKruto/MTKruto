@@ -143,6 +143,10 @@ Deno.test("getRandomId", () => {
   const iterations = 10_000;
 
   for (let i = 0; i < iterations; i++) {
+    const number = getRandomId(true);
+    assert(Number.isInteger(number));
+    assert(number >= -(2 ** 31) && number < 2 ** 31);
+
     const bigint = getRandomId();
     assert(Math.ceil(bigint.toString(2).length / 8) <= 8);
   }

@@ -145,8 +145,13 @@ export class ClientPlain extends ClientAbstract implements ClientAbstract {
 
     const newNonce_ = intToBytes(newNonce, 32);
     const serverNonce_ = intToBytes(serverNonce, 16);
-    const tmpAesKey = concat([await sha1(concat([newNonce_, serverNonce_])), (await sha1(concat([serverNonce_, newNonce_]))).subarray(0, 0 + 12)]);
-    const tmpAesIv = concat([(await sha1(concat([serverNonce_, newNonce_]))).subarray(12, 12 + 8), await sha1(concat([newNonce_, newNonce_])), newNonce_.subarray(0, 0 + 4)]);
+    const [sha1NewNonceServerNonce, sha1ServerNonceNewNonce, sha1NewNonce] = await Promise.all([
+      sha1(concat([newNonce_, serverNonce_])),
+      sha1(concat([serverNonce_, newNonce_])),
+      sha1(concat([newNonce_, newNonce_])),
+    ]);
+    const tmpAesKey = concat([sha1NewNonceServerNonce, sha1ServerNonceNewNonce.subarray(0, 12)]);
+    const tmpAesIv = concat([sha1ServerNonceNewNonce.subarray(12, 20), sha1NewNonce, newNonce_.subarray(0, 4)]);
     const answerWithHash = ige256Decrypt(dhParams.encrypted_answer, tmpAesKey, tmpAesIv);
 
     const dhInnerData = Mtproto.deserializeType("server_DH_inner_data", answerWithHash.slice(20));

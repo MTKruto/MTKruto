@@ -32,14 +32,14 @@ export function assertIsValidObject(object: any, schema: Schema) {
 }
 
 export function is(typeName: string, value: any, schema: Schema) {
-  if (!isValidObject(value, schema)) {
-    return false;
-  } else {
-    return value._ === typeName;
-  }
+  return value !== null && typeof value === "object" && typeof value._ === "string" && value._ === typeName && schema.definitions[typeName] !== undefined;
 }
 export function isOneOf(names: string[], value: unknown, schema: Schema) {
-  return isValidObject(value, schema) && names.includes((value as any)._);
+  if (value === null || typeof value !== "object") {
+    return false;
+  }
+  const typeName = (value as any)._;
+  return typeof typeName === "string" && names.includes(typeName) && schema.definitions[typeName] !== undefined;
 }
 export function isOfEnum(name: string, value: any, schema: Schema) {
   return isValidObject(value, schema) && schema.definitions[value._][2] === name;
