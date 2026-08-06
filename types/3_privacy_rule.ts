@@ -96,6 +96,19 @@ export interface PrivacyRuleChatMembers {
 /** Any type of privacy rule. */
 export type PrivacyRule = PrivacyRuleContacts | PrivacyRuleEverybody | PrivacyRuleUsers | PrivacyRuleCloseFriends | PrivacyRulePremium | PrivacyRuleBots | PrivacyRuleChatMembers;
 
+function constructPrivacyChats(ids: bigint[], getPeer: PeerGetter): ChatP[] {
+  const chats = new Array<ChatP>(ids.length);
+  let length = 0;
+  for (const id of ids) {
+    const peer = getPeer({ _: "peerChannel", channel_id: id }) ?? getPeer({ _: "peerChat", chat_id: id });
+    if (peer !== null) {
+      chats[length++] = peer[0];
+    }
+  }
+  chats.length = length;
+  return chats;
+}
+
 export function constructPrivacyRule(pr: Api.PrivacyRule, getPeer: PeerGetter): PrivacyRule {
   switch (pr._) {
     case "privacyValueAllowContacts":
@@ -115,11 +128,11 @@ export function constructPrivacyRule(pr: Api.PrivacyRule, getPeer: PeerGetter): 
       return { type: "users", users, isAllowed: false };
     }
     case "privacyValueAllowChatParticipants": {
-      const chats = pr.chats.map((v) => getPeer({ _: "peerChannel", channel_id: v }) || getPeer({ _: "peerChat", chat_id: v })).filter((v) => v !== null).map((v) => v[0]);
+      const chats = constructPrivacyChats(pr.chats, getPeer);
       return { type: "chatMembers", chats, isAllowed: true };
     }
     case "privacyValueDisallowChatParticipants": {
-      const chats = pr.chats.map((v) => getPeer({ _: "peerChannel", channel_id: v }) || getPeer({ _: "peerChat", chat_id: v })).filter((v) => v !== null).map((v) => v[0]);
+      const chats = constructPrivacyChats(pr.chats, getPeer);
       return { type: "chatMembers", chats, isAllowed: false };
     }
     case "privacyValueAllowCloseFriends":

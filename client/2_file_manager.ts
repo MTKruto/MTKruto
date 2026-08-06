@@ -483,7 +483,7 @@ export class FileManager {
             const right = decryptedBytes.subarray(-16);
 
             const remainingSize = Math.max(0, fileSize - totalSize);
-            result.bytes = decryptedBytes.slice(0, remainingSize);
+            result.bytes = decryptedBytes.subarray(0, remainingSize);
             totalSize += result.bytes.byteLength;
             finished = totalSize >= fileSize;
 
@@ -665,7 +665,18 @@ export class FileManager {
     }
   }
 
-  async getStickerSetName(inputStickerSet: Api.inputStickerSetID, hash = 0): Promise<string | undefined> {
+  #stickerSetNameRequests = new Map<string, Promise<string | undefined>>();
+  getStickerSetName(inputStickerSet: Api.inputStickerSetID, hash = 0): Promise<string | undefined> {
+    const key = `${inputStickerSet.id}:${inputStickerSet.access_hash}:${hash}`;
+    let request = this.#stickerSetNameRequests.get(key);
+    if (request === undefined) {
+      request = this.#getStickerSetName(inputStickerSet, hash).finally(() => this.#stickerSetNameRequests.delete(key));
+      this.#stickerSetNameRequests.set(key, request);
+    }
+    return request;
+  }
+
+  async #getStickerSetName(inputStickerSet: Api.inputStickerSetID, hash: number): Promise<string | undefined> {
     const maybeStickerSetName = await this.#c.messageStorage.getStickerSetName(inputStickerSet.id, inputStickerSet.access_hash);
     if (maybeStickerSetName !== null && Date.now() - maybeStickerSetName[1].getTime() < STICKER_SET_NAME_TTL) {
       return maybeStickerSetName[0];

@@ -136,11 +136,17 @@ export function getRandomId(isNumber: true): number;
 export function getRandomId(): bigint;
 export function getRandomId(isNumber?: boolean): bigint | number {
   if (isNumber) {
-    return Number(getRandomInt(4, true));
+    crypto.getRandomValues(getRandomId32);
+    return getRandomId32View.getInt32(0, true);
   } else {
-    return getRandomInt(8, true);
+    crypto.getRandomValues(getRandomId64);
+    return getRandomId64View.getBigInt64(0, true);
   }
 }
+const getRandomId32 = new Uint8Array(4);
+const getRandomId32View = new DataView(getRandomId32.buffer);
+const getRandomId64 = new Uint8Array(8);
+const getRandomId64View = new DataView(getRandomId64.buffer);
 
 export function gcd(a: bigint, b: bigint) {
   while (b !== 0n) {

@@ -46,14 +46,10 @@ function constructInlineKeyboardMarkup(keyboard_: Api.replyInlineMarkup): ReplyM
 }
 
 async function inlineKeyboardMarkupToTlObject(keyboard: ReplyMarkupInlineKeyboard, usernameResolver: UsernameResolver): Promise<Api.replyInlineMarkup> {
-  const rows_ = new Array<Api.keyboardButtonRow>();
-  for (const row of keyboard.inlineKeyboard) {
-    const row_ = new Array<Api.KeyboardButton>();
-    for (const button of row) {
-      row_.push(await inlineKeyboardButtonToTlObject(button, usernameResolver));
-    }
-    rows_.push({ _: "keyboardButtonRow", buttons: row_ });
-  }
+  const rows_ = await Promise.all(keyboard.inlineKeyboard.map(async (row): Promise<Api.keyboardButtonRow> => ({
+    _: "keyboardButtonRow",
+    buttons: await Promise.all(row.map((button) => inlineKeyboardButtonToTlObject(button, usernameResolver))),
+  })));
   return { _: "replyInlineMarkup", rows: rows_ };
 }
 

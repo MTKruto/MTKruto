@@ -19,6 +19,7 @@
  */
 
 import { assertEquals } from "../0_deps.ts";
+import { assertThrows } from "../0_test_deps.ts";
 import { encodeText } from "./0_text.ts";
 import { base64DecodeUrlSafe, base64EncodeUrlSafe } from "./1_base64.ts";
 
@@ -44,6 +45,10 @@ Deno.test("base64DecodeUrlSafe", () => {
     const expected = encodeText("hi");
 
     assertEquals(actual, expected);
+    assertEquals(base64DecodeUrlSafe("aGk="), expected);
+    assertEquals(base64DecodeUrlSafe("Zg="), encodeText("f"));
+    assertEquals(base64DecodeUrlSafe("+/8"), new Uint8Array([251, 255]));
+    assertThrows(() => base64DecodeUrlSafe("a Gk="));
   }
 
   {
@@ -59,6 +64,7 @@ Deno.test("base64EncodeUrlSafe", () => {
   const expected = "aGk";
 
   assertEquals(actual, expected);
+  assertEquals(base64EncodeUrlSafe(encodeText("hi").buffer), expected);
 
   {
     const actual = base64EncodeUrlSafe(

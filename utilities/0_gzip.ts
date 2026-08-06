@@ -29,17 +29,9 @@ export function gzip(buffer: Uint8Array): Promise<Uint8Array<ArrayBuffer>> {
 }
 
 async function inner(buffer: Uint8Array, transformStream: GenericTransformStream): Promise<Uint8Array<ArrayBuffer>> {
-  let readable: ReadableStream;
-  if (ReadableStream.from) {
-    readable = ReadableStream.from([buffer]);
-  } else {
-    readable = new ReadableStream({
-      pull(controller) {
-        controller.enqueue(buffer);
-        controller.close();
-      },
-    });
-  }
-  readable = readable.pipeThrough(transformStream);
-  return new Uint8Array(await toArrayBuffer(readable));
+  const writer = transformStream.writable.getWriter();
+  const result = toArrayBuffer(transformStream.readable);
+  await writer.write(buffer);
+  await writer.close();
+  return new Uint8Array(await result);
 }
