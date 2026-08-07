@@ -39,14 +39,14 @@ export { startsWith } from "jsr:@std/bytes@1.0.6/starts-with";
 
 export { isIPv4, isIPv6 } from "jsr:@std/net@1.0.6/unstable-ip";
 
-export { LruCache } from "jsr:@std/cache@0.2.3/lru-cache";
+export { LruCache } from "jsr:@std/cache@0.2.4/lru-cache";
 
 export { writeAll } from "jsr:@std/io@0.225.3/write-all";
 
 export { format } from "jsr:@std/datetime@0.225.7/format";
 export { MINUTE, SECOND, WEEK } from "jsr:@std/datetime@0.225.7/constants";
 
-export { toArrayBuffer } from "jsr:@std/streams@1.1.1/to-array-buffer";
+export { toArrayBuffer } from "jsr:@std/streams@1.1.2/to-array-buffer";
 
 export { decodeHex, encodeHex } from "jsr:@std/encoding@1.0.11/hex";
 export { decodeBase64, encodeBase64 } from "jsr:@std/encoding@1.0.11/base64";
