@@ -174,15 +174,19 @@ export async function checkPassword(password_: string, ap: Api.account_Password)
   // s_a := pow(t, a + u * x) mod p
   const sA = modExp(t, a + u * x, p);
 
-  // k_a := H(s_a)
-  const kA = await h(pad(sA));
-
+  const [kA, hG, hP, hSalt1, hSalt2] = await Promise.all([
+    // k_a := H(s_a)
+    h(pad(sA)),
+    h(pad(g)),
+    h(pad(p)),
+    h(salt1),
+    h(salt2),
+  ]);
   // M1 := H(H(p) xor H(g) | H(salt1) | H(salt2) | g_a | g_b | k_a)
-  const hG = await h(pad(g));
   const m1 = await h(concat([
-    (await h(pad(p))).map((v, i) => v ^ hG[i]),
-    await h(salt1),
-    await h(salt2),
+    hP.map((v, i) => v ^ hG[i]),
+    hSalt1,
+    hSalt2,
     pad(gA),
     pad(gB),
     kA,
