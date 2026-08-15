@@ -70,4 +70,26 @@ export function extension(mimeType: string) {
 
 export { crypto } from "jsr:@std/crypto@1.1.0";
 
-export { ige256Decrypt, ige256Encrypt, init as initTgCrypto } from "jsr:@roj/tgcrypto@1.0.3";
+import { ige256Decrypt as defaultIge256Decrypt, ige256Encrypt as defaultIge256Encrypt } from "jsr:@roj/tgcrypto@1.0.3";
+export { init as initTgCrypto } from "jsr:@roj/tgcrypto@1.0.3";
+
+export type Ige256 = (data: Uint8Array, key: Uint8Array, iv: Uint8Array) => Uint8Array<ArrayBuffer>;
+
+let ige256Decrypt_: Ige256 = defaultIge256Decrypt;
+let ige256Encrypt_: Ige256 = defaultIge256Encrypt;
+
+export function ige256Decrypt(data: Uint8Array, key: Uint8Array, iv: Uint8Array): Uint8Array<ArrayBuffer> {
+  return ige256Decrypt_(data, key, iv);
+}
+
+export function ige256Encrypt(data: Uint8Array, key: Uint8Array, iv: Uint8Array): Uint8Array<ArrayBuffer> {
+  return ige256Encrypt_(data, key, iv);
+}
+
+export function setIge256Decrypt(ige256Decrypt: Ige256) {
+  ige256Decrypt_ = ige256Decrypt;
+}
+
+export function setIge256Encrypt(ige256Encrypt: Ige256) {
+  ige256Encrypt_ = ige256Encrypt;
+}

@@ -19,6 +19,7 @@
  */
 
 export { getColorFromPeerId, getColorName, getRandomId, type LoggingProvider, setLogFilter, setLoggingProvider, setLogVerbosity } from "./1_utilities.ts";
+export { type Ige256, setIge256Decrypt, setIge256Encrypt } from "./0_deps.ts";
 export { checkPassword } from "./client/0_password.ts";
 
 export * from "./2_connection.ts";
