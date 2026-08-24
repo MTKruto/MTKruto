@@ -124,12 +124,20 @@ export interface InlineKeyboardButtonPay extends _InlineKeyboardButtonBase {
 }
 
 /**
- * An inline keyboard button that, when pressed, copies the text inside its `copy` field.
+ * An inline keyboard button that, when pressed, copies the text inside its `textToCopy` field.
  * @unlisted
  */
 export interface InlineKeyboardButtonCopy extends _InlineKeyboardButtonBase {
   type: "copy";
   textToCopy: string;
+}
+
+/**
+ * A disabled inline keyboard button.
+ * @unlisted
+ */
+export interface InlineKeyboardButtonDisabled extends _InlineKeyboardButtonBase {
+  type: "disabled";
 }
 
 /** Any type of an inline keyboard's button. */
@@ -143,7 +151,8 @@ export type InlineKeyboardButton =
   | InlineKeyboardButtonSwitchInlineChosen
   | InlineKeyboardButtonGame
   | InlineKeyboardButtonPay
-  | InlineKeyboardButtonCopy;
+  | InlineKeyboardButtonCopy
+  | InlineKeyboardButtonDisabled;
 
 export function constructInlineKeyboardButton(button_: Api.KeyboardInlineButton): InlineKeyboardButton {
   const text = button_.text;
@@ -183,6 +192,8 @@ export function constructInlineKeyboardButton(button_: Api.KeyboardInlineButton)
     return cleanObject({ type: "callbackGame", text, style });
   } else if (Api.is("inlineButtonTypeCopy", button_.type)) {
     return cleanObject({ type: "copy", text, style, textToCopy: button_.type.copy_text });
+  } else if (Api.is("inlineButtonTypeDisabled", button_.type)) {
+    return cleanObject({ type: "disabled", text, style });
   } else {
     unreachable();
   }
@@ -234,5 +245,7 @@ export async function inlineKeyboardButtonToTlObject(button: InlineKeyboardButto
       return { _: "keyboardInlineButton", text: button.text, style, type: { _: "inlineButtonTypeBuy" } };
     case "copy":
       return { _: "keyboardInlineButton", text: button.text, style, type: { _: "inlineButtonTypeCopy", copy_text: button.textToCopy } };
+    case "disabled":
+      return { _: "keyboardInlineButton", text: button.text, style, type: { _: "inlineButtonTypeDisabled" } };
   }
 }
