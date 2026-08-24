@@ -810,6 +810,7 @@ export interface chatFull {
   can_set_username?: true;
   has_scheduled?: true;
   translations_disabled?: true;
+  has_welcome_messages?: true;
   id: bigint;
   about: string;
   participants: ChatParticipants;
@@ -853,6 +854,7 @@ export interface channelFull {
   paid_reactions_available?: true;
   stargifts_available?: true;
   paid_messages_available?: true;
+  has_welcome_messages?: true;
   id: bigint;
   about: string;
   participants_count?: number;
@@ -1603,6 +1605,7 @@ export interface messageActionStarGiftUnique {
   assigned?: true;
   from_offer?: true;
   craft?: true;
+  name_hidden?: true;
   gift: StarGift;
   can_export_at?: number;
   transfer_stars?: bigint;
@@ -1614,6 +1617,7 @@ export interface messageActionStarGiftUnique {
   can_resell_at?: number;
   drop_original_details_stars?: bigint;
   can_craft_at?: number;
+  message?: TextWithEntities;
 }
 
 /** https://core.telegram.org/constructor/messageActionPaidMessagesRefunded */
@@ -1759,6 +1763,12 @@ export interface messageActionManagedBotCreated {
 export interface messageActionChangeCommunity {
   _: "messageActionChangeCommunity";
   community_id?: bigint;
+}
+
+/** https://core.telegram.org/constructor/messageActionChatJoinedViaCommunity */
+export interface messageActionChatJoinedViaCommunity {
+  _: "messageActionChatJoinedViaCommunity";
+  community_id: bigint;
 }
 
 /** https://core.telegram.org/constructor/dialog */
@@ -3655,9 +3665,10 @@ export interface updateEphemeralBotCallbackQuery {
   _: "updateEphemeralBotCallbackQuery";
   query_id: bigint;
   user_id: bigint;
-  peer: Peer;
+  peer?: Peer;
   msg_id: number;
   data: Uint8Array<ArrayBuffer>;
+  chat_instance?: bigint;
   message: EphemeralMessage;
 }
 
@@ -4266,6 +4277,8 @@ export interface sendMessageEmojiInteractionSeen {
 /** https://core.telegram.org/constructor/sendMessageTextDraftAction */
 export interface sendMessageTextDraftAction {
   _: "sendMessageTextDraftAction";
+  can_stop?: true;
+  keep_on_stop?: true;
   random_id: bigint;
   text: TextWithEntities;
 }
@@ -4273,6 +4286,8 @@ export interface sendMessageTextDraftAction {
 /** https://core.telegram.org/constructor/inputSendMessageRichMessageDraftAction */
 export interface inputSendMessageRichMessageDraftAction {
   _: "inputSendMessageRichMessageDraftAction";
+  can_stop?: true;
+  keep_on_stop?: true;
   random_id: bigint;
   rich_message: InputRichMessage;
 }
@@ -4280,8 +4295,16 @@ export interface inputSendMessageRichMessageDraftAction {
 /** https://core.telegram.org/constructor/sendMessageRichMessageDraftAction */
 export interface sendMessageRichMessageDraftAction {
   _: "sendMessageRichMessageDraftAction";
+  can_stop?: true;
+  keep_on_stop?: true;
   random_id: bigint;
   rich_message: RichMessage;
+}
+
+/** https://core.telegram.org/constructor/sendMessageStopDraftAction */
+export interface sendMessageStopDraftAction {
+  _: "sendMessageStopDraftAction";
+  random_id: bigint;
 }
 
 /** https://core.telegram.org/constructor/contacts.found */
@@ -4991,153 +5014,7 @@ export interface keyboardButton {
   _: "keyboardButton";
   style?: KeyboardButtonStyle;
   text: string;
-}
-
-/** https://core.telegram.org/constructor/keyboardButtonUrl */
-export interface keyboardButtonUrl {
-  _: "keyboardButtonUrl";
-  style?: KeyboardButtonStyle;
-  text: string;
-  url: string;
-}
-
-/** https://core.telegram.org/constructor/keyboardButtonCallback */
-export interface keyboardButtonCallback {
-  _: "keyboardButtonCallback";
-  requires_password?: true;
-  style?: KeyboardButtonStyle;
-  text: string;
-  data: Uint8Array<ArrayBuffer>;
-}
-
-/** https://core.telegram.org/constructor/keyboardButtonRequestPhone */
-export interface keyboardButtonRequestPhone {
-  _: "keyboardButtonRequestPhone";
-  style?: KeyboardButtonStyle;
-  text: string;
-}
-
-/** https://core.telegram.org/constructor/keyboardButtonRequestGeoLocation */
-export interface keyboardButtonRequestGeoLocation {
-  _: "keyboardButtonRequestGeoLocation";
-  style?: KeyboardButtonStyle;
-  text: string;
-}
-
-/** https://core.telegram.org/constructor/keyboardButtonSwitchInline */
-export interface keyboardButtonSwitchInline {
-  _: "keyboardButtonSwitchInline";
-  same_peer?: true;
-  style?: KeyboardButtonStyle;
-  text: string;
-  query: string;
-  peer_types?: Array<InlineQueryPeerType>;
-}
-
-/** https://core.telegram.org/constructor/keyboardButtonGame */
-export interface keyboardButtonGame {
-  _: "keyboardButtonGame";
-  style?: KeyboardButtonStyle;
-  text: string;
-}
-
-/** https://core.telegram.org/constructor/keyboardButtonBuy */
-export interface keyboardButtonBuy {
-  _: "keyboardButtonBuy";
-  style?: KeyboardButtonStyle;
-  text: string;
-}
-
-/** https://core.telegram.org/constructor/keyboardButtonUrlAuth */
-export interface keyboardButtonUrlAuth {
-  _: "keyboardButtonUrlAuth";
-  style?: KeyboardButtonStyle;
-  text: string;
-  fwd_text?: string;
-  url: string;
-  button_id: number;
-}
-
-/** https://core.telegram.org/constructor/inputKeyboardButtonUrlAuth */
-export interface inputKeyboardButtonUrlAuth {
-  _: "inputKeyboardButtonUrlAuth";
-  request_write_access?: true;
-  style?: KeyboardButtonStyle;
-  text: string;
-  fwd_text?: string;
-  url: string;
-  bot: InputUser;
-}
-
-/** https://core.telegram.org/constructor/keyboardButtonRequestPoll */
-export interface keyboardButtonRequestPoll {
-  _: "keyboardButtonRequestPoll";
-  style?: KeyboardButtonStyle;
-  quiz?: boolean;
-  text: string;
-}
-
-/** https://core.telegram.org/constructor/inputKeyboardButtonUserProfile */
-export interface inputKeyboardButtonUserProfile {
-  _: "inputKeyboardButtonUserProfile";
-  style?: KeyboardButtonStyle;
-  text: string;
-  user_id: InputUser;
-}
-
-/** https://core.telegram.org/constructor/keyboardButtonUserProfile */
-export interface keyboardButtonUserProfile {
-  _: "keyboardButtonUserProfile";
-  style?: KeyboardButtonStyle;
-  text: string;
-  user_id: bigint;
-}
-
-/** https://core.telegram.org/constructor/keyboardButtonWebView */
-export interface keyboardButtonWebView {
-  _: "keyboardButtonWebView";
-  style?: KeyboardButtonStyle;
-  text: string;
-  url: string;
-}
-
-/** https://core.telegram.org/constructor/keyboardButtonSimpleWebView */
-export interface keyboardButtonSimpleWebView {
-  _: "keyboardButtonSimpleWebView";
-  style?: KeyboardButtonStyle;
-  text: string;
-  url: string;
-}
-
-/** https://core.telegram.org/constructor/keyboardButtonRequestPeer */
-export interface keyboardButtonRequestPeer {
-  _: "keyboardButtonRequestPeer";
-  style?: KeyboardButtonStyle;
-  text: string;
-  button_id: number;
-  peer_type: RequestPeerType;
-  max_quantity: number;
-}
-
-/** https://core.telegram.org/constructor/inputKeyboardButtonRequestPeer */
-export interface inputKeyboardButtonRequestPeer {
-  _: "inputKeyboardButtonRequestPeer";
-  name_requested?: true;
-  username_requested?: true;
-  photo_requested?: true;
-  style?: KeyboardButtonStyle;
-  text: string;
-  button_id: number;
-  peer_type: RequestPeerType;
-  max_quantity: number;
-}
-
-/** https://core.telegram.org/constructor/keyboardButtonCopy */
-export interface keyboardButtonCopy {
-  _: "keyboardButtonCopy";
-  style?: KeyboardButtonStyle;
-  text: string;
-  copy_text: string;
+  type: ButtonType;
 }
 
 /** https://core.telegram.org/constructor/keyboardButtonRow */
@@ -5167,6 +5044,7 @@ export interface replyKeyboardMarkup {
   single_use?: true;
   selective?: true;
   persistent?: true;
+  force_reply?: true;
   rows: Array<KeyboardButtonRow>;
   placeholder?: string;
 }
@@ -5174,7 +5052,8 @@ export interface replyKeyboardMarkup {
 /** https://core.telegram.org/constructor/replyInlineMarkup */
 export interface replyInlineMarkup {
   _: "replyInlineMarkup";
-  rows: Array<KeyboardButtonRow>;
+  force_reply?: true;
+  rows: Array<KeyboardInlineButtonRow>;
 }
 
 /** https://core.telegram.org/constructor/messageEntityUnknown */
@@ -6465,6 +6344,14 @@ export interface textDiff {
   old_text: RichText;
 }
 
+/** https://core.telegram.org/constructor/textButton */
+export interface textButton {
+  _: "textButton";
+  text: RichText;
+  type: InlineButtonType;
+  style?: RichButtonStyle;
+}
+
 /** https://core.telegram.org/constructor/pageBlockUnsupported */
 export interface pageBlockUnsupported {
   _: "pageBlockUnsupported";
@@ -6540,6 +6427,7 @@ export interface pageBlockList {
 /** https://core.telegram.org/constructor/pageBlockBlockquote */
 export interface pageBlockBlockquote {
   _: "pageBlockBlockquote";
+  collapsed?: true;
   text: RichText;
   caption: RichText;
 }
@@ -6640,6 +6528,7 @@ export interface pageBlockTable {
   _: "pageBlockTable";
   bordered?: true;
   striped?: true;
+  compact?: true;
   title: RichText;
   rows: Array<PageTableRow>;
 }
@@ -6741,6 +6630,22 @@ export interface pageBlockBlockquoteBlocks {
   _: "pageBlockBlockquoteBlocks";
   blocks: Array<PageBlock>;
   caption: RichText;
+}
+
+/** https://core.telegram.org/constructor/pageBlockButtonRow */
+export interface pageBlockButtonRow {
+  _: "pageBlockButtonRow";
+  align_left?: true;
+  align_center?: true;
+  align_right?: true;
+  buttons: Array<PageButton>;
+}
+
+/** https://core.telegram.org/constructor/pageBlockDocument */
+export interface pageBlockDocument {
+  _: "pageBlockDocument";
+  document_id: bigint;
+  caption: PageCaption;
 }
 
 /** https://core.telegram.org/constructor/phoneCallDiscardReasonMissed */
@@ -8435,6 +8340,7 @@ export interface chatAdminRights {
   manage_direct_messages?: true;
   manage_ranks?: true;
   manage_linked_peers?: true;
+  manage_welcome_messages?: true;
 }
 
 /** https://core.telegram.org/constructor/chatBannedRights */
@@ -9966,8 +9872,10 @@ export interface inputInvoiceBusinessBotTransferStars {
 export interface inputInvoiceStarGiftResale {
   _: "inputInvoiceStarGiftResale";
   ton?: true;
+  show_name?: true;
   slug: string;
   to_id: InputPeer;
+  message?: TextWithEntities;
 }
 
 /** https://core.telegram.org/constructor/inputInvoiceStarGiftPrepaidUpgrade */
@@ -13266,9 +13174,12 @@ export interface communities_peerLinkRequests {
 export interface ephemeralMessage {
   _: "ephemeralMessage";
   out?: true;
+  welcome_template?: true;
+  invert_media?: true;
+  noforwards?: true;
   id: number;
   from_id: Peer;
-  peer_id: Peer;
+  peer_id?: Peer;
   receiver_id: bigint;
   top_msg_id?: number;
   date: number;
@@ -13277,6 +13188,9 @@ export interface ephemeralMessage {
   media?: MessageMedia;
   reply_markup?: ReplyMarkup;
   reply_to?: MessageReplyHeader;
+  rich_message?: RichMessage;
+  chat_instance?: bigint;
+  anchor_msg_id?: number;
 }
 
 /** https://core.telegram.org/constructor/communities.participantJoinedChats */
@@ -13298,6 +13212,179 @@ export interface messages_translatedRichMessage {
 export interface messages_composedRichMessageWithAI {
   _: "messages.composedRichMessageWithAI";
   result: RichMessage;
+}
+
+/** https://core.telegram.org/constructor/buttonTypeDefault */
+export interface buttonTypeDefault {
+  _: "buttonTypeDefault";
+}
+
+/** https://core.telegram.org/constructor/buttonTypeRequestPhone */
+export interface buttonTypeRequestPhone {
+  _: "buttonTypeRequestPhone";
+}
+
+/** https://core.telegram.org/constructor/buttonTypeRequestGeoLocation */
+export interface buttonTypeRequestGeoLocation {
+  _: "buttonTypeRequestGeoLocation";
+}
+
+/** https://core.telegram.org/constructor/buttonTypeRequestPoll */
+export interface buttonTypeRequestPoll {
+  _: "buttonTypeRequestPoll";
+  quiz?: boolean;
+}
+
+/** https://core.telegram.org/constructor/buttonTypeRequestPeer */
+export interface buttonTypeRequestPeer {
+  _: "buttonTypeRequestPeer";
+  button_id: number;
+  peer_type: RequestPeerType;
+  max_quantity: number;
+}
+
+/** https://core.telegram.org/constructor/inputButtonTypeRequestPeer */
+export interface inputButtonTypeRequestPeer {
+  _: "inputButtonTypeRequestPeer";
+  name_requested?: true;
+  username_requested?: true;
+  photo_requested?: true;
+  button_id: number;
+  peer_type: RequestPeerType;
+  max_quantity: number;
+}
+
+/** https://core.telegram.org/constructor/buttonTypeSimpleWebView */
+export interface buttonTypeSimpleWebView {
+  _: "buttonTypeSimpleWebView";
+  url: string;
+}
+
+/** https://core.telegram.org/constructor/inlineButtonTypeUrl */
+export interface inlineButtonTypeUrl {
+  _: "inlineButtonTypeUrl";
+  url: string;
+}
+
+/** https://core.telegram.org/constructor/inlineButtonTypeUrlAuth */
+export interface inlineButtonTypeUrlAuth {
+  _: "inlineButtonTypeUrlAuth";
+  fwd_text?: string;
+  url: string;
+  button_id: number;
+}
+
+/** https://core.telegram.org/constructor/inputInlineButtonTypeUrlAuth */
+export interface inputInlineButtonTypeUrlAuth {
+  _: "inputInlineButtonTypeUrlAuth";
+  request_write_access?: true;
+  fwd_text?: string;
+  url: string;
+  bot?: InputUser;
+}
+
+/** https://core.telegram.org/constructor/inlineButtonTypeWebView */
+export interface inlineButtonTypeWebView {
+  _: "inlineButtonTypeWebView";
+  url: string;
+}
+
+/** https://core.telegram.org/constructor/inlineButtonTypeCallback */
+export interface inlineButtonTypeCallback {
+  _: "inlineButtonTypeCallback";
+  requires_password?: true;
+  data: Uint8Array<ArrayBuffer>;
+}
+
+/** https://core.telegram.org/constructor/inlineButtonTypeGame */
+export interface inlineButtonTypeGame {
+  _: "inlineButtonTypeGame";
+}
+
+/** https://core.telegram.org/constructor/inlineButtonTypeBuy */
+export interface inlineButtonTypeBuy {
+  _: "inlineButtonTypeBuy";
+}
+
+/** https://core.telegram.org/constructor/inlineButtonTypeSwitchInline */
+export interface inlineButtonTypeSwitchInline {
+  _: "inlineButtonTypeSwitchInline";
+  same_peer?: true;
+  query: string;
+  peer_types?: Array<InlineQueryPeerType>;
+}
+
+/** https://core.telegram.org/constructor/inlineButtonTypeUserProfile */
+export interface inlineButtonTypeUserProfile {
+  _: "inlineButtonTypeUserProfile";
+  user_id: bigint;
+}
+
+/** https://core.telegram.org/constructor/inputInlineButtonTypeUserProfile */
+export interface inputInlineButtonTypeUserProfile {
+  _: "inputInlineButtonTypeUserProfile";
+  user_id: InputUser;
+}
+
+/** https://core.telegram.org/constructor/inlineButtonTypeCopy */
+export interface inlineButtonTypeCopy {
+  _: "inlineButtonTypeCopy";
+  copy_text: string;
+}
+
+/** https://core.telegram.org/constructor/inlineButtonTypeDisabled */
+export interface inlineButtonTypeDisabled {
+  _: "inlineButtonTypeDisabled";
+}
+
+/** https://core.telegram.org/constructor/keyboardInlineButton */
+export interface keyboardInlineButton {
+  _: "keyboardInlineButton";
+  style?: KeyboardButtonStyle;
+  text: string;
+  type: InlineButtonType;
+}
+
+/** https://core.telegram.org/constructor/keyboardInlineButtonRow */
+export interface keyboardInlineButtonRow {
+  _: "keyboardInlineButtonRow";
+  buttons: Array<KeyboardInlineButton>;
+}
+
+/** https://core.telegram.org/constructor/richButtonStyle */
+export interface richButtonStyle {
+  _: "richButtonStyle";
+  bg_primary?: true;
+  bg_danger?: true;
+  bg_success?: true;
+  link?: true;
+}
+
+/** https://core.telegram.org/constructor/pageButton */
+export interface pageButton {
+  _: "pageButton";
+  text: RichText;
+  type: InlineButtonType;
+  style?: RichButtonStyle;
+}
+
+/** https://core.telegram.org/constructor/ephemeral.welcomeMessagesNotModified */
+export interface ephemeral_welcomeMessagesNotModified {
+  _: "ephemeral.welcomeMessagesNotModified";
+}
+
+/** https://core.telegram.org/constructor/ephemeral.welcomeMessages */
+export interface ephemeral_welcomeMessages {
+  _: "ephemeral.welcomeMessages";
+  hash: bigint;
+  messages: Array<EphemeralMessage>;
+}
+
+/** https://core.telegram.org/constructor/auth.firebasePnvIntent */
+export interface auth_firebasePnvIntent {
+  _: "auth.firebasePnvIntent";
+  nonce: string;
+  digital_credential_payload: string;
 }
 
 /** https://core.telegram.org/method/invokeWithBusinessConnectionPrefix */
@@ -13640,6 +13727,30 @@ export interface auth_finishPasskeyLogin {
   credential: InputPasskeyCredential;
   from_dc_id?: number;
   from_auth_key_id?: bigint;
+  [R]?: auth_Authorization;
+}
+
+/** https://core.telegram.org/method/auth.initFirebasePnvLogin */
+export interface auth_initFirebasePnvLogin {
+  _: "auth.initFirebasePnvLogin";
+  api_id: number;
+  api_hash: string;
+  [R]?: auth_FirebasePnvIntent;
+}
+
+/** https://core.telegram.org/method/auth.finishFirebasePnvLogin */
+export interface auth_finishFirebasePnvLogin {
+  _: "auth.finishFirebasePnvLogin";
+  google_token: string;
+  [R]?: auth_Authorization;
+}
+
+/** https://core.telegram.org/method/auth.firebasePnvSignUp */
+export interface auth_firebasePnvSignUp {
+  _: "auth.firebasePnvSignUp";
+  no_joined_notifications?: true;
+  first_name: string;
+  last_name: string;
   [R]?: auth_Authorization;
 }
 
@@ -15056,6 +15167,7 @@ export interface messages_forwardMessages {
   drop_media_captions?: true;
   noforwards?: true;
   allow_paid_floodskip?: true;
+  from_ephemeral?: true;
   from_peer: InputPeer;
   id: Array<number>;
   random_id: Array<bigint>;
@@ -20195,7 +20307,11 @@ export interface communities_getParticipantJoinedChats {
 /** https://core.telegram.org/method/ephemeral.sendMessage */
 export interface ephemeral_sendMessage {
   _: "ephemeral.sendMessage";
-  peer: InputPeer;
+  invert_media?: true;
+  welcome?: true;
+  anchor?: true;
+  noforwards?: true;
+  peer?: InputPeer;
   receiver_id: InputUser;
   query_id?: bigint;
   message: string;
@@ -20211,7 +20327,7 @@ export interface ephemeral_sendMessage {
 /** https://core.telegram.org/method/ephemeral.deleteMessage */
 export interface ephemeral_deleteMessage {
   _: "ephemeral.deleteMessage";
-  peer: InputPeer;
+  peer?: InputPeer;
   receiver_id: InputUser;
   id: number;
   [R]?: boolean;
@@ -20239,14 +20355,40 @@ export interface ephemeral_getCallbackAnswer {
 /** https://core.telegram.org/method/ephemeral.editMessage */
 export interface ephemeral_editMessage {
   _: "ephemeral.editMessage";
-  peer: InputPeer;
+  invert_media?: true;
+  welcome?: true;
+  peer?: InputPeer;
   receiver_id: InputUser;
   id: number;
   message?: string;
   media?: InputMedia;
   entities?: Array<MessageEntity>;
   reply_markup?: ReplyMarkup;
+  rich_message?: InputRichMessage;
   [R]?: Updates;
+}
+
+/** https://core.telegram.org/method/ephemeral.deleteWelcomeMessage */
+export interface ephemeral_deleteWelcomeMessage {
+  _: "ephemeral.deleteWelcomeMessage";
+  peer: InputPeer;
+  id: number;
+  [R]?: boolean;
+}
+
+/** https://core.telegram.org/method/ephemeral.deleteAllWelcomeMessages */
+export interface ephemeral_deleteAllWelcomeMessages {
+  _: "ephemeral.deleteAllWelcomeMessages";
+  peer: InputPeer;
+  [R]?: boolean;
+}
+
+/** https://core.telegram.org/method/ephemeral.getWelcomeMessages */
+export interface ephemeral_getWelcomeMessages {
+  _: "ephemeral.getWelcomeMessages";
+  peer: InputPeer;
+  hash: bigint;
+  [R]?: ephemeral_WelcomeMessages;
 }
 
 export interface Types {
@@ -20440,6 +20582,7 @@ export interface Types {
   "messageActionPollDeleteAnswer": messageActionPollDeleteAnswer;
   "messageActionManagedBotCreated": messageActionManagedBotCreated;
   "messageActionChangeCommunity": messageActionChangeCommunity;
+  "messageActionChatJoinedViaCommunity": messageActionChatJoinedViaCommunity;
   "dialog": dialog;
   "dialogFolder": dialogFolder;
   "dialogCommunity": dialogCommunity;
@@ -20756,6 +20899,7 @@ export interface Types {
   "sendMessageTextDraftAction": sendMessageTextDraftAction;
   "inputSendMessageRichMessageDraftAction": inputSendMessageRichMessageDraftAction;
   "sendMessageRichMessageDraftAction": sendMessageRichMessageDraftAction;
+  "sendMessageStopDraftAction": sendMessageStopDraftAction;
   "contacts.found": contacts_found;
   "inputPrivacyKeyStatusTimestamp": inputPrivacyKeyStatusTimestamp;
   "inputPrivacyKeyChatInvite": inputPrivacyKeyChatInvite;
@@ -20859,23 +21003,6 @@ export interface Types {
   "botCommand": botCommand;
   "botInfo": botInfo;
   "keyboardButton": keyboardButton;
-  "keyboardButtonUrl": keyboardButtonUrl;
-  "keyboardButtonCallback": keyboardButtonCallback;
-  "keyboardButtonRequestPhone": keyboardButtonRequestPhone;
-  "keyboardButtonRequestGeoLocation": keyboardButtonRequestGeoLocation;
-  "keyboardButtonSwitchInline": keyboardButtonSwitchInline;
-  "keyboardButtonGame": keyboardButtonGame;
-  "keyboardButtonBuy": keyboardButtonBuy;
-  "keyboardButtonUrlAuth": keyboardButtonUrlAuth;
-  "inputKeyboardButtonUrlAuth": inputKeyboardButtonUrlAuth;
-  "keyboardButtonRequestPoll": keyboardButtonRequestPoll;
-  "inputKeyboardButtonUserProfile": inputKeyboardButtonUserProfile;
-  "keyboardButtonUserProfile": keyboardButtonUserProfile;
-  "keyboardButtonWebView": keyboardButtonWebView;
-  "keyboardButtonSimpleWebView": keyboardButtonSimpleWebView;
-  "keyboardButtonRequestPeer": keyboardButtonRequestPeer;
-  "inputKeyboardButtonRequestPeer": inputKeyboardButtonRequestPeer;
-  "keyboardButtonCopy": keyboardButtonCopy;
   "keyboardButtonRow": keyboardButtonRow;
   "replyKeyboardHide": replyKeyboardHide;
   "replyKeyboardForceReply": replyKeyboardForceReply;
@@ -21050,6 +21177,7 @@ export interface Types {
   "textMentionName": textMentionName;
   "textDate": textDate;
   "textDiff": textDiff;
+  "textButton": textButton;
   "pageBlockUnsupported": pageBlockUnsupported;
   "pageBlockTitle": pageBlockTitle;
   "pageBlockSubtitle": pageBlockSubtitle;
@@ -21089,6 +21217,8 @@ export interface Types {
   "pageBlockThinking": pageBlockThinking;
   "inputPageBlockMap": inputPageBlockMap;
   "pageBlockBlockquoteBlocks": pageBlockBlockquoteBlocks;
+  "pageBlockButtonRow": pageBlockButtonRow;
+  "pageBlockDocument": pageBlockDocument;
   "phoneCallDiscardReasonMissed": phoneCallDiscardReasonMissed;
   "phoneCallDiscardReasonDisconnect": phoneCallDiscardReasonDisconnect;
   "phoneCallDiscardReasonHangup": phoneCallDiscardReasonHangup;
@@ -21896,6 +22026,32 @@ export interface Types {
   "communities.participantJoinedChats": communities_participantJoinedChats;
   "messages.translatedRichMessage": messages_translatedRichMessage;
   "messages.composedRichMessageWithAI": messages_composedRichMessageWithAI;
+  "buttonTypeDefault": buttonTypeDefault;
+  "buttonTypeRequestPhone": buttonTypeRequestPhone;
+  "buttonTypeRequestGeoLocation": buttonTypeRequestGeoLocation;
+  "buttonTypeRequestPoll": buttonTypeRequestPoll;
+  "buttonTypeRequestPeer": buttonTypeRequestPeer;
+  "inputButtonTypeRequestPeer": inputButtonTypeRequestPeer;
+  "buttonTypeSimpleWebView": buttonTypeSimpleWebView;
+  "inlineButtonTypeUrl": inlineButtonTypeUrl;
+  "inlineButtonTypeUrlAuth": inlineButtonTypeUrlAuth;
+  "inputInlineButtonTypeUrlAuth": inputInlineButtonTypeUrlAuth;
+  "inlineButtonTypeWebView": inlineButtonTypeWebView;
+  "inlineButtonTypeCallback": inlineButtonTypeCallback;
+  "inlineButtonTypeGame": inlineButtonTypeGame;
+  "inlineButtonTypeBuy": inlineButtonTypeBuy;
+  "inlineButtonTypeSwitchInline": inlineButtonTypeSwitchInline;
+  "inlineButtonTypeUserProfile": inlineButtonTypeUserProfile;
+  "inputInlineButtonTypeUserProfile": inputInlineButtonTypeUserProfile;
+  "inlineButtonTypeCopy": inlineButtonTypeCopy;
+  "inlineButtonTypeDisabled": inlineButtonTypeDisabled;
+  "keyboardInlineButton": keyboardInlineButton;
+  "keyboardInlineButtonRow": keyboardInlineButtonRow;
+  "richButtonStyle": richButtonStyle;
+  "pageButton": pageButton;
+  "ephemeral.welcomeMessagesNotModified": ephemeral_welcomeMessagesNotModified;
+  "ephemeral.welcomeMessages": ephemeral_welcomeMessages;
+  "auth.firebasePnvIntent": auth_firebasePnvIntent;
 }
 
 export interface Functions<T = Function> {
@@ -21940,6 +22096,9 @@ export interface Functions<T = Function> {
   "auth.checkPaidAuth": auth_checkPaidAuth;
   "auth.initPasskeyLogin": auth_initPasskeyLogin;
   "auth.finishPasskeyLogin": auth_finishPasskeyLogin;
+  "auth.initFirebasePnvLogin": auth_initFirebasePnvLogin;
+  "auth.finishFirebasePnvLogin": auth_finishFirebasePnvLogin;
+  "auth.firebasePnvSignUp": auth_firebasePnvSignUp;
   "account.registerDevice": account_registerDevice;
   "account.unregisterDevice": account_unregisterDevice;
   "account.updateNotifySettings": account_updateNotifySettings;
@@ -22710,6 +22869,9 @@ export interface Functions<T = Function> {
   "ephemeral.reportMessage": ephemeral_reportMessage;
   "ephemeral.getCallbackAnswer": ephemeral_getCallbackAnswer;
   "ephemeral.editMessage": ephemeral_editMessage;
+  "ephemeral.deleteWelcomeMessage": ephemeral_deleteWelcomeMessage;
+  "ephemeral.deleteAllWelcomeMessages": ephemeral_deleteAllWelcomeMessages;
+  "ephemeral.getWelcomeMessages": ephemeral_getWelcomeMessages;
 }
 
 export interface Enums {
@@ -23322,6 +23484,14 @@ export interface Enums {
   "communities.ParticipantJoinedChats": communities_ParticipantJoinedChats;
   "messages.TranslatedRichMessage": messages_TranslatedRichMessage;
   "messages.ComposedRichMessageWithAI": messages_ComposedRichMessageWithAI;
+  "ButtonType": ButtonType;
+  "InlineButtonType": InlineButtonType;
+  "KeyboardInlineButton": KeyboardInlineButton;
+  "KeyboardInlineButtonRow": KeyboardInlineButtonRow;
+  "RichButtonStyle": RichButtonStyle;
+  "PageButton": PageButton;
+  "ephemeral.WelcomeMessages": ephemeral_WelcomeMessages;
+  "auth.FirebasePnvIntent": auth_FirebasePnvIntent;
 }
 
 export type AnyType = Types[keyof Types];
@@ -23411,7 +23581,7 @@ export type Message = messageEmpty | message | messageService;
 export type MessageMedia = messageMediaEmpty | messageMediaPhoto | messageMediaGeo | messageMediaContact | messageMediaUnsupported | messageMediaDocument | messageMediaWebPage | messageMediaVenue | messageMediaGame | messageMediaInvoice | messageMediaGeoLive | messageMediaPoll | messageMediaDice | messageMediaStory | messageMediaGiveaway | messageMediaGiveawayResults | messageMediaPaidMedia | messageMediaToDo | messageMediaVideoStream;
 
 /** https://core.telegram.org/type/MessageAction */
-export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults | messageActionBoostApply | messageActionRequestedPeerSentMe | messageActionPaymentRefunded | messageActionGiftStars | messageActionPrizeStars | messageActionStarGift | messageActionStarGiftUnique | messageActionPaidMessagesRefunded | messageActionPaidMessagesPrice | messageActionConferenceCall | messageActionTodoCompletions | messageActionTodoAppendTasks | messageActionSuggestedPostApproval | messageActionSuggestedPostSuccess | messageActionSuggestedPostRefund | messageActionGiftTon | messageActionSuggestBirthday | messageActionStarGiftPurchaseOffer | messageActionStarGiftPurchaseOfferDeclined | messageActionNewCreatorPending | messageActionChangeCreator | messageActionNoForwardsToggle | messageActionNoForwardsRequest | messageActionPollAppendAnswer | messageActionPollDeleteAnswer | messageActionManagedBotCreated | messageActionChangeCommunity;
+export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults | messageActionBoostApply | messageActionRequestedPeerSentMe | messageActionPaymentRefunded | messageActionGiftStars | messageActionPrizeStars | messageActionStarGift | messageActionStarGiftUnique | messageActionPaidMessagesRefunded | messageActionPaidMessagesPrice | messageActionConferenceCall | messageActionTodoCompletions | messageActionTodoAppendTasks | messageActionSuggestedPostApproval | messageActionSuggestedPostSuccess | messageActionSuggestedPostRefund | messageActionGiftTon | messageActionSuggestBirthday | messageActionStarGiftPurchaseOffer | messageActionStarGiftPurchaseOfferDeclined | messageActionNewCreatorPending | messageActionChangeCreator | messageActionNoForwardsToggle | messageActionNoForwardsRequest | messageActionPollAppendAnswer | messageActionPollDeleteAnswer | messageActionManagedBotCreated | messageActionChangeCommunity | messageActionChatJoinedViaCommunity;
 
 /** https://core.telegram.org/type/Dialog */
 export type Dialog = dialog | dialogFolder | dialogCommunity;
@@ -23561,7 +23731,7 @@ export type help_Support = help_support;
 export type NotifyPeer = notifyPeer | notifyUsers | notifyChats | notifyBroadcasts | notifyForumTopic | notifyCommunity;
 
 /** https://core.telegram.org/type/SendMessageAction */
-export type SendMessageAction = sendMessageTypingAction | sendMessageCancelAction | sendMessageRecordVideoAction | sendMessageUploadVideoAction | sendMessageRecordAudioAction | sendMessageUploadAudioAction | sendMessageUploadPhotoAction | sendMessageUploadDocumentAction | sendMessageGeoLocationAction | sendMessageChooseContactAction | sendMessageGamePlayAction | sendMessageRecordRoundAction | sendMessageUploadRoundAction | speakingInGroupCallAction | sendMessageHistoryImportAction | sendMessageChooseStickerAction | sendMessageEmojiInteraction | sendMessageEmojiInteractionSeen | sendMessageTextDraftAction | inputSendMessageRichMessageDraftAction | sendMessageRichMessageDraftAction;
+export type SendMessageAction = sendMessageTypingAction | sendMessageCancelAction | sendMessageRecordVideoAction | sendMessageUploadVideoAction | sendMessageRecordAudioAction | sendMessageUploadAudioAction | sendMessageUploadPhotoAction | sendMessageUploadDocumentAction | sendMessageGeoLocationAction | sendMessageChooseContactAction | sendMessageGamePlayAction | sendMessageRecordRoundAction | sendMessageUploadRoundAction | speakingInGroupCallAction | sendMessageHistoryImportAction | sendMessageChooseStickerAction | sendMessageEmojiInteraction | sendMessageEmojiInteractionSeen | sendMessageTextDraftAction | inputSendMessageRichMessageDraftAction | sendMessageRichMessageDraftAction | sendMessageStopDraftAction;
 
 /** https://core.telegram.org/type/contacts.Found */
 export type contacts_Found = contacts_found;
@@ -23645,7 +23815,7 @@ export type BotCommand = botCommand;
 export type BotInfo = botInfo;
 
 /** https://core.telegram.org/type/KeyboardButton */
-export type KeyboardButton = keyboardButton | keyboardButtonUrl | keyboardButtonCallback | keyboardButtonRequestPhone | keyboardButtonRequestGeoLocation | keyboardButtonSwitchInline | keyboardButtonGame | keyboardButtonBuy | keyboardButtonUrlAuth | inputKeyboardButtonUrlAuth | keyboardButtonRequestPoll | inputKeyboardButtonUserProfile | keyboardButtonUserProfile | keyboardButtonWebView | keyboardButtonSimpleWebView | keyboardButtonRequestPeer | inputKeyboardButtonRequestPeer | keyboardButtonCopy;
+export type KeyboardButton = keyboardButton;
 
 /** https://core.telegram.org/type/KeyboardButtonRow */
 export type KeyboardButtonRow = keyboardButtonRow;
@@ -23780,10 +23950,10 @@ export type HighScore = highScore;
 export type messages_HighScores = messages_highScores;
 
 /** https://core.telegram.org/type/RichText */
-export type RichText = textEmpty | textPlain | textBold | textItalic | textUnderline | textStrike | textFixed | textUrl | textEmail | textConcat | textSubscript | textSuperscript | textMarked | textPhone | textImage | textAnchor | textMath | textCustomEmoji | textSpoiler | textMention | textHashtag | textBotCommand | textCashtag | textAutoUrl | textAutoEmail | textAutoPhone | textBankCard | textMentionName | textDate | textDiff;
+export type RichText = textEmpty | textPlain | textBold | textItalic | textUnderline | textStrike | textFixed | textUrl | textEmail | textConcat | textSubscript | textSuperscript | textMarked | textPhone | textImage | textAnchor | textMath | textCustomEmoji | textSpoiler | textMention | textHashtag | textBotCommand | textCashtag | textAutoUrl | textAutoEmail | textAutoPhone | textBankCard | textMentionName | textDate | textDiff | textButton;
 
 /** https://core.telegram.org/type/PageBlock */
-export type PageBlock = pageBlockUnsupported | pageBlockTitle | pageBlockSubtitle | pageBlockAuthorDate | pageBlockHeader | pageBlockSubheader | pageBlockParagraph | pageBlockPreformatted | pageBlockFooter | pageBlockDivider | pageBlockAnchor | pageBlockList | pageBlockBlockquote | pageBlockPullquote | pageBlockPhoto | pageBlockVideo | pageBlockCover | pageBlockEmbed | pageBlockEmbedPost | pageBlockCollage | pageBlockSlideshow | pageBlockChannel | pageBlockAudio | pageBlockKicker | pageBlockTable | pageBlockOrderedList | pageBlockDetails | pageBlockRelatedArticles | pageBlockMap | pageBlockHeading1 | pageBlockHeading2 | pageBlockHeading3 | pageBlockHeading4 | pageBlockHeading5 | pageBlockHeading6 | pageBlockMath | pageBlockThinking | inputPageBlockMap | pageBlockBlockquoteBlocks;
+export type PageBlock = pageBlockUnsupported | pageBlockTitle | pageBlockSubtitle | pageBlockAuthorDate | pageBlockHeader | pageBlockSubheader | pageBlockParagraph | pageBlockPreformatted | pageBlockFooter | pageBlockDivider | pageBlockAnchor | pageBlockList | pageBlockBlockquote | pageBlockPullquote | pageBlockPhoto | pageBlockVideo | pageBlockCover | pageBlockEmbed | pageBlockEmbedPost | pageBlockCollage | pageBlockSlideshow | pageBlockChannel | pageBlockAudio | pageBlockKicker | pageBlockTable | pageBlockOrderedList | pageBlockDetails | pageBlockRelatedArticles | pageBlockMap | pageBlockHeading1 | pageBlockHeading2 | pageBlockHeading3 | pageBlockHeading4 | pageBlockHeading5 | pageBlockHeading6 | pageBlockMath | pageBlockThinking | inputPageBlockMap | pageBlockBlockquoteBlocks | pageBlockButtonRow | pageBlockDocument;
 
 /** https://core.telegram.org/type/PhoneCallDiscardReason */
 export type PhoneCallDiscardReason = phoneCallDiscardReasonMissed | phoneCallDiscardReasonDisconnect | phoneCallDiscardReasonHangup | phoneCallDiscardReasonBusy | phoneCallDiscardReasonMigrateConferenceCall;
@@ -25159,6 +25329,30 @@ export type messages_TranslatedRichMessage = messages_translatedRichMessage;
 /** https://core.telegram.org/type/messages.ComposedRichMessageWithAI */
 export type messages_ComposedRichMessageWithAI = messages_composedRichMessageWithAI;
 
+/** https://core.telegram.org/type/ButtonType */
+export type ButtonType = buttonTypeDefault | buttonTypeRequestPhone | buttonTypeRequestGeoLocation | buttonTypeRequestPoll | buttonTypeRequestPeer | inputButtonTypeRequestPeer | buttonTypeSimpleWebView;
+
+/** https://core.telegram.org/type/InlineButtonType */
+export type InlineButtonType = inlineButtonTypeUrl | inlineButtonTypeUrlAuth | inputInlineButtonTypeUrlAuth | inlineButtonTypeWebView | inlineButtonTypeCallback | inlineButtonTypeGame | inlineButtonTypeBuy | inlineButtonTypeSwitchInline | inlineButtonTypeUserProfile | inputInlineButtonTypeUserProfile | inlineButtonTypeCopy | inlineButtonTypeDisabled;
+
+/** https://core.telegram.org/type/KeyboardInlineButton */
+export type KeyboardInlineButton = keyboardInlineButton;
+
+/** https://core.telegram.org/type/KeyboardInlineButtonRow */
+export type KeyboardInlineButtonRow = keyboardInlineButtonRow;
+
+/** https://core.telegram.org/type/RichButtonStyle */
+export type RichButtonStyle = richButtonStyle;
+
+/** https://core.telegram.org/type/PageButton */
+export type PageButton = pageButton;
+
+/** https://core.telegram.org/type/ephemeral.WelcomeMessages */
+export type ephemeral_WelcomeMessages = ephemeral_welcomeMessagesNotModified | ephemeral_welcomeMessages;
+
+/** https://core.telegram.org/type/auth.FirebasePnvIntent */
+export type auth_FirebasePnvIntent = auth_firebasePnvIntent;
+
 export const schema = Object.freeze({
   definitions: {
     true: [
@@ -26044,6 +26238,7 @@ export const schema = Object.freeze({
         ["can_set_username", "flags.7?true"],
         ["has_scheduled", "flags.8?true"],
         ["translations_disabled", "flags.19?true"],
+        ["has_welcome_messages", "flags.21?true"],
         ["id", "long"],
         ["about", "string"],
         ["participants", "ChatParticipants"],
@@ -26090,6 +26285,7 @@ export const schema = Object.freeze({
         ["paid_reactions_available", "flags2.16?true"],
         ["stargifts_available", "flags2.19?true"],
         ["paid_messages_available", "flags2.20?true"],
+        ["has_welcome_messages", "flags2.24?true"],
         ["id", "long"],
         ["about", "string"],
         ["participants_count", "flags.0?int"],
@@ -26937,7 +27133,7 @@ export const schema = Object.freeze({
       "MessageAction",
     ],
     messageActionStarGiftUnique: [
-      0xE6C31522,
+      0x7E1C1187,
       [
         ["flags", "#"],
         ["upgrade", "flags.0?true"],
@@ -26948,6 +27144,7 @@ export const schema = Object.freeze({
         ["assigned", "flags.13?true"],
         ["from_offer", "flags.14?true"],
         ["craft", "flags.16?true"],
+        ["name_hidden", "flags.17?true"],
         ["gift", "StarGift"],
         ["can_export_at", "flags.3?int"],
         ["transfer_stars", "flags.4?long"],
@@ -26959,6 +27156,7 @@ export const schema = Object.freeze({
         ["can_resell_at", "flags.10?int"],
         ["drop_original_details_stars", "flags.12?long"],
         ["can_craft_at", "flags.15?int"],
+        ["message", "flags.18?TextWithEntities"],
       ],
       "MessageAction",
     ],
@@ -27133,6 +27331,13 @@ export const schema = Object.freeze({
       [
         ["flags", "#"],
         ["community_id", "flags.0?long"],
+      ],
+      "MessageAction",
+    ],
+    messageActionChatJoinedViaCommunity: [
+      0x4A8BFE80,
+      [
+        ["community_id", "long"],
       ],
       "MessageAction",
     ],
@@ -29284,13 +29489,15 @@ export const schema = Object.freeze({
       "Update",
     ],
     updateEphemeralBotCallbackQuery: [
-      0x9B380762,
+      0x7C1079D6,
       [
+        ["flags", "#"],
         ["query_id", "long"],
         ["user_id", "long"],
-        ["peer", "Peer"],
+        ["peer", "flags.0?Peer"],
         ["msg_id", "int"],
         ["data", "bytes"],
+        ["chat_instance", "flags.1?long"],
         ["message", "EphemeralMessage"],
       ],
       "Update",
@@ -29961,26 +30168,42 @@ export const schema = Object.freeze({
       "SendMessageAction",
     ],
     sendMessageTextDraftAction: [
-      0x376D975C,
+      0x3630B85A,
       [
+        ["flags", "#"],
+        ["can_stop", "flags.0?true"],
+        ["keep_on_stop", "flags.1?true"],
         ["random_id", "long"],
         ["text", "TextWithEntities"],
       ],
       "SendMessageAction",
     ],
     inputSendMessageRichMessageDraftAction: [
-      0xE2B23B51,
+      0xA937C7BE,
       [
+        ["flags", "#"],
+        ["can_stop", "flags.0?true"],
+        ["keep_on_stop", "flags.1?true"],
         ["random_id", "long"],
         ["rich_message", "InputRichMessage"],
       ],
       "SendMessageAction",
     ],
     sendMessageRichMessageDraftAction: [
-      0xA2CB24F9,
+      0x52564893,
       [
+        ["flags", "#"],
+        ["can_stop", "flags.0?true"],
+        ["keep_on_stop", "flags.1?true"],
         ["random_id", "long"],
         ["rich_message", "RichMessage"],
+      ],
+      "SendMessageAction",
+    ],
+    sendMessageStopDraftAction: [
+      0xFBF902B0,
+      [
+        ["random_id", "long"],
       ],
       "SendMessageAction",
     ],
@@ -30747,192 +30970,12 @@ export const schema = Object.freeze({
       "BotInfo",
     ],
     keyboardButton: [
-      0x7D170CFF,
+      0x2F67A72F,
       [
         ["flags", "#"],
         ["style", "flags.10?KeyboardButtonStyle"],
         ["text", "string"],
-      ],
-      "KeyboardButton",
-    ],
-    keyboardButtonUrl: [
-      0xD80C25EC,
-      [
-        ["flags", "#"],
-        ["style", "flags.10?KeyboardButtonStyle"],
-        ["text", "string"],
-        ["url", "string"],
-      ],
-      "KeyboardButton",
-    ],
-    keyboardButtonCallback: [
-      0xE62BC960,
-      [
-        ["flags", "#"],
-        ["requires_password", "flags.0?true"],
-        ["style", "flags.10?KeyboardButtonStyle"],
-        ["text", "string"],
-        ["data", "bytes"],
-      ],
-      "KeyboardButton",
-    ],
-    keyboardButtonRequestPhone: [
-      0x417EFD8F,
-      [
-        ["flags", "#"],
-        ["style", "flags.10?KeyboardButtonStyle"],
-        ["text", "string"],
-      ],
-      "KeyboardButton",
-    ],
-    keyboardButtonRequestGeoLocation: [
-      0xAA40F94D,
-      [
-        ["flags", "#"],
-        ["style", "flags.10?KeyboardButtonStyle"],
-        ["text", "string"],
-      ],
-      "KeyboardButton",
-    ],
-    keyboardButtonSwitchInline: [
-      0x991399FC,
-      [
-        ["flags", "#"],
-        ["same_peer", "flags.0?true"],
-        ["style", "flags.10?KeyboardButtonStyle"],
-        ["text", "string"],
-        ["query", "string"],
-        ["peer_types", "flags.1?Vector<InlineQueryPeerType>"],
-      ],
-      "KeyboardButton",
-    ],
-    keyboardButtonGame: [
-      0x89C590F9,
-      [
-        ["flags", "#"],
-        ["style", "flags.10?KeyboardButtonStyle"],
-        ["text", "string"],
-      ],
-      "KeyboardButton",
-    ],
-    keyboardButtonBuy: [
-      0x3FA53905,
-      [
-        ["flags", "#"],
-        ["style", "flags.10?KeyboardButtonStyle"],
-        ["text", "string"],
-      ],
-      "KeyboardButton",
-    ],
-    keyboardButtonUrlAuth: [
-      0xF51006F9,
-      [
-        ["flags", "#"],
-        ["style", "flags.10?KeyboardButtonStyle"],
-        ["text", "string"],
-        ["fwd_text", "flags.0?string"],
-        ["url", "string"],
-        ["button_id", "int"],
-      ],
-      "KeyboardButton",
-    ],
-    inputKeyboardButtonUrlAuth: [
-      0x68013E72,
-      [
-        ["flags", "#"],
-        ["request_write_access", "flags.0?true"],
-        ["style", "flags.10?KeyboardButtonStyle"],
-        ["text", "string"],
-        ["fwd_text", "flags.1?string"],
-        ["url", "string"],
-        ["bot", "InputUser"],
-      ],
-      "KeyboardButton",
-    ],
-    keyboardButtonRequestPoll: [
-      0x7A11D782,
-      [
-        ["flags", "#"],
-        ["style", "flags.10?KeyboardButtonStyle"],
-        ["quiz", "flags.0?Bool"],
-        ["text", "string"],
-      ],
-      "KeyboardButton",
-    ],
-    inputKeyboardButtonUserProfile: [
-      0x7D5E07C7,
-      [
-        ["flags", "#"],
-        ["style", "flags.10?KeyboardButtonStyle"],
-        ["text", "string"],
-        ["user_id", "InputUser"],
-      ],
-      "KeyboardButton",
-    ],
-    keyboardButtonUserProfile: [
-      0xC0FD5D09,
-      [
-        ["flags", "#"],
-        ["style", "flags.10?KeyboardButtonStyle"],
-        ["text", "string"],
-        ["user_id", "long"],
-      ],
-      "KeyboardButton",
-    ],
-    keyboardButtonWebView: [
-      0xE846B1A0,
-      [
-        ["flags", "#"],
-        ["style", "flags.10?KeyboardButtonStyle"],
-        ["text", "string"],
-        ["url", "string"],
-      ],
-      "KeyboardButton",
-    ],
-    keyboardButtonSimpleWebView: [
-      0xE15C4370,
-      [
-        ["flags", "#"],
-        ["style", "flags.10?KeyboardButtonStyle"],
-        ["text", "string"],
-        ["url", "string"],
-      ],
-      "KeyboardButton",
-    ],
-    keyboardButtonRequestPeer: [
-      0x5B0F15F5,
-      [
-        ["flags", "#"],
-        ["style", "flags.10?KeyboardButtonStyle"],
-        ["text", "string"],
-        ["button_id", "int"],
-        ["peer_type", "RequestPeerType"],
-        ["max_quantity", "int"],
-      ],
-      "KeyboardButton",
-    ],
-    inputKeyboardButtonRequestPeer: [
-      0x02B78156,
-      [
-        ["flags", "#"],
-        ["name_requested", "flags.0?true"],
-        ["username_requested", "flags.1?true"],
-        ["photo_requested", "flags.2?true"],
-        ["style", "flags.10?KeyboardButtonStyle"],
-        ["text", "string"],
-        ["button_id", "int"],
-        ["peer_type", "RequestPeerType"],
-        ["max_quantity", "int"],
-      ],
-      "KeyboardButton",
-    ],
-    keyboardButtonCopy: [
-      0xBCC4AF10,
-      [
-        ["flags", "#"],
-        ["style", "flags.10?KeyboardButtonStyle"],
-        ["text", "string"],
-        ["copy_text", "string"],
+        ["type", "ButtonType"],
       ],
       "KeyboardButton",
     ],
@@ -30969,15 +31012,18 @@ export const schema = Object.freeze({
         ["single_use", "flags.1?true"],
         ["selective", "flags.2?true"],
         ["persistent", "flags.4?true"],
+        ["force_reply", "flags.5?true"],
         ["rows", "Vector<KeyboardButtonRow>"],
         ["placeholder", "flags.3?string"],
       ],
       "ReplyMarkup",
     ],
     replyInlineMarkup: [
-      0x48A30254,
+      0xB2B15770,
       [
-        ["rows", "Vector<KeyboardButtonRow>"],
+        ["flags", "#"],
+        ["force_reply", "flags.5?true"],
+        ["rows", "Vector<KeyboardInlineButtonRow>"],
       ],
       "ReplyMarkup",
     ],
@@ -32459,6 +32505,16 @@ export const schema = Object.freeze({
       ],
       "RichText",
     ],
+    textButton: [
+      0xAFC79CD6,
+      [
+        ["flags", "#"],
+        ["text", "RichText"],
+        ["type", "InlineButtonType"],
+        ["style", "flags.0?RichButtonStyle"],
+      ],
+      "RichText",
+    ],
     pageBlockUnsupported: [
       0x13567E8A,
       [],
@@ -32542,8 +32598,10 @@ export const schema = Object.freeze({
       "PageBlock",
     ],
     pageBlockBlockquote: [
-      0x263D7C26,
+      0x66D1670B,
       [
+        ["flags", "#"],
+        ["collapsed", "flags.0?true"],
         ["text", "RichText"],
         ["caption", "RichText"],
       ],
@@ -32660,6 +32718,7 @@ export const schema = Object.freeze({
         ["flags", "#"],
         ["bordered", "flags.0?true"],
         ["striped", "flags.1?true"],
+        ["compact", "flags.2?true"],
         ["title", "RichText"],
         ["rows", "Vector<PageTableRow>"],
       ],
@@ -32777,6 +32836,25 @@ export const schema = Object.freeze({
       [
         ["blocks", "Vector<PageBlock>"],
         ["caption", "RichText"],
+      ],
+      "PageBlock",
+    ],
+    pageBlockButtonRow: [
+      0x6D640318,
+      [
+        ["flags", "#"],
+        ["align_left", "flags.0?true"],
+        ["align_center", "flags.1?true"],
+        ["align_right", "flags.2?true"],
+        ["buttons", "Vector<PageButton>"],
+      ],
+      "PageBlock",
+    ],
+    pageBlockDocument: [
+      0x38FA3BA3,
+      [
+        ["document_id", "long"],
+        ["caption", "PageCaption"],
       ],
       "PageBlock",
     ],
@@ -34701,6 +34779,7 @@ export const schema = Object.freeze({
         ["manage_direct_messages", "flags.17?true"],
         ["manage_ranks", "flags.18?true"],
         ["manage_linked_peers", "flags.19?true"],
+        ["manage_welcome_messages", "flags.20?true"],
       ],
       "ChatAdminRights",
     ],
@@ -36429,12 +36508,14 @@ export const schema = Object.freeze({
       "InputInvoice",
     ],
     inputInvoiceStarGiftResale: [
-      0xC39F5324,
+      0xE9B0C658,
       [
         ["flags", "#"],
         ["ton", "flags.0?true"],
+        ["show_name", "flags.2?true"],
         ["slug", "string"],
         ["to_id", "InputPeer"],
+        ["message", "flags.1?TextWithEntities"],
       ],
       "InputInvoice",
     ],
@@ -40213,13 +40294,16 @@ export const schema = Object.freeze({
       "communities.PeerLinkRequests",
     ],
     ephemeralMessage: [
-      0xD9C6DC1A,
+      0xDD27BEE9,
       [
         ["flags", "#"],
         ["out", "flags.0?true"],
+        ["welcome_template", "flags.5?true"],
+        ["invert_media", "flags.7?true"],
+        ["noforwards", "flags.12?true"],
         ["id", "int"],
         ["from_id", "Peer"],
-        ["peer_id", "Peer"],
+        ["peer_id", "flags.9?Peer"],
         ["receiver_id", "long"],
         ["top_msg_id", "flags.1?int"],
         ["date", "int"],
@@ -40228,6 +40312,9 @@ export const schema = Object.freeze({
         ["media", "flags.3?MessageMedia"],
         ["reply_markup", "flags.4?ReplyMarkup"],
         ["reply_to", "flags.6?MessageReplyHeader"],
+        ["rich_message", "flags.8?RichMessage"],
+        ["chat_instance", "flags.10?long"],
+        ["anchor_msg_id", "flags.11?int"],
       ],
       "EphemeralMessage",
     ],
@@ -40254,6 +40341,208 @@ export const schema = Object.freeze({
         ["result", "RichMessage"],
       ],
       "messages.ComposedRichMessageWithAI",
+    ],
+    buttonTypeDefault: [
+      0xC9DD90E9,
+      [],
+      "ButtonType",
+    ],
+    buttonTypeRequestPhone: [
+      0xDF3D36F9,
+      [],
+      "ButtonType",
+    ],
+    buttonTypeRequestGeoLocation: [
+      0x9BEEE140,
+      [],
+      "ButtonType",
+    ],
+    buttonTypeRequestPoll: [
+      0xAACFFF84,
+      [
+        ["flags", "#"],
+        ["quiz", "flags.0?Bool"],
+      ],
+      "ButtonType",
+    ],
+    buttonTypeRequestPeer: [
+      0x4F58A237,
+      [
+        ["flags", "#"],
+        ["button_id", "int"],
+        ["peer_type", "RequestPeerType"],
+        ["max_quantity", "int"],
+      ],
+      "ButtonType",
+    ],
+    inputButtonTypeRequestPeer: [
+      0x3FE268FE,
+      [
+        ["flags", "#"],
+        ["name_requested", "flags.0?true"],
+        ["username_requested", "flags.1?true"],
+        ["photo_requested", "flags.2?true"],
+        ["button_id", "int"],
+        ["peer_type", "RequestPeerType"],
+        ["max_quantity", "int"],
+      ],
+      "ButtonType",
+    ],
+    buttonTypeSimpleWebView: [
+      0xC01A597A,
+      [
+        ["url", "string"],
+      ],
+      "ButtonType",
+    ],
+    inlineButtonTypeUrl: [
+      0xECA4F8D4,
+      [
+        ["url", "string"],
+      ],
+      "InlineButtonType",
+    ],
+    inlineButtonTypeUrlAuth: [
+      0xBFD02DA2,
+      [
+        ["flags", "#"],
+        ["fwd_text", "flags.0?string"],
+        ["url", "string"],
+        ["button_id", "int"],
+      ],
+      "InlineButtonType",
+    ],
+    inputInlineButtonTypeUrlAuth: [
+      0x9961BCB4,
+      [
+        ["flags", "#"],
+        ["request_write_access", "flags.0?true"],
+        ["fwd_text", "flags.1?string"],
+        ["url", "string"],
+        ["bot", "flags.2?InputUser"],
+      ],
+      "InlineButtonType",
+    ],
+    inlineButtonTypeWebView: [
+      0x3BCAB5B4,
+      [
+        ["url", "string"],
+      ],
+      "InlineButtonType",
+    ],
+    inlineButtonTypeCallback: [
+      0x2955BC38,
+      [
+        ["flags", "#"],
+        ["requires_password", "flags.0?true"],
+        ["data", "bytes"],
+      ],
+      "InlineButtonType",
+    ],
+    inlineButtonTypeGame: [
+      0x5CD3709D,
+      [],
+      "InlineButtonType",
+    ],
+    inlineButtonTypeBuy: [
+      0x48BAD7A5,
+      [],
+      "InlineButtonType",
+    ],
+    inlineButtonTypeSwitchInline: [
+      0x93773FF5,
+      [
+        ["flags", "#"],
+        ["same_peer", "flags.0?true"],
+        ["query", "string"],
+        ["peer_types", "flags.1?Vector<InlineQueryPeerType>"],
+      ],
+      "InlineButtonType",
+    ],
+    inlineButtonTypeUserProfile: [
+      0x3FA33FCF,
+      [
+        ["user_id", "long"],
+      ],
+      "InlineButtonType",
+    ],
+    inputInlineButtonTypeUserProfile: [
+      0x53F3CE5A,
+      [
+        ["user_id", "InputUser"],
+      ],
+      "InlineButtonType",
+    ],
+    inlineButtonTypeCopy: [
+      0xB41D3272,
+      [
+        ["copy_text", "string"],
+      ],
+      "InlineButtonType",
+    ],
+    inlineButtonTypeDisabled: [
+      0xA438619D,
+      [],
+      "InlineButtonType",
+    ],
+    keyboardInlineButton: [
+      0x11C1A322,
+      [
+        ["flags", "#"],
+        ["style", "flags.10?KeyboardButtonStyle"],
+        ["text", "string"],
+        ["type", "InlineButtonType"],
+      ],
+      "KeyboardInlineButton",
+    ],
+    keyboardInlineButtonRow: [
+      0x19420AF6,
+      [
+        ["buttons", "Vector<KeyboardInlineButton>"],
+      ],
+      "KeyboardInlineButtonRow",
+    ],
+    richButtonStyle: [
+      0x03C610BD,
+      [
+        ["flags", "#"],
+        ["bg_primary", "flags.0?true"],
+        ["bg_danger", "flags.1?true"],
+        ["bg_success", "flags.2?true"],
+        ["link", "flags.3?true"],
+      ],
+      "RichButtonStyle",
+    ],
+    pageButton: [
+      0x692A5488,
+      [
+        ["flags", "#"],
+        ["text", "RichText"],
+        ["type", "InlineButtonType"],
+        ["style", "flags.0?RichButtonStyle"],
+      ],
+      "PageButton",
+    ],
+    "ephemeral.welcomeMessagesNotModified": [
+      0x59FFDB31,
+      [],
+      "ephemeral.WelcomeMessages",
+    ],
+    "ephemeral.welcomeMessages": [
+      0x104FC872,
+      [
+        ["hash", "long"],
+        ["messages", "Vector<EphemeralMessage>"],
+      ],
+      "ephemeral.WelcomeMessages",
+    ],
+    "auth.firebasePnvIntent": [
+      0xDF5AC00C,
+      [
+        ["nonce", "string"],
+        ["digital_credential_payload", "string"],
+      ],
+      "auth.FirebasePnvIntent",
     ],
     invokeWithBusinessConnectionPrefix: [
       0xDD289F8E,
@@ -40599,6 +40888,31 @@ export const schema = Object.freeze({
         ["credential", "InputPasskeyCredential"],
         ["from_dc_id", "flags.0?int"],
         ["from_auth_key_id", "flags.0?long"],
+      ],
+      "auth.Authorization",
+    ],
+    "auth.initFirebasePnvLogin": [
+      0x777DF37A,
+      [
+        ["api_id", "int"],
+        ["api_hash", "string"],
+      ],
+      "auth.FirebasePnvIntent",
+    ],
+    "auth.finishFirebasePnvLogin": [
+      0x2C85094C,
+      [
+        ["google_token", "string"],
+      ],
+      "auth.Authorization",
+    ],
+    "auth.firebasePnvSignUp": [
+      0x783F6B56,
+      [
+        ["flags", "#"],
+        ["no_joined_notifications", "flags.0?true"],
+        ["first_name", "string"],
+        ["last_name", "string"],
       ],
       "auth.Authorization",
     ],
@@ -42031,6 +42345,7 @@ export const schema = Object.freeze({
         ["drop_media_captions", "flags.12?true"],
         ["noforwards", "flags.14?true"],
         ["allow_paid_floodskip", "flags.19?true"],
+        ["from_ephemeral", "flags.25?true"],
         ["from_peer", "InputPeer"],
         ["id", "Vector<int>"],
         ["random_id", "Vector<long>"],
@@ -47326,10 +47641,14 @@ export const schema = Object.freeze({
       "communities.ParticipantJoinedChats",
     ],
     "ephemeral.sendMessage": [
-      0x68CBD09F,
+      0xBA8D5F35,
       [
         ["flags", "#"],
-        ["peer", "InputPeer"],
+        ["invert_media", "flags.6?true"],
+        ["welcome", "flags.7?true"],
+        ["anchor", "flags.9?true"],
+        ["noforwards", "flags.10?true"],
+        ["peer", "flags.8?InputPeer"],
         ["receiver_id", "InputUser"],
         ["query_id", "flags.0?long"],
         ["message", "string"],
@@ -47343,9 +47662,10 @@ export const schema = Object.freeze({
       "Updates",
     ],
     "ephemeral.deleteMessage": [
-      0xA3C0D511,
+      0x92F6E797,
       [
-        ["peer", "InputPeer"],
+        ["flags", "#"],
+        ["peer", "flags.0?InputPeer"],
         ["receiver_id", "InputUser"],
         ["id", "int"],
       ],
@@ -47372,18 +47692,44 @@ export const schema = Object.freeze({
       "messages.BotCallbackAnswer",
     ],
     "ephemeral.editMessage": [
-      0x13F250EE,
+      0xCF9C725B,
       [
         ["flags", "#"],
-        ["peer", "InputPeer"],
+        ["invert_media", "flags.5?true"],
+        ["welcome", "flags.6?true"],
+        ["peer", "flags.7?InputPeer"],
         ["receiver_id", "InputUser"],
         ["id", "int"],
         ["message", "flags.0?string"],
         ["media", "flags.3?InputMedia"],
         ["entities", "flags.1?Vector<MessageEntity>"],
         ["reply_markup", "flags.2?ReplyMarkup"],
+        ["rich_message", "flags.4?InputRichMessage"],
       ],
       "Updates",
+    ],
+    "ephemeral.deleteWelcomeMessage": [
+      0xE882A9E1,
+      [
+        ["peer", "InputPeer"],
+        ["id", "int"],
+      ],
+      "Bool",
+    ],
+    "ephemeral.deleteAllWelcomeMessages": [
+      0x734F9721,
+      [
+        ["peer", "InputPeer"],
+      ],
+      "Bool",
+    ],
+    "ephemeral.getWelcomeMessages": [
+      0xDB9AC18D,
+      [
+        ["peer", "InputPeer"],
+        ["hash", "long"],
+      ],
+      "ephemeral.WelcomeMessages",
     ],
   },
   identifierToName: {
@@ -47556,7 +47902,7 @@ export const schema = Object.freeze({
     [0x45D5B021]: "messageActionGiftStars",
     [0xB00C47A2]: "messageActionPrizeStars",
     [0xEA2C31D3]: "messageActionStarGift",
-    [0xE6C31522]: "messageActionStarGiftUnique",
+    [0x7E1C1187]: "messageActionStarGiftUnique",
     [0xAC1F1FCD]: "messageActionPaidMessagesRefunded",
     [0x84B88578]: "messageActionPaidMessagesPrice",
     [0x2FFE2F7A]: "messageActionConferenceCall",
@@ -47577,6 +47923,7 @@ export const schema = Object.freeze({
     [0x399674DC]: "messageActionPollDeleteAnswer",
     [0x16605E3E]: "messageActionManagedBotCreated",
     [0x5D20BAE8]: "messageActionChangeCommunity",
+    [0x4A8BFE80]: "messageActionChatJoinedViaCommunity",
     [0xFC89F7F3]: "dialog",
     [0x71BD134C]: "dialogFolder",
     [0xF78A0973]: "dialogCommunity",
@@ -47818,7 +48165,7 @@ export const schema = Object.freeze({
     [0x20BCBBA1]: "updateNewEphemeralMessage",
     [0x56DBFCF8]: "updateDeleteEphemeralMessages",
     [0x4BBB8F01]: "updateEditEphemeralMessage",
-    [0x9B380762]: "updateEphemeralBotCallbackQuery",
+    [0x7C1079D6]: "updateEphemeralBotCallbackQuery",
     [0x6C0D8E23]: "updateBotStarsSubscription",
     [0xA56C2A3E]: "updates.state",
     [0x5D75A138]: "updates.differenceEmpty",
@@ -47890,9 +48237,10 @@ export const schema = Object.freeze({
     [0xB05AC6B1]: "sendMessageChooseStickerAction",
     [0x25972BCB]: "sendMessageEmojiInteraction",
     [0xB665902E]: "sendMessageEmojiInteractionSeen",
-    [0x376D975C]: "sendMessageTextDraftAction",
-    [0xE2B23B51]: "inputSendMessageRichMessageDraftAction",
-    [0xA2CB24F9]: "sendMessageRichMessageDraftAction",
+    [0x3630B85A]: "sendMessageTextDraftAction",
+    [0xA937C7BE]: "inputSendMessageRichMessageDraftAction",
+    [0x52564893]: "sendMessageRichMessageDraftAction",
+    [0xFBF902B0]: "sendMessageStopDraftAction",
     [0xB3134D9D]: "contacts.found",
     [0x4F96CB18]: "inputPrivacyKeyStatusTimestamp",
     [0xBDFB0426]: "inputPrivacyKeyChatInvite",
@@ -47995,29 +48343,12 @@ export const schema = Object.freeze({
     [0xD3F924EB]: "messages.stickerSetNotModified",
     [0x9852D6D2]: "botCommand",
     [0x4D8A0299]: "botInfo",
-    [0x7D170CFF]: "keyboardButton",
-    [0xD80C25EC]: "keyboardButtonUrl",
-    [0xE62BC960]: "keyboardButtonCallback",
-    [0x417EFD8F]: "keyboardButtonRequestPhone",
-    [0xAA40F94D]: "keyboardButtonRequestGeoLocation",
-    [0x991399FC]: "keyboardButtonSwitchInline",
-    [0x89C590F9]: "keyboardButtonGame",
-    [0x3FA53905]: "keyboardButtonBuy",
-    [0xF51006F9]: "keyboardButtonUrlAuth",
-    [0x68013E72]: "inputKeyboardButtonUrlAuth",
-    [0x7A11D782]: "keyboardButtonRequestPoll",
-    [0x7D5E07C7]: "inputKeyboardButtonUserProfile",
-    [0xC0FD5D09]: "keyboardButtonUserProfile",
-    [0xE846B1A0]: "keyboardButtonWebView",
-    [0xE15C4370]: "keyboardButtonSimpleWebView",
-    [0x5B0F15F5]: "keyboardButtonRequestPeer",
-    [0x02B78156]: "inputKeyboardButtonRequestPeer",
-    [0xBCC4AF10]: "keyboardButtonCopy",
+    [0x2F67A72F]: "keyboardButton",
     [0x77608B83]: "keyboardButtonRow",
     [0xA03E5B85]: "replyKeyboardHide",
     [0x86B40B08]: "replyKeyboardForceReply",
     [0x85DD99D1]: "replyKeyboardMarkup",
-    [0x48A30254]: "replyInlineMarkup",
+    [0xB2B15770]: "replyInlineMarkup",
     [0xBB92BA95]: "messageEntityUnknown",
     [0xFA04579D]: "messageEntityMention",
     [0x6F635B0D]: "messageEntityHashtag",
@@ -48187,6 +48518,7 @@ export const schema = Object.freeze({
     [0x01A9FBFC]: "textMentionName",
     [0xA5B45E2B]: "textDate",
     [0x9686CB50]: "textDiff",
+    [0xAFC79CD6]: "textButton",
     [0x13567E8A]: "pageBlockUnsupported",
     [0x70ABC3FD]: "pageBlockTitle",
     [0x8FFA9A1F]: "pageBlockSubtitle",
@@ -48199,7 +48531,7 @@ export const schema = Object.freeze({
     [0xDB20B188]: "pageBlockDivider",
     [0xCE0D37B0]: "pageBlockAnchor",
     [0xE4E88011]: "pageBlockList",
-    [0x263D7C26]: "pageBlockBlockquote",
+    [0x66D1670B]: "pageBlockBlockquote",
     [0x4F4456D3]: "pageBlockPullquote",
     [0x1759C560]: "pageBlockPhoto",
     [0x7C8FE7B6]: "pageBlockVideo",
@@ -48226,6 +48558,8 @@ export const schema = Object.freeze({
     [0x3C29A3E2]: "pageBlockThinking",
     [0x574B617F]: "inputPageBlockMap",
     [0x0E6E47C4]: "pageBlockBlockquoteBlocks",
+    [0x6D640318]: "pageBlockButtonRow",
+    [0x38FA3BA3]: "pageBlockDocument",
     [0x85E42301]: "phoneCallDiscardReasonMissed",
     [0xE095C1A0]: "phoneCallDiscardReasonDisconnect",
     [0x57ADC690]: "phoneCallDiscardReasonHangup",
@@ -48629,7 +48963,7 @@ export const schema = Object.freeze({
     [0x4A5F5BD9]: "inputInvoiceStarGiftTransfer",
     [0xDABAB2EF]: "inputInvoicePremiumGiftStars",
     [0xF4997E42]: "inputInvoiceBusinessBotTransferStars",
-    [0xC39F5324]: "inputInvoiceStarGiftResale",
+    [0xE9B0C658]: "inputInvoiceStarGiftResale",
     [0x9A0B48B8]: "inputInvoiceStarGiftPrepaidUpgrade",
     [0x3E77F614]: "inputInvoicePremiumAuthCode",
     [0x0923D8D1]: "inputInvoiceStarGiftDropOriginalDetails",
@@ -49029,11 +49363,37 @@ export const schema = Object.freeze({
     [0x76141EBD]: "communityPeer",
     [0x7BEAFA85]: "communityPeerRequest",
     [0x2244AFAD]: "communities.peerLinkRequests",
-    [0xD9C6DC1A]: "ephemeralMessage",
+    [0xDD27BEE9]: "ephemeralMessage",
     [0x8D78512A]: "communities.participantJoinedChats",
     [0x4203998F]: "messages.translatedRichMessage",
     [0x4C4537C8]: "messages.composedRichMessageWithAI",
+    [0xC9DD90E9]: "buttonTypeDefault",
+    [0xDF3D36F9]: "buttonTypeRequestPhone",
+    [0x9BEEE140]: "buttonTypeRequestGeoLocation",
+    [0xAACFFF84]: "buttonTypeRequestPoll",
+    [0x4F58A237]: "buttonTypeRequestPeer",
+    [0x3FE268FE]: "inputButtonTypeRequestPeer",
+    [0xC01A597A]: "buttonTypeSimpleWebView",
+    [0xECA4F8D4]: "inlineButtonTypeUrl",
+    [0xBFD02DA2]: "inlineButtonTypeUrlAuth",
+    [0x9961BCB4]: "inputInlineButtonTypeUrlAuth",
+    [0x3BCAB5B4]: "inlineButtonTypeWebView",
+    [0x2955BC38]: "inlineButtonTypeCallback",
+    [0x5CD3709D]: "inlineButtonTypeGame",
+    [0x48BAD7A5]: "inlineButtonTypeBuy",
+    [0x93773FF5]: "inlineButtonTypeSwitchInline",
+    [0x3FA33FCF]: "inlineButtonTypeUserProfile",
+    [0x53F3CE5A]: "inputInlineButtonTypeUserProfile",
+    [0xB41D3272]: "inlineButtonTypeCopy",
+    [0xA438619D]: "inlineButtonTypeDisabled",
+    [0x11C1A322]: "keyboardInlineButton",
+    [0x19420AF6]: "keyboardInlineButtonRow",
+    [0x03C610BD]: "richButtonStyle",
+    [0x692A5488]: "pageButton",
+    [0x59FFDB31]: "ephemeral.welcomeMessagesNotModified",
+    [0x104FC872]: "ephemeral.welcomeMessages",
+    [0xDF5AC00C]: "auth.firebasePnvIntent",
   },
 }) as unknown as Schema;
 
-export const LAYER = 228;
+export const LAYER = 229;

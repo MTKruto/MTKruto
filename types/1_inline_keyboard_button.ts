@@ -145,77 +145,69 @@ export type InlineKeyboardButton =
   | InlineKeyboardButtonPay
   | InlineKeyboardButtonCopy;
 
-export function constructInlineKeyboardButton(button_: Api.KeyboardButton): InlineKeyboardButton {
+export function constructInlineKeyboardButton(button_: Api.KeyboardInlineButton): InlineKeyboardButton {
   const text = button_.text;
   const style = constructButtonStyle(button_.style);
-  if (Api.is("keyboardButtonUrl", button_)) {
-    return cleanObject({ type: "url", text, style, url: button_.url });
-  } else if (Api.is("keyboardButtonCallback", button_)) {
-    return cleanObject({ type: "callbackData", text, style, callbackData: decodeText(button_.data) });
-  } else if (Api.is("keyboardButtonWebView", button_) || Api.is("keyboardButtonSimpleWebView", button_)) {
-    return cleanObject({ type: "miniApp", text, style, url: button_.url });
-  } else if (Api.is("keyboardButtonUrlAuth", button_)) {
-    return cleanObject({ type: "loginUrl", text, style, loginUrl: { url: button_.url, forwardText: button_.fwd_text } });
-  } else if (Api.is("keyboardButtonSwitchInline", button_)) {
-    if (button_.same_peer) {
-      return cleanObject({ type: "switchInlineQueryCurrentChat", text, style, inlineQuery: button_.query });
-    } else if (button_.peer_types && button_.peer_types.length) {
-      const isUser = button_.peer_types.some((v) => v._ === "inlineQueryPeerTypeBotPM") || undefined;
-      const isBot = button_.peer_types.some((v) => v._ === "inlineQueryPeerTypeSameBotPM" || v._ === "inlineQueryPeerTypeBotPM") || undefined;
-      const isGroup = button_.peer_types.some((v) => v._ === "inlineQueryPeerTypeChat" || v._ === "inlineQueryPeerTypeMegagroup") || undefined;
-      const isChannel = button_.peer_types.some((v) => v._ === "inlineQueryPeerTypeBroadcast") || undefined;
+  if (Api.is("inlineButtonTypeUrl", button_.type)) {
+    return cleanObject({ type: "url", text, style, url: button_.type.url });
+  } else if (Api.is("inlineButtonTypeCallback", button_.type)) {
+    return cleanObject({ type: "callbackData", text, style, callbackData: decodeText(button_.type.data) });
+  } else if (Api.is("inlineButtonTypeWebView", button_.type)) {
+    return cleanObject({ type: "miniApp", text, style, url: button_.type.url });
+  } else if (Api.is("inlineButtonTypeUrlAuth", button_.type)) {
+    return cleanObject({ type: "loginUrl", text, style, loginUrl: { url: button_.type.url, forwardText: button_.type.fwd_text } });
+  } else if (Api.is("inlineButtonTypeSwitchInline", button_.type)) {
+    if (button_.type.same_peer) {
+      return cleanObject({ type: "switchInlineQueryCurrentChat", text, style, inlineQuery: button_.type.query });
+    } else if (button_.type.peer_types && button_.type.peer_types.length) {
+      const isUser = button_.type.peer_types.some((v) => v._ === "inlineQueryPeerTypeBotPM") || undefined;
+      const isBot = button_.type.peer_types.some((v) => v._ === "inlineQueryPeerTypeSameBotPM" || v._ === "inlineQueryPeerTypeBotPM") || undefined;
+      const isGroup = button_.type.peer_types.some((v) => v._ === "inlineQueryPeerTypeChat" || v._ === "inlineQueryPeerTypeMegagroup") || undefined;
+      const isChannel = button_.type.peer_types.some((v) => v._ === "inlineQueryPeerTypeBroadcast") || undefined;
       return cleanObject({
         type: "switchInlineQueryChosenChats",
         text,
         style,
-        inlineQuery: button_.query,
+        inlineQuery: button_.type.query,
         isUser,
         isBot,
         isGroup,
         isChannel,
       });
     } else {
-      return cleanObject({ type: "switchInlineQuery", text, style, inlineQuery: button_.query });
+      return cleanObject({ type: "switchInlineQuery", text, style, inlineQuery: button_.type.query });
     }
-  } else if (Api.is("keyboardButtonBuy", button_)) {
+  } else if (Api.is("inlineButtonTypeBuy", button_.type)) {
     return cleanObject({ type: "pay", text, style });
-  } else if (Api.is("keyboardButtonGame", button_)) {
+  } else if (Api.is("inlineButtonTypeGame", button_.type)) {
     return cleanObject({ type: "callbackGame", text, style });
-  } else if (Api.is("keyboardButtonCopy", button_)) {
-    return cleanObject({ type: "copy", text, style, textToCopy: button_.copy_text });
-  } else if (Api.is("keyboardButtonRequestPeer", button_)) {
-    unreachable();
+  } else if (Api.is("inlineButtonTypeCopy", button_.type)) {
+    return cleanObject({ type: "copy", text, style, textToCopy: button_.type.copy_text });
   } else {
     unreachable();
   }
 }
 
-export async function inlineKeyboardButtonToTlObject(button: InlineKeyboardButton, usernameResolver: UsernameResolver): Promise<Api.KeyboardButton> {
+export async function inlineKeyboardButtonToTlObject(button: InlineKeyboardButton, usernameResolver: UsernameResolver): Promise<Api.KeyboardInlineButton> {
   const style = buttonStyleToTlObject(button.style);
   switch (button.type) {
     case "url":
-      return { _: "keyboardButtonUrl", text: button.text, url: button.url, style };
+      return { _: "keyboardInlineButton", text: button.text, style, type: { _: "inlineButtonTypeUrl", url: button.url } };
     case "callbackData":
-      return { _: "keyboardButtonCallback", text: button.text, data: encodeText(button.callbackData), style };
+      return { _: "keyboardInlineButton", text: button.text, style, type: { _: "inlineButtonTypeCallback", data: encodeText(button.callbackData) } };
     case "miniApp":
-      return { _: "keyboardButtonWebView", text: button.text, url: button.url, style };
-
+      return { _: "keyboardInlineButton", text: button.text, style, type: { _: "inlineButtonTypeWebView", url: button.url } };
     case "loginUrl":
       return {
-        _: "inputKeyboardButtonUrlAuth",
+        _: "keyboardInlineButton",
         text: button.text,
-        url: button.loginUrl.url,
-        fwd_text: button.loginUrl.forwardText,
-        bot: button.loginUrl.botUsername ? await usernameResolver(button.loginUrl.botUsername) : { _: "inputUserSelf" },
-        request_write_access: button.loginUrl.requestWriteAccess || undefined,
         style,
+        type: { _: "inputInlineButtonTypeUrlAuth", url: button.loginUrl.url, fwd_text: button.loginUrl.forwardText, bot: button.loginUrl.botUsername ? await usernameResolver(button.loginUrl.botUsername) : { _: "inputUserSelf" }, request_write_access: button.loginUrl.requestWriteAccess || undefined },
       };
     case "switchInlineQuery":
-      return { _: "keyboardButtonSwitchInline", text: button.text, query: button.inlineQuery, style };
-
+      return { _: "keyboardInlineButton", text: button.text, style, type: { _: "inlineButtonTypeSwitchInline", query: button.inlineQuery } };
     case "switchInlineQueryCurrentChat":
-      return { _: "keyboardButtonSwitchInline", text: button.text, query: button.inlineQuery, same_peer: true, style };
-
+      return { _: "keyboardInlineButton", text: button.text, style, type: { _: "inlineButtonTypeSwitchInline", query: button.inlineQuery, same_peer: true } };
     case "switchInlineQueryChosenChats": {
       const peerTypes = new Array<Api.InlineQueryPeerType>();
       const { isUser, isBot, isGroup, isChannel } = button;
@@ -234,13 +226,13 @@ export async function inlineKeyboardButtonToTlObject(button: InlineKeyboardButto
       if (isChannel) {
         peerTypes.push({ _: "inlineQueryPeerTypeBroadcast" });
       }
-      return { _: "keyboardButtonSwitchInline", text: button.text, query: button.inlineQuery, peer_types: peerTypes, style };
+      return { _: "keyboardInlineButton", text: button.text, style, type: { _: "inlineButtonTypeSwitchInline", query: button.inlineQuery, peer_types: peerTypes } };
     }
     case "callbackGame":
-      return { _: "keyboardButtonGame", text: button.text, style };
+      return { _: "keyboardInlineButton", text: button.text, style, type: { _: "inlineButtonTypeGame" } };
     case "pay":
-      return { _: "keyboardButtonBuy", text: button.text, style };
+      return { _: "keyboardInlineButton", text: button.text, style, type: { _: "inlineButtonTypeBuy" } };
     case "copy":
-      return { _: "keyboardButtonCopy", text: button.text, copy_text: button.textToCopy, style };
+      return { _: "keyboardInlineButton", text: button.text, style, type: { _: "inlineButtonTypeCopy", copy_text: button.textToCopy } };
   }
 }

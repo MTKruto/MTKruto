@@ -960,6 +960,7 @@ export async function constructMessage(
   }
 
   let link: string | undefined;
+  if (message_.peer_id === undefined) unreachable();
   const chat_: ChatP | null = getPeer(message_.peer_id)?.[0] ?? null;
   if (chat_ === null) {
     unreachable();
