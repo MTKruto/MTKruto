@@ -23,7 +23,9 @@ import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { deserializeFileId } from "./_file_id.ts";
 import { constructPhoto } from "./1_photo.ts";
+import { constructRichTextButton, type RichTextButton, richTextButtonToTlObject } from "./1_rich_text_button.ts";
 import { constructDateTimeFormat, timeFormatToTlObject } from "./2_message_entity.ts";
+import type { UsernameResolver } from "./_getters.ts";
 
 /**
  * An empty rich text component.
@@ -309,7 +311,7 @@ export interface RichTextComponentTextMention {
 }
 
 /**
- * A datetime text component.
+ * A datetime rich text component.
  * @unlisted
  */
 export interface RichTextComponentDateTime {
@@ -320,8 +322,20 @@ export interface RichTextComponentDateTime {
   text: RichTextComponent;
 }
 
+/**
+ * A button rich text component.
+ * @unlisted
+ */
+export interface RichTextComponentButton {
+  type: "button";
+  /** The component's inner text. */
+  text: RichTextComponent;
+  /** The button. */
+  button: RichTextButton;
+}
+
 /** Any type of rich text component. */
-export type RichTextComponent = RichTextComponentEmpty | RichTextComponentPlain | RichTextComponentBold | RichTextComponentItalic | RichTextComponentUnderline | RichTextComponentStrikethrough | RichTextComponentFixed | RichTextComponentLink | RichTextComponentEmailLink | RichTextComponentConcatenate | RichTextComponentSubscript | RichTextComponentSuperscript | RichTextComponentMarked | RichTextComponentPhoneNumberLink | RichTextComponentPhoto | RichTextComponentAnchor | RichTextComponentMath | RichTextComponentCustomEmoji | RichTextComponentSpoiler | RichTextComponentMention | RichTextComponentHashtag | RichTextComponentBotCommand | RichTextComponentCashtag | RichTextComponentUrl | RichTextComponentEmail | RichTextComponentPhone | RichTextComponentBankCard | RichTextComponentTextMention | RichTextComponentDateTime;
+export type RichTextComponent = RichTextComponentEmpty | RichTextComponentPlain | RichTextComponentBold | RichTextComponentItalic | RichTextComponentUnderline | RichTextComponentStrikethrough | RichTextComponentFixed | RichTextComponentLink | RichTextComponentEmailLink | RichTextComponentConcatenate | RichTextComponentSubscript | RichTextComponentSuperscript | RichTextComponentMarked | RichTextComponentPhoneNumberLink | RichTextComponentPhoto | RichTextComponentAnchor | RichTextComponentMath | RichTextComponentCustomEmoji | RichTextComponentSpoiler | RichTextComponentMention | RichTextComponentHashtag | RichTextComponentBotCommand | RichTextComponentCashtag | RichTextComponentUrl | RichTextComponentEmail | RichTextComponentPhone | RichTextComponentBankCard | RichTextComponentTextMention | RichTextComponentDateTime | RichTextComponentButton;
 
 export function constructRichTextComponent(rt: Api.RichText, photos: Api.Photo[]): RichTextComponent {
   switch (rt._) {
@@ -386,41 +400,43 @@ export function constructRichTextComponent(rt: Api.RichText, photos: Api.Photo[]
       return { type: "textMention", userId: Number(rt.user_id), text: constructRichTextComponent(rt.text, photos) };
     case "textDate":
       return cleanObject({ type: "dateTime", format: constructDateTimeFormat(rt) || undefined, date: rt.date, text: constructRichTextComponent(rt.text, photos) });
+    case "textButton":
+      return cleanObject({ type: "button", text: constructRichTextComponent(rt.text, photos), button: constructRichTextButton(rt.type, rt.style) });
   }
 
   unreachable();
 }
 
-export function richTextComponentToTlObject(rtc: RichTextComponent): Api.RichText {
+export async function richTextComponentToTlObject(rtc: RichTextComponent, usernameResolver: UsernameResolver): Promise<Api.RichText> {
   switch (rtc.type) {
     case "empty":
       return { _: "textEmpty" };
     case "plain":
       return { _: "textPlain", text: rtc.text };
     case "bold":
-      return { _: "textBold", text: richTextComponentToTlObject(rtc.text) };
+      return { _: "textBold", text: await richTextComponentToTlObject(rtc.text, usernameResolver) };
     case "italic":
-      return { _: "textItalic", text: richTextComponentToTlObject(rtc.text) };
+      return { _: "textItalic", text: await richTextComponentToTlObject(rtc.text, usernameResolver) };
     case "underline":
-      return { _: "textUnderline", text: richTextComponentToTlObject(rtc.text) };
+      return { _: "textUnderline", text: await richTextComponentToTlObject(rtc.text, usernameResolver) };
     case "strikethrough":
-      return { _: "textStrike", text: richTextComponentToTlObject(rtc.text) };
+      return { _: "textStrike", text: await richTextComponentToTlObject(rtc.text, usernameResolver) };
     case "fixed":
-      return { _: "textFixed", text: richTextComponentToTlObject(rtc.text) };
+      return { _: "textFixed", text: await richTextComponentToTlObject(rtc.text, usernameResolver) };
     case "link":
-      return { _: "textUrl", url: rtc.url, webpage_id: BigInt(rtc.linkPreviewId ?? "0"), text: richTextComponentToTlObject(rtc.text) };
+      return { _: "textUrl", url: rtc.url, webpage_id: BigInt(rtc.linkPreviewId ?? "0"), text: await richTextComponentToTlObject(rtc.text, usernameResolver) };
     case "emailLink":
-      return { _: "textEmail", email: rtc.email, text: richTextComponentToTlObject(rtc.text) };
+      return { _: "textEmail", email: rtc.email, text: await richTextComponentToTlObject(rtc.text, usernameResolver) };
     case "concatenate":
-      return { _: "textConcat", texts: rtc.components.map(richTextComponentToTlObject) };
+      return { _: "textConcat", texts: await Promise.all(rtc.components.map((v) => richTextComponentToTlObject(v, usernameResolver))) };
     case "subscript":
-      return { _: "textSubscript", text: richTextComponentToTlObject(rtc.text) };
+      return { _: "textSubscript", text: await richTextComponentToTlObject(rtc.text, usernameResolver) };
     case "superscript":
-      return { _: "textSuperscript", text: richTextComponentToTlObject(rtc.text) };
+      return { _: "textSuperscript", text: await richTextComponentToTlObject(rtc.text, usernameResolver) };
     case "marked":
-      return { _: "textMarked", text: richTextComponentToTlObject(rtc.text) };
+      return { _: "textMarked", text: await richTextComponentToTlObject(rtc.text, usernameResolver) };
     case "phoneNumberLink":
-      return { _: "textPhone", phone: rtc.phoneNumber, text: richTextComponentToTlObject(rtc.text) };
+      return { _: "textPhone", phone: rtc.phoneNumber, text: await richTextComponentToTlObject(rtc.text, usernameResolver) };
     case "photo": {
       const fileId = deserializeFileId(rtc.fileId);
       if (!("id" in fileId.location)) {
@@ -429,34 +445,38 @@ export function richTextComponentToTlObject(rtc: RichTextComponent): Api.RichTex
       return { _: "textImage", document_id: fileId.location.id, w: rtc.width, h: rtc.height };
     }
     case "anchor":
-      return { _: "textAnchor", name: rtc.name, text: richTextComponentToTlObject(rtc.text) };
+      return { _: "textAnchor", name: rtc.name, text: await richTextComponentToTlObject(rtc.text, usernameResolver) };
     case "math":
       return { _: "textMath", source: rtc.code };
     case "customEmoji":
       return { _: "textCustomEmoji", document_id: BigInt(rtc.customEmojiId), alt: rtc.alt };
     case "spoiler":
-      return { _: "textSpoiler", text: richTextComponentToTlObject(rtc.text) };
+      return { _: "textSpoiler", text: await richTextComponentToTlObject(rtc.text, usernameResolver) };
     case "mention":
-      return { _: "textMention", text: richTextComponentToTlObject(rtc.text) };
+      return { _: "textMention", text: await richTextComponentToTlObject(rtc.text, usernameResolver) };
     case "hashtag":
-      return { _: "textHashtag", text: richTextComponentToTlObject(rtc.text) };
+      return { _: "textHashtag", text: await richTextComponentToTlObject(rtc.text, usernameResolver) };
     case "botCommand":
-      return { _: "textBotCommand", text: richTextComponentToTlObject(rtc.text) };
+      return { _: "textBotCommand", text: await richTextComponentToTlObject(rtc.text, usernameResolver) };
     case "cashtag":
-      return { _: "textCashtag", text: richTextComponentToTlObject(rtc.text) };
+      return { _: "textCashtag", text: await richTextComponentToTlObject(rtc.text, usernameResolver) };
     case "url":
-      return { _: "textAutoUrl", text: richTextComponentToTlObject(rtc.text) };
+      return { _: "textAutoUrl", text: await richTextComponentToTlObject(rtc.text, usernameResolver) };
     case "email":
-      return { _: "textAutoEmail", text: richTextComponentToTlObject(rtc.text) };
+      return { _: "textAutoEmail", text: await richTextComponentToTlObject(rtc.text, usernameResolver) };
     case "phoneNumber":
-      return { _: "textAutoPhone", text: richTextComponentToTlObject(rtc.text) };
+      return { _: "textAutoPhone", text: await richTextComponentToTlObject(rtc.text, usernameResolver) };
     case "bankCard":
-      return { _: "textBankCard", text: richTextComponentToTlObject(rtc.text) };
+      return { _: "textBankCard", text: await richTextComponentToTlObject(rtc.text, usernameResolver) };
     case "textMention":
-      return { _: "textMentionName", text: richTextComponentToTlObject(rtc.text), user_id: BigInt(rtc.userId) };
+      return { _: "textMentionName", text: await richTextComponentToTlObject(rtc.text, usernameResolver), user_id: BigInt(rtc.userId) };
     case "dateTime": {
-      const obj: Api.textDate = { _: "textDate", text: richTextComponentToTlObject(rtc.text), date: rtc.date };
+      const obj: Api.textDate = { _: "textDate", text: await richTextComponentToTlObject(rtc.text, usernameResolver), date: rtc.date };
       timeFormatToTlObject(rtc.format ?? "", obj);
+      return obj;
+    }
+    case "button": {
+      const obj: Api.textButton = { _: "textButton", text: await richTextComponentToTlObject(rtc.text, usernameResolver), style: { _: "richButtonStyle", bg_danger: rtc.button.style === "danger" || undefined, bg_primary: rtc.button.style === "primary" || undefined, bg_success: rtc.button.style === "success" || undefined, link: rtc.button.style === "link" || undefined }, type: await richTextButtonToTlObject(rtc.button, usernameResolver) };
       return obj;
     }
   }

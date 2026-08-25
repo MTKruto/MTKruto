@@ -664,7 +664,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
             }
           }
         }
-        rich_message = { _: "inputRichMessage", blocks: richText.blocks.map((v) => inputPageBlockToTlObject(v, photoIds, documentIds)), photos, documents, rtl, noautolink };
+        rich_message = { _: "inputRichMessage", blocks: await Promise.all(richText.blocks.map((v) => inputPageBlockToTlObject(v, photoIds, documentIds, this.usernameResolver.bind(this)))), photos, documents, rtl, noautolink };
         break;
       }
       case "markdown":

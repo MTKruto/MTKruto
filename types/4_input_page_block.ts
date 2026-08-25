@@ -23,6 +23,7 @@ import type { Api } from "../2_tl.ts";
 import type { FileSource } from "./0_file_source.ts";
 import type { Location } from "./0_location.ts";
 import { type RichTextComponent, type RichTextComponentPhoto, richTextComponentToTlObject } from "./3_rich_text_component.ts";
+import type { UsernameResolver } from "./_getters.ts";
 
 /** @unlisted */
 export interface _InputPageBlockMediaCommon {
@@ -112,12 +113,12 @@ export interface InputPageBlockListItemBlockList {
 }
 /** @unlisted */
 export type InputPageBlockListItem = InputPageBlockListItemText | InputPageBlockListItemBlockList;
-export function pageBlockListItemToTlObject(pbli: InputPageBlockListItem, photoIds: bigint[], documentIds: bigint[]): Api.PageListItem {
+export async function pageBlockListItemToTlObject(pbli: InputPageBlockListItem, photoIds: bigint[], documentIds: bigint[], usernameResolver: UsernameResolver): Promise<Api.PageListItem> {
   switch (pbli.type) {
     case "text":
-      return { _: "pageListItemText", checkbox: pbli.isCheckbox || undefined, checked: pbli.isChecked || undefined, text: richTextComponentToTlObject(pbli.text) };
+      return { _: "pageListItemText", checkbox: pbli.isCheckbox || undefined, checked: pbli.isChecked || undefined, text: await richTextComponentToTlObject(pbli.text, usernameResolver) };
     case "blockList":
-      return { _: "pageListItemBlocks", checkbox: pbli.isCheckbox || undefined, checked: pbli.isChecked || undefined, blocks: pbli.blocks.map((v) => inputPageBlockToTlObject(v, photoIds, documentIds)) };
+      return { _: "pageListItemBlocks", checkbox: pbli.isCheckbox || undefined, checked: pbli.isChecked || undefined, blocks: await Promise.all(pbli.blocks.map((v) => inputPageBlockToTlObject(v, photoIds, documentIds, usernameResolver))) };
   }
 }
 /**
@@ -165,11 +166,11 @@ export interface InputPageBlockCaption {
   /** The caption's credit text. */
   credit: RichTextComponent;
 }
-export function pageBlockCaptionToTlObject(pbc: InputPageBlockCaption): Api.PageCaption {
+export async function pageBlockCaptionToTlObject(pbc: InputPageBlockCaption, usernameResolver: UsernameResolver): Promise<Api.PageCaption> {
   return {
     _: "pageCaption",
-    text: richTextComponentToTlObject(pbc.text),
-    credit: richTextComponentToTlObject(pbc.credit),
+    text: await richTextComponentToTlObject(pbc.text, usernameResolver),
+    credit: await richTextComponentToTlObject(pbc.credit, usernameResolver),
   };
 }
 /**
@@ -345,7 +346,7 @@ export interface InputPageBlockTableCell {
   colspan?: number;
   rowspan?: number;
 }
-export function pageBlockTableCellToTlObject(pbtc: InputPageBlockTableCell): Api.PageTableCell {
+export async function pageBlockTableCellToTlObject(pbtc: InputPageBlockTableCell, usernameResolver: UsernameResolver): Promise<Api.PageTableCell> {
   return {
     _: "pageTableCell",
     header: pbtc.isHeader || undefined,
@@ -353,7 +354,7 @@ export function pageBlockTableCellToTlObject(pbtc: InputPageBlockTableCell): Api
     align_right: pbtc.isRightAligned || undefined,
     valign_middle: pbtc.isMiddleVerticallyAligned || undefined,
     valign_bottom: pbtc.isBottomVerticallyAligned || undefined,
-    text: pbtc.text ? richTextComponentToTlObject(pbtc.text) : undefined,
+    text: pbtc.text ? await richTextComponentToTlObject(pbtc.text, usernameResolver) : undefined,
     colspan: pbtc.colspan,
     rowspan: pbtc.rowspan,
   };
@@ -362,10 +363,10 @@ export function pageBlockTableCellToTlObject(pbtc: InputPageBlockTableCell): Api
 export interface InputPageBlockTableRow {
   cells: InputPageBlockTableCell[];
 }
-export function pageBlockTableRowToTlObject(pbtr: InputPageBlockTableRow): Api.PageTableRow {
+export async function pageBlockTableRowToTlObject(pbtr: InputPageBlockTableRow, usernameResolver: UsernameResolver): Promise<Api.PageTableRow> {
   return {
     _: "pageTableRow",
-    cells: pbtr.cells.map(pageBlockTableCellToTlObject),
+    cells: await Promise.all(pbtr.cells.map((v) => pageBlockTableCellToTlObject(v, usernameResolver))),
   };
 }
 /**
@@ -402,12 +403,12 @@ export interface InputPageBlockOrderedListItemTextBlockList {
 }
 /** @unlisted */
 export type InputPageBlockOrderedListItem = InputPageBlockOrderedListItemText | InputPageBlockOrderedListItemTextBlockList;
-export function pageBlockOrderedListItemToTlObject(pboli: InputPageBlockOrderedListItem, photoIds: bigint[], documentIds: bigint[]): Api.PageListOrderedItem {
+export async function pageBlockOrderedListItemToTlObject(pboli: InputPageBlockOrderedListItem, photoIds: bigint[], documentIds: bigint[], usernameResolver: UsernameResolver): Promise<Api.PageListOrderedItem> {
   switch (pboli.type) {
     case "text":
-      return { _: "pageListOrderedItemText", checkbox: pboli.isCheckbox || undefined, checked: pboli.isChecked || undefined, text: richTextComponentToTlObject(pboli.text), num: pboli.number, type: pboli.itemType, value: pboli.value };
+      return { _: "pageListOrderedItemText", checkbox: pboli.isCheckbox || undefined, checked: pboli.isChecked || undefined, text: await richTextComponentToTlObject(pboli.text, usernameResolver), num: pboli.number, type: pboli.itemType, value: pboli.value };
     case "blockList":
-      return { _: "pageListOrderedItemBlocks", checkbox: pboli.isCheckbox || undefined, checked: pboli.isChecked || undefined, blocks: pboli.blocks.map((v) => inputPageBlockToTlObject(v, photoIds, documentIds)), num: pboli.number, type: pboli.itemType, value: pboli.value };
+      return { _: "pageListOrderedItemBlocks", checkbox: pboli.isCheckbox || undefined, checked: pboli.isChecked || undefined, blocks: await Promise.all(pboli.blocks.map((v) => inputPageBlockToTlObject(v, photoIds, documentIds, usernameResolver))), num: pboli.number, type: pboli.itemType, value: pboli.value };
   }
 }
 /**
@@ -571,30 +572,30 @@ export type InputPageBlock =
   | InputPageBlockThinking
   | InputPageBlockBlockQuoteBlocks;
 
-export function inputPageBlockToTlObject(pb: InputPageBlock, photoIds: bigint[], documentIds: bigint[]): Api.PageBlock {
+export async function inputPageBlockToTlObject(pb: InputPageBlock, photoIds: bigint[], documentIds: bigint[], usernameResolver: UsernameResolver): Promise<Api.PageBlock> {
   switch (pb.type) {
     case "paragraph":
-      return { _: "pageBlockParagraph", text: richTextComponentToTlObject(pb.text) };
+      return { _: "pageBlockParagraph", text: await richTextComponentToTlObject(pb.text, usernameResolver) };
     case "pre":
-      return { _: "pageBlockPreformatted", text: richTextComponentToTlObject(pb.text), language: pb.language ?? "" };
+      return { _: "pageBlockPreformatted", text: await richTextComponentToTlObject(pb.text, usernameResolver), language: pb.language ?? "" };
     case "footer":
-      return { _: "pageBlockFooter", text: richTextComponentToTlObject(pb.text) };
+      return { _: "pageBlockFooter", text: await richTextComponentToTlObject(pb.text, usernameResolver) };
     case "divider":
       return { _: "pageBlockDivider" };
     case "anchor":
       return { _: "pageBlockAnchor", name: pb.name };
     case "list":
-      return { _: "pageBlockList", items: pb.items.map((v) => pageBlockListItemToTlObject(v, photoIds, documentIds)) };
+      return { _: "pageBlockList", items: await Promise.all(pb.items.map((v) => pageBlockListItemToTlObject(v, photoIds, documentIds, usernameResolver))) };
     case "blockQuote":
-      return { _: "pageBlockBlockquote", text: richTextComponentToTlObject(pb.text), caption: richTextComponentToTlObject(pb.caption) };
+      return { _: "pageBlockBlockquote", text: await richTextComponentToTlObject(pb.text, usernameResolver), caption: await richTextComponentToTlObject(pb.caption, usernameResolver) };
     case "pullQuote":
-      return { _: "pageBlockPullquote", text: richTextComponentToTlObject(pb.text), caption: richTextComponentToTlObject(pb.caption) };
+      return { _: "pageBlockPullquote", text: await richTextComponentToTlObject(pb.text, usernameResolver), caption: await richTextComponentToTlObject(pb.caption, usernameResolver) };
     case "photo": {
       const photo_id = photoIds.shift();
       if (photo_id === undefined) {
         unreachable();
       }
-      return { _: "pageBlockPhoto", photo_id, caption: pageBlockCaptionToTlObject(pb.caption ?? { text: { type: "empty" }, credit: { type: "empty" } }), spoiler: pb.isSpoiler || undefined, url: pb.url, webpage_id: pb.linkPreviewId ? BigInt(pb.linkPreviewId) : undefined };
+      return { _: "pageBlockPhoto", photo_id, caption: await pageBlockCaptionToTlObject(pb.caption ?? { text: { type: "empty" }, credit: { type: "empty" } }, usernameResolver), spoiler: pb.isSpoiler || undefined, url: pb.url, webpage_id: pb.linkPreviewId ? BigInt(pb.linkPreviewId) : undefined };
     }
     case "video":
     case "animation": {
@@ -602,54 +603,54 @@ export function inputPageBlockToTlObject(pb: InputPageBlock, photoIds: bigint[],
       if (video_id === undefined) {
         unreachable();
       }
-      return { _: "pageBlockVideo", video_id, caption: pageBlockCaptionToTlObject(pb.caption ?? { text: { type: "empty" }, credit: { type: "empty" } }), spoiler: pb.isSpoiler || undefined, autoplay: pb.isAutoplay || undefined, loop: pb.isLoop || undefined };
+      return { _: "pageBlockVideo", video_id, caption: await pageBlockCaptionToTlObject(pb.caption ?? { text: { type: "empty" }, credit: { type: "empty" } }, usernameResolver), spoiler: pb.isSpoiler || undefined, autoplay: pb.isAutoplay || undefined, loop: pb.isLoop || undefined };
     }
     case "cover":
-      return { _: "pageBlockCover", cover: inputPageBlockToTlObject(pb.cover, photoIds, documentIds) };
+      return { _: "pageBlockCover", cover: await inputPageBlockToTlObject(pb.cover, photoIds, documentIds, usernameResolver) };
     case "embed":
-      return { _: "pageBlockEmbed", caption: pageBlockCaptionToTlObject(pb.caption), allow_scrolling: pb.isScrollingAllowed || undefined, full_width: pb.isFullWidth || undefined, w: pb.width, h: pb.height, html: pb.html, url: pb.url, poster_photo_id: pb.posterPhotoId ? BigInt(pb.posterPhotoId) : undefined };
+      return { _: "pageBlockEmbed", caption: await pageBlockCaptionToTlObject(pb.caption, usernameResolver), allow_scrolling: pb.isScrollingAllowed || undefined, full_width: pb.isFullWidth || undefined, w: pb.width, h: pb.height, html: pb.html, url: pb.url, poster_photo_id: pb.posterPhotoId ? BigInt(pb.posterPhotoId) : undefined };
     case "embedPost":
-      return { _: "pageBlockEmbedPost", caption: pageBlockCaptionToTlObject(pb.caption), url: pb.url, author: pb.author, author_photo_id: BigInt(pb.authorPhotoId), blocks: pb.blocks.map((v) => inputPageBlockToTlObject(v, photoIds, documentIds)), date: pb.date, webpage_id: BigInt(pb.linkPreviewId) };
+      return { _: "pageBlockEmbedPost", caption: await pageBlockCaptionToTlObject(pb.caption, usernameResolver), url: pb.url, author: pb.author, author_photo_id: BigInt(pb.authorPhotoId), blocks: await Promise.all(pb.blocks.map((v) => inputPageBlockToTlObject(v, photoIds, documentIds, usernameResolver))), date: pb.date, webpage_id: BigInt(pb.linkPreviewId) };
     case "collage":
-      return { _: "pageBlockCollage", caption: pageBlockCaptionToTlObject(pb.caption), items: pb.items.map((v) => inputPageBlockToTlObject(v, photoIds, documentIds)) };
+      return { _: "pageBlockCollage", caption: await pageBlockCaptionToTlObject(pb.caption, usernameResolver), items: await Promise.all(pb.items.map((v) => inputPageBlockToTlObject(v, photoIds, documentIds, usernameResolver))) };
     case "slideshow":
-      return { _: "pageBlockSlideshow", caption: pageBlockCaptionToTlObject(pb.caption), items: pb.items.map((v) => inputPageBlockToTlObject(v, photoIds, documentIds)) };
+      return { _: "pageBlockSlideshow", caption: await pageBlockCaptionToTlObject(pb.caption, usernameResolver), items: await Promise.all(pb.items.map((v) => inputPageBlockToTlObject(v, photoIds, documentIds, usernameResolver))) };
     case "audio":
     case "voice": {
       const audio_id = documentIds.shift();
       if (audio_id === undefined) {
         unreachable();
       }
-      return { _: "pageBlockAudio", audio_id, caption: pageBlockCaptionToTlObject(pb.caption ?? { text: { type: "empty" }, credit: { type: "empty" } }) };
+      return { _: "pageBlockAudio", audio_id, caption: await pageBlockCaptionToTlObject(pb.caption ?? { text: { type: "empty" }, credit: { type: "empty" } }, usernameResolver) };
     }
     case "kicker":
-      return { _: "pageBlockKicker", text: richTextComponentToTlObject(pb.text) };
+      return { _: "pageBlockKicker", text: await richTextComponentToTlObject(pb.text, usernameResolver) };
     case "math":
       return { _: "pageBlockMath", source: pb.code };
     case "table":
-      return { _: "pageBlockTable", title: richTextComponentToTlObject(pb.title), rows: pb.rows.map(pageBlockTableRowToTlObject), bordered: pb.isBordered || undefined, striped: pb.isStriped || undefined };
+      return { _: "pageBlockTable", title: await richTextComponentToTlObject(pb.title, usernameResolver), rows: await Promise.all(pb.rows.map((v) => pageBlockTableRowToTlObject(v, usernameResolver))), bordered: pb.isBordered || undefined, striped: pb.isStriped || undefined };
     case "orderedList":
-      return { _: "pageBlockOrderedList", items: pb.items.map((v) => pageBlockOrderedListItemToTlObject(v, photoIds, documentIds)), reversed: pb.isReversed || undefined, start: pb.start, type: pb.itemsType };
+      return { _: "pageBlockOrderedList", items: await Promise.all(pb.items.map((v) => pageBlockOrderedListItemToTlObject(v, photoIds, documentIds, usernameResolver))), reversed: pb.isReversed || undefined, start: pb.start, type: pb.itemsType };
     case "details":
-      return { _: "pageBlockDetails", title: richTextComponentToTlObject(pb.title), blocks: pb.blocks.map((v) => inputPageBlockToTlObject(v, photoIds, documentIds)), open: pb.isOpen || undefined };
+      return { _: "pageBlockDetails", title: await richTextComponentToTlObject(pb.title, usernameResolver), blocks: await Promise.all(pb.blocks.map((v) => inputPageBlockToTlObject(v, photoIds, documentIds, usernameResolver))), open: pb.isOpen || undefined };
     case "map":
-      return { _: "inputPageBlockMap", geo: { _: "inputGeoPoint", lat: pb.location.latitude, long: pb.location.longitude, accuracy_radius: pb.location.horizontalAccuracy }, caption: pageBlockCaptionToTlObject(pb.caption), w: pb.width, h: pb.height, zoom: pb.zoom };
+      return { _: "inputPageBlockMap", geo: { _: "inputGeoPoint", lat: pb.location.latitude, long: pb.location.longitude, accuracy_radius: pb.location.horizontalAccuracy }, caption: await pageBlockCaptionToTlObject(pb.caption, usernameResolver), w: pb.width, h: pb.height, zoom: pb.zoom };
     case "heading1":
-      return { _: "pageBlockHeading1", text: richTextComponentToTlObject(pb.text) };
+      return { _: "pageBlockHeading1", text: await richTextComponentToTlObject(pb.text, usernameResolver) };
     case "heading2":
-      return { _: "pageBlockHeading2", text: richTextComponentToTlObject(pb.text) };
+      return { _: "pageBlockHeading2", text: await richTextComponentToTlObject(pb.text, usernameResolver) };
     case "heading3":
-      return { _: "pageBlockHeading3", text: richTextComponentToTlObject(pb.text) };
+      return { _: "pageBlockHeading3", text: await richTextComponentToTlObject(pb.text, usernameResolver) };
     case "heading4":
-      return { _: "pageBlockHeading4", text: richTextComponentToTlObject(pb.text) };
+      return { _: "pageBlockHeading4", text: await richTextComponentToTlObject(pb.text, usernameResolver) };
     case "heading5":
-      return { _: "pageBlockHeading5", text: richTextComponentToTlObject(pb.text) };
+      return { _: "pageBlockHeading5", text: await richTextComponentToTlObject(pb.text, usernameResolver) };
     case "heading6":
-      return { _: "pageBlockHeading6", text: richTextComponentToTlObject(pb.text) };
+      return { _: "pageBlockHeading6", text: await richTextComponentToTlObject(pb.text, usernameResolver) };
     case "thinking":
-      return { _: "pageBlockThinking", text: richTextComponentToTlObject(pb.text) };
+      return { _: "pageBlockThinking", text: await richTextComponentToTlObject(pb.text, usernameResolver) };
     case "blockQuoteBlocks":
-      return { _: "pageBlockBlockquoteBlocks", caption: richTextComponentToTlObject(pb.caption), blocks: pb.blocks.map((v) => inputPageBlockToTlObject(v, photoIds, documentIds)) };
+      return { _: "pageBlockBlockquoteBlocks", caption: await richTextComponentToTlObject(pb.caption, usernameResolver), blocks: await Promise.all(pb.blocks.map((v) => inputPageBlockToTlObject(v, photoIds, documentIds, usernameResolver))) };
   }
 
   unreachable();
@@ -720,6 +721,7 @@ function flattenRichTextComponent(component: RichTextComponent): RichTextCompone
     case "phoneNumber":
     case "bankCard":
     case "textMention":
+    case "button":
       for (const item of flattenRichTextComponent(component.text)) {
         items.push(item);
       }

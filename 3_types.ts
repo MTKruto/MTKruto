@@ -121,6 +121,7 @@ export * from "./types/1_order_info.ts";
 export * from "./types/1_photo.ts";
 export * from "./types/1_reaction_count.ts";
 export * from "./types/1_report_result.ts";
+export * from "./types/1_rich_text_button.ts";
 export * from "./types/1_sticker_set_p.ts";
 export * from "./types/1_sticker.ts";
 export * from "./types/1_story_reaction.ts";
