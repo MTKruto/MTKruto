@@ -143,7 +143,17 @@ export abstract class Session {
         this.#resolveConnectionStateChange();
         return;
       }
-      await this.transport.connection.open();
+      do {
+        try {
+          await this.transport.connection.open();
+          break;
+        } catch (err) {
+          if (!(err instanceof Error) || err.name !== "NetworkUnreachable") {
+            throw err;
+          }
+          await delay(3 * SECOND);
+        }
+      } while (true);
       try {
         await this.transport.transport.initialize();
       } catch (err) {
