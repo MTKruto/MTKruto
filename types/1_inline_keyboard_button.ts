@@ -169,7 +169,7 @@ export function constructInlineKeyboardButton(button_: Api.KeyboardInlineButton)
     if (button_.type.same_peer) {
       return cleanObject({ type: "switchInlineQueryCurrentChat", text, style, inlineQuery: button_.type.query });
     } else if (button_.type.peer_types && button_.type.peer_types.length) {
-      const isUser = button_.type.peer_types.some((v) => v._ === "inlineQueryPeerTypeBotPM") || undefined;
+      const isUser = button_.type.peer_types.some((v) => v._ === "inlineQueryPeerTypePM") || undefined;
       const isBot = button_.type.peer_types.some((v) => v._ === "inlineQueryPeerTypeSameBotPM" || v._ === "inlineQueryPeerTypeBotPM") || undefined;
       const isGroup = button_.type.peer_types.some((v) => v._ === "inlineQueryPeerTypeChat" || v._ === "inlineQueryPeerTypeMegagroup") || undefined;
       const isChannel = button_.type.peer_types.some((v) => v._ === "inlineQueryPeerTypeBroadcast") || undefined;
@@ -226,7 +226,7 @@ export async function inlineKeyboardButtonToTlObject(button: InlineKeyboardButto
         throw new InputError("switchInlineQueryChosenChats: At least one chat type must be allowed.");
       }
       if (isUser) {
-        peerTypes.push({ _: "inlineQueryPeerTypeBotPM" });
+        peerTypes.push({ _: "inlineQueryPeerTypePM" });
       }
       if (isBot) {
         peerTypes.push({ _: "inlineQueryPeerTypeSameBotPM" }, { _: "inlineQueryPeerTypeBotPM" });

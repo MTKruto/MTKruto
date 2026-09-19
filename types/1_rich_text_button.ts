@@ -177,7 +177,7 @@ export function constructRichTextButton(button_: Api.InlineButtonType, style_: A
     if (button_.same_peer) {
       return cleanObject({ type: "switchInlineQueryCurrentChat", style, inlineQuery: button_.query });
     } else if (button_.peer_types && button_.peer_types.length) {
-      const isUser = button_.peer_types.some((v) => v._ === "inlineQueryPeerTypeBotPM") || undefined;
+      const isUser = button_.peer_types.some((v) => v._ === "inlineQueryPeerTypePM") || undefined;
       const isBot = button_.peer_types.some((v) => v._ === "inlineQueryPeerTypeSameBotPM" || v._ === "inlineQueryPeerTypeBotPM") || undefined;
       const isGroup = button_.peer_types.some((v) => v._ === "inlineQueryPeerTypeChat" || v._ === "inlineQueryPeerTypeMegagroup") || undefined;
       const isChannel = button_.peer_types.some((v) => v._ === "inlineQueryPeerTypeBroadcast") || undefined;
@@ -228,7 +228,7 @@ export async function richTextButtonToTlObject(button: RichTextButton, usernameR
         throw new InputError("switchInlineQueryChosenChats: At least one chat type must be allowed.");
       }
       if (isUser) {
-        peerTypes.push({ _: "inlineQueryPeerTypeBotPM" });
+        peerTypes.push({ _: "inlineQueryPeerTypePM" });
       }
       if (isBot) {
         peerTypes.push({ _: "inlineQueryPeerTypeSameBotPM" }, { _: "inlineQueryPeerTypeBotPM" });
