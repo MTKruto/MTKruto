@@ -18,40 +18,40 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-export { assert } from "jsr:@std/assert@1.0.19/assert";
-export { assertFalse } from "jsr:@std/assert@1.0.19/false";
-export { assertEquals } from "jsr:@std/assert@1.0.19/equals";
-export { unreachable } from "jsr:@std/assert@1.0.19/unreachable";
-export { AssertionError } from "jsr:@std/assert@1.0.19/assertion-error";
+export { assert } from "@std/assert/assert";
+export { assertFalse } from "@std/assert/false";
+export { assertEquals } from "@std/assert/equals";
+export { unreachable } from "@std/assert/unreachable";
+export { AssertionError } from "@std/assert/assertion-error";
 
-export { join } from "jsr:@std/path@1.1.6/join";
-export { extname } from "jsr:@std/path@1.1.6/extname";
-export { basename } from "jsr:@std/path@1.1.6/basename";
-export { toFileUrl } from "jsr:@std/path@1.1.6/to-file-url";
-export { isAbsolute } from "jsr:@std/path@1.1.6/is-absolute";
+export { join } from "@std/path/join";
+export { extname } from "@std/path/extname";
+export { basename } from "@std/path/basename";
+export { toFileUrl } from "@std/path/to-file-url";
+export { isAbsolute } from "@std/path/is-absolute";
 
-export { delay } from "jsr:@std/async@1.5.0/delay";
-export { pooledMap } from "jsr:@std/async@1.5.0/pool";
+export { delay } from "@std/async/delay";
+export { pooledMap } from "@std/async/pool";
 
-export { concat } from "jsr:@std/bytes@1.0.6/concat";
-export { equals } from "jsr:@std/bytes@1.0.6/equals";
-export { startsWith } from "jsr:@std/bytes@1.0.6/starts-with";
+export { concat } from "@std/bytes/concat";
+export { equals } from "@std/bytes/equals";
+export { startsWith } from "@std/bytes/starts-with";
 
-export { isIPv4, isIPv6 } from "jsr:@std/net@1.0.6/unstable-ip";
+export { isIPv4, isIPv6 } from "@std/net/unstable-ip";
 
-export { LruCache } from "jsr:@std/cache@0.2.4/lru-cache";
+export { LruCache } from "@std/cache/lru-cache";
 
-export { writeAll } from "jsr:@std/io@0.225.3/write-all";
+export { writeAll } from "@std/io/write-all";
 
-export { format } from "jsr:@std/datetime@0.225.7/format";
-export { MINUTE, SECOND, WEEK } from "jsr:@std/datetime@0.225.7/constants";
+export { format } from "@std/datetime/format";
+export { MINUTE, SECOND, WEEK } from "@std/datetime/constants";
 
-export { toArrayBuffer } from "jsr:@std/streams@1.1.2/to-array-buffer";
+export { toArrayBuffer } from "@std/streams/to-array-buffer";
 
-export { decodeHex, encodeHex } from "jsr:@std/encoding@1.0.11/hex";
-export { decodeBase64, encodeBase64 } from "jsr:@std/encoding@1.0.11/base64";
+export { decodeHex, encodeHex } from "@std/encoding/hex";
+export { decodeBase64, encodeBase64 } from "@std/encoding/base64";
 
-import { contentType as contentType_ } from "jsr:@std/media-types@1.1.0/content-type";
+import { contentType as contentType_ } from "@std/media-types/content-type";
 export const contentType: typeof contentType_ = (extensionOrType) => {
   if (extensionOrType === "tgs") {
     return "application/x-tgsticker";
@@ -59,7 +59,7 @@ export const contentType: typeof contentType_ = (extensionOrType) => {
     return contentType_(extensionOrType);
   }
 };
-import { extension as extension_ } from "jsr:@std/media-types@1.1.0/extension";
+import { extension as extension_ } from "@std/media-types/extension";
 export function extension(mimeType: string) {
   if (mimeType === "application/x-tgsticker") {
     return "tgs";
@@ -68,10 +68,10 @@ export function extension(mimeType: string) {
   }
 }
 
-export { crypto } from "jsr:@std/crypto@1.1.0";
+export { crypto } from "@std/crypto";
 
-import { ige256Decrypt as defaultIge256Decrypt, ige256Encrypt as defaultIge256Encrypt } from "jsr:@roj/tgcrypto@1.0.3";
-export { init as initTgCrypto } from "jsr:@roj/tgcrypto@1.0.3";
+import { ige256Decrypt as defaultIge256Decrypt, ige256Encrypt as defaultIge256Encrypt } from "@roj/tgcrypto";
+export { init as initTgCrypto } from "@roj/tgcrypto";
 
 export type Ige256 = (data: Uint8Array, key: Uint8Array, iv: Uint8Array) => Uint8Array<ArrayBuffer>;
 

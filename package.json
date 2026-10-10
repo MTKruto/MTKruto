@@ -1,0 +1,36 @@
+{
+  "name": "MTKruto",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.10.1",
+      "onFail": "download"
+    }
+  },
+  "packageManager": "pnpm@12.10.1",
+  "type": "module",
+  "dependencies": {
+    "@roj/tgcrypto": "jsr:^1.0.3",
+    "@std/assert": "jsr:^1.0.19",
+    "@std/async": "jsr:^1.5.1",
+    "@std/bytes": "jsr:^1.0.6",
+    "@std/cache": "jsr:^0.2.4",
+    "@std/crypto": "jsr:^1.1.0",
+    "@std/datetime": "jsr:^0.225.7",
+    "@std/encoding": "jsr:^1.0.11",
+    "@std/io": "jsr:^0.225.3",
+    "@std/media-types": "jsr:^1.1.0",
+    "@std/net": "jsr:^1.0.7",
+    "@std/path": "jsr:^1.1.6",
+    "@std/streams": "jsr:^1.2.0"
+  }
+}
