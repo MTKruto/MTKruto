@@ -21,6 +21,7 @@
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { constructPhoto, type Photo } from "./1_photo.ts";
+import { constructMessageEntity, type MessageEntity } from "./2_message_entity.ts";
 import { constructUser, type User } from "./2_user.ts";
 
 /** A resolved invite link. */
@@ -61,6 +62,8 @@ export interface ResolvedInviteLink {
   verificationCustomEmojiId?: string;
   /** The chat verification's description. */
   verificationDescription?: string;
+  /** The chat verification's description entities. */
+  verificationDescriptionEntities?: MessageEntity[];
 }
 
 export function constructResolvedInviteLink(il: Api.chatInvite): ResolvedInviteLink {
@@ -82,6 +85,7 @@ export function constructResolvedInviteLink(il: Api.chatInvite): ResolvedInviteL
     subscriptionPrice: il.subscription_pricing?.amount ? Number(il.subscription_pricing.amount) : undefined,
     verificationBotId: il.bot_verification?.bot_id ? Number(il.bot_verification.bot_id) : undefined,
     verificationCustomEmojiId: il.bot_verification?.icon ? String(il.bot_verification.icon) : undefined,
-    verificationDescription: il.bot_verification?.description,
+    verificationDescription: il.bot_verification?.description.text,
+    verificationDescriptionEntities: il.bot_verification?.description.entities.map(constructMessageEntity).filter((v) => v !== null),
   });
 }
