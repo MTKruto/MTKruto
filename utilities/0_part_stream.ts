@@ -32,6 +32,9 @@ export class PartStream extends TransformStream<Uint8Array<ArrayBuffer>, Part> {
   #part = 0;
 
   constructor(chunkSize: number) {
+    if (!Number.isInteger(chunkSize) || chunkSize <= 0) {
+      throw new RangeError("chunkSize must be a positive integer.");
+    }
     const buffer = new Uint8Array(chunkSize);
     super({
       transform: (chunk, controller) => {
