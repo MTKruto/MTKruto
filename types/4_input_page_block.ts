@@ -20,10 +20,10 @@
 
 import { unreachable } from "../0_deps.ts";
 import type { Api } from "../2_tl.ts";
+import type { UsernameResolver } from "./_getters.ts";
 import type { FileSource } from "./0_file_source.ts";
 import type { Location } from "./0_location.ts";
 import { type RichTextComponent, type RichTextComponentPhoto, richTextComponentToTlObject } from "./3_rich_text_component.ts";
-import type { UsernameResolver } from "./_getters.ts";
 
 /** @unlisted */
 export interface _InputPageBlockMediaCommon {

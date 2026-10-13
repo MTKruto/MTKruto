@@ -22,10 +22,10 @@ import { unreachable } from "../0_deps.ts";
 import { cleanObject } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { deserializeFileId } from "./_file_id.ts";
+import type { UsernameResolver } from "./_getters.ts";
 import { constructPhoto } from "./1_photo.ts";
 import { constructRichTextButton, type RichTextButton, richTextButtonToTlObject } from "./1_rich_text_button.ts";
 import { constructDateTimeFormat, timeFormatToTlObject } from "./2_message_entity.ts";
-import type { UsernameResolver } from "./_getters.ts";
 
 /**
  * An empty rich text component.
