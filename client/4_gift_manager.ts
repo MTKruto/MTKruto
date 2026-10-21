@@ -149,4 +149,10 @@ export class GiftManager {
     const form = await this.#c.invoke({ _: "payments.getPaymentForm", invoice });
     await this.#c.invoke({ _: "payments.sendStarsForm", form_id: form.form_id, invoice });
   }
+
+  async deleteGift(gift: InputGift) {
+    this.#c.storage.assertUser("deleteGift");
+    const stargift = await inputGiftToTlObject(gift, this.#c.getInputPeer);
+    await this.#c.invoke({ _: "payments.deleteStarGift", stargift });
+  }
 }

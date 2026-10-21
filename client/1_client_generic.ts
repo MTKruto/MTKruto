@@ -3390,6 +3390,14 @@ export abstract class ClientGeneric {
   abstract craftGifts(gifts: InputGift[]): Promise<void>;
 
   /**
+   * Delete a gift. User-only.
+   *
+   * @method gf
+   * @param gift The gift to delete.
+   */
+  abstract deleteGift(gift: InputGift): Promise<void>;
+
+  /**
    * Get gifts claimed by a user or a channel.
    *
    * @method gf

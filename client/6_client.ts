@@ -5508,6 +5508,16 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
+   * Delete a gift. User-only.
+   *
+   * @method gf
+   * @param gift The gift to delete.
+   */
+  async deleteGift(gift: InputGift): Promise<void> {
+    return await this.#giftManager.deleteGift(gift);
+  }
+
+  /**
    * Get gifts claimed by a user or a channel.
    *
    * @method gf
