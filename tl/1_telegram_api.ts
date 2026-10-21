@@ -701,6 +701,7 @@ export interface channel {
   broadcast_messages_allowed?: true;
   monoforum?: true;
   forum_tabs?: true;
+  in_news?: true;
   id: bigint;
   access_hash?: bigint;
   title: string;
@@ -723,6 +724,7 @@ export interface channel {
   send_paid_messages_stars?: bigint;
   linked_monoforum_id?: bigint;
   linked_community_id?: bigint;
+  pinned_msg_id?: number;
 }
 
 /** https://core.telegram.org/constructor/channelForbidden */
@@ -858,6 +860,7 @@ export interface channelFull {
   send_paid_messages_stars?: bigint;
   main_tab?: ProfileTab;
   guard_bot_id?: bigint;
+  share_theme?: ShareTheme;
 }
 
 /** https://core.telegram.org/constructor/communityFull */
@@ -1750,6 +1753,11 @@ export interface messageActionWalletTonConnectRequest {
   dapp_name?: string;
 }
 
+/** https://core.telegram.org/constructor/messageActionNoPaidMessagesTokenUsed */
+export interface messageActionNoPaidMessagesTokenUsed {
+  _: "messageActionNoPaidMessagesTokenUsed";
+}
+
 /** https://core.telegram.org/constructor/dialog */
 export interface dialog {
   _: "dialog";
@@ -2144,6 +2152,8 @@ export interface userFull {
   saved_music?: Document;
   note?: TextWithEntities;
   bot_manager_id?: bigint;
+  wallet_card?: wallet_Card;
+  share_theme?: ShareTheme;
 }
 
 /** https://core.telegram.org/constructor/contact */
@@ -8558,6 +8568,7 @@ export interface urlAuthResultRequest {
   request_phone_number?: true;
   match_codes_first?: true;
   is_app?: true;
+  request_wallet?: true;
   bot: User;
   domain: string;
   browser?: string;
@@ -8567,6 +8578,8 @@ export interface urlAuthResultRequest {
   match_codes?: Array<string>;
   user_id_hint?: bigint;
   verified_app_name?: string;
+  tc_session_id?: bigint;
+  tc_client_id?: string;
 }
 
 /** https://core.telegram.org/constructor/urlAuthResultAccepted */
@@ -9103,6 +9116,7 @@ export interface messageReplyHeader {
   quote_offset?: number;
   todo_item_id?: number;
   poll_option?: Uint8Array<ArrayBuffer>;
+  quote_rich?: Array<RichText>;
 }
 
 /** https://core.telegram.org/constructor/messageReplyStoryHeader */
@@ -10731,6 +10745,7 @@ export interface inputReplyToMessage {
   monoforum_peer_id?: InputPeer;
   todo_item_id?: number;
   poll_option?: Uint8Array<ArrayBuffer>;
+  quote_rich?: Array<RichText>;
 }
 
 /** https://core.telegram.org/constructor/inputReplyToStory */
@@ -13554,6 +13569,20 @@ export interface walletTransactionPeerUnsupported {
   _: "walletTransactionPeerUnsupported";
 }
 
+/** https://core.telegram.org/constructor/walletTransactionPeerChannel */
+export interface walletTransactionPeerChannel {
+  _: "walletTransactionPeerChannel";
+  channel_id: bigint;
+  address: string;
+  domain?: string;
+}
+
+/** https://core.telegram.org/constructor/walletTransactionPeerTelegramGift */
+export interface walletTransactionPeerTelegramGift {
+  _: "walletTransactionPeerTelegramGift";
+  own_profile?: true;
+}
+
 /** https://core.telegram.org/constructor/walletTransaction */
 export interface walletTransaction {
   _: "walletTransaction";
@@ -13719,6 +13748,7 @@ export interface wallet_nftItem {
   lottie?: WebDocument;
   attributes?: Array<wallet_NftAttribute>;
   extra?: DataJSON;
+  gift?: StarGift;
 }
 
 /** https://core.telegram.org/constructor/wallet.nftItems */
@@ -13733,6 +13763,101 @@ export interface auth_firebasePnvIntent {
   _: "auth.firebasePnvIntent";
   nonce: string;
   digital_credential_payload: string;
+}
+
+/** https://core.telegram.org/constructor/inputTonConnectOauthSession */
+export interface inputTonConnectOauthSession {
+  _: "inputTonConnectOauthSession";
+  session_id: bigint;
+  challenge_answer: Uint8Array<ArrayBuffer>;
+  body: Uint8Array<ArrayBuffer>;
+  proof: WalletOwnershipProof;
+}
+
+/** https://core.telegram.org/constructor/exportedNoPaidMessagesToken */
+export interface exportedNoPaidMessagesToken {
+  _: "exportedNoPaidMessagesToken";
+  token: string;
+  url: string;
+  expires?: number;
+}
+
+/** https://core.telegram.org/constructor/shareThemeDefault */
+export interface shareThemeDefault {
+  _: "shareThemeDefault";
+}
+
+/** https://core.telegram.org/constructor/shareThemeEmojiBackdrop */
+export interface shareThemeEmojiBackdrop {
+  _: "shareThemeEmojiBackdrop";
+  backdrop_id?: number;
+  emojis?: Array<Reaction>;
+}
+
+/** https://core.telegram.org/constructor/shareThemeGift */
+export interface shareThemeGift {
+  _: "shareThemeGift";
+  stargift: StarGift;
+}
+
+/** https://core.telegram.org/constructor/inputShareThemeGift */
+export interface inputShareThemeGift {
+  _: "inputShareThemeGift";
+  stargift: InputSavedStarGift;
+}
+
+/** https://core.telegram.org/constructor/shareThemeBackdropOption */
+export interface shareThemeBackdropOption {
+  _: "shareThemeBackdropOption";
+  backdrop_id: number;
+  name: string;
+  center_color: number;
+  edge_color: number;
+  pattern_color: number;
+  text_color: number;
+}
+
+/** https://core.telegram.org/constructor/shareThemeBackdropsNotModified */
+export interface shareThemeBackdropsNotModified {
+  _: "shareThemeBackdropsNotModified";
+}
+
+/** https://core.telegram.org/constructor/shareThemeBackdrops */
+export interface shareThemeBackdrops {
+  _: "shareThemeBackdrops";
+  hash: number;
+  backdrops: Array<ShareThemeBackdropOption>;
+}
+
+/** https://core.telegram.org/constructor/inputWalletCardSticker */
+export interface inputWalletCardSticker {
+  _: "inputWalletCardSticker";
+  coordinates: MediaAreaCoordinates;
+  nft_address: string;
+}
+
+/** https://core.telegram.org/constructor/wallet.cardSticker */
+export interface wallet_cardSticker {
+  _: "wallet.cardSticker";
+  coordinates: MediaAreaCoordinates;
+  nft: wallet_NftItem;
+}
+
+/** https://core.telegram.org/constructor/wallet.card */
+export interface wallet_card {
+  _: "wallet.card";
+  stickers?: Array<wallet_CardSticker>;
+  bg_nft_item?: wallet_NftItem;
+  address: string;
+  balance: bigint;
+}
+
+/** https://core.telegram.org/constructor/payments.starGiftDepositPayload */
+export interface payments_starGiftDepositPayload {
+  _: "payments.starGiftDepositPayload";
+  nft_address: string;
+  payload: Uint8Array<ArrayBuffer>;
+  amount: bigint;
 }
 
 /** https://core.telegram.org/method/invokeAfterMsg */
@@ -15329,6 +15454,22 @@ export interface contacts_updateContactNote {
   [R]?: boolean;
 }
 
+/** https://core.telegram.org/method/contacts.exportNoPaidMessagesToken */
+export interface contacts_exportNoPaidMessagesToken {
+  _: "contacts.exportNoPaidMessagesToken";
+  revoke?: true;
+  temporary?: true;
+  [R]?: ExportedNoPaidMessagesToken;
+}
+
+/** https://core.telegram.org/method/contacts.importNoPaidMessagesToken */
+export interface contacts_importNoPaidMessagesToken {
+  _: "contacts.importNoPaidMessagesToken";
+  user_id: InputUser;
+  token: string;
+  [R]?: User;
+}
+
 /** https://core.telegram.org/method/messages.getMessages */
 export interface messages_getMessages {
   _: "messages.getMessages";
@@ -16390,6 +16531,7 @@ export interface messages_acceptUrlAuth {
   button_id?: number;
   url?: string;
   match_code?: string;
+  tonconnect_session?: InputTonConnectOauthSession;
   [R]?: UrlAuthResult;
 }
 
@@ -17733,6 +17875,21 @@ export interface messages_requestChatJoinWebView {
   theme_params?: DataJSON;
   platform: string;
   [R]?: WebViewResult;
+}
+
+/** https://core.telegram.org/method/messages.setShareTheme */
+export interface messages_setShareTheme {
+  _: "messages.setShareTheme";
+  peer: InputPeer;
+  theme: ShareTheme;
+  [R]?: boolean;
+}
+
+/** https://core.telegram.org/method/messages.getShareThemeBackdrops */
+export interface messages_getShareThemeBackdrops {
+  _: "messages.getShareThemeBackdrops";
+  hash: number;
+  [R]?: ShareThemeBackdrops;
 }
 
 /** https://core.telegram.org/method/updates.getState */
@@ -19249,7 +19406,7 @@ export interface payments_getSavedStarGift {
 export interface payments_getStarGiftWithdrawalUrl {
   _: "payments.getStarGiftWithdrawalUrl";
   stargift: InputSavedStarGift;
-  password: InputCheckPasswordSRP;
+  tmp_password: Uint8Array<ArrayBuffer>;
   [R]?: payments_StarGiftWithdrawalUrl;
 }
 
@@ -19490,6 +19647,39 @@ export interface payments_createOnrampSession {
   fail_return_url?: string;
   crypto_amount?: string;
   [R]?: OnrampSession;
+}
+
+/** https://core.telegram.org/method/payments.withdrawStarGift */
+export interface payments_withdrawStarGift {
+  _: "payments.withdrawStarGift";
+  keep_on_profile?: true;
+  stargift: InputSavedStarGift;
+  tmp_password: Uint8Array<ArrayBuffer>;
+  [R]?: boolean;
+}
+
+/** https://core.telegram.org/method/payments.depositStarGift */
+export interface payments_depositStarGift {
+  _: "payments.depositStarGift";
+  hide_sender?: true;
+  peer: InputPeer;
+  slug: string;
+  [R]?: payments_StarGiftDepositPayload;
+}
+
+/** https://core.telegram.org/method/payments.displayStarGift */
+export interface payments_displayStarGift {
+  _: "payments.displayStarGift";
+  peer?: InputPeer;
+  slug: string;
+  [R]?: boolean;
+}
+
+/** https://core.telegram.org/method/payments.deleteStarGift */
+export interface payments_deleteStarGift {
+  _: "payments.deleteStarGift";
+  stargift: InputSavedStarGift;
+  [R]?: boolean;
 }
 
 /** https://core.telegram.org/method/stickers.createStickerSet */
@@ -21018,6 +21208,14 @@ export interface wallet_tonConnectGetSessions {
   [R]?: wallet_TonConnectSessions;
 }
 
+/** https://core.telegram.org/method/wallet.setCardStickers */
+export interface wallet_setCardStickers {
+  _: "wallet.setCardStickers";
+  stickers: Array<InputWalletCardSticker>;
+  bg_nft_address?: string;
+  [R]?: wallet_Card;
+}
+
 export interface Types {
   "true": true_;
   "error": error;
@@ -21207,6 +21405,7 @@ export interface Types {
   "messageActionChatJoinedViaCommunity": messageActionChatJoinedViaCommunity;
   "messageActionGramTransfer": messageActionGramTransfer;
   "messageActionWalletTonConnectRequest": messageActionWalletTonConnectRequest;
+  "messageActionNoPaidMessagesTokenUsed": messageActionNoPaidMessagesTokenUsed;
   "dialog": dialog;
   "dialogFolder": dialogFolder;
   "dialogCommunity": dialogCommunity;
@@ -22699,6 +22898,8 @@ export interface Types {
   "walletTransactionPeerAddress": walletTransactionPeerAddress;
   "walletTransactionPeerOnramp": walletTransactionPeerOnramp;
   "walletTransactionPeerUnsupported": walletTransactionPeerUnsupported;
+  "walletTransactionPeerChannel": walletTransactionPeerChannel;
+  "walletTransactionPeerTelegramGift": walletTransactionPeerTelegramGift;
   "walletTransaction": walletTransaction;
   "wallet.transactions": wallet_transactions;
   "wallet.secretPhraseParts": wallet_secretPhraseParts;
@@ -22720,6 +22921,19 @@ export interface Types {
   "wallet.nftItem": wallet_nftItem;
   "wallet.nftItems": wallet_nftItems;
   "auth.firebasePnvIntent": auth_firebasePnvIntent;
+  "inputTonConnectOauthSession": inputTonConnectOauthSession;
+  "exportedNoPaidMessagesToken": exportedNoPaidMessagesToken;
+  "shareThemeDefault": shareThemeDefault;
+  "shareThemeEmojiBackdrop": shareThemeEmojiBackdrop;
+  "shareThemeGift": shareThemeGift;
+  "inputShareThemeGift": inputShareThemeGift;
+  "shareThemeBackdropOption": shareThemeBackdropOption;
+  "shareThemeBackdropsNotModified": shareThemeBackdropsNotModified;
+  "shareThemeBackdrops": shareThemeBackdrops;
+  "inputWalletCardSticker": inputWalletCardSticker;
+  "wallet.cardSticker": wallet_cardSticker;
+  "wallet.card": wallet_card;
+  "payments.starGiftDepositPayload": payments_starGiftDepositPayload;
 }
 
 export interface Functions<T = Function> {
@@ -22927,6 +23141,8 @@ export interface Functions<T = Function> {
   "contacts.getBirthdays": contacts_getBirthdays;
   "contacts.getSponsoredPeers": contacts_getSponsoredPeers;
   "contacts.updateContactNote": contacts_updateContactNote;
+  "contacts.exportNoPaidMessagesToken": contacts_exportNoPaidMessagesToken;
+  "contacts.importNoPaidMessagesToken": contacts_importNoPaidMessagesToken;
   "messages.getMessages": messages_getMessages;
   "messages.getDialogs": messages_getDialogs;
   "messages.getHistory": messages_getHistory;
@@ -23186,6 +23402,8 @@ export interface Functions<T = Function> {
   "messages.translateRichMessage": messages_translateRichMessage;
   "messages.composeRichMessageWithAI": messages_composeRichMessageWithAI;
   "messages.requestChatJoinWebView": messages_requestChatJoinWebView;
+  "messages.setShareTheme": messages_setShareTheme;
+  "messages.getShareThemeBackdrops": messages_getShareThemeBackdrops;
   "updates.getState": updates_getState;
   "updates.getDifference": updates_getDifference;
   "updates.getChannelDifference": updates_getChannelDifference;
@@ -23397,6 +23615,10 @@ export interface Functions<T = Function> {
   "payments.getOnrampLimits": payments_getOnrampLimits;
   "payments.getOnrampQuote": payments_getOnrampQuote;
   "payments.createOnrampSession": payments_createOnrampSession;
+  "payments.withdrawStarGift": payments_withdrawStarGift;
+  "payments.depositStarGift": payments_depositStarGift;
+  "payments.displayStarGift": payments_displayStarGift;
+  "payments.deleteStarGift": payments_deleteStarGift;
   "stickers.createStickerSet": stickers_createStickerSet;
   "stickers.removeStickerFromSet": stickers_removeStickerFromSet;
   "stickers.changeStickerPosition": stickers_changeStickerPosition;
@@ -23573,6 +23795,7 @@ export interface Functions<T = Function> {
   "wallet.tonConnectNextEventId": wallet_tonConnectNextEventId;
   "wallet.tonConnectCloseSession": wallet_tonConnectCloseSession;
   "wallet.tonConnectGetSessions": wallet_tonConnectGetSessions;
+  "wallet.setCardStickers": wallet_setCardStickers;
 }
 
 export interface Enums {
@@ -24224,6 +24447,15 @@ export interface Enums {
   "wallet.NftItem": wallet_NftItem;
   "wallet.NftItems": wallet_NftItems;
   "auth.FirebasePnvIntent": auth_FirebasePnvIntent;
+  "InputTonConnectOauthSession": InputTonConnectOauthSession;
+  "ExportedNoPaidMessagesToken": ExportedNoPaidMessagesToken;
+  "ShareTheme": ShareTheme;
+  "ShareThemeBackdropOption": ShareThemeBackdropOption;
+  "ShareThemeBackdrops": ShareThemeBackdrops;
+  "InputWalletCardSticker": InputWalletCardSticker;
+  "wallet.CardSticker": wallet_CardSticker;
+  "wallet.Card": wallet_Card;
+  "payments.StarGiftDepositPayload": payments_StarGiftDepositPayload;
 }
 
 export type AnyType = Types[keyof Types];
@@ -24307,7 +24539,7 @@ export type Message = messageEmpty | message | messageService;
 export type MessageMedia = messageMediaEmpty | messageMediaPhoto | messageMediaGeo | messageMediaContact | messageMediaUnsupported | messageMediaDocument | messageMediaWebPage | messageMediaVenue | messageMediaGame | messageMediaInvoice | messageMediaGeoLive | messageMediaPoll | messageMediaDice | messageMediaStory | messageMediaGiveaway | messageMediaGiveawayResults | messageMediaPaidMedia | messageMediaToDo | messageMediaVideoStream;
 
 /** https://core.telegram.org/type/MessageAction */
-export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults | messageActionBoostApply | messageActionRequestedPeerSentMe | messageActionPaymentRefunded | messageActionGiftStars | messageActionPrizeStars | messageActionStarGift | messageActionStarGiftUnique | messageActionPaidMessagesRefunded | messageActionPaidMessagesPrice | messageActionConferenceCall | messageActionTodoCompletions | messageActionTodoAppendTasks | messageActionSuggestedPostApproval | messageActionSuggestedPostSuccess | messageActionSuggestedPostRefund | messageActionGiftTon | messageActionSuggestBirthday | messageActionStarGiftPurchaseOffer | messageActionStarGiftPurchaseOfferDeclined | messageActionNewCreatorPending | messageActionChangeCreator | messageActionNoForwardsToggle | messageActionNoForwardsRequest | messageActionPollAppendAnswer | messageActionPollDeleteAnswer | messageActionManagedBotCreated | messageActionChangeCommunity | messageActionChatJoinedViaCommunity | messageActionGramTransfer | messageActionWalletTonConnectRequest;
+export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults | messageActionBoostApply | messageActionRequestedPeerSentMe | messageActionPaymentRefunded | messageActionGiftStars | messageActionPrizeStars | messageActionStarGift | messageActionStarGiftUnique | messageActionPaidMessagesRefunded | messageActionPaidMessagesPrice | messageActionConferenceCall | messageActionTodoCompletions | messageActionTodoAppendTasks | messageActionSuggestedPostApproval | messageActionSuggestedPostSuccess | messageActionSuggestedPostRefund | messageActionGiftTon | messageActionSuggestBirthday | messageActionStarGiftPurchaseOffer | messageActionStarGiftPurchaseOfferDeclined | messageActionNewCreatorPending | messageActionChangeCreator | messageActionNoForwardsToggle | messageActionNoForwardsRequest | messageActionPollAppendAnswer | messageActionPollDeleteAnswer | messageActionManagedBotCreated | messageActionChangeCommunity | messageActionChatJoinedViaCommunity | messageActionGramTransfer | messageActionWalletTonConnectRequest | messageActionNoPaidMessagesTokenUsed;
 
 /** https://core.telegram.org/type/Dialog */
 export type Dialog = dialog | dialogFolder | dialogCommunity;
@@ -26116,7 +26348,7 @@ export type WalletUserAddress = walletUserAddress;
 export type wallet_UserAddresses = wallet_userAddresses;
 
 /** https://core.telegram.org/type/WalletTransactionPeer */
-export type WalletTransactionPeer = walletTransactionPeerUser | walletTransactionPeerAddress | walletTransactionPeerOnramp | walletTransactionPeerUnsupported;
+export type WalletTransactionPeer = walletTransactionPeerUser | walletTransactionPeerAddress | walletTransactionPeerOnramp | walletTransactionPeerUnsupported | walletTransactionPeerChannel | walletTransactionPeerTelegramGift;
 
 /** https://core.telegram.org/type/WalletTransaction */
 export type WalletTransaction = walletTransaction;
@@ -26177,6 +26409,33 @@ export type wallet_NftItems = wallet_nftItems;
 
 /** https://core.telegram.org/type/auth.FirebasePnvIntent */
 export type auth_FirebasePnvIntent = auth_firebasePnvIntent;
+
+/** https://core.telegram.org/type/InputTonConnectOauthSession */
+export type InputTonConnectOauthSession = inputTonConnectOauthSession;
+
+/** https://core.telegram.org/type/ExportedNoPaidMessagesToken */
+export type ExportedNoPaidMessagesToken = exportedNoPaidMessagesToken;
+
+/** https://core.telegram.org/type/ShareTheme */
+export type ShareTheme = shareThemeDefault | shareThemeEmojiBackdrop | shareThemeGift | inputShareThemeGift;
+
+/** https://core.telegram.org/type/ShareThemeBackdropOption */
+export type ShareThemeBackdropOption = shareThemeBackdropOption;
+
+/** https://core.telegram.org/type/ShareThemeBackdrops */
+export type ShareThemeBackdrops = shareThemeBackdropsNotModified | shareThemeBackdrops;
+
+/** https://core.telegram.org/type/InputWalletCardSticker */
+export type InputWalletCardSticker = inputWalletCardSticker;
+
+/** https://core.telegram.org/type/wallet.CardSticker */
+export type wallet_CardSticker = wallet_cardSticker;
+
+/** https://core.telegram.org/type/wallet.Card */
+export type wallet_Card = wallet_card;
+
+/** https://core.telegram.org/type/payments.StarGiftDepositPayload */
+export type payments_StarGiftDepositPayload = payments_starGiftDepositPayload;
 
 export const schema = Object.freeze({
   definitions: {
@@ -26906,7 +27165,7 @@ export const schema = Object.freeze({
       "Chat",
     ],
     channel: [
-      0xD49F34C6,
+      0x7AD15240,
       [
         ["flags", "#"],
         ["creator", "flags.0?true"],
@@ -26938,6 +27197,7 @@ export const schema = Object.freeze({
         ["broadcast_messages_allowed", "flags2.16?true"],
         ["monoforum", "flags2.17?true"],
         ["forum_tabs", "flags2.19?true"],
+        ["in_news", "flags2.21?true"],
         ["id", "long"],
         ["access_hash", "flags.13?long"],
         ["title", "string"],
@@ -26960,6 +27220,7 @@ export const schema = Object.freeze({
         ["send_paid_messages_stars", "flags2.14?long"],
         ["linked_monoforum_id", "flags2.18?long"],
         ["linked_community_id", "flags2.20?long"],
+        ["pinned_msg_id", "flags2.22?int"],
       ],
       "Chat",
     ],
@@ -27035,7 +27296,7 @@ export const schema = Object.freeze({
       "ChatFull",
     ],
     channelFull: [
-      0xA04E8D3A,
+      0xC4C4DD40,
       [
         ["flags", "#"],
         ["can_view_participants", "flags.3?true"],
@@ -27107,6 +27368,7 @@ export const schema = Object.freeze({
         ["send_paid_messages_stars", "flags2.21?long"],
         ["main_tab", "flags2.22?ProfileTab"],
         ["guard_bot_id", "flags2.23?long"],
+        ["share_theme", "flags2.25?ShareTheme"],
       ],
       "ChatFull",
     ],
@@ -28142,6 +28404,11 @@ export const schema = Object.freeze({
       ],
       "MessageAction",
     ],
+    messageActionNoPaidMessagesTokenUsed: [
+      0xC1D2F1C6,
+      [],
+      "MessageAction",
+    ],
     dialog: [
       0xFC89F7F3,
       [
@@ -28515,7 +28782,7 @@ export const schema = Object.freeze({
       "ReportReason",
     ],
     userFull: [
-      0x06CBE645,
+      0xB90C2AFD,
       [
         ["flags", "#"],
         ["blocked", "flags.0?true"],
@@ -28577,6 +28844,8 @@ export const schema = Object.freeze({
         ["saved_music", "flags2.21?Document"],
         ["note", "flags2.22?TextWithEntities"],
         ["bot_manager_id", "flags2.25?long"],
+        ["wallet_card", "flags2.19?wallet.Card"],
+        ["share_theme", "flags2.27?ShareTheme"],
       ],
       "UserFull",
     ],
@@ -35847,13 +36116,14 @@ export const schema = Object.freeze({
       "messages.SearchCounter",
     ],
     urlAuthResultRequest: [
-      0x3CD623EC,
+      0xBDCA6167,
       [
         ["flags", "#"],
         ["request_write_access", "flags.0?true"],
         ["request_phone_number", "flags.1?true"],
         ["match_codes_first", "flags.5?true"],
         ["is_app", "flags.6?true"],
+        ["request_wallet", "flags.8?true"],
         ["bot", "User"],
         ["domain", "string"],
         ["browser", "flags.2?string"],
@@ -35863,6 +36133,8 @@ export const schema = Object.freeze({
         ["match_codes", "flags.3?Vector<string>"],
         ["user_id_hint", "flags.4?long"],
         ["verified_app_name", "flags.7?string"],
+        ["tc_session_id", "flags.9?long"],
+        ["tc_client_id", "flags.10?string"],
       ],
       "UrlAuthResult",
     ],
@@ -36455,7 +36727,7 @@ export const schema = Object.freeze({
       "messages.DiscussionMessage",
     ],
     messageReplyHeader: [
-      0x1B97DD66,
+      0xDDB5AB75,
       [
         ["flags", "#"],
         ["reply_to_scheduled", "flags.2?true"],
@@ -36472,6 +36744,7 @@ export const schema = Object.freeze({
         ["quote_offset", "flags.10?int"],
         ["todo_item_id", "flags.11?int"],
         ["poll_option", "flags.12?bytes"],
+        ["quote_rich", "flags.14?Vector<RichText>"],
       ],
       "MessageReplyHeader",
     ],
@@ -38315,7 +38588,7 @@ export const schema = Object.freeze({
       "stories.StoryViews",
     ],
     inputReplyToMessage: [
-      0x3BD4B7C2,
+      0x75C1AD70,
       [
         ["flags", "#"],
         ["reply_to_msg_id", "int"],
@@ -38327,6 +38600,7 @@ export const schema = Object.freeze({
         ["monoforum_peer_id", "flags.5?InputPeer"],
         ["todo_item_id", "flags.6?int"],
         ["poll_option", "flags.7?bytes"],
+        ["quote_rich", "flags.8?Vector<RichText>"],
       ],
       "InputReplyTo",
     ],
@@ -41566,6 +41840,24 @@ export const schema = Object.freeze({
       [],
       "WalletTransactionPeer",
     ],
+    walletTransactionPeerChannel: [
+      0x54E70C31,
+      [
+        ["flags", "#"],
+        ["channel_id", "long"],
+        ["address", "string"],
+        ["domain", "flags.0?string"],
+      ],
+      "WalletTransactionPeer",
+    ],
+    walletTransactionPeerTelegramGift: [
+      0xF4729499,
+      [
+        ["flags", "#"],
+        ["own_profile", "flags.0?true"],
+      ],
+      "WalletTransactionPeer",
+    ],
     walletTransaction: [
       0x952DC143,
       [
@@ -41741,7 +42033,7 @@ export const schema = Object.freeze({
       "wallet.NftAttribute",
     ],
     "wallet.nftItem": [
-      0x3441FD1C,
+      0x173DFAF3,
       [
         ["flags", "#"],
         ["collection_address", "flags.0?string"],
@@ -41756,6 +42048,7 @@ export const schema = Object.freeze({
         ["lottie", "flags.6?WebDocument"],
         ["attributes", "flags.7?Vector<wallet.NftAttribute>"],
         ["extra", "flags.8?DataJSON"],
+        ["gift", "flags.9?StarGift"],
       ],
       "wallet.NftItem",
     ],
@@ -41775,6 +42068,115 @@ export const schema = Object.freeze({
         ["digital_credential_payload", "string"],
       ],
       "auth.FirebasePnvIntent",
+    ],
+    inputTonConnectOauthSession: [
+      0x629F66CE,
+      [
+        ["session_id", "long"],
+        ["challenge_answer", "bytes"],
+        ["body", "bytes"],
+        ["proof", "WalletOwnershipProof"],
+      ],
+      "InputTonConnectOauthSession",
+    ],
+    exportedNoPaidMessagesToken: [
+      0x695DD042,
+      [
+        ["flags", "#"],
+        ["token", "string"],
+        ["url", "string"],
+        ["expires", "flags.0?int"],
+      ],
+      "ExportedNoPaidMessagesToken",
+    ],
+    shareThemeDefault: [
+      0x95ACE84F,
+      [],
+      "ShareTheme",
+    ],
+    shareThemeEmojiBackdrop: [
+      0x64B334E1,
+      [
+        ["flags", "#"],
+        ["backdrop_id", "flags.0?int"],
+        ["emojis", "flags.1?Vector<Reaction>"],
+      ],
+      "ShareTheme",
+    ],
+    shareThemeGift: [
+      0xEBECE66D,
+      [
+        ["stargift", "StarGift"],
+      ],
+      "ShareTheme",
+    ],
+    inputShareThemeGift: [
+      0x3FB92B5B,
+      [
+        ["stargift", "InputSavedStarGift"],
+      ],
+      "ShareTheme",
+    ],
+    shareThemeBackdropOption: [
+      0x45C1D652,
+      [
+        ["backdrop_id", "int"],
+        ["name", "string"],
+        ["center_color", "int"],
+        ["edge_color", "int"],
+        ["pattern_color", "int"],
+        ["text_color", "int"],
+      ],
+      "ShareThemeBackdropOption",
+    ],
+    shareThemeBackdropsNotModified: [
+      0x7A3F6DFF,
+      [],
+      "ShareThemeBackdrops",
+    ],
+    shareThemeBackdrops: [
+      0xAAEADCE0,
+      [
+        ["hash", "int"],
+        ["backdrops", "Vector<ShareThemeBackdropOption>"],
+      ],
+      "ShareThemeBackdrops",
+    ],
+    inputWalletCardSticker: [
+      0x57DF45A7,
+      [
+        ["coordinates", "MediaAreaCoordinates"],
+        ["nft_address", "string"],
+      ],
+      "InputWalletCardSticker",
+    ],
+    "wallet.cardSticker": [
+      0xF3010CBA,
+      [
+        ["coordinates", "MediaAreaCoordinates"],
+        ["nft", "wallet.NftItem"],
+      ],
+      "wallet.CardSticker",
+    ],
+    "wallet.card": [
+      0x8ED043B1,
+      [
+        ["flags", "#"],
+        ["stickers", "flags.0?Vector<wallet.CardSticker>"],
+        ["bg_nft_item", "flags.1?wallet.NftItem"],
+        ["address", "string"],
+        ["balance", "long"],
+      ],
+      "wallet.Card",
+    ],
+    "payments.starGiftDepositPayload": [
+      0x725BB4EB,
+      [
+        ["nft_address", "string"],
+        ["payload", "bytes"],
+        ["amount", "long"],
+      ],
+      "payments.StarGiftDepositPayload",
     ],
     invokeAfterMsg: [
       0xCB9F372D,
@@ -43384,6 +43786,23 @@ export const schema = Object.freeze({
       ],
       "Bool",
     ],
+    "contacts.exportNoPaidMessagesToken": [
+      0x83C586AE,
+      [
+        ["flags", "#"],
+        ["revoke", "flags.0?true"],
+        ["temporary", "flags.1?true"],
+      ],
+      "ExportedNoPaidMessagesToken",
+    ],
+    "contacts.importNoPaidMessagesToken": [
+      0x35A7C6CA,
+      [
+        ["user_id", "InputUser"],
+        ["token", "string"],
+      ],
+      "User",
+    ],
     "messages.getMessages": [
       0x63C66506,
       [
@@ -44478,7 +44897,7 @@ export const schema = Object.freeze({
       "UrlAuthResult",
     ],
     "messages.acceptUrlAuth": [
-      0x67A3F0DE,
+      0x18DD4E92,
       [
         ["flags", "#"],
         ["write_allowed", "flags.0?true"],
@@ -44488,6 +44907,7 @@ export const schema = Object.freeze({
         ["button_id", "flags.1?int"],
         ["url", "flags.2?string"],
         ["match_code", "flags.4?string"],
+        ["tonconnect_session", "flags.5?InputTonConnectOauthSession"],
       ],
       "UrlAuthResult",
     ],
@@ -45881,6 +46301,21 @@ export const schema = Object.freeze({
         ["platform", "string"],
       ],
       "WebViewResult",
+    ],
+    "messages.setShareTheme": [
+      0x698A9B1A,
+      [
+        ["peer", "InputPeer"],
+        ["theme", "ShareTheme"],
+      ],
+      "Bool",
+    ],
+    "messages.getShareThemeBackdrops": [
+      0xF4599EF2,
+      [
+        ["hash", "int"],
+      ],
+      "ShareThemeBackdrops",
     ],
     "updates.getState": [
       0xEDD4882A,
@@ -47424,10 +47859,11 @@ export const schema = Object.freeze({
       "payments.SavedStarGifts",
     ],
     "payments.getStarGiftWithdrawalUrl": [
-      0xD06E93A8,
+      0xC8CA817B,
       [
+        ["flags", "#"],
         ["stargift", "InputSavedStarGift"],
-        ["password", "InputCheckPasswordSRP"],
+        ["tmp_password", "bytes"],
       ],
       "payments.StarGiftWithdrawalUrl",
     ],
@@ -47678,6 +48114,42 @@ export const schema = Object.freeze({
         ["crypto_amount", "flags.7?string"],
       ],
       "OnrampSession",
+    ],
+    "payments.withdrawStarGift": [
+      0xEC2030AE,
+      [
+        ["flags", "#"],
+        ["keep_on_profile", "flags.0?true"],
+        ["stargift", "InputSavedStarGift"],
+        ["tmp_password", "bytes"],
+      ],
+      "Bool",
+    ],
+    "payments.depositStarGift": [
+      0xC0A2EA9F,
+      [
+        ["flags", "#"],
+        ["hide_sender", "flags.0?true"],
+        ["peer", "InputPeer"],
+        ["slug", "string"],
+      ],
+      "payments.StarGiftDepositPayload",
+    ],
+    "payments.displayStarGift": [
+      0x4AA5F0FE,
+      [
+        ["flags", "#"],
+        ["peer", "flags.0?InputPeer"],
+        ["slug", "string"],
+      ],
+      "Bool",
+    ],
+    "payments.deleteStarGift": [
+      0x3CDAF8AA,
+      [
+        ["stargift", "InputSavedStarGift"],
+      ],
+      "Bool",
     ],
     "stickers.createStickerSet": [
       0x9021AB67,
@@ -49254,6 +49726,15 @@ export const schema = Object.freeze({
       [],
       "wallet.TonConnectSessions",
     ],
+    "wallet.setCardStickers": [
+      0x068509AC,
+      [
+        ["flags", "#"],
+        ["stickers", "Vector<InputWalletCardSticker>"],
+        ["bg_nft_address", "flags.0?string"],
+      ],
+      "wallet.Card",
+    ],
   },
   identifierToName: {
     [0x3FEDD339]: "true",
@@ -49337,12 +49818,12 @@ export const schema = Object.freeze({
     [0x29562865]: "chatEmpty",
     [0x41CBF256]: "chat",
     [0x6592A1A7]: "chatForbidden",
-    [0xD49F34C6]: "channel",
+    [0x7AD15240]: "channel",
     [0x17D493D5]: "channelForbidden",
     [0xFD3CDAB8]: "communityForbidden",
     [0x65EFE954]: "community",
     [0x2633421B]: "chatFull",
-    [0xA04E8D3A]: "channelFull",
+    [0xC4C4DD40]: "channelFull",
     [0xCBB7A507]: "communityFull",
     [0x38E79FDE]: "chatParticipant",
     [0xE1F867B8]: "chatParticipantCreator",
@@ -49444,6 +49925,7 @@ export const schema = Object.freeze({
     [0x4A8BFE80]: "messageActionChatJoinedViaCommunity",
     [0x9329EA33]: "messageActionGramTransfer",
     [0x69B8C4BF]: "messageActionWalletTonConnectRequest",
+    [0xC1D2F1C6]: "messageActionNoPaidMessagesTokenUsed",
     [0xFC89F7F3]: "dialog",
     [0x71BD134C]: "dialogFolder",
     [0xF78A0973]: "dialogCommunity",
@@ -49484,7 +49966,7 @@ export const schema = Object.freeze({
     [0xF5DDD6E7]: "inputReportReasonFake",
     [0x0A8EB2BE]: "inputReportReasonIllegalDrugs",
     [0x9EC7863D]: "inputReportReasonPersonalDetails",
-    [0x06CBE645]: "userFull",
+    [0xB90C2AFD]: "userFull",
     [0x145ADE0B]: "contact",
     [0xC13E3C50]: "importedContact",
     [0x16D9703B]: "contactStatus",
@@ -50323,7 +50805,7 @@ export const schema = Object.freeze({
     [0xFBD2C296]: "inputFolderPeer",
     [0xE9BAA668]: "folderPeer",
     [0xE844EBFF]: "messages.searchCounter",
-    [0x3CD623EC]: "urlAuthResultRequest",
+    [0xBDCA6167]: "urlAuthResultRequest",
     [0x623A8FA0]: "urlAuthResultAccepted",
     [0xA9D6DB1F]: "urlAuthResultDefault",
     [0xBFB5AD8B]: "channelLocationEmpty",
@@ -50386,7 +50868,7 @@ export const schema = Object.freeze({
     [0x455B853D]: "messageViews",
     [0xB6C4F543]: "messages.messageViews",
     [0xA6341782]: "messages.discussionMessage",
-    [0x1B97DD66]: "messageReplyHeader",
+    [0xDDB5AB75]: "messageReplyHeader",
     [0x0E5AF939]: "messageReplyStoryHeader",
     [0x83D60FC2]: "messageReplies",
     [0xE8FD8014]: "peerBlocked",
@@ -50589,7 +51071,7 @@ export const schema = Object.freeze({
     [0xBD74CF49]: "storyViewPublicRepost",
     [0x59D78FC5]: "stories.storyViewsList",
     [0xDE9EED1D]: "stories.storyViews",
-    [0x3BD4B7C2]: "inputReplyToMessage",
+    [0x75C1AD70]: "inputReplyToMessage",
     [0x5881323A]: "inputReplyToStory",
     [0x69D66C45]: "inputReplyToMonoForum",
     [0x4119B95E]: "inputReplyToEphemeralMessage",
@@ -50936,6 +51418,8 @@ export const schema = Object.freeze({
     [0x062CC1BC]: "walletTransactionPeerAddress",
     [0xE595186E]: "walletTransactionPeerOnramp",
     [0x728BED5A]: "walletTransactionPeerUnsupported",
+    [0x54E70C31]: "walletTransactionPeerChannel",
+    [0xF4729499]: "walletTransactionPeerTelegramGift",
     [0x952DC143]: "walletTransaction",
     [0x4322D5A5]: "wallet.transactions",
     [0xE6D0EF01]: "wallet.secretPhraseParts",
@@ -50954,10 +51438,23 @@ export const schema = Object.freeze({
     [0x0E1F6896]: "wallet.tonConnectSessions",
     [0xBDE90A8D]: "wallet.existingBalance",
     [0x4C1EF10E]: "wallet.nftAttribute",
-    [0x3441FD1C]: "wallet.nftItem",
+    [0x173DFAF3]: "wallet.nftItem",
     [0x794D486F]: "wallet.nftItems",
     [0xDF5AC00C]: "auth.firebasePnvIntent",
+    [0x629F66CE]: "inputTonConnectOauthSession",
+    [0x695DD042]: "exportedNoPaidMessagesToken",
+    [0x95ACE84F]: "shareThemeDefault",
+    [0x64B334E1]: "shareThemeEmojiBackdrop",
+    [0xEBECE66D]: "shareThemeGift",
+    [0x3FB92B5B]: "inputShareThemeGift",
+    [0x45C1D652]: "shareThemeBackdropOption",
+    [0x7A3F6DFF]: "shareThemeBackdropsNotModified",
+    [0xAAEADCE0]: "shareThemeBackdrops",
+    [0x57DF45A7]: "inputWalletCardSticker",
+    [0xF3010CBA]: "wallet.cardSticker",
+    [0x8ED043B1]: "wallet.card",
+    [0x725BB4EB]: "payments.starGiftDepositPayload",
   },
 }) as unknown as Schema;
 
-export const LAYER = 230;
+export const LAYER = 232;
