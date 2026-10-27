@@ -36,7 +36,7 @@ export interface WalletAddress {
   user?: User;
 }
 
-export function constructWalletAddress(wua: Api.walletUserAddress, getPeer: PeerGetter) {
+export function constructWalletAddress(wua: Api.walletUserAddress, getPeer: PeerGetter): WalletAddress {
   const address = wua.address;
   const publicKey = base64EncodeUrlSafe(wua.public_key);
   let user: User | undefined;
