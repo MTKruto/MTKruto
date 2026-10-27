@@ -24,7 +24,7 @@ import { drop, getLogger, type Logger, MAX_MONOFORUM_CHANNEL_ID, type MaybePromi
 import { type Storage, StorageMemory } from "../2_storage.ts";
 import { Api, Mtproto } from "../2_tl.ts";
 import { type DC, getDcId, getRawDcId, type TransportProvider } from "../3_transport.ts";
-import { type AlbumStoryList, type Animation, type AppSupport, type Audio, type AuthorizationSession, type AvailableReactions, type Birthday, type BlockedUserList, type BotAccessSettings, type BotCommand, type BotTokenCheckResult, type BusinessAwayMessageSchedule, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatActionType, type ChatJoinResult, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type CodeCheckResult, type Community, type CommunityP, type ConnectedWebsite, type ConnectionState, constructChatP, constructUser2, type Country, type EmojiStatus, type FailedInvitation, type FileSource, type Gift, type GiftCollection, type GiftPrivacy, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputBusinessRecipients, type InputChecklistItem, type InputEmojiStatus, type InputGift, type InputMedia, type InputPollOption, type InputPrivacyRule, type InputRichText, type InputSticker, type InputStoryContent, type InviteLink, type JoinRequest, type LeftChannelList, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageCounters, type MessageDice, type MessageDocument, type MessageInvoice, type MessageList, type MessageLivePhoto, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageRichText, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageViewer, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type NewChatPrivacy, type NotificationSettings, type ParseMode, type PasswordCheckResult, type Poll, type PollVoterList, type PremiumSubscriptionDuration, type PriceTag, type PrivacyRule, type PrivacySettingKey, type ProfilePhotoList, type Reaction, type RecentActionsEntry, type ReportReason, type ReportResult, type ResolvedInviteLink, type RichText, type SavedChats, type SavedNotificationSound, type SecretChat, type SlowModeDuration, type StarAmount, type StarTransactionList, type Sticker, type StickerSet, type StickerSetP, type Story, type StoryAlbum, type SummarizedText, type TextToTranslate, type Timezone, type TonTransactionList, type Topic, type TopicList, type TopicListItem, type TranslatedText, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription } from "../3_types.ts";
+import { type AlbumStoryList, type Animation, type AppSupport, type Audio, type AuthorizationSession, type AvailableReactions, type Birthday, type BlockedUserList, type BotAccessSettings, type BotCommand, type BotTokenCheckResult, type BusinessAwayMessageSchedule, type BusinessConnection, type CallbackQueryAnswer, type CallbackQueryQuestion, type Chat, type ChatActionType, type ChatJoinResult, type ChatListItem, type ChatMember, type ChatP, type ChatPChannel, type ChatPGroup, type ChatPPrivate, type ChatPSupergroup, type ChatSettings, type ClaimedGifts, type CodeCheckResult, type Community, type CommunityP, type ConnectedWebsite, type ConnectionState, constructChatP, constructUser2, type Country, type EmojiStatus, type FailedInvitation, type FileSource, type Gift, type GiftCollection, type GiftPrivacy, type ID, type InactiveChat, type InlineQueryAnswer, type InlineQueryResult, type InputBusinessRecipients, type InputChecklistItem, type InputEmojiStatus, type InputGift, type InputMedia, type InputPollOption, type InputPrivacyRule, type InputRichText, type InputSticker, type InputStoryContent, type InviteLink, type JoinRequest, type LeftChannelList, type LinkPreview, type LiveStreamChannel, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageCounters, type MessageDice, type MessageDocument, type MessageInvoice, type MessageList, type MessageLivePhoto, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageRichText, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageViewer, type MessageVoice, type MiniAppInfo, type NetworkStatistics, type NewChatPrivacy, type NotificationSettings, type ParseMode, type PasswordCheckResult, type Poll, type PollVoterList, type PremiumSubscriptionDuration, type PriceTag, type PrivacyRule, type PrivacySettingKey, type ProfilePhotoList, type Reaction, type RecentActionsEntry, type ReportReason, type ReportResult, type ResolvedInviteLink, type RichText, type SavedChats, type SavedNotificationSound, type SecretChat, type SlowModeDuration, type StarAmount, type StarTransactionList, type Sticker, type StickerSet, type StickerSetP, type Story, type StoryAlbum, type SummarizedText, type TextToTranslate, type Timezone, type TonTransactionList, type Topic, type TopicList, type TopicListItem, type TranslatedText, type Translation, type Update, type User, type VideoChat, type VideoChatActive, type VideoChatScheduled, type VoiceTranscription, type WalletAddress, type WalletState } from "../3_types.ts";
 import { APP_VERSION, DEVICE_MODEL, DOWNLOAD_MAX_CHUNK_SIZE, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, PHONE_NUMBER_TTL, type PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, SessionRevoked } from "../4_errors.ts";
 import { AbortableLoop } from "./0_abortable_loop.ts";
@@ -49,6 +49,7 @@ import { StoryAlbumManager } from "./2_story_album_manager.ts";
 import { TakeoutManager } from "./2_takeout_manager.ts";
 import { TranslationsManager } from "./2_translations_manager.ts";
 import { UpdateManager } from "./2_update_manager.ts";
+import { WalletManager } from "./2_wallet_manager.ts";
 import { AccountManager } from "./3_account_manager.ts";
 import { ClientEncryptedPool } from "./3_client_encrypted_pool.ts";
 import { MessageManager } from "./3_message_manager.ts";
@@ -146,6 +147,7 @@ export interface ClientManagers {
   takeoutManager: TakeoutManager;
   translationsManager: TranslationsManager;
   updateManager: UpdateManager;
+  walletManager: WalletManager;
   // 3_
   accountManager: AccountManager;
   messageManager: MessageManager;
@@ -186,6 +188,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   #takeoutManager: TakeoutManager;
   #translationsManager: TranslationsManager;
   #updateManager: UpdateManager;
+  #walletManager: WalletManager;
   // 3_
   #accountManager: AccountManager;
   #messageManager: MessageManager;
@@ -222,6 +225,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       takeoutManager: this.#takeoutManager,
       translationsManager: this.#translationsManager,
       updateManager: this.#updateManager,
+      walletManager: this.#walletManager,
       // 3_
       accountManager: this.#accountManager,
       messageManager: this.#messageManager,
@@ -368,6 +372,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     this.#takeoutManager = new TakeoutManager(c);
     this.#translationsManager = new TranslationsManager(c);
     this.#updateManager = new UpdateManager(c);
+    this.#walletManager = new WalletManager(c);
     // 3_
     this.#accountManager = new AccountManager({ ...c, fileManager });
     const messageManager = this.#messageManager = new MessageManager({ ...c, fileManager });
@@ -6281,5 +6286,28 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async showCommunityAsOneChat(communityId: number): Promise<void> {
     return await this.#communityManager.showCommunityAsOneChat(communityId);
+  }
+
+  //
+  // ========================= WALLETS ========================= //
+  //
+
+  /**
+   * Get a user's wallet addresses. User-only.
+   *
+   * @method wl
+   * @param userId The identifier of the user.
+   */
+  async getWalletAddresses(userId: ID): Promise<WalletAddress[]> {
+    return await this.#walletManager.getWalletAddresses(userId);
+  }
+
+  /**
+   * Get the current user's wallet state. User-only.
+   *
+   * @method wl
+   */
+  async getWalletState(): Promise<WalletState> {
+    return await this.#walletManager.getWalletState();
   }
 }
