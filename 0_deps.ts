@@ -30,14 +30,14 @@ export { basename } from "jsr:@std/path@1.1.6/basename";
 export { toFileUrl } from "jsr:@std/path@1.1.6/to-file-url";
 export { isAbsolute } from "jsr:@std/path@1.1.6/is-absolute";
 
-export { delay } from "jsr:@std/async@1.5.0/delay";
-export { pooledMap } from "jsr:@std/async@1.5.0/pool";
+export { delay } from "jsr:@std/async@1.5.1/delay";
+export { pooledMap } from "jsr:@std/async@1.5.1/pool";
 
 export { concat } from "jsr:@std/bytes@1.0.6/concat";
 export { equals } from "jsr:@std/bytes@1.0.6/equals";
 export { startsWith } from "jsr:@std/bytes@1.0.6/starts-with";
 
-export { isIPv4, isIPv6 } from "jsr:@std/net@1.0.6/unstable-ip";
+export { isIPv4, isIPv6 } from "jsr:@std/net@1.0.7/unstable-ip";
 
 export { LruCache } from "jsr:@std/cache@0.2.4/lru-cache";
 
@@ -46,7 +46,7 @@ export { writeAll } from "jsr:@std/io@0.225.3/write-all";
 export { format } from "jsr:@std/datetime@0.225.7/format";
 export { MINUTE, SECOND, WEEK } from "jsr:@std/datetime@0.225.7/constants";
 
-export { toArrayBuffer } from "jsr:@std/streams@1.1.2/to-array-buffer";
+export { toArrayBuffer } from "jsr:@std/streams@1.2.0/to-array-buffer";
 
 export { decodeHex, encodeHex } from "jsr:@std/encoding@1.0.11/hex";
 export { decodeBase64, encodeBase64 } from "jsr:@std/encoding@1.0.11/base64";
@@ -70,8 +70,8 @@ export function extension(mimeType: string) {
 
 export { crypto } from "jsr:@std/crypto@1.1.0";
 
-import { ige256Decrypt as defaultIge256Decrypt, ige256Encrypt as defaultIge256Encrypt } from "jsr:@roj/tgcrypto@1.0.3";
-export { init as initTgCrypto } from "jsr:@roj/tgcrypto@1.0.3";
+import { ige256Decrypt as defaultIge256Decrypt, ige256Encrypt as defaultIge256Encrypt } from "jsr:@roj/tgcrypto@1.0.4";
+export { init as initTgCrypto } from "jsr:@roj/tgcrypto@1.0.4";
 
 export type Ige256 = (data: Uint8Array, key: Uint8Array, iv: Uint8Array) => Uint8Array<ArrayBuffer>;
 
