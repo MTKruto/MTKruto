@@ -369,6 +369,11 @@ export interface SendWidgetParams extends _CaptionCommon, _SendCommon, _ReplyMar
   isQueryable?: boolean;
 }
 
+export interface SendSharedWidgetParams extends _CaptionCommon, _SendCommon, _ReplyMarkupCommon {
+  /** The widget's chat data. */
+  chatData?: string;
+}
+
 export interface SendStickerParams extends _UploadCommon, _SendCommon, _ReplyMarkupCommon {
   /** Emoji to bind to the sticker. */
   emoji?: string;
