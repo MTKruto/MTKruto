@@ -38,9 +38,52 @@ export interface error {
   text: string;
 }
 
-/** https://core.telegram.org/constructor/null */
-export interface null_ {
-  _: "null";
+/** https://core.telegram.org/constructor/ipPort */
+export interface ipPort {
+  _: "ipPort";
+  ipv4: number;
+  port: number;
+}
+
+/** https://core.telegram.org/constructor/ipPortSecret */
+export interface ipPortSecret {
+  _: "ipPortSecret";
+  ipv4: number;
+  port: number;
+  secret: Uint8Array<ArrayBuffer>;
+}
+
+/** https://core.telegram.org/constructor/accessPointRule */
+export interface accessPointRule {
+  _: "accessPointRule";
+  phone_prefix_rules: string;
+  dc_id: number;
+  ips: Array<IpPort>;
+}
+
+/** https://core.telegram.org/constructor/help.configSimple */
+export interface help_configSimple {
+  _: "help.configSimple";
+  date: number;
+  expires: number;
+  rules: Array<AccessPointRule>;
+}
+
+/** https://core.telegram.org/constructor/inputPeerPhotoFileLocationLegacy */
+export interface inputPeerPhotoFileLocationLegacy {
+  _: "inputPeerPhotoFileLocationLegacy";
+  big?: true;
+  peer: InputPeer;
+  volume_id: bigint;
+  local_id: number;
+}
+
+/** https://core.telegram.org/constructor/inputStickerSetThumbLegacy */
+export interface inputStickerSetThumbLegacy {
+  _: "inputStickerSetThumbLegacy";
+  stickerset: InputStickerSet;
+  volume_id: bigint;
+  local_id: number;
 }
 
 /** https://core.telegram.org/constructor/inputPeerEmpty */
@@ -329,6 +372,25 @@ export interface inputMediaStakeDice {
   client_seed: Uint8Array<ArrayBuffer>;
 }
 
+/** https://core.telegram.org/constructor/inputMediaWidget */
+export interface inputMediaWidget {
+  _: "inputMediaWidget";
+  allow_queries?: true;
+  shared_widget?: true;
+  width: number;
+  height: number;
+  html: string;
+  public_data?: string;
+  chat_data?: string;
+}
+
+/** https://core.telegram.org/constructor/inputMediaWidgetId */
+export interface inputMediaWidgetId {
+  _: "inputMediaWidgetId";
+  widget_id: bigint;
+  chat_data?: string;
+}
+
 /** https://core.telegram.org/constructor/inputChatPhotoEmpty */
 export interface inputChatPhotoEmpty {
   _: "inputChatPhotoEmpty";
@@ -564,6 +626,7 @@ export interface user {
   bot_can_manage_bots?: true;
   bot_guestchat?: true;
   bot_guard?: true;
+  bot_forum_sidebar?: true;
   id: bigint;
   access_hash?: bigint;
   first_name?: string;
@@ -702,6 +765,7 @@ export interface channel {
   monoforum?: true;
   forum_tabs?: true;
   in_news?: true;
+  forum_sidebar?: true;
   id: bigint;
   access_hash?: bigint;
   title: string;
@@ -1188,6 +1252,21 @@ export interface messageMediaVideoStream {
   _: "messageMediaVideoStream";
   rtmp_stream?: true;
   call: InputGroupCall;
+}
+
+/** https://core.telegram.org/constructor/messageMediaWidget */
+export interface messageMediaWidget {
+  _: "messageMediaWidget";
+  is_copy?: true;
+  can_query?: true;
+  background_query?: true;
+  width: number;
+  height: number;
+  payload: Uint8Array<ArrayBuffer>;
+  public_data?: string;
+  public_data_hash?: bigint;
+  chat_data?: string;
+  widget_id?: bigint;
 }
 
 /** https://core.telegram.org/constructor/messageActionEmpty */
@@ -3708,6 +3787,77 @@ export interface updateWalletTonConnectPendingDisconnect {
   session_ids: Array<bigint>;
 }
 
+/** https://core.telegram.org/constructor/updateEditForumTopic */
+export interface updateEditForumTopic {
+  _: "updateEditForumTopic";
+  peer: Peer;
+  topic_id: number;
+  title?: string;
+  icon_emoji_id?: bigint;
+  closed?: boolean;
+  hidden?: boolean;
+}
+
+/** https://core.telegram.org/constructor/updateBotWidgetQuery */
+export interface updateBotWidgetQuery {
+  _: "updateBotWidgetQuery";
+  query_id: bigint;
+  query_type: WidgetQueryType;
+  user_id: bigint;
+  peer: Peer;
+  msg_id: number;
+  chat_instance: bigint;
+  chat_type: string;
+  data: Uint8Array<ArrayBuffer>;
+  widget_id?: bigint;
+  wallet_card?: wallet_Card;
+}
+
+/** https://core.telegram.org/constructor/updateInlineBotWidgetQuery */
+export interface updateInlineBotWidgetQuery {
+  _: "updateInlineBotWidgetQuery";
+  query_id: bigint;
+  query_type: WidgetQueryType;
+  user_id: bigint;
+  inline_message_id: InputBotInlineMessageID;
+  chat_instance: bigint;
+  chat_type: string;
+  data: Uint8Array<ArrayBuffer>;
+  widget_id?: bigint;
+  wallet_card?: wallet_Card;
+}
+
+/** https://core.telegram.org/constructor/updateBotWidgetCopyQuery */
+export interface updateBotWidgetCopyQuery {
+  _: "updateBotWidgetCopyQuery";
+  query_id: bigint;
+  query_type: WidgetQueryType;
+  user_id: bigint;
+  data: Uint8Array<ArrayBuffer>;
+  widget_id: bigint;
+  wallet_card?: wallet_Card;
+}
+
+/** https://core.telegram.org/constructor/updateMessageWidgetData */
+export interface updateMessageWidgetData {
+  _: "updateMessageWidgetData";
+  peer: Peer;
+  msg_id: number;
+  public_data?: string;
+  public_data_hash?: bigint;
+  chat_data?: string;
+  pts: number;
+  pts_count: number;
+}
+
+/** https://core.telegram.org/constructor/updateTranscribedAudioFile */
+export interface updateTranscribedAudioFile {
+  _: "updateTranscribedAudioFile";
+  pending?: true;
+  transcription_id: bigint;
+  text: string;
+}
+
 /** https://core.telegram.org/constructor/updates.state */
 export interface updates_state {
   _: "updates.state";
@@ -3903,6 +4053,7 @@ export interface config {
   revoke_pm_inbox?: true;
   blocked_mode?: true;
   force_try_ipv6?: true;
+  fpnv_allowed?: true;
   date: number;
   expires: number;
   test_mode: boolean;
@@ -5593,6 +5744,33 @@ export interface inputBotInlineMessageRichMessage {
   rich_message: InputRichMessage;
 }
 
+/** https://core.telegram.org/constructor/inputBotInlineMessageWidget */
+export interface inputBotInlineMessageWidget {
+  _: "inputBotInlineMessageWidget";
+  allow_queries?: true;
+  shared_widget?: true;
+  invert_media?: true;
+  width: number;
+  height: number;
+  html: string;
+  public_data?: string;
+  chat_data?: string;
+  reply_markup?: ReplyMarkup;
+  message: string;
+  entities?: Array<MessageEntity>;
+}
+
+/** https://core.telegram.org/constructor/inputBotInlineMessageWidgetId */
+export interface inputBotInlineMessageWidgetId {
+  _: "inputBotInlineMessageWidgetId";
+  invert_media?: true;
+  widget_id: bigint;
+  chat_data?: string;
+  reply_markup?: ReplyMarkup;
+  message: string;
+  entities?: Array<MessageEntity>;
+}
+
 /** https://core.telegram.org/constructor/inputBotInlineResult */
 export interface inputBotInlineResult {
   _: "inputBotInlineResult";
@@ -5717,6 +5895,22 @@ export interface botInlineMessageRichMessage {
   _: "botInlineMessageRichMessage";
   reply_markup?: ReplyMarkup;
   rich_message: RichMessage;
+}
+
+/** https://core.telegram.org/constructor/botInlineMessageWidget */
+export interface botInlineMessageWidget {
+  _: "botInlineMessageWidget";
+  invert_media?: true;
+  width: number;
+  height: number;
+  payload: Uint8Array<ArrayBuffer>;
+  public_data?: string;
+  public_data_hash?: bigint;
+  chat_data?: string;
+  reply_markup?: ReplyMarkup;
+  widget_id?: bigint;
+  message: string;
+  entities?: Array<MessageEntity>;
 }
 
 /** https://core.telegram.org/constructor/botInlineResult */
@@ -13860,6 +14054,85 @@ export interface payments_starGiftDepositPayload {
   amount: bigint;
 }
 
+/** https://core.telegram.org/constructor/userWallet */
+export interface userWallet {
+  _: "userWallet";
+  address: string;
+  balance: bigint;
+  public_key?: Uint8Array<ArrayBuffer>;
+  state_init?: Uint8Array<ArrayBuffer>;
+}
+
+/** https://core.telegram.org/constructor/widgetQueryTypeData */
+export interface widgetQueryTypeData {
+  _: "widgetQueryTypeData";
+  with_wallet?: true;
+}
+
+/** https://core.telegram.org/constructor/widgetQueryTypeSignData */
+export interface widgetQueryTypeSignData {
+  _: "widgetQueryTypeSignData";
+  wallet: UserWallet;
+  sign_data: DataJSON;
+}
+
+/** https://core.telegram.org/constructor/widgetQueryTypeSentTransaction */
+export interface widgetQueryTypeSentTransaction {
+  _: "widgetQueryTypeSentTransaction";
+  wallet: UserWallet;
+  msg_hash: string;
+}
+
+/** https://core.telegram.org/constructor/messages.botWidgetQueryAnswer */
+export interface messages_botWidgetQueryAnswer {
+  _: "messages.botWidgetQueryAnswer";
+  result?: string;
+}
+
+/** https://core.telegram.org/constructor/messages.widgetPublicDataNotModified */
+export interface messages_widgetPublicDataNotModified {
+  _: "messages.widgetPublicDataNotModified";
+  period: number;
+}
+
+/** https://core.telegram.org/constructor/messages.widgetPublicData */
+export interface messages_widgetPublicData {
+  _: "messages.widgetPublicData";
+  hash: bigint;
+  data: string;
+  period: number;
+}
+
+/** https://core.telegram.org/method/invokeWithBusinessConnectionPrefix */
+export interface invokeWithBusinessConnectionPrefix {
+  _: "invokeWithBusinessConnectionPrefix";
+  connection_id: string;
+  [R]?: Error;
+}
+
+/** https://core.telegram.org/method/invokeWithGooglePlayIntegrityPrefix */
+export interface invokeWithGooglePlayIntegrityPrefix {
+  _: "invokeWithGooglePlayIntegrityPrefix";
+  nonce: string;
+  token: string;
+  [R]?: Error;
+}
+
+/** https://core.telegram.org/method/invokeWithApnsSecretPrefix */
+export interface invokeWithApnsSecretPrefix {
+  _: "invokeWithApnsSecretPrefix";
+  nonce: string;
+  secret: string;
+  [R]?: Error;
+}
+
+/** https://core.telegram.org/method/invokeWithReCaptchaPrefix */
+export interface invokeWithReCaptchaPrefix {
+  _: "invokeWithReCaptchaPrefix";
+  token: string;
+  [R]?: Error;
+}
+
 /** https://core.telegram.org/method/invokeAfterMsg */
 export interface invokeAfterMsg<T> {
   _: "invokeAfterMsg";
@@ -17892,6 +18165,75 @@ export interface messages_getShareThemeBackdrops {
   [R]?: ShareThemeBackdrops;
 }
 
+/** https://core.telegram.org/method/messages.getBotWidgetQueryAnswer */
+export interface messages_getBotWidgetQueryAnswer {
+  _: "messages.getBotWidgetQueryAnswer";
+  peer: InputPeer;
+  msg_id: number;
+  query_type: WidgetQueryType;
+  data: Uint8Array<ArrayBuffer>;
+  [R]?: messages_BotWidgetQueryAnswer;
+}
+
+/** https://core.telegram.org/method/messages.setBotWidgetQueryAnswer */
+export interface messages_setBotWidgetQueryAnswer {
+  _: "messages.setBotWidgetQueryAnswer";
+  query_id: bigint;
+  result?: string;
+  [R]?: boolean;
+}
+
+/** https://core.telegram.org/method/messages.editMessageWidgetData */
+export interface messages_editMessageWidgetData {
+  _: "messages.editMessageWidgetData";
+  peer: InputPeer;
+  id: number;
+  public_data?: string;
+  chat_data?: string;
+  [R]?: Updates;
+}
+
+/** https://core.telegram.org/method/messages.editInlineBotMessageWidgetData */
+export interface messages_editInlineBotMessageWidgetData {
+  _: "messages.editInlineBotMessageWidgetData";
+  id: InputBotInlineMessageID;
+  public_data?: string;
+  chat_data?: string;
+  [R]?: boolean;
+}
+
+/** https://core.telegram.org/method/messages.editWidgetData */
+export interface messages_editWidgetData {
+  _: "messages.editWidgetData";
+  widget_id: bigint;
+  public_data: string;
+  cache_time?: number;
+  [R]?: boolean;
+}
+
+/** https://core.telegram.org/method/messages.getWidgetPublicData */
+export interface messages_getWidgetPublicData {
+  _: "messages.getWidgetPublicData";
+  peer: InputPeer;
+  msg_id: number;
+  hash: bigint;
+  [R]?: messages_WidgetPublicData;
+}
+
+/** https://core.telegram.org/method/messages.transcribeAudioFile */
+export interface messages_transcribeAudioFile {
+  _: "messages.transcribeAudioFile";
+  file: InputFile;
+  [R]?: messages_TranscribedAudio;
+}
+
+/** https://core.telegram.org/method/messages.getTranscriptionLangs */
+export interface messages_getTranscriptionLangs {
+  _: "messages.getTranscriptionLangs";
+  peer?: InputPeer;
+  [R]?: Array<string>;
+}
+
 /** https://core.telegram.org/method/updates.getState */
 export interface updates_getState {
   _: "updates.getState";
@@ -18567,6 +18909,7 @@ export interface channels_toggleForum {
   channel: InputChannel;
   enabled: boolean;
   tabs: boolean;
+  sidebar: boolean;
   [R]?: Updates;
 }
 
@@ -21219,7 +21562,12 @@ export interface wallet_setCardStickers {
 export interface Types {
   "true": true_;
   "error": error;
-  "null": null_;
+  "ipPort": ipPort;
+  "ipPortSecret": ipPortSecret;
+  "accessPointRule": accessPointRule;
+  "help.configSimple": help_configSimple;
+  "inputPeerPhotoFileLocationLegacy": inputPeerPhotoFileLocationLegacy;
+  "inputStickerSetThumbLegacy": inputStickerSetThumbLegacy;
   "inputPeerEmpty": inputPeerEmpty;
   "inputPeerSelf": inputPeerSelf;
   "inputPeerChat": inputPeerChat;
@@ -21255,6 +21603,8 @@ export interface Types {
   "inputMediaPaidMedia": inputMediaPaidMedia;
   "inputMediaTodo": inputMediaTodo;
   "inputMediaStakeDice": inputMediaStakeDice;
+  "inputMediaWidget": inputMediaWidget;
+  "inputMediaWidgetId": inputMediaWidgetId;
   "inputChatPhotoEmpty": inputChatPhotoEmpty;
   "inputChatUploadedPhoto": inputChatUploadedPhoto;
   "inputChatPhoto": inputChatPhoto;
@@ -21334,6 +21684,7 @@ export interface Types {
   "messageMediaPaidMedia": messageMediaPaidMedia;
   "messageMediaToDo": messageMediaToDo;
   "messageMediaVideoStream": messageMediaVideoStream;
+  "messageMediaWidget": messageMediaWidget;
   "messageActionEmpty": messageActionEmpty;
   "messageActionChatCreate": messageActionChatCreate;
   "messageActionChatEditTitle": messageActionChatEditTitle;
@@ -21654,6 +22005,12 @@ export interface Types {
   "updateWalletGaslessInfo": updateWalletGaslessInfo;
   "updateWalletTonConnectSession": updateWalletTonConnectSession;
   "updateWalletTonConnectPendingDisconnect": updateWalletTonConnectPendingDisconnect;
+  "updateEditForumTopic": updateEditForumTopic;
+  "updateBotWidgetQuery": updateBotWidgetQuery;
+  "updateInlineBotWidgetQuery": updateInlineBotWidgetQuery;
+  "updateBotWidgetCopyQuery": updateBotWidgetCopyQuery;
+  "updateMessageWidgetData": updateMessageWidgetData;
+  "updateTranscribedAudioFile": updateTranscribedAudioFile;
   "updates.state": updates_state;
   "updates.differenceEmpty": updates_differenceEmpty;
   "updates.difference": updates_difference;
@@ -21901,6 +22258,8 @@ export interface Types {
   "inputBotInlineMessageMediaInvoice": inputBotInlineMessageMediaInvoice;
   "inputBotInlineMessageMediaWebPage": inputBotInlineMessageMediaWebPage;
   "inputBotInlineMessageRichMessage": inputBotInlineMessageRichMessage;
+  "inputBotInlineMessageWidget": inputBotInlineMessageWidget;
+  "inputBotInlineMessageWidgetId": inputBotInlineMessageWidgetId;
   "inputBotInlineResult": inputBotInlineResult;
   "inputBotInlineResultPhoto": inputBotInlineResultPhoto;
   "inputBotInlineResultDocument": inputBotInlineResultDocument;
@@ -21913,6 +22272,7 @@ export interface Types {
   "botInlineMessageMediaInvoice": botInlineMessageMediaInvoice;
   "botInlineMessageMediaWebPage": botInlineMessageMediaWebPage;
   "botInlineMessageRichMessage": botInlineMessageRichMessage;
+  "botInlineMessageWidget": botInlineMessageWidget;
   "botInlineResult": botInlineResult;
   "botInlineMediaResult": botInlineMediaResult;
   "messages.botResults": messages_botResults;
@@ -22934,9 +23294,20 @@ export interface Types {
   "wallet.cardSticker": wallet_cardSticker;
   "wallet.card": wallet_card;
   "payments.starGiftDepositPayload": payments_starGiftDepositPayload;
+  "userWallet": userWallet;
+  "widgetQueryTypeData": widgetQueryTypeData;
+  "widgetQueryTypeSignData": widgetQueryTypeSignData;
+  "widgetQueryTypeSentTransaction": widgetQueryTypeSentTransaction;
+  "messages.botWidgetQueryAnswer": messages_botWidgetQueryAnswer;
+  "messages.widgetPublicDataNotModified": messages_widgetPublicDataNotModified;
+  "messages.widgetPublicData": messages_widgetPublicData;
 }
 
 export interface Functions<T = Function> {
+  "invokeWithBusinessConnectionPrefix": invokeWithBusinessConnectionPrefix;
+  "invokeWithGooglePlayIntegrityPrefix": invokeWithGooglePlayIntegrityPrefix;
+  "invokeWithApnsSecretPrefix": invokeWithApnsSecretPrefix;
+  "invokeWithReCaptchaPrefix": invokeWithReCaptchaPrefix;
   "invokeAfterMsg": invokeAfterMsg<T>;
   "invokeAfterMsgs": invokeAfterMsgs<T>;
   "initConnection": initConnection<T>;
@@ -23404,6 +23775,14 @@ export interface Functions<T = Function> {
   "messages.requestChatJoinWebView": messages_requestChatJoinWebView;
   "messages.setShareTheme": messages_setShareTheme;
   "messages.getShareThemeBackdrops": messages_getShareThemeBackdrops;
+  "messages.getBotWidgetQueryAnswer": messages_getBotWidgetQueryAnswer;
+  "messages.setBotWidgetQueryAnswer": messages_setBotWidgetQueryAnswer;
+  "messages.editMessageWidgetData": messages_editMessageWidgetData;
+  "messages.editInlineBotMessageWidgetData": messages_editInlineBotMessageWidgetData;
+  "messages.editWidgetData": messages_editWidgetData;
+  "messages.getWidgetPublicData": messages_getWidgetPublicData;
+  "messages.transcribeAudioFile": messages_transcribeAudioFile;
+  "messages.getTranscriptionLangs": messages_getTranscriptionLangs;
   "updates.getState": updates_getState;
   "updates.getDifference": updates_getDifference;
   "updates.getChannelDifference": updates_getChannelDifference;
@@ -23801,7 +24180,10 @@ export interface Functions<T = Function> {
 export interface Enums {
   "True": True;
   "Error": Error;
-  "Null": Null;
+  "IpPort": IpPort;
+  "AccessPointRule": AccessPointRule;
+  "help.ConfigSimple": help_ConfigSimple;
+  "InputFileLocation": InputFileLocation;
   "InputPeer": InputPeer;
   "InputUser": InputUser;
   "InputContact": InputContact;
@@ -23810,7 +24192,6 @@ export interface Enums {
   "InputChatPhoto": InputChatPhoto;
   "InputGeoPoint": InputGeoPoint;
   "InputPhoto": InputPhoto;
-  "InputFileLocation": InputFileLocation;
   "Peer": Peer;
   "storage.FileType": storage_FileType;
   "User": User;
@@ -24456,6 +24837,10 @@ export interface Enums {
   "wallet.CardSticker": wallet_CardSticker;
   "wallet.Card": wallet_Card;
   "payments.StarGiftDepositPayload": payments_StarGiftDepositPayload;
+  "UserWallet": UserWallet;
+  "WidgetQueryType": WidgetQueryType;
+  "messages.BotWidgetQueryAnswer": messages_BotWidgetQueryAnswer;
+  "messages.WidgetPublicData": messages_WidgetPublicData;
 }
 
 export type AnyType = Types[keyof Types];
@@ -24472,8 +24857,17 @@ export type True = true_;
 /** https://core.telegram.org/type/Error */
 export type Error = error;
 
-/** https://core.telegram.org/type/Null */
-export type Null = null_;
+/** https://core.telegram.org/type/IpPort */
+export type IpPort = ipPort | ipPortSecret;
+
+/** https://core.telegram.org/type/AccessPointRule */
+export type AccessPointRule = accessPointRule;
+
+/** https://core.telegram.org/type/help.ConfigSimple */
+export type help_ConfigSimple = help_configSimple;
+
+/** https://core.telegram.org/type/InputFileLocation */
+export type InputFileLocation = inputPeerPhotoFileLocationLegacy | inputStickerSetThumbLegacy | inputFileLocation | inputEncryptedFileLocation | inputDocumentFileLocation | inputSecureFileLocation | inputTakeoutFileLocation | inputPhotoFileLocation | inputPhotoLegacyFileLocation | inputPeerPhotoFileLocation | inputStickerSetThumb | inputGroupCallStream;
 
 /** https://core.telegram.org/type/InputPeer */
 export type InputPeer = inputPeerEmpty | inputPeerSelf | inputPeerChat | inputPeerUser | inputPeerChannel | inputPeerUserFromMessage | inputPeerChannelFromMessage;
@@ -24488,7 +24882,7 @@ export type InputContact = inputPhoneContact;
 export type InputFile = inputFile | inputFileBig | inputFileStoryDocument;
 
 /** https://core.telegram.org/type/InputMedia */
-export type InputMedia = inputMediaEmpty | inputMediaUploadedPhoto | inputMediaPhoto | inputMediaGeoPoint | inputMediaContact | inputMediaUploadedDocument | inputMediaDocument | inputMediaVenue | inputMediaPhotoExternal | inputMediaDocumentExternal | inputMediaGame | inputMediaInvoice | inputMediaGeoLive | inputMediaPoll | inputMediaDice | inputMediaStory | inputMediaWebPage | inputMediaPaidMedia | inputMediaTodo | inputMediaStakeDice;
+export type InputMedia = inputMediaEmpty | inputMediaUploadedPhoto | inputMediaPhoto | inputMediaGeoPoint | inputMediaContact | inputMediaUploadedDocument | inputMediaDocument | inputMediaVenue | inputMediaPhotoExternal | inputMediaDocumentExternal | inputMediaGame | inputMediaInvoice | inputMediaGeoLive | inputMediaPoll | inputMediaDice | inputMediaStory | inputMediaWebPage | inputMediaPaidMedia | inputMediaTodo | inputMediaStakeDice | inputMediaWidget | inputMediaWidgetId;
 
 /** https://core.telegram.org/type/InputChatPhoto */
 export type InputChatPhoto = inputChatPhotoEmpty | inputChatUploadedPhoto | inputChatPhoto;
@@ -24498,9 +24892,6 @@ export type InputGeoPoint = inputGeoPointEmpty | inputGeoPoint;
 
 /** https://core.telegram.org/type/InputPhoto */
 export type InputPhoto = inputPhotoEmpty | inputPhoto;
-
-/** https://core.telegram.org/type/InputFileLocation */
-export type InputFileLocation = inputFileLocation | inputEncryptedFileLocation | inputDocumentFileLocation | inputSecureFileLocation | inputTakeoutFileLocation | inputPhotoFileLocation | inputPhotoLegacyFileLocation | inputPeerPhotoFileLocation | inputStickerSetThumb | inputGroupCallStream;
 
 /** https://core.telegram.org/type/Peer */
 export type Peer = peerUser | peerChat | peerChannel;
@@ -24536,7 +24927,7 @@ export type ChatPhoto = chatPhotoEmpty | chatPhoto;
 export type Message = messageEmpty | message | messageService;
 
 /** https://core.telegram.org/type/MessageMedia */
-export type MessageMedia = messageMediaEmpty | messageMediaPhoto | messageMediaGeo | messageMediaContact | messageMediaUnsupported | messageMediaDocument | messageMediaWebPage | messageMediaVenue | messageMediaGame | messageMediaInvoice | messageMediaGeoLive | messageMediaPoll | messageMediaDice | messageMediaStory | messageMediaGiveaway | messageMediaGiveawayResults | messageMediaPaidMedia | messageMediaToDo | messageMediaVideoStream;
+export type MessageMedia = messageMediaEmpty | messageMediaPhoto | messageMediaGeo | messageMediaContact | messageMediaUnsupported | messageMediaDocument | messageMediaWebPage | messageMediaVenue | messageMediaGame | messageMediaInvoice | messageMediaGeoLive | messageMediaPoll | messageMediaDice | messageMediaStory | messageMediaGiveaway | messageMediaGiveawayResults | messageMediaPaidMedia | messageMediaToDo | messageMediaVideoStream | messageMediaWidget;
 
 /** https://core.telegram.org/type/MessageAction */
 export type MessageAction = messageActionEmpty | messageActionChatCreate | messageActionChatEditTitle | messageActionChatEditPhoto | messageActionChatDeletePhoto | messageActionChatAddUser | messageActionChatDeleteUser | messageActionChatJoinedByLink | messageActionChannelCreate | messageActionChatMigrateTo | messageActionChannelMigrateFrom | messageActionPinMessage | messageActionHistoryClear | messageActionGameScore | messageActionPaymentSentMe | messageActionPaymentSent | messageActionPhoneCall | messageActionScreenshotTaken | messageActionCustomAction | messageActionBotAllowed | messageActionSecureValuesSentMe | messageActionSecureValuesSent | messageActionContactSignUp | messageActionGeoProximityReached | messageActionGroupCall | messageActionInviteToGroupCall | messageActionSetMessagesTTL | messageActionGroupCallScheduled | messageActionSetChatTheme | messageActionChatJoinedByRequest | messageActionWebViewDataSentMe | messageActionWebViewDataSent | messageActionGiftPremium | messageActionTopicCreate | messageActionTopicEdit | messageActionSuggestProfilePhoto | messageActionRequestedPeer | messageActionSetChatWallPaper | messageActionGiftCode | messageActionGiveawayLaunch | messageActionGiveawayResults | messageActionBoostApply | messageActionRequestedPeerSentMe | messageActionPaymentRefunded | messageActionGiftStars | messageActionPrizeStars | messageActionStarGift | messageActionStarGiftUnique | messageActionPaidMessagesRefunded | messageActionPaidMessagesPrice | messageActionConferenceCall | messageActionTodoCompletions | messageActionTodoAppendTasks | messageActionSuggestedPostApproval | messageActionSuggestedPostSuccess | messageActionSuggestedPostRefund | messageActionGiftTon | messageActionSuggestBirthday | messageActionStarGiftPurchaseOffer | messageActionStarGiftPurchaseOfferDeclined | messageActionNewCreatorPending | messageActionChangeCreator | messageActionNoForwardsToggle | messageActionNoForwardsRequest | messageActionPollAppendAnswer | messageActionPollDeleteAnswer | messageActionManagedBotCreated | messageActionChangeCommunity | messageActionChatJoinedViaCommunity | messageActionGramTransfer | messageActionWalletTonConnectRequest | messageActionNoPaidMessagesTokenUsed;
@@ -24620,7 +25011,7 @@ export type messages_AffectedHistory = messages_affectedHistory;
 export type MessagesFilter = inputMessagesFilterEmpty | inputMessagesFilterPhotos | inputMessagesFilterVideo | inputMessagesFilterPhotoVideo | inputMessagesFilterDocument | inputMessagesFilterUrl | inputMessagesFilterGif | inputMessagesFilterVoice | inputMessagesFilterMusic | inputMessagesFilterChatPhotos | inputMessagesFilterPhoneCalls | inputMessagesFilterRoundVoice | inputMessagesFilterRoundVideo | inputMessagesFilterMyMentions | inputMessagesFilterGeo | inputMessagesFilterContacts | inputMessagesFilterPinned | inputMessagesFilterPoll;
 
 /** https://core.telegram.org/type/Update */
-export type Update = updateNewMessage | updateMessageID | updateDeleteMessages | updateUserTyping | updateChatUserTyping | updateChatParticipants | updateUserStatus | updateUserName | updateNewAuthorization | updateNewEncryptedMessage | updateEncryptedChatTyping | updateEncryption | updateEncryptedMessagesRead | updateChatParticipantAdd | updateChatParticipantDelete | updateDcOptions | updateNotifySettings | updateServiceNotification | updatePrivacy | updateUserPhone | updateReadHistoryInbox | updateReadHistoryOutbox | updateWebPage | updateReadMessagesContents | updateChannelTooLong | updateChannel | updateNewChannelMessage | updateReadChannelInbox | updateDeleteChannelMessages | updateChannelMessageViews | updateChatParticipantAdmin | updateNewStickerSet | updateStickerSetsOrder | updateStickerSets | updateSavedGifs | updateBotInlineQuery | updateBotInlineSend | updateEditChannelMessage | updateBotCallbackQuery | updateEditMessage | updateInlineBotCallbackQuery | updateReadChannelOutbox | updateDraftMessage | updateReadFeaturedStickers | updateRecentStickers | updateConfig | updatePtsChanged | updateChannelWebPage | updateDialogPinned | updatePinnedDialogs | updateBotWebhookJSON | updateBotWebhookJSONQuery | updateBotShippingQuery | updateBotPrecheckoutQuery | updatePhoneCall | updateLangPackTooLong | updateLangPack | updateFavedStickers | updateChannelReadMessagesContents | updateContactsReset | updateChannelAvailableMessages | updateDialogUnreadMark | updateMessagePoll | updateChatDefaultBannedRights | updateFolderPeers | updatePeerSettings | updatePeerLocated | updateNewScheduledMessage | updateDeleteScheduledMessages | updateTheme | updateGeoLiveViewed | updateLoginToken | updateMessagePollVote | updateDialogFilter | updateDialogFilterOrder | updateDialogFilters | updatePhoneCallSignalingData | updateChannelMessageForwards | updateReadChannelDiscussionInbox | updateReadChannelDiscussionOutbox | updatePeerBlocked | updateChannelUserTyping | updatePinnedMessages | updatePinnedChannelMessages | updateChat | updateGroupCallParticipants | updateGroupCall | updatePeerHistoryTTL | updateChatParticipant | updateChannelParticipant | updateBotStopped | updateGroupCallConnection | updateBotCommands | updatePendingJoinRequests | updateBotChatInviteRequester | updateMessageReactions | updateAttachMenuBots | updateWebViewResultSent | updateBotMenuButton | updateSavedRingtones | updateTranscribedAudio | updateReadFeaturedEmojiStickers | updateUserEmojiStatus | updateRecentEmojiStatuses | updateRecentReactions | updateMoveStickerSetToTop | updateMessageExtendedMedia | updateUser | updateAutoSaveSettings | updateStory | updateReadStories | updateStoryID | updateStoriesStealthMode | updateSentStoryReaction | updateBotChatBoost | updateChannelViewForumAsMessages | updatePeerWallpaper | updateBotMessageReaction | updateBotMessageReactions | updateSavedDialogPinned | updatePinnedSavedDialogs | updateSavedReactionTags | updateSmsJob | updateQuickReplies | updateNewQuickReply | updateDeleteQuickReply | updateQuickReplyMessage | updateDeleteQuickReplyMessages | updateBotBusinessConnect | updateBotNewBusinessMessage | updateBotEditBusinessMessage | updateBotDeleteBusinessMessage | updateNewStoryReaction | updateStarsBalance | updateBusinessBotCallbackQuery | updateStarsRevenueStatus | updateBotPurchasedPaidMedia | updatePaidReactionPrivacy | updateSentPhoneCode | updateGroupCallChainBlocks | updateReadMonoForumInbox | updateReadMonoForumOutbox | updateMonoForumNoPaidException | updateGroupCallMessage | updateGroupCallEncryptedMessage | updatePinnedForumTopic | updatePinnedForumTopics | updateDeleteGroupCallMessages | updateStarGiftAuctionState | updateStarGiftAuctionUserState | updateEmojiGameInfo | updateStarGiftCraftFail | updateChatParticipantRank | updateManagedBot | updateBotGuestChatQuery | updateAiComposeTones | updateJoinChatWebViewDecision | updateNewBotConnection | updateWebBrowserSettings | updateWebBrowserException | updateNewEphemeralMessage | updateDeleteEphemeralMessages | updateEditEphemeralMessage | updateEphemeralBotCallbackQuery | updateBotStarsSubscription | updateWalletState | updateSentWalletTransaction | updateWalletGaslessInfo | updateWalletTonConnectSession | updateWalletTonConnectPendingDisconnect;
+export type Update = updateNewMessage | updateMessageID | updateDeleteMessages | updateUserTyping | updateChatUserTyping | updateChatParticipants | updateUserStatus | updateUserName | updateNewAuthorization | updateNewEncryptedMessage | updateEncryptedChatTyping | updateEncryption | updateEncryptedMessagesRead | updateChatParticipantAdd | updateChatParticipantDelete | updateDcOptions | updateNotifySettings | updateServiceNotification | updatePrivacy | updateUserPhone | updateReadHistoryInbox | updateReadHistoryOutbox | updateWebPage | updateReadMessagesContents | updateChannelTooLong | updateChannel | updateNewChannelMessage | updateReadChannelInbox | updateDeleteChannelMessages | updateChannelMessageViews | updateChatParticipantAdmin | updateNewStickerSet | updateStickerSetsOrder | updateStickerSets | updateSavedGifs | updateBotInlineQuery | updateBotInlineSend | updateEditChannelMessage | updateBotCallbackQuery | updateEditMessage | updateInlineBotCallbackQuery | updateReadChannelOutbox | updateDraftMessage | updateReadFeaturedStickers | updateRecentStickers | updateConfig | updatePtsChanged | updateChannelWebPage | updateDialogPinned | updatePinnedDialogs | updateBotWebhookJSON | updateBotWebhookJSONQuery | updateBotShippingQuery | updateBotPrecheckoutQuery | updatePhoneCall | updateLangPackTooLong | updateLangPack | updateFavedStickers | updateChannelReadMessagesContents | updateContactsReset | updateChannelAvailableMessages | updateDialogUnreadMark | updateMessagePoll | updateChatDefaultBannedRights | updateFolderPeers | updatePeerSettings | updatePeerLocated | updateNewScheduledMessage | updateDeleteScheduledMessages | updateTheme | updateGeoLiveViewed | updateLoginToken | updateMessagePollVote | updateDialogFilter | updateDialogFilterOrder | updateDialogFilters | updatePhoneCallSignalingData | updateChannelMessageForwards | updateReadChannelDiscussionInbox | updateReadChannelDiscussionOutbox | updatePeerBlocked | updateChannelUserTyping | updatePinnedMessages | updatePinnedChannelMessages | updateChat | updateGroupCallParticipants | updateGroupCall | updatePeerHistoryTTL | updateChatParticipant | updateChannelParticipant | updateBotStopped | updateGroupCallConnection | updateBotCommands | updatePendingJoinRequests | updateBotChatInviteRequester | updateMessageReactions | updateAttachMenuBots | updateWebViewResultSent | updateBotMenuButton | updateSavedRingtones | updateTranscribedAudio | updateReadFeaturedEmojiStickers | updateUserEmojiStatus | updateRecentEmojiStatuses | updateRecentReactions | updateMoveStickerSetToTop | updateMessageExtendedMedia | updateUser | updateAutoSaveSettings | updateStory | updateReadStories | updateStoryID | updateStoriesStealthMode | updateSentStoryReaction | updateBotChatBoost | updateChannelViewForumAsMessages | updatePeerWallpaper | updateBotMessageReaction | updateBotMessageReactions | updateSavedDialogPinned | updatePinnedSavedDialogs | updateSavedReactionTags | updateSmsJob | updateQuickReplies | updateNewQuickReply | updateDeleteQuickReply | updateQuickReplyMessage | updateDeleteQuickReplyMessages | updateBotBusinessConnect | updateBotNewBusinessMessage | updateBotEditBusinessMessage | updateBotDeleteBusinessMessage | updateNewStoryReaction | updateStarsBalance | updateBusinessBotCallbackQuery | updateStarsRevenueStatus | updateBotPurchasedPaidMedia | updatePaidReactionPrivacy | updateSentPhoneCode | updateGroupCallChainBlocks | updateReadMonoForumInbox | updateReadMonoForumOutbox | updateMonoForumNoPaidException | updateGroupCallMessage | updateGroupCallEncryptedMessage | updatePinnedForumTopic | updatePinnedForumTopics | updateDeleteGroupCallMessages | updateStarGiftAuctionState | updateStarGiftAuctionUserState | updateEmojiGameInfo | updateStarGiftCraftFail | updateChatParticipantRank | updateManagedBot | updateBotGuestChatQuery | updateAiComposeTones | updateJoinChatWebViewDecision | updateNewBotConnection | updateWebBrowserSettings | updateWebBrowserException | updateNewEphemeralMessage | updateDeleteEphemeralMessages | updateEditEphemeralMessage | updateEphemeralBotCallbackQuery | updateBotStarsSubscription | updateWalletState | updateSentWalletTransaction | updateWalletGaslessInfo | updateWalletTonConnectSession | updateWalletTonConnectPendingDisconnect | updateEditForumTopic | updateBotWidgetQuery | updateInlineBotWidgetQuery | updateBotWidgetCopyQuery | updateMessageWidgetData | updateTranscribedAudioFile;
 
 /** https://core.telegram.org/type/updates.State */
 export type updates_State = updates_state;
@@ -24818,13 +25209,13 @@ export type help_TermsOfService = help_termsOfService;
 export type messages_SavedGifs = messages_savedGifsNotModified | messages_savedGifs;
 
 /** https://core.telegram.org/type/InputBotInlineMessage */
-export type InputBotInlineMessage = inputBotInlineMessageMediaAuto | inputBotInlineMessageText | inputBotInlineMessageMediaGeo | inputBotInlineMessageMediaVenue | inputBotInlineMessageMediaContact | inputBotInlineMessageGame | inputBotInlineMessageMediaInvoice | inputBotInlineMessageMediaWebPage | inputBotInlineMessageRichMessage;
+export type InputBotInlineMessage = inputBotInlineMessageMediaAuto | inputBotInlineMessageText | inputBotInlineMessageMediaGeo | inputBotInlineMessageMediaVenue | inputBotInlineMessageMediaContact | inputBotInlineMessageGame | inputBotInlineMessageMediaInvoice | inputBotInlineMessageMediaWebPage | inputBotInlineMessageRichMessage | inputBotInlineMessageWidget | inputBotInlineMessageWidgetId;
 
 /** https://core.telegram.org/type/InputBotInlineResult */
 export type InputBotInlineResult = inputBotInlineResult | inputBotInlineResultPhoto | inputBotInlineResultDocument | inputBotInlineResultGame;
 
 /** https://core.telegram.org/type/BotInlineMessage */
-export type BotInlineMessage = botInlineMessageMediaAuto | botInlineMessageText | botInlineMessageMediaGeo | botInlineMessageMediaVenue | botInlineMessageMediaContact | botInlineMessageMediaInvoice | botInlineMessageMediaWebPage | botInlineMessageRichMessage;
+export type BotInlineMessage = botInlineMessageMediaAuto | botInlineMessageText | botInlineMessageMediaGeo | botInlineMessageMediaVenue | botInlineMessageMediaContact | botInlineMessageMediaInvoice | botInlineMessageMediaWebPage | botInlineMessageRichMessage | botInlineMessageWidget;
 
 /** https://core.telegram.org/type/BotInlineResult */
 export type BotInlineResult = botInlineResult | botInlineMediaResult;
@@ -26437,6 +26828,18 @@ export type wallet_Card = wallet_card;
 /** https://core.telegram.org/type/payments.StarGiftDepositPayload */
 export type payments_StarGiftDepositPayload = payments_starGiftDepositPayload;
 
+/** https://core.telegram.org/type/UserWallet */
+export type UserWallet = userWallet;
+
+/** https://core.telegram.org/type/WidgetQueryType */
+export type WidgetQueryType = widgetQueryTypeData | widgetQueryTypeSignData | widgetQueryTypeSentTransaction;
+
+/** https://core.telegram.org/type/messages.BotWidgetQueryAnswer */
+export type messages_BotWidgetQueryAnswer = messages_botWidgetQueryAnswer;
+
+/** https://core.telegram.org/type/messages.WidgetPublicData */
+export type messages_WidgetPublicData = messages_widgetPublicDataNotModified | messages_widgetPublicData;
+
 export const schema = Object.freeze({
   definitions: {
     true: [
@@ -26452,10 +26855,60 @@ export const schema = Object.freeze({
       ],
       "Error",
     ],
-    null: [
-      0x56730BCC,
-      [],
-      "Null",
+    ipPort: [
+      0xD433AD73,
+      [
+        ["ipv4", "int"],
+        ["port", "int"],
+      ],
+      "IpPort",
+    ],
+    ipPortSecret: [
+      0x37982646,
+      [
+        ["ipv4", "int"],
+        ["port", "int"],
+        ["secret", "bytes"],
+      ],
+      "IpPort",
+    ],
+    accessPointRule: [
+      0x4679B65F,
+      [
+        ["phone_prefix_rules", "string"],
+        ["dc_id", "int"],
+        ["ips", "vector<IpPort>"],
+      ],
+      "AccessPointRule",
+    ],
+    "help.configSimple": [
+      0x5A592A6C,
+      [
+        ["date", "int"],
+        ["expires", "int"],
+        ["rules", "vector<AccessPointRule>"],
+      ],
+      "help.ConfigSimple",
+    ],
+    inputPeerPhotoFileLocationLegacy: [
+      0x27D69997,
+      [
+        ["flags", "#"],
+        ["big", "flags.0?true"],
+        ["peer", "InputPeer"],
+        ["volume_id", "long"],
+        ["local_id", "int"],
+      ],
+      "InputFileLocation",
+    ],
+    inputStickerSetThumbLegacy: [
+      0x0DBAEAE9,
+      [
+        ["stickerset", "InputStickerSet"],
+        ["volume_id", "long"],
+        ["local_id", "int"],
+      ],
+      "InputFileLocation",
     ],
     inputPeerEmpty: [
       0x7F3B18EA,
@@ -26785,6 +27238,29 @@ export const schema = Object.freeze({
       ],
       "InputMedia",
     ],
+    inputMediaWidget: [
+      0x44F6C04E,
+      [
+        ["flags", "#"],
+        ["allow_queries", "flags.0?true"],
+        ["shared_widget", "flags.1?true"],
+        ["width", "int"],
+        ["height", "int"],
+        ["html", "string"],
+        ["public_data", "flags.2?string"],
+        ["chat_data", "flags.3?string"],
+      ],
+      "InputMedia",
+    ],
+    inputMediaWidgetId: [
+      0x7C855CB5,
+      [
+        ["flags", "#"],
+        ["widget_id", "long"],
+        ["chat_data", "flags.0?string"],
+      ],
+      "InputMedia",
+    ],
     inputChatPhotoEmpty: [
       0x1CA48F57,
       [],
@@ -27043,6 +27519,7 @@ export const schema = Object.freeze({
         ["bot_can_manage_bots", "flags2.18?true"],
         ["bot_guestchat", "flags2.19?true"],
         ["bot_guard", "flags2.20?true"],
+        ["bot_forum_sidebar", "flags2.22?true"],
         ["id", "long"],
         ["access_hash", "flags.0?long"],
         ["first_name", "flags.1?string"],
@@ -27198,6 +27675,7 @@ export const schema = Object.freeze({
         ["monoforum", "flags2.17?true"],
         ["forum_tabs", "flags2.19?true"],
         ["in_news", "flags2.21?true"],
+        ["forum_sidebar", "flags2.23?true"],
         ["id", "long"],
         ["access_hash", "flags.13?long"],
         ["title", "string"],
@@ -27745,6 +28223,23 @@ export const schema = Object.freeze({
         ["flags", "#"],
         ["rtmp_stream", "flags.0?true"],
         ["call", "InputGroupCall"],
+      ],
+      "MessageMedia",
+    ],
+    messageMediaWidget: [
+      0x2238F214,
+      [
+        ["flags", "#"],
+        ["is_copy", "flags.0?true"],
+        ["can_query", "flags.1?true"],
+        ["background_query", "flags.2?true"],
+        ["width", "int"],
+        ["height", "int"],
+        ["payload", "bytes"],
+        ["public_data", "flags.3?string"],
+        ["public_data_hash", "flags.3?long"],
+        ["chat_data", "flags.4?string"],
+        ["widget_id", "flags.5?long"],
       ],
       "MessageMedia",
     ],
@@ -30628,6 +31123,89 @@ export const schema = Object.freeze({
       ],
       "Update",
     ],
+    updateEditForumTopic: [
+      0x2366665C,
+      [
+        ["flags", "#"],
+        ["peer", "Peer"],
+        ["topic_id", "int"],
+        ["title", "flags.0?string"],
+        ["icon_emoji_id", "flags.1?long"],
+        ["closed", "flags.2?Bool"],
+        ["hidden", "flags.3?Bool"],
+      ],
+      "Update",
+    ],
+    updateBotWidgetQuery: [
+      0xB373FE68,
+      [
+        ["flags", "#"],
+        ["query_id", "long"],
+        ["query_type", "WidgetQueryType"],
+        ["user_id", "long"],
+        ["peer", "Peer"],
+        ["msg_id", "int"],
+        ["chat_instance", "long"],
+        ["chat_type", "string"],
+        ["data", "bytes"],
+        ["widget_id", "flags.0?long"],
+        ["wallet_card", "flags.1?wallet.Card"],
+      ],
+      "Update",
+    ],
+    updateInlineBotWidgetQuery: [
+      0xA5F07E08,
+      [
+        ["flags", "#"],
+        ["query_id", "long"],
+        ["query_type", "WidgetQueryType"],
+        ["user_id", "long"],
+        ["inline_message_id", "InputBotInlineMessageID"],
+        ["chat_instance", "long"],
+        ["chat_type", "string"],
+        ["data", "bytes"],
+        ["widget_id", "flags.0?long"],
+        ["wallet_card", "flags.1?wallet.Card"],
+      ],
+      "Update",
+    ],
+    updateBotWidgetCopyQuery: [
+      0xFA89BEF7,
+      [
+        ["flags", "#"],
+        ["query_id", "long"],
+        ["query_type", "WidgetQueryType"],
+        ["user_id", "long"],
+        ["data", "bytes"],
+        ["widget_id", "long"],
+        ["wallet_card", "flags.1?wallet.Card"],
+      ],
+      "Update",
+    ],
+    updateMessageWidgetData: [
+      0xBBB078DD,
+      [
+        ["flags", "#"],
+        ["peer", "Peer"],
+        ["msg_id", "int"],
+        ["public_data", "flags.0?string"],
+        ["public_data_hash", "flags.0?long"],
+        ["chat_data", "flags.1?string"],
+        ["pts", "int"],
+        ["pts_count", "int"],
+      ],
+      "Update",
+    ],
+    updateTranscribedAudioFile: [
+      0x734C2E7B,
+      [
+        ["flags", "#"],
+        ["pending", "flags.0?true"],
+        ["transcription_id", "long"],
+        ["text", "string"],
+      ],
+      "Update",
+    ],
     "updates.state": [
       0xA56C2A3E,
       [
@@ -30845,6 +31423,7 @@ export const schema = Object.freeze({
         ["revoke_pm_inbox", "flags.6?true"],
         ["blocked_mode", "flags.8?true"],
         ["force_try_ipv6", "flags.14?true"],
+        ["fpnv_allowed", "flags.17?true"],
         ["date", "int"],
         ["expires", "int"],
         ["test_mode", "Bool"],
@@ -32732,6 +33311,37 @@ export const schema = Object.freeze({
       ],
       "InputBotInlineMessage",
     ],
+    inputBotInlineMessageWidget: [
+      0xF597A3F0,
+      [
+        ["flags", "#"],
+        ["allow_queries", "flags.0?true"],
+        ["shared_widget", "flags.1?true"],
+        ["invert_media", "flags.6?true"],
+        ["width", "int"],
+        ["height", "int"],
+        ["html", "string"],
+        ["public_data", "flags.2?string"],
+        ["chat_data", "flags.3?string"],
+        ["reply_markup", "flags.4?ReplyMarkup"],
+        ["message", "string"],
+        ["entities", "flags.5?Vector<MessageEntity>"],
+      ],
+      "InputBotInlineMessage",
+    ],
+    inputBotInlineMessageWidgetId: [
+      0xFE8B792B,
+      [
+        ["flags", "#"],
+        ["invert_media", "flags.3?true"],
+        ["widget_id", "long"],
+        ["chat_data", "flags.0?string"],
+        ["reply_markup", "flags.1?ReplyMarkup"],
+        ["message", "string"],
+        ["entities", "flags.2?Vector<MessageEntity>"],
+      ],
+      "InputBotInlineMessage",
+    ],
     inputBotInlineResult: [
       0x88BF9319,
       [
@@ -32877,6 +33487,24 @@ export const schema = Object.freeze({
         ["flags", "#"],
         ["reply_markup", "flags.2?ReplyMarkup"],
         ["rich_message", "RichMessage"],
+      ],
+      "BotInlineMessage",
+    ],
+    botInlineMessageWidget: [
+      0xBAA17834,
+      [
+        ["flags", "#"],
+        ["invert_media", "flags.5?true"],
+        ["width", "int"],
+        ["height", "int"],
+        ["payload", "bytes"],
+        ["public_data", "flags.0?string"],
+        ["public_data_hash", "flags.0?long"],
+        ["chat_data", "flags.1?string"],
+        ["reply_markup", "flags.2?ReplyMarkup"],
+        ["widget_id", "flags.3?long"],
+        ["message", "string"],
+        ["entities", "flags.4?Vector<MessageEntity>"],
       ],
       "BotInlineMessage",
     ],
@@ -42178,6 +42806,95 @@ export const schema = Object.freeze({
       ],
       "payments.StarGiftDepositPayload",
     ],
+    userWallet: [
+      0x454D2737,
+      [
+        ["flags", "#"],
+        ["address", "string"],
+        ["balance", "long"],
+        ["public_key", "flags.0?bytes"],
+        ["state_init", "flags.0?bytes"],
+      ],
+      "UserWallet",
+    ],
+    widgetQueryTypeData: [
+      0x16D8CF0B,
+      [
+        ["flags", "#"],
+        ["with_wallet", "flags.0?true"],
+      ],
+      "WidgetQueryType",
+    ],
+    widgetQueryTypeSignData: [
+      0x192047DC,
+      [
+        ["wallet", "UserWallet"],
+        ["sign_data", "DataJSON"],
+      ],
+      "WidgetQueryType",
+    ],
+    widgetQueryTypeSentTransaction: [
+      0xFF3B33B4,
+      [
+        ["wallet", "UserWallet"],
+        ["msg_hash", "string"],
+      ],
+      "WidgetQueryType",
+    ],
+    "messages.botWidgetQueryAnswer": [
+      0x95B73023,
+      [
+        ["flags", "#"],
+        ["result", "flags.0?string"],
+      ],
+      "messages.BotWidgetQueryAnswer",
+    ],
+    "messages.widgetPublicDataNotModified": [
+      0xB9196E57,
+      [
+        ["period", "int"],
+      ],
+      "messages.WidgetPublicData",
+    ],
+    "messages.widgetPublicData": [
+      0x04493BFF,
+      [
+        ["hash", "long"],
+        ["data", "string"],
+        ["period", "int"],
+      ],
+      "messages.WidgetPublicData",
+    ],
+    invokeWithBusinessConnectionPrefix: [
+      0xDD289F8E,
+      [
+        ["connection_id", "string"],
+      ],
+      "Error",
+    ],
+    invokeWithGooglePlayIntegrityPrefix: [
+      0x1DF92984,
+      [
+        ["nonce", "string"],
+        ["token", "string"],
+      ],
+      "Error",
+    ],
+    invokeWithApnsSecretPrefix: [
+      0x0DAE54F8,
+      [
+        ["nonce", "string"],
+        ["secret", "string"],
+      ],
+      "Error",
+    ],
+    invokeWithReCaptchaPrefix: [
+      0xADBB0F94,
+      [
+        ["token", "string"],
+      ],
+      "Error",
+    ],
     invokeAfterMsg: [
       0xCB9F372D,
       [
@@ -46317,6 +47034,80 @@ export const schema = Object.freeze({
       ],
       "ShareThemeBackdrops",
     ],
+    "messages.getBotWidgetQueryAnswer": [
+      0x5C550579,
+      [
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
+        ["query_type", "WidgetQueryType"],
+        ["data", "bytes"],
+      ],
+      "messages.BotWidgetQueryAnswer",
+    ],
+    "messages.setBotWidgetQueryAnswer": [
+      0xF8CDEC6A,
+      [
+        ["flags", "#"],
+        ["query_id", "long"],
+        ["result", "flags.0?string"],
+      ],
+      "Bool",
+    ],
+    "messages.editMessageWidgetData": [
+      0xF624BC1E,
+      [
+        ["flags", "#"],
+        ["peer", "InputPeer"],
+        ["id", "int"],
+        ["public_data", "flags.0?string"],
+        ["chat_data", "flags.1?string"],
+      ],
+      "Updates",
+    ],
+    "messages.editInlineBotMessageWidgetData": [
+      0x6396CE2B,
+      [
+        ["flags", "#"],
+        ["id", "InputBotInlineMessageID"],
+        ["public_data", "flags.0?string"],
+        ["chat_data", "flags.1?string"],
+      ],
+      "Bool",
+    ],
+    "messages.editWidgetData": [
+      0xEAC343C0,
+      [
+        ["flags", "#"],
+        ["widget_id", "long"],
+        ["public_data", "string"],
+        ["cache_time", "flags.0?int"],
+      ],
+      "Bool",
+    ],
+    "messages.getWidgetPublicData": [
+      0x6FC53181,
+      [
+        ["peer", "InputPeer"],
+        ["msg_id", "int"],
+        ["hash", "long"],
+      ],
+      "messages.WidgetPublicData",
+    ],
+    "messages.transcribeAudioFile": [
+      0x072D2EF7,
+      [
+        ["file", "InputFile"],
+      ],
+      "messages.TranscribedAudio",
+    ],
+    "messages.getTranscriptionLangs": [
+      0xBA6CD9AA,
+      [
+        ["flags", "#"],
+        ["peer", "flags.0?InputPeer"],
+      ],
+      "Vector<string>",
+    ],
     "updates.getState": [
       0xEDD4882A,
       [],
@@ -46990,11 +47781,12 @@ export const schema = Object.freeze({
       "Bool",
     ],
     "channels.toggleForum": [
-      0x3FF75734,
+      0xA2952B54,
       [
         ["channel", "InputChannel"],
         ["enabled", "Bool"],
         ["tabs", "Bool"],
+        ["sidebar", "Bool"],
       ],
       "Updates",
     ],
@@ -49739,7 +50531,12 @@ export const schema = Object.freeze({
   identifierToName: {
     [0x3FEDD339]: "true",
     [0xC4B9F9BB]: "error",
-    [0x56730BCC]: "null",
+    [0xD433AD73]: "ipPort",
+    [0x37982646]: "ipPortSecret",
+    [0x4679B65F]: "accessPointRule",
+    [0x5A592A6C]: "help.configSimple",
+    [0x27D69997]: "inputPeerPhotoFileLocationLegacy",
+    [0x0DBAEAE9]: "inputStickerSetThumbLegacy",
     [0x7F3B18EA]: "inputPeerEmpty",
     [0x7DA07EC9]: "inputPeerSelf",
     [0x35A95CB9]: "inputPeerChat",
@@ -49775,6 +50572,8 @@ export const schema = Object.freeze({
     [0xC4103386]: "inputMediaPaidMedia",
     [0x9FC55FDE]: "inputMediaTodo",
     [0xF3A9244A]: "inputMediaStakeDice",
+    [0x44F6C04E]: "inputMediaWidget",
+    [0x7C855CB5]: "inputMediaWidgetId",
     [0x1CA48F57]: "inputChatPhotoEmpty",
     [0xBDCDAEC0]: "inputChatUploadedPhoto",
     [0x8953AD37]: "inputChatPhoto",
@@ -49854,6 +50653,7 @@ export const schema = Object.freeze({
     [0xA8852491]: "messageMediaPaidMedia",
     [0x8A53B014]: "messageMediaToDo",
     [0xCA5CAB89]: "messageMediaVideoStream",
+    [0x2238F214]: "messageMediaWidget",
     [0xB6AEF7B0]: "messageActionEmpty",
     [0xBD47CBAD]: "messageActionChatCreate",
     [0xB5A1CE5A]: "messageActionChatEditTitle",
@@ -50174,6 +50974,12 @@ export const schema = Object.freeze({
     [0xA8AE1CAC]: "updateWalletGaslessInfo",
     [0x50A38E0E]: "updateWalletTonConnectSession",
     [0xD1EE8199]: "updateWalletTonConnectPendingDisconnect",
+    [0x2366665C]: "updateEditForumTopic",
+    [0xB373FE68]: "updateBotWidgetQuery",
+    [0xA5F07E08]: "updateInlineBotWidgetQuery",
+    [0xFA89BEF7]: "updateBotWidgetCopyQuery",
+    [0xBBB078DD]: "updateMessageWidgetData",
+    [0x734C2E7B]: "updateTranscribedAudioFile",
     [0xA56C2A3E]: "updates.state",
     [0x5D75A138]: "updates.differenceEmpty",
     [0x00F49CA0]: "updates.difference",
@@ -50421,6 +51227,8 @@ export const schema = Object.freeze({
     [0xD7E78225]: "inputBotInlineMessageMediaInvoice",
     [0xBDDCC510]: "inputBotInlineMessageMediaWebPage",
     [0xB43DF56C]: "inputBotInlineMessageRichMessage",
+    [0xF597A3F0]: "inputBotInlineMessageWidget",
+    [0xFE8B792B]: "inputBotInlineMessageWidgetId",
     [0x88BF9319]: "inputBotInlineResult",
     [0xA8D864A7]: "inputBotInlineResultPhoto",
     [0xFFF8FDC4]: "inputBotInlineResultDocument",
@@ -50433,6 +51241,7 @@ export const schema = Object.freeze({
     [0x354A9B09]: "botInlineMessageMediaInvoice",
     [0x809AD9A6]: "botInlineMessageMediaWebPage",
     [0x0A617E7B]: "botInlineMessageRichMessage",
+    [0xBAA17834]: "botInlineMessageWidget",
     [0x11965F3A]: "botInlineResult",
     [0x17DB940B]: "botInlineMediaResult",
     [0xE021F2F6]: "messages.botResults",
@@ -51454,7 +52263,14 @@ export const schema = Object.freeze({
     [0xF3010CBA]: "wallet.cardSticker",
     [0x8ED043B1]: "wallet.card",
     [0x725BB4EB]: "payments.starGiftDepositPayload",
+    [0x454D2737]: "userWallet",
+    [0x16D8CF0B]: "widgetQueryTypeData",
+    [0x192047DC]: "widgetQueryTypeSignData",
+    [0xFF3B33B4]: "widgetQueryTypeSentTransaction",
+    [0x95B73023]: "messages.botWidgetQueryAnswer",
+    [0xB9196E57]: "messages.widgetPublicDataNotModified",
+    [0x04493BFF]: "messages.widgetPublicData",
   },
 }) as unknown as Schema;
 
-export const LAYER = 232;
+export const LAYER = 233;

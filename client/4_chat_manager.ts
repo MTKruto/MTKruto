@@ -368,7 +368,7 @@ export class ChatManager implements UpdateProcessor<ChatManagerUpdate, true> {
 
   async #setIsTopicsEnabled(chatId: ID, isEnabled: boolean, isShownAsTabs: boolean) {
     const channel = await this.#c.getInputChannel(chatId);
-    await this.#c.invoke({ _: "channels.toggleForum", channel, enabled: isEnabled, tabs: isShownAsTabs });
+    await this.#c.invoke({ _: "channels.toggleForum", channel, enabled: isEnabled, tabs: isShownAsTabs, sidebar: false });
   }
 
   async disableTopics(chatId: ID) {
