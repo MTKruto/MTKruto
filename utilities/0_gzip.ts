@@ -21,7 +21,8 @@
 import { toArrayBuffer } from "../0_deps.ts";
 
 export function gunzip(buffer: Uint8Array): Promise<Uint8Array<ArrayBuffer>> {
-  return inner(buffer, new DecompressionStream("gzip"));
+  const format = buffer[0] === 0x1f && buffer[1] === 0x8b ? "gzip" : "deflate";
+  return inner(buffer, new DecompressionStream(format));
 }
 
 export function gzip(buffer: Uint8Array): Promise<Uint8Array<ArrayBuffer>> {

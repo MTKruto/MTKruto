@@ -91,6 +91,7 @@ export * from "./types/0_user_status.ts";
 export * from "./types/0_video_chat.ts";
 export * from "./types/0_voice_transcription.ts";
 export * from "./types/0_voice.ts";
+export * from "./types/0_widget.ts";
 export * from "./types/0_working_hours_interval.ts";
 export * from "./types/1_animation.ts";
 export * from "./types/1_audio.ts";
