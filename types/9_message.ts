@@ -21,7 +21,6 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject, getLogger, type MaybePromise, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
-import type { _CaptionCommon } from "../client/0_params.ts";
 import { peerToChatId } from "../tl/2_telegram.ts";
 import { type FileId, FileType, toUniqueFileId } from "./_file_id.ts";
 import { serializeFileId } from "./_file_id.ts";
