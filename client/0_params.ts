@@ -1455,3 +1455,12 @@ export interface SellGiftParams extends _BusinessConnectionIdCommon {
 export interface TransferGiftParams extends _BusinessConnectionIdCommon {
   transferPrice?: number;
 }
+
+export interface AnswerWidgetQueryParams {
+  data?: string;
+}
+
+export interface EditMessageWidgetDataParams {
+  publicData?: string;
+  chatData?: string;
+}

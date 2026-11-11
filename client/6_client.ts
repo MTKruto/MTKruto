@@ -28,7 +28,7 @@ import { type AlbumStoryList, type Animation, type AppSupport, type Audio, type 
 import { APP_VERSION, DEVICE_MODEL, DOWNLOAD_MAX_CHUNK_SIZE, INITIAL_DC, LANG_CODE, LANG_PACK, MAX_CHANNEL_ID, MAX_CHAT_ID, PHONE_NUMBER_TTL, type PublicKeys, SYSTEM_LANG_CODE, SYSTEM_VERSION, USERNAME_TTL } from "../4_constants.ts";
 import { AuthKeyUnregistered, FloodWait, Migrate, SessionRevoked } from "../4_errors.ts";
 import { AbortableLoop } from "./0_abortable_loop.ts";
-import type { AddBotToAttachmentsMenuParams, AddChatMemberParams, AddChatToCommunityParams, AddContactParams, AddMusicToProfileParams, AddReactionParams, AddSavedNotificationSoundParams, AddStickerToStickerSetParams, AllowUnpaidMessagesFromUserParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, BoostChatParams, CheckUsernameParams, CreateChannelParams, CreateCommunityParams, CreateGroupParams, CreateInviteLinkParams, CreateStickerSetParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteAccountParams, DeleteMessageParams, DeleteMessagesParams, DeleteMyCommandsParams, DisallowUnpaidMessagesFromUserParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageRichTextParams, EditMessageTextParams, EditStoryParams, EditTopicParams, EnableSignaturesParams, EndSecretChatParams, EndTakeoutSessionParams, ForwardMessagesParams, GetAdministeredChatsParams, GetBlockedUsersParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLeftChannelsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetMyDescriptionParams, GetMyNameParams, GetMyShortDescriptionParams, GetPollVotersParams, GetProfileMusicParams, GetProfilePhotosParams, GetRecentActionsParams, GetSavedChatsParams, GetSavedMessagesParams, GetStarTransactionsParams, GetStoriesInAlbumParams, GetTonTransactionsParams, GetTopicsParams, GetTranslationsParams, GiftPremiumSubscriptionParams, InvokeParams, JoinVideoChatParams, MarkAllMentionsAsReadParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, RemoveProfilePhotoParams, ReplaceStickerInStickerSetParams, ReportChatParams, ReportEphemeralMessageParams, ReportStoryParams, ResolveUsernameParams, SaveDraftParams, SaveRichTextDraftParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLivePhotoParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendRichTextParams, SendSecretAnimationParams, SendSecretAudioParams, SendSecretContactParams, SendSecretDocumentParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretPhotoParams, SendSecretStickerParams, SendSecretVenueParams, SendSecretVideoNoteParams, SendSecretVideoParams, SendSecretVoiceParams, SendSharedWidgetParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SendWidgetParams, SetBirthdayParams, SetBusinessAwayMessageParams, SetBusinessIntroParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetContactNoteParams, SetEmojiStatusParams, SetLocationParams, SetManagedBotAccessSettingsParams, SetMyCommandsParams, SetMyDescriptionParams, SetMyNameParams, SetMyShortDescriptionParams, SetNameColorParams, SetNotificationSettingsParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetStickerSetThumbnailParams, SetWorkingHoursParams, SignInParams, SignUpParams, StartBotParams, StartTakeoutSessionParams, StartVideoChatParams, StopPollParams, SummarizeTextParams, TransferGiftParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
+import type { AddBotToAttachmentsMenuParams, AddChatMemberParams, AddChatToCommunityParams, AddContactParams, AddMusicToProfileParams, AddReactionParams, AddSavedNotificationSoundParams, AddStickerToStickerSetParams, AllowUnpaidMessagesFromUserParams, AnswerCallbackQueryParams, AnswerInlineQueryParams, AnswerPreCheckoutQueryParams, AnswerWidgetQueryParams, ApproveJoinRequestsParams, BanChatMemberParams, BoostChatParams, CheckUsernameParams, CreateChannelParams, CreateCommunityParams, CreateGroupParams, CreateInviteLinkParams, CreateStickerSetParams, CreateStoryParams, CreateSupergroupParams, CreateTopicParams, DeclineJoinRequestsParams, DeleteAccountParams, DeleteMessageParams, DeleteMessagesParams, DeleteMyCommandsParams, DisallowUnpaidMessagesFromUserParams, DownloadLiveStreamSegmentParams, DownloadParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageRichTextParams, EditMessageTextParams, EditMessageWidgetDataParams, EditStoryParams, EditTopicParams, EnableSignaturesParams, EndSecretChatParams, EndTakeoutSessionParams, ForwardMessagesParams, GetAdministeredChatsParams, GetBlockedUsersParams, GetChatMembersParams, GetChatsParams, GetClaimedGiftsParams, GetCommonChatsParams, GetCreatedInviteLinksParams, GetHistoryParams, GetJoinRequestsParams, GetLeftChannelsParams, GetLinkPreviewParams, GetMessageReactionsParams, GetMyCommandsParams, GetMyDescriptionParams, GetMyNameParams, GetMyShortDescriptionParams, GetPollVotersParams, GetProfileMusicParams, GetProfilePhotosParams, GetRecentActionsParams, GetSavedChatsParams, GetSavedMessagesParams, GetStarTransactionsParams, GetStoriesInAlbumParams, GetTonTransactionsParams, GetTopicsParams, GetTranslationsParams, GiftPremiumSubscriptionParams, InvokeParams, JoinVideoChatParams, MarkAllMentionsAsReadParams, OpenChatParams, OpenMiniAppParams, PinMessageParams, PromoteChatMemberParams, RemoveProfilePhotoParams, ReplaceStickerInStickerSetParams, ReportChatParams, ReportEphemeralMessageParams, ReportStoryParams, ResolveUsernameParams, SaveDraftParams, SaveRichTextDraftParams, ScheduleVideoChatParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendGiftParams, SendInlineQueryParams, SendInvoiceParams, SendLivePhotoParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendRichTextParams, SendSecretAnimationParams, SendSecretAudioParams, SendSecretContactParams, SendSecretDocumentParams, SendSecretLocationParams, SendSecretMessageParams, SendSecretPhotoParams, SendSecretStickerParams, SendSecretVenueParams, SendSecretVideoNoteParams, SendSecretVideoParams, SendSecretVoiceParams, SendSharedWidgetParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SendWidgetParams, SetBirthdayParams, SetBusinessAwayMessageParams, SetBusinessIntroParams, SetChatMemberRightsParams, SetChatMemberTagParams, SetChatPhotoParams, SetContactNoteParams, SetEmojiStatusParams, SetLocationParams, SetManagedBotAccessSettingsParams, SetMyCommandsParams, SetMyDescriptionParams, SetMyNameParams, SetMyShortDescriptionParams, SetNameColorParams, SetNotificationSettingsParams, SetPersonalChannelParams, SetProfileColorParams, SetReactionsParams, SetStickerSetThumbnailParams, SetWorkingHoursParams, SignInParams, SignUpParams, StartBotParams, StartTakeoutSessionParams, StartVideoChatParams, StopPollParams, SummarizeTextParams, TransferGiftParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams, UpdateChecklistParams, UpdateProfileParams, UpdateProfilePhotoParams, UpdateProfileVideoParams } from "./0_params.ts";
 import { StorageOperations } from "./0_storage_operations.ts";
 import { canBeInputChannel, canBeInputUser, DOWNLOAD_POOL_SIZE, getUsername, toInputChannel, toInputUser } from "./0_utilities.ts";
 import type { ClientGeneric } from "./1_client_generic.ts";
@@ -50,6 +50,7 @@ import { TakeoutManager } from "./2_takeout_manager.ts";
 import { TranslationsManager } from "./2_translations_manager.ts";
 import { UpdateManager } from "./2_update_manager.ts";
 import { WalletManager } from "./2_wallet_manager.ts";
+import { WidgetManager } from "./2_widget_manager.ts";
 import { AccountManager } from "./3_account_manager.ts";
 import { ClientEncryptedPool } from "./3_client_encrypted_pool.ts";
 import { MessageManager } from "./3_message_manager.ts";
@@ -148,6 +149,7 @@ export interface ClientManagers {
   translationsManager: TranslationsManager;
   updateManager: UpdateManager;
   walletManager: WalletManager;
+  widgetManager: WidgetManager;
   // 3_
   accountManager: AccountManager;
   messageManager: MessageManager;
@@ -189,6 +191,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   #translationsManager: TranslationsManager;
   #updateManager: UpdateManager;
   #walletManager: WalletManager;
+  #widgetManager: WidgetManager;
   // 3_
   #accountManager: AccountManager;
   #messageManager: MessageManager;
@@ -226,6 +229,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
       translationsManager: this.#translationsManager,
       updateManager: this.#updateManager,
       walletManager: this.#walletManager,
+      widgetManager: this.#widgetManager,
       // 3_
       accountManager: this.#accountManager,
       messageManager: this.#messageManager,
@@ -373,6 +377,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
     this.#translationsManager = new TranslationsManager(c);
     this.#updateManager = new UpdateManager(c);
     this.#walletManager = new WalletManager(c);
+    this.#widgetManager = new WidgetManager(c);
     // 3_
     this.#accountManager = new AccountManager({ ...c, fileManager });
     const messageManager = this.#messageManager = new MessageManager({ ...c, fileManager });
@@ -2709,6 +2714,17 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async editMessageText(chatId: ID, messageId: number, text: string, params?: EditMessageTextParams): Promise<MessageText> {
     return await this.#messageManager.editMessageText(chatId, messageId, text, params);
+  }
+
+  /**
+   * Edit a message's widget data.
+   *
+   * @method ms
+   * @param chatId The identifier of the chat which the message belongs to.
+   * @param messageId The identifier of the message.
+   */
+  async editMessageWidgetData(chatId: ID, messageId: number, params?: EditMessageWidgetDataParams): Promise<void> {
+    return await this.#messageManager.editMessageWidgetData(chatId, messageId, params);
   }
 
   /**
@@ -6332,5 +6348,19 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    */
   async getWalletState(): Promise<WalletState> {
     return await this.#walletManager.getWalletState();
+  }
+
+  //
+  // ========================= WIDGET QUERIES ========================= //
+  //
+
+  /**
+   * Answer a widget query. Bot-only.
+   *
+   * @method wq
+   * @param queryId The identifier of the query to answer.
+   */
+  async answerWidgetQuery(queryId: string, params?: AnswerWidgetQueryParams): Promise<void> {
+    return await this.#widgetManager.answerWidgetQuery(queryId, params);
   }
 }
