@@ -27,7 +27,7 @@ import type { PeerGetter } from "./1_chat_p.ts";
 import { constructVenue, type Venue } from "./1_venue.ts";
 
 /** @unlisted */
-export interface StoryInteractiveAreaPosition {
+export interface AreaPosition {
   xPercentage: number;
   yPercentage: number;
   widthPercentage: number;
@@ -37,7 +37,7 @@ export interface StoryInteractiveAreaPosition {
 
 /** @unlisted */
 export interface _StoryInteractiveAreaPositionCommon {
-  position: StoryInteractiveAreaPosition;
+  position: AreaPosition;
 }
 
 /** @unlisted */
@@ -97,7 +97,7 @@ export type StoryInteractiveArea =
   | StoryInteractiveAreaWeather
   | StoryInteractiveAreaGift;
 
-function constructStoryInteractiveAreaPosition(position: Api.mediaAreaCoordinates): StoryInteractiveAreaPosition {
+export function constructStoryInteractiveAreaPosition(position: Api.mediaAreaCoordinates): AreaPosition {
   return {
     xPercentage: position.x,
     yPercentage: position.y,
@@ -161,7 +161,7 @@ export function constructStoryInteractiveArea(area: Api.MediaArea): StoryInterac
   }
 }
 
-function storyInteractiveAreaPositionToTlObject(position: StoryInteractiveAreaPosition): Api.mediaAreaCoordinates {
+function storyInteractiveAreaPositionToTlObject(position: AreaPosition): Api.mediaAreaCoordinates {
   return { _: "mediaAreaCoordinates", x: position.xPercentage, y: position.yPercentage, w: position.widthPercentage, h: position.heightPercentage, rotation: position.rotationAngle };
 }
 export function storyInteractiveAreaToTlObject(area: StoryInteractiveArea, getPeer: PeerGetter): Api.MediaArea {

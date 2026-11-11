@@ -47,6 +47,7 @@ import type { ChatMemberUpdated } from "./4_chat_member_updated.ts";
 import type { JoinRequest } from "./4_join_request.ts";
 import type { LinkPreview } from "./5_link_preview.ts";
 import type { Poll } from "./8_poll.ts";
+import type { WidgetQuery } from "./8_widget_query.ts";
 import type { Message } from "./9_message.ts";
 import type { CallbackQuery } from "./A_callback_query.ts";
 import type { ChatListItem } from "./A_chat_list_item.ts";
@@ -646,6 +647,22 @@ export interface UpdateManagedBot {
   bot: User;
 }
 
+/**
+ * A widget query was received. Bot-only.
+ *
+ * ```
+ * client.on("widgetQuery", (ctx) => {
+ *   // ctx.update.widgetQuery
+ * });
+ * ```
+ * @unlisted
+ */
+export interface UpdateWidgetQuery {
+  type: "widgetQuery";
+  /** The received widget query. */
+  widgetQuery: WidgetQuery;
+}
+
 /** Any type of update. */
 export type Update =
   | UpdateConnectionState
@@ -687,4 +704,5 @@ export type Update =
   | UpdateSecretChat
   | UpdateSecretMessage
   | UpdateSecretTyping
-  | UpdateManagedBot;
+  | UpdateManagedBot
+  | UpdateWidgetQuery;
