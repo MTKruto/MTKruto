@@ -21,6 +21,7 @@
 import { unreachable } from "../0_deps.ts";
 import { cleanObject, getLogger, type MaybePromise, ZERO_CHANNEL_ID } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
+import type { _CaptionCommon } from "../client/0_params.ts";
 import { peerToChatId } from "../tl/2_telegram.ts";
 import { type FileId, FileType, toUniqueFileId } from "./_file_id.ts";
 import { serializeFileId } from "./_file_id.ts";
@@ -32,6 +33,7 @@ import { constructLocation, type Location } from "./0_location.ts";
 import { constructRefundedPayment, type RefundedPayment } from "./0_refunded_payment.ts";
 import { constructSelfDestructOption, type SelfDestructOption } from "./0_self_destruct_option.ts";
 import { constructVoice, type Voice } from "./0_voice.ts";
+import { constructWidget, type Widget } from "./0_widget.ts";
 import { type Animation, constructAnimation } from "./1_animation.ts";
 import { type Audio, constructAudio } from "./1_audio.ts";
 import { type ChatP, isChatPUser, type PeerGetter } from "./1_chat_p.ts";
@@ -676,6 +678,15 @@ export interface MessageRemovedFromCommunity extends _MessageBase {
   type: "removedFromCommunity";
 }
 
+/**
+ * A widget message.
+ * @unlisted
+ */
+export interface MessageWidget extends _MessageMediaBase {
+  type: "widget";
+  widget: Widget;
+}
+
 export function assertMessageType<T extends Message["type"]>(message: Message, type: T): Message & { type: T } {
   if (message.type !== type) {
     unreachable();
@@ -738,7 +749,8 @@ export type Message =
   | MessageScreenshotTaken
   | MessageRichText
   | MessageAddedToCommunity
-  | MessageRemovedFromCommunity;
+  | MessageRemovedFromCommunity
+  | MessageWidget;
 
 /** @unlisted */
 export interface MessageGetter {
@@ -1294,6 +1306,9 @@ export async function constructMessage(
         m = { type: "video", ...messageMedia, video };
       }
     }
+  } else if (Api.is("messageMediaWidget", message_.media)) {
+    const widget = await constructWidget(message_.media);
+    m = { type: "widget", ...messageMedia, widget };
   }
 
   if (m === null) {

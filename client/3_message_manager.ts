@@ -27,7 +27,7 @@ import { type Animation, assertMessageType, type BlockedUserList, type ChatActio
 import { peerToChatId } from "../tl/2_telegram.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, _UploadCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetBlockedUsersParams, GetHistoryParams, GetMessageReactionsParams, GetSavedChatsParams, GetSavedMessagesParams, OpenMiniAppParams, PinMessageParams, ReportEphemeralMessageParams, SaveDraftParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams as SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendRichTextParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SetReactionsParams, StartBotParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams } from "./0_params.ts";
+import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, _UploadCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetBlockedUsersParams, GetHistoryParams, GetMessageReactionsParams, GetSavedChatsParams, GetSavedMessagesParams, OpenMiniAppParams, PinMessageParams, ReportEphemeralMessageParams, SaveDraftParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams as SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendRichTextParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SendWidgetParams, SetReactionsParams, StartBotParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, checkArray, checkMessageId, checkPhotoName, checkStickerName, getLimit, getUsername, isHttpUrl, toInputChannel } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
@@ -3233,5 +3233,27 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const message = params?.text ?? "";
     const result = await this.#c.invoke({ _: "ephemeral.reportMessage", peer, id, option, message });
     return constructReportResult(result);
+  }
+
+  async sendWidget(chatId: ID, html: string, params?: SendWidgetParams) {
+    this.#c.storage.assertBot("sendWidget");
+
+    if (params?.width !== undefined && (params.width < 0 || params.width % 1 !== 0)) {
+      throw new InputError("Invalid width specified.");
+    }
+    if (params?.height !== undefined && (params.height < 0 || params.height % 1 !== 0)) {
+      throw new InputError("Invalid height specified.");
+    }
+    if (html.length === 0) {
+      throw new InputError("Widget html cannot be empty.");
+    }
+
+    const width = params?.width ?? 0;
+    const height = params?.height ?? 0;
+    const chat_data = params?.chatData;
+    const public_data = params?.publicData;
+    const shared_widget = params?.isShared || undefined;
+    const allow_queries = params?.isQueryable || undefined;
+    return assertMessageType(await this.#sendMedia(chatId, { _: "inputMediaWidget", width, height, html, chat_data, public_data, shared_widget, allow_queries }, params), "widget");
   }
 }

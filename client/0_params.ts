@@ -354,6 +354,21 @@ export interface _ThumbnailCommon {
 export interface SendDocumentParams extends _CaptionCommon, _ThumbnailCommon, _UploadCommon, _SendCommon, _ReplyMarkupCommon {
 }
 
+export interface SendWidgetParams extends _CaptionCommon, _SendCommon, _ReplyMarkupCommon {
+  /** The width of the widget. */
+  width?: number;
+  /** The height of the widget. */
+  height?: number;
+  /** The widget's public data. */
+  publicData?: string;
+  /** The widget's chat data. */
+  chatData?: string;
+  /** Whether the widget is shared. */
+  isShared?: boolean;
+  /** Whether the widget is queryable. */
+  isQueryable?: boolean;
+}
+
 export interface SendStickerParams extends _UploadCommon, _SendCommon, _ReplyMarkupCommon {
   /** Emoji to bind to the sticker. */
   emoji?: string;
