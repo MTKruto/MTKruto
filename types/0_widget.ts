@@ -18,7 +18,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { decodeText, gunzip } from "../1_utilities.ts";
+import { cleanObject, decodeText, gunzip } from "../1_utilities.ts";
 import type { Api } from "../2_tl.ts";
 
 /** A widget. */
@@ -56,7 +56,7 @@ export async function constructWidget(mmw: Api.messageMediaWidget): Promise<Widg
   const isBackgroundQuery = !!mmw.background_query;
   const isCopy = !!mmw.is_copy;
   const publicDataHash = mmw.public_data_hash !== undefined ? String(mmw.public_data_hash) : undefined;
-  return {
+  return cleanObject({
     id,
     width,
     height,
@@ -67,5 +67,5 @@ export async function constructWidget(mmw: Api.messageMediaWidget): Promise<Widg
     isQueryable,
     isBackgroundQuery,
     isCopy,
-  };
+  });
 }
