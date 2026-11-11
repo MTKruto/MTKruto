@@ -23,11 +23,11 @@ import { InputError } from "../0_errors.ts";
 import { base64EncodeUrlSafe, encodeText, fromUnixTimestamp, getLogger, getRandomId, type Logger } from "../1_utilities.ts";
 import { Api } from "../2_tl.ts";
 import { getDc } from "../3_transport.ts";
-import { type Animation, assertMessageType, type BlockedUserList, type ChatActionType, collectMediaFileSources, constructAnimation, constructBlockedUserList, constructChatAction, constructMessage as constructMessage_, constructMessageDraft, constructMessageEntity, constructMessageReactionList, constructMessageViewer, constructMiniAppInfo, constructReportResult, constructSavedChats, constructSticker, constructSummarizedText, constructVoiceTranscription, constructWidgetQuery, deserializeFileId, deserializeInlineMessageId, type FileId, type FileSource, FileType, type ID, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, inputPageBlockToTlObject, type InputPollMedia, type InputPollMediaSticker, type InputPollMediaVideo, type InputPollOption, type InputRichText, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageCounters, type MessageDice, type MessageDocument, type MessageEntity, messageEntityToTlObject, type MessageGetter, type MessageInvoice, type MessageList, type MessageLivePhoto, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageReference, type MessageRichText, messageSearchFilterToTlObject, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageViewer, type MessageVoice, type MessageWidget, type MiniAppInfo, type ParseMode, type Poll, type PriceTag, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type ReportResult, type RichText, type SavedChats, type SelfDestructOption, selfDestructOptionToInt, serializeFileId, type Sticker, type SummarizedText, type TextToTranslate, toUniqueFileId, type TranslatedText, type Update, type UsernameResolver, type VoiceTranscription } from "../3_types.ts";
+import { type Animation, assertMessageType, type BlockedUserList, type ChatActionType, collectMediaFileSources, constructAnimation, constructBlockedUserList, constructChatAction, constructMessage as constructMessage_, constructMessageDraft, constructMessageEntity, constructMessageReactionList, constructMessageViewer, constructMiniAppInfo, constructReportResult, constructSavedChats, constructSticker, constructSummarizedText, constructVoiceTranscription, deserializeFileId, deserializeInlineMessageId, type FileId, type FileSource, FileType, type ID, type InlineQueryResult, inlineQueryResultToTlObject, type InputChecklistItem, type InputMedia, inputPageBlockToTlObject, type InputPollMedia, type InputPollMediaSticker, type InputPollMediaVideo, type InputPollOption, type InputRichText, type Message, type MessageAnimation, type MessageAudio, type MessageChecklist, type MessageContact, type MessageCounters, type MessageDice, type MessageDocument, type MessageEntity, messageEntityToTlObject, type MessageGetter, type MessageInvoice, type MessageList, type MessageLivePhoto, type MessageLocation, type MessagePhoto, type MessagePoll, type MessageReactionList, type MessageReference, type MessageRichText, messageSearchFilterToTlObject, type MessageSticker, type MessageText, type MessageVenue, type MessageVideo, type MessageVideoNote, type MessageViewer, type MessageVoice, type MessageWidget, type MiniAppInfo, type ParseMode, type Poll, type PriceTag, type Reaction, reactionEqual, reactionToTlObject, replyMarkupToTlObject, type ReportResult, type RichText, type SavedChats, type SelfDestructOption, selfDestructOptionToInt, serializeFileId, type Sticker, type SummarizedText, type TextToTranslate, toUniqueFileId, type TranslatedText, type Update, type UsernameResolver, type VoiceTranscription } from "../3_types.ts";
 import { peerToChatId } from "../tl/2_telegram.ts";
 import { parseHtml } from "./0_html.ts";
 import { parseMarkdown } from "./0_markdown.ts";
-import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, _UploadCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, ForwardMessagesParams, GetBlockedUsersParams, GetHistoryParams, GetMessageReactionsParams, GetSavedChatsParams, GetSavedMessagesParams, OpenMiniAppParams, PinMessageParams, ReportEphemeralMessageParams, SaveDraftParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams as SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendRichTextParams, SendSharedWidgetParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SendWidgetParams, SetReactionsParams, StartBotParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams } from "./0_params.ts";
+import type { _BusinessConnectionIdCommon, _ReplyMarkupCommon, _SendCommon, _SpoilCommon, _UploadCommon, AddReactionParams, DeleteMessagesParams, EditInlineMessageCaptionParams, EditInlineMessageMediaParams, EditInlineMessageRichTextParams, EditInlineMessageTextParams, EditMessageCaptionParams, EditMessageLiveLocationParams, EditMessageMediaParams, EditMessageReplyMarkupParams, EditMessageTextParams, EditMessageWidgetDataParams, ForwardMessagesParams, GetBlockedUsersParams, GetHistoryParams, GetMessageReactionsParams, GetSavedChatsParams, GetSavedMessagesParams, OpenMiniAppParams, PinMessageParams, ReportEphemeralMessageParams, SaveDraftParams, SearchMessagesParams, SendAnimationParams, SendAudioParams, SendChatActionParams, SendChecklistParams as SendChecklistParams, SendContactParams, SendDiceParams, SendDocumentParams, SendInvoiceParams, SendLocationParams, SendMediaGroupParams, SendMessageDraftParams, SendMessageParams, SendPhotoParams, SendPollParams, SendRichTextDraftParams, SendRichTextParams, SendSharedWidgetParams, SendStickerParams, SendVenueParams, SendVideoNoteParams, SendVideoParams, SendVoiceParams, SendWidgetParams, SetReactionsParams, StartBotParams, StopPollParams, SummarizeTextParams, TranslateTextParams, UnpinMessageParams, UnpinMessagesParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import { canBeInputChannel, checkArray, checkMessageId, checkPhotoName, checkStickerName, getLimit, getUsername, isHttpUrl, toInputChannel } from "./0_utilities.ts";
 import type { C as C_ } from "./1_types.ts";
@@ -65,7 +65,6 @@ const messageManagerUpdates = [
   "updateChatUserTyping",
   "updateChannelUserTyping",
   "updateBotGuestChatQuery",
-  "updateBotWidgetQuery",
 ] as const;
 
 type MessageManagerUpdate = Api.Types[(typeof messageManagerUpdates)[number]];
@@ -2346,11 +2345,6 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       return { type: "deletedMessages", deletedMessages, isEphemeral: true };
     }
 
-    if (Api.isOneOf(["updateBotWidgetQuery", "updateInlineBotWidgetQuery"], update)) {
-      const widgetQuery = constructWidgetQuery(update, this.#c.getPeer);
-      return { type: "widgetQuery", widgetQuery };
-    }
-
     return null;
   }
 
@@ -3261,6 +3255,16 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     const shared_widget = params?.isShared || undefined;
     const allow_queries = params?.isQueryable || undefined;
     return assertMessageType(await this.#sendMedia(chatId, { _: "inputMediaWidget", width, height, html, chat_data, public_data, shared_widget, allow_queries }, params), "widget");
+  }
+
+  async editMessageWidgetData(chatId: ID, messageId: number, params?: EditMessageWidgetDataParams): Promise<void> {
+    this.#c.storage.assertBot("editMessageWidgetData");
+
+    const peer = await this.#c.getInputPeer(chatId);
+    const id = messageId;
+    const chat_data = params?.chatData;
+    const public_data = params?.publicData;
+    await this.#c.invoke({ _: "messages.editMessageWidgetData", peer, id, chat_data, public_data });
   }
 
   async sendSharedWidget(chatId: ID, widgetId: string, params?: SendSharedWidgetParams): Promise<MessageWidget> {
