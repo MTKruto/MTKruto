@@ -1467,3 +1467,8 @@ export interface EditMessageWidgetDataParams {
   /** The widget's chat-specific data. */
   chatData?: string;
 }
+
+export interface EditSharedWidgetDataParams {
+  /** The TTL of cached data, in seconds. */
+  cacheTime?: number;
+}
