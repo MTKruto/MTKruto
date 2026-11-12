@@ -63,7 +63,7 @@ export class CallbackQueryManager implements UpdateProcessor<CallbackQueryManage
       return constructCallbackQueryAnswer(maybeAnswer[0]);
     }
     const answer = await this.#c.invoke({ _: "messages.getBotCallbackAnswer", peer, msg_id: messageId, data: "data" in question ? encodeText(question.data) : undefined, game: question.type === "game" || undefined, password: question.type === "password" ? await this.#getPasswordCheck(question.password) : undefined });
-    if (answer.cache_time >= 0) {
+    if (answer.cache_time > 0) {
       await this.#c.messageStorage.setCallbackQueryAnswer(peerId, messageId, questionKey, answer);
     }
     return constructCallbackQueryAnswer(answer);
