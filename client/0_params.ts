@@ -162,6 +162,8 @@ export interface _EditMessageCaptionCommon extends _ReplyMarkupCommon {
 }
 
 export interface EditMessageCaptionParams extends _BusinessConnectionIdCommon, _EditMessageCaptionCommon {
+  /** The message's link preview. */
+  linkPreview?: InputLinkPreview;
 }
 
 export interface EditInlineMessageCaptionParams extends _EditMessageCaptionCommon {

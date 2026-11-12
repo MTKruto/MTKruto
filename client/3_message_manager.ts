@@ -1570,7 +1570,7 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
     return assertMessageType(message_, "richText");
   }
 
-  static #CAPTIONABLE_MESSAGE_TYPES = ["photo", "document", "video", "animation", "voice", "audio", "video", "livePhoto"] as const;
+  static #CAPTIONABLE_MESSAGE_TYPES = ["photo", "document", "video", "animation", "voice", "audio", "video", "livePhoto", "widget"] as const;
   async editMessageCaption(chatId: ID, messageId: number, params?: EditMessageCaptionParams): Promise<Message> {
     let canHaveCaption = false;
     this.#checkParams(params);
@@ -1596,6 +1596,8 @@ export class MessageManager implements UpdateProcessor<MessageManagerUpdate, tru
       entities: message ? entities : [],
       message,
       reply_markup: await this.#constructReplyMarkup(params),
+      invert_media: params?.linkPreview?.isAboveText || undefined,
+      no_webpage: params?.linkPreview?.isDisabled || undefined,
     }, { businessConnectionId: params?.businessConnectionId });
 
     return (await this.updatesToMessages(chatId, result, params?.businessConnectionId))[0];
