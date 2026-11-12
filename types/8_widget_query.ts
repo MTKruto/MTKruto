@@ -8,35 +8,61 @@ import { constructWalletCard, type WalletCard } from "./7_wallet_card.ts";
 
 /** @unlisted */
 export interface _WidgetQueryBase {
-  /** The identifier of the widget query. */
+  /** The identifier of the query. */
   id: string;
+  /** The user who made the query. */
   from: User;
+  /** The chat in which the query was made. */
   chat?: ChatP;
+  /** The query's message ID. */
   messageId?: number;
+  /** The query's inline message ID. */
   inlineMessageId?: string;
+  /** The query's chat instance. */
   chatInstance: string;
+  /** The query's chat type. */
   chatType?: string;
+  /** The query's data. */
   data: string;
+  /** The identifier of the widget. */
   widgetId?: string;
 }
 
+/**
+ * A data widget query.
+ * @unlisted
+ */
 export interface WidgetQueryData extends _WidgetQueryBase {
   type: "data";
+  /** The card of the involved wallet. */
   walletCard?: WalletCard;
 }
 
+/**
+ * A sign data widget query.
+ * @unlisted
+ */
 export interface WidgetQuerySignData extends _WidgetQueryBase {
   type: "signData";
+  /** The involved wallet. */
   wallet: Wallet;
+  /** The sign data. */
   signData: string;
 }
 
+/**
+ * A transaction widget query.
+ * @unlisted
+ */
 export interface WidgetQueryTransaction extends _WidgetQueryBase {
   type: "transaction";
+  /** The wallet that made the transaction. */
   wallet: Wallet;
+  /** The transaction's message hash. */
   messageHash: string;
 }
 
+/** Any type of widget query. */
 export type WidgetQuery = WidgetQueryData | WidgetQuerySignData | WidgetQueryTransaction;
 
 export function constructWidgetQuery(ubwq: Api.updateBotWidgetQuery | Api.updateInlineBotWidgetQuery, getPeer: PeerGetter): WidgetQuery {

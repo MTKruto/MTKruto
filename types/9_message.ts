@@ -683,6 +683,7 @@ export interface MessageRemovedFromCommunity extends _MessageBase {
  */
 export interface MessageWidget extends _MessageMediaBase {
   type: "widget";
+  /** The widget included in the message. */
   widget: Widget;
 }
 

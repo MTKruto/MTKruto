@@ -1457,10 +1457,13 @@ export interface TransferGiftParams extends _BusinessConnectionIdCommon {
 }
 
 export interface AnswerWidgetQueryParams {
+  /** The query answer's data. */
   data?: string;
 }
 
 export interface EditMessageWidgetDataParams {
+  /** The widget's public data. */
   publicData?: string;
+  /** The widget's chat-specific data. */
   chatData?: string;
 }

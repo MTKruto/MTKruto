@@ -2717,7 +2717,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
   }
 
   /**
-   * Edit a message's widget data.
+   * Edit a message's widget data. Bot-only.
    *
    * @method ms
    * @param chatId The identifier of the chat which the message belongs to.
@@ -3383,7 +3383,7 @@ export class Client<C extends Context = Context> extends Composer<C> implements 
    *
    * @method ms
    * @param chatId The identifier of a chat to send the widget message to.
-   * @param voice The HTML of the widget.
+   * @param html The HTML of the widget.
    * @returns The sent widget message.
    */
   async sendWidget(chatId: ID, html: string, params?: SendWidgetParams): Promise<MessageWidget> {
