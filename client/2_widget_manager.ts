@@ -21,7 +21,7 @@
 import { Api } from "../2_tl.ts";
 import { constructWidgetQuery, type Update } from "../3_types.ts";
 import { InputError } from "../4_errors.ts";
-import type { AnswerWidgetQueryParams } from "./0_params.ts";
+import type { AnswerWidgetQueryParams, EditSharedWidgetDataParams } from "./0_params.ts";
 import type { UpdateProcessor } from "./0_update_processor.ts";
 import type { C } from "./1_types.ts";
 
@@ -56,5 +56,19 @@ export class WidgetManager implements UpdateProcessor<WidgetManagerUpdate, false
     }
     const result = params?.data;
     await this.#c.invoke({ _: "messages.setBotWidgetQueryAnswer", query_id, result });
+  }
+
+  async editSharedWidgetData(widgetId: string, publicData: string, params?: EditSharedWidgetDataParams): Promise<void> {
+    this.#c.storage.assertBot("editSharedWidgetData");
+    const widget_id = BigInt(widgetId);
+    if (widget_id === 0n) {
+      throw new InputError("Invalid widget ID specified.");
+    }
+    const cache_time = params?.cacheTime;
+    if (cache_time !== undefined && (cache_time < 0 || cache_time % 1 !== 0)) {
+      throw new InputError("Invalid cache time specified.");
+    }
+    const public_data = publicData;
+    await this.#c.invoke({ _: "messages.editWidgetData", widget_id, public_data, cache_time });
   }
 }
