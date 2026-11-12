@@ -3656,14 +3656,14 @@ export class ClientDispatcher<C extends Context = Context> extends Composer<C> i
    * Send a callback query. User-only.
    *
    * @method cq
-   * @param botId The identifier of the bot to send the callback query to.
+   * @param chatId The identifier of the chat to send the callback query in.
    * @param messageId The identifier of the message that includes a button responsible for the callback query question.
    * @param question The callback query's question.
    * @returns The bot's answer to the callback query.
    * @cache
    */
-  async sendCallbackQuery(botId: ID, messageId: number, question: CallbackQueryQuestion): Promise<CallbackQueryAnswer> {
-    return await this.#dispatch("sendCallbackQuery", botId, messageId, question);
+  async sendCallbackQuery(chatId: ID, messageId: number, question: CallbackQueryQuestion): Promise<CallbackQueryAnswer> {
+    return await this.#dispatch("sendCallbackQuery", chatId, messageId, question);
   }
 
   //

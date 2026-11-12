@@ -53,11 +53,11 @@ export class CallbackQueryManager implements UpdateProcessor<CallbackQueryManage
     await this.#c.invoke({ _: "messages.setBotCallbackAnswer", url: params?.url, query_id: BigInt(id), cache_time: params?.cacheTime ?? 0, message: params?.text, alert: params?.isAlert || undefined });
   }
 
-  async sendCallbackQuery(botId: ID, messageId: number, question: CallbackQueryQuestion): Promise<CallbackQueryAnswer> {
+  async sendCallbackQuery(chatId: ID, messageId: number, question: CallbackQueryQuestion): Promise<CallbackQueryAnswer> {
     this.#c.storage.assertUser("sendCallbackQuery");
     checkMessageId(messageId);
     validateCallbackQueryQuestion(question);
-    const peer = await this.#c.getInputPeer(botId), peerId = await this.#c.getInputPeerChatId(peer), questionKey = JSON.stringify(question);
+    const peer = await this.#c.getInputPeer(chatId), peerId = await this.#c.getInputPeerChatId(peer), questionKey = JSON.stringify(question);
     const maybeAnswer = await this.#c.messageStorage.getCallbackQueryAnswer(peerId, messageId, questionKey);
     if (maybeAnswer !== null && !CallbackQueryManager.#isExpired(maybeAnswer[1], maybeAnswer[0].cache_time)) {
       return constructCallbackQueryAnswer(maybeAnswer[0]);
